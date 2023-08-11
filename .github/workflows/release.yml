@@ -9,8 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -25,21 +31,8 @@ jobs:
       - name: Test
         run: ./gradlew runGameTestServer --no-daemon --max-workers 1
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: 17
-          cache: 'gradle'
+      - name: Clean build/libs folder
+        run: rm -f build/libs/*
 
       - name: Make Changelog
         run: ./gradlew makeChangelog --no-daemon --max-workers 1

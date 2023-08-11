@@ -8,7 +8,7 @@ plugins {
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.77.2'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.79.0'
     id 'me.modmuss50.mod-publish-plugin' version '0.3.3'
 }
 
@@ -172,8 +172,10 @@ mixin {
 
 tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo = projectDir.absolutePath.toString()
+    fromCommit = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
+    toRef = 'HEAD'
     file = file('CHANGELOG.md')
-    fromCommit = 'c6c8481d7b6f5cda609d621c2a521cf50f8645c6'
+    untaggedName = 'Next release'
     templateContent = file('changelog.mustache').text
 }
 
@@ -181,8 +183,9 @@ publishMods {
     displayName = "railcraft-reborn-$minecraft_version-$mod_version"
     version = mod_version
     type = BETA
-    //changelog = file('CHANGELOG.md').text
-    changelog = 'First public beta for Minecraft 1.20.1'
+
+    def changelogFile = file('CHANGELOG.md')
+    changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
     if (minecraft_version.equals('1.20.1')) {
