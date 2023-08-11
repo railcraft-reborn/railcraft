@@ -1,3 +1,4 @@
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 import static org.apache.commons.lang3.StringUtils.repeat
 
 plugins {
@@ -5,9 +6,10 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'net.covers1624.signing' version '1.1.4'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.77.2'
+    id 'me.modmuss50.mod-publish-plugin' version '0.3.3'
 }
 
 def isCI = System.getenv('GITHUB_ACTION')
@@ -16,19 +18,6 @@ def ref = System.getenv('GITHUB_PR_NUMBER')
 
 def tag = nightly ? 'NIGHTLY' : 'CI'
 def suffix = "-${tag}" + (ref ? "-${ref}" : '')
-
-def signProps = [:]
-if (System.getenv('SECURE_SIGN')) {
-    println('Using Env variables for jar signing.')
-    signProps['keyStore'] = System.getenv('KEY_STORE')
-    signProps['storePass'] = System.getenv('KEY_STORE_PASS')
-    signProps['keyPass'] = System.getenv('KEY_STORE_KEY_PASS')
-} else if (project.hasProperty('keyStore')) {
-    println('Using Project properties for jar signing.')
-    signProps['keyStore'] = project.getProperty('keyStore')
-    signProps['storePass'] = project.getProperty('keyStorePass')
-    signProps['keyPass'] = project.getProperty('keyStoreKeyPass')
-}
 
 // does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-[NIGHTLY | CI]][-RUNID.RUNINT]-HASH
 version = "${minecraft_version}-${mod_version}"
@@ -41,7 +30,7 @@ if (isCI || nightly) {
 
 group = 'mods.railcraft'
 base {
-    archivesName = 'railcraft'
+    archivesName = 'railcraft-reborn'
 }
 
 java {
@@ -51,16 +40,13 @@ java {
 }
 
 println(repeat('*', 60))
-println('Project Version: ' + version)
+println("Project Version: $version")
 if (isCI) {
-    println("Running in Github Workflow ${tag}" + (ref ? " pull request ${ref}." : '.'))
+    println("Running in Github Workflow $tag" + (ref ? " pull request $ref." : '.'))
 }
-if (!signProps.isEmpty()) {
-    println('With .jar signing.')
-}
-println('Java: ' + System.getProperty('java.version'))
-println('JVM: ' + System.getProperty('java.vm.version') + ' (' + System.getProperty('java.vendor') + ')')
-println('Arch: ' + System.getProperty('os.arch'))
+println("Java: ${System.getProperty('java.version')}")
+println("JVM: ${System.getProperty('java.vm.version')} (${System.getProperty('java.vendor')})")
+println("Arch: ${System.getProperty('os.arch')}")
 println(repeat('*', 60))
 
 sourceSets {
@@ -87,7 +73,7 @@ configurations {
 }
 
 minecraft {
-    mappings channel: project.mappings_channel, version: project.mappings_version
+    mappings channel: mappings_channel, version: mappings_version
 
     copyIdeResources = true
 
@@ -141,14 +127,15 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.neoforged', name: 'forge', version: "${project.minecraft_version}-${project.neo_version}"
+    minecraft group: 'net.neoforged', name: 'forge', version: "$minecraft_version-$neo_version"
 
-    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
-    testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: project.mixin_version, classifier: 'processor'
+    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
+    testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
 
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge-api:${project.jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}-forge:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
+    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
+    runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
+
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -157,7 +144,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            mod_version: project.mod_version
+            mod_version: mod_version
     ]
     inputs.properties replaceProperties
 
@@ -184,21 +171,50 @@ tasks.named('jar', Jar).configure {
     finalizedBy 'reobfJar'
 }
 
+task apiJar(type: Jar, group: 'build') {
+    from sourceSets.api.output
+    archiveClassifier = 'api'
+    manifest.from(jar.manifest)
+}
+
+artifacts {
+    archives jar
+    archives apiJar
+}
+
 mixin {
     add sourceSets.main, 'railcraft.refmap.json'
 }
 
-signing {
-    if (!signProps.isEmpty()) {
-        jars {
-            sign jar
-            after 'reobfJar'
+tasks.register('makeChangelog', GitChangelogTask) {
+    fromRepo = projectDir.absolutePath.toString()
+    file = file('CHANGELOG.md')
+    fromCommit = 'c6c8481d7b6f5cda609d621c2a521cf50f8645c6'
+    templateContent = file('changelog.mustache').text
+}
 
-            keyStore = signProps.keyStore
-            storePass = signProps.storePass
+publishMods {
+    displayName = "railcraft-reborn-$minecraft_version-$mod_version"
+    version = mod_version
+    type = BETA
+    //changelog = file('CHANGELOG.md').text
+    changelog = 'First public beta for Minecraft 1.20.1'
 
-            alias = 'railcraft'
-            keyPass = signProps.keyPass
-        }
+    modLoaders.add('neoforge')
+    if (minecraft_version.equals('1.20.1')) {
+        modLoaders.add('forge')
+    }
+    file = jar.archiveFile
+    additionalFiles.from(apiJar)
+
+    curseforge {
+        projectId = '901491'
+        accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
+        minecraftVersions.add(minecraft_version)
+    }
+    modrinth {
+        projectId = 'rO6kKst6'
+        accessToken = providers.environmentVariable('MODRINTH_TOKEN')
+        minecraftVersions.add(minecraft_version)
     }
 }

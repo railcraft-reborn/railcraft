@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Compile
+        run: ./gradlew build --no-daemon --max-workers 1
+
+      - name: Test
+        run: ./gradlew runGameTestServer --no-daemon --max-workers 1
+
+      - name: Clean
+        run: ./gradlew clean
+
+      - name: Make Changelog
+        run: ./gradlew makeChangelog
+
+      - name: Publish
+        run: ./gradlew publishMods

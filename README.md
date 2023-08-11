@@ -1,7 +1,8 @@
 # Railcraft Reborn for Minecraft 1.20
 
-[![Deploy Nightly](https://github.com/railcraft-reborn/railcraft/actions/workflows/nightly.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/releases/tag/nightly)
-[![CI Suite](https://github.com/railcraft-reborn/railcraft/actions/workflows/master.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/master.yml)
+[![CI Build](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml)
+[![CurseForge Downloads](http://cf.way2muchnoise.eu/full_901491_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/rO6kKst6?label=Modrinth%20Downloads)](https://modrinth.com/mod/railcraft-reborn)
 
 Here you will find the source and issue tracker for the **Railcraft Reborn Project**.
 
