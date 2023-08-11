@@ -13,19 +13,13 @@ plugins {
 }
 
 def isCI = System.getenv('GITHUB_ACTION')
-def nightly = System.getenv('GITHUB_NIGHTLY')
 def ref = System.getenv('GITHUB_PR_NUMBER')
 
-def tag = nightly ? 'NIGHTLY' : 'CI'
-def suffix = "-${tag}" + (ref ? "-${ref}" : '')
-
-// does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-[NIGHTLY | CI]][-RUNID.RUNINT]-HASH
-version = "${minecraft_version}-${mod_version}"
+// does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-CI][-RUNID.RUNINT]-HASH
+version = "$minecraft_version-$mod_version"
 if (isCI) {
-    version = version + suffix
-}
-if (isCI || nightly) {
-    version = version + '-' + 'git rev-parse --short HEAD'.execute().text.trim()
+    def suffix = "-CI-" + (ref ? "$ref-" : '')
+    version = version + suffix + 'git rev-parse --short HEAD'.execute().text.trim()
 }
 
 group = 'mods.railcraft'
