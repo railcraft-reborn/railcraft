@@ -46,13 +46,13 @@ public interface ChargeStorage extends IEnergyStorage {
     /**
      * Infinite Batteries will supply an infinite amount of power to the network.
      */
-    INFINITE("tile.railcraft.battery.state.infinite"),
+    INFINITE,
     /**
      * Source batteries are used in generators and transformers. The charge they hold will be used
      * to charge the rechargeable batteries in the network, but they themselves will not be load
      * balanced.
      */
-    SOURCE("tile.railcraft.battery.state.source"),
+    SOURCE,
     /**
      * Rechargeable batteries can be filled and drained indefinitely. The charge network will
      * balance the change level between all the rechargeable batteries in the network.
@@ -61,19 +61,19 @@ public interface ChargeStorage extends IEnergyStorage {
      * Generators should posses a small rechargeable battery just large enough to hold the
      * generator's max per tick output with a similar draw level and 100% efficiency.
      */
-    RECHARGEABLE("tile.railcraft.battery.state.rechargeable"),
+    RECHARGEABLE,
     /**
      * Disposable batteries are excluded from the charge network's level balancing. They will be
      * drained after rechargeable batteries.
      */
-    DISPOSABLE("tile.railcraft.battery.state.disposable"),
+    DISPOSABLE,
     /**
      * Disabled batteries are ignored by the network. Use for redstone switching or multiblock
      * logic, etc.
      */
-    DISABLED("tile.railcraft.battery.state.disabled");
+    DISABLED;
 
-    private State(String locTag) {}
+    private State() {}
   }
 
   BlockPos getBlockPos();
