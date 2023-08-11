@@ -12,15 +12,8 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin' version '0.3.3'
 }
 
-def isCI = System.getenv('GITHUB_ACTION')
-def ref = System.getenv('GITHUB_PR_NUMBER')
-
-// does in fact follow the semantic versioning. (GAMEVER)-(MAJOR.MINOR.PATCH)[-CI][-RUNID.RUNINT]-HASH
+// Simple name to not have long names when publishing with the CI
 version = "$minecraft_version-$mod_version"
-if (isCI) {
-    def suffix = "-CI-" + (ref ? "$ref-" : '')
-    version = version + suffix + 'git rev-parse --short HEAD'.execute().text.trim()
-}
 
 group = 'mods.railcraft'
 base {
