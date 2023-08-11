@@ -203,12 +203,12 @@ publishMods {
 
     curseforge {
         projectId = '901491'
-        accessToken = System.getenv('CURSEFORGE_TOKEN')
+        accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
         minecraftVersions.add(minecraft_version)
     }
     modrinth {
         projectId = 'rO6kKst6'
-        accessToken = System.getenv('MODRINTH_TOKEN')
+        accessToken = providers.environmentVariable('MODRINTH_TOKEN')
         minecraftVersions.add(minecraft_version)
     }
 }
