@@ -28,6 +28,9 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
     steps:
       - uses: actions/checkout@v3
 
@@ -38,11 +41,8 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
-      - name: Build
-        run: ./gradlew build --no-daemon --max-workers 1
-
       - name: Make Changelog
         run: ./gradlew makeChangelog --no-daemon --max-workers 1
 
       - name: Publish
-        run: ./gradlew publishMods --no-daemon --max-workers 1
+        run: ./gradlew publishModrinth --no-daemon --max-workers 1
