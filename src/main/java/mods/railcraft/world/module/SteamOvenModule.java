@@ -49,7 +49,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
       @Override
       @NotNull
       public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (slot > 9) {
+        if (slot >= 9) {
           return stack;
         }
         return super.insertItem(slot, stack, simulate);
