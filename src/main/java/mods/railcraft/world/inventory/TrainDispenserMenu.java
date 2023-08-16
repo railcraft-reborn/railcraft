@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrainDispenserMenu extends RailcraftMenu {
 
   public TrainDispenserMenu(int id, Inventory inventory, TrainDispenserBlockEntity manipulator) {
-    super(RailcraftMenuTypes.TRAIN_DISPENSER.get(), id, inventory.player, manipulator::stillValid);
+    super(RailcraftMenuTypes.TRAIN_DISPENSER.get(), id, inventory.player, manipulator::isStillValid);
 
     for (int i = 0; i < 9; i++) {
       this.addSlot(new PhantomMinecartSlot(manipulator.getInvPattern(), i, 8 + i * 18, 29));

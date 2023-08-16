@@ -168,7 +168,7 @@ public class AdvancedContainer extends SimpleContainer
 
     @Override
     public boolean stillValid(Player player) {
-      return this.moduleProvider.stillValid(player);
+      return this.moduleProvider.isStillValid(player);
     }
 
     @Override

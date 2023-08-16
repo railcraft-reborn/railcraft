@@ -162,6 +162,11 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     return this.container;
   }
 
+  @Override
+  public boolean stillValid(Player player) {
+    return isStillValid(player);
+  }
+
   @Nullable
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {

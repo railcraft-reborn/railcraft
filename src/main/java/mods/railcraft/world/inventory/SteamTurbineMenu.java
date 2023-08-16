@@ -21,7 +21,7 @@ public class SteamTurbineMenu extends RailcraftMenu {
   private final AnalogGaugeWidget chargeWidget;
 
   public SteamTurbineMenu(int id, Inventory inventory, SteamTurbineBlockEntity steamTurbine) {
-    super(RailcraftMenuTypes.STEAM_TURBINE.get(), id, inventory.player, steamTurbine::stillValid);
+    super(RailcraftMenuTypes.STEAM_TURBINE.get(), id, inventory.player, steamTurbine::isStillValid);
 
     var module = steamTurbine.getSteamTurbineModule();
     var rotorContainer = module.getRotorContainer();

@@ -12,7 +12,7 @@ public class RoutingTrackMenu extends RailcraftMenu {
   private final RoutingTrackBlockEntity blockEntity;
 
   public RoutingTrackMenu(int id, Inventory inventory, RoutingTrackBlockEntity blockEntity) {
-    super(RailcraftMenuTypes.ROUTING_TRACK.get(), id, inventory.player, blockEntity::stillValid);
+    super(RailcraftMenuTypes.ROUTING_TRACK.get(), id, inventory.player, blockEntity::isStillValid);
     this.blockEntity = blockEntity;
 
     var goldenTicketSlot = new Slot(blockEntity, 0, 44, 24) {

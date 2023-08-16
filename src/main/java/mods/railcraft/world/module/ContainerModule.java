@@ -19,7 +19,7 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
 
   @Override
   public boolean stillValid(Player player) {
-    return this.provider.stillValid(player);
+    return this.provider.isStillValid(player);
   }
 
   @Override

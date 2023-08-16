@@ -23,7 +23,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
 
   protected ManualRollingMachineMenu(MenuType<?> type, int id, Inventory inventory,
       ManualRollingMachineBlockEntity blockEntity, int xs, int xy) {
-    super(type, id, inventory.player, blockEntity::stillValid);
+    super(type, id, inventory.player, blockEntity::isStillValid);
     this.blockEntity = blockEntity;
     this.craftMatrix = blockEntity.getCraftMatrix(this);
     this.resultSlot = blockEntity.getInvResult();

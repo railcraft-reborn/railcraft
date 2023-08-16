@@ -52,7 +52,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
 
   @Override
   public boolean stillValid(Player player) {
-    return RailcraftBlockEntity.stillValid(this, player);
+    return this.isStillValid(player);
   }
 
   @Override

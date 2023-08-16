@@ -5,7 +5,6 @@ import mods.railcraft.api.carts.Routable;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.world.inventory.RoutingTrackMenu;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -58,7 +57,7 @@ public class RoutingTrackBlockEntity extends LockableTrackBlockEntity implements
 
   @Override
   public boolean stillValid(Player player) {
-    return RailcraftBlockEntity.stillValid(this, player);
+    return isStillValid(player);
   }
 
   @Override
