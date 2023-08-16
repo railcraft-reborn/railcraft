@@ -14,7 +14,7 @@ public class WaterTankSidingMenu extends RailcraftMenu {
   private final FluidGaugeWidget fluidGauge;
 
   public WaterTankSidingMenu(int id, Inventory inventory, WaterTankSidingBlockEntity tank) {
-    super(RailcraftMenuTypes.WATER_TANK_SIDING.get(), id, inventory.player, tank::stillValid);
+    super(RailcraftMenuTypes.WATER_TANK_SIDING.get(), id, inventory.player, tank::isStillValid);
 
     this.addWidget(this.fluidGauge = this.createGauge(tank, 35, 20, 176, 0, 48, 47));
 

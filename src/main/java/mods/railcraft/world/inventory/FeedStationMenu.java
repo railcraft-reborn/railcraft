@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class FeedStationMenu extends RailcraftMenu {
 
   public FeedStationMenu(int id, Inventory inventory, FeedStationBlockEntity blockEntity) {
-    super(RailcraftMenuTypes.FEED_STATION.get(), id, inventory.player, blockEntity::stillValid);
+    super(RailcraftMenuTypes.FEED_STATION.get(), id, inventory.player, blockEntity::isStillValid);
     this.addSlot(new FeedSlot(blockEntity, 0, 60, 24));
     this.addInventorySlots(inventory, 140);
   }

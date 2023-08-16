@@ -17,7 +17,7 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
 
   protected ManipulatorMenu(MenuType<?> type, int id, Inventory inventory, T manipulator,
       boolean hasCartFilter) {
-    super(type, id, inventory.player, manipulator::stillValid);
+    super(type, id, inventory.player, manipulator::isStillValid);
     this.manipulator = manipulator;
     this.hasCartFilter = hasCartFilter;
 
@@ -38,7 +38,7 @@ public class ManipulatorMenu<T extends ManipulatorBlockEntity> extends Railcraft
 
   @Override
   public boolean stillValid(Player player) {
-    return this.manipulator.stillValid(player);
+    return this.manipulator.isStillValid(player);
   }
 
   public boolean hasCartFilter() {

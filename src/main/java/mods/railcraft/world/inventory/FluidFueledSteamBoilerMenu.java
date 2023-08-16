@@ -21,7 +21,7 @@ public class FluidFueledSteamBoilerMenu extends RailcraftMenu {
   public FluidFueledSteamBoilerMenu(int id, Inventory inventory,
       SteamBoilerBlockEntity steamBoiler) {
     super(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(), id, inventory.player,
-        steamBoiler::stillValid);
+        steamBoiler::isStillValid);
 
     this.module = steamBoiler.getModule(FluidFueledSteamBoilerModule.class).get();
 

@@ -113,8 +113,8 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public boolean stillValid(Player player) {
-    return stillValid(this, player);
+  public boolean isStillValid(Player player) {
+    return isStillValid(this, player);
   }
 
   public final void setOwner(@Nullable GameProfile profile) {
@@ -207,10 +207,10 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this;
   }
 
-  public static boolean stillValid(BlockEntity blockEntity, Player player) {
+  public static boolean isStillValid(BlockEntity blockEntity, Player player) {
+    var pos = blockEntity.getBlockPos();
     return !blockEntity.isRemoved()
-        && blockEntity.getLevel().getBlockEntity(blockEntity.getBlockPos()) == blockEntity
-        && player.distanceToSqr(blockEntity.getBlockPos().getX(), blockEntity.getBlockPos().getY(),
-            blockEntity.getBlockPos().getZ()) <= 64;
+        && blockEntity.getLevel().getBlockEntity(pos).equals(blockEntity)
+        && player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 64;
   }
 }

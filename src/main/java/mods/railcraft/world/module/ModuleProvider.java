@@ -26,7 +26,7 @@ public interface ModuleProvider {
    */
   void save();
 
-  boolean stillValid(Player player);
+  boolean isStillValid(Player player);
 
   Level level();
 

@@ -12,7 +12,7 @@ public class TankMenu extends RailcraftMenu {
   private final FluidGaugeWidget fluidGauge;
 
   public TankMenu(int id, Inventory inventory, TankBlockEntity tank) {
-    super(RailcraftMenuTypes.TANK.get(), id, inventory.player, tank::stillValid);
+    super(RailcraftMenuTypes.TANK.get(), id, inventory.player, tank::isStillValid);
 
     this.addWidget(this.fluidGauge = this.createGauge(tank, 35, 20, 176, 0, 48, 47));
 

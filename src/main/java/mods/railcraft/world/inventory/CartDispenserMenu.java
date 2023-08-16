@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CartDispenserMenu extends RailcraftMenu {
 
   public CartDispenserMenu(int id, Inventory inventory, CartDispenserBlockEntity manipulator) {
-    super(RailcraftMenuTypes.CART_DISPENSER.get(), id, inventory.player, manipulator::stillValid);
+    super(RailcraftMenuTypes.CART_DISPENSER.get(), id, inventory.player, manipulator::isStillValid);
 
     this.addSlot(new DispensableCartSlot(manipulator, 0, 62, 24));
     this.addSlot(new DispensableCartSlot(manipulator, 1, 80, 24));
