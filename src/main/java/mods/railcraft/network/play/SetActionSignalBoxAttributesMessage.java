@@ -39,6 +39,7 @@ public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
               ? senderProfile
               : null);
           signalBox.syncToClient();
+          signalBox.setChanged();
         });
     return true;
   }

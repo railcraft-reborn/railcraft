@@ -38,6 +38,7 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
 
   @Override
   public void setChanged() {
+    super.setChanged();
     if (this.level == null) {
       return;
     }
