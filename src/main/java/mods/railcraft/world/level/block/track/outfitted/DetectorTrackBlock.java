@@ -16,9 +16,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.MinecartCommandBlock;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -54,7 +58,8 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
-  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
+  public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos,
+      RandomSource random) {
     blockState.getValue(MODE).updatePowerState(blockState, level, blockPos);
   }
 
@@ -79,9 +84,50 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
+  public boolean isSignalSource(BlockState state) {
+    return true;
+  }
+
+  @Override
   public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos,
       Direction direction) {
     return blockState.getValue(POWERED) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
+  }
+
+  @Override
+  public int getDirectSignal(BlockState state, BlockGetter level, BlockPos blockPos,
+      Direction direction) {
+    return getSignal(state, level, blockPos, direction);
+  }
+
+  @Override
+  public boolean hasAnalogOutputSignal(BlockState blockState) {
+    return blockState.getValue(POWERED).booleanValue();
+  }
+
+  @Override
+  public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    if (hasAnalogOutputSignal(blockState)) {
+      var carts = EntitySearcher.findMinecarts().at(pos).upTo(-0.2F).list(level);
+      if (!carts.isEmpty() && carts.get(0).getComparatorLevel() > -1) {
+        return carts.get(0).getComparatorLevel();
+      }
+
+      var commandCarts = EntitySearcher.find(MinecartCommandBlock.class)
+          .at(pos).upTo(-0.2F).list(level);
+
+      if (!commandCarts.isEmpty()) {
+        return commandCarts.get(0).getCommandBlock().getSuccessCount();
+      }
+
+      var chestCarts = EntitySearcher.findMinecarts()
+          .at(pos).upTo(-0.2F).and(EntitySelector.CONTAINER_ENTITY_SELECTOR).list(level);
+
+      if (!chestCarts.isEmpty()) {
+        return AbstractContainerMenu.getRedstoneSignalFromContainer((Container) chestCarts.get(0));
+      }
+    }
+    return 0;
   }
 
   @Override
@@ -122,23 +168,6 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       this.name = name;
     }
 
-    @Override
-    public String getSerializedName() {
-      return this.name;
-    }
-
-    private Mode next() {
-      return values()[(this.ordinal() + 1) % values().length];
-    }
-
-    private Mode previous() {
-      return values()[(this.ordinal() + values().length - 1) % values().length];
-    }
-
-    protected void updatePowerState(BlockState blockState, Level level, BlockPos blockPos) {
-      return;
-    }
-
     protected static void updatePowerState(BlockState blockState, Level level, BlockPos blockPos,
         boolean reversed) {
       List<AbstractMinecart> carts = findCarts(level, blockPos);
@@ -163,11 +192,29 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       }
       if (powered != blockState.getValue(POWERED)) {
         level.setBlockAndUpdate(blockPos, blockState.setValue(POWERED, powered));
+        level.updateNeighborsAt(blockPos, blockState.getBlock());
+        level.updateNeighborsAt(blockPos.relative(Direction.DOWN), blockState.getBlock());
       }
     }
 
     private static List<AbstractMinecart> findCarts(Level level, BlockPos blockPos) {
       return EntitySearcher.findMinecarts().at(blockPos).upTo(-0.2F).list(level);
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    private Mode next() {
+      return values()[(this.ordinal() + 1) % values().length];
+    }
+
+    private Mode previous() {
+      return values()[(this.ordinal() + values().length - 1) % values().length];
+    }
+
+    protected void updatePowerState(BlockState blockState, Level level, BlockPos blockPos) {
     }
   }
 }
