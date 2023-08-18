@@ -1235,6 +1235,19 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_RELAYER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.BLAZE_ROD)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DIAMOND_PICKAXE)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_REMOVER.get())
         .pattern("aba")
         .pattern("cdc")

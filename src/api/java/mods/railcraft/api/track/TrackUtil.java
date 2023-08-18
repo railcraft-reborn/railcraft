@@ -149,6 +149,14 @@ public final class TrackUtil {
         && RailShapeUtil.isStraight(getTrackDirection(level, pos));
   }
 
+  public static boolean isRailBlockAt(Level level, BlockPos pos) {
+    return isRail(level.getBlockState(pos).getBlock().asItem());
+  }
+
+  public static boolean isRail(Block block) {
+    return isRail(block.asItem());
+  }
+
   public static boolean isRail(ItemStack stack) {
     return isRail(stack.getItem());
   }

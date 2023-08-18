@@ -440,8 +440,10 @@ public class RailcraftCreativeModeTabs {
     );
     var addAfterTNTMinecart = List.of(
         Items.TNT_MINECART,
-        RailcraftItems.TRACK_REMOVER.get(),
         RailcraftItems.TRACK_LAYER.get(),
+        RailcraftItems.TRACK_RELAYER.get(),
+        RailcraftItems.TRACK_REMOVER.get(),
+
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),
         RailcraftItems.ELECTRIC_LOCOMOTIVE.get(),

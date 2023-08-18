@@ -4,6 +4,7 @@ import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.TankMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackLayerMinecartRenderer;
+import mods.railcraft.client.renderer.entity.cart.TrackRelayerMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackRemoverMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -17,6 +18,8 @@ public class RailcraftEntityRenderers {
         TankMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TRACK_LAYER.get(),
         TrackLayerMinecartRenderer::new);
+    event.registerEntityRenderer(RailcraftEntityTypes.TRACK_RELAYER.get(),
+        TrackRelayerMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TRACK_REMOVER.get(),
         TrackRemoverMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),

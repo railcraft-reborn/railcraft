@@ -131,6 +131,7 @@ public class Translations {
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
     public static final String TRACK_LAYER = makeKey("tips", "track_layer");
+    public static final String TRACK_RELAYER = makeKey("tips", "track_relayer");
     public static final String TRACK_REMOVER = makeKey("tips", "track_remover");
     public static final String CRUSHED_OBSIDIAN =
         makeKey("tips", "crushed_obsidian");

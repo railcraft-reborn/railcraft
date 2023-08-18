@@ -22,9 +22,9 @@ import net.minecraftforge.common.IPlantable;
 
 public class TrackLayer extends MaintenancePatternMinecart {
 
-  public static final int SLOT_STOCK = 0;
-  public static final int SLOT_REPLACE = 0;
-  public static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
+  private static final int SLOT_STOCK = 0;
+  private static final int SLOT_REPLACE = 0;
+  private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
   public TrackLayer(EntityType<?> type, Level level) {
     super(type, level);

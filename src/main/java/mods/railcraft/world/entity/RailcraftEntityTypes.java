@@ -3,6 +3,7 @@ package mods.railcraft.world.entity;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
+import mods.railcraft.world.entity.vehicle.TrackRelayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
@@ -49,6 +50,15 @@ public class RailcraftEntityTypes {
           () -> create("track_layer",
               EntityType.Builder
                   .<TrackLayer>of(TrackLayer::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final RegistryObject<EntityType<TrackRelayer>> TRACK_RELAYER =
+      deferredRegister.register("track_relayer",
+          () -> create("track_relayer",
+              EntityType.Builder
+                  .<TrackRelayer>of(TrackRelayer::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));

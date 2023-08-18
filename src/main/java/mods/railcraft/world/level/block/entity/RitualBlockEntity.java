@@ -145,7 +145,6 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     queueForFilling(pos.below());
   }
 
-  // TODO: test
   public void queueForFilling(BlockPos index) {
     if (visitedBlocks.add(index)) {
       if ((index.getX() - this.worldPosition.getX()) * (index.getX() - this.worldPosition.getX())

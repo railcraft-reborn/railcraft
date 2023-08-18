@@ -269,9 +269,9 @@ public class RailcraftVillagerTrades {
       //EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_STANDARD);
       //EXPENSIVE.add(RailcraftCarts.CHEST_METALS);
       //EXPENSIVE.add(RailcraftCarts.CHEST_VOID);
-      //EXPENSIVE.add(RailcraftCarts.MOW_TRACK_RELAYER);
-      EXPENSIVE.add(RailcraftEntityTypes.TRACK_REMOVER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_LAYER.get());
+      EXPENSIVE.add(RailcraftEntityTypes.TRACK_RELAYER.get());
+      EXPENSIVE.add(RailcraftEntityTypes.TRACK_REMOVER.get());
       //EXPENSIVE.add(RailcraftCarts.MOW_UNDERCUTTER);
       EXPENSIVE.add(RailcraftEntityTypes.TUNNEL_BORE.get());
     }

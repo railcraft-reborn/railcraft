@@ -206,6 +206,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
     this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
+    this.addItem(RailcraftItems.TRACK_RELAYER, "Track Relayer Cart");
     this.addItem(RailcraftItems.TRACK_REMOVER, "Track Remover Cart");
     this.addItem(RailcraftItems.IRON_SPIKE_MAUL, "Iron Spike Maul");
     this.addItem(RailcraftItems.STEEL_SPIKE_MAUL, "Steel Spike Maul");
@@ -330,6 +331,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE, "Electric Locomotive");
     this.addEntityType(RailcraftEntityTypes.TUNNEL_BORE, "Tunnel Bore");
     this.addEntityType(RailcraftEntityTypes.TRACK_LAYER, "Track Layer Cart");
+    this.addEntityType(RailcraftEntityTypes.TRACK_RELAYER, "Track Relayer Cart");
     this.addEntityType(RailcraftEntityTypes.TRACK_REMOVER, "Track Remover Cart");
   }
 
@@ -364,6 +366,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
+    this.add(Translations.Tips.TRACK_RELAYER, "Replaces one track with another");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
     this.add(Translations.Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
