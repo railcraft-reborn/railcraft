@@ -39,9 +39,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class BaseSteamLocomotive extends Locomotive implements FluidMinecart {
 
-  public static final int SLOT_WATER_INPUT = 0;
-  public static final int SLOT_WATER_PROCESSING = 1;
-  public static final int SLOT_WATER_OUTPUT = 2;
+  protected static final int SLOT_WATER_INPUT = 0;
+  protected static final int SLOT_WATER_PROCESSING = 1;
+  protected static final int SLOT_WATER_OUTPUT = 2;
 
   private static final EntityDataAccessor<Boolean> SMOKE =
       SynchedEntityData.defineId(BaseSteamLocomotive.class, EntityDataSerializers.BOOLEAN);
@@ -66,17 +66,13 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
       .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
       .setTicksPerCycle(TICKS_PER_BOILER_CYCLE);
 
-  protected final ContainerMapper invWaterInput =
-      ContainerMapper.make(this, SLOT_WATER_INPUT, 1)
-          .withStackSizeLimit(4);
-  protected final ContainerMapper invWaterOutput = ContainerMapper.make(this, SLOT_WATER_OUTPUT, 1);
   protected final ContainerMapper invWaterContainers =
-      ContainerMapper.make(this, SLOT_WATER_INPUT, 3);
+      ContainerMapper.make(this, SLOT_WATER_INPUT, 3).ignoreItemChecks();
 
   private final LazyOptional<TankManager> tankManager =
       LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
 
-  private int fluidProcessingTimer = this.random.nextInt();
+  private int fluidProcessingTimer = 0;
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
 
@@ -84,8 +80,8 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
     super(type, level);
   }
 
-  protected BaseSteamLocomotive(ItemStack itemStack, EntityType<?> type, double x,
-      double y, double z, ServerLevel serverLevel) {
+  protected BaseSteamLocomotive(ItemStack itemStack, EntityType<?> type,
+      double x, double y, double z, ServerLevel serverLevel) {
     super(itemStack, type, x, y, z, serverLevel);
   }
 
@@ -132,8 +128,9 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void tick() {
     super.tick();
-
-    if (!this.level().isClientSide()) {
+    if (this.level().isClientSide) {
+      clientTick();
+    } else {
       if (this.waterTank.isEmpty()) {
         this.setMode(Mode.SHUTDOWN);
       }
@@ -145,20 +142,21 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
         this.setSmoking(this.boiler.isBurning());
 
-        // TODO: make venting a toggleable thing (why autodump while train has no
-        // coal??)
+        // TODO: make venting a toggleable thing (why autodump while train has no coal??)
         if (!this.boiler.isBurning()) {
           this.ventSteam();
         }
       }
 
-      if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
+      if (++this.fluidProcessingTimer >= FluidTools.BUCKET_FILL_TIME) {
         this.fluidProcessingTimer = 0;
         this.processState = FluidTools.processContainer(this.invWaterContainers,
             this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
       }
-      return; // particles should NOT run serverside (it's a waste)
     }
+  }
+
+  private void clientTick() {
     // future information: renderYaw FACES at -x when at 0deg
     double rads = Math.toRadians(renderYaw);
     if (this.isSmoking()) {
