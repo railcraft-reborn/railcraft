@@ -31,9 +31,6 @@ jobs:
       - name: Test
         run: ./gradlew runGameTestServer --no-daemon --max-workers 1
 
-      - name: Clean build/libs folder
-        run: rm -f build/libs/*
-
       - name: Make Changelog
         run: ./gradlew makeChangelog --no-daemon --max-workers 1
 
