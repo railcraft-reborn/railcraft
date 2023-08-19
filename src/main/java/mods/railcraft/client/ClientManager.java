@@ -64,44 +64,38 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ClientManager {
 
-  private static ClientManager instance;
-  private final ShuntingAuraRenderer shuntingAuraRenderer;
+  private static ShuntingAuraRenderer shuntingAuraRenderer;
 
-  public ClientManager() {
-    instance = this;
+  public static void init(IEventBus modEventBus) {
+    modEventBus.addListener(ClientManager::handleClientSetup);
+    modEventBus.addListener(ClientManager::handleItemColors);
+    modEventBus.addListener(ClientManager::handleBlockColors);
+    modEventBus.addListener(ClientManager::handleParticleRegistration);
+    modEventBus.addListener(ClientManager::handleRegisterRenderers);
+    modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
+    MinecraftForge.EVENT_BUS.register(ClientManager.class);
 
+    shuntingAuraRenderer = new ShuntingAuraRenderer();
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
     EmblemClientUtil._setPackageManager(new EmblemPackageManagerImpl());
-
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    modEventBus.addListener(this::handleClientSetup);
-    modEventBus.addListener(this::handleItemColors);
-    modEventBus.addListener(this::handleBlockColors);
-    modEventBus.addListener(this::handleParticleRegistration);
-    modEventBus.addListener(this::handleRegisterRenderers);
-    modEventBus.addListener(this::handleRegisterLayerDefinitions);
-
-    MinecraftForge.EVENT_BUS.register(this);
-
-    this.shuntingAuraRenderer = new ShuntingAuraRenderer();
   }
 
-  public ShuntingAuraRenderer getShuntingAuraRenderer() {
-    return this.shuntingAuraRenderer;
+  public static ShuntingAuraRenderer getShuntingAuraRenderer() {
+    return shuntingAuraRenderer;
   }
 
   // ================================================================================
   // Mod Events
   // ================================================================================
 
-  private void handleClientSetup(FMLClientSetupEvent event) {
+  private static void handleClientSetup(FMLClientSetupEvent event) {
     // === Menu Screens ===
     MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
         SolidFueledSteamBoilerScreen::new);
@@ -137,7 +131,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
   }
 
-  private void handleItemColors(RegisterColorHandlersEvent.Item event) {
+  private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.register((stack, tintIndex) -> switch (tintIndex) {
           case 0 -> LocomotiveItem.getPrimaryColor(stack).getMapColor().col;
           case 1 -> LocomotiveItem.getSecondaryColor(stack).getMapColor().col;
@@ -148,7 +142,7 @@ public class ClientManager {
         RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
   }
 
-  private void handleBlockColors(RegisterColorHandlersEvent.Block event) {
+  private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register((state, level, pos, tintIndex) ->
             state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
@@ -163,7 +157,7 @@ public class ClientManager {
         RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
-  private void handleParticleRegistration(RegisterParticleProvidersEvent event) {
+  private static void handleParticleRegistration(RegisterParticleProvidersEvent event) {
     event.registerSpriteSet(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
     event.registerSpriteSet(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
     event.registerSpriteSet(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
@@ -175,12 +169,13 @@ public class ClientManager {
         ForceSpawnParticle.Provider::new);
   }
 
-  private void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+  private static void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
     RailcraftEntityRenderers.register(event);
     RailcraftBlockEntityRenderers.register(event);
   }
 
-  private void handleRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+  private static void handleRegisterLayerDefinitions(
+      EntityRenderersEvent.RegisterLayerDefinitions event) {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
@@ -189,7 +184,7 @@ public class ClientManager {
   // ================================================================================
 
   @SubscribeEvent
-  public void handleClientTick(TickEvent.ClientTickEvent event) {
+  static void handleClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.START
         && (Minecraft.getInstance().level != null && !Minecraft.getInstance().isPaused())) {
       SignalAspect.tickBlinkState();
@@ -197,17 +192,17 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  public void handleRenderWorldLast(RenderLevelStageEvent event) {
-    this.shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
+  static void handleRenderWorldLast(RenderLevelStageEvent event) {
+    shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
   }
 
   @SubscribeEvent
-  public void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
-    this.shuntingAuraRenderer.clearCarts();
+  static void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
+    shuntingAuraRenderer.clearCarts();
   }
 
   @SubscribeEvent
-  public void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
+  static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
     if (!Railcraft.BETA && FMLLoader.isProduction()) {
       return;
     }
@@ -233,7 +228,7 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  public void onItemTooltip(ItemTooltipEvent event) {
+  static void onItemTooltip(ItemTooltipEvent event) {
     var itemStack = event.getItemStack();
     var tag = itemStack.getTag();
     if (tag == null) {
@@ -242,15 +237,7 @@ public class ClientManager {
     if (tag.contains(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG) &&
         tag.getBoolean(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG)) {
       event.getToolTip().add(Component.translatable(Translations.Tips.CLICK_TO_CRAFT)
-              .withStyle(ChatFormatting.YELLOW));
+          .withStyle(ChatFormatting.YELLOW));
     }
-  }
-
-  // ================================================================================
-  // Static Methods
-  // ================================================================================
-
-  public static ClientManager instance() {
-    return instance;
   }
 }
