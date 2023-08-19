@@ -165,8 +165,12 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
     return this.stream()
         .filter(slot -> slot.matches(filter))
-        .filter(slot -> dest.insert(slot.simulateExtract()).isEmpty())
-        .map(T::extract)
+        .filter(slot -> !slot.simulateExtract().isEmpty())
+        .filter(slot -> dest.insert(slot.simulateExtract(), true).isEmpty())
+        .map(slot -> {
+          dest.insert(slot.simulateExtract(), false);
+          return slot.extract();
+        })
         .findFirst()
         .orElse(ItemStack.EMPTY);
   }
@@ -229,14 +233,14 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return null if nothing was moved, the stack moved otherwise
    */
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest) {
-    return this.moveOneItemTo(dest, Predicates.alwaysTrue());
+    return this.moveOneItemTo(dest, itemStack -> true);
   }
 
   /**
    * Returns true if the inventory contains the specified item.
    *
    * @param filter The ItemStack to look for
-   * @return true is exists
+   * @return true if exists
    */
   default boolean contains(Predicate<ItemStack> filter) {
     return streamItems().anyMatch(filter);
