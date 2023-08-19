@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import com.google.common.base.Predicates;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
@@ -59,7 +58,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   }
 
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos) {
-    return findAdjacent(level, blockPos, Predicates.alwaysTrue());
+    return findAdjacent(level, blockPos, blockEntity -> true);
   }
 
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos,
@@ -98,7 +97,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
 
   /**
    * Attempt to add the stack to the inventory returning the remainder.
-   *
+   * <p>
    * If the entire stack was accepted, it returns an empty stack.
    *
    * @return The remainder
@@ -165,8 +164,12 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
     return this.stream()
         .filter(slot -> slot.matches(filter))
-        .filter(slot -> dest.insert(slot.simulateExtract()).isEmpty())
-        .map(T::extract)
+        .filter(slot -> !slot.simulateExtract().isEmpty())
+        .filter(slot -> dest.insert(slot.simulateExtract(), true).isEmpty())
+        .map(slot -> {
+          dest.insert(slot.simulateExtract(), false);
+          return slot.extract();
+        })
         .findFirst()
         .orElse(ItemStack.EMPTY);
   }
@@ -229,14 +232,14 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return null if nothing was moved, the stack moved otherwise
    */
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest) {
-    return this.moveOneItemTo(dest, Predicates.alwaysTrue());
+    return this.moveOneItemTo(dest, itemStack -> true);
   }
 
   /**
    * Returns true if the inventory contains the specified item.
    *
    * @param filter The ItemStack to look for
-   * @return true is exists
+   * @return true if exists
    */
   default boolean contains(Predicate<ItemStack> filter) {
     return streamItems().anyMatch(filter);

@@ -37,10 +37,7 @@ public class ContainerSlotAccessor<T extends Container> implements ModifiableSlo
   @Override
   public ItemStack extract(int amount, boolean simulate) {
     if (simulate) {
-      var remaining = this.item();
-      var removed = remaining.split(amount);
-      this.container.setItem(this.index, remaining);
-      return removed;
+      return this.item().copy().split(amount);
     }
 
     return this.container.removeItem(this.index, amount);
@@ -124,7 +121,7 @@ public class ContainerSlotAccessor<T extends Container> implements ModifiableSlo
     @Override
     public ItemStack extract(int amount, boolean simulate) {
       return this.container.canTakeItemThroughFace(this.index, this.item(), this.face)
-          ? super.extract()
+          ? super.extract(amount, simulate)
           : ItemStack.EMPTY;
     }
   }

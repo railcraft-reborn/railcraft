@@ -95,11 +95,11 @@ import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -132,7 +132,9 @@ public class Railcraft {
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
-    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientManager::new);
+    if (FMLEnvironment.dist == Dist.CLIENT) {
+      ClientManager.init(modEventBus);
+    }
 
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);

@@ -22,7 +22,7 @@ public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) {
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    ClientManager.instance().getShuntingAuraRenderer().setLinkedCarts(this.linkedCarts);
+    ClientManager.getShuntingAuraRenderer().setLinkedCarts(this.linkedCarts);
     return true;
   }
 
