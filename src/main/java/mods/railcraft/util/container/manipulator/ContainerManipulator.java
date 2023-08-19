@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import com.google.common.base.Predicates;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
@@ -59,7 +58,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   }
 
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos) {
-    return findAdjacent(level, blockPos, Predicates.alwaysTrue());
+    return findAdjacent(level, blockPos, blockEntity -> true);
   }
 
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos,
@@ -98,7 +97,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
 
   /**
    * Attempt to add the stack to the inventory returning the remainder.
-   *
+   * <p>
    * If the entire stack was accepted, it returns an empty stack.
    *
    * @return The remainder
