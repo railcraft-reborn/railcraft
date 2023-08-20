@@ -66,6 +66,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
 
@@ -203,28 +205,41 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-    if (!Railcraft.BETA && FMLLoader.isProduction()) {
-      return;
+    var modInfo = ModList.get().getModFileById(Railcraft.ID).getMods().get(0);
+    var versionStatus = VersionChecker.getResult(modInfo).status();
+
+    if (versionStatus.shouldDraw()) {
+      var message = Component.literal("Railcraft Reborn: ").withStyle(ChatFormatting.GREEN)
+          .append(Component.literal("A new version is available to download.")
+              .withStyle(style -> style
+                  .withColor(ChatFormatting.WHITE)
+                  .withUnderlined(true)
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                      "https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn"))));
+      event.getPlayer().displayClientMessage(message, false);
     }
-    var type = !FMLLoader.isProduction() ? "development" : "beta";
-    var message = CommonComponents.joinLines(
-        Component.literal("You are using a " + type + " version of Railcraft.")
-            .withStyle(ChatFormatting.RED),
+
+    if (Railcraft.BETA || !FMLLoader.isProduction()) {
+      var type = FMLLoader.isProduction() ? "beta" : "development";
+      var message = CommonComponents.joinLines(
+          Component.literal("You are using a " + type + " version of Railcraft Reborn.")
+              .withStyle(ChatFormatting.RED),
         /*Component.literal("- World saves are not stable and may break between versions.")
             .withStyle(ChatFormatting.GRAY),*/
-        Component.literal("- Features might be missing or only partially implemented.")
-            .withStyle(ChatFormatting.GRAY),
+          Component.literal("- Features might be missing or only partially implemented.")
+              .withStyle(ChatFormatting.GRAY),
         /*Component.literal("You have been warned.")
             .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),*/
-        Component.literal("Bug reports are welcome at our issue tracker.")
-            .withStyle(style -> style
-                .withColor(ChatFormatting.GREEN)
-                .withUnderlined(true)
-                .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                    "https://github.com/railcraft-reborn/railcraft/issues"))),
-        Component.literal("- Sm0keySa1m0n, Edivad99")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    event.getPlayer().displayClientMessage(message, false);
+          Component.literal("Bug reports are welcome at our issue tracker.")
+              .withStyle(style -> style
+                  .withColor(ChatFormatting.GREEN)
+                  .withUnderlined(true)
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                      "https://github.com/railcraft-reborn/railcraft/issues"))),
+          Component.literal("- Sm0keySa1m0n, Edivad99")
+              .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+      event.getPlayer().displayClientMessage(message, false);
+    }
   }
 
   @SubscribeEvent
