@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -204,6 +205,7 @@ public interface RollingStock {
     return Stream.concat(Stream.of(this), this.traverseTrain(side));
   }
 
+  @Nullable
   Train train();
 
   default boolean isSameTrainAs(@NotNull RollingStock minecart) {
