@@ -6,22 +6,21 @@
 
 Here you will find the source and issue tracker for the **Railcraft Reborn Project**.
 
-## What is Railcraft?
+## What is Railcraft Reborn?
 
-Railcraft is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built on top
-of the [NeoForged](https://github.com/neoforged) API.
+Railcraft Reborn is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built 
+on top of the [NeoForged](https://github.com/neoforged) API.
 
 It greatly expands and improves the Minecart system in Minecraft. Adding many new blocks, entities,
-and features. It has been in development since 2012 and contains over 800 class files and hundreds
-of thousands of lines of code.
+and features.
 The mod was created by the user going by the name **CovertJaguar**.
 
-- **CovertJaguar** is currently in charge of development for Minecraft 1.12 in
-  this [repo](https://github.com/Railcraft/Railcraft).
-- This repo is maintained by **Sm0keySa1m0n** and [**Edivad99**](https://github.com/Edivad99) and
-  aims to develop for the most recent versions of Minecraft.
+This repo is maintained by:
+- [**Sm0keySa1m0n**](https://github.com/Sm0keySa1m0n)
+- [**Edivad99**](https://github.com/Edivad99)
 
-A thank you also goes to [LetterN](https://github.com/LetterN).
+Thanks also to [LetterN](https://github.com/LetterN) who contributed in the early stages
+of development.
 
 ## Official Links
 
@@ -35,13 +34,10 @@ A thank you also goes to [LetterN](https://github.com/LetterN).
 
 Post only confirmed bugs [here](https://github.com/railcraft-reborn/railcraft/issues).
 
-More information about issue Labels can be
-found [here](https://github.com/CovertJaguar/Railcraft/wiki/Issue-Labels).
-
 ## License
 
-Railcraft is licensed under a custom usage license tailored specifically for the project. It can be
-read [here](https://github.com/railcraft-reborn/railcraft/blob/1.20.x/LICENSE.md).
+Railcraft Reborn is licensed under a custom usage license tailored specifically for the project. It 
+can be read [here](https://github.com/railcraft-reborn/railcraft/blob/1.20.x/LICENSE.md).
 
 **Note: The API is licensed under the MIT license which can be found
 in `src\api\java\mods\railcraft\api\LICENSE.txt`**
