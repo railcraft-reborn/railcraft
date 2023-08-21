@@ -5,6 +5,7 @@ import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -59,6 +60,15 @@ public class RailcraftEntityTypes {
           () -> create("track_relayer",
               EntityType.Builder
                   .<TrackRelayer>of(TrackRelayer::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final RegistryObject<EntityType<TrackUndercutter>> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> create("track_undercutter",
+              EntityType.Builder
+                  .<TrackUndercutter>of(TrackUndercutter::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));

@@ -443,6 +443,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TRACK_LAYER.get(),
         RailcraftItems.TRACK_RELAYER.get(),
         RailcraftItems.TRACK_REMOVER.get(),
+        RailcraftItems.TRACK_UNDERCUTTER.get(),
 
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),

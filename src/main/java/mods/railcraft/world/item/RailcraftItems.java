@@ -429,6 +429,12 @@ public class RailcraftItems {
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
 
+  public static final RegistryObject<TrackUndercutterCartItem> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> new TrackUndercutterCartItem(new Item.Properties()
+              .rarity(Rarity.UNCOMMON)
+              .stacksTo(1)));
+
   public static final RegistryObject<Item> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> new TunnelBoreItem(new Item.Properties()

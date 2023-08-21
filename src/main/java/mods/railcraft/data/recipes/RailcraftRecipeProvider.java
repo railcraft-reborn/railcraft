@@ -1260,6 +1260,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('f', Items.MINECART)
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_UNDERCUTTER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.PISTON)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DIAMOND_SHOVEL)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
   }
 
   private void buildChargeItems(Consumer<FinishedRecipe> consumer) {

@@ -208,6 +208,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
     this.addItem(RailcraftItems.TRACK_RELAYER, "Track Relayer Cart");
     this.addItem(RailcraftItems.TRACK_REMOVER, "Track Remover Cart");
+    this.addItem(RailcraftItems.TRACK_UNDERCUTTER, "Track Undercutter Cart");
     this.addItem(RailcraftItems.IRON_SPIKE_MAUL, "Iron Spike Maul");
     this.addItem(RailcraftItems.STEEL_SPIKE_MAUL, "Steel Spike Maul");
     this.addItem(RailcraftItems.DIAMOND_SPIKE_MAUL, "Diamond Spike Maul");
@@ -333,6 +334,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.TRACK_LAYER, "Track Layer Cart");
     this.addEntityType(RailcraftEntityTypes.TRACK_RELAYER, "Track Relayer Cart");
     this.addEntityType(RailcraftEntityTypes.TRACK_REMOVER, "Track Remover Cart");
+    this.addEntityType(RailcraftEntityTypes.TRACK_UNDERCUTTER, "Track Undercutter Cart");
   }
 
   private void fluidTranslations() {
@@ -368,6 +370,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
     this.add(Translations.Tips.TRACK_RELAYER, "Replaces one track with another");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
+    this.add(Translations.Tips.TRACK_UNDERCUTTER, "Replaces the blocks under the track");
     this.add(Translations.Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.WATER_TANK_SIDING, "Multi-Block: 3x3x3 (Hollow)");
@@ -617,6 +620,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.WATER_TANK_FINAL_RATE, "Final rate: %s mB/sec");
     this.add(Translations.Screen.PATTERN, "Pattern");
     this.add(Translations.Screen.STOCK, "Stock");
+    this.add(Translations.Screen.UNDER, "Under");
+    this.add(Translations.Screen.SIDES, "Sides");
     this.add(Translations.Screen.HELP, "Help");
     this.add(Translations.Screen.NAME, "Name");
     this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");

@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-18T09:53:04.208725	Item Models: railcraft
+// 1.20.1	2023-08-20T16:53:13.483166	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -134,6 +134,7 @@ d31c782b684829da1db599c7286876b0f132dec4 assets/railcraft/models/item/tin_raw.js
 d84b7ac1a245a3876160c8c6008f616a45043e81 assets/railcraft/models/item/track_parts.json
 c3b0ff2d06de828babe62bdc7d0bc2696a639e34 assets/railcraft/models/item/track_relayer.json
 cea85f2cecdfed35a48cf27458b69a69804ddf9c assets/railcraft/models/item/track_remover.json
+68d35c044f50861965feba944ad40e30c25e1873 assets/railcraft/models/item/track_undercutter.json
 b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition_track_kit.json
 82ad4ebda88e4b1aec1f19bc2392f16fb567d56a assets/railcraft/models/item/tunnel_bore.json
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json

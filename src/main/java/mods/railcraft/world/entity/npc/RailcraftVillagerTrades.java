@@ -272,7 +272,7 @@ public class RailcraftVillagerTrades {
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_LAYER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_RELAYER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_REMOVER.get());
-      //EXPENSIVE.add(RailcraftCarts.MOW_UNDERCUTTER);
+      EXPENSIVE.add(RailcraftEntityTypes.TRACK_UNDERCUTTER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TUNNEL_BORE.get());
     }
 

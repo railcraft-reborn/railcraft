@@ -45,6 +45,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.TRACK_LAYER.get());
         this.basicItem(RailcraftItems.TRACK_RELAYER.get());
         this.basicItem(RailcraftItems.TRACK_REMOVER.get());
+        this.basicItem(RailcraftItems.TRACK_UNDERCUTTER.get());
         this.basicItem(RailcraftItems.TUNNEL_BORE.get());
         this.basicItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get());
         this.basicItem(RailcraftItems.SIGNAL_TUNER.get());

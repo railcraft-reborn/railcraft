@@ -4,6 +4,7 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
+import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -145,6 +146,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<TrackRelayerMenu>> TRACK_RELAYER =
       deferredRegister.register("track_relayer",
           () -> entityMenu(TrackRelayer.class, TrackRelayerMenu::new));
+
+  public static final RegistryObject<MenuType<TrackUndercutterMenu>> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> entityMenu(TrackUndercutter.class, TrackUndercutterMenu::new));
 
   public static final RegistryObject<MenuType<RoutingTrackMenu>> ROUTING_TRACK =
       deferredRegister.register("routing_track",

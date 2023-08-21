@@ -42,54 +42,50 @@ public abstract class MaintenanceMinecartRenderer
     this.maintenanceTextureLocation = maintenanceTextureLocation;
 
     this.bodyModel = new MinecartModel<>(context.bakeLayer(ModelLayers.MINECART));
-    this.snowModel = new DeformableMinecartModel<>(
-        context.bakeLayer(RailcraftModelLayers.MINECART_SNOW));
-    this.maintenanceModel = new MaintenanceModel(
-        context.bakeLayer(RailcraftModelLayers.MAINTENANCE));
-    this.lampModel = new MaintenanceLampModel(
-        context.bakeLayer(RailcraftModelLayers.MAINTENANCE_LAMP));
+    this.snowModel =
+        new DeformableMinecartModel<>(context.bakeLayer(RailcraftModelLayers.MINECART_SNOW));
+    this.maintenanceModel =
+        new MaintenanceModel(context.bakeLayer(RailcraftModelLayers.MAINTENANCE));
+    this.lampModel =
+        new MaintenanceLampModel(context.bakeLayer(RailcraftModelLayers.MAINTENANCE_LAMP));
   }
 
   @Override
   public void renderContents(MaintenanceMinecart cart, float partialTicks,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
       float red, float green, float blue, float alpha) {
-    var maintenanceVertexConsumer = bufferSource.getBuffer(
-        this.maintenanceModel.renderType(this.maintenanceTextureLocation));
+    var maintenanceVertexConsumer =
+        bufferSource.getBuffer(this.maintenanceModel.renderType(this.maintenanceTextureLocation));
     this.maintenanceModel.renderToBuffer(poseStack, maintenanceVertexConsumer, packedLight,
         OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 
     poseStack.pushPose();
-    {
-//      poseStack.translate(-0.5F, -0.5F, -0.5F);
+    //poseStack.translate(-0.5F, -0.5F, -0.5F);
 
-      var blinking = cart.isBlinking();
-      ResourceLocation textureLocation;
-      if (blinking) {
-        textureLocation = LAMP_ON_TEX;
-      } else if (cart.getMode() == MaintenanceMinecart.Mode.TRANSPORT) {
-        textureLocation = LAMP_DISABLED_TEX;
-      } else {
-        textureLocation = LAMP_OFF_TEX;
-      }
-      var lampVertexConsumer =
-          bufferSource.getBuffer(this.lampModel.renderType(textureLocation));
-      this.lampModel.renderToBuffer(poseStack, lampVertexConsumer,
-          blinking ? RenderUtil.FULL_LIGHT : packedLight,
-          OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+    var blinking = cart.isBlinking();
+    ResourceLocation textureLocation;
+    if (blinking) {
+      textureLocation = LAMP_ON_TEX;
+    } else if (cart.getMode() == MaintenanceMinecart.Mode.TRANSPORT) {
+      textureLocation = LAMP_DISABLED_TEX;
+    } else {
+      textureLocation = LAMP_OFF_TEX;
     }
+    var lampVertexConsumer =
+        bufferSource.getBuffer(this.lampModel.renderType(textureLocation));
+    this.lampModel.renderToBuffer(poseStack, lampVertexConsumer,
+        blinking ? RenderUtil.FULL_LIGHT : packedLight,
+        OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
     poseStack.popPose();
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecart> getBodyModel(
-      MaintenanceMinecart cart) {
+  protected EntityModel<? super MaintenanceMinecart> getBodyModel(MaintenanceMinecart cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecart> getSnowModel(
-      MaintenanceMinecart cart) {
+  protected EntityModel<? super MaintenanceMinecart> getSnowModel(MaintenanceMinecart cart) {
     return this.snowModel;
   }
 }
