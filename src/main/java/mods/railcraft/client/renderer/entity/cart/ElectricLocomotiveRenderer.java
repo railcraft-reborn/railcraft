@@ -33,33 +33,26 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         "textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff = new ResourceLocation(Railcraft.ID,
         "textures/entity/locomotive/" + modelTag + "/lamp_off.png");
-    this.setEmblemPosition(0.2F, -0.03F, -0.41F, -0.505F);
   }
 
   @Override
   public void renderBody(Locomotive cart, float time, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
-    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
-        alpha);
+    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue, alpha);
     poseStack.pushPose();
-    {
-      poseStack.scale(-1, -1, 1);
-      poseStack.translate(0.05F, 0.0F, 0.0F);
+    poseStack.scale(-1, -1, 1);
+    poseStack.translate(0.05F, 0.0F, 0.0F);
 
-      boolean bright = ((Locomotive) cart).getMode() == Locomotive.Mode.RUNNING;
+    boolean bright = cart.getMode() == Locomotive.Mode.RUNNING;
 
-      VertexConsumer vertexBuilder = bright
-          ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
-          : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
+    VertexConsumer vertexBuilder = bright
+        ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
+        : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
 
-      this.lampModel.renderToBuffer(poseStack, vertexBuilder,
-          bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY,
-          red, green, blue, alpha);
-
-    }
+    this.lampModel.renderToBuffer(poseStack, vertexBuilder,
+        bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY,
+        red, green, blue, alpha);
     poseStack.popPose();
   }
-
-
 }
