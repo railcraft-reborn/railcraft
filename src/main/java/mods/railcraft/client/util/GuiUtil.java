@@ -41,4 +41,9 @@ public class GuiUtil {
     int x = windowWidth / 2 - length / 2;
     guiGraphics.drawString(font, component, x, y, IngameWindowScreen.TEXT_COLOR, shadow);
   }
+
+  public static void drawCenteredString(GuiGraphics guiGraphics, Font font, Component component,
+      int windowWidth, int y) {
+    drawCenteredString(guiGraphics, font, component, windowWidth, y, false);
+  }
 }

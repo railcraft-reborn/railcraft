@@ -31,12 +31,8 @@ public class TrackUndercutterScreen extends RailcraftMenuScreen<TrackUndercutter
     super.renderLabels(guiGraphics, mouseX, mouseY);
     guiGraphics.drawString(this.font, PATTERN, 8, 23, IngameWindowScreen.TEXT_COLOR, false);
     guiGraphics.drawString(this.font, STOCK, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
-
-    //guiGraphics.drawString(this.font, UNDER, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
-    //guiGraphics.drawString(this.font, SIDES, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
-
-    GuiUtil.drawCenteredString(guiGraphics, this.font, UNDER, imageWidth, 23, false);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, SIDES, imageWidth, 65, false);
+    GuiUtil.drawCenteredString(guiGraphics, this.font, UNDER, imageWidth, 23);
+    GuiUtil.drawCenteredString(guiGraphics, this.font, SIDES, imageWidth, 65);
   }
 
   @Override

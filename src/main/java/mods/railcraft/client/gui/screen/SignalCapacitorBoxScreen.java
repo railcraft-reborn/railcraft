@@ -3,6 +3,7 @@ package mods.railcraft.client.gui.screen;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
@@ -52,9 +53,10 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   @Override
   protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(guiGraphics,
+    var componentDuration =
         Component.translatable(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION,
-            this.signalBox.getTicksToPower() / 20), this.windowWidth / 2, 25);
+        this.signalBox.getTicksToPower() / 20);
+    GuiUtil.drawCenteredString(guiGraphics, this.font, componentDuration, this.windowWidth, 25);
   }
 
   @Override

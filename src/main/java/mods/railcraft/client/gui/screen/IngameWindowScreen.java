@@ -1,11 +1,11 @@
 package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.client.util.GuiUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 
 public class IngameWindowScreen extends Screen {
 
@@ -50,7 +50,7 @@ public class IngameWindowScreen extends Screen {
     var poseStack = guiGraphics.pose();
     poseStack.pushPose();
     poseStack.translate(centredX, centredY, 0.0F);
-    this.drawCenteredString(guiGraphics, this.title, this.windowWidth / 2, this.font.lineHeight);
+    GuiUtil.drawCenteredString(guiGraphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
     this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
     poseStack.popPose();
     super.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -66,22 +66,5 @@ public class IngameWindowScreen extends Screen {
     if (!this.minecraft.player.isAlive() || this.minecraft.player.isDeadOrDying()) {
       this.onClose();
     }
-  }
-
-  public void drawCenteredString(GuiGraphics guiGraphics, Component text, float x, float y) {
-    FormattedCharSequence orderedText = text.getVisualOrderText();
-    guiGraphics.drawString(this.font, orderedText, x - (float) this.font.width(orderedText) / 2, y,
-        TEXT_COLOR, false);
-  }
-
-  public void drawCenteredString(GuiGraphics guiGraphics, Component component, int y, boolean shadow) {
-    drawCenteredString(guiGraphics, component, windowWidth, y, shadow);
-  }
-
-  public void drawCenteredString(GuiGraphics guiGraphics, Component component, int width, int y,
-      boolean shadow) {
-    int length = font.width(component);
-    int x = width / 2 - length / 2;
-    guiGraphics.drawString(font, component, x, y, TEXT_COLOR, shadow);
   }
 }
