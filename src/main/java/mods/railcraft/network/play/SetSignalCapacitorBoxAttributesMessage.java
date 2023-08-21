@@ -28,6 +28,7 @@ public record SetSignalCapacitorBoxAttributesMessage(BlockPos blockPos, short ti
           signalBox.setTicksToPower(this.ticksToPower);
           signalBox.setMode(this.mode);
           signalBox.syncToClient();
+          signalBox.setChanged();
         });
     return true;
   }

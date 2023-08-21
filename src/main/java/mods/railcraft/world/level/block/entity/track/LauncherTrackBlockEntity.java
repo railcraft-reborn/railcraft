@@ -2,16 +2,19 @@ package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LauncherTrackBlockEntity extends BlockEntity {
+public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
 
   public static final int MIN_LAUNCH_FORCE = 5;
   private static final float LAUNCH_THRESHOLD = 0.01F;
@@ -49,5 +52,29 @@ public class LauncherTrackBlockEntity extends BlockEntity {
   public void setLaunchForce(byte launchForce) {
     this.launchForce = (byte) Mth.clamp(launchForce, MIN_LAUNCH_FORCE,
         RailcraftConfig.SERVER.maxLauncherTrackForce.get());
+  }
+
+  @Override
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.putByte("launchForce", this.launchForce);
+  }
+
+  @Override
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.launchForce = tag.getByte("launchForce");
+  }
+
+  @Override
+  public void writeToBuf(FriendlyByteBuf out) {
+    super.writeToBuf(out);
+    out.writeByte(this.launchForce);
+  }
+
+  @Override
+  public void readFromBuf(FriendlyByteBuf in) {
+    super.readFromBuf(in);
+    this.launchForce = in.readByte();
   }
 }

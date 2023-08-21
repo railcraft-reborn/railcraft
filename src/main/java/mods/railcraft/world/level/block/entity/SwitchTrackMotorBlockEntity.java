@@ -80,7 +80,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.put("signalReceiver", this.signalReceiver.serializeNBT());
-    ListTag actionAspectsTag = new ListTag();
+    var actionAspectsTag = new ListTag();
     this.actionSignalAspects
         .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
     tag.put("actionSignalAspects", actionAspectsTag);
@@ -91,8 +91,9 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   public void load(CompoundTag tag) {
     super.load(tag);
     this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
-    ListTag actionAspectsTag = tag.getList("actionAspects", Tag.TAG_STRING);
-    for (Tag aspectTag : actionAspectsTag) {
+    var actionAspectsTag = tag.getList("actionSignalAspects", Tag.TAG_STRING);
+    this.actionSignalAspects.clear();
+    for (var aspectTag : actionAspectsTag) {
       SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
     this.redstoneTriggered = tag.getBoolean("redstoneTriggered");
