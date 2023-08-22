@@ -217,12 +217,6 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public boolean isConduitFrame(BlockState state, LevelReader level, BlockPos pos,
-      BlockPos conduit) {
-    return false;
-  }
-
-  @Override
   public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
       CollisionContext context) {
     RailShape railShape = blockState.is(this) ? blockState.getValue(this.getShapeProperty()) : null;

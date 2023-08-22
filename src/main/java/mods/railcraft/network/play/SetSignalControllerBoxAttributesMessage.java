@@ -27,6 +27,7 @@ public record SetSignalControllerBoxAttributesMessage(BlockPos blockPos, SignalA
         .ifPresent(signalBox -> {
           signalBox.setDefaultAspect(this.defaultAspect);
           signalBox.setPoweredAspect(this.poweredAspect);
+          signalBox.setChanged();
         });
     return true;
   }

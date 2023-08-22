@@ -34,15 +34,16 @@ public record SetSwitchTrackMotorAttributesMessage(BlockPos blockPos,
     var level = player.level();
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
-        .filter(signalBox -> signalBox.canAccess(senderProfile))
-        .ifPresent(signalBox -> {
-          signalBox.getActionSignalAspects().clear();
-          signalBox.getActionSignalAspects().addAll(this.actionSignalAspects);
-          signalBox.setRedstoneTriggered(this.redstoneTriggered);
-          signalBox.setLock(
+        .filter(switchTrack -> switchTrack.canAccess(senderProfile))
+        .ifPresent(switchTrack -> {
+          switchTrack.getActionSignalAspects().clear();
+          switchTrack.getActionSignalAspects().addAll(this.actionSignalAspects);
+          switchTrack.setRedstoneTriggered(this.redstoneTriggered);
+          switchTrack.setLock(
               this.lock.equals(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED)
                   ? null : senderProfile);
-          signalBox.syncToClient();
+          switchTrack.syncToClient();
+          switchTrack.setChanged();
         });
     return true;
   }
