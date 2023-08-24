@@ -63,6 +63,7 @@ import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
@@ -743,6 +744,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> ABANDONED_DUMPING_TRACK =
+      deferredRegister.register("abandoned_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.register("abandoned_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ABANDONED,
@@ -844,6 +850,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<DisembarkingTrackBlock> ELECTRIC_DISEMBARKING_TRACK =
       deferredRegister.register("electric_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+
+  public static final RegistryObject<DumpingTrackBlock> ELECTRIC_DUMPING_TRACK =
+      deferredRegister.register("electric_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<WyeTrackBlock> ELECTRIC_WYE_TRACK =
@@ -1068,6 +1079,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> IRON_DUMPING_TRACK =
+      deferredRegister.register("iron_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.register("iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
@@ -1170,6 +1186,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> REINFORCED_DUMPING_TRACK =
+      deferredRegister.register("reinforced_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.register("reinforced_wye_track",
           () -> new WyeTrackBlock(TrackTypes.REINFORCED,
@@ -1270,6 +1291,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<DisembarkingTrackBlock> STRAP_IRON_DISEMBARKING_TRACK =
       deferredRegister.register("strap_iron_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+
+  public static final RegistryObject<DumpingTrackBlock> STRAP_IRON_DUMPING_TRACK =
+      deferredRegister.register("strap_iron_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
 
   public static final RegistryObject<WyeTrackBlock> STRAP_IRON_WYE_TRACK =

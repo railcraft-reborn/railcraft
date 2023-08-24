@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-20T16:53:13.483166	Item Models: railcraft
+// 1.20.1	2023-08-24T18:14:37.106579	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -40,6 +40,7 @@ a316dff6851bed398cdc0215ee39f4da055e89bf assets/railcraft/models/item/detector_t
 91a2158a674793cb41bf0b61b7dc4831c2ec2dad assets/railcraft/models/item/diamond_spike_maul.json
 92eb4bd2cf914a7f017f55078356ff400854ca21 assets/railcraft/models/item/diamond_tunnel_bore_head.json
 45c68599a0b64ee792ec7bebb09863245528225b assets/railcraft/models/item/disembarking_track_kit.json
+ab7fa5102406bed3c4aed220e8d0f2fdec0593d4 assets/railcraft/models/item/dumping_track_kit.json
 41ee85b2c2ad5f24241b2a839756dfca91e25515 assets/railcraft/models/item/electric_rail.json
 2d1c8a424573c2795b1c8605aff3d9bd61ee69b8 assets/railcraft/models/item/embarking_track_kit.json
 245bf48c8cedd8733bfceca3d1fd28bd7e84a442 assets/railcraft/models/item/ender_dust.json

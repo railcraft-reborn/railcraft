@@ -306,6 +306,8 @@ public class Translations {
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
     public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
+    public static final String DUMPING_TRACK = makeKey("tips", "dumping_track");
+
     public static final String MANUAL_OPERATION = makeKey("tips", "manual_operation");
     public static final String SCRIPTED_LOGIC_OPERATION =
         makeKey("tips", "scripted_logic_operation");

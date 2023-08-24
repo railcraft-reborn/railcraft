@@ -271,8 +271,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ABANDONED_COUPLER_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_CONTROL_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ABANDONED_DUMPING_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_GATED_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LOCKING_TRACK.get());
@@ -291,8 +292,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.IRON_COUPLER_TRACK.get());
             output.accept(RailcraftItems.IRON_CONTROL_TRACK.get());
             output.accept(RailcraftItems.IRON_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.IRON_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.IRON_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.IRON_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.IRON_DUMPING_TRACK.get());
             output.accept(RailcraftItems.IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.IRON_LOCKING_TRACK.get());
@@ -311,8 +313,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.STRAP_IRON_COUPLER_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_CONTROL_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.STRAP_IRON_DUMPING_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LOCKING_TRACK.get());
@@ -331,8 +334,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.REINFORCED_COUPLER_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_CONTROL_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.REINFORCED_DUMPING_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_GATED_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LOCKING_TRACK.get());
@@ -351,8 +355,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ELECTRIC_COUPLER_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_CONTROL_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ELECTRIC_DUMPING_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_GATED_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LOCKING_TRACK.get());
@@ -470,6 +475,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.COUPLER_TRACK_KIT.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(),
         RailcraftItems.WHISTLE_TRACK_KIT.get(),
