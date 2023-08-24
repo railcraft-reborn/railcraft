@@ -43,6 +43,7 @@ sourceSets {
         runtimeClasspath += sourceSets.api.output
         resources {
             srcDir 'src/generated/resources'
+            exclude '.cache'
         }
     }
     test {
