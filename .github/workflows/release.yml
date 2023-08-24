@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     env:
       CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -26,13 +26,13 @@ jobs:
           cache: 'gradle'
 
       - name: Compile
-        run: ./gradlew build --no-daemon --max-workers 1
+        run: ./gradlew build --max-workers 1
 
       - name: Test
-        run: ./gradlew runGameTestServer --no-daemon --max-workers 1
+        run: ./gradlew runGameTestServer --max-workers 1
 
       - name: Make Changelog
-        run: ./gradlew makeChangelog --no-daemon --max-workers 1
+        run: ./gradlew makeChangelog --max-workers 1
 
       - name: Publish
-        run: ./gradlew publishMods --no-daemon --max-workers 1
+        run: ./gradlew publishMods --max-workers 1
