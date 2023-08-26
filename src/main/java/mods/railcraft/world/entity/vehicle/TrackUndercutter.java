@@ -80,7 +80,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     if (this.level().isClientSide) {
       return;
     }
-    if (this.getMode() == Mode.TRANSPORT) {
+    if (this.getMode() == Mode.OFF) {
       return;
     }
     stockItems(SLOT_REPLACE_UNDER, SLOT_STOCK_UNDER);

@@ -52,7 +52,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
     if (level().isClientSide) {
       return;
     }
-    if (this.getMode() == Mode.TRANSPORT) {
+    if (this.getMode() == Mode.OFF) {
       return;
     }
     stockItems(SLOT_REPLACE, SLOT_STOCK);

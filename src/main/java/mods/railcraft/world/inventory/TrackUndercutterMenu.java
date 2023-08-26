@@ -9,9 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class TrackUndercutterMenu extends RailcraftMenu {
 
+  private final TrackUndercutter trackUndercutter;
+
   public TrackUndercutterMenu(int id, Inventory inventory, TrackUndercutter trackUndercutter) {
     super(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), id, inventory.player,
         trackUndercutter::stillValid);
+    this.trackUndercutter = trackUndercutter;
 
     var container = trackUndercutter.getPattern();
     this.addSlot(new BlockFilterSlot(container, 0, 17, 36));
@@ -26,6 +29,10 @@ public class TrackUndercutterMenu extends RailcraftMenu {
     this.addSlot(new SlotLinked(trackUndercutter, 1, 131, 78, side));
 
     this.addInventorySlots(inventory, 205);
+  }
+
+  public TrackUndercutter getTrackUndercutter() {
+    return trackUndercutter;
   }
 
   private static class SlotUndercutterFilter extends BlockFilterSlot {

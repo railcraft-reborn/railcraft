@@ -1,5 +1,10 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
@@ -10,6 +15,7 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,7 +38,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
-  public static final EntityDataAccessor<Byte> MODE =
+  private static final EntityDataAccessor<Byte> MODE =
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
 
   protected MaintenanceMinecart(EntityType<?> type, Level level) {
@@ -47,7 +53,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected void defineSynchedData() {
     super.defineSynchedData();
     this.entityData.define(BLINK, (byte) 0);
-    this.entityData.define(MODE, (byte) Mode.SERVICE.ordinal());
+    this.entityData.define(MODE, (byte) Mode.ON.ordinal());
   }
 
   @Override
@@ -107,6 +113,18 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
   }
 
+  @Override
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putString("mode", this.getMode().getSerializedName());
+  }
+
+  @Override
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.ON));
+  }
+
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
     ItemStack trackStack = getItem(slotStock);
     if (!trackStack.isEmpty()) {
@@ -135,8 +153,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
   public enum Mode implements ButtonState<Mode>, StringRepresentable {
 
-    SERVICE("service", 0.1F),
-    TRANSPORT("transport", 0.4F);
+    ON("on", 0.1F),
+    OFF("off", 0.4F);
+
+    private static final Map<String, Mode> byName = Arrays.stream(values())
+        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
 
     private final String name;
     private final float speed;
@@ -156,6 +177,10 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     }
 
     public String getTranslationKey() {
+      return Translations.makeKey("screen", "cart.maintenance.mode." + this.name);
+    }
+
+    public String getTipsKey() {
       return Translations.makeKey("tips", "cart.maintenance.mode." + this.name);
     }
 
@@ -172,6 +197,10 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public static Optional<Mode> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
     }
   }
 }

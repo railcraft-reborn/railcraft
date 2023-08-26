@@ -356,8 +356,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void tipsTranslations() {
-    this.add(MaintenanceMinecart.Mode.SERVICE.getTranslationKey(), "Service");
-    this.add(MaintenanceMinecart.Mode.TRANSPORT.getTranslationKey(), "Transport");
+    this.add(MaintenanceMinecart.Mode.ON.getTipsKey(),
+        "While On, will actively perform maintenance functions");
+    this.add(MaintenanceMinecart.Mode.OFF.getTipsKey(),
+        "While Off, will not perform maintenance functions and will have higher max speed");
 
     this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
     this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
@@ -575,6 +577,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void screenTranslations() {
+    this.add(MaintenanceMinecart.Mode.ON.getTranslationKey(), "On");
+    this.add(MaintenanceMinecart.Mode.OFF.getTranslationKey(), "Off");
+
     this.add(Translations.Screen.STEAM_TURBINE_ROTOR, "Rotor:");
     this.add(Translations.Screen.STEAM_TURBINE_OUTPUT, "Output:");
     this.add(Translations.Screen.STEAM_TURBINE_USAGE, "Usage:");

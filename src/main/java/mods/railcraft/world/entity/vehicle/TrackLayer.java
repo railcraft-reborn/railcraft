@@ -57,7 +57,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   private void placeTrack(BlockPos pos) {
-    if (getMode() == Mode.TRANSPORT)
+    if (getMode() == Mode.OFF)
       return;
     pos = pos.relative(travelDirection);
 
