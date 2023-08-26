@@ -41,8 +41,8 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return slots::stream;
   }
 
-  static ContainerManipulator<ModifiableSlotAccessor> of(
-      WorldlyContainer container, Direction face) {
+  static ContainerManipulator<ModifiableSlotAccessor> of(WorldlyContainer container,
+      Direction face) {
     var slots = ContainerSlotAccessor.createSlots(container, face).toList();
     return slots::stream;
   }
@@ -102,6 +102,17 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    *
    * @return The remainder
    */
+  default ItemStack insert(ItemStack stack) {
+    return this.insert(stack, false);
+  }
+
+  /**
+   * Attempt to add the stack to the inventory returning the remainder.
+   * <p>
+   * If the entire stack was accepted, it returns an empty stack.
+   *
+   * @return The remainder
+   */
   default ItemStack insert(ItemStack stack, boolean simulate) {
     if (stack.isEmpty()) {
       return ItemStack.EMPTY;
@@ -124,25 +135,6 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   }
 
   /**
-   * Removes up to maxAmount items in one slot matching the filter.
-   */
-  default ItemStack extract(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
-    return this.stream()
-        .filter(slot -> slot.matches(filter))
-        .map(slot -> slot.extract(maxAmount, simulate))
-        .filter(item -> !item.isEmpty())
-        .findFirst()
-        .orElse(ItemStack.EMPTY);
-  }
-
-  /**
-   * Removed an item matching the filter.
-   */
-  default ItemStack extract(Predicate<ItemStack> filter) {
-    return this.extract(1, filter, false);
-  }
-
-  /**
    * Removes and returns a single item from the inventory.
    *
    * @return An ItemStack
@@ -161,6 +153,35 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return this.extract(StackFilter.anyOf(filter));
   }
 
+  /**
+   * Removed an item matching the filter.
+   */
+  default ItemStack extract(Predicate<ItemStack> filter) {
+    return this.extract(1, filter, false);
+  }
+
+  /**
+   * Removes up to maxAmount items in one slot matching the filter.
+   */
+  default ItemStack extract(int maxAmount, Predicate<ItemStack> filter, boolean simulate) {
+    return this.stream()
+        .filter(slot -> slot.matches(filter))
+        .map(slot -> slot.extract(maxAmount, simulate))
+        .filter(item -> !item.isEmpty())
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
+  }
+
+  /**
+   * Attempts to move a single item from one inventory to another.
+   *
+   * @param dest the destination inventory
+   * @return null if nothing was moved, the stack moved otherwise
+   */
+  default ItemStack moveOneItemTo(ContainerManipulator<?> dest) {
+    return this.moveOneItemTo(dest, itemStack -> true);
+  }
+
   default ItemStack moveOneItemTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
     return this.stream()
         .filter(slot -> slot.matches(filter))
@@ -172,6 +193,39 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
         })
         .findFirst()
         .orElse(ItemStack.EMPTY);
+  }
+
+  /**
+   * Attempts to move a single itemstack from one inventory to another.
+   *
+   * @param dest the destination inventory
+   * @return null if nothing was moved, the stack moved otherwise
+   */
+  default ItemStack moveOneItemStackTo(ContainerManipulator<?> dest) {
+    return this.moveOneItemStackTo(dest, itemStack -> true);
+  }
+
+  default ItemStack moveOneItemStackTo(ContainerManipulator<?> dest, Predicate<ItemStack> filter) {
+    return this.stream()
+        .filter(slot -> slot.matches(filter))
+        .filter(slot -> !slot.simulateExtract(64).isEmpty())
+        .filter(slot -> dest.insert(slot.simulateExtract(64), true).isEmpty())
+        .map(slot -> {
+          dest.insert(slot.simulateExtract(64), false);
+          return slot.extract(64, false);
+        })
+        .findFirst()
+        .orElse(ItemStack.EMPTY);
+  }
+
+  /**
+   * Checks if inventory will accept any item from the list.
+   *
+   * @param stacks The ItemStacks
+   * @return true if room for stack
+   */
+  default boolean willAcceptAny(List<ItemStack> stacks) {
+    return stacks.stream().anyMatch(this::willAccept);
   }
 
   /**
@@ -189,16 +243,6 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   }
 
   /**
-   * Checks if inventory will accept any item from the list.
-   *
-   * @param stacks The ItemStacks
-   * @return true if room for stack
-   */
-  default boolean willAcceptAny(List<ItemStack> stacks) {
-    return stacks.stream().anyMatch(this::willAccept);
-  }
-
-  /**
    * Checks if there is room for the ItemStack in the inventory.
    *
    * @param stack The ItemStack
@@ -208,31 +252,10 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return this.insert(stack, true).isEmpty();
   }
 
-  /**
-   * Attempt to add the stack to the inventory returning the remainder.
-   *
-   * If the entire stack was accepted, it returns an empty stack.
-   *
-   * @return The remainder
-   */
-  default ItemStack insert(ItemStack stack) {
-    return this.insert(stack, false);
-  }
-
   default Optional<T> findFirstExtractable(Predicate<ItemStack> filter) {
     return this.stream()
         .filter(slot -> slot.matches(filter) && !slot.simulateExtract().isEmpty())
         .findFirst();
-  }
-
-  /**
-   * Attempts to move a single item from one inventory to another.
-   *
-   * @param dest the destination inventory
-   * @return null if nothing was moved, the stack moved otherwise
-   */
-  default ItemStack moveOneItemTo(ContainerManipulator<?> dest) {
-    return this.moveOneItemTo(dest, itemStack -> true);
   }
 
   /**

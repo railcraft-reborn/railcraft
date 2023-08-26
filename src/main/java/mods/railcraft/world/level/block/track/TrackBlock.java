@@ -95,7 +95,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
     if (!blockState.is(oldBlockState.getBlock())) {
-      if (!TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance())) {
+      if (!TrackSupportTools.isSupported(level, pos, this.getMaxSupportedDistance())) {
         level.destroyBlock(pos, true);
         return;
       }
@@ -120,7 +120,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.getTrackType().isElectric() ? CHARGE_SPECS : Collections.emptyMap();
   }
 
-  public int getMaxSupportedDistance(Level level, BlockPos pos) {
+  public int getMaxSupportedDistance() {
     return this.getTrackType().getMaxSupportDistance();
   }
 
@@ -153,7 +153,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     if (level.isClientSide()) {
       return;
     }
-    if (!this.isRailValid(blockState, level, pos, this.getMaxSupportedDistance(level, pos))) {
+    if (!this.isRailValid(blockState, level, pos, this.getMaxSupportedDistance())) {
       level.destroyBlock(pos, true);
       return;
     }
@@ -165,7 +165,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
         return false;
       }
       if (block instanceof TrackBlock track) {
-        int maxSupportedDistance = track.getMaxSupportedDistance(l, p);
+        int maxSupportedDistance = track.getMaxSupportedDistance();
         if (maxSupportedDistance <= 0 || TrackSupportTools.isSupportedDirectly(l, p)) {
           return false;
         }
@@ -213,7 +213,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
     return !BaseRailBlock.isRail(level.getBlockState(pos.above()))
         && !BaseRailBlock.isRail(level.getBlockState(pos.below()))
-        && TrackSupportTools.isSupported(level, pos, this.getTrackType().getMaxSupportDistance());
+        && TrackSupportTools.isSupported(level, pos, this.getMaxSupportedDistance());
   }
 
   @Override

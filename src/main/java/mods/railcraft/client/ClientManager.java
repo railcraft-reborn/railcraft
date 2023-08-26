@@ -11,6 +11,7 @@ import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
+import mods.railcraft.client.gui.screen.inventory.DumpingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
@@ -27,6 +28,8 @@ import mods.railcraft.client.gui.screen.inventory.SwitchTrackRouterScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrackRelayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrackUndercutterScreen;
 import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
@@ -108,6 +111,8 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
         WaterTankSidingScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
@@ -131,6 +136,7 @@ public class ClientManager {
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {

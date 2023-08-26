@@ -37,7 +37,6 @@ public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
               ? null
               : player.getGameProfile());
         }
-        loco.setChanged();
       });
     }
     return true;

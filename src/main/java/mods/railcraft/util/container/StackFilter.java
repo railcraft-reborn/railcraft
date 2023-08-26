@@ -188,12 +188,12 @@ public enum StackFilter implements Predicate<ItemStack> {
         return false;
       }
 
-      ItemStack cartItem = cart.getPickResult();
-      boolean matches = !itemStack.isEmpty() && ItemStack.isSameItem(cartItem, itemStack);
+      var cartItem = cart.getPickResult();
+      boolean matches = ItemStack.isSameItem(cartItem, itemStack);
 
       if (itemStack.hasCustomHoverName()) {
         return matches && itemStack.getDisplayName().getContents()
-            .equals(cart.getPickResult().getDisplayName().getContents());
+            .equals(cartItem.getDisplayName().getContents());
       }
 
       return matches;

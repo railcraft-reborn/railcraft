@@ -212,6 +212,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.DETECTOR_TRACK_KIT.get())
         .add(RailcraftItems.DISEMBARKING_TRACK_KIT.get())
         .add(RailcraftItems.EMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.DUMPING_TRACK_KIT.get())
         .add(RailcraftItems.GATED_TRACK_KIT.get())
         .add(RailcraftItems.LAUNCHER_TRACK_KIT.get())
         .add(RailcraftItems.LOCKING_TRACK_KIT.get())

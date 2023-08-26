@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
@@ -44,9 +45,9 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   @Override
   protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(guiGraphics,
-        Component.translatable(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE,
-            this.track.getLaunchForce()), this.windowWidth / 2, 25);
+    var componentForce = Component.translatable(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE,
+        this.track.getLaunchForce());
+    GuiUtil.drawCenteredString(guiGraphics, this.font, componentForce, this.windowWidth, 25);
   }
 
   private void incrementForce(int incrementAmount) {

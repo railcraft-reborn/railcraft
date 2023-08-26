@@ -1,0 +1,154 @@
+package mods.railcraft.world.level.block.entity.track;
+
+import java.util.List;
+import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
+import mods.railcraft.util.container.AdvancedContainer;
+import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.inventory.DumpingTrackMenu;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
+public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements MenuProvider {
+
+  private static final int ITEM_DROP_INTERVAL = 16;
+  private static final List<Direction> DIRECTION =
+      List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN);
+
+  private final AdvancedContainer cartFilter, itemFilter;
+  private final Predicate<ItemStack> itemMatcher;
+
+  private int ticksSinceLastDrop;
+
+  public DumpingTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
+    super(RailcraftBlockEntityTypes.DUMPING_TRACK.get(), blockPos, blockState);
+    this.cartFilter = new AdvancedContainer(3).listener(x -> this.setChanged()).phantom();
+    this.itemFilter = new AdvancedContainer(9).listener(x -> this.setChanged()).phantom();
+    this.itemMatcher = StackFilter.anyMatch(itemFilter);
+    this.ticksSinceLastDrop = 0;
+  }
+
+  public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
+      DumpingTrackBlockEntity blockEntity) {
+    blockEntity.ticksSinceLastDrop++;
+  }
+
+  @Nullable
+  private static BlockEntity getBlockEntityAround(Level level, BlockPos pos) {
+    for (var direction : DIRECTION) {
+      var blockEntity = level.getBlockEntity(pos.relative(direction));
+      if (blockEntity != null &&
+          blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
+        return blockEntity;
+      }
+    }
+    return null;
+  }
+
+  public AdvancedContainer getCartFilter() {
+    return cartFilter;
+  }
+
+  public AdvancedContainer getItemFilter() {
+    return itemFilter;
+  }
+
+  public void minecartPassed(AbstractMinecart cart, boolean powered) {
+    if (powered) {
+      return;
+    }
+
+    if (!cartFilter.isEmpty()) {
+      boolean sameCart = cartFilter.stream()
+          .anyMatch(slot -> slot.is(cart.getPickResult().getItem()));
+      if (!sameCart) {
+        return;
+      }
+    }
+
+    if (!cart.getPassengers().isEmpty() && tryDumpRider(cart)) {
+      return;
+    }
+
+    tryDumpInventory(cart);
+  }
+
+  private boolean tryDumpRider(AbstractMinecart cart) {
+    CartTools.removePassengers(cart);
+    return true;
+  }
+
+  private void tryDumpInventory(AbstractMinecart cart) {
+    if (ticksSinceLastDrop < ITEM_DROP_INTERVAL) {
+      return;
+    }
+
+    cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        .ifPresent(itemHandler -> {
+          var cartInv = ContainerManipulator.of(itemHandler);
+          if (!cartInv.hasItems()) {
+            return;
+          }
+          ticksSinceLastDrop = 0;
+
+          var blockEntity = getBlockEntityAround(level, blockPos());
+          if (blockEntity == null) {
+            if (itemFilter.isEmpty()) {
+              cartInv.streamItems()
+                  .forEach(itemStack ->
+                      ContainerTools.dropItem(itemStack, level, blockPos().below()));
+            } else {
+              cartInv.streamItems()
+                  .filter(itemMatcher)
+                  .forEach(itemStack ->
+                      ContainerTools.dropItem(itemStack, level, blockPos().below()));
+            }
+            return;
+          }
+          blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
+              .ifPresent(itemHandlerBlockEntity -> {
+                var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
+                cartInv.moveOneItemStackTo(blockInv);
+              });
+        });
+  }
+
+  @Override
+  protected void saveAdditional(CompoundTag tag) {
+    super.saveAdditional(tag);
+    tag.put("cartFilter", this.cartFilter.createTag());
+    tag.put("itemFilter", this.itemFilter.createTag());
+    tag.putInt("ticksSinceLastDrop", this.ticksSinceLastDrop);
+  }
+
+  @Override
+  public void load(CompoundTag tag) {
+    super.load(tag);
+    this.cartFilter.fromTag(tag.getList("cartFilter", Tag.TAG_COMPOUND));
+    this.itemFilter.fromTag(tag.getList("itemFilter", Tag.TAG_COMPOUND));
+    this.ticksSinceLastDrop = tag.getInt("ticksSinceLastDrop");
+  }
+
+  @Nullable
+  @Override
+  public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+    return new DumpingTrackMenu(id, inventory, this);
+  }
+}

@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-28T21:56:56.556627	Item Models: railcraft
+// 1.20.1	2023-08-24T18:14:37.106579	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -40,6 +40,7 @@ a316dff6851bed398cdc0215ee39f4da055e89bf assets/railcraft/models/item/detector_t
 91a2158a674793cb41bf0b61b7dc4831c2ec2dad assets/railcraft/models/item/diamond_spike_maul.json
 92eb4bd2cf914a7f017f55078356ff400854ca21 assets/railcraft/models/item/diamond_tunnel_bore_head.json
 45c68599a0b64ee792ec7bebb09863245528225b assets/railcraft/models/item/disembarking_track_kit.json
+ab7fa5102406bed3c4aed220e8d0f2fdec0593d4 assets/railcraft/models/item/dumping_track_kit.json
 41ee85b2c2ad5f24241b2a839756dfca91e25515 assets/railcraft/models/item/electric_rail.json
 2d1c8a424573c2795b1c8605aff3d9bd61ee69b8 assets/railcraft/models/item/embarking_track_kit.json
 245bf48c8cedd8733bfceca3d1fd28bd7e84a442 assets/railcraft/models/item/ender_dust.json
@@ -132,7 +133,9 @@ f4848dc55098272582e0f2589cc9468e4224f7bb assets/railcraft/models/item/tin_plate.
 d31c782b684829da1db599c7286876b0f132dec4 assets/railcraft/models/item/tin_raw.json
 1cf67ec82cbd7f41dbcbe8e8fd2ca5533d4d14b4 assets/railcraft/models/item/track_layer.json
 d84b7ac1a245a3876160c8c6008f616a45043e81 assets/railcraft/models/item/track_parts.json
+c3b0ff2d06de828babe62bdc7d0bc2696a639e34 assets/railcraft/models/item/track_relayer.json
 cea85f2cecdfed35a48cf27458b69a69804ddf9c assets/railcraft/models/item/track_remover.json
+68d35c044f50861965feba944ad40e30c25e1873 assets/railcraft/models/item/track_undercutter.json
 b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition_track_kit.json
 82ad4ebda88e4b1aec1f19bc2392f16fb567d56a assets/railcraft/models/item/tunnel_bore.json
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json

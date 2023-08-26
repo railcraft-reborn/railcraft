@@ -206,7 +206,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
     this.addItem(RailcraftItems.TUNNEL_BORE, "Tunnel Bore");
     this.addItem(RailcraftItems.TRACK_LAYER, "Track Layer Cart");
+    this.addItem(RailcraftItems.TRACK_RELAYER, "Track Relayer Cart");
     this.addItem(RailcraftItems.TRACK_REMOVER, "Track Remover Cart");
+    this.addItem(RailcraftItems.TRACK_UNDERCUTTER, "Track Undercutter Cart");
     this.addItem(RailcraftItems.IRON_SPIKE_MAUL, "Iron Spike Maul");
     this.addItem(RailcraftItems.STEEL_SPIKE_MAUL, "Steel Spike Maul");
     this.addItem(RailcraftItems.DIAMOND_SPIKE_MAUL, "Diamond Spike Maul");
@@ -308,6 +310,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.COUPLER_TRACK_KIT, "Coupler Track Kit");
     this.addItem(RailcraftItems.EMBARKING_TRACK_KIT, "Embarking Track Kit");
     this.addItem(RailcraftItems.DISEMBARKING_TRACK_KIT, "Disembarking Track Kit");
+    this.addItem(RailcraftItems.DUMPING_TRACK_KIT, "Dumping Track Kit");
     this.addItem(RailcraftItems.LAUNCHER_TRACK_KIT, "Launcher Track Kit");
     this.addItem(RailcraftItems.ONE_WAY_TRACK_KIT, "One-Way Track Kit");
     this.addItem(RailcraftItems.WHISTLE_TRACK_KIT, "Whistle Track Kit");
@@ -330,7 +333,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE, "Electric Locomotive");
     this.addEntityType(RailcraftEntityTypes.TUNNEL_BORE, "Tunnel Bore");
     this.addEntityType(RailcraftEntityTypes.TRACK_LAYER, "Track Layer Cart");
+    this.addEntityType(RailcraftEntityTypes.TRACK_RELAYER, "Track Relayer Cart");
     this.addEntityType(RailcraftEntityTypes.TRACK_REMOVER, "Track Remover Cart");
+    this.addEntityType(RailcraftEntityTypes.TRACK_UNDERCUTTER, "Track Undercutter Cart");
   }
 
   private void fluidTranslations() {
@@ -351,8 +356,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void tipsTranslations() {
-    this.add(MaintenanceMinecart.Mode.SERVICE.getTranslationKey(), "Service");
-    this.add(MaintenanceMinecart.Mode.TRANSPORT.getTranslationKey(), "Transport");
+    this.add(MaintenanceMinecart.Mode.ON.getTipsKey(),
+        "While On, will actively perform maintenance functions");
+    this.add(MaintenanceMinecart.Mode.OFF.getTipsKey(),
+        "While Off, will not perform maintenance functions and will have higher max speed");
 
     this.add(Translations.Tips.ROUTING_TICKET_ISSUER, "Issuer:");
     this.add(Translations.Tips.ROUTING_TICKET_DEST, "Destination:");
@@ -364,7 +371,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
+    this.add(Translations.Tips.TRACK_RELAYER, "Replaces one track with another");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
+    this.add(Translations.Tips.TRACK_UNDERCUTTER, "Replaces the blocks under the track");
     this.add(Translations.Tips.CRUSHED_OBSIDIAN, "Prevents Mobs Spawns");
     this.add(Translations.Tips.COKE_OVEN, "Multi-Block: 3x3x3 (Hollow)");
     this.add(Translations.Tips.WATER_TANK_SIDING, "Multi-Block: 3x3x3 (Hollow)");
@@ -513,6 +522,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.DISEMBARKING_TRACK,
         "Dismount riding entities in direction of arrow");
     this.add(Translations.Tips.EMBARKING_TRACK, "Loads entities into carts");
+    this.add(Translations.Tips.DUMPING_TRACK, "Drops entities or items through the track");
     this.add(Translations.Tips.GATED_TRACK, "Track with built-in gate");
     this.add(Translations.Tips.COUPLER_TRACK, "Couples/Decouples passing carts");
     this.add(Translations.Tips.LAUNCHER_TRACK, "Makes carts fly!");
@@ -567,6 +577,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void screenTranslations() {
+    this.add(MaintenanceMinecart.Mode.ON.getTranslationKey(), "On");
+    this.add(MaintenanceMinecart.Mode.OFF.getTranslationKey(), "Off");
+
     this.add(Translations.Screen.STEAM_TURBINE_ROTOR, "Rotor:");
     this.add(Translations.Screen.STEAM_TURBINE_OUTPUT, "Output:");
     this.add(Translations.Screen.STEAM_TURBINE_USAGE, "Usage:");
@@ -614,6 +627,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.WATER_TANK_FINAL_RATE, "Final rate: %s mB/sec");
     this.add(Translations.Screen.PATTERN, "Pattern");
     this.add(Translations.Screen.STOCK, "Stock");
+    this.add(Translations.Screen.UNDER, "Under");
+    this.add(Translations.Screen.SIDES, "Sides");
     this.add(Translations.Screen.HELP, "Help");
     this.add(Translations.Screen.NAME, "Name");
     this.add(Translations.Screen.GOLDEN_TICKET_TITLE, "Golden Ticket");
@@ -645,6 +660,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ABANDONED_COUPLER_TRACK, "Abandoned Coupler Track");
     this.addBlock(RailcraftBlocks.ABANDONED_EMBARKING_TRACK, "Abandoned Embarking Track");
     this.addBlock(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK, "Abandoned Disembarking Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_DUMPING_TRACK, "Abandoned Dumping Track");
     this.addBlock(RailcraftBlocks.ABANDONED_TURNOUT_TRACK, "Abandoned Turnout Track");
     this.addBlock(RailcraftBlocks.ABANDONED_WYE_TRACK, "Abandoned Wye Track");
     this.addBlock(RailcraftBlocks.ABANDONED_JUNCTION_TRACK, "Abandoned Junction Track");
@@ -666,6 +682,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ELECTRIC_COUPLER_TRACK, "Electric Coupler Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_EMBARKING_TRACK, "Electric Embarking Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK, "Electric Disembarking Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_DUMPING_TRACK, "Electric Dumping Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK, "Electric Turnout Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_WYE_TRACK, "Electric Wye Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_JUNCTION_TRACK, "Electric Junction Track");
@@ -725,6 +742,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.REINFORCED_COUPLER_TRACK, "Reinforced Coupler Track");
     this.addBlock(RailcraftBlocks.REINFORCED_EMBARKING_TRACK, "Reinforced Embarking Track");
     this.addBlock(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK, "Reinforced Disembarking Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_DUMPING_TRACK, "Reinforced Dumping Track");
     this.addBlock(RailcraftBlocks.REINFORCED_TURNOUT_TRACK, "Reinforced Turnout Track");
     this.addBlock(RailcraftBlocks.REINFORCED_WYE_TRACK, "Reinforced Wye Track");
     this.addBlock(RailcraftBlocks.REINFORCED_JUNCTION_TRACK, "Reinforced Junction Track");
@@ -746,6 +764,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STRAP_IRON_COUPLER_TRACK, "Strap Iron Coupler Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK, "Strap Iron Embarking Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK, "Strap Iron Disembarking Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_DUMPING_TRACK, "Strap Iron Dumping Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK, "Strap Iron Turnout Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_WYE_TRACK, "Strap Iron Wye Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK, "Strap Iron Junction Track");
@@ -766,6 +785,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.IRON_COUPLER_TRACK, "Iron Coupler Track");
     this.addBlock(RailcraftBlocks.IRON_EMBARKING_TRACK, "Iron Embarking Track");
     this.addBlock(RailcraftBlocks.IRON_DISEMBARKING_TRACK, "Iron Disembarking Track");
+    this.addBlock(RailcraftBlocks.IRON_DUMPING_TRACK, "Iron Dumping Track");
     this.addBlock(RailcraftBlocks.IRON_TURNOUT_TRACK, "Iron Turnout Track");
     this.addBlock(RailcraftBlocks.IRON_WYE_TRACK, "Iron Wye Track");
     this.addBlock(RailcraftBlocks.IRON_JUNCTION_TRACK, "Iron Junction Track");

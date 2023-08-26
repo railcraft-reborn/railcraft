@@ -92,6 +92,8 @@ public class Translations {
         makeKey("screen", "water_tank.final_rate");
     public static final String PATTERN = makeKey("screen", "track_layer.patter");
     public static final String STOCK = makeKey("screen", "track_layer.stock");
+    public static final String UNDER = makeKey("screen", "track_undercutter.under");
+    public static final String SIDES = makeKey("screen", "track_undercutter.sides");
     public static final String HELP = makeKey("screen", "help");
     public static final String NAME = makeKey("screen", "name");
     public static final String GOLDEN_TICKET_TITLE = makeKey("screen", "golden_ticket.title");
@@ -131,7 +133,9 @@ public class Translations {
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
     public static final String TRACK_LAYER = makeKey("tips", "track_layer");
+    public static final String TRACK_RELAYER = makeKey("tips", "track_relayer");
     public static final String TRACK_REMOVER = makeKey("tips", "track_remover");
+    public static final String TRACK_UNDERCUTTER = makeKey("tips", "track_undercutter");
     public static final String CRUSHED_OBSIDIAN =
         makeKey("tips", "crushed_obsidian");
     public static final String COKE_OVEN =
@@ -302,6 +306,8 @@ public class Translations {
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
     public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
+    public static final String DUMPING_TRACK = makeKey("tips", "dumping_track");
+
     public static final String MANUAL_OPERATION = makeKey("tips", "manual_operation");
     public static final String SCRIPTED_LOGIC_OPERATION =
         makeKey("tips", "scripted_logic_operation");

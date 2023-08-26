@@ -423,6 +423,18 @@ public class RailcraftItems {
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
 
+  public static final RegistryObject<TrackRelayerCartItem> TRACK_RELAYER =
+      deferredRegister.register("track_relayer",
+          () -> new TrackRelayerCartItem(new Item.Properties()
+              .rarity(Rarity.UNCOMMON)
+              .stacksTo(1)));
+
+  public static final RegistryObject<TrackUndercutterCartItem> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> new TrackUndercutterCartItem(new Item.Properties()
+              .rarity(Rarity.UNCOMMON)
+              .stacksTo(1)));
+
   public static final RegistryObject<Item> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> new TunnelBoreItem(new Item.Properties()
@@ -536,6 +548,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> ABANDONED_DISEMBARKING_TRACK =
       blockItem("abandoned_disembarking_track", RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK);
 
+  public static final RegistryObject<Item> ABANDONED_DUMPING_TRACK =
+      blockItem("abandoned_dumping_track", RailcraftBlocks.ABANDONED_DUMPING_TRACK);
+
   public static final RegistryObject<Item> ABANDONED_WYE_TRACK =
       blockItem("abandoned_wye_track", RailcraftBlocks.ABANDONED_WYE_TRACK);
 
@@ -595,6 +610,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> ELECTRIC_DISEMBARKING_TRACK =
       blockItem("electric_disembarking_track", RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK);
+
+  public static final RegistryObject<Item> ELECTRIC_DUMPING_TRACK =
+      blockItem("electric_dumping_track", RailcraftBlocks.ELECTRIC_DUMPING_TRACK);
 
   public static final RegistryObject<Item> ELECTRIC_WYE_TRACK =
       blockItem("electric_wye_track", RailcraftBlocks.ELECTRIC_WYE_TRACK);
@@ -735,6 +753,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> IRON_DISEMBARKING_TRACK =
       blockItem("iron_disembarking_track", RailcraftBlocks.IRON_DISEMBARKING_TRACK);
 
+  public static final RegistryObject<Item> IRON_DUMPING_TRACK =
+      blockItem("iron_dumping_track", RailcraftBlocks.IRON_DUMPING_TRACK);
+
   public static final RegistryObject<Item> IRON_WYE_TRACK =
       blockItem("iron_wye_track", RailcraftBlocks.IRON_WYE_TRACK);
 
@@ -795,6 +816,9 @@ public class RailcraftItems {
   public static final RegistryObject<Item> REINFORCED_DISEMBARKING_TRACK =
       blockItem("reinforced_disembarking_track", RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK);
 
+  public static final RegistryObject<Item> REINFORCED_DUMPING_TRACK =
+      blockItem("reinforced_dumping_track", RailcraftBlocks.REINFORCED_DUMPING_TRACK);
+
   public static final RegistryObject<Item> REINFORCED_WYE_TRACK =
       blockItem("reinforced_wye_track", RailcraftBlocks.REINFORCED_WYE_TRACK);
 
@@ -854,6 +878,9 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> STRAP_IRON_DISEMBARKING_TRACK =
       blockItem("strap_iron_disembarking_track", RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK);
+
+  public static final RegistryObject<Item> STRAP_IRON_DUMPING_TRACK =
+      blockItem("strap_iron_dumping_track", RailcraftBlocks.STRAP_IRON_DUMPING_TRACK);
 
   public static final RegistryObject<Item> STRAP_IRON_WYE_TRACK =
       blockItem("strap_iron_wye_track", RailcraftBlocks.STRAP_IRON_WYE_TRACK);
@@ -1027,6 +1054,18 @@ public class RailcraftItems {
                   RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
                   RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK)));
+
+  public static final RegistryObject<Item> DUMPING_TRACK_KIT =
+      deferredRegister.register("dumping_track_kit",
+          () -> new TrackKitItem(new TrackKitItem.Properties()
+              .setAllowedOnSlopes(true)
+              .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DUMPING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DUMPING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DUMPING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_DUMPING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_DUMPING_TRACK)));
 
   public static final RegistryObject<Item> LAUNCHER_TRACK_KIT =
       deferredRegister.register("launcher_track_kit",

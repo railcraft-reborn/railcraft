@@ -177,7 +177,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
             southState.isFaceSturdy(level, southPos, Direction.NORTH), Direction.NORTH))
         .setValue(WEST, this.getConnection(westState,
             westState.isFaceSturdy(level, westPos, Direction.EAST), Direction.EAST))
-        .setValue(WATERLOGGED, Boolean.valueOf(fluidState.getType() == Fluids.WATER));
+        .setValue(WATERLOGGED, fluidState.getType().isSame(Fluids.WATER));
   }
 
 
@@ -232,10 +232,6 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     return Column.SMALL;
-  }
-
-  public boolean isPlatform(BlockState state) {
-    return false;
   }
 
   @Override

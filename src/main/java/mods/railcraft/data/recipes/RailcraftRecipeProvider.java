@@ -187,6 +187,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
+    tracks(consumer, RailcraftItems.ABANDONED_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ABANDONED_TRACK.get());
     tracks(consumer, RailcraftItems.ABANDONED_LAUNCHER_TRACK.get(),
@@ -220,6 +222,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), Items.RAIL);
+    tracks(consumer, RailcraftItems.IRON_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), Items.RAIL);
     tracks(consumer, RailcraftItems.IRON_LAUNCHER_TRACK.get(),
@@ -253,6 +257,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
+    tracks(consumer, RailcraftItems.STRAP_IRON_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.STRAP_IRON_TRACK.get());
     tracks(consumer, RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get(),
@@ -286,6 +292,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
+    tracks(consumer, RailcraftItems.REINFORCED_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.REINFORCED_TRACK.get());
     tracks(consumer, RailcraftItems.REINFORCED_LAUNCHER_TRACK.get(),
@@ -319,6 +327,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_EMBARKING_TRACK.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
+    tracks(consumer, RailcraftItems.ELECTRIC_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_GATED_TRACK.get(),
         RailcraftItems.GATED_TRACK_KIT.get(), RailcraftItems.ELECTRIC_TRACK.get());
     tracks(consumer, RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get(),
@@ -1235,6 +1245,19 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_RELAYER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.BLAZE_ROD)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DIAMOND_PICKAXE)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_REMOVER.get())
         .pattern("aba")
         .pattern("cdc")
@@ -1244,6 +1267,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.STICKY_PISTON)
         .define('d', RailcraftTags.Items.STEEL_BLOCK)
         .define('e', RailcraftTags.Items.CROWBAR)
+        .define('f', Items.MINECART)
+        .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_UNDERCUTTER.get())
+        .pattern("aba")
+        .pattern("cdc")
+        .pattern("efe")
+        .define('a', Items.YELLOW_DYE)
+        .define('b', Items.REDSTONE_LAMP)
+        .define('c', Items.PISTON)
+        .define('d', RailcraftTags.Items.STEEL_BLOCK)
+        .define('e', Items.DIAMOND_SHOVEL)
         .define('f', Items.MINECART)
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(consumer);
@@ -1320,6 +1355,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     kits(consumer, RailcraftItems.EMBARKING_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Items.ENDER_PEARL), 1),
         new Tuple<>(Ingredient.of(Items.LEAD), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
+    kits(consumer, RailcraftItems.DUMPING_TRACK_KIT.get(), 4, List.of(
+        new Tuple<>(Ingredient.of(RailcraftTags.Items.STEEL_PLATE), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.GATED_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Tags.Items.FENCE_GATES), 1),

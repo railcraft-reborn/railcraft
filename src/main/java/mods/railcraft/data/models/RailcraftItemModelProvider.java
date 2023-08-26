@@ -43,7 +43,9 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
         this.basicItem(RailcraftItems.TANK_MINECART.get());
         this.basicItem(RailcraftItems.TRACK_LAYER.get());
+        this.basicItem(RailcraftItems.TRACK_RELAYER.get());
         this.basicItem(RailcraftItems.TRACK_REMOVER.get());
+        this.basicItem(RailcraftItems.TRACK_UNDERCUTTER.get());
         this.basicItem(RailcraftItems.TUNNEL_BORE.get());
         this.basicItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get());
         this.basicItem(RailcraftItems.SIGNAL_TUNER.get());
@@ -150,6 +152,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
         this.basicItem(RailcraftItems.COUPLER_TRACK_KIT.get());
         this.basicItem(RailcraftItems.EMBARKING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+        this.basicItem(RailcraftItems.DUMPING_TRACK_KIT.get());
         this.basicItem(RailcraftItems.LAUNCHER_TRACK_KIT.get());
         this.basicItem(RailcraftItems.ONE_WAY_TRACK_KIT.get());
         this.basicItem(RailcraftItems.WHISTLE_TRACK_KIT.get());

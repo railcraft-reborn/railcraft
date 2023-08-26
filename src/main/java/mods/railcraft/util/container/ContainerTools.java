@@ -88,8 +88,8 @@ public abstract class ContainerTools {
   public static boolean matchesFilter(ItemStack filter, ItemStack stack) {
     if (stack.isEmpty() || filter.isEmpty())
       return false;
-    if (filter.getItem() instanceof Filter) {
-      return ((Filter) filter.getItem()).matches(filter, stack);
+    if (filter.getItem() instanceof Filter filterItem) {
+      return filterItem.matches(filter, stack);
     }
     return isItemEqual(stack, filter);
   }
@@ -221,19 +221,19 @@ public abstract class ContainerTools {
   public static BlockState getBlockStateFromStack(ItemStack stack) {
     if (stack.isEmpty())
       return Blocks.AIR.defaultBlockState();
-    // noinspection deprecation
     return getBlockFromStack(stack).defaultBlockState();
   }
 
-  public static @Nullable BlockState getBlockStateFromStack(ItemStack stack, Level level,
+  @Nullable
+  public static BlockState getBlockStateFromStack(ItemStack stack, Level level,
       BlockPos pos) {
     if (stack.isEmpty())
       return null;
     Item item = stack.getItem();
-    if (item instanceof BlockItem) {
-      return ((BlockItem) item).getBlock().getStateForPlacement(
-          new BlockPlaceContext(level, null, InteractionHand.MAIN_HAND, stack, new BlockHitResult(
-              new Vec3(0.5D, 0.5D, 0.5D), Direction.UP, pos.above(), false)));
+    if (item instanceof BlockItem blockItem) {
+      return blockItem.getBlock().getStateForPlacement(
+          new BlockPlaceContext(level, null, InteractionHand.MAIN_HAND, stack,
+              new BlockHitResult(new Vec3(0.5D, 0.5D, 0.5D), Direction.UP, pos.above(), false)));
     }
     return null;
   }

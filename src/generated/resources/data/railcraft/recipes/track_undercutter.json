@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:yellow_dye"
+    },
+    "b": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "c": {
+      "item": "minecraft:piston"
+    },
+    "d": {
+      "tag": "forge:storage_blocks/steel"
+    },
+    "e": {
+      "item": "minecraft:diamond_shovel"
+    },
+    "f": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "aba",
+    "cdc",
+    "efe"
+  ],
+  "result": {
+    "item": "railcraft:track_undercutter"
+  },
+  "show_notification": true
+}
