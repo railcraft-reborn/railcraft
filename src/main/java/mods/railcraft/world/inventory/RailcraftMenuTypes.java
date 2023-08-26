@@ -25,6 +25,7 @@ import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockE
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
+import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -154,6 +155,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<RoutingTrackMenu>> ROUTING_TRACK =
       deferredRegister.register("routing_track",
           () -> blockEntityMenu(RoutingTrackBlockEntity.class, RoutingTrackMenu::new));
+
+  public static final RegistryObject<MenuType<DumpingTrackMenu>> DUMPING_TRACK =
+      deferredRegister.register("dumping_track",
+          () -> blockEntityMenu(DumpingTrackBlockEntity.class, DumpingTrackMenu::new));
 
   private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

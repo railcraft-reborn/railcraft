@@ -68,6 +68,9 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
+            // Enables better hot reloading if using the JetBrains Runtime
+            jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+
             args '--mixin', 'railcraft.mixins.json'
 
             mods {

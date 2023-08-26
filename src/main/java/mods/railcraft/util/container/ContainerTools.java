@@ -88,8 +88,8 @@ public abstract class ContainerTools {
   public static boolean matchesFilter(ItemStack filter, ItemStack stack) {
     if (stack.isEmpty() || filter.isEmpty())
       return false;
-    if (filter.getItem() instanceof Filter) {
-      return ((Filter) filter.getItem()).matches(filter, stack);
+    if (filter.getItem() instanceof Filter filterItem) {
+      return filterItem.matches(filter, stack);
     }
     return isItemEqual(stack, filter);
   }

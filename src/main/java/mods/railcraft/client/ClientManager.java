@@ -11,6 +11,7 @@ import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
+import mods.railcraft.client.gui.screen.inventory.DumpingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
@@ -135,6 +136,7 @@ public class ClientManager {
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {

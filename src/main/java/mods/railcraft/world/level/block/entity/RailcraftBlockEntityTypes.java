@@ -30,6 +30,7 @@ import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntit
 import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
@@ -390,6 +391,17 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.IRON_ROUTING_TRACK.get(),
                   RailcraftBlocks.REINFORCED_ROUTING_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<DumpingTrackBlockEntity>> DUMPING_TRACK =
+      deferredRegister.register("dumping_track",
+          () -> BlockEntityType.Builder
+              .of(DumpingTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_DUMPING_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_DUMPING_TRACK.get(),
+                  RailcraftBlocks.IRON_DUMPING_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_DUMPING_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_DUMPING_TRACK.get())
               .build(null));
 
   @SafeVarargs
