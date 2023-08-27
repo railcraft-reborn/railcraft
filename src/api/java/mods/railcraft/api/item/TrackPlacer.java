@@ -7,6 +7,7 @@
 
 package mods.railcraft.api.item;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +42,7 @@ public interface TrackPlacer {
    *        your track, use your default value.
    * @return true if successful
    */
-  default boolean placeTrack(ItemStack stack, @Nullable Player player, Level world,
+  default boolean placeTrack(ItemStack stack, @NotNull Player player, Level world,
       BlockPos pos, @Nullable RailShape trackShape) {
     return stack.getItem().useOn(
         new UseOnContext(player, InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.ZERO,

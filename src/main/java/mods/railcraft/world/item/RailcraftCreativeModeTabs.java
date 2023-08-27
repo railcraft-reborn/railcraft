@@ -260,10 +260,8 @@ public class RailcraftCreativeModeTabs {
           .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
           .displayItems((params, output) -> {
             /* TODO:
-              - Dumping track
               - Messenger track
               - Delayed locking track
-              - Priming track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());

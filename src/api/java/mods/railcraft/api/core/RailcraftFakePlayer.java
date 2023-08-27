@@ -22,8 +22,6 @@ public final class RailcraftFakePlayer {
   public static final GameProfile RAILCRAFT_USER_PROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RailcraftConstantsAPI.RAILCRAFT_PLAYER.getBytes()),
           RailcraftConstantsAPI.RAILCRAFT_PLAYER);
-  public static final GameProfile UNKNOWN_USER_PROFILE =
-      new GameProfile(null, RailcraftConstantsAPI.UNKNOWN_PLAYER);
 
   public static ServerPlayer get(final ServerLevel world, final double x, final double y,
       final double z) {
