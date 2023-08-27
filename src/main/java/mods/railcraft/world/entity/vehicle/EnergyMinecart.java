@@ -28,8 +28,7 @@ public class EnergyMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  protected EnergyMinecart(EntityType<?> type, double x, double y, double z,
-      Level level) {
+  protected EnergyMinecart(EntityType<?> type, double x, double y, double z, Level level) {
     super(type, x, y, z, level);
   }
 

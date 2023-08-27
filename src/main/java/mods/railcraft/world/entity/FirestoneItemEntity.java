@@ -89,7 +89,7 @@ public class FirestoneItemEntity extends ItemEntity {
 
   @Override
   public void readAdditionalSaveData(CompoundTag compound) {
-    this.refined = compound.getBoolean("refined");
     super.readAdditionalSaveData(compound);
+    this.refined = compound.getBoolean("refined");
   }
 }

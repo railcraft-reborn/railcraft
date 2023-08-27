@@ -136,7 +136,8 @@ public class LevelUtil {
     level.sendBlockUpdated(pos, oldState, newState, Block.UPDATE_LIMIT);
   }
 
-  public static @Nullable BlockPos findBlock(Level level, BlockPos pos, int distance,
+  @Nullable
+  public static BlockPos findBlock(Level level, BlockPos pos, int distance,
       Predicate<BlockState> matcher) {
     int x = pos.getX();
     int y = pos.getY();
