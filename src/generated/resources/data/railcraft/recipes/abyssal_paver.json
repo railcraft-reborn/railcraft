@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "railcraft:abyssal_bricks"
+    }
+  },
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:abyssal_paver"
+  },
+  "show_notification": true
+}

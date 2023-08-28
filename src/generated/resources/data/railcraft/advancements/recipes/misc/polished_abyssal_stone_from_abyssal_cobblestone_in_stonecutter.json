@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_abyssal_cobblestone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:abyssal_cobblestone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_abyssal_cobblestone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"
+    ]
+  },
+  "sends_telemetry_event": false
+}

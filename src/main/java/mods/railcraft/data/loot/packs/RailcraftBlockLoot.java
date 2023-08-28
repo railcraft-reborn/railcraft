@@ -99,6 +99,18 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(), this::createSlabItemTable);
     this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), this::createSlabItemTable);
 
+    this.dropSelf(RailcraftBlocks.ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_COBBLESTONE.get());
+    this.dropSelf(RailcraftBlocks.POLISHED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.CHISELED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ETCHED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_BRICK_STAIRS.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_PAVER_STAIRS.get());
+    this.add(RailcraftBlocks.ABYSSAL_BRICK_SLAB.get(), this::createSlabItemTable);
+    this.add(RailcraftBlocks.ABYSSAL_PAVER_SLAB.get(), this::createSlabItemTable);
+
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> this.createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(),

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "railcraft:block/abyssal_paver",
+    "side": "railcraft:block/abyssal_paver",
+    "top": "railcraft:block/abyssal_paver"
+  }
+}

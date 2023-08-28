@@ -1469,6 +1469,52 @@ public class RailcraftBlocks {
       deferredRegister.register("quarried_paver_slab",
           () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
 
+  public static final RegistryObject<Block> ABYSSAL_STONE =
+      deferredRegister.register("abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+  public static final RegistryObject<Block> ABYSSAL_COBBLESTONE =
+      deferredRegister.register("abyssal_cobblestone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+
+  public static final RegistryObject<Block> POLISHED_ABYSSAL_STONE =
+      deferredRegister.register("polished_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+
+  public static final RegistryObject<Block> CHISELED_ABYSSAL_STONE =
+      deferredRegister.register("chiseled_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
+
+  public static final RegistryObject<Block> ETCHED_ABYSSAL_STONE =
+      deferredRegister.register("etched_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<Block> ABYSSAL_BRICKS =
+      deferredRegister.register("abyssal_bricks",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<StairBlock> ABYSSAL_BRICK_STAIRS =
+      deferredRegister.register("abyssal_brick_stairs",
+          () -> new StairBlock(() -> ABYSSAL_BRICKS.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> ABYSSAL_BRICK_SLAB =
+      deferredRegister.register("abyssal_brick_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<Block> ABYSSAL_PAVER =
+      deferredRegister.register("abyssal_paver",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<StairBlock> ABYSSAL_PAVER_STAIRS =
+      deferredRegister.register("abyssal_paver_stairs",
+          () -> new StairBlock(() -> ABYSSAL_PAVER.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> ABYSSAL_PAVER_SLAB =
+      deferredRegister.register("abyssal_paver_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
   }

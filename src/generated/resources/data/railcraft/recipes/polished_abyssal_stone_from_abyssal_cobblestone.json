@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "railcraft:abyssal_cobblestone"
+    }
+  },
+  "pattern": [
+    "aa",
+    "aa"
+  ],
+  "result": {
+    "count": 4,
+    "item": "railcraft:polished_abyssal_stone"
+  },
+  "show_notification": true
+}

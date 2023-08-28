@@ -270,7 +270,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.STEEL_TANK_GAUGE,
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
             RailcraftTags.Blocks.STEEL_TANK_WALL,
-            RailcraftTags.Blocks.QUARRIED);
+            RailcraftTags.Blocks.QUARRIED,
+            RailcraftTags.Blocks.ABYSSAL);
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -341,6 +342,15 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
             RailcraftBlocks.QUARRIED_BRICKS.get(),
             RailcraftBlocks.QUARRIED_PAVER.get());
+
+    this.tag(RailcraftTags.Blocks.ABYSSAL)
+        .add(RailcraftBlocks.ABYSSAL_STONE.get(),
+            RailcraftBlocks.ABYSSAL_COBBLESTONE.get(),
+            RailcraftBlocks.POLISHED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.CHISELED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.ETCHED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.ABYSSAL_BRICKS.get(),
+            RailcraftBlocks.ABYSSAL_PAVER.get());
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)
