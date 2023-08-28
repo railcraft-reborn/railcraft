@@ -1,5 +1,6 @@
 package mods.railcraft;
 
+import java.util.Set;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
@@ -23,7 +24,9 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
-import mods.railcraft.data.worldgen.RailcraftDatapackProvider;
+import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
+import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
+import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.NetworkChannel;
@@ -34,6 +37,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
+import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
@@ -58,6 +62,11 @@ import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,6 +82,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -91,6 +101,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod(Railcraft.ID)
 public class Railcraft {
@@ -195,10 +206,6 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootModifierProvider(packOutput));
-    generator.addProvider(event.includeServer(),
-        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftDatapackProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
@@ -208,6 +215,21 @@ public class Railcraft {
         new RailcraftSoundsProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
         new RailcraftSpriteSourceProvider(packOutput, fileHelper));
+
+    var builder = new RegistrySetBuilder()
+        .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
+        .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
+        .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
+        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap);
+
+    generator.addProvider(event.includeServer(),
+        (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
+            new DatapackBuiltinEntriesProvider(output, lookupProvider, builder, Set.of(ID)));
+
+    generator.addProvider(event.includeServer(),
+        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider.thenApply(provider ->
+            builder.buildPatch(RegistryAccess
+                .fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), provider)), fileHelper));
   }
 
   // ================================================================================
