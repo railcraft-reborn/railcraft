@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 73927265,
+    "separation": 4,
+    "spacing": 16,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "railcraft:geode",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "type": "railcraft:geode",
+  "biomes": "#minecraft:is_deep_ocean",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

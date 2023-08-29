@@ -1,4 +1,4 @@
-// 1.20.1	2023-07-26T15:10:45.011469	Registries
+// 1.20.1	2023-08-29T14:43:55.596827	Registries
 febb98aea6d16a6b3ef939bd3fb613f874ea974a data/railcraft/damage_type/bore.json
 bd26d74b84c1805b9ee7dabf21ed62cf44609f5e data/railcraft/damage_type/creosote.json
 bcc0737ada4e58124e8650c74c9e1a9aae4813b2 data/railcraft/damage_type/crusher.json
@@ -47,3 +47,5 @@ e51f07523b15de8fbd5a18ffe47d07ad47e4edaf data/railcraft/worldgen/placed_feature/
 c201091adbb6cf9f1c5bc20966f6f3b51f7a41c7 data/railcraft/worldgen/placed_feature/tin_ore_large.json
 0095b19af5e9a322e0c88bb580498ec83066d22c data/railcraft/worldgen/placed_feature/tin_ore_small.json
 cd761e1dd22bba54411e81e8314541563b012e76 data/railcraft/worldgen/placed_feature/zinc_ore.json
+b2586582292380f39956956234bc6fb47a9e2c3c data/railcraft/worldgen/structure/geode.json
+c0dc7adafebd391c0cb05f9f822de126c498927e data/railcraft/worldgen/structure_set/geode.json

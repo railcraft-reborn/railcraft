@@ -25,6 +25,8 @@ import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
+import mods.railcraft.data.worldgen.RailcraftStructureSets;
+import mods.railcraft.data.worldgen.RailcraftStructures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
@@ -59,6 +61,8 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
@@ -157,6 +161,8 @@ public class Railcraft {
     RailcraftPoiTypes.register(modEventBus);
     RailcraftVillagerProfession.register(modEventBus);
     RailcraftLootModifiers.register(modEventBus);
+    RailcraftStructureTypes.register(modEventBus);
+    RailcraftStructurePieces.register(modEventBus);
   }
 
   // ================================================================================
@@ -220,7 +226,9 @@ public class Railcraft {
         .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
         .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
-        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap);
+        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
+        .add(Registries.STRUCTURE, RailcraftStructures::bootstrap)
+        .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap);
 
     generator.addProvider(event.includeServer(),
         (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
