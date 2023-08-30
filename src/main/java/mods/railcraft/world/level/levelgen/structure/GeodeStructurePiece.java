@@ -25,12 +25,12 @@ public class GeodeStructurePiece extends StructurePiece {
     this.setOrientation(null);
   }
 
-  private static BoundingBox createBoundingBox(int minX, int y, int minZ) {
-    return new BoundingBox(minX, y, minZ, minX + 16, y + 16, minZ + 16);
-  }
-
   public GeodeStructurePiece(CompoundTag tag) {
     super(RailcraftStructurePieces.GEODE.get(), tag);
+  }
+
+  private static BoundingBox createBoundingBox(int minX, int y, int minZ) {
+    return new BoundingBox(minX, y, minZ, minX + 16, y + 16, minZ + 16);
   }
 
   @Override
@@ -62,21 +62,17 @@ public class GeodeStructurePiece extends StructurePiece {
   }
 
   private void placeAir(WorldGenLevel level, BlockPos pos) {
-    if (this.canBeReplaced(level, pos.getX(), pos.getY(), pos.getZ(), new BoundingBox(pos))) {
-      this.placeBlock(level, Blocks.AIR.defaultBlockState(), pos.getX(), pos.getY(), pos.getZ(),
-          new BoundingBox(pos));
-    }
+    this.placeBlock(level, Blocks.AIR.defaultBlockState(), pos.getX(), pos.getY(), pos.getZ(),
+        this.getBoundingBox());
   }
 
   private void placeStone(WorldGenLevel level, BlockPos pos, RandomSource random) {
-    if (this.canBeReplaced(level, pos.getX(), pos.getY(), pos.getZ(), new BoundingBox(pos))) {
-      var state = random.nextDouble() < 0.2
-          ? random.nextDouble() < 0.5
-            ? Blocks.DEEPSLATE.defaultBlockState()
-            : Blocks.SMOOTH_BASALT.defaultBlockState()
-          : RailcraftBlocks.ABYSSAL_STONE.get().defaultBlockState();
-      this.placeBlock(level, state, pos.getX(), pos.getY(), pos.getZ(), new BoundingBox(pos));
-    }
+    var state = random.nextDouble() < 0.2
+        ? random.nextDouble() < 0.5
+          ? Blocks.DEEPSLATE.defaultBlockState()
+          : Blocks.SMOOTH_BASALT.defaultBlockState()
+        : RailcraftBlocks.ABYSSAL_STONE.get().defaultBlockState();
+    this.placeBlock(level, state, pos.getX(), pos.getY(), pos.getZ(), this.getBoundingBox());
   }
 
   private void placeOre(WorldGenLevel level, BlockState existingState, RandomSource random,
@@ -92,7 +88,7 @@ public class GeodeStructurePiece extends StructurePiece {
         oreState = Blocks.DEEPSLATE_LAPIS_ORE.defaultBlockState();
       }
       if (oreState != null) {
-        this.placeBlock(level, oreState, pos.getX(), pos.getY(), pos.getZ(), new BoundingBox(pos));
+        this.placeBlock(level, oreState, pos.getX(), pos.getY(), pos.getZ(), this.getBoundingBox());
       }
     }
   }

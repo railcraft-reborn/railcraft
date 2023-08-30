@@ -30,5 +30,4 @@ public class RailcraftDatapackProvider extends DatapackBuiltinEntriesProvider {
       CompletableFuture<HolderLookup.Provider> lookupProvider) {
     super(output, lookupProvider, BUILDER, Set.of(Railcraft.ID));
   }
-
 }
