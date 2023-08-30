@@ -233,24 +233,12 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CREOSOTE_BOTTLE.get());
             output.accept(RailcraftItems.CREOSOTE_BUCKET.get());
 
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(color).get());
-            }
+            output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(DyeColor.WHITE).get());
           })
           .build());
   private static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
@@ -427,6 +415,24 @@ public class RailcraftCreativeModeTabs {
             }
             for (var color : DyeColor.values()) {
               output.accept(RailcraftItems.POST.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(color).get());
             }
           }).build());
 
