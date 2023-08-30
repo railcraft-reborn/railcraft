@@ -1,0 +1,16 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "tag": "railcraft:abyssal"
+  },
+  "output": [
+    {
+      "probability": 1.0,
+      "result": {
+        "count": 1,
+        "item": "railcraft:abyssal_cobblestone"
+      }
+    }
+  ],
+  "processTime": 200
+}

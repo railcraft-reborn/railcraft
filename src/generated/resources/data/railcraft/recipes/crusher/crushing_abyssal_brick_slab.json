@@ -1,0 +1,21 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": [
+    {
+      "item": "railcraft:abyssal_brick_slab"
+    },
+    {
+      "item": "railcraft:abyssal_paver_slab"
+    }
+  ],
+  "output": [
+    {
+      "probability": 0.5,
+      "result": {
+        "count": 1,
+        "item": "railcraft:abyssal_cobblestone"
+      }
+    }
+  ],
+  "processTime": 200
+}

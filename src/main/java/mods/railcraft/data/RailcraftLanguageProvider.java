@@ -143,6 +143,18 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_STAIRS, "Quarried Paver Stairs");
     this.addBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB, "Quarried Paver Slab");
 
+    this.addBlock(RailcraftBlocks.ABYSSAL_STONE, "Abyssal Stone");
+    this.addBlock(RailcraftBlocks.ABYSSAL_COBBLESTONE, "Abyssal Cobblestone");
+    this.addBlock(RailcraftBlocks.POLISHED_ABYSSAL_STONE, "Polished Abyssal Stone");
+    this.addBlock(RailcraftBlocks.CHISELED_ABYSSAL_STONE, "Chiseled Abyssal Stone");
+    this.addBlock(RailcraftBlocks.ETCHED_ABYSSAL_STONE, "Etched Abyssal Stone");
+    this.addBlock(RailcraftBlocks.ABYSSAL_BRICKS, "Abyssal Bricks");
+    this.addBlock(RailcraftBlocks.ABYSSAL_BRICK_STAIRS, "Abyssal Brick Stairs");
+    this.addBlock(RailcraftBlocks.ABYSSAL_BRICK_SLAB, "Abyssal Brick Slab");
+    this.addBlock(RailcraftBlocks.ABYSSAL_PAVER, "Abyssal Paver");
+    this.addBlock(RailcraftBlocks.ABYSSAL_PAVER_STAIRS, "Abyssal Paver Stairs");
+    this.addBlock(RailcraftBlocks.ABYSSAL_PAVER_SLAB, "Abyssal Paver Slab");
+
     this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");

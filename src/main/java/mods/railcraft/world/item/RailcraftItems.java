@@ -1308,6 +1308,39 @@ public class RailcraftItems {
   public static final RegistryObject<Item> QUARRIED_PAVER_SLAB =
       blockItem("quarried_paver_slab", RailcraftBlocks.QUARRIED_PAVER_SLAB);
 
+  public static final RegistryObject<Item> ABYSSAL_STONE =
+      blockItem("abyssal_stone", RailcraftBlocks.ABYSSAL_STONE);
+
+  public static final RegistryObject<Item> ABYSSAL_COBBLESTONE =
+      blockItem("abyssal_cobblestone", RailcraftBlocks.ABYSSAL_COBBLESTONE);
+
+  public static final RegistryObject<Item> POLISHED_ABYSSAL_STONE =
+      blockItem("polished_abyssal_stone", RailcraftBlocks.POLISHED_ABYSSAL_STONE);
+
+  public static final RegistryObject<Item> CHISELED_ABYSSAL_STONE =
+      blockItem("chiseled_abyssal_stone", RailcraftBlocks.CHISELED_ABYSSAL_STONE);
+
+  public static final RegistryObject<Item> ETCHED_ABYSSAL_STONE =
+      blockItem("etched_abyssal_stone", RailcraftBlocks.ETCHED_ABYSSAL_STONE);
+
+  public static final RegistryObject<Item> ABYSSAL_BRICKS =
+      blockItem("abyssal_bricks", RailcraftBlocks.ABYSSAL_BRICKS);
+
+  public static final RegistryObject<Item> ABYSSAL_BRICK_STAIRS =
+      blockItem("abyssal_brick_stairs", RailcraftBlocks.ABYSSAL_BRICK_STAIRS);
+
+  public static final RegistryObject<Item> ABYSSAL_BRICK_SLAB =
+      blockItem("abyssal_brick_slab", RailcraftBlocks.ABYSSAL_BRICK_SLAB);
+
+  public static final RegistryObject<Item> ABYSSAL_PAVER =
+      blockItem("abyssal_paver", RailcraftBlocks.ABYSSAL_PAVER);
+
+  public static final RegistryObject<Item> ABYSSAL_PAVER_STAIRS =
+      blockItem("abyssal_paver_stairs", RailcraftBlocks.ABYSSAL_PAVER_STAIRS);
+
+  public static final RegistryObject<Item> ABYSSAL_PAVER_SLAB =
+      blockItem("abyssal_paver_slab", RailcraftBlocks.ABYSSAL_PAVER_SLAB);
+
   // ================================================================================
   // Buckets
   // ================================================================================

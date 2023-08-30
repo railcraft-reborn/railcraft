@@ -77,6 +77,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildCrowbars(consumer);
     buildFirestones(consumer);
     buildQuarriedStone(consumer);
+    buildAbyssalStone(consumer);
     buildBattery(consumer);
     buildFrame(consumer);
   }
@@ -1855,6 +1856,63 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.QUARRIED_BRICK_SLAB.get(), RailcraftItems.QUARRIED_BRICKS.get());
     slab(consumer, RecipeCategory.MISC,
         RailcraftItems.QUARRIED_PAVER_SLAB.get(), RailcraftItems.QUARRIED_PAVER.get());
+  }
+
+  private void buildAbyssalStone(Consumer<FinishedRecipe> consumer) {
+    square2x2(consumer, RailcraftItems.ABYSSAL_STONE.get(),
+        RailcraftItems.POLISHED_ABYSSAL_STONE.get(), 4, "_from_abyssal_stone");
+    square2x2(consumer, RailcraftItems.ABYSSAL_COBBLESTONE.get(),
+        RailcraftItems.POLISHED_ABYSSAL_STONE.get(), 4, "_from_abyssal_cobblestone");
+    SingleItemRecipeBuilder.stonecutting(
+            Ingredient.of(new ItemStack(RailcraftItems.ABYSSAL_STONE.get())),
+            RecipeCategory.MISC, RailcraftItems.POLISHED_ABYSSAL_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.ABYSSAL_STONE.get()),
+            has(RailcraftItems.ABYSSAL_STONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID,
+            "polished_abyssal_stone_from_abyssal_stone_in_stonecutter"));
+    SingleItemRecipeBuilder.stonecutting(
+            Ingredient.of(new ItemStack(RailcraftItems.ABYSSAL_COBBLESTONE.get())),
+            RecipeCategory.MISC, RailcraftItems.POLISHED_ABYSSAL_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.ABYSSAL_COBBLESTONE.get()),
+            has(RailcraftItems.ABYSSAL_COBBLESTONE.get()))
+        .save(consumer, new ResourceLocation(Railcraft.ID,
+            "polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"));
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHISELED_ABYSSAL_STONE.get(), 8)
+        .pattern("aaa")
+        .pattern("a a")
+        .pattern("aaa")
+        .define('a', RailcraftItems.POLISHED_ABYSSAL_STONE.get())
+        .unlockedBy(getHasName(RailcraftItems.POLISHED_ABYSSAL_STONE.get()),
+            has(RailcraftItems.POLISHED_ABYSSAL_STONE.get()))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ETCHED_ABYSSAL_STONE.get(), 8)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.POLISHED_ABYSSAL_STONE.get())
+        .define('b', Items.GUNPOWDER)
+        .unlockedBy(getHasName(RailcraftItems.POLISHED_ABYSSAL_STONE.get()),
+            has(RailcraftItems.POLISHED_ABYSSAL_STONE.get()))
+        .save(consumer);
+    square2x2(consumer, RailcraftItems.POLISHED_ABYSSAL_STONE.get(),
+        RailcraftItems.ABYSSAL_BRICKS.get(), 4, "");
+    square2x2(consumer, RailcraftItems.ABYSSAL_BRICKS.get(),
+        RailcraftItems.ABYSSAL_PAVER.get(), 4, "");
+
+    stairBuilder(RailcraftItems.ABYSSAL_BRICK_STAIRS.get(),
+        Ingredient.of(RailcraftItems.ABYSSAL_BRICKS.get()))
+        .unlockedBy(getHasName(RailcraftItems.ABYSSAL_BRICKS.get()),
+            has(RailcraftItems.ABYSSAL_BRICKS.get()))
+        .save(consumer);
+    stairBuilder(RailcraftItems.ABYSSAL_PAVER_STAIRS.get(),
+        Ingredient.of(RailcraftItems.ABYSSAL_PAVER.get()))
+        .unlockedBy(getHasName(RailcraftItems.ABYSSAL_PAVER.get()),
+            has(RailcraftItems.ABYSSAL_PAVER.get()))
+        .save(consumer);
+    slab(consumer, RecipeCategory.MISC,
+        RailcraftItems.ABYSSAL_BRICK_SLAB.get(), RailcraftItems.ABYSSAL_BRICKS.get());
+    slab(consumer, RecipeCategory.MISC,
+        RailcraftItems.ABYSSAL_PAVER_SLAB.get(), RailcraftItems.ABYSSAL_PAVER.get());
   }
 
   private void buildBattery(Consumer<FinishedRecipe> consumer) {

@@ -410,6 +410,17 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.QUARRIED_PAVER.get());
             output.accept(RailcraftItems.QUARRIED_PAVER_STAIRS.get());
             output.accept(RailcraftItems.QUARRIED_PAVER_SLAB.get());
+            output.accept(RailcraftItems.ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ABYSSAL_COBBLESTONE.get());
+            output.accept(RailcraftItems.POLISHED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.CHISELED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ETCHED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICKS.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICK_STAIRS.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICK_SLAB.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER_STAIRS.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER_SLAB.get());
 
             for (var color : DyeColor.values()) {
               output.accept(RailcraftItems.STRENGTHENED_GLASS.variantFor(color).get());

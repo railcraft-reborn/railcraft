@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "railcraft:block/abyssal_brick_slab"
+    },
+    "type=double": {
+      "model": "railcraft:block/abyssal_bricks"
+    },
+    "type=top": {
+      "model": "railcraft:block/abyssal_brick_slab_top"
+    }
+  }
+}

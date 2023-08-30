@@ -282,6 +282,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleSlabBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(),
         RailcraftBlocks.QUARRIED_PAVER.get());
 
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_COBBLESTONE.get());
+    this.simpleBlock(RailcraftBlocks.POLISHED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.CHISELED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ETCHED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.simpleStairsBlock(RailcraftBlocks.ABYSSAL_BRICK_STAIRS.get(),
+        RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleStairsBlock(RailcraftBlocks.ABYSSAL_PAVER_STAIRS.get(),
+        RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.simpleSlabBlock(RailcraftBlocks.ABYSSAL_BRICK_SLAB.get(),
+        RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleSlabBlock(RailcraftBlocks.ABYSSAL_PAVER_SLAB.get(),
+        RailcraftBlocks.ABYSSAL_PAVER.get());
+
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());

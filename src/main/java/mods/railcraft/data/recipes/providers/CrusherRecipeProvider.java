@@ -224,6 +224,17 @@ public class CrusherRecipeProvider extends RecipeProvider {
             RailcraftItems.QUARRIED_PAVER_SLAB.get()))
         .addResult(RailcraftItems.QUARRIED_COBBLESTONE.get(), 1, 0.5)
         .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftTags.Items.ABYSSAL))
+        .addResult(RailcraftItems.ABYSSAL_COBBLESTONE.get(), 1, 1)
+        .save(consumer, "tags_abyssal");
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.ABYSSAL_BRICK_STAIRS.get(),
+            RailcraftItems.ABYSSAL_PAVER_STAIRS.get()))
+        .addResult(RailcraftItems.ABYSSAL_COBBLESTONE.get(), 1, 0.75)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.ABYSSAL_BRICK_SLAB.get(),
+            RailcraftItems.ABYSSAL_PAVER_SLAB.get()))
+        .addResult(RailcraftItems.ABYSSAL_COBBLESTONE.get(), 1, 0.5)
+        .save(consumer);
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.ZINC_SILVER_BATTERY_EMPTY.get(),
             RailcraftItems.ZINC_CARBON_BATTERY_EMPTY.get()))
         .addResult(RailcraftItems.CHARGE_TERMINAL.get(), 2, 1)
