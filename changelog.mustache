@@ -3,9 +3,6 @@
 {{#tags}}
 ## {{name}}
 {{#commits}}
-{{#ifMatches messageTitle "^.*Merge branch.*$"}}
-{{else}}
 * [{{{messageTitle}}}](https://github.com/railcraft-reborn/railcraft/commit/{{hashFull}}) - {{{authorName}}}
-{{/ifMatches}}
 {{/commits}}
 {{/tags}}
