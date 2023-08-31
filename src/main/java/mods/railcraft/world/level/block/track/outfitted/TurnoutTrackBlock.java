@@ -80,18 +80,13 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
       @Nullable AbstractMinecart cart) {
     final boolean mirrored = isMirrored(blockState);
     if (isSwitched(blockState)) {
-      switch (getFacing(blockState)) {
-        case NORTH:
-          return mirrored ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
-        case SOUTH:
-          return mirrored ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
-        case EAST:
-          return mirrored ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
-        case WEST:
-          return mirrored ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
-        default:
-          throw new IllegalStateException("Invalid facing direction.");
-      }
+      return switch (getFacing(blockState)) {
+        case NORTH -> mirrored ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
+        case SOUTH -> mirrored ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
+        case EAST -> mirrored ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
+        case WEST -> mirrored ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
+        default -> throw new IllegalStateException("Invalid facing direction.");
+      };
     }
     return getRailShapeRaw(blockState);
   }

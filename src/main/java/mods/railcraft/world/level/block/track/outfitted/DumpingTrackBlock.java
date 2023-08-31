@@ -49,7 +49,8 @@ public class DumpingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
 
   @Override
   public int getMaxSupportedDistance() {
-    return super.getMaxSupportedDistance() > 0 ? super.getMaxSupportedDistance() : 1;
+    var distance = super.getMaxSupportedDistance();
+    return distance > 0 ? distance : 1;
   }
 
   @Override

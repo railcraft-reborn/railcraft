@@ -27,18 +27,13 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
   public RailShape getRailDirection(BlockState blockState, BlockGetter world, BlockPos pos,
       @Nullable AbstractMinecart cart) {
     final boolean switched = isSwitched(blockState);
-    switch (getFacing(blockState)) {
-      case NORTH:
-        return switched ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
-      case SOUTH:
-        return switched ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
-      case EAST:
-        return switched ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
-      case WEST:
-        return switched ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
-      default:
-        throw new IllegalStateException("Invalid facing direction.");
-    }
+    return switch (getFacing(blockState)) {
+      case NORTH -> switched ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
+      case SOUTH -> switched ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
+      case EAST -> switched ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
+      case WEST -> switched ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
+      default -> throw new IllegalStateException("Invalid facing direction.");
+    };
   }
 
   @Override

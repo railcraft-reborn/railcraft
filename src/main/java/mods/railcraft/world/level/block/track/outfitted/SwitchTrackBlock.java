@@ -53,6 +53,7 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
+    super.onPlace(state, level, pos, oldBlockState, moved);
     this.updateAdjacentBlocks(state, level, pos);
   }
 
