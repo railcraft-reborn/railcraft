@@ -212,11 +212,14 @@ public class ClientManager {
   @SubscribeEvent
   static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
     var modInfo = ModList.get().getModFileById(Railcraft.ID).getMods().get(0);
-    var versionStatus = VersionChecker.getResult(modInfo).status();
+    var result = VersionChecker.getResult(modInfo);
+    var versionStatus = result.status();
 
     if (versionStatus.shouldDraw()) {
+      var newVersion = result.target().toString();
       var message = Component.literal("Railcraft Reborn: ").withStyle(ChatFormatting.GREEN)
-          .append(Component.literal("A new version is available to download.")
+          .append(Component.literal(
+              "A new version (%s) is available to download.".formatted(newVersion))
               .withStyle(style -> style
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
