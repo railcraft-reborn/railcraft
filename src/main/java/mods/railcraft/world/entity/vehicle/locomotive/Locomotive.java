@@ -309,7 +309,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * Gets the destination ticket item.
    */
   public ItemStack getDestItem() {
-    return getTicketInventory().getItem(1);
+    return ticketContainer().getItem(1);
   }
 
   @Override
@@ -345,7 +345,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       var destination = TicketItem.getDestination(ticket);
       if (!destination.equals(this.getDestination())) {
         this.setDestination(destination);
-        this.getTicketInventory().setItem(1, TicketItem.copyTicket(ticket));
+        this.ticketContainer().setItem(1, TicketItem.copyTicket(ticket));
         return true;
       }
     }
@@ -536,10 +536,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
   }
 
-  protected abstract Container getTicketInventory();
+  protected abstract Container ticketContainer();
 
   private void processTicket() {
-    Container invTicket = this.getTicketInventory();
+    Container invTicket = this.ticketContainer();
     ItemStack stack = invTicket.getItem(0);
     if (stack.getItem() instanceof TicketItem) {
       if (setDestination(stack)) {
@@ -708,7 +708,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void remove(RemovalReason reason) {
-    this.getTicketInventory().setItem(1, ItemStack.EMPTY);
+    this.ticketContainer().setItem(1, ItemStack.EMPTY);
     super.remove(reason);
   }
 

@@ -82,7 +82,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  protected Container getTicketInventory() {
+  protected Container ticketContainer() {
     return invTicket;
   }
 

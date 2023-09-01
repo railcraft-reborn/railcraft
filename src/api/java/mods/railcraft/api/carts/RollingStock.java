@@ -38,7 +38,7 @@ public interface RollingStock {
 
   static RollingStock getOrThrow(AbstractMinecart minecart) {
     return minecart.getCapability(CAPABILITY)
-        .orElseThrow(() -> new IllegalStateException("MinecartExtension missing on " + minecart));
+        .orElseThrow(() -> new IllegalStateException("RollingStock missing on " + minecart));
   }
 
   /**

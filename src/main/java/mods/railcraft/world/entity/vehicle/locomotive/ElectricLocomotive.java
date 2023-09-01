@@ -103,7 +103,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  protected Container getTicketInventory() {
+  protected Container ticketContainer() {
     return this.ticketInventory;
   }
 
