@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,12 +39,17 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   private final Deque<BlockPos> queue = new ArrayDeque<>();
   private final Deque<BlockPos> lavaFound = new ArrayDeque<>();
   private final Set<BlockPos> visitedBlocks = new HashSet<>();
-  public int charge;
-  public long rotationYaw, preRotationYaw;
-  public float yOffset = -2, preYOffset = -2;
+  private int charge;
+
   private int rebuildDelay;
   private Component itemName;
   private int tick = 0;
+
+  // Client only
+  private long rotationYaw;
+  private long preRotationYaw;
+  private float yOffset = -2;
+  private float preYOffset = -2;
 
   public RitualBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.RITUAL.get(), blockPos, blockState);
@@ -70,7 +76,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
       return;
     }
 
-    if(blockEntity.tick % REBUILD_DELAY[blockEntity.rebuildDelay] == 0) {
+    if (blockEntity.tick % REBUILD_DELAY[blockEntity.rebuildDelay] == 0) {
       blockEntity.rebuildDelay++;
       if (blockEntity.rebuildDelay >= REBUILD_DELAY.length) {
         blockEntity.rebuildDelay = REBUILD_DELAY.length - 1;
@@ -162,11 +168,27 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   }
 
   public Component getItemName() {
-    return itemName;
+    return this.itemName;
   }
 
   public void setItemName(Component itemName) {
     this.itemName = itemName;
+  }
+
+  public int charge() {
+    return this.charge;
+  }
+
+  public void setCharge(int charge) {
+    this.charge = charge;
+  }
+
+  public float getRotationYaw(float partialTick) {
+    return Mth.lerp(partialTick, this.preRotationYaw, this.rotationYaw);
+  }
+
+  public float getYOffset(float partialTick) {
+    return Mth.lerp(partialTick, this.preYOffset, this.yOffset);
   }
 
   @Override

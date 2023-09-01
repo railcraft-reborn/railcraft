@@ -174,12 +174,12 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.translatable(this.getTranslationKey());
     }
 
     @Override
-    public Optional<Component> getTooltip() {
+    public Optional<Component> tooltip() {
       return Optional.of(Component.translatable(this.getDescriptionKey()));
     }
 
@@ -192,12 +192,12 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public Mode getNext() {
+    public Mode next() {
       return EnumUtil.next(this, values());
     }
   }

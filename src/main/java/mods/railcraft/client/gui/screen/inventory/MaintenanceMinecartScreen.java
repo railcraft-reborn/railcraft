@@ -38,7 +38,7 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
 
     this.mode = this.addRenderableWidget(
         MultiButton
-            .builder(ButtonTexture.SMALL_BUTTON, this.cart.getMode())
+            .builder(ButtonTexture.SMALL_BUTTON, this.cart.mode())
             .bounds(centreX + 120, centreY + getYSize() - 100, 40, 16)
             .stateCallback(this::setMaintenanceMode)
             .tooltipFactory(this::createLockTooltip)
@@ -59,7 +59,7 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   }
 
   private void setMaintenanceMode(MaintenanceMinecart.Mode mode) {
-    if (mode != this.cart.getMode()) {
+    if (mode != this.cart.mode()) {
       this.cart.setMode(mode);
       this.updateButtons();
       NetworkChannel.GAME.sendToServer(
@@ -68,7 +68,7 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   }
 
   private void updateButtons() {
-    this.mode.setState(cart.getMode());
+    this.mode.setState(cart.mode());
   }
 
   @Override

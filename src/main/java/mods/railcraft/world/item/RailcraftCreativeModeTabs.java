@@ -22,7 +22,7 @@ public class RailcraftCreativeModeTabs {
   public static final DeferredRegister<CreativeModeTab> deferredRegister =
       DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Railcraft.ID);
   private static final TabVisibility DEFAULT_VISIBILITY = TabVisibility.PARENT_AND_SEARCH_TABS;
-  private static final RegistryObject<CreativeModeTab> MAIN_TAB =
+  public static final RegistryObject<CreativeModeTab> MAIN_TAB =
       deferredRegister.register("main_tab", () -> CreativeModeTab.builder()
           .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
           .title(Component.translatable(Translations.Tab.RAILCRAFT))
@@ -241,15 +241,14 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(DyeColor.WHITE).get());
           })
           .build());
-  private static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
+  public static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
       deferredRegister.register("outfitted_tracks", () -> CreativeModeTab.builder()
           .withTabsBefore(MAIN_TAB.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS))
           .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
           .displayItems((params, output) -> {
-            /* TODO:
-              - Messenger track
-              - Delayed locking track
+            /*
+             * TODO: - Messenger track - Delayed locking track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
@@ -380,7 +379,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
           }).build());
-  private static final RegistryObject<CreativeModeTab> DECORATIVE_BLOCKS =
+  public static final RegistryObject<CreativeModeTab> DECORATIVE_BLOCKS =
       deferredRegister.register("decorative_blocks", () -> CreativeModeTab.builder()
           .withTabsBefore(OUTFITTED_TRACKS.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))
@@ -456,8 +455,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.STEEL_SHOVEL.get(),
         RailcraftItems.STEEL_PICKAXE.get(),
         RailcraftItems.STEEL_AXE.get(),
-        RailcraftItems.STEEL_HOE.get()
-    );
+        RailcraftItems.STEEL_HOE.get());
     var addAfterTNTMinecart = List.of(
         Items.TNT_MINECART,
         RailcraftItems.TRACK_LAYER.get(),
@@ -468,8 +466,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),
         RailcraftItems.ELECTRIC_LOCOMOTIVE.get(),
-        RailcraftItems.CREATIVE_LOCOMOTIVE.get()
-    );
+        RailcraftItems.CREATIVE_LOCOMOTIVE.get());
     var addAfterActivatorRail = List.of(
         Items.ACTIVATOR_RAIL,
         RailcraftItems.ABANDONED_TRACK.get(),
@@ -512,8 +509,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TOKEN_SIGNAL.get(),
         RailcraftItems.DUAL_BLOCK_SIGNAL.get(),
         RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
-        RailcraftItems.DUAL_TOKEN_SIGNAL.get()
-    );
+        RailcraftItems.DUAL_TOKEN_SIGNAL.get());
 
     addItemsToTab(addAfterIronHoe, entries);
     addItemsToTab(addAfterTNTMinecart, entries);
@@ -536,8 +532,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.STEEL_HELMET.get(),
         RailcraftItems.STEEL_CHESTPLATE.get(),
         RailcraftItems.STEEL_LEGGINGS.get(),
-        RailcraftItems.STEEL_BOOTS.get()
-    );
+        RailcraftItems.STEEL_BOOTS.get());
     addItemsToTab(addAfterIronBoots, entries);
   }
 

@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.EnumSet;
+import java.util.Set;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -25,7 +26,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
   private static final int SLOT_REPLACE = 1;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
-  private static final EnumSet<Direction> HORIZONTAL_DIRECTION =
+  private static final Set<Direction> HORIZONTAL_DIRECTION =
       EnumSet.of(Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH);
 
   public TrackRelayer(EntityType<?> type, Level level) {
@@ -49,14 +50,14 @@ public class TrackRelayer extends MaintenancePatternMinecart {
   @Override
   public void tick() {
     super.tick();
-    if (level().isClientSide) {
+    if (this.level().isClientSide()) {
       return;
     }
-    if (this.getMode() == Mode.OFF) {
+    if (this.mode() == Mode.OFF) {
       return;
     }
-    stockItems(SLOT_REPLACE, SLOT_STOCK);
-    replace();
+    this.stockItems(SLOT_REPLACE, SLOT_STOCK);
+    this.replace();
   }
 
   private void replace() {
@@ -70,8 +71,8 @@ public class TrackRelayer extends MaintenancePatternMinecart {
     var block = blockstate.getBlock();
 
     if (TrackUtil.isRail(block)) {
-      var trackExist = patternContainer.getItem(SLOT_EXISTS);
-      var trackStock = patternContainer.getItem(SLOT_STOCK);
+      var trackExist = this.patternContainer.getItem(SLOT_EXISTS);
+      var trackStock = this.patternContainer.getItem(SLOT_STOCK);
 
       boolean nextToSuspended = false;
       for (var direction : HORIZONTAL_DIRECTION) {
@@ -107,7 +108,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    ItemStack trackReplace = patternContainer.getItem(SLOT_REPLACE);
+    var trackReplace = this.patternContainer.getItem(SLOT_REPLACE);
     return ContainerTools.isItemEqual(stack, trackReplace);
   }
 

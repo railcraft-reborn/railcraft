@@ -54,7 +54,7 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   private void removeTrack(BlockPos track) {
-    if (this.getMode() == Mode.OFF) {
+    if (this.mode() == Mode.OFF) {
       return;
     }
     if (track.distSqr(this.blockPosition()) >= 9) {

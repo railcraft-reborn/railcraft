@@ -109,12 +109,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    return FluidTools.interactWithFluidHandler(player, hand, getTankManager())
+    return FluidTools.interactWithFluidHandler(player, hand, this.tankManager())
         ? InteractionResult.SUCCESS
         : super.interact(player, hand);
   }
 
-  public TankManager getTankManager() {
+  public TankManager tankManager() {
     return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
   }
 
@@ -128,31 +128,37 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide) {
-      clientTick();
-    } else {
-      if (this.waterTank.isEmpty()) {
-        this.setMode(Mode.SHUTDOWN);
+
+    if (this.isRemoved()) {
+      return;
+    }
+
+    if (this.level().isClientSide()) {
+      this.clientTick();
+      return;
+    }
+
+    if (this.waterTank.isEmpty()) {
+      this.setMode(Mode.SHUTDOWN);
+    }
+    this.setSteaming(this.steamTank.getFluidAmount() > 0);
+
+    if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
+        || this.isShutdown()) {
+      this.boiler.tick(1);
+
+      this.setSmoking(this.boiler.isBurning());
+
+      // TODO: make venting a toggleable thing (why autodump while train has no coal??)
+      if (!this.boiler.isBurning()) {
+        this.ventSteam();
       }
-      this.setSteaming(this.steamTank.getFluidAmount() > 0);
+    }
 
-      if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
-          || this.isShutdown()) {
-        this.boiler.tick(1);
-
-        this.setSmoking(this.boiler.isBurning());
-
-        // TODO: make venting a toggleable thing (why autodump while train has no coal??)
-        if (!this.boiler.isBurning()) {
-          this.ventSteam();
-        }
-      }
-
-      if (++this.fluidProcessingTimer >= FluidTools.BUCKET_FILL_TIME) {
-        this.fluidProcessingTimer = 0;
-        this.processState = FluidTools.processContainer(this.invWaterContainers,
-            this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
-      }
+    if (++this.fluidProcessingTimer >= FluidTools.BUCKET_FILL_TIME) {
+      this.fluidProcessingTimer = 0;
+      this.processState = FluidTools.processContainer(this.invWaterContainers,
+          this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
     }
   }
 
@@ -216,18 +222,18 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
     this.steamTank.internalDrain(4, FluidAction.EXECUTE);
   }
 
-  public SteamBoiler getBoiler() {
+  public SteamBoiler boiler() {
     return this.boiler;
   }
 
   @Override
   public int retrieveFuel() {
-    FluidStack steam = steamTank.getFluid();
+    var steam = this.steamTank.getFluid();
     if (steam == FluidStack.EMPTY) {
       return 0;
     }
-    if (steam.getAmount() >= steamTank.getCapacity() / 2) {
-      steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+    if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
+      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;
@@ -236,7 +242,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("tankManager", this.getTankManager().serializeNBT());
+    tag.put("tankManager", this.tankManager().serializeNBT());
     tag.put("boiler", this.boiler.serializeNBT());
     tag.putString("processState", this.processState.getSerializedName());
   }
@@ -244,7 +250,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.tankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(tag.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);

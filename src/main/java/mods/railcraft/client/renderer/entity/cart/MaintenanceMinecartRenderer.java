@@ -66,7 +66,7 @@ public abstract class MaintenanceMinecartRenderer
     ResourceLocation textureLocation;
     if (blinking) {
       textureLocation = LAMP_ON_TEX;
-    } else if (cart.getMode() == MaintenanceMinecart.Mode.OFF) {
+    } else if (cart.mode() == MaintenanceMinecart.Mode.OFF) {
       textureLocation = LAMP_DISABLED_TEX;
     } else {
       textureLocation = LAMP_OFF_TEX;

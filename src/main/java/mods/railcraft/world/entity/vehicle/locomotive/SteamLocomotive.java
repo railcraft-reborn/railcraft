@@ -46,7 +46,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public SteamLocomotive(EntityType<?> type, Level level) {
     super(type, level);
 
-    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+    this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
         return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
@@ -58,7 +58,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
 
-    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+    this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
         return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();

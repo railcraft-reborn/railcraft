@@ -188,18 +188,18 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.translatable(Translations.makeKey("screen",
           String.format("switch_track_router.%s_railway", this.name)));
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public Railway getNext() {
+    public Railway next() {
       return EnumUtil.next(this, values());
     }
 

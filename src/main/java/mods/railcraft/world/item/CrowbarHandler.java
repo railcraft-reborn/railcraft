@@ -110,7 +110,7 @@ public class CrowbarHandler {
     } else if (cart instanceof Directional directional) {
       directional.reverse();
     } else if (cart instanceof TrackRemover trackRemover) {
-      trackRemover.setMode(trackRemover.getMode().getNext());
+      trackRemover.setMode(trackRemover.mode().next());
     } else {
       int lvl = stack.getEnchantmentLevel(RailcraftEnchantments.SMACK.get());
       if (lvl == 0) {

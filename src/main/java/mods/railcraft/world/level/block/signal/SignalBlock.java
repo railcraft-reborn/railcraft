@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.Map;
+import java.util.function.ToIntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
@@ -83,7 +84,8 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   }
 
   public final int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIfAbsent(blockState, this::computeShapeIndex);
+    return this.stateToIndex.computeIfAbsent(blockState,
+        (ToIntFunction<BlockState>) this::computeShapeIndex);
   }
 
   protected int computeShapeIndex(BlockState blockState) {

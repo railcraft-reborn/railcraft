@@ -16,12 +16,12 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, inventory, locomotive, HEIGHT);
 
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().getTankManager().get(0), 53, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(this.getLocomotive().tankManager().get(0), 53, 23, 176, 0, 16, 47));
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().getTankManager().get(1), 17, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(this.getLocomotive().tankManager().get(1), 17, 23, 176, 0, 16, 47));
 
     this.addWidget(new GaugeWidget(
-        this.getLocomotive().getBoiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
+        this.getLocomotive().boiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
 
     this.addSlot(new LimitedWaterSlot(this.getLocomotive(), 0, 152, 20));
     this.addSlot(new OutputSlot(this.getLocomotive(), 1, 152, 56));
@@ -32,11 +32,11 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     this.addSlot(new RailcraftSlot(this.getLocomotive(), 6, 80, 56)); // Fuel
 
     this.addDataSlot(new SimpleDataSlot(
-        () -> (int) Math.round(locomotive.getBoiler().getBurnTime()),
-        this.getLocomotive().getBoiler()::setBurnTime));
+        () -> (int) Math.round(locomotive.boiler().getBurnTime()),
+        this.getLocomotive().boiler()::setBurnTime));
 
     this.addDataSlot(new SimpleDataSlot(
-        () -> (int) Math.round(locomotive.getBoiler().getCurrentItemBurnTime()),
-        this.getLocomotive().getBoiler()::setCurrentItemBurnTime));
+        () -> (int) Math.round(locomotive.boiler().getCurrentItemBurnTime()),
+        this.getLocomotive().boiler()::setCurrentItemBurnTime));
   }
 }

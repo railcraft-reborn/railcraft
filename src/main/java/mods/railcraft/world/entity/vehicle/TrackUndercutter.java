@@ -77,10 +77,10 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide) {
+    if (this.level().isClientSide()) {
       return;
     }
-    if (this.getMode() == Mode.OFF) {
+    if (this.mode() == Mode.OFF) {
       return;
     }
     stockItems(SLOT_REPLACE_UNDER, SLOT_STOCK_UNDER);

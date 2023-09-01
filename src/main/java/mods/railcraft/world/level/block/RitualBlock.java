@@ -78,7 +78,7 @@ public class RitualBlock extends BaseEntityBlock {
       if (firestone.hasCustomName()) {
         drop.setHoverName(firestone.getCustomName());
       }
-      drop.setDamageValue(drop.getMaxDamage() - firestone.charge);
+      drop.setDamageValue(drop.getMaxDamage() - firestone.charge());
       drops.add(drop);
     } else {
       drops.add(RefinedFirestoneItem.getItemEmpty());

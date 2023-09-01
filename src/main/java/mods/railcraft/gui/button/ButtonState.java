@@ -6,13 +6,13 @@ import net.minecraft.network.chat.Component;
 
 public interface ButtonState<T extends ButtonState<T>> {
 
-  Component getLabel();
+  Component label();
 
-  TexturePosition getTexturePosition();
+  TexturePosition texturePosition();
 
-  default Optional<Component> getTooltip() {
+  default Optional<Component> tooltip() {
     return Optional.empty();
   }
 
-  T getNext();
+  T next();
 }

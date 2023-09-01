@@ -539,27 +539,28 @@ public abstract class Locomotive extends RailcraftMinecart implements
   protected abstract Container ticketContainer();
 
   private void processTicket() {
-    Container invTicket = this.ticketContainer();
-    ItemStack stack = invTicket.getItem(0);
-    if (stack.getItem() instanceof TicketItem) {
-      if (setDestination(stack)) {
-        invTicket.setItem(0, ContainerTools.depleteItem(stack));
+    var ticketContainer = this.ticketContainer();
+    var ticketStack = ticketContainer.getItem(0);
+    if (ticketStack.getItem() instanceof TicketItem) {
+      if (this.setDestination(ticketStack)) {
+        ticketContainer.setItem(0, ContainerTools.depleteItem(ticketStack));
       }
-    } else {
-      invTicket.setItem(0, ItemStack.EMPTY);
+      return;
     }
+
+    ticketContainer.setItem(0, ItemStack.EMPTY);
   }
 
   @Override
   protected void applyNaturalSlowdown() {
     this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
 
-    if (isReverse() && getSpeed().getLevel() > getMaxReverseSpeed().getLevel()) {
+    if (this.isReverse() && this.getSpeed().getLevel() > this.getMaxReverseSpeed().getLevel()) {
       setSpeed(getMaxReverseSpeed());
     }
 
-    Speed speed = getSpeed();
-    if (isRunning()) {
+    var speed = this.getSpeed();
+    if (this.isRunning()) {
       double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
       if (isReverse()) {
         force = -force;
@@ -575,14 +576,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     if (speed != Speed.MAX) {
-      float limit = 0.4f;
-      switch (speed) {
-        case SLOWEST -> limit = 0.1f;
-        case SLOWER -> limit = 0.2f;
-        case NORMAL -> limit = 0.3f;
-      }
+      float limit = switch (speed) {
+        case SLOWEST -> limit = 0.1F;
+        case SLOWER -> limit = 0.2F;
+        case NORMAL -> limit = 0.3F;
+        default -> 0.4F;
+      };
 
-      Vec3 motion = this.getDeltaMovement();
+      var motion = this.getDeltaMovement();
 
       this.setDeltaMovement(
           Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
@@ -592,16 +593,19 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   private int getFuelUse() {
-    if (isRunning()) {
+    if (this.isRunning()) {
       return switch (getSpeed()) {
         case SLOWEST -> 2;
         case SLOWER -> 4;
         case NORMAL -> 6;
         default -> 8;
       };
-    } else if (isIdle()) {
-      return getIdleFuelUse();
     }
+
+    if (this.isIdle()) {
+      return this.getIdleFuelUse();
+    }
+
     return 0;
   }
 
@@ -652,7 +656,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       if (extension.train().stream()
           .map(RollingStock::entity)
           .noneMatch(t -> t.hasPassenger(entity))
-          && (isVelocityHigherThan(0.2f) || extension.isHighSpeed())
+          && (this.isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
@@ -940,17 +944,17 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.empty();
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return this.texture;
     }
 
     @Override
-    public Lock getNext() {
+    public Lock next() {
       return EnumUtil.next(this, values());
     }
 

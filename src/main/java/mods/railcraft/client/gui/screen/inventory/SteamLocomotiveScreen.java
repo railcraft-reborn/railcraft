@@ -40,8 +40,8 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
     super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;
-    if (this.menu.getLocomotive().getBoiler().hasFuel()) {
-      int scale = this.menu.getLocomotive().getBoiler().getBurnProgressScaled(12);
+    if (this.menu.getLocomotive().boiler().hasFuel()) {
+      int scale = this.menu.getLocomotive().boiler().getBurnProgressScaled(12);
       guiGraphics.blit(TEXTURE_LOCATION, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }

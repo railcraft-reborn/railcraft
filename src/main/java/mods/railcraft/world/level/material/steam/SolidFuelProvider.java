@@ -5,34 +5,33 @@ import mods.railcraft.world.item.RefinedFirestoneItem;
 import mods.railcraft.world.level.material.FuelProvider;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
 
 public class SolidFuelProvider implements FuelProvider {
 
-  private final Container inv;
+  private final Container container;
   private final int slot;
   private Item lastItem;
 
-  public SolidFuelProvider(Container inv, int slot) {
-    this.inv = inv;
+  public SolidFuelProvider(Container container, int slot) {
+    this.container = container;
     this.slot = slot;
   }
 
   @Override
   public float getHeatStep() {
-    if (this.lastItem instanceof RefinedFirestoneItem)
-      return SteamConstants.HEAT_STEP * 30;
-    return SteamConstants.HEAT_STEP;
+    return this.lastItem instanceof RefinedFirestoneItem
+        ? SteamConstants.HEAT_STEP * 30
+        : SteamConstants.HEAT_STEP;
   }
 
   @Override
   public float consumeFuel() {
-    ItemStack fuel = this.inv.getItem(this.slot);
+    var fuel = this.container.getItem(this.slot);
     int burn = ForgeHooks.getBurnTime(fuel, null);
     if (burn > 0) {
       this.lastItem = fuel.getItem();
-      this.inv.setItem(this.slot, ContainerTools.depleteItem(fuel));
+      this.container.setItem(this.slot, ContainerTools.depleteItem(fuel));
     }
     return burn;
   }

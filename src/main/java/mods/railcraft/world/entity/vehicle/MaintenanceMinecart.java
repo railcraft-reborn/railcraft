@@ -58,10 +58,10 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
   @Override
   public float getMaxCartSpeedOnRail() {
-    return this.getMode().getSpeed();
+    return this.mode().speed();
   }
 
-  public Mode getMode() {
+  public Mode mode() {
     return RailcraftDataSerializers.getEnum(this.entityData, MODE, Mode.values());
   }
 
@@ -116,7 +116,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("mode", this.getMode().getSerializedName());
+    tag.putString("mode", this.mode().getSerializedName());
   }
 
   @Override
@@ -167,12 +167,12 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
       this.speed = speed;
     }
 
-    public float getSpeed() {
+    public float speed() {
       return this.speed;
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.translatable(this.getTranslationKey());
     }
 
@@ -185,12 +185,12 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public Mode getNext() {
+    public Mode next() {
       return EnumUtil.next(this, values());
     }
 
