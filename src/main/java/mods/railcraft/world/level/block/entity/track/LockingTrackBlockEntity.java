@@ -196,23 +196,26 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   private boolean isSameTrainOrCart() {
     final LockingMode lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
     if (lockingMode.getLockType().isTrain()) {
-      if (this.currentCart != null && this.prevCart != null) {
-        var extension = RollingStock.getOrThrow(this.currentCart);
-        var prevExtension = RollingStock.getOrThrow(this.prevCart);
-        if (extension.isSameTrainAs(prevExtension)) {
+      if (this.currentCart != null
+          && this.currentCart.isAlive()
+          && this.prevCart != null
+          && this.prevCart.isAlive()) {
+        var rollingStock = RollingStock.getOrThrow(this.currentCart);
+        var prevRollingStock = RollingStock.getOrThrow(this.prevCart);
+        if (rollingStock.isSameTrainAs(prevRollingStock)) {
           // reset trainDelay
           this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         } else {
           // We've encountered a new train, force the delay to 0, so we return false
           this.trainDelay = 0;
         }
-      } else if (this.trainLeaving && this.prevCart != null) {
-        var prevExtension = RollingStock.getOrThrow(this.prevCart);
+      } else if (this.trainLeaving && this.prevCart != null && this.prevCart.isAlive()) {
+        var prevRollingStock = RollingStock.getOrThrow(this.prevCart);
         if (EntitySearcher.findMinecarts()
             .at(this.getBlockPos())
             .stream(this.level)
             .map(RollingStock::getOrThrow)
-            .anyMatch(cart -> cart.isSameTrainAs(prevExtension))) {
+            .anyMatch(cart -> cart.isSameTrainAs(prevRollingStock))) {
           this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         }
       }
