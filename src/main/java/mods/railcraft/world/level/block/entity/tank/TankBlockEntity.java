@@ -145,6 +145,11 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   }
 
   @Override
+  public boolean isStillValid(Player player) {
+    return isStillValid(this, player, 256);
+  }
+
+  @Override
   protected void membershipChanged(@Nullable Membership<TankBlockEntity> membership) {
     this.getCurrentPattern().ifPresent(pattern -> {
       this.module.getTank().setCapacity(this.getCapacityPerBlock() * pattern.getArea());

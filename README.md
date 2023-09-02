@@ -14,7 +14,7 @@ on top of the [NeoForged](https://github.com/neoforged) API.
 The mod greatly expands and improves the minecart system in Minecraft - adding many new blocks, entities,
 and features.
 
-This prpject is maintained by:
+This project is maintained by:
 - [**Sm0keySa1m0n**](https://github.com/Sm0keySa1m0n)
 - [**Edivad99**](https://github.com/Edivad99)
 
@@ -22,8 +22,6 @@ Thanks also to [LetterN](https://github.com/LetterN) who contributed in the earl
 of development.
 
 ## Official Links
-
-* [Wiki](https://railcraft.info/wiki)
 
 * [Discord](https://discord.gg/VyaUt2r)
 
