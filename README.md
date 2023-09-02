@@ -4,18 +4,17 @@
 [![CurseForge Downloads](http://cf.way2muchnoise.eu/full_901491_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/rO6kKst6?label=Modrinth%20Downloads)](https://modrinth.com/mod/railcraft-reborn)
 
-Here you will find the source and issue tracker for the **Railcraft Reborn Project**.
+Here you will find the source and issue tracker for the **Railcraft Reborn** project.
 
 ## What is Railcraft Reborn?
 
-Railcraft Reborn is a mod written for the hit game [Minecraft](https://minecraft.net/). It is built 
+Railcraft Reborn is a community driven continuation of the popular Minecraft mod [Railcraft](https://github.com/Railcraft/Railcraft), originally devloped by **CovertJaguar**. It is built 
 on top of the [NeoForged](https://github.com/neoforged) API.
 
-It greatly expands and improves the Minecart system in Minecraft. Adding many new blocks, entities,
+The mod greatly expands and improves the minecart system in Minecraft - adding many new blocks, entities,
 and features.
-The mod was created by the user going by the name **CovertJaguar**.
 
-This repo is maintained by:
+This prpject is maintained by:
 - [**Sm0keySa1m0n**](https://github.com/Sm0keySa1m0n)
 - [**Edivad99**](https://github.com/Edivad99)
 
@@ -24,11 +23,9 @@ of development.
 
 ## Official Links
 
-[comment]: <> (* The Blog, Forums, and main download page: <https://www.railcraft.info>)
+* [Wiki](https://railcraft.info/wiki)
 
-[comment]: <> (* The Wiki: <https://railcraft.info/wiki>)
-
-* Discord: [Invite](https://discord.gg/VyaUt2r)
+* [Discord](https://discord.gg/VyaUt2r)
 
 ## Issues
 
@@ -44,16 +41,15 @@ in `src\api\java\mods\railcraft\api\LICENSE.txt`**
 
 ### Key things to keep in mind:
 
-- You may **NOT** create works using Railcraft Reborn code (source or binary) without 
+- You may **NOT** create works using the Railcraft Reborn source or binary without 
   permission from Sm0keySa1m0n and Edivad99 except as listed in this license.
 - You may **NOT** create derivative Jars from Railcraft Reborn source to distribute to other users.
-- You **MAY** use snippets of Railcraft Code posted on the Official GitHub in your own projects, but
+- You **MAY** use snippets of the Railcraft Reborn source in your own projects, but
   only if your project consists of less than 25% of Railcraft Reborn derived code.
-  You must give credit to the Railcraft Reborn Project for the code used, including a link to the 
-  GitHub Project. Put this in your class file headers that contain Railcraft code, in your 
+  You must credit Railcraft Reborn for any code used, including a link to the 
+  GitHub repository. Put this in your class file headers that contain Railcraft code, in your 
   readme, and on the main download page.
-- You may **NOT** use Railcraft Reborn Art Assets in other projects **unless** the project is 
+- You may **NOT** use Railcraft Reborn art assets in other projects **unless** the project is 
   intended to operate alongside Railcraft Reborn.
-  Examples are Addons, Resource Packs and InterMod Integration.
-- You **MAY** fork and edit the GitHub Project for the purpose of contributing to the Official
-  Railcraft Reborn Project. You may **NOT** distribute any Jar created from a fork for any reason.
+  Examples are addons, resource packs and inter-mod integrations.
+- You **MAY** fork and edit the GitHub repository for the purpose of contributing to the project. You may **NOT** distribute any Jar created from a fork for any reason.
