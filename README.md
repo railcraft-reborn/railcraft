@@ -1,6 +1,8 @@
 # Railcraft Reborn for Minecraft 1.20
 
 [![CI Build](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml)
+[![Crowdin](https://badges.crowdin.net/railcraft-reborn/localized.svg)](https://crowdin.com/project/railcraft-reborn)
+
 [![CurseForge Downloads](http://cf.way2muchnoise.eu/full_901491_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/rO6kKst6?label=Modrinth%20Downloads)](https://modrinth.com/mod/railcraft-reborn)
 
