@@ -46,6 +46,7 @@ public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements 
     return new SwitchTrackRouterBlockEntity(blockPos, blockState);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean isMoving) {

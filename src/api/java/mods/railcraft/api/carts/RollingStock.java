@@ -11,6 +11,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.track.TrackUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
@@ -26,13 +27,21 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 public interface RollingStock {
 
   /**
-   * The default max distance at which carts can be linked, divided by 2.
+   * The default max distance between linked rolling stock, divided by 2.
    */
   float MAX_LINK_DISTANCE = 1.25F;
   /**
-   * The default distance at which linked carts are maintained, divided by 2.
+   * The default distance between linked rolling stock, divided by 2.
    */
   float OPTIMAL_LINK_DISTANCE = 0.78F;
+  /**
+   * The fastest speed rolling stock can go before they are considered high speed.
+   */
+  float HIGH_SPEED_THRESHOLD = 0.499F;
+  /**
+   * The fastest speed rolling stock can go before they explode.
+   */
+  float EXPLOSION_SPEED_THRESHOLD = 0.5F;
 
   Capability<RollingStock> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
@@ -43,6 +52,8 @@ public interface RollingStock {
 
   /**
    * Called upon minecart tick.
+   * 
+   * @apiNote Called by Railcraft.
    */
   @ApiStatus.Internal
   void tick();
@@ -51,6 +62,7 @@ public interface RollingStock {
    * Called upon minecart removal.
    * 
    * @param reason - the reason
+   * @apiNote Called by Railcraft.
    */
   @ApiStatus.Internal
   void removed(Entity.RemovalReason reason);
@@ -131,10 +143,10 @@ public interface RollingStock {
   boolean link(RollingStock rollingStock);
 
   /**
-   * Complete linking with {@link RollingStock}.
+   * Called when a link is completed.
    * 
    * @param rollingStock - the {@code RollingStock} to link
-   * @apiNote <b>Only to be called by implementations of {@link RollingStock}.</b>
+   * @apiNote To be called by implementations of {@link RollingStock}
    */
   @ApiStatus.Internal
   void completeLink(RollingStock rollingStock, Side side);
@@ -144,7 +156,7 @@ public interface RollingStock {
    * 
    * @param rollingStock - the {@link RollingStock} being linked
    * @return {@code true} if it can, {@code false} otherwise
-   * @apiNote <b>Only to be called by implementations of {@link RollingStock}.</b>
+   * @apiNote To be called by implementations of {@link RollingStock}
    */
   @ApiStatus.Internal
   default boolean isLinkableWith(RollingStock rollingStock) {
@@ -158,6 +170,13 @@ public interface RollingStock {
     return true;
   }
 
+  /**
+   * Called when a link is removed.
+   * 
+   * @param side - the link side to be removed
+   * @apiNote To be called by implementations of {@link RollingStock}
+   */
+  @ApiStatus.Internal
   void removeLink(Side side);
 
   default boolean unlinkAll() {
@@ -174,7 +193,7 @@ public interface RollingStock {
    * Traverses all {@link RollingStock} on the specified {@link Side} and swaps their front and back
    * links.
    * 
-   * @apiNote <b>Only to be called by implementations of {@link RollingStock}.</b>
+   * @apiNote To be called by implementations of {@link RollingStock}.
    */
   @ApiStatus.Internal
   boolean swapLinks(Side side);
@@ -267,7 +286,7 @@ public interface RollingStock {
 
   boolean isHighSpeed();
 
-  void setHighSpeed(boolean highSpeed);
+  void checkHighSpeed(BlockPos blockPos);
 
   AbstractMinecart entity();
 

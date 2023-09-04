@@ -40,7 +40,6 @@ public final class CartTools {
     if (!cart.isAlive()) {
       return;
     }
-    RollingStock.getOrThrow(cart).setHighSpeed(false);
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
     if (cart.level().isClientSide()) {
@@ -96,7 +95,8 @@ public final class CartTools {
   }
 
   public static ServerPlayer getFakePlayer(AbstractMinecart cart) {
-    return RailcraftFakePlayer.get((ServerLevel) cart.level(), cart.getX(), cart.getY(), cart.getZ());
+    return RailcraftFakePlayer.get((ServerLevel) cart.level(), cart.getX(), cart.getY(),
+        cart.getZ());
   }
 
   public static ServerPlayer getFakePlayerWith(AbstractMinecart cart, ItemStack stack) {

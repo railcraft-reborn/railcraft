@@ -188,6 +188,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     return false;
   }
 
+  @SuppressWarnings("deprecation")
   private boolean safeToReplace(BlockPos pos) {
     var state = level().getBlockState(pos);
     if (state.isAir()) {

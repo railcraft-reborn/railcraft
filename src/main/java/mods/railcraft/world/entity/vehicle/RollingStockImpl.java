@@ -14,8 +14,9 @@ import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.Vec2d;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
+import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -335,8 +336,36 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   @Override
-  public void setHighSpeed(boolean highSpeed) {
-    this.highSpeed = highSpeed;
+  public void checkHighSpeed(BlockPos blockPos) {
+    var currentMotion = this.minecart.getDeltaMovement();
+    if (this.highSpeed) {
+      HighSpeedTrackUtil.checkSafetyAndExplode(this.level(), blockPos, this.minecart);
+      return;
+    }
+
+    if (!HighSpeedTrackUtil.isTrackSafeForHighSpeed(this.level(), blockPos, this.minecart)) {
+      this.limitSpeed();
+      return;
+    }
+
+    if (Math.abs(currentMotion.x()) > HIGH_SPEED_THRESHOLD) {
+      double motionX = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.x());
+      this.minecart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
+      this.highSpeed = true;
+    }
+
+    if (Math.abs(currentMotion.z()) > HIGH_SPEED_THRESHOLD) {
+      double motionZ = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.z());
+      this.minecart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
+      this.highSpeed = true;
+    }
+  }
+
+  private void limitSpeed() {
+    var motion = this.minecart.getDeltaMovement();
+    var motionX = Math.copySign(Math.min(HIGH_SPEED_THRESHOLD, Math.abs(motion.x())), motion.x());
+    var motionZ = Math.copySign(Math.min(HIGH_SPEED_THRESHOLD, Math.abs(motion.z())), motion.z());
+    this.minecart.setDeltaMovement(motionX, motion.y(), motionZ);
   }
 
   @Override
@@ -466,10 +495,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     if (this.highSpeed) {
-      if (CartTools.cartVelocityIsLessThan(this.entity(), HighSpeedTools.SPEED_EXPLODE)) {
+      if (CartTools.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
         this.highSpeed = false;
-      } else if (launchState == LaunchState.LANDED) {
-        HighSpeedTools.checkSafetyAndExplode(this.level(), this.minecart.blockPosition(),
+      } else if (this.launchState == LaunchState.LANDED) {
+        HighSpeedTrackUtil.checkSafetyAndExplode(this.level(), this.minecart.blockPosition(),
             this.entity());
       }
     }

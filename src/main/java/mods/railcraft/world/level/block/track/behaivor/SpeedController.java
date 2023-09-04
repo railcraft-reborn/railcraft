@@ -74,15 +74,13 @@ public enum SpeedController implements TrackType.EventHandler {
 
     @Override
     public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
-      HighSpeedTools.performHighSpeedChecks(level, pos, RollingStock.getOrThrow(cart));
+      RollingStock.getOrThrow(cart).checkHighSpeed(pos);
     }
 
     @Override
     public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart,
         BlockPos pos) {
-      return TrackUtil.getTrackDirection(level, pos, cart).isAscending()
-          ? HighSpeedTools.SPEED_SLOPE
-          : HighSpeedTools.speedForNextTrack(level, pos, 0, cart);
+      return HighSpeedTrackUtil.getMaxSpeed(level, cart, pos);
     }
   },
   REINFORCED {

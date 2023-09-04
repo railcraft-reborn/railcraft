@@ -13,7 +13,6 @@ import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackBlock;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
@@ -132,9 +131,9 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
 
   private void lockCurrentCart() {
     if (this.currentCart != null) {
-      var extension = RollingStock.getOrThrow(this.currentCart);
-      HighSpeedTools.performHighSpeedChecks(this.level, this.getBlockPos(), extension);
-      var train = extension.train();
+      var rollingStock = RollingStock.getOrThrow(this.currentCart);
+      rollingStock.checkHighSpeed(this.blockPos());
+      var train = rollingStock.train();
       if (this.currentTrain != train && this.currentTrain != null) {
         this.currentTrain.removeLock(this.lockId);
       }
