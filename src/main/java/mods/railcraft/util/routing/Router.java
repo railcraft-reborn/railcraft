@@ -11,11 +11,11 @@ public interface Router {
   Optional<Either<RoutingLogic, RoutingLogicException>> logicResult();
 
   default Optional<RoutingLogic> logic() {
-    return this.logicResult().flatMap(Either::left);
+    return this.logicResult().flatMap(x -> x.left());
   }
 
   default Optional<RoutingLogicException> logicError() {
-    return this.logicResult().flatMap(Either::right);
+    return this.logicResult().flatMap(x -> x.right());
   }
 }
 
