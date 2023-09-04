@@ -33,9 +33,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   @Override
   protected void addTranslations() {
-    this.add(Translations.Tab.RAILCRAFT, "Railcraft Reborn");
-    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, "Railcraft Reborn Outfitted Tracks");
-    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, "Railcraft Reborn Decorative Blocks");
+    this.add(Translations.Tab.RAILCRAFT, Railcraft.NAME);
+    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, Railcraft.NAME + " Outfitted Tracks");
+    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, Railcraft.NAME + " Decorative Blocks");
 
     this.blockTranslations();
     this.itemTranslations();
@@ -57,6 +57,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.damageSourceTranslations();
     this.routingTableTranslations();
     this.chargeMeterTranslations();
+    this.keyBindingTranslations();
   }
 
   private void blockTranslations() {
@@ -1206,6 +1207,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ChargeMeter.PRODUCER, """
         Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
         Eff: %s%%""");
+  }
+
+  private void keyBindingTranslations() {
+    this.add(Translations.KeyBinding.CATEGORY, Railcraft.NAME);
+    this.add(Translations.KeyBinding.CHANGE_AURA, "Change Aura");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

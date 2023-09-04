@@ -657,6 +657,8 @@
   "jei.railcraft.desc.token_signal": "This signal can be used to define an area to monitor for carts entering and leaving. It pairs into a net of signals, with no particular limit to the number of signals defining the area. Recommended for junctions and diagonals. It will send the resulting aspect to a paired Receiver.",
   "jei.railcraft.desc.tunnel_bore": "Machine designed for digging tunnels and laying track.",
   "jei.railcraft.tips.crusher": "(%s%% chance)",
+  "key.railcraft.category": "Railcraft Reborn",
+  "key.railcraft.change_aura": "Change Aura",
   "manual.railcraft.routing_table.page.1": "The Routing Table when placed in a Routing Detector or Switch will define a set of rules that are used to match against any passing Locomotive. These rules are define using a simple logic syntax that allows you to create rules as simple or complex as you like. The syntax is a Prefix Notation script, the Operators are followed by the Operands. Only one keyword is allowed per line. If no Operator is specified, OR is assumed. Routing Tables can be copied by placing two or more in a crafting grid.",
   "manual.railcraft.routing_table.page.10": "Result:\n  The script on the previous page will\n  match a Locomotive with a destination\n  of \"TheFarLands/Milliways\",\n  or that is painted black and red,\n  or that has a destination of\n  \"SecretHideout/OceanEntrance\",\n  but only if its not owned by Steve.\n",
   "manual.railcraft.routing_table.page.11": "Regular Expressions:\n  Some Conditions support\n  Regular Expressions.\n  To use a regex, add a '?' before the '='.\n  Rules are standard Java Patterns.\nSupporting Conditions:\n  Dest, Name\nExample:\n  Dest?=.*Hill\n",

@@ -46,6 +46,7 @@ import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -61,7 +62,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -85,6 +88,7 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleParticleRegistration);
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
+    modEventBus.addListener(ClientManager::handleKeyRegister);
     MinecraftForge.EVENT_BUS.register(ClientManager.class);
 
     shuntingAuraRenderer = new ShuntingAuraRenderer();
@@ -187,6 +191,11 @@ public class ClientManager {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
+
+  private static void handleKeyRegister(RegisterKeyMappingsEvent event) {
+    event.register(KeyBinding.CHANGE_AURA_KEY);
+  }
+
   // ================================================================================
   // Forge Events
   // ================================================================================
@@ -201,7 +210,8 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
+        Minecraft.getInstance().player, event.getPartialTick());
   }
 
   @SubscribeEvent
@@ -252,7 +262,7 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  static void onItemTooltip(ItemTooltipEvent event) {
+  static void handleItemTooltip(ItemTooltipEvent event) {
     var itemStack = event.getItemStack();
     var tag = itemStack.getTag();
     if (tag == null) {
@@ -262,6 +272,13 @@ public class ClientManager {
         tag.getBoolean(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG)) {
       event.getToolTip().add(Component.translatable(Translations.Tips.CLICK_TO_CRAFT)
           .withStyle(ChatFormatting.YELLOW));
+    }
+  }
+
+  @SubscribeEvent
+  static void handleKeyInput(InputEvent.Key event) {
+    if (KeyBinding.CHANGE_AURA_KEY.consumeClick()) {
+      GogglesItem.changeAuraByKey(Minecraft.getInstance().player);
     }
   }
 }

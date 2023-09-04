@@ -19,6 +19,7 @@ import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
+import mods.railcraft.network.play.UpdateAuraByKeyMessage;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -157,6 +158,13 @@ public enum NetworkChannel {
           .encoder(SetMaintenanceMinecartAttributesMessage::encode)
           .decoder(SetMaintenanceMinecartAttributesMessage::decode)
           .consumerMainThread(SetMaintenanceMinecartAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(UpdateAuraByKeyMessage.class, 0x12,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(UpdateAuraByKeyMessage::encode)
+          .decoder(UpdateAuraByKeyMessage::decode)
+          .consumerMainThread(UpdateAuraByKeyMessage::handle)
           .add();
     }
   };
