@@ -12,7 +12,7 @@ public class TypeCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     var cartType = ForgeRegistries.ENTITY_TYPES.getKey(cart.getType()).toString();
     return value.equalsIgnoreCase(cartType);
   }

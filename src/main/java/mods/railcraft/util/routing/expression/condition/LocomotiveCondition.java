@@ -13,7 +13,7 @@ public class LocomotiveCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     if (cart instanceof Locomotive loco) {
       if (value.equalsIgnoreCase("Electric")) {
         return loco.getType() == RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get();

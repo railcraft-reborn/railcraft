@@ -14,7 +14,7 @@ public class RedstoneCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     return powered == routerBlockEntity.isPowered();
   }
 }

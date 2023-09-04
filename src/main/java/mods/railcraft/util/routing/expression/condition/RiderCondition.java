@@ -54,7 +54,7 @@ public class RiderCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     switch (tokens[0].toLowerCase(Locale.ROOT)) {
       case "any" -> {
         return !getPassengers(cart).isEmpty();

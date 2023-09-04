@@ -10,19 +10,11 @@ import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
-import mods.railcraft.util.PowerUtil;
-import mods.railcraft.util.routing.expression.ConstantExpression;
 import mods.railcraft.util.routing.expression.Expression;
-import mods.railcraft.util.routing.expression.IF;
-import mods.railcraft.util.routing.expression.condition.AND;
 import mods.railcraft.util.routing.expression.condition.ColorCondition;
-import mods.railcraft.util.routing.expression.condition.Condition;
-import mods.railcraft.util.routing.expression.condition.ConstantCondition;
 import mods.railcraft.util.routing.expression.condition.DestCondition;
 import mods.railcraft.util.routing.expression.condition.LocomotiveCondition;
-import mods.railcraft.util.routing.expression.condition.NOT;
 import mods.railcraft.util.routing.expression.condition.NameCondition;
-import mods.railcraft.util.routing.expression.condition.OR;
 import mods.railcraft.util.routing.expression.condition.OwnerCondition;
 import mods.railcraft.util.routing.expression.condition.RedstoneCondition;
 import mods.railcraft.util.routing.expression.condition.RefuelCondition;
@@ -75,7 +67,7 @@ public class RoutingLogic {
     expressions = stack;
   }
 
-  private AbstractMinecart getRoutableCart(AbstractMinecart cart) {
+  private static AbstractMinecart getRoutableCart(AbstractMinecart cart) {
     var rollingStock = RollingStock.getOrThrow(cart);
     var train = rollingStock.train();
     if (train.size() <= 1) {
@@ -96,22 +88,16 @@ public class RoutingLogic {
   }
 
   public boolean matches(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
-    return evaluate(blockEntityRouting, cart) != PowerUtil.NO_POWER;
-  }
-
-  public int evaluate(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
-    if (expressions == null) {
-      return PowerUtil.NO_POWER;
+    if (this.expressions == null) {
+      return false;
     }
     var controllingCart = getRoutableCart(cart);
-    return expressions.stream()
-        .mapToInt(expression -> expression.evaluate(blockEntityRouting, controllingCart))
-        .filter(value -> value != PowerUtil.NO_POWER)
-        .findFirst()
-        .orElse(PowerUtil.NO_POWER);
+    return this.expressions.stream()
+        .anyMatch(expression -> expression.evaluate(blockEntityRouting, controllingCart));
   }
 
-  private Expression parseLine(String line, Deque<Expression> stack) throws RoutingLogicException {
+  private static Expression parseLine(String line, Deque<Expression> stack)
+      throws RoutingLogicException {
     try {
       if (line.startsWith("Dest")) {
         return new DestCondition(line);
@@ -146,30 +132,23 @@ public class RoutingLogic {
       throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
     }
     if (line.equals("TRUE")) {
-      return ConstantCondition.TRUE;
+      return Expression.TRUE;
     }
     if (line.equals("FALSE")) {
-      return ConstantCondition.FALSE;
-    }
-    try {
-      return new ConstantExpression(Integer.parseInt(line));
-    } catch (NumberFormatException ignored) {
-      // not an integer; pass through
-    } catch (IllegalArgumentException ex) {
-      throw new RoutingLogicException(Translations.RoutingTable.ERROR_INVALID_CONSTANT, line);
+      return Expression.FALSE;
     }
     try {
       if (line.equals("NOT")) {
-        return new NOT((Condition) stack.pop());
+        return stack.pop().negate();
       }
       if (line.equals("AND")) {
-        return new AND((Condition) stack.pop(), (Condition) stack.pop());
+        return stack.pop().and(stack.pop());
       }
       if (line.equals("OR")) {
-        return new OR((Condition) stack.pop(), (Condition) stack.pop());
+        return stack.pop().or(stack.pop());
       }
       if (line.equals("IF")) {
-        return new IF((Condition) stack.pop(), stack.pop(), stack.pop());
+        return stack.pop().select(stack.pop(), stack.pop());
       }
     } catch (NoSuchElementException ex) {
       throw new RoutingLogicException(Translations.RoutingTable.ERROR_INSUFFICIENT_OPERAND, line);

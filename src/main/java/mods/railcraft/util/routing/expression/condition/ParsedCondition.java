@@ -6,9 +6,10 @@ import mods.railcraft.Translations;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
+import mods.railcraft.util.routing.expression.Expression;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public abstract class ParsedCondition implements Condition {
+public abstract class ParsedCondition implements Expression {
 
   public final String value;
   protected final boolean isRegex;
@@ -38,5 +39,5 @@ public abstract class ParsedCondition implements Condition {
   }
 
   @Override
-  public abstract boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart);
+  public abstract boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart);
 }

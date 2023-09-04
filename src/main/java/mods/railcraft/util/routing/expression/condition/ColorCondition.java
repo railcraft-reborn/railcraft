@@ -34,7 +34,7 @@ public class ColorCondition extends ParsedCondition {
   }
 
   @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
+  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
     if (cart instanceof Paintable paintedCart) {
       return (primary == null || primary.equals(paintedCart.getPrimaryDyeColor())) &&
           (secondary == null || secondary.equals(paintedCart.getSecondaryDyeColor()));
