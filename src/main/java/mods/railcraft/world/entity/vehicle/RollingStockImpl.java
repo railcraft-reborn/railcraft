@@ -424,7 +424,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       this.forceChunk(false);
       this.unlinkAll();
     } else {
-      this.forceChunk(true);
+      this.forceChunk(this.train().size() > 1);
     }
   }
 
