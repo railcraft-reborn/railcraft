@@ -170,21 +170,20 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
    * whether the switch is sprung or not. It caches the server responses for the clients to use.
    * Note: This method should not modify any variables except the cache, we leave that to update().
    */
-  public boolean shouldSwitchForCart(@Nullable AbstractMinecart cart) {
-    if (cart == null || this.level.isClientSide())
-      return false;
-
-    if (this.springingCarts.contains(cart.getUUID()))
+  public boolean shouldSwitchForCart(AbstractMinecart cart) {
+    if (this.springingCarts.contains(cart.getUUID())) {
       return true; // Carts at the spring entrance always are on switched tracks
+    }
 
-    if (this.lockingCarts.contains(cart.getUUID()))
+    if (this.lockingCarts.contains(cart.getUUID())) {
       return false; // Carts at the locking entrance always are on locked tracks
+    }
 
-    var sameTrain = this.currentCart() != null && RollingStock.getOrThrow(cart)
-        .isSameTrainAs(this.currentCart());
+    var sameTrain = this.currentCart() != null
+        && RollingStock.getOrThrow(cart).isSameTrainAs(this.currentCart());
 
     boolean shouldSwitch = false;
-    var actuatorBlockEntity =  this.level.getBlockEntity(this.getActuatorBlockPos());
+    var actuatorBlockEntity = this.level.getBlockEntity(this.getActuatorBlockPos());
     if (actuatorBlockEntity instanceof SwitchActuator switchActuator) {
       shouldSwitch = switchActuator.shouldSwitch(cart);
     }

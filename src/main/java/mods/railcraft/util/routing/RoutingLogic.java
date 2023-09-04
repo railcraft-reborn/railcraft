@@ -4,7 +4,6 @@ package mods.railcraft.util.routing;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.NoSuchElementException;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.carts.Paintable;
@@ -22,39 +21,11 @@ import mods.railcraft.util.routing.expression.condition.RiderCondition;
 import mods.railcraft.util.routing.expression.condition.TypeCondition;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class RoutingLogic {
+public record RoutingLogic(Deque<Expression> expressions) {
 
   public static final String REGEX_SYMBOL = "\\?";
 
-  private Deque<Expression> expressions;
-  private RoutingLogicException error;
-
-  private RoutingLogic(@Nullable Deque<String> data) {
-    try {
-      if (data != null) {
-        this.parseTable(data);
-      } else {
-        throw new RoutingLogicException(Translations.RoutingTable.ERROR_BLANK);
-      }
-    } catch (RoutingLogicException ex) {
-      this.error = ex;
-    }
-  }
-
-  public static RoutingLogic buildLogic(@Nullable Deque<String> data) {
-    return new RoutingLogic(data);
-  }
-
-  @Nullable
-  public RoutingLogicException getError() {
-    return this.error;
-  }
-
-  public boolean isValid() {
-    return this.expressions != null;
-  }
-
-  private void parseTable(Deque<String> data) throws RoutingLogicException {
+  public static RoutingLogic parseTable(Deque<String> data) throws RoutingLogicException {
     Deque<Expression> stack = new ArrayDeque<>();
     var it = data.descendingIterator();
     while (it.hasNext()) {
@@ -64,7 +35,7 @@ public class RoutingLogic {
       }
       stack.push(parseLine(line, stack));
     }
-    expressions = stack;
+    return new RoutingLogic(stack);
   }
 
   private static AbstractMinecart getRoutableCart(AbstractMinecart cart) {
