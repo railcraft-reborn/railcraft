@@ -3,7 +3,6 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2d;
 import org.slf4j.Logger;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
@@ -14,6 +13,7 @@ import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathUtil;
+import mods.railcraft.util.Vec2d;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
@@ -644,10 +644,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     var adj1 = this.canCartBeAdjustedBy(cart2);
     var adj2 = cart2.canCartBeAdjustedBy(this);
 
-    var cart1Pos = new Vector2d(this.minecart.getX(), this.minecart.getZ());
-    var cart2Pos = new Vector2d(cart2Entity.getX(), cart2Entity.getZ());
+    var cart1Pos = new Vec2d(this.minecart);
+    var cart2Pos = new Vec2d(cart2Entity);
 
-    var unit = cart2Pos.sub(cart1Pos).normalize();
+    Vec2d unit = Vec2d.unit(cart2Pos, cart1Pos);
 
     // Energy transfer
 
@@ -679,8 +679,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     var highSpeed = this.isHighSpeed();
 
     var stiffness = highSpeed ? HS_STIFFNESS : STIFFNESS;
-    var springX = stiffness * stretch * unit.x();
-    var springZ = stiffness * stretch * unit.y();
+    var springX = stiffness * stretch * unit.getX();
+    var springZ = stiffness * stretch * unit.getY();
 
     springX = limitForce(springX);
     springZ = limitForce(springZ);
@@ -695,18 +695,18 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     // Damping
 
-    var cart1Vel = new Vector2d(
+    var cart1Vel = new Vec2d(
         this.minecart.getDeltaMovement().x(),
         this.minecart.getDeltaMovement().z());
-    var cart2Vel = new Vector2d(
+    var cart2Vel = new Vec2d(
         cart2Entity.getDeltaMovement().x(),
         cart2Entity.getDeltaMovement().z());
 
-    var dot = cart2Vel.sub(cart1Vel).dot(unit);
+    var dot = Vec2d.subtract(cart2Vel, cart1Vel).dotProduct(unit);
 
     var damping = highSpeed ? HS_DAMPING : DAMPING;
-    var dampX = damping * dot * unit.x();
-    var dampZ = damping * dot * unit.y();
+    var dampX = damping * dot * unit.getX();
+    var dampZ = damping * dot * unit.getY();
 
     dampX = limitForce(dampX);
     dampZ = limitForce(dampZ);
