@@ -14,8 +14,8 @@ public class NameCondition {
     Predicate<String> predicate = statement.isRegex()
         ? statement.pattern().asMatchPredicate()
         : statement.value()::equalsIgnoreCase;
-    return (router, minecart) -> minecart.hasCustomName()
-        ? predicate.test(minecart.getCustomName().getString())
+    return (router, rollingStock) -> rollingStock.entity().hasCustomName()
+        ? predicate.test(rollingStock.entity().getCustomName().getString())
         : statement.value().equalsIgnoreCase("null");
   }
 }

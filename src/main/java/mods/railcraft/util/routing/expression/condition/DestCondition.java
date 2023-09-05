@@ -16,8 +16,8 @@ public class DestCondition {
     Predicate<String> predicate = statement.isRegex()
         ? statement.pattern().asMatchPredicate()
         : s -> s.startsWith(statement.value());
-    return (router, minecart) -> {
-      if (minecart instanceof Routable routable) {
+    return (router, rollingStock) -> {
+      if (rollingStock.entity() instanceof Routable routable) {
         var destination = routable.getDestination();
         if (StringUtils.equalsIgnoreCase("null", statement.value())) {
           return StringUtils.isBlank(destination);

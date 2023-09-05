@@ -11,6 +11,6 @@ public class RedstoneCondition {
   public static Expression parse(String line) throws RoutingLogicException {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
     var powered = Boolean.parseBoolean(statement.value());
-    return (router, minecart) -> router.isPowered() == powered;
+    return (router, rollingStock) -> router.isPowered() == powered;
   }
 }

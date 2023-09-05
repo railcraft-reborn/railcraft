@@ -19,8 +19,8 @@ public class ColorCondition {
     var primary = parseColor(colors[0]);
     var secondary = colors.length < 2 ? null : parseColor(colors[1]);
 
-    return (router, minecart) -> {
-      if (minecart instanceof Paintable paintable) {
+    return (router, rollingStock) -> {
+      if (rollingStock.entity() instanceof Paintable paintable) {
         return (primary == null || primary.equals(paintable.getPrimaryDyeColor())) &&
             (secondary == null || secondary.equals(paintable.getSecondaryDyeColor()));
       }

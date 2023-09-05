@@ -21,8 +21,8 @@ public class LocomotiveCondition {
       case "none" -> null;
       default -> throw new IllegalArgumentException("Unexpected value: " + statement.value());
     };
-    return (router, minecart) -> {
-      if (minecart instanceof Locomotive loco && predicate != null) {
+    return (router, rollingStock) -> {
+      if (rollingStock.entity() instanceof Locomotive loco && predicate != null) {
         return predicate.test(loco);
       }
       return true;

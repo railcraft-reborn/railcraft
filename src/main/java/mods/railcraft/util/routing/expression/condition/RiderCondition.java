@@ -5,7 +5,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.util.routing.RoutingStatementParser;
 import mods.railcraft.util.routing.expression.Expression;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RiderCondition {
@@ -31,15 +29,7 @@ public class RiderCondition {
     checkSyntax(type, tokens, line);
 
     var context = new Context(statement, tokens);
-    return (router, minecart) -> type.matches(getPassengers(minecart), context);
-  }
-
-  private static Stream<Entity> getPassengers(AbstractMinecart minecart) {
-    return RollingStock.getOrThrow(minecart)
-        .train()
-        .stream()
-        .map(RollingStock::entity)
-        .flatMap(c -> c.getPassengers().stream());
+    return (router, rollingStock) -> type.matches(rollingStock.train().passengers(), context);
   }
 
   private static void checkRegexSyntax(Type type, String[] tokens, String line)

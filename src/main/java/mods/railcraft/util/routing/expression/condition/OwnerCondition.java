@@ -11,8 +11,8 @@ public class OwnerCondition {
 
   public static Expression parse(String line) throws RoutingLogicException {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
-    return (router, minecart) -> {
-      var owner = CartTools.getCartOwner(minecart);
+    return (router, rollingStock) -> {
+      var owner = CartTools.getCartOwner(rollingStock.entity());
       return owner != null && statement.value().equalsIgnoreCase(owner.getName());
     };
   }

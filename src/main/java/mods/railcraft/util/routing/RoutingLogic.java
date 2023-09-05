@@ -19,7 +19,6 @@ import mods.railcraft.util.routing.expression.condition.RedstoneCondition;
 import mods.railcraft.util.routing.expression.condition.RefuelCondition;
 import mods.railcraft.util.routing.expression.condition.RiderCondition;
 import mods.railcraft.util.routing.expression.condition.TypeCondition;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public record RoutingLogic(Deque<Expression> expressions) {
 
@@ -36,33 +35,32 @@ public record RoutingLogic(Deque<Expression> expressions) {
     return new RoutingLogic(stack);
   }
 
-  private static AbstractMinecart getRoutableCart(AbstractMinecart cart) {
-    var rollingStock = RollingStock.getOrThrow(cart);
+  private static RollingStock getRoutableCart(RollingStock rollingStock) {
     var train = rollingStock.train();
     if (train.size() <= 1) {
-      return cart;
+      return rollingStock;
     }
     if (rollingStock.isEnd()) {
-      if (cart instanceof Routable) {
-        return cart;
+      if (rollingStock.entity() instanceof Routable) {
+        return rollingStock;
       }
-      if (cart instanceof Paintable) {
-        return cart;
+      if (rollingStock.entity() instanceof Paintable) {
+        return rollingStock;
       }
-      if (cart instanceof NeedsFuel) {
-        return cart;
+      if (rollingStock.entity() instanceof NeedsFuel) {
+        return rollingStock;
       }
     }
-    return train.front().entity();
+    return train.front();
   }
 
-  public boolean matches(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity router, RollingStock rollingStock) {
     if (this.expressions == null) {
       return false;
     }
-    var controllingCart = getRoutableCart(cart);
+    var controllingCart = getRoutableCart(rollingStock);
     return this.expressions.stream()
-        .anyMatch(expression -> expression.evaluate(blockEntityRouting, controllingCart));
+        .anyMatch(expression -> expression.evaluate(router, controllingCart));
   }
 
   private static Expression parseLine(String line, Deque<Expression> stack)

@@ -11,7 +11,7 @@ public class TypeCondition {
 
   public static Expression parse(String line) throws RoutingLogicException {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
-    return (router, minecart) -> statement.value().equalsIgnoreCase(
-        ForgeRegistries.ENTITY_TYPES.getKey(minecart.getType()).toString());
+    return (router, rollingStock) -> statement.value().equalsIgnoreCase(
+        ForgeRegistries.ENTITY_TYPES.getKey(rollingStock.entity().getType()).toString());
   }
 }
