@@ -20,8 +20,11 @@ import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.network.play.UpdateAuraByKeyMessage;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
@@ -160,8 +163,7 @@ public enum NetworkChannel {
           .consumerMainThread(SetMaintenanceMinecartAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(UpdateAuraByKeyMessage.class, 0x12,
-              NetworkDirection.PLAY_TO_SERVER)
+          .messageBuilder(UpdateAuraByKeyMessage.class, 0x12, NetworkDirection.PLAY_TO_SERVER)
           .encoder(UpdateAuraByKeyMessage::encode)
           .decoder(UpdateAuraByKeyMessage::decode)
           .consumerMainThread(UpdateAuraByKeyMessage::handle)
@@ -219,6 +221,13 @@ public enum NetworkChannel {
 
   public void sendToDimension(Object packet, ResourceKey<Level> dimensionId) {
     this.simpleChannel.send(PacketDistributor.DIMENSION.with(() -> dimensionId), packet);
+  }
+
+  @SuppressWarnings("deprecation")
+  public static void sendToTrackingChunk(Packet<?> packet, ServerLevel level, BlockPos blockPos) {
+    if (level.hasChunkAt(blockPos)) {
+      PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(blockPos)).send(packet);
+    }
   }
 
   public static void registerAll() {

@@ -27,12 +27,12 @@ public class ShuntingAuraRenderer {
     this.linkedCarts = linkedCarts;
   }
 
-  public void render(PoseStack poseStack, Camera mainCamera,
-      LocalPlayer player, float partialTick) {
+  public void render(PoseStack poseStack, Camera mainCamera, float partialTick) {
     if (this.linkedCarts == null) {
       return;
     }
 
+    var player = Minecraft.getInstance().player;
     var goggles = player.getItemBySlot(EquipmentSlot.HEAD);
     if (goggles.is(RailcraftItems.GOGGLES.get())) {
       var aura = GogglesItem.getAura(goggles);

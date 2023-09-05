@@ -210,8 +210,7 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
-        Minecraft.getInstance().player, event.getPartialTick());
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(), event.getPartialTick());
   }
 
   @SubscribeEvent

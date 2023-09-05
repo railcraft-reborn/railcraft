@@ -14,8 +14,7 @@ public record UpdateAuraByKeyMessage(CompoundTag tag) {
   }
 
   public static UpdateAuraByKeyMessage decode(FriendlyByteBuf in) {
-    var tag = in.readNbt();
-    return new UpdateAuraByKeyMessage(tag);
+    return new UpdateAuraByKeyMessage(in.readNbt());
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
