@@ -1,36 +1,31 @@
 package mods.railcraft.util;
 
-import mods.railcraft.util.container.ContainerTools;
-import net.minecraft.nbt.CompoundTag;
+import java.util.Objects;
 import net.minecraft.world.item.ItemStack;
 
-public record ItemStackKey(ItemStack stack) {
+public record ItemStackKey(ItemStack itemStack) {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
-      return false;
+    if (this == obj) {
+      return true;
     }
-    if (getClass() != obj.getClass()) {
-      return false;
+    if (obj instanceof ItemStackKey other) {
+      return ItemStack.isSameItem(this.itemStack, other.itemStack);
     }
-    final ItemStackKey other = (ItemStackKey) obj;
-    return ContainerTools.isItemEqual(stack, other.stack);
+    return false;
   }
 
   @Override
   public int hashCode() {
-    int hash = 5;
-    hash = 23 * hash + stack.getItem().hashCode();
-    hash = 23 * hash + stack.getDamageValue();
-    CompoundTag nbt = stack.getTag();
-    if (nbt != null)
-      hash = 23 * hash + nbt.hashCode();
-    return hash;
+    return Objects.hash(
+        this.itemStack.getItem(),
+        this.itemStack.getDamageValue(),
+        this.itemStack.getTag());
   }
 
   public ItemStack copyStack() {
-    return this.stack.copy();
+    return this.itemStack.copy();
   }
 
   public static ItemStackKey make(ItemStack stack) {

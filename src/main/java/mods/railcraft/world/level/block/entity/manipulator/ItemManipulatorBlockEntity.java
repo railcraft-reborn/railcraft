@@ -84,7 +84,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
       ContainerManifest remainingManifest = ContainerManifest.create(tile.getSource());
       remainingManifest.keySet()
-          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.stack()));
+          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.itemStack()));
 
       return remainingManifest.streamValueStacks().anyMatch(dest::willAccept);
     });

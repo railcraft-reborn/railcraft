@@ -87,7 +87,7 @@ public final class ContainerManifest
       Collection<ItemStackKey> keys) {
     var manifest = new ContainerManifest();
     for (var filterKey : keys) {
-      var filter = StackFilter.anyMatch(filterKey.stack());
+      var filter = StackFilter.anyMatch(filterKey.itemStack());
       containers.streamItems()
           .filter(filter)
           .forEach(stack -> manifest.compute(filterKey, (k, v) -> compute(k, v, stack)));
@@ -98,7 +98,7 @@ public final class ContainerManifest
   public static ContainerManifest create(Container container, Collection<ItemStackKey> keys) {
     var manifest = new ContainerManifest();
     for (var filterKey : keys) {
-      var filter = StackFilter.anyMatch(filterKey.stack());
+      var filter = StackFilter.anyMatch(filterKey.itemStack());
       IntStream.range(0, container.getContainerSize())
           .mapToObj(container::getItem)
           .filter(filter)
