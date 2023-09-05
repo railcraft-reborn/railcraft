@@ -96,6 +96,7 @@ import net.minecraftforge.network.NetworkDirection;
 public class Railcraft {
 
   public static final String ID = "railcraft";
+  public static final String NAME = "Railcraft Reborn";
   public static final boolean BETA = true;
 
   static {
