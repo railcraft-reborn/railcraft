@@ -4,7 +4,10 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.play.UpdateAuraByKeyMessage;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -22,26 +25,6 @@ public class GogglesItem extends ArmorItem {
     super(RailcraftArmorMaterial.GOGGLES, Type.HELMET, properties);
   }
 
-  @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player,
-      InteractionHand hand) {
-    ItemStack itemStack = player.getItemInHand(hand);
-    if (!level.isClientSide()) {
-      incrementAura(itemStack);
-      Aura aura = getAura(itemStack);
-      player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
-    }
-    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
-  }
-
-  @Override
-  public void appendHoverText(ItemStack itemStack, @Nullable Level level,
-      List<Component> lines, TooltipFlag adv) {
-    lines.add(getDescriptionText(getAura(itemStack).getDisplayName(), true));
-    lines
-        .add(Component.translatable(Translations.Tips.GOOGLES_DESC).withStyle(ChatFormatting.GRAY));
-  }
-
   public static Aura getAura(ItemStack itemStack) {
     if (itemStack.hasTag()) {
       var tag = itemStack.getTag();
@@ -52,12 +35,23 @@ public class GogglesItem extends ArmorItem {
     return Aura.NONE;
   }
 
-  private static void incrementAura(ItemStack itemStack) {
-    Aura aura = getAura(itemStack).getNext();
+  public static Aura incrementAura(ItemStack itemStack) {
+    var aura = getAura(itemStack).getNext();
     if (aura == Aura.TRACKING) {
       aura.getNext();
     }
     itemStack.getOrCreateTag().putInt("aura", aura.ordinal());
+    return aura;
+  }
+
+  public static void changeAuraByKey(LocalPlayer player) {
+    var itemStack = player.getItemBySlot(EquipmentSlot.HEAD);
+    if (itemStack.isEmpty()) {
+      return;
+    }
+    var aura = incrementAura(itemStack);
+    player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
+    NetworkChannel.GAME.sendToServer(new UpdateAuraByKeyMessage(itemStack.getTag()));
   }
 
   public static boolean isGoggleAuraActive(Player player, Aura aura) {
@@ -73,6 +67,24 @@ public class GogglesItem extends ArmorItem {
     return title.append(" ").append(value.withStyle(ChatFormatting.DARK_PURPLE));
   }
 
+  @Override
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    var itemStack = player.getItemInHand(hand);
+    if (!level.isClientSide()) {
+      var aura = incrementAura(itemStack);
+      player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
+    }
+    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+  }
+
+  @Override
+  public void appendHoverText(ItemStack itemStack, @Nullable Level level,
+      List<Component> lines, TooltipFlag adv) {
+    lines.add(getDescriptionText(getAura(itemStack).getDisplayName(), true));
+    lines.add(Component.translatable(Translations.Tips.GOOGLES_DESC)
+        .withStyle(ChatFormatting.GRAY));
+  }
+
   public enum Aura {
 
     NONE(Translations.Tips.GOOGLES_AURA_NONE),
@@ -85,7 +97,7 @@ public class GogglesItem extends ArmorItem {
 
     private final String translationKey;
 
-    private Aura(String translationKey) {
+    Aura(String translationKey) {
       this.translationKey = translationKey;
     }
 

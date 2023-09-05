@@ -580,6 +580,11 @@ public class Translations {
     public static final String PRODUCER = makeKey("charge_meter", "producer");
   }
 
+  public static class KeyBinding {
+    public static final String CATEGORY = makeKey("key", "category");
+    public static final String CHANGE_AURA = makeKey("key", "change_aura");
+  }
+
   public static String makeKey(String type, String name) {
     return type + "." + Railcraft.ID + "." + name;
   }
