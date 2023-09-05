@@ -99,6 +99,7 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
           TrackUtil.setRailShape(level, pos, RailShape.EAST_WEST);
         }
       }
+      default -> {}
     }
   }
 

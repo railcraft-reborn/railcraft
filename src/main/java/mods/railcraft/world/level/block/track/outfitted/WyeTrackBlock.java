@@ -62,6 +62,7 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
           TrackUtil.setRailShape(level, pos, RailShape.NORTH_SOUTH);
         }
       }
+      default -> {}
     }
   }
 

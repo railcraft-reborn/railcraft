@@ -2,8 +2,8 @@ package mods.railcraft.world.module;
 
 import java.util.function.IntSupplier;
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;

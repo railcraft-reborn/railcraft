@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
@@ -142,9 +141,9 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
 
-    var extension = RollingStock.getOrThrow(this);
+    var rollingStock = RollingStock.getOrThrow(this);
     for (var stack : drops) {
-      CartUtil.transferService().offerOrDropItem(extension, stack);
+      rollingStock.offerOrDropItem(stack);
     }
     var trackShape = TrackUtil.getRailShapeRaw(state);
     this.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());

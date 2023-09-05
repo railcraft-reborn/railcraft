@@ -1,4 +1,4 @@
-package mods.railcraft.util.container.manipulator;
+package mods.railcraft.api.container.manipulator;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

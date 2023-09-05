@@ -1,9 +1,9 @@
 package mods.railcraft.world.module;
 
 import java.util.function.Predicate;
-import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -13,7 +13,11 @@ public interface BlockModuleProvider extends ModuleProvider {
 
   @Override
   default void dropItem(ItemStack itemStack) {
-    ContainerTools.dropItem(itemStack, this.level(), this.blockPos());
+    Containers.dropItemStack(this.level(),
+        this.blockPos().getX(),
+        this.blockPos().getY(),
+        this.blockPos().getZ(),
+        itemStack);
   }
 
   default ContainerManipulator<?> findAdjacentContainers() {

@@ -14,7 +14,7 @@ import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.RailcraftNBTUtil;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -139,10 +139,10 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
 
       for (UUID testCartUUID : allCarts) {
         if (closestCart == null) {
-          closestCart = CartTools.getCartFromUUID(this.level, testCartUUID);
+          closestCart = MinecartUtil.getCartFromUUID(this.level, testCartUUID);
         } else {
           double closestDist = crudeDistance(this.getBlockPos(), closestCart);
-          AbstractMinecart testCart = CartTools.getCartFromUUID(this.level, testCartUUID);
+          AbstractMinecart testCart = MinecartUtil.getCartFromUUID(this.level, testCartUUID);
           if (testCart != null) {
             double testDist = crudeDistance(this.getBlockPos(), testCart);
             if (testDist < closestDist)

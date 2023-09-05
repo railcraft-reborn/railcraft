@@ -15,12 +15,14 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.TrackScanUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 
 public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignalEntity>
     implements BlockSignal {
@@ -153,8 +155,9 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
     int xOffset = otherTrack.getX() > trackPos.getX() ? -3 : 3;
     int zOffset = otherTrack.getZ() > trackPos.getZ() ? -3 : 3;
 
-    var carts = CartUtil.getMinecartsIn(this.getLevel(),
-        new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2));
+    var carts = this.getLevel().getEntitiesOfClass(AbstractMinecart.class,
+        new AABB(x1, y1, z1, x2, y2, z2),
+        EntitySelector.ENTITY_STILL_ALIVE);
 
     var newAspect = SignalAspect.GREEN;
     for (var cart : carts) {
@@ -290,8 +293,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
             }, iterator::remove);
           }
         }
-        default -> {
-        }
+        default -> {}
       }
     }
   }

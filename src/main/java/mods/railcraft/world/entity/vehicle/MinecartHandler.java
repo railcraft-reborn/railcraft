@@ -184,20 +184,18 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
   }
 
-  private void testHighSpeedCollision(RollingStock extension, Entity other) {
-    var cart = extension.entity();
-    if (extension.isHighSpeed()) {
+  private void testHighSpeedCollision(RollingStock rollingStock, Entity other) {
+    var cart = rollingStock.entity();
+    if (rollingStock.isHighSpeed()) {
       var otherExtension = other instanceof AbstractMinecart otherCart
           ? RollingStock.getOrThrow(otherCart)
           : null;
 
-      if (otherExtension != null && extension.isSameTrainAs(otherExtension)) {
+      if (otherExtension != null && rollingStock.isSameTrainAs(otherExtension)) {
         return;
       }
 
-      if (extension.train().stream()
-          .map(RollingStock::entity)
-          .anyMatch(c -> c.hasPassenger(other))) {
+      if (rollingStock.train().entities().anyMatch(c -> c.hasPassenger(other))) {
         return;
       }
 
@@ -205,7 +203,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         var otherHighSpeed = otherExtension.isHighSpeed();
         if (!otherHighSpeed || (cart.getDeltaMovement().x() > 0 ^ other.getDeltaMovement().x() > 0)
             || (cart.getDeltaMovement().z() > 0 ^ other.getDeltaMovement().z() > 0)) {
-          extension.primeExplosion();
+          rollingStock.primeExplosion();
           return;
         }
       }
@@ -215,7 +213,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         return;
       }
 
-      extension.primeExplosion();
+      rollingStock.primeExplosion();
     }
   }
 

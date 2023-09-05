@@ -1,19 +1,12 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.carts.Side;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.CartItem;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,14 +20,39 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public final class CartTools {
+public final class MinecartUtil {
+
+  private MinecartUtil() {}
+
+  /**
+   * Returns the cart's "speed". It is not capped by the carts max speed, it instead returns the
+   * cart's "potential" speed. Used by collision and linkage logic. Do not use this to determine how
+   * fast a cart is currently moving.
+   *
+   * @return speed
+   */
+  public static double getCartSpeedUncapped(Vec3 deltaMovement) {
+    return Math.sqrt(getCartSpeedUncappedSquared(deltaMovement));
+  }
+
+  public static double getCartSpeedUncappedSquared(Vec3 deltaMovement) {
+    return deltaMovement.x() * deltaMovement.x() + deltaMovement.z() * deltaMovement.z();
+  }
+
+  public static boolean cartVelocityIsLessThan(AbstractMinecart minecart, float velocity) {
+    return cartVelocityIsLessThan(minecart.getDeltaMovement(), velocity);
+  }
+
+  public static boolean cartVelocityIsLessThan(Vec3 deltaMovement, float velocity) {
+    return Math.abs(deltaMovement.x()) < velocity
+        && Math.abs(deltaMovement.z()) < velocity;
+  }
 
   public static void explodeCart(AbstractMinecart cart) {
     if (!cart.isAlive()) {
@@ -51,11 +69,6 @@ public final class CartTools {
     if (cart.level().getRandom().nextInt(2) == 0) {
       cart.kill();
     }
-  }
-
-  public static boolean cartVelocityIsLessThan(AbstractMinecart cart, float vel) {
-    return Math.abs(cart.getDeltaMovement().x()) < vel
-        && Math.abs(cart.getDeltaMovement().z()) < vel;
   }
 
   public static List<UUID> getMinecartUUIDsAt(Level level, BlockPos pos, float sensitivity) {
@@ -75,9 +88,6 @@ public final class CartTools {
         .collect(Collectors.toList());
   }
 
-  public static void addPassenger(AbstractMinecart cart, Entity passenger) {
-    passenger.startRiding(cart);
-  }
 
   public static void removePassengers(AbstractMinecart cart) {
     removePassengers(cart, cart.getX(), cart.getY(), cart.getZ());
@@ -89,8 +99,9 @@ public final class CartTools {
     for (var entity : passengers) {
       if (entity instanceof ServerPlayer player) {
         player.setPos(x, y, z);
-      } else
+      } else {
         entity.moveTo(x, y, z, entity.getYRot(), entity.getXRot());
+      }
     }
   }
 
@@ -117,42 +128,6 @@ public final class CartTools {
 
     range = range * 64.0D * CartConstants.RENDER_DIST_MULTIPLIER;
     return distance < range * range;
-  }
-
-  public static List<String> getDebugOutput(AbstractMinecart cart) {
-    List<String> debug = new ArrayList<>();
-    debug.add("Railcraft Minecart Data Dump");
-    String cartInfo;
-    if (cart.level().getGameRules().getBoolean(GameRules.RULE_REDUCEDDEBUGINFO)) {
-      cartInfo = String.format("%s[\'%s\'/%d, l=\'%s\']", cart.getClass().getSimpleName(),
-          cart.getName(), cart.getId(), cart.level().dimension().toString());
-    } else {
-      cartInfo = cart.toString();
-    }
-
-    var extension = RollingStock.getOrThrow(cart);
-
-    debug.add("Object: " + cartInfo);
-    debug.add("UUID: " + cart.getUUID());
-    debug.add("LinkA: " + extension.linkAt(Side.BACK)
-        .map(RollingStock::entity)
-        .map(AbstractMinecart::getUUID)
-        .orElse(null));
-    debug.add("LinkB: " + extension.linkAt(Side.FRONT)
-        .map(RollingStock::entity)
-        .map(AbstractMinecart::getUUID)
-        .orElse(null));
-    debug.add("Train: " + (cart.level().isClientSide()
-        ? "NA on Client"
-        : extension.train().id()));
-    if (!cart.level().isClientSide()) {
-      debug.add(extension.train().stream()
-          .map(RollingStock::entity)
-          .map(AbstractMinecart::getUUID)
-          .map(UUID::toString)
-          .collect(Collectors.joining(", ", "Train Carts: ", "")));
-    }
-    return debug;
   }
 
   /**
@@ -269,27 +244,6 @@ public final class CartTools {
         cart.setCustomName(cartStack.getDisplayName());
       level.addFreshEntity(cart);
       return cart;
-    }
-    return null;
-  }
-
-  @Nullable
-  public static GameProfile getCartOwner(AbstractMinecart cart) {
-    if (cart instanceof Locomotive loco) {
-      var owner = loco.getOwner();
-      if (owner.isPresent()) {
-        var gameProfile = owner.get();
-        if (gameProfile.isComplete())
-          return gameProfile;
-        String ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
-        if (!StringUtils.isBlank(gameProfile.getName()))
-          ownerName = gameProfile.getName();
-
-        UUID ownerId = null;
-        if (gameProfile.getId() != null)
-          ownerId = gameProfile.getId();
-        return new GameProfile(ownerId, ownerName);
-      }
     }
     return null;
   }

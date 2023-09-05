@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity.track;
 import java.util.List;
 import java.util.UUID;
 import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
@@ -44,14 +44,14 @@ public class TurnoutTrackBlockEntity extends SwitchTrackBlockEntity {
 
   @Override
   protected List<UUID> getCartsAtLockEntrance() {
-    return CartTools.getMinecartUUIDsAt(this.level,
+    return MinecartUtil.getMinecartUUIDsAt(this.level,
         this.getBlockPos().relative(SwitchTrackBlock.getFacing(this.getBlockState())),
         0.1F);
   }
 
   @Override
   protected List<UUID> getCartsAtDecisionEntrance() {
-    return CartTools.getMinecartUUIDsAt(this.level,
+    return MinecartUtil.getMinecartUUIDsAt(this.level,
         this.getBlockPos().relative(SwitchTrackBlock.getFacing(this.getBlockState()).getOpposite()),
         0.1F);
   }
@@ -60,7 +60,7 @@ public class TurnoutTrackBlockEntity extends SwitchTrackBlockEntity {
   protected List<UUID> getCartsAtSpringEntrance() {
     final Direction facing = SwitchTrackBlock.getFacing(this.getBlockState());
     final boolean mirrored = TurnoutTrackBlock.isMirrored(this.getBlockState());
-    return CartTools.getMinecartUUIDsAt(this.level,
+    return MinecartUtil.getMinecartUUIDsAt(this.level,
         this.getBlockPos()
             .relative(mirrored ? facing.getCounterClockWise() : facing.getClockWise()),
         0.1F);

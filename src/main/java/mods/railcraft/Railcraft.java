@@ -1,7 +1,6 @@
 package mods.railcraft;
 
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.fuel.FuelUtil;
@@ -41,7 +40,6 @@ import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
-import mods.railcraft.world.entity.vehicle.TrainTransferServiceImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
@@ -102,7 +100,6 @@ public class Railcraft {
 
   static {
     FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
-    CartUtil._setTransferService(TrainTransferServiceImpl.INSTANCE);
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);

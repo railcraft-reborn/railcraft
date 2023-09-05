@@ -3,10 +3,10 @@ package mods.railcraft.advancements;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.util.JsonUtil;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.server.level.ServerPlayer;
@@ -51,21 +51,21 @@ public final class MinecartPredicate {
   }
 
   public boolean test(ServerPlayer player, AbstractMinecart cart) {
-    var extension = RollingStock.getOrThrow(cart);
+    var rollingStock = RollingStock.getOrThrow(cart);
 
-    if (this.highSpeed != null && extension.isHighSpeed() != this.highSpeed) {
+    if (this.highSpeed != null && rollingStock.isHighSpeed() != this.highSpeed) {
       return false;
     }
-    if (this.launched != null && extension.isLaunched() != this.launched) {
+    if (this.launched != null && rollingStock.isLaunched() != this.launched) {
       return false;
     }
-    if (this.onElevator != null && extension.isOnElevator() != this.onElevator) {
+    if (this.onElevator != null && rollingStock.isOnElevator() != this.onElevator) {
       return false;
     }
-    if (this.derailed != null && extension.isDerailed() != this.derailed) {
+    if (this.derailed != null && rollingStock.isDerailed() != this.derailed) {
       return false;
     }
-    if (this.mountable != null && extension.isMountable() != this.mountable) {
+    if (this.mountable != null && rollingStock.isMountable() != this.mountable) {
       return false;
     }
     if (this.checksOwner != null && cart instanceof Ownable
@@ -73,7 +73,7 @@ public final class MinecartPredicate {
             .orElse(false)) {
       return false;
     }
-    if (!this.speed.matchesSqr(CartUtil.getCartSpeedUncappedSquared(cart.getDeltaMovement()))) {
+    if (!this.speed.matchesSqr(MinecartUtil.getCartSpeedUncappedSquared(cart.getDeltaMovement()))) {
       return false;
     }
     return this.parent.matches(player, cart);

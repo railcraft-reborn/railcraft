@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.season.Season;
@@ -195,12 +196,12 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canAcceptPushedItem(RollingStock requester, ItemStack stack) {
     return false;
   }
 
   @Override
-  public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canProvidePulledItem(RollingStock requester, ItemStack stack) {
     return false;
   }
 
@@ -209,6 +210,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
    */
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
-    return CartTools.isInRangeToRenderDist(this, distance);
+    return MinecartUtil.isInRangeToRenderDist(this, distance);
   }
 }

@@ -70,7 +70,7 @@ final class TrainImpl implements Train {
 
   @Override
   public int getNumRunningLocomotives() {
-    return (int)this.stream()
+    return (int) this.entities()
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(Locomotive::isRunning)
         .count();
@@ -78,8 +78,7 @@ final class TrainImpl implements Train {
 
   @Override
   public Optional<IItemHandler> itemHandler() {
-    var cartHandlers = this.stream()
-        .map(RollingStock::entity)
+    var cartHandlers = this.entities()
         .flatMap(cart -> cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
@@ -92,8 +91,7 @@ final class TrainImpl implements Train {
 
   @Override
   public Optional<IFluidHandler> fluidHandler() {
-    var cartHandlers = this.stream()
-        .map(RollingStock::entity)
+    var cartHandlers = this.entities()
         .flatMap(cart -> cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
@@ -109,8 +107,7 @@ final class TrainImpl implements Train {
 
   private float calculateMaxSpeed() {
     double locoBoost = Math.max(0.0, this.getNumRunningLocomotives() - 1.0) * 0.075;
-    return (float) this.stream()
-        .map(RollingStock::entity)
+    return (float) this.entities()
         .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), this.softMaxSpeed(c) + locoBoost))
         .min()
         .orElse(1.2F);
@@ -123,9 +120,7 @@ final class TrainImpl implements Train {
   }
 
   private void setMaxSpeed(float trainSpeed) {
-    this.stream()
-        .map(RollingStock::entity)
-        .forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
+    this.entities().forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
   }
 
   @Override

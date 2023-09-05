@@ -57,6 +57,7 @@ public class SteamOvenBlock extends MultiblockBlock {
     return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public BlockState mirror(BlockState state, Mirror mirror) {
     return state.rotate(mirror.getRotation(state.getValue(FACING)));

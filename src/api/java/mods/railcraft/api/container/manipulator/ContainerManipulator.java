@@ -1,4 +1,4 @@
-package mods.railcraft.util.container.manipulator;
+package mods.railcraft.api.container.manipulator;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.util.container.StackFilter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -64,12 +61,12 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos,
       Predicate<BlockEntity> filter) {
     return () -> Arrays.stream(Direction.values())
-        .flatMap(direction -> LevelUtil.getBlockEntity(level, blockPos.relative(direction))
+        .flatMap(direction -> Stream.ofNullable(level.getBlockEntity(blockPos.relative(direction)))
             .filter(filter)
             .flatMap(blockEntity -> blockEntity
                 .getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite())
-                .map(ContainerManipulator::of))
-            .stream())
+                .map(ContainerManipulator::of)
+                .stream()))
         .flatMap(ContainerManipulator::stream);
   }
 
@@ -140,7 +137,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return An ItemStack
    */
   default ItemStack extract() {
-    return this.extract(StackFilter.ALL);
+    return this.extract(__ -> true);
   }
 
   /**
@@ -150,7 +147,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return An ItemStack
    */
   default ItemStack extract(ItemStack... filter) {
-    return this.extract(StackFilter.anyOf(filter));
+    return this.extract(anyOf(Arrays.asList(filter)));
   }
 
   /**
@@ -238,7 +235,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     if (stack.isEmpty()) {
       return false;
     }
-    var newStack = ContainerTools.copyOne(stack);
+    var newStack = stack.copyWithCount(1);
     return this.stream().anyMatch(slot -> slot.isValid(newStack));
   }
 
@@ -265,15 +262,15 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return true if exists
    */
   default boolean contains(Predicate<ItemStack> filter) {
-    return streamItems().anyMatch(filter);
+    return this.streamItems().anyMatch(filter);
   }
 
   default int countStacks() {
-    return countStacks(StackFilter.ALL);
+    return (int) this.streamItems().count();
   }
 
   default int countStacks(Predicate<ItemStack> filter) {
-    return (int) streamItems().filter(filter).count();
+    return (int) this.streamItems().filter(filter).count();
   }
 
   /**
@@ -283,7 +280,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return true is exists
    */
   default boolean contains(ItemStack... items) {
-    return contains(StackFilter.anyOf(items));
+    return contains(anyOf(Arrays.asList(items)));
   }
 
   /**
@@ -293,7 +290,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return the number of items in the inventory
    */
   default int countItems(Predicate<ItemStack> filter) {
-    return streamItems().filter(filter).mapToInt(ItemStack::getCount).sum();
+    return this.streamItems().filter(filter).mapToInt(ItemStack::getCount).sum();
   }
 
   /**
@@ -302,7 +299,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return the number of items in the inventory
    */
   default int countItems() {
-    return countItems(StackFilter.ALL);
+    return this.countItems(__ -> true);
   }
 
   /**
@@ -312,15 +309,15 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
    * @return the number of items in the inventory
    */
   default int countItems(ItemStack... filters) {
-    return countItems(StackFilter.anyOf(filters));
+    return this.countItems(anyOf(Arrays.asList(filters)));
   }
 
   default boolean hasItems() {
-    return streamItems().findAny().isPresent();
+    return this.streamItems().findAny().isPresent();
   }
 
   default boolean hasNoItems() {
-    return !hasItems();
+    return !this.hasItems();
   }
 
   default boolean isFull() {
@@ -328,7 +325,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   }
 
   default boolean hasEmptySlot() {
-    return !isFull();
+    return !this.isFull();
   }
 
   default int countMaxItemStackSize() {
@@ -346,12 +343,24 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return this.stream().filter(slot -> slot.matches(filter));
   }
 
+  default double calculateFullness() {
+    return this.stream()
+        .mapToDouble(slot -> slot.item().getCount() / (double) slot.maxStackSize())
+        .average()
+        .orElse(0.0D);
+  }
+
   /**
    * @see Container#calcRedstoneFromInventory(IInventory)
    */
   default int calcRedstone() {
-    double average = ContainerTools.calculateFullness(this);
+    double average = this.calculateFullness();
+    return Mth.floor(average * 14.0F) + (this.hasNoItems() ? 0 : 1);
+  }
 
-    return Mth.floor(average * 14.0F) + (hasNoItems() ? 0 : 1);
+  static Predicate<ItemStack> anyOf(Collection<ItemStack> items) {
+    return itemStack -> items.isEmpty()
+        || items.stream().allMatch(ItemStack::isEmpty)
+        || items.stream().anyMatch(match -> ItemStack.isSameItem(itemStack, match));
   }
 }

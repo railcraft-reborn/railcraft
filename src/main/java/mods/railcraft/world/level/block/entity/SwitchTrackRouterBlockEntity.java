@@ -23,7 +23,6 @@ import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
-import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
@@ -145,12 +144,9 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
         .map(logic -> logic.matches(this, rollingStock))
         .orElse(false);
     if (this.railway == Railway.PRIVATE) {
-      var cartOwner = CartTools.getCartOwner(rollingStock.entity());
-      if (cartOwner == null) {
-        shouldSwitch = false;
-      } else {
-        shouldSwitch = shouldSwitch && PlayerUtil.isSamePlayer(cartOwner, this.getOwnerOrThrow());
-      }
+      shouldSwitch = rollingStock.owner()
+          .filter(owner -> PlayerUtil.isSamePlayer(owner, this.getOwnerOrThrow()))
+          .isPresent();
     }
     SwitchTrackActuatorBlock.setSwitched(
         this.getBlockState(), this.level, this.getBlockPos(), shouldSwitch);

@@ -11,8 +11,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ForwardingMap;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.ItemStackKey;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 

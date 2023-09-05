@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
@@ -16,7 +15,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -87,15 +85,13 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     // fuelInventory.moveOneItemTo(invWaterOutput,
     // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
 
-    var extension = RollingStock.getOrThrow(this);
-    var pulledFuel =
-        CartUtil.transferService().pullStack(extension, this.extraFuelContainer::canFit);
+    var rollingStock = RollingStock.getOrThrow(this);
+    var pulledFuel = rollingStock.pullItem(this.extraFuelContainer::canFit);
     if (!pulledFuel.isEmpty()) {
       this.extraFuelContainer.insert(pulledFuel);
     }
     if (this.isSafeToFill() && this.waterTank.getFluidAmount() < this.waterTank.getCapacity() / 2) {
-      var pulledWater =
-          CartUtil.transferService().pullFluid(extension, new FluidStack(Fluids.WATER, 1));
+      var pulledWater = rollingStock.pullFluid(new FluidStack(Fluids.WATER, 1));
       if (pulledWater != null) {
         this.waterTank.fill(pulledWater, FluidAction.EXECUTE);
       }
@@ -144,10 +140,8 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
-      case FUEL_SLOT,
-          EXTRA_FUEL_SLOT_A,
-          EXTRA_FUEL_SLOT_B,
-          EXTRA_FUEL_SLOT_C -> ForgeHooks.getBurnTime(stack, null) > 0;
+      case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C -> ForgeHooks
+          .getBurnTime(stack, null) > 0;
       case SLOT_WATER_INPUT ->
           // if (FluidItemHelper.getFluidStackInContainer(stack)
           // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
@@ -160,12 +154,12 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canAcceptPushedItem(RollingStock requester, ItemStack stack) {
     return ForgeHooks.getBurnTime(stack, null) > 0;
   }
 
   @Override
-  public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canProvidePulledItem(RollingStock requester, ItemStack stack) {
     return false;
   }
 

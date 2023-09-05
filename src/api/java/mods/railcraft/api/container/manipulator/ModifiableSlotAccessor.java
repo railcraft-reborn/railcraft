@@ -1,8 +1,8 @@
-package mods.railcraft.util.container.manipulator;
+package mods.railcraft.api.container.manipulator;
 
 import java.util.function.Predicate;
-import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -31,7 +31,7 @@ public interface ModifiableSlotAccessor extends SlotAccessor {
     var item = this.item();
     if (!item.isEmpty() && !predicate.test(item)) {
       this.clear();
-      ContainerTools.dropItem(item, level, blockPos);
+      Containers.dropItemStack(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), item);
     }
   }
 }

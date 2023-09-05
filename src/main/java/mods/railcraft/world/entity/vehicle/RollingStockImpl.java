@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.Linkable;
@@ -13,6 +14,7 @@ import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.Vec2d;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
@@ -491,15 +493,15 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     if (this.explosionPending) {
       this.explosionPending = false;
-      CartTools.explodeCart(this.entity());
+      MinecartUtil.explodeCart(this.entity());
     }
 
     if (this.highSpeed) {
-      if (CartTools.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
+      if (MinecartUtil.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
         this.highSpeed = false;
       } else if (this.launchState == LaunchState.LANDED) {
-        HighSpeedTrackUtil.checkSafetyAndExplode(this.level(), this.minecart.blockPosition(),
-            this.entity());
+        HighSpeedTrackUtil.checkSafetyAndExplode(this.level(),
+            this.minecart.blockPosition(), this.entity());
       }
     }
 
@@ -772,5 +774,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       dist += MAX_LINK_DISTANCE;
     }
     return dist * dist;
+  }
+
+  @Override
+  public Optional<GameProfile> owner() {
+    return this.entity() instanceof Locomotive loco ? loco.getOwner() : Optional.empty();
   }
 }

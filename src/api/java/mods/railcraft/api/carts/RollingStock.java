@@ -5,19 +5,30 @@ import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.authlib.GameProfile;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 
 /**
  * Main capability for all things minecart/locomotive related.
@@ -42,6 +53,9 @@ public interface RollingStock {
    * The fastest speed rolling stock can go before they explode.
    */
   float EXPLOSION_SPEED_THRESHOLD = 0.5F;
+
+  int MAX_BLOCKING_ITEM_SLOTS = 8;
+  int MAX_BLOCKING_TANK_CAPACITY = 8 * FluidType.BUCKET_VOLUME;
 
   Capability<RollingStock> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 
@@ -232,6 +246,188 @@ public interface RollingStock {
     return this.train() == minecart.train();
   }
 
+  /**
+   * Pushes an {@link ItemStack} through a train.
+   *
+   * @param itemStack - the {@link ItemStack} to be pushed
+   * @return the remaining {@link ItemStack}, or {@link ItemStack#EMPTY} if all items were pushed
+   * @see {@link ItemTransferHandler}
+   */
+  default ItemStack pushItem(ItemStack itemStack) {
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets =
+          () -> this.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+            .map(ContainerManipulator::of)
+            .orElse(null);
+        if (adaptor != null && this.canAcceptPushedItem(cart, itemStack)) {
+          itemStack = adaptor.insert(itemStack);
+        }
+
+        if (itemStack.isEmpty() || blocksItemRequests(cart, itemStack)) {
+          break;
+        }
+      }
+
+      if (itemStack.isEmpty()) {
+        return ItemStack.EMPTY;
+      }
+    }
+
+    return itemStack;
+  }
+
+  private boolean canAcceptPushedItem(AbstractMinecart cart, ItemStack stack) {
+    return !(cart instanceof ItemTransferHandler handler)
+        || handler.canAcceptPushedItem(this, stack);
+  }
+
+  /**
+   * Pulls an {@link ItemStack} from a train.
+   *
+   * @param filter - a {@link Predicate} to filter the pulled item
+   * @return the resulting {@link ItemStack} or {@link ItemStack#EMPTY} if not found
+   * @see {@link ItemTransferHandler}
+   */
+  default ItemStack pullItem(Predicate<ItemStack> filter) {
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets = () -> this.traverseTrain(side).iterator();
+      RollingStock resultProvider = null;
+      SlotAccessor result = null;
+      for (var target : targets) {
+        var cart = target.entity();
+        var slot = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+            .map(ContainerManipulator::of)
+            .flatMap(manipulator -> manipulator.findFirstExtractable(
+                filter.and(stack -> this.canProvidePulledItem(cart, stack))))
+            .orElse(null);
+        if (slot != null) {
+          resultProvider = target;
+          result = slot;
+        }
+      }
+
+      if (result == null) {
+        continue;
+      }
+
+      for (var target : targets) {
+        if (target == resultProvider) {
+          break;
+        }
+        if (blocksItemRequests(target.entity(), result.item())) {
+          result = null;
+          break;
+        }
+      }
+
+      if (result != null) {
+        return result.extract();
+      }
+    }
+
+    return ItemStack.EMPTY;
+  }
+
+  private boolean canProvidePulledItem(AbstractMinecart cart, ItemStack stack) {
+    return !(cart instanceof ItemTransferHandler handler)
+        || handler.canProvidePulledItem(this, stack);
+  }
+
+  /**
+   * Pushes an {@link ItemStack} through the train and drops any remaining items.
+   *
+   * @param itemStack - the {@link ItemStack} to be pushed
+   */
+  default void offerOrDropItem(ItemStack itemStack) {
+    var remainder = this.pushItem(itemStack);
+    if (!remainder.isEmpty()) {
+      Containers.dropItemStack(this.level(),
+          this.entity().getX(), this.entity().getY(), this.entity().getZ(),
+          remainder);
+    }
+  }
+
+  /**
+   * Pushes the specified {@link FluidStack} through the train.
+   *
+   * @param fluidStack - the {@link FluidStack} to be pushed
+   * @return the remaining {@link FluidStack}, or {@link FluidStack#EMPTY} if all fluid was pushed
+   * @see {@link FluidTransferHandler}
+   */
+  default FluidStack pushFluid(FluidStack fluidStack) {
+    var remainder = fluidStack.copy();
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets = () -> this.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        if (this.canAcceptPushedFluid(cart, remainder)) {
+          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          if (fluidHandler != null) {
+            var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
+            remainder.setAmount(remainder.getAmount() - filled);
+          }
+        }
+        if (remainder.isEmpty() || blocksFluidRequests(cart, remainder)) {
+          break;
+        }
+      }
+
+      if (remainder.isEmpty()) {
+        return FluidStack.EMPTY;
+      }
+    }
+
+    return remainder;
+  }
+
+  private boolean canAcceptPushedFluid(AbstractMinecart cart, FluidStack fluid) {
+    return !(cart instanceof FluidTransferHandler handler)
+        || handler.canAcceptPushedFluid(this, fluid);
+  }
+
+  /**
+   * Pulls a {@link FluidStack} from a train.
+   *
+   * @param fluidStack - the {@link FluidStack} to pull
+   * @return the resulting {@link FluidStack} or {@link FluidStack#EMPTY} if not found
+   * @see {@link FluidTransferHandler}
+   */
+  default FluidStack pullFluid(FluidStack fluidStack) {
+    if (fluidStack.isEmpty()) {
+      return FluidStack.EMPTY;
+    }
+
+    for (var side : Side.values()) {
+      Iterable<RollingStock> targets = () -> this.traverseTrain(side).iterator();
+      for (var target : targets) {
+        var cart = target.entity();
+        if (this.canProvidePulledFluid(cart, fluidStack)) {
+          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          if (fluidHandler != null) {
+            var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            if (!drained.isEmpty()) {
+              return drained;
+            }
+          }
+        }
+
+        if (blocksFluidRequests(cart, fluidStack)) {
+          break;
+        }
+      }
+    }
+
+    return FluidStack.EMPTY;
+  }
+
+  private boolean canProvidePulledFluid(AbstractMinecart cart, FluidStack fluid) {
+    return !(cart instanceof FluidTransferHandler handler)
+        || handler.canProvidePulledFluid(this, fluid);
+  }
+
   default boolean isAutoLinkEnabled() {
     return Stream.of(Side.values()).anyMatch(this::isAutoLinkEnabled);
   }
@@ -288,9 +484,39 @@ public interface RollingStock {
 
   void checkHighSpeed(BlockPos blockPos);
 
+  Optional<GameProfile> owner();
+
   AbstractMinecart entity();
 
   default Level level() {
     return this.entity().level();
+  }
+
+  private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
+    return cart instanceof ItemTransferHandler handler
+        ? !handler.canPassItemRequests(stack)
+        : cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+            .map(IItemHandler::getSlots)
+            .orElse(0) < MAX_BLOCKING_ITEM_SLOTS;
+  }
+
+  private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
+    return cart instanceof FluidTransferHandler fluidMinecart
+        ? !fluidMinecart.canPassFluidRequests(fluid)
+        : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
+            .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
+            .orElse(true);
+  }
+
+  private static boolean hasMatchingTank(IFluidHandler handler, FluidStack fluid) {
+    for (int i = 0; i < handler.getTanks(); i++) {
+      if (handler.getTankCapacity(i) >= MAX_BLOCKING_TANK_CAPACITY) {
+        var tankFluid = handler.getFluidInTank(i);
+        if (tankFluid.isEmpty() || tankFluid.isFluidEqual(fluid)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

@@ -6,7 +6,7 @@ import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TypedTrack;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +30,7 @@ public final class HighSpeedTrackUtil {
 
   public static void checkSafetyAndExplode(Level level, BlockPos pos, AbstractMinecart cart) {
     if (!isTrackSafeForHighSpeed(level, pos, cart)) {
-      CartTools.explodeCart(cart);
+      MinecartUtil.explodeCart(cart);
     }
   }
 

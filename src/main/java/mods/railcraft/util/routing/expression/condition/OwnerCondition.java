@@ -1,9 +1,9 @@
 package mods.railcraft.util.routing.expression.condition;
 
+import com.mojang.authlib.GameProfile;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.util.routing.RoutingStatementParser;
 import mods.railcraft.util.routing.expression.Expression;
-import mods.railcraft.world.entity.vehicle.CartTools;
 
 public class OwnerCondition {
 
@@ -11,9 +11,9 @@ public class OwnerCondition {
 
   public static Expression parse(String line) throws RoutingLogicException {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
-    return (router, rollingStock) -> {
-      var owner = CartTools.getCartOwner(rollingStock.entity());
-      return owner != null && statement.value().equalsIgnoreCase(owner.getName());
-    };
+    return (router, rollingStock) -> rollingStock.owner()
+        .map(GameProfile::getName)
+        .filter(statement.value()::equalsIgnoreCase)
+        .isPresent();
   }
 }
