@@ -1,23 +1,19 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import org.apache.commons.lang3.StringUtils;
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 import mods.railcraft.world.entity.vehicle.CartTools;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class OwnerCondition extends ParsedCondition {
+public class OwnerCondition {
 
-  public OwnerCondition(String line) throws RoutingLogicException {
-    super("Owner", false, line);
-  }
+  public static final String KEYWORD = "Owner";
 
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    var owner = CartTools.getCartOwner(cart);
-    if (owner == null) {
-      return false;
-    }
-    return StringUtils.equalsIgnoreCase(value, owner.getName());
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, false, line);
+    return (router, minecart) -> {
+      var owner = CartTools.getCartOwner(minecart);
+      return owner != null && statement.value().equalsIgnoreCase(owner.getName());
+    };
   }
 }

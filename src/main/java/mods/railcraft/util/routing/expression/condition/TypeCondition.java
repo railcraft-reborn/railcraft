@@ -1,19 +1,17 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class TypeCondition extends ParsedCondition {
+public class TypeCondition {
 
-  public TypeCondition(String line) throws RoutingLogicException {
-    super("Type", false, line);
-  }
+  public static final String KEYWORD = "Type";
 
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    var cartType = ForgeRegistries.ENTITY_TYPES.getKey(cart.getType()).toString();
-    return value.equalsIgnoreCase(cartType);
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, false, line);
+    return (router, minecart) -> statement.value().equalsIgnoreCase(
+        ForgeRegistries.ENTITY_TYPES.getKey(minecart.getType()).toString());
   }
 }

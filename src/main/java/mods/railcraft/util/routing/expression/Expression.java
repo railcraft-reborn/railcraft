@@ -6,26 +6,28 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 @FunctionalInterface
 public interface Expression {
 
-  Expression FALSE = (router, cart) -> false;
-  Expression TRUE = (router, cart) -> true;
+  Expression FALSE = (router, minecart) -> false;
+  Expression TRUE = (router, minecart) -> true;
 
-  boolean evaluate(RouterBlockEntity router, AbstractMinecart cart);
+  boolean evaluate(RouterBlockEntity router, AbstractMinecart minecart);
 
   default Expression negate() {
-    return (router, cart) -> !this.evaluate(router, cart);
+    return (router, minecart) -> !this.evaluate(router, minecart);
   }
 
   default Expression and(Expression other) {
-    return (router, cart) -> this.evaluate(router, cart) && other.evaluate(router, cart);
+    return (router, minecart) -> this.evaluate(router, minecart)
+        && other.evaluate(router, minecart);
   }
 
   default Expression or(Expression other) {
-    return (router, cart) -> this.evaluate(router, cart) || other.evaluate(router, cart);
+    return (router, minecart) -> this.evaluate(router, minecart)
+        || other.evaluate(router, minecart);
   }
 
   default Expression select(Expression success, Expression fail) {
-    return (router, cart) -> this.evaluate(router, cart)
-        ? success.evaluate(router, cart)
-        : fail.evaluate(router, cart);
+    return (router, minecart) -> this.evaluate(router, minecart)
+        ? success.evaluate(router, minecart)
+        : fail.evaluate(router, minecart);
   }
 }

@@ -1,32 +1,33 @@
 package mods.railcraft.util.routing.expression.condition;
 
+import java.util.function.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.api.carts.Routable;
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 
-public class DestCondition extends ParsedCondition {
+public class DestCondition {
 
-  public DestCondition(String line) throws RoutingLogicException {
-    super("Dest", true, line);
-  }
+  public static final String KEYWORD = "Dest";
 
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    if (cart instanceof Routable routableCart) {
-      String cartDest = routableCart.getDestination();
-      if (StringUtils.equalsIgnoreCase("null", value)) {
-        return StringUtils.isBlank(cartDest);
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, true, line);
+    Predicate<String> predicate = statement.isRegex()
+        ? statement.pattern().asMatchPredicate()
+        : s -> s.startsWith(statement.value());
+    return (router, minecart) -> {
+      if (minecart instanceof Routable routable) {
+        var destination = routable.getDestination();
+        if (StringUtils.equalsIgnoreCase("null", statement.value())) {
+          return StringUtils.isBlank(destination);
+        }
+        if (StringUtils.isBlank(destination)) {
+          return false;
+        }
+        return predicate.test(destination);
       }
-      if (StringUtils.isBlank(cartDest)) {
-        return false;
-      }
-      if (isRegex) {
-        return cartDest.matches(value);
-      }
-      return cartDest.startsWith(value);
-    }
-    return false;
+      return false;
+    };
   }
 }

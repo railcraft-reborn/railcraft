@@ -23,8 +23,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public record RoutingLogic(Deque<Expression> expressions) {
 
-  public static final String REGEX_SYMBOL = "\\?";
-
   public static RoutingLogic parseTable(Deque<String> data) throws RoutingLogicException {
     Deque<Expression> stack = new ArrayDeque<>();
     var it = data.descendingIterator();
@@ -70,32 +68,32 @@ public record RoutingLogic(Deque<Expression> expressions) {
   private static Expression parseLine(String line, Deque<Expression> stack)
       throws RoutingLogicException {
     try {
-      if (line.startsWith("Dest")) {
-        return new DestCondition(line);
+      if (line.startsWith(DestCondition.KEYWORD)) {
+        return DestCondition.parse(line);
       }
-      if (line.startsWith("Color")) {
-        return new ColorCondition(line);
+      if (line.startsWith(ColorCondition.KEYWORD)) {
+        return ColorCondition.parse(line);
       }
-      if (line.startsWith("Owner")) {
-        return new OwnerCondition(line);
+      if (line.startsWith(OwnerCondition.KEYWORD)) {
+        return OwnerCondition.parse(line);
       }
-      if (line.startsWith("Name")) {
-        return new NameCondition(line);
+      if (line.startsWith(NameCondition.KEYWORD)) {
+        return NameCondition.parse(line);
       }
-      if (line.startsWith("Type")) {
-        return new TypeCondition(line);
+      if (line.startsWith(TypeCondition.KEYWORD)) {
+        return TypeCondition.parse(line);
       }
-      if (line.startsWith("NeedsRefuel")) {
-        return new RefuelCondition(line);
+      if (line.startsWith(RefuelCondition.KEYWORD)) {
+        return RefuelCondition.parse(line);
       }
-      if (line.startsWith("Rider")) {
-        return new RiderCondition(line);
+      if (line.startsWith(RiderCondition.KEYWORD)) {
+        return RiderCondition.parse(line);
       }
-      if (line.startsWith("Redstone")) {
-        return new RedstoneCondition(line);
+      if (line.startsWith(RedstoneCondition.KEYWORD)) {
+        return RedstoneCondition.parse(line);
       }
-      if (line.startsWith("Loco")) {
-        return new LocomotiveCondition(line);
+      if (line.startsWith(LocomotiveCondition.KEYWORD)) {
+        return LocomotiveCondition.parse(line);
       }
     } catch (RoutingLogicException ex) {
       throw ex;

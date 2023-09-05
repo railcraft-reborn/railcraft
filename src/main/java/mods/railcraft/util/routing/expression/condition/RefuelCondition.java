@@ -2,27 +2,23 @@ package mods.railcraft.util.routing.expression.condition;
 
 import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 
-public class RefuelCondition extends ParsedCondition {
+public class RefuelCondition {
 
-  private final boolean needsRefuel;
+  public static final String KEYWORD = "NeedsRefuel";
 
-  public RefuelCondition(String line) throws RoutingLogicException {
-    super("NeedsRefuel", false, line);
-    this.needsRefuel = Boolean.parseBoolean(value);
-  }
-
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    return RollingStock.getOrThrow(cart)
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, false, line);
+    var needsRefuel = Boolean.parseBoolean(statement.value());
+    return (router, minecart) -> RollingStock.getOrThrow(minecart)
         .train()
         .stream()
         .map(RollingStock::entity)
-        .filter(x -> x instanceof NeedsFuel)
-        .map(x -> (NeedsFuel) x)
-        .anyMatch(x -> x.needsFuel() == this.needsRefuel);
+        .filter(NeedsFuel.class::isInstance)
+        .map(NeedsFuel.class::cast)
+        .anyMatch(x -> x.needsFuel() == needsRefuel);
   }
 }
