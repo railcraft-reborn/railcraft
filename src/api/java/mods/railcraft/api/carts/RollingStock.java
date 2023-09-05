@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
@@ -238,12 +237,11 @@ public interface RollingStock {
     return Stream.concat(Stream.of(this), this.traverseTrain(side));
   }
 
-  @Nullable
   Train train();
 
-  default boolean isSameTrainAs(@NotNull RollingStock minecart) {
-    Objects.requireNonNull(minecart, "minecart cannot be null.");
-    return this.train() == minecart.train();
+  default boolean isSameTrainAs(@NotNull RollingStock rollingStock) {
+    Objects.requireNonNull(rollingStock, "rollingStock cannot be null.");
+    return this.train() == rollingStock.train();
   }
 
   /**
