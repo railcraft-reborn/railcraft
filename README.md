@@ -10,11 +10,12 @@ Here you will find the source and issue tracker for the **Railcraft Reborn** pro
 
 ## What is Railcraft Reborn?
 
-Railcraft Reborn is a community driven continuation of the popular Minecraft mod [Railcraft](https://github.com/Railcraft/Railcraft), originally devloped by **CovertJaguar**. It is built 
-on top of the [NeoForged](https://github.com/neoforged) API.
+Railcraft Reborn is a community driven continuation of the popular Minecraft mod
+[Railcraft](https://github.com/Railcraft/Railcraft), originally developed by **CovertJaguar**.
+It is built on top of the [NeoForged](https://github.com/neoforged) API.
 
-The mod greatly expands and improves the minecart system in Minecraft - adding many new blocks, entities,
-and features.
+The mod greatly expands and improves the minecart system in Minecraft - adding many new blocks,
+entities, and features.
 
 This project is maintained by:
 - [**Sm0keySa1m0n**](https://github.com/Sm0keySa1m0n)
@@ -52,4 +53,5 @@ in `src\api\java\mods\railcraft\api\LICENSE.txt`**
 - You may **NOT** use Railcraft Reborn art assets in other projects **unless** the project is 
   intended to operate alongside Railcraft Reborn.
   Examples are addons, resource packs and inter-mod integrations.
-- You **MAY** fork and edit the GitHub repository for the purpose of contributing to the project. You may **NOT** distribute any Jar created from a fork for any reason.
+- You **MAY** fork and edit the GitHub repository for the purpose of contributing to the project.
+- You may **NOT** distribute any Jar created from a fork for any reason.
