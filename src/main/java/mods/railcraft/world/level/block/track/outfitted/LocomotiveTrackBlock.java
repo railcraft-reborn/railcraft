@@ -48,8 +48,7 @@ public class LocomotiveTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
     super.onMinecartPass(state, level, pos, cart);
     if (isPowered(state)) {
-      RollingStock.getOrThrow(cart).train().stream()
-          .map(RollingStock::entity)
+      RollingStock.getOrThrow(cart).train().entities()
           .flatMap(FunctionalUtil.ofType(Locomotive.class))
           .forEach(locomotive -> locomotive.setMode(state.getValue(LOCOMOTIVE_MODE)));
     }

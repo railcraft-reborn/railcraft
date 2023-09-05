@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;

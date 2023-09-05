@@ -3,11 +3,10 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.List;
 import java.util.function.Supplier;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -51,10 +50,10 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
 
     final var deltaMovement = cart.getDeltaMovement();
-    final var speed = CartUtil.getCartSpeedUncapped(deltaMovement);
+    final var speed = MinecartUtil.getCartSpeedUncapped(deltaMovement);
 
     if (speed <= BOOST_THRESHOLD) {
-      CartTools.startBoost(cart, pos, railShape, START_BOOST);
+      MinecartUtil.startBoost(cart, pos, railShape, START_BOOST);
       return;
     }
 

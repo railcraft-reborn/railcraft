@@ -1,25 +1,21 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import org.apache.commons.lang3.StringUtils;
-import mods.railcraft.util.routing.RouterBlockEntity;
+import java.util.function.Predicate;
 import mods.railcraft.util.routing.RoutingLogicException;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 
-public class NameCondition extends ParsedCondition {
+public class NameCondition {
 
-  public NameCondition(String line) throws RoutingLogicException {
-    super("Name", true, line);
-  }
+  public static final String KEYWORD = "Name";
 
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    if (!cart.hasCustomName()) {
-      return StringUtils.equalsIgnoreCase("null", value);
-    }
-    String customName = cart.getDisplayName().getString();
-    if (isRegex) {
-      return customName.matches(value);
-    }
-    return StringUtils.equalsIgnoreCase(customName, value);
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, true, line);
+    Predicate<String> predicate = statement.isRegex()
+        ? statement.pattern().asMatchPredicate()
+        : statement.value()::equalsIgnoreCase;
+    return (router, rollingStock) -> rollingStock.entity().hasCustomName()
+        ? predicate.test(rollingStock.entity().getCustomName().getString())
+        : statement.value().equalsIgnoreCase("null");
   }
 }

@@ -1,121 +1,121 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class RiderCondition extends ParsedCondition {
+public class RiderCondition {
 
-  private final String[] tokens;
+  public static final String KEYWORD = "Rider";
 
-  public RiderCondition(String line) throws RoutingLogicException {
-    super("Rider", true, line);
-    tokens = value.split(":");
-    if (isRegex) {
-      switch (tokens[0].toLowerCase(Locale.ROOT)) {
-        case "any", "none", "mob", "animal", "unnamed", "entity" ->
-            throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
-        case "named", "player" -> {
-          if (tokens.length == 1) {
-            throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
-          }
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, true, line);
+    var tokens = statement.value().split(":");
+    var type = Type.valueOf(tokens[0].toUpperCase(Locale.ROOT));
+
+    if (statement.isRegex()) {
+      checkRegexSyntax(type, tokens, line);
+    }
+    checkSyntax(type, tokens, line);
+
+    var context = new Context(statement, tokens);
+    return (router, rollingStock) -> type.matches(rollingStock.train().passengers(), context);
+  }
+
+  private static void checkRegexSyntax(Type type, String[] tokens, String line)
+      throws RoutingLogicException {
+    switch (type) {
+      case ANY, NONE, MOB, ANIMAL, UNNAMED, ENTITY -> throw new RoutingLogicException(
+          Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX, line);
+      case NAMED, PLAYER -> {
+        if (tokens.length == 1) {
+          throw new RoutingLogicException(Translations.RoutingTable.ERROR_UNSUPPORTED_REGEX,
+              line);
         }
       }
     }
-    switch (tokens[0].toLowerCase(Locale.ROOT)) {
-      case "any", "none", "mob", "animal", "unnamed" -> {
+  }
+
+  private static void checkSyntax(Type type, String[] tokens, String line)
+      throws RoutingLogicException {
+    switch (type) {
+      case ANY, NONE, MOB, ANIMAL, UNNAMED -> {
         if (tokens.length > 1) {
           throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
-      case "entity" -> {
+      case ENTITY -> {
         if (tokens.length == 1) {
           throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
-      case "named", "player" -> {
+      case NAMED, PLAYER -> {
         if (tokens.length > 2) {
           throw new RoutingLogicException(Translations.RoutingTable.ERROR_MALFORMED_SYNTAX, line);
         }
       }
-      default ->
-          throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD, line);
+      default -> throw new RoutingLogicException(Translations.RoutingTable.UNRECOGNIZED_KEYWORD,
+          line);
     }
   }
 
-  @Override
-  public boolean evaluate(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    switch (tokens[0].toLowerCase(Locale.ROOT)) {
-      case "any" -> {
-        return !getPassengers(cart).isEmpty();
+
+  private enum Type {
+
+    ANY(passengers -> passengers.count() > 0),
+    NONE(passengers -> passengers.count() == 0),
+    MOB(passengers -> passengers.anyMatch(Monster.class::isInstance)),
+    ANIMAL(passengers -> passengers.anyMatch(Animal.class::isInstance)),
+    UNNAMED(passengers -> passengers.anyMatch(p -> !p.hasCustomName())),
+    ENTITY((passengers, context) -> passengers.anyMatch(e -> {
+      var registryName = ForgeRegistries.ENTITY_TYPES.getKey(e.getType()).toString();
+      return context.tokens[1].equalsIgnoreCase(registryName);
+    })),
+    PLAYER((passengers, context) -> {
+      if (context.tokens.length < 2) {
+        return passengers.anyMatch(Player.class::isInstance);
       }
-      case "none" -> {
-        return getPassengers(cart).isEmpty();
+      BiPredicate<String, String> predicate = context.statement.isRegex()
+          ? String::matches
+          : String::equalsIgnoreCase;
+      return passengers.anyMatch(e -> e instanceof Player &&
+          predicate.test(e.getName().getString(), context.tokens[1]));
+    }),
+    NAMED((passengers, context) -> {
+      if (context.tokens.length < 2) {
+        return passengers.anyMatch(Entity::hasCustomName);
       }
-      case "mob" -> {
-        return getPassengers(cart).stream().anyMatch(e -> e instanceof Monster);
-      }
-      case "animal" -> {
-        return getPassengers(cart).stream().anyMatch(e -> e instanceof Animal);
-      }
-      case "unnamed" -> {
-        return getPassengers(cart).stream().anyMatch(e -> !e.hasCustomName());
-      }
-      case "entity" -> {
-        return getPassengers(cart).stream()
-            .anyMatch(e -> {
-              var registryName = ForgeRegistries.ENTITY_TYPES.getKey(e.getType()).toString();
-              return tokens[1].equalsIgnoreCase(registryName);
-            });
-      }
-      case "player" -> {
-        if (tokens.length == 2) {
-          if (isRegex) {
-            return getPassengers(cart).stream()
-                .anyMatch(e -> e instanceof Player &&
-                    e.getName().getString().matches(tokens[1]));
-          } else {
-            return getPassengers(cart).stream()
-                .anyMatch(e -> e instanceof Player &&
-                    e.getName().getString().equalsIgnoreCase(tokens[1]));
-          }
-        }
-        return getPassengers(cart).stream().anyMatch(e -> e instanceof Player);
-      }
-      case "named" -> {
-        if (tokens.length == 2) {
-          if (isRegex) {
-            return getPassengers(cart).stream()
-                .anyMatch(e -> e.hasCustomName() &&
-                    e.getCustomName().getString().matches(tokens[1]));
-          } else {
-            return getPassengers(cart).stream().anyMatch(
-                e -> e.hasCustomName() &&
-                    e.getCustomName().getString().equalsIgnoreCase(tokens[1]));
-          }
-        }
-        return getPassengers(cart).stream().anyMatch(Entity::hasCustomName);
-      }
+      BiPredicate<String, String> predicate = context.statement.isRegex()
+          ? String::matches
+          : String::equalsIgnoreCase;
+      return passengers.anyMatch(e -> e.hasCustomName() &&
+          predicate.test(e.getCustomName().getString(), context.tokens[1]));
+    });
+
+    private final BiPredicate<Stream<Entity>, Context> predicate;
+
+    Type(Predicate<Stream<Entity>> predicate) {
+      this((passengers, __) -> predicate.test(passengers));
     }
-    return false;
+
+    Type(BiPredicate<Stream<Entity>, Context> predicate) {
+      this.predicate = predicate;
+    }
+
+    private boolean matches(Stream<Entity> passengers, Context context) {
+      return this.predicate.test(passengers, context);
+    }
   }
 
-  private List<Entity> getPassengers(AbstractMinecart cart) {
-    return RollingStock.getOrThrow(cart)
-        .train()
-        .stream()
-        .map(RollingStock::entity)
-        .flatMap(c -> c.getPassengers().stream())
-        .collect(Collectors.toList());
-  }
+  private record Context(RoutingStatementParser.ParsedStatement statement, String[] tokens) {}
 }

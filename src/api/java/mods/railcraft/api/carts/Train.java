@@ -9,6 +9,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -25,6 +27,15 @@ public interface Train extends Iterable<RollingStock> {
 
   default Stream<RollingStock> stream() {
     return this.front().traverseTrainWithSelf(Side.BACK);
+  }
+
+  default Stream<? extends AbstractMinecart> entities() {
+    return this.stream().map(RollingStock::entity);
+  }
+
+  default Stream<Entity> passengers() {
+    return this.entities()
+        .flatMap(minecart -> minecart.getPassengers().stream());
   }
 
   @Override

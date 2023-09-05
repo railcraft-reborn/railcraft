@@ -9,7 +9,7 @@ import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackBlock;
@@ -69,8 +69,8 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   @Override
   public void onLoad() {
     super.onLoad();
-    this.prevCart = CartTools.getCartFromUUID(this.level, this.prevCartId);
-    this.currentCart = CartTools.getCartFromUUID(this.level, this.currentCartId);
+    this.prevCart = MinecartUtil.getCartFromUUID(this.level, this.prevCartId);
+    this.currentCart = MinecartUtil.getCartFromUUID(this.level, this.currentCartId);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,

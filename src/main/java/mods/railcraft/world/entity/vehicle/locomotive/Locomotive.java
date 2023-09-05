@@ -20,6 +20,7 @@ import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.core.Lockable;
+import mods.railcraft.api.core.RailcraftConstantsAPI;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -33,7 +34,7 @@ import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import mods.railcraft.world.item.LocomotiveItem;
@@ -176,6 +177,15 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void setOwner(@Nullable GameProfile owner) {
+    if (owner != null && !owner.isComplete()) {
+      var ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
+      if (!StringUtils.isBlank(owner.getName())) {
+        ownerName = owner.getName();
+      }
+
+      owner = new GameProfile(owner.getId(), ownerName);
+    }
+
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 
@@ -653,9 +663,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
       var extension = RollingStock.getOrThrow(this);
 
-      if (extension.train().stream()
-          .map(RollingStock::entity)
-          .noneMatch(t -> t.hasPassenger(entity))
+      if (extension.train().entities().noneMatch(t -> t.hasPassenger(entity))
           && (this.isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
@@ -717,7 +725,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void explode() {
-    CartTools.explodeCart(this);
+    MinecartUtil.explodeCart(this);
     this.remove(RemovalReason.KILLED);
   }
 
@@ -785,8 +793,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
-    var locos = RollingStock.getOrThrow(this).train().stream()
-        .map(RollingStock::entity)
+    var locos = RollingStock.getOrThrow(this).train().entities()
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {

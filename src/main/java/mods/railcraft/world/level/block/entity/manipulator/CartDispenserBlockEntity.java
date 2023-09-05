@@ -5,7 +5,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -85,7 +85,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
           if (remainder.isEmpty()) {
             this.insert(cartStack);
             if (!cart.getPassengers().isEmpty()) {
-              CartTools.removePassengers(cart);
+              MinecartUtil.removePassengers(cart);
             }
             cart.kill();
           }
@@ -95,7 +95,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
               var cartStack = this.getItem(i);
               if (!cartStack.isEmpty()) {
                 var pos = this.getBlockPos().offset(this.getFacing().getNormal());
-                var placedCart = CartTools.placeCart(cartStack, serverLevel, pos);
+                var placedCart = MinecartUtil.placeCart(cartStack, serverLevel, pos);
 
                 if (placedCart != null) {
                   this.removeItem(i, 1);

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -72,7 +72,7 @@ public class DisembarkingTrackBlock extends PoweredOutfittedTrackBlock {
       } else {
         z -= offset;
       }
-      CartTools.removePassengers(cart, x + 0.5D, blockPos.getY() + 1.0D, z + 0.5D);
+      MinecartUtil.removePassengers(cart, x + 0.5D, blockPos.getY() + 1.0D, z + 0.5D);
       RollingStock.getOrThrow(cart).setPreventMountRemainingTicks(TIME_TILL_NEXT_MOUNT);
     }
   }

@@ -2,7 +2,6 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.HashSet;
 import java.util.Set;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
@@ -168,7 +167,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
 
         this.removeItem(slotStock, 1);
         for (var stack : drops) {
-          CartUtil.transferService().offerOrDropItem(RollingStock.getOrThrow(this), stack);
+          RollingStock.getOrThrow(this).offerOrDropItem(stack);
         }
         blink();
       }

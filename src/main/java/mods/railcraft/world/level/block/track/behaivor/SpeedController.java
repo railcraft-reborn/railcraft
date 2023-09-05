@@ -3,11 +3,11 @@ package mods.railcraft.world.level.block.track.behaivor;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -26,11 +26,9 @@ public enum SpeedController implements TrackType.EventHandler {
     }
 
     private boolean isDerailing(RollingStock cart) {
-      if (CartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
-          && cart.level().getRandom().nextInt(500) == 250) {
-        return true;
-      }
-      return cart.train().stream().anyMatch(RollingStock::isDerailed);
+      return (MinecartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
+          && cart.level().getRandom().nextInt(500) == 250)
+          || cart.train().stream().anyMatch(RollingStock::isDerailed);
     }
 
     @Override

@@ -19,11 +19,8 @@ import mods.railcraft.util.routing.expression.condition.RedstoneCondition;
 import mods.railcraft.util.routing.expression.condition.RefuelCondition;
 import mods.railcraft.util.routing.expression.condition.RiderCondition;
 import mods.railcraft.util.routing.expression.condition.TypeCondition;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public record RoutingLogic(Deque<Expression> expressions) {
-
-  public static final String REGEX_SYMBOL = "\\?";
 
   public static RoutingLogic parseTable(Deque<String> data) throws RoutingLogicException {
     Deque<Expression> stack = new ArrayDeque<>();
@@ -38,64 +35,63 @@ public record RoutingLogic(Deque<Expression> expressions) {
     return new RoutingLogic(stack);
   }
 
-  private static AbstractMinecart getRoutableCart(AbstractMinecart cart) {
-    var rollingStock = RollingStock.getOrThrow(cart);
+  private static RollingStock getRoutableCart(RollingStock rollingStock) {
     var train = rollingStock.train();
     if (train.size() <= 1) {
-      return cart;
+      return rollingStock;
     }
     if (rollingStock.isEnd()) {
-      if (cart instanceof Routable) {
-        return cart;
+      if (rollingStock.entity() instanceof Routable) {
+        return rollingStock;
       }
-      if (cart instanceof Paintable) {
-        return cart;
+      if (rollingStock.entity() instanceof Paintable) {
+        return rollingStock;
       }
-      if (cart instanceof NeedsFuel) {
-        return cart;
+      if (rollingStock.entity() instanceof NeedsFuel) {
+        return rollingStock;
       }
     }
-    return train.front().entity();
+    return train.front();
   }
 
-  public boolean matches(RouterBlockEntity blockEntityRouting, AbstractMinecart cart) {
+  public boolean matches(RouterBlockEntity router, RollingStock rollingStock) {
     if (this.expressions == null) {
       return false;
     }
-    var controllingCart = getRoutableCart(cart);
+    var controllingCart = getRoutableCart(rollingStock);
     return this.expressions.stream()
-        .anyMatch(expression -> expression.evaluate(blockEntityRouting, controllingCart));
+        .anyMatch(expression -> expression.evaluate(router, controllingCart));
   }
 
   private static Expression parseLine(String line, Deque<Expression> stack)
       throws RoutingLogicException {
     try {
-      if (line.startsWith("Dest")) {
-        return new DestCondition(line);
+      if (line.startsWith(DestCondition.KEYWORD)) {
+        return DestCondition.parse(line);
       }
-      if (line.startsWith("Color")) {
-        return new ColorCondition(line);
+      if (line.startsWith(ColorCondition.KEYWORD)) {
+        return ColorCondition.parse(line);
       }
-      if (line.startsWith("Owner")) {
-        return new OwnerCondition(line);
+      if (line.startsWith(OwnerCondition.KEYWORD)) {
+        return OwnerCondition.parse(line);
       }
-      if (line.startsWith("Name")) {
-        return new NameCondition(line);
+      if (line.startsWith(NameCondition.KEYWORD)) {
+        return NameCondition.parse(line);
       }
-      if (line.startsWith("Type")) {
-        return new TypeCondition(line);
+      if (line.startsWith(TypeCondition.KEYWORD)) {
+        return TypeCondition.parse(line);
       }
-      if (line.startsWith("NeedsRefuel")) {
-        return new RefuelCondition(line);
+      if (line.startsWith(RefuelCondition.KEYWORD)) {
+        return RefuelCondition.parse(line);
       }
-      if (line.startsWith("Rider")) {
-        return new RiderCondition(line);
+      if (line.startsWith(RiderCondition.KEYWORD)) {
+        return RiderCondition.parse(line);
       }
-      if (line.startsWith("Redstone")) {
-        return new RedstoneCondition(line);
+      if (line.startsWith(RedstoneCondition.KEYWORD)) {
+        return RedstoneCondition.parse(line);
       }
-      if (line.startsWith("Loco")) {
-        return new LocomotiveCondition(line);
+      if (line.startsWith(LocomotiveCondition.KEYWORD)) {
+        return LocomotiveCondition.parse(line);
       }
     } catch (RoutingLogicException ex) {
       throw ex;

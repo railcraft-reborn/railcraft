@@ -14,7 +14,7 @@ import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.RailcraftNBTUtil;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -95,10 +95,11 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
 
     // Only allow cartsOnTrack to actually spring or lock the track
     if (bestCart != null && uuidOnTrack.contains(bestCart.getUUID())) {
-      if (blockEntity.shouldSwitchForCart(bestCart)) {
-        blockEntity.springTrack(RollingStock.getOrThrow(bestCart));
+      var rollingStock = RollingStock.getOrThrow(bestCart);
+      if (blockEntity.shouldSwitchForCart(rollingStock)) {
+        blockEntity.springTrack(rollingStock);
       } else {
-        blockEntity.lockTrack(RollingStock.getOrThrow(bestCart));
+        blockEntity.lockTrack(rollingStock);
       }
     }
 
@@ -138,10 +139,10 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
 
       for (UUID testCartUUID : allCarts) {
         if (closestCart == null) {
-          closestCart = CartTools.getCartFromUUID(this.level, testCartUUID);
+          closestCart = MinecartUtil.getCartFromUUID(this.level, testCartUUID);
         } else {
           double closestDist = crudeDistance(this.getBlockPos(), closestCart);
-          AbstractMinecart testCart = CartTools.getCartFromUUID(this.level, testCartUUID);
+          AbstractMinecart testCart = MinecartUtil.getCartFromUUID(this.level, testCartUUID);
           if (testCart != null) {
             double testDist = crudeDistance(this.getBlockPos(), testCart);
             if (testDist < closestDist)
@@ -170,22 +171,24 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
    * whether the switch is sprung or not. It caches the server responses for the clients to use.
    * Note: This method should not modify any variables except the cache, we leave that to update().
    */
-  public boolean shouldSwitchForCart(AbstractMinecart cart) {
-    if (this.springingCarts.contains(cart.getUUID())) {
+  public boolean shouldSwitchForCart(RollingStock rollingStock) {
+    var entity = rollingStock.entity();
+
+    if (this.springingCarts.contains(entity.getUUID())) {
       return true; // Carts at the spring entrance always are on switched tracks
     }
 
-    if (this.lockingCarts.contains(cart.getUUID())) {
+    if (this.lockingCarts.contains(entity.getUUID())) {
       return false; // Carts at the locking entrance always are on locked tracks
     }
 
     var sameTrain = this.currentCart() != null
-        && RollingStock.getOrThrow(cart).isSameTrainAs(this.currentCart());
+        && rollingStock.isSameTrainAs(this.currentCart());
 
     boolean shouldSwitch = false;
     var actuatorBlockEntity = this.level.getBlockEntity(this.getActuatorBlockPos());
     if (actuatorBlockEntity instanceof SwitchActuator switchActuator) {
-      shouldSwitch = switchActuator.shouldSwitch(cart);
+      shouldSwitch = switchActuator.shouldSwitch(rollingStock);
     }
 
     if (this.isSprung()) {

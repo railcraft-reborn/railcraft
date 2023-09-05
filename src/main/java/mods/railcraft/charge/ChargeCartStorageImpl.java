@@ -1,6 +1,7 @@
 package mods.railcraft.charge;
 
 import java.util.Random;
+import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeCartStorage;
@@ -54,7 +55,7 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   @Override
   public void tick(AbstractMinecart owner) {
-    if (owner.level().isClientSide) {
+    if (owner.level().isClientSide()) {
       return;
     }
     clock++;
@@ -65,22 +66,19 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
     if (drewFromTrack > 0) {
       drewFromTrack--;
     } else if (energy < (capacity * 0.5) && clock % DRAW_INTERVAL == 0) {
-      RollingStock.getOrThrow(owner)
-          .train()
-          .stream()
-          .map(RollingStock::entity)
-          .map(c -> c.getCapability(ForgeCapabilities.ENERGY))
+      RollingStock.getOrThrow(owner).train().entities()
+          .flatMap(c -> c.getCapability(ForgeCapabilities.ENERGY)
+              .map(Stream::of)
+              .orElse(Stream.empty()))
           .findAny()
-          .ifPresent(c ->
-              c.ifPresent(energyStorage ->
-                  energy += energyStorage.extractEnergy(capacity - energy, false)
-              ));
+          .ifPresent(
+              energyStorage -> energy += energyStorage.extractEnergy(capacity - energy, false));
     }
   }
 
   @Override
   public void tickOnTrack(AbstractMinecart owner, BlockPos pos) {
-    if (!owner.level().isClientSide && needsCharging()) {
+    if (!owner.level().isClientSide() && needsCharging()) {
       double drawnFromTrack = Charge.distribution
           .network((ServerLevel) owner.level())
           .access(pos)

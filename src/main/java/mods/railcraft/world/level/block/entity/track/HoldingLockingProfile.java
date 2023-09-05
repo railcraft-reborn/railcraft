@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import net.minecraft.core.Direction;
@@ -40,7 +40,7 @@ public class HoldingLockingProfile implements LockingModeController {
   }
 
   private Vec3 applyBoost(Direction.Axis axis, Vec3 deltaMovement) {
-    double speed = CartUtil.getCartSpeedUncapped(deltaMovement);
+    double speed = MinecartUtil.getCartSpeedUncapped(deltaMovement);
     double boost = speed > 0.005D
         ? (Math.abs(deltaMovement.get(axis)) / speed) * LockingTrackBlockEntity.BOOST_FACTOR
         : LockingTrackBlockEntity.START_BOOST;
@@ -58,9 +58,10 @@ public class HoldingLockingProfile implements LockingModeController {
   protected void setLaunchDirection(AbstractMinecart cart) {
     RailShape railShape = TrackBlock.getRailShapeRaw(this.lockingTrack.getBlockState());
     final Vec3 deltaMovement = cart.getDeltaMovement();
-    if (CartUtil.getCartSpeedUncapped(deltaMovement) > DIR_THRESHOLD) {
-      this.launchForward =
-          RailShapeUtil.isNorthSouth(railShape) ? deltaMovement.z() > 0.0D : deltaMovement.x() > 0.0D;
+    if (MinecartUtil.getCartSpeedUncapped(deltaMovement) > DIR_THRESHOLD) {
+      this.launchForward = RailShapeUtil.isNorthSouth(railShape)
+          ? deltaMovement.z() > 0.0D
+          : deltaMovement.x() > 0.0D;
     }
   }
 

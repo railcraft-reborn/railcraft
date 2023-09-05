@@ -7,7 +7,6 @@ import java.util.stream.IntStream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,18 +30,6 @@ public abstract class ContainerTools {
   public static void requiresNotEmpty(ItemStack stack) {
     if (stack.isEmpty())
       throw new IllegalStateException("Item cannot be empty.");
-  }
-
-  public static ItemStack copy(ItemStack itemStack, int newSize) {
-    var copy = itemStack.copy();
-    if (!copy.isEmpty()) {
-      copy.setCount(Math.min(newSize, copy.getMaxStackSize()));
-    }
-    return copy;
-  }
-
-  public static ItemStack copyOne(ItemStack stack) {
-    return copy(stack, 1);
   }
 
   public static boolean canMerge(ItemStack target, ItemStack source) {
@@ -72,13 +59,8 @@ public abstract class ContainerTools {
     var item = container.getItem(index);
     if (!item.isEmpty() && !predicate.test(item)) {
       container.setItem(index, ItemStack.EMPTY);
-      ContainerTools.dropItem(item, level, blockPos);
+      Containers.dropItemStack(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), item);
     }
-  }
-
-  public static void dropItem(ItemStack stack, Level level, BlockPos pos) {
-    Containers.dropItemStack(
-        level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
   }
 
   public static boolean isItem(ItemStack stack, @Nullable Item item) {
@@ -206,7 +188,7 @@ public abstract class ContainerTools {
   }
 
   public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {
-    if(stack.isEmpty() || block == null || !(block.asItem() instanceof BlockItem item))
+    if (stack.isEmpty() || block == null || !(block.asItem() instanceof BlockItem item))
       return false;
     return stack.is(item);
   }
@@ -236,12 +218,6 @@ public abstract class ContainerTools {
               new BlockHitResult(new Vec3(0.5D, 0.5D, 0.5D), Direction.UP, pos.above(), false)));
     }
     return null;
-  }
-
-  public static double calculateFullness(ContainerManipulator<?> manipulator) {
-    return manipulator.stream()
-        .mapToDouble(slot -> slot.item().getCount() / (double) slot.maxStackSize()).average()
-        .orElse(0.0);
   }
 
   /**

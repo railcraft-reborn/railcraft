@@ -8,7 +8,7 @@ import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.inventory.TrainDispenserMenu;
 import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -63,7 +63,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
     if (EntitySearcher.findMinecarts().at(offset).list(serverLevel).isEmpty()) {
       var cartItem = this.extract(filter);
       if (!cartItem.isEmpty()) {
-        var placedCart = CartTools.placeCart(cartItem, serverLevel, offset);
+        var placedCart = MinecartUtil.placeCart(cartItem, serverLevel, offset);
 
         if (placedCart != null) {
           var extension = RollingStock.getOrThrow(placedCart);

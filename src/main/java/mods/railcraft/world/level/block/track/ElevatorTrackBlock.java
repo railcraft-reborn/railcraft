@@ -287,12 +287,14 @@ public class ElevatorTrackBlock extends Block {
     return state.getValue(FACING).getStepY();
   }
 
+  @SuppressWarnings("deprecation")
   private boolean isPathEmpty(BlockState state, AbstractMinecart cart, BlockPos pos,
       boolean up) {
-    if (cart.level().getBlockState(pos).isSolid())
+    if (cart.level().getBlockState(pos).isSolid()) {
       return false;
-    Direction.Axis axis = state.getValue(FACING).getAxis();
-    BoxBuilder factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
+    }
+    var axis = state.getValue(FACING).getAxis();
+    var factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
     if (up) {
       factory.raiseCeiling(0.5);
       factory.raiseFloor(0.2);

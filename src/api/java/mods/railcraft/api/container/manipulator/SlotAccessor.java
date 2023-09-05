@@ -1,4 +1,4 @@
-package mods.railcraft.util.container.manipulator;
+package mods.railcraft.api.container.manipulator;
 
 import java.util.function.Predicate;
 import net.minecraft.world.item.Item;

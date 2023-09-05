@@ -2,7 +2,8 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidMinecart;
+import mods.railcraft.api.carts.FluidTransferHandler;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
@@ -27,7 +28,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -37,7 +37,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public abstract class BaseSteamLocomotive extends Locomotive implements FluidMinecart {
+public abstract class BaseSteamLocomotive extends Locomotive implements FluidTransferHandler {
 
   protected static final int SLOT_WATER_INPUT = 0;
   protected static final int SLOT_WATER_PROCESSING = 1;
@@ -266,12 +266,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   }
 
   @Override
-  public boolean canAcceptPushedFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canAcceptPushedFluid(RollingStock requester, FluidStack fluid) {
     return Fluids.WATER.isSame(fluid.getFluid());
   }
 
   @Override
-  public boolean canProvidePulledFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canProvidePulledFluid(RollingStock requester, FluidStack fluid) {
     return false;
   }
 

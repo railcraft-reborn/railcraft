@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.EnumSet;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;
@@ -15,7 +16,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
@@ -49,7 +49,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   }
 
   @Override
-  public boolean shouldSwitch(@Nullable AbstractMinecart cart) {
+  public boolean shouldSwitch(RollingStock cart) {
     return SwitchTrackActuatorBlock.isSwitched(this.getBlockState());
   }
 

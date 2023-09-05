@@ -3,11 +3,10 @@ package mods.railcraft.world.level.block.entity.track;
 import java.util.List;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.inventory.DumpingTrackMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -15,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -91,7 +91,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   }
 
   private boolean tryDumpRider(AbstractMinecart cart) {
-    CartTools.removePassengers(cart);
+    MinecartUtil.removePassengers(cart);
     return true;
   }
 
@@ -106,19 +106,22 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
           if (!cartInv.hasItems()) {
             return;
           }
-          ticksSinceLastDrop = 0;
+          this.ticksSinceLastDrop = 0;
 
-          var blockEntity = getBlockEntityAround(level, blockPos());
+          var blockEntity = getBlockEntityAround(this.level, this.blockPos());
           if (blockEntity == null) {
-            if (itemFilter.isEmpty()) {
+            var below = this.blockPos().below();
+            if (this.itemFilter.isEmpty()) {
               cartInv.streamItems()
-                  .forEach(itemStack ->
-                      ContainerTools.dropItem(itemStack, level, blockPos().below()));
+                  .forEach(itemStack -> Containers.dropItemStack(this.level,
+                      below.getX(), below.getY(), below.getZ(),
+                      itemStack));
             } else {
               cartInv.streamItems()
-                  .filter(itemMatcher)
-                  .forEach(itemStack ->
-                      ContainerTools.dropItem(itemStack, level, blockPos().below()));
+                  .filter(this.itemMatcher)
+                  .forEach(itemStack -> Containers.dropItemStack(this.level,
+                      below.getX(), below.getY(), below.getZ(),
+                      itemStack));
             }
             return;
           }

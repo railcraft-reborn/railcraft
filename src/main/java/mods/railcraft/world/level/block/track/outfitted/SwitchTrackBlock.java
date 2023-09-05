@@ -82,6 +82,7 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
           TrackUtil.setRailShape(level, offset, RailShape.EAST_WEST);
         }
       }
+      default -> {}
     }
   }
 

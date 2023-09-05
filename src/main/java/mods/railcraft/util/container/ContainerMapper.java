@@ -3,10 +3,10 @@ package mods.railcraft.util.container;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
+import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.util.Predicates;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import mods.railcraft.util.container.manipulator.ContainerSlotAccessor;
-import mods.railcraft.util.container.manipulator.ModifiableSlotAccessor;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public class ContainerMapper implements Container, ContainerManipulator<Modifiab
   private final int start;
   private final int size;
   private int maxStackSize = -1;
-  private Predicate<ItemStack> filter = StackFilter.ALL;
+  private Predicate<ItemStack> filter = Predicates.alwaysTrue();
 
   public static ContainerMapper make(Container container) {
     return new ContainerMapper(container, 0, container.getContainerSize());
