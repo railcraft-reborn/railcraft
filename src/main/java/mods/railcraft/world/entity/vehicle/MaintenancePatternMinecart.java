@@ -53,7 +53,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
 
     var rollingStock = RollingStock.getOrThrow(this);
 
-    if (!stackStock.isEmpty() && !ContainerTools.isItemEqual(stackReplace, stackStock)) {
+    if (!stackStock.isEmpty() && !ItemStack.isSameItem(stackReplace, stackStock)) {
       rollingStock.offerOrDropItem(stackStock);
       this.setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;

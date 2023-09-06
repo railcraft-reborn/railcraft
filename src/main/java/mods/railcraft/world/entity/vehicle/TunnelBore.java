@@ -803,11 +803,11 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
             if (StackFilter.FUEL.test(stack)) {
-              stack = fuelContainer.insert(stack);
+              stack = this.fuelContainer.insert(stack);
             }
 
-            if (!stack.isEmpty() && ContainerTools.isStackEqualToBlock(stack, Blocks.GRAVEL)) {
-              stack = ballastContainer.insert(stack);
+            if (!stack.isEmpty() && ContainerTools.isItemStackBlock(stack, Blocks.GRAVEL)) {
+              stack = this.ballastContainer.insert(stack);
             }
 
             if (!stack.isEmpty()) {

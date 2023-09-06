@@ -1,10 +1,7 @@
 package mods.railcraft.util.container;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
 import net.minecraft.core.BlockPos;
@@ -33,7 +30,7 @@ public abstract class ContainerTools {
   }
 
   public static boolean canMerge(ItemStack target, ItemStack source) {
-    return target.isEmpty() || source.isEmpty() || (isItemEqual(target, source)
+    return target.isEmpty() || source.isEmpty() || (ItemStack.isSameItem(target, source)
         && target.getCount() + source.getCount() <= target.getMaxStackSize());
   }
 
@@ -63,17 +60,13 @@ public abstract class ContainerTools {
     }
   }
 
-  public static boolean isItem(ItemStack stack, @Nullable Item item) {
-    return !stack.isEmpty() && item != null && stack.getItem() == item;
-  }
-
   public static boolean matchesFilter(ItemStack filter, ItemStack stack) {
     if (stack.isEmpty() || filter.isEmpty())
       return false;
     if (filter.getItem() instanceof Filter filterItem) {
       return filterItem.matches(filter, stack);
     }
-    return isItemEqual(stack, filter);
+    return ItemStack.isSameItem(stack, filter);
   }
 
   /**
@@ -104,70 +97,12 @@ public abstract class ContainerTools {
         || a.getTag().equals(b.getTag());
   }
 
-  /**
-   * A more robust item comparison function.
-   * <p/>
-   * Does not compare stackSize.
-   * <p/>
-   * Two null stacks will return true, unlike the other functions.
-   * <p/>
-   * This function is primarily intended to be used to track changes to an ItemStack.
-   *
-   * @param a An ItemStack
-   * @param b An ItemStack
-   * @return True if equal
-   */
-  public static boolean isItemEqualSemiStrict(@Nullable ItemStack a, @Nullable ItemStack b) {
-    if (a == null && b == null)
-      return true;
-    if (a == null || b == null)
-      return false;
-    if (a.getItem() != b.getItem())
-      return false;
-    if (a.getDamageValue() != b.getDamageValue())
-      return false;
-    return a.getTag() == null || b.getTag() == null
-        || a.getTag().equals(b.getTag());
-  }
-
-  /**
-   * Returns true if the item is equal to any one of several possible matches.
-   *
-   * @param stack the ItemStack to test
-   * @param matches the ItemStacks to test against
-   * @return true if a match is found
-   */
-  public static boolean isItemEqual(@NotNull ItemStack stack, ItemStack... matches) {
-    return Arrays.stream(matches).anyMatch(match -> ItemStack.isSameItem(match, stack));
-  }
-
-  /**
-   * Returns true if the item is equal to any one of several possible matches.
-   *
-   * @param stack the ItemStack to test
-   * @param matches the ItemStacks to test against
-   * @return true if a match is found
-   */
-  public static boolean isItemEqual(@NotNull ItemStack stack, Collection<ItemStack> matches) {
-    return matches.stream().anyMatch(match -> ItemStack.isSameItem(stack, match));
-  }
-
-  public static boolean isItemGreaterOrEqualThan(@NotNull ItemStack stackA,
-      @NotNull ItemStack stackB) {
-    return ItemStack.isSameItem(stackA, stackB) && stackA.getCount() >= stackB.getCount();
-  }
-
-  public static boolean isItemLessThanOrEqualTo(@NotNull ItemStack stackA,
-      @NotNull ItemStack stackB) {
-    return ItemStack.isSameItem(stackA, stackB) && stackA.getCount() <= stackB.getCount();
-  }
-
-  public static ListTag writeInventory(Container inventory) {
-    ListTag tag = new ListTag();
-    for (byte i = 0; i < inventory.getContainerSize(); i++) {
-      ItemStack itemStack = inventory.getItem(i);
+  public static ListTag writeContainer(Container container) {
+    var tag = new ListTag();
+    for (byte i = 0; i < container.getContainerSize(); i++) {
+      var itemStack = container.getItem(i);
       if (!itemStack.isEmpty()) {
-        CompoundTag slotTag = new CompoundTag();
+        var slotTag = new CompoundTag();
         slotTag.putByte("index", i);
         itemStack.save(slotTag);
         tag.add(slotTag);
@@ -176,21 +111,21 @@ public abstract class ContainerTools {
     return tag;
   }
 
-  public static void readInventory(Container inventory, ListTag tag) {
+  public static void readContainer(Container container, ListTag tag) {
     for (byte i = 0; i < tag.size(); i++) {
-      CompoundTag slotTag = tag.getCompound(i);
+      var slotTag = tag.getCompound(i);
       int slot = slotTag.getByte("index");
-      if (slot >= 0 && slot < inventory.getContainerSize()) {
-        ItemStack itemStack = ItemStack.of(slotTag);
-        inventory.setItem(slot, itemStack);
+      if (slot >= 0 && slot < container.getContainerSize()) {
+        var itemStack = ItemStack.of(slotTag);
+        container.setItem(slot, itemStack);
       }
     }
   }
 
-  public static boolean isStackEqualToBlock(ItemStack stack, @Nullable Block block) {
-    if (stack.isEmpty() || block == null || !(block.asItem() instanceof BlockItem item))
-      return false;
-    return stack.is(item);
+  public static boolean isItemStackBlock(ItemStack itemStack, Block block) {
+    return !itemStack.isEmpty()
+        && itemStack.getItem() instanceof BlockItem item
+        && item.getBlock() == block;
   }
 
   public static Block getBlockFromStack(ItemStack stack) {
@@ -209,10 +144,10 @@ public abstract class ContainerTools {
   @Nullable
   public static BlockState getBlockStateFromStack(ItemStack stack, Level level,
       BlockPos pos) {
-    if (stack.isEmpty())
+    if (stack.isEmpty()) {
       return null;
-    Item item = stack.getItem();
-    if (item instanceof BlockItem blockItem) {
+    }
+    if (stack.getItem() instanceof BlockItem blockItem) {
       return blockItem.getBlock().getStateForPlacement(
           new BlockPlaceContext(level, null, InteractionHand.MAIN_HAND, stack,
               new BlockHitResult(new Vec3(0.5D, 0.5D, 0.5D), Direction.UP, pos.above(), false)));

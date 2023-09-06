@@ -30,7 +30,7 @@ public class FirestoneItem extends Item {
       || itemStack.is(RailcraftItems.RAW_FIRESTONE.get())
       || itemStack.is(RailcraftItems.CUT_FIRESTONE.get())
       || itemStack.is(RailcraftItems.CRACKED_FIRESTONE.get())
-      || ContainerTools.isStackEqualToBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
+      || ContainerTools.isItemStackBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
 
   public FirestoneItem(Properties properties) {
     super(properties);

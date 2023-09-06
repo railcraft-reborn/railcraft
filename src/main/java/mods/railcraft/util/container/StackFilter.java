@@ -137,7 +137,7 @@ public enum StackFilter implements Predicate<ItemStack> {
         return false;
       }
       return stacks.stream().filter(toTest -> !toTest.isEmpty())
-          .noneMatch(filter -> ContainerTools.isItemEqual(itemStack, filter));
+          .noneMatch(filter -> ItemStack.isSameItem(itemStack, filter));
     };
   }
 

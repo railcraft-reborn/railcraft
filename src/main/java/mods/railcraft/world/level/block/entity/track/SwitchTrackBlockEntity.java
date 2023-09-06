@@ -7,19 +7,20 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
-import com.google.common.collect.Sets;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -244,9 +245,15 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     super.saveAdditional(tag);
     tag.putByte("sprung", this.sprung);
     tag.putByte("locked", this.locked);
-    tag.put("springingCarts", RailcraftNBTUtil.createUUIDArray(this.springingCarts));
-    tag.put("lockingCarts", RailcraftNBTUtil.createUUIDArray(this.lockingCarts));
-    tag.put("decidingCarts", RailcraftNBTUtil.createUUIDArray(this.decidingCarts));
+    tag.put("springingCarts", this.springingCarts.stream()
+        .map(NbtUtils::createUUID)
+        .collect(Collectors.toCollection(ListTag::new)));
+    tag.put("lockingCarts", this.lockingCarts.stream()
+        .map(NbtUtils::createUUID)
+        .collect(Collectors.toCollection(ListTag::new)));
+    tag.put("decidingCarts", this.decidingCarts.stream()
+        .map(NbtUtils::createUUID)
+        .collect(Collectors.toCollection(ListTag::new)));
     if (this.currentCart != null) {
       tag.putUUID("currentCart", this.currentCart.entity().getUUID());
     }
@@ -257,15 +264,18 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     super.load(tag);
     this.sprung = tag.getByte("sprung");
     this.locked = tag.getByte("locked");
-    this.springingCarts = Sets.newHashSet(
-        RailcraftNBTUtil
-            .loadUUIDArray(tag.getList("springingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
-    this.lockingCarts = Sets.newHashSet(
-        RailcraftNBTUtil
-            .loadUUIDArray(tag.getList("lockingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
-    this.decidingCarts = Sets.newHashSet(
-        RailcraftNBTUtil
-            .loadUUIDArray(tag.getList("decidingCarts", RailcraftNBTUtil.UUID_TAG_TYPE)));
+    this.springingCarts = tag.getList("springingCarts", Tag.TAG_INT_ARRAY)
+        .stream()
+        .map(NbtUtils::loadUUID)
+        .collect(Collectors.toCollection(HashSet::new));
+    this.lockingCarts = tag.getList("lockingCarts", Tag.TAG_INT_ARRAY)
+        .stream()
+        .map(NbtUtils::loadUUID)
+        .collect(Collectors.toCollection(HashSet::new));
+    this.decidingCarts = tag.getList("decidingCarts", Tag.TAG_INT_ARRAY)
+        .stream()
+        .map(NbtUtils::loadUUID)
+        .collect(Collectors.toCollection(HashSet::new));
     this.unresolvedCurrentCart = tag.hasUUID("currentCart") ? tag.getUUID("currentCart") : null;
   }
 

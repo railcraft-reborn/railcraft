@@ -3,10 +3,8 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.charge.ChargeCartStorage;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -47,7 +45,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   private final Container ticketInventory =
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
-  private ChargeCartStorage cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
+  private ChargeCartStorageImpl cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
 
   public ElectricLocomotive(EntityType<?> type, Level level) {
     super(type, level);
@@ -161,13 +159,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    RailcraftNBTUtil.loadEnergyCell(tag.getCompound("battery"), this.cartStorage);
+    this.cartStorage.deserializeNBT(tag.getCompound("battery"));
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("battery", RailcraftNBTUtil.saveEnergyCell(this.cartStorage));
+    tag.put("battery", this.cartStorage.serializeNBT());
   }
 
   @Override
@@ -177,14 +175,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     if (this.cartStorage == null) {
       this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
     }
-    RailcraftNBTUtil.loadEnergyCell(tag.getCompound("battery"), this.cartStorage);
+    this.cartStorage.deserializeNBT(tag.getCompound("battery"));
   }
 
   @Override
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
-    itemStack.getOrCreateTag()
-        .put("battery", RailcraftNBTUtil.saveEnergyCell(this.cartStorage));
+    itemStack.getOrCreateTag().put("battery", this.cartStorage.serializeNBT());
     return itemStack;
   }
 

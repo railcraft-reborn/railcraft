@@ -2,29 +2,29 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.EnumSet;
 import java.util.Set;
-import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TrackRelayerMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 
 public class TrackRelayer extends MaintenancePatternMinecart {
 
-  private static final int SLOT_STOCK = 0;
-  private static final int SLOT_EXISTS = 0;
-  private static final int SLOT_REPLACE = 1;
+  private static final int STOCK_SLOT = 0;
+  private static final int REPLACE_SLOT = 1;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
+
+  // Pattern container slot
+  private static final int EXISTING_TRACK_SLOT = 0;
 
   private static final Set<Direction> HORIZONTAL_DIRECTION =
       EnumSet.of(Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH);
@@ -56,48 +56,48 @@ public class TrackRelayer extends MaintenancePatternMinecart {
     if (this.mode() == Mode.OFF) {
       return;
     }
-    this.stockItems(SLOT_REPLACE, SLOT_STOCK);
+    this.stockItems(REPLACE_SLOT, STOCK_SLOT);
     this.replace();
   }
 
   private void replace() {
-    var pos = BlockPos.containing(position());
-
-    if (TrackUtil.isRailBlockAt(level(), pos.below())) {
+    var pos = this.blockPosition();
+    if (BaseRailBlock.isRail(this.level(), pos.below())) {
       pos = pos.below();
     }
 
-    var blockstate = level().getBlockState(pos);
-    var block = blockstate.getBlock();
+    var blockState = this.level().getBlockState(pos);
+    if (!BaseRailBlock.isRail(blockState)) {
+      return;
+    }
 
-    if (TrackUtil.isRail(block)) {
-      var trackExist = this.patternContainer.getItem(SLOT_EXISTS);
-      var trackStock = this.patternContainer.getItem(SLOT_STOCK);
+    var block = blockState.getBlock();
 
-      boolean nextToSuspended = false;
-      for (var direction : HORIZONTAL_DIRECTION) {
-        var blockEntity = level().getBlockEntity(pos.offset(direction.getNormal()));
-        if (blockEntity instanceof DumpingTrackBlockEntity) {
-          nextToSuspended = true;
-          break;
-        }
+    var existingTrack = this.patternContainer.getItem(EXISTING_TRACK_SLOT);
+    if (existingTrack.isEmpty()) {
+      return;
+    }
+    var stockTrack = this.getItem(STOCK_SLOT);
+    if (stockTrack.isEmpty()) {
+      return;
+    }
+
+    boolean nextToSuspended = false;
+    for (var direction : HORIZONTAL_DIRECTION) {
+      var blockEntity = this.level().getBlockEntity(pos.offset(direction.getNormal()));
+      if (blockEntity instanceof DumpingTrackBlockEntity) {
+        nextToSuspended = true;
+        break;
       }
+    }
 
-      if (nextToSuspended) {
-        return;
-      }
+    if (nextToSuspended) {
+      return;
+    }
 
-      if (!trackExist.isEmpty() && !trackStock.isEmpty()) {
-        if (trackExist.getItem() instanceof BlockItem trackExistsBlockItem) {
-          if (trackExistsBlockItem.getBlock() == block) {
-            var trackShape = removeOldTrack(pos, blockstate);
-            placeNewTrack(pos, SLOT_STOCK, trackShape);
-          }
-        } else if (ContainerTools.isStackEqualToBlock(trackExist, block)) {
-          var trackShape = removeOldTrack(pos, blockstate);
-          placeNewTrack(pos, SLOT_STOCK, trackShape);
-        }
-      }
+    if (ContainerTools.isItemStackBlock(existingTrack, block)) {
+      var trackShape = this.removeOldTrack(pos, blockState);
+      this.placeNewTrack(pos, STOCK_SLOT, trackShape);
     }
   }
 
@@ -108,8 +108,8 @@ public class TrackRelayer extends MaintenancePatternMinecart {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    var trackReplace = this.patternContainer.getItem(SLOT_REPLACE);
-    return ContainerTools.isItemEqual(stack, trackReplace);
+    var trackReplace = this.patternContainer.getItem(REPLACE_SLOT);
+    return ItemStack.isSameItem(stack, trackReplace);
   }
 
   @Override

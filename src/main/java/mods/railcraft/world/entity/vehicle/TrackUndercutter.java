@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.HashSet;
 import java.util.Set;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
@@ -20,6 +19,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +27,8 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class TrackUndercutter extends MaintenancePatternMinecart {
 
-  public static final Set<Block> EXCLUDED_BLOCKS = new HashSet<>();
+  private static final Set<Block> EXCLUDED_BLOCKS = Set.of(Blocks.SAND);
+
   public static final int SLOT_STOCK_UNDER = 0;
   public static final int SLOT_STOCK_SIDE = 1;
   private static final int SLOT_EXIST_UNDER_A = 0;
@@ -38,29 +39,12 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
   private static final int SLOT_REPLACE_SIDE = 5;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 2);
 
-  static {
-    EXCLUDED_BLOCKS.add(Blocks.SAND);
-  }
-
   public TrackUndercutter(EntityType<?> type, Level level) {
     super(type, level);
   }
 
   public TrackUndercutter(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
     super(RailcraftEntityTypes.TRACK_UNDERCUTTER.get(), x, y, z, level);
-  }
-
-  public static boolean isValidBallast(ItemStack stack, TrackUndercutter trackUndercutter) {
-    if (stack.isEmpty()) {
-      return false;
-    }
-    var state = ContainerTools.getBlockStateFromStack(stack);
-    if (EXCLUDED_BLOCKS.contains(state.getBlock())) {
-      return false;
-    }
-
-    return state.isSuffocating(trackUndercutter.level(),
-        BlockPos.containing(trackUndercutter.position()));
   }
 
   @Override
@@ -82,124 +66,112 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     if (this.mode() == Mode.OFF) {
       return;
     }
-    stockItems(SLOT_REPLACE_UNDER, SLOT_STOCK_UNDER);
-    stockItems(SLOT_REPLACE_SIDE, SLOT_STOCK_SIDE);
+    this.stockItems(SLOT_REPLACE_UNDER, SLOT_STOCK_UNDER);
+    this.stockItems(SLOT_REPLACE_SIDE, SLOT_STOCK_SIDE);
 
     var pos = BlockPos.containing(this.position());
-    if (TrackUtil.isRailBlockAt(this.level(), pos.below())) {
+    if (BaseRailBlock.isRail(this.level(), pos.below())) {
       pos = pos.below();
     }
 
-    var state = this.level().getBlockState(pos);
-    var block = state.getBlock();
+    var blockState = this.level().getBlockState(pos);
+    if (!BaseRailBlock.isRail(blockState)) {
+      return;
+    }
 
-    if (TrackUtil.isRail(block)) {
-      var railShape = TrackUtil.getTrackDirection(this.level(), pos, state, this);
-      pos = pos.below();
+    var railShape = TrackUtil.getTrackDirection(this.level(), pos, blockState, this);
+    pos = pos.below();
 
-      boolean slotANull = true;
-      boolean slotBNull = true;
-      if (!patternContainer.getItem(SLOT_EXIST_UNDER_A).isEmpty()) {
-        replaceUnder(pos, SLOT_EXIST_UNDER_A);
-        slotANull = false;
-      }
-      if (!patternContainer.getItem(SLOT_EXIST_UNDER_B).isEmpty()) {
-        replaceUnder(pos, SLOT_EXIST_UNDER_B);
-        slotBNull = false;
-      }
+    var slotAEmpty = true;
+    var slotBEmpty = true;
+    if (!this.patternContainer.getItem(SLOT_EXIST_UNDER_A).isEmpty()) {
+      this.replaceUnder(pos, SLOT_EXIST_UNDER_A);
+      slotAEmpty = false;
+    }
+    if (!this.patternContainer.getItem(SLOT_EXIST_UNDER_B).isEmpty()) {
+      this.replaceUnder(pos, SLOT_EXIST_UNDER_B);
+      slotBEmpty = false;
+    }
 
-      if (slotANull && slotBNull) {
-        replaceUnder(pos, SLOT_EXIST_UNDER_A);
-      }
+    if (slotAEmpty && slotBEmpty) {
+      this.replaceUnder(pos, SLOT_EXIST_UNDER_A);
+    }
 
-      slotANull = true;
-      slotBNull = true;
-      if (!patternContainer.getItem(SLOT_EXIST_SIDE_A).isEmpty()) {
-        replaceSide(pos, SLOT_EXIST_SIDE_A, railShape);
-        slotANull = false;
-      }
-      if (!patternContainer.getItem(SLOT_EXIST_SIDE_B).isEmpty()) {
-        replaceSide(pos, SLOT_EXIST_SIDE_B, railShape);
-        slotBNull = false;
-      }
+    slotAEmpty = true;
+    slotBEmpty = true;
+    if (!this.patternContainer.getItem(SLOT_EXIST_SIDE_A).isEmpty()) {
+      this.replaceSide(pos, SLOT_EXIST_SIDE_A, railShape);
+      slotAEmpty = false;
+    }
+    if (!this.patternContainer.getItem(SLOT_EXIST_SIDE_B).isEmpty()) {
+      this.replaceSide(pos, SLOT_EXIST_SIDE_B, railShape);
+      slotBEmpty = false;
+    }
 
-      if (slotANull && slotBNull) {
-        replaceSide(pos, SLOT_EXIST_SIDE_A, railShape);
-      }
+    if (slotAEmpty && slotBEmpty) {
+      this.replaceSide(pos, SLOT_EXIST_SIDE_A, railShape);
     }
   }
 
   private void replaceUnder(BlockPos pos, int slotExist) {
-    replaceWith(pos, slotExist, SLOT_STOCK_UNDER);
+    this.replaceWith(pos, slotExist, SLOT_STOCK_UNDER);
   }
 
   private void replaceSide(BlockPos pos, int slotExist, RailShape railShape) {
     if (RailShapeUtil.isEastWest(railShape)) {
-      replaceWith(pos.north(), slotExist, SLOT_STOCK_SIDE);
-      replaceWith(pos.south(), slotExist, SLOT_STOCK_SIDE);
+      this.replaceWith(pos.north(), slotExist, SLOT_STOCK_SIDE);
+      this.replaceWith(pos.south(), slotExist, SLOT_STOCK_SIDE);
     } else if (RailShapeUtil.isNorthSouth(railShape)) {
-      replaceWith(pos.east(), slotExist, SLOT_STOCK_SIDE);
-      replaceWith(pos.west(), slotExist, SLOT_STOCK_SIDE);
+      this.replaceWith(pos.east(), slotExist, SLOT_STOCK_SIDE);
+      this.replaceWith(pos.west(), slotExist, SLOT_STOCK_SIDE);
     }
   }
 
-  private void replaceWith(BlockPos pos, int slotExist, int slotStock) {
-    var exist = patternContainer.getItem(slotExist);
-    var stock = getItem(slotStock);
+  private void replaceWith(BlockPos pos, int existingSlot, int stockSlot) {
+    var existingTrack = this.patternContainer.getItem(existingSlot);
+    var stockTrack = this.getItem(stockSlot);
 
-    if (!isValidBallast(stock, this)) {
+    if (!isValidBallast(stockTrack, this)) {
       return;
     }
 
     var oldState = this.level().getBlockState(pos);
 
-    if (!blockMatches(oldState, exist)) {
+    if (!blockMatches(oldState, existingTrack)) {
       return;
     }
 
-    if (safeToReplace(pos)) {
-      var stockBlock = ContainerTools.getBlockStateFromStack(stock, this.level(), pos);
+    if (this.safeToReplace(pos)) {
+      var stockBlock = ContainerTools.getBlockStateFromStack(stockTrack, this.level(), pos);
       var drops = Block.getDrops(oldState, (ServerLevel) this.level(), pos,
           this.level().getBlockEntity(pos));
-      if (stockBlock != null && level().setBlockAndUpdate(pos, stockBlock)) {
+      if (stockBlock != null && this.level().setBlockAndUpdate(pos, stockBlock)) {
         this.level().playSound(null, pos, stockBlock.getSoundType().getPlaceSound(),
             SoundSource.AMBIENT, (1f + 1.0F) / 2.0F, 0.8F);
 
-        this.removeItem(slotStock, 1);
+        this.removeItem(stockSlot, 1);
+        var rollingStock = RollingStock.getOrThrow(this);
         for (var stack : drops) {
-          RollingStock.getOrThrow(this).offerOrDropItem(stack);
+          rollingStock.offerOrDropItem(stack);
         }
-        blink();
+        this.blink();
       }
     }
   }
 
-
-  private boolean blockMatches(BlockState state, ItemStack stack) {
-    if (stack.isEmpty()) {
-      return true;
-    }
-    if (stack.getItem() instanceof BlockItem) {
-      var stackBlock = ContainerTools.getBlockStateFromStack(stack);
-      return (state.equals(stackBlock) || state.is(stackBlock.getBlock())) ||
-          state.is(Blocks.GRASS) && stackBlock.is(Blocks.DIRT);
-    }
-    return false;
-  }
-
   @SuppressWarnings("deprecation")
   private boolean safeToReplace(BlockPos pos) {
-    var state = level().getBlockState(pos);
-    if (state.isAir()) {
+    var blockState = this.level().getBlockState(pos);
+    if (blockState.isAir()) {
       return false;
     }
-    if (state.liquid()) {
+    if (blockState.liquid()) {
       return false;
     }
-    if (state.getDestroySpeed(this.level(), pos) < 0) {
+    if (blockState.getDestroySpeed(this.level(), pos) < 0) {
       return false;
     }
-    return !TunnelBore.REPLACEABLE_BLOCKS.contains(state.getBlock());
+    return !TunnelBore.REPLACEABLE_BLOCKS.contains(blockState.getBlock());
   }
 
   @Override
@@ -214,19 +186,40 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    if (slot == SLOT_REPLACE_UNDER) {
-      var trackReplace = patternContainer.getItem(SLOT_REPLACE_UNDER);
-      return ItemStack.isSameItem(stack, trackReplace);
-    }
-    if (slot == SLOT_REPLACE_SIDE) {
-      var trackReplace = patternContainer.getItem(SLOT_REPLACE_SIDE);
-      return ItemStack.isSameItem(stack, trackReplace);
-    }
-    return false;
+    return switch (slot) {
+      case SLOT_REPLACE_UNDER -> ItemStack.isSameItem(stack,
+          this.patternContainer.getItem(SLOT_REPLACE_UNDER));
+      case SLOT_REPLACE_SIDE -> ItemStack.isSameItem(stack,
+          this.patternContainer.getItem(SLOT_REPLACE_SIDE));
+      default -> false;
+    };
   }
 
   @Override
   protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
     return new TrackUndercutterMenu(id, inventory, this);
+  }
+
+  private static boolean blockMatches(BlockState state, ItemStack stack) {
+    if (stack.isEmpty()) {
+      return true;
+    }
+    if (stack.getItem() instanceof BlockItem item) {
+      return state.is(item.getBlock()) || state.is(Blocks.GRASS) && item.getBlock() == Blocks.DIRT;
+    }
+    return false;
+  }
+
+  public static boolean isValidBallast(ItemStack stack, TrackUndercutter trackUndercutter) {
+    if (stack.isEmpty()) {
+      return false;
+    }
+    var state = ContainerTools.getBlockStateFromStack(stack);
+    if (EXCLUDED_BLOCKS.contains(state.getBlock())) {
+      return false;
+    }
+
+    return state.isSuffocating(trackUndercutter.level(),
+        trackUndercutter.blockPosition());
   }
 }

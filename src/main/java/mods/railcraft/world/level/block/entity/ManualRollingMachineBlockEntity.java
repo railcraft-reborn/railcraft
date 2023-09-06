@@ -52,7 +52,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.put("container", this.container.createTag());
-    tag.put("craftMatrix", ContainerTools.writeInventory(craftMatrix));
+    tag.put("craftMatrix", ContainerTools.writeContainer(craftMatrix));
     tag.putInt("progress", this.progress);
   }
 
@@ -60,7 +60,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   public void load(CompoundTag tag) {
     super.load(tag);
     this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
-    ContainerTools.readInventory(this.craftMatrix, tag.getList("craftMatrix", Tag.TAG_COMPOUND));
+    ContainerTools.readContainer(this.craftMatrix, tag.getList("craftMatrix", Tag.TAG_COMPOUND));
     this.progress = tag.getInt("progress");
   }
 
@@ -139,7 +139,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   protected void progress() {
-      this.progress++;
+    this.progress++;
   }
 
   private void balanceSlots() {
@@ -171,7 +171,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   public boolean canMakeMore() {
-    if(this.getRecipe().isEmpty())
+    if (this.getRecipe().isEmpty())
       return false;
     if (this.useLast)
       return true;
