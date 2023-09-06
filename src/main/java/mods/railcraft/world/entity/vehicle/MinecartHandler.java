@@ -1,13 +1,13 @@
 package mods.railcraft.world.entity.vehicle;
 
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2d;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
-import mods.railcraft.util.Vec2d;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -72,8 +72,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     this.testHighSpeedCollision(rollingStock, other);
 
     if (isLiving
-        && level.getBlockState(cart.blockPosition())
-            .is(RailcraftBlocks.ELEVATOR_TRACK.get())
+        && level.getBlockState(cart.blockPosition()).is(RailcraftBlocks.ELEVATOR_TRACK.get())
         && other.getBoundingBox().minY < cart.getBoundingBox().maxY) {
       other.move(MoverType.SELF,
           new Vec3(0, cart.getBoundingBox().maxY - other.getBoundingBox().minY, 0));
@@ -93,7 +92,6 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
     Vec3 cartMotion = cart.getDeltaMovement();
 
-
     // TODO: needs more thought in regards to passenger handling
     if (isLiving && !isPlayer && cart.canBeRidden() && !(other instanceof IronGolem)
         && cartMotion.x() * cartMotion.x() + cartMotion.z() * cartMotion.z() > 0.001D
@@ -109,11 +107,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    Vec2d cartPos = new Vec2d(cart);
-    Vec2d otherPos = new Vec2d(other);
-
-    Vec2d unit = Vec2d.subtract(otherPos, cartPos);
-    unit.normalize();
+    var sub = new Vector2d(other.getX(), other.getZ()).sub(cart.getX(), cart.getZ());
+    var unit = sub.equals(0, 0) ? sub : sub.normalize(); //Check for NaN
 
     double distance = cart.distanceTo(other);
     double depth = distance - OPTIMAL_DISTANCE;
@@ -123,22 +118,22 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
     if (depth < 0) {
       double spring = isPlayer ? COEF_SPRING_PLAYER : COEF_SPRING;
-      double penaltyX = spring * depth * unit.getX();
-      double penaltyZ = spring * depth * unit.getY();
+      double penaltyX = spring * depth * unit.x();
+      double penaltyZ = spring * depth * unit.y();
 
       forceX += penaltyX;
       forceZ += penaltyZ;
 
       if (!isPlayer) {
-        double impulseX = unit.getX();
-        double impulseZ = unit.getY();
+        double impulseX = unit.x();
+        double impulseZ = unit.y();
         impulseX *= -(1.0 + COEF_RESTITUTION);
         impulseZ *= -(1.0 + COEF_RESTITUTION);
 
-        Vec2d cartVel = new Vec2d(cart.getDeltaMovement());
-        Vec2d otherVel = new Vec2d(other.getDeltaMovement());
+        var cartVel = new Vector2d(cart.getDeltaMovement().x(), cart.getDeltaMovement().z());
+        var otherVel = new Vector2d(other.getDeltaMovement().x(), other.getDeltaMovement().z());
 
-        double dot = Vec2d.subtract(otherVel, cartVel).dotProduct(unit);
+        double dot = otherVel.sub(cartVel).dot(unit);
 
         impulseX *= dot;
         impulseZ *= dot;
@@ -162,15 +157,15 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
     } else {
-      Vec2d cartVel = new Vec2d(cart.getDeltaMovement());
-      cartVel.add(forceX, forceZ);
-      Vec2d otherVel = new Vec2d(other.getDeltaMovement());
-      otherVel.subtract(forceX, forceZ);
+      var cartVel = new Vector2d(cart.getDeltaMovement().x(), cart.getDeltaMovement().z())
+          .add((int) forceX, (int) forceZ);
+      var otherVel = new Vector2d(other.getDeltaMovement().x(), other.getDeltaMovement().z())
+          .sub((int) forceX, (int) forceZ);
 
-      double dot = Vec2d.subtract(otherVel, cartVel).dotProduct(unit);
+      double dot = otherVel.sub(cartVel).dot(unit);
 
-      double dampX = COEF_DAMPING * dot * unit.getX();
-      double dampZ = COEF_DAMPING * dot * unit.getY();
+      double dampX = COEF_DAMPING * dot * unit.x();
+      double dampZ = COEF_DAMPING * dot * unit.y();
 
       forceX += dampX;
       forceZ += dampZ;
