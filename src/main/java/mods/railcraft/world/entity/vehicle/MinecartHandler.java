@@ -158,9 +158,9 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
     } else {
       var cartVel = new Vector2d(cart.getDeltaMovement().x(), cart.getDeltaMovement().z())
-          .add((int) forceX, (int) forceZ);
+          .add(forceX, forceZ);
       var otherVel = new Vector2d(other.getDeltaMovement().x(), other.getDeltaMovement().z())
-          .sub((int) forceX, (int) forceZ);
+          .sub(forceX, forceZ);
 
       double dot = otherVel.sub(cartVel).dot(unit);
 
