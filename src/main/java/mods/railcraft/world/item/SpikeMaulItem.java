@@ -12,7 +12,6 @@ import com.google.common.collect.Multimap;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.item.SpikeMaulTarget;
-import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
@@ -75,7 +74,7 @@ public class SpikeMaulItem extends TieredItem {
     }
 
     var railShape = TrackBlock.getRailShapeRaw(existingBlockState);
-    if (RailShapeUtil.isAscending(railShape)) {
+    if (railShape.isAscending()) {
       return InteractionResult.PASS;
     }
 

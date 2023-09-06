@@ -1,35 +1,31 @@
 package mods.railcraft.api.track;
 
-import javax.annotation.Nullable;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
 public final class RailShapeUtil {
 
   private RailShapeUtil() {}
 
-  public static boolean isLevelStraight(@Nullable RailShape dir) {
-    return dir != null && dir.ordinal() < 2;
+  public static boolean isLevelStraight(RailShape railShape) {
+    return railShape == RailShape.NORTH_SOUTH || railShape == RailShape.EAST_WEST;
   }
 
-  public static boolean isStraight(@Nullable RailShape dir) {
-    return dir != null && dir.ordinal() < 6;
+  public static boolean isEastWest(RailShape railShape) {
+    return (railShape == RailShape.EAST_WEST
+        || railShape == RailShape.ASCENDING_EAST
+        || railShape == RailShape.ASCENDING_WEST);
   }
 
-  public static boolean isEastWest(@Nullable RailShape dir) {
-    return (dir == RailShape.EAST_WEST || dir == RailShape.ASCENDING_EAST
-        || dir == RailShape.ASCENDING_WEST);
+  public static boolean isNorthSouth(RailShape railShape) {
+    return (railShape == RailShape.NORTH_SOUTH
+        || railShape == RailShape.ASCENDING_NORTH
+        || railShape == RailShape.ASCENDING_SOUTH);
   }
 
-  public static boolean isNorthSouth(@Nullable RailShape dir) {
-    return (dir == RailShape.NORTH_SOUTH || dir == RailShape.ASCENDING_NORTH
-        || dir == RailShape.ASCENDING_SOUTH);
-  }
-
-  public static boolean isAscending(@Nullable RailShape dir) {
-    return dir != null && dir.isAscending();
-  }
-
-  public static boolean isTurn(@Nullable RailShape dir) {
-    return dir != null && dir.ordinal() >= 6;
+  public static boolean isTurn(RailShape railShape) {
+    return railShape == RailShape.SOUTH_EAST
+        || railShape == RailShape.SOUTH_WEST
+        || railShape == RailShape.NORTH_WEST
+        || railShape == RailShape.NORTH_EAST;
   }
 }

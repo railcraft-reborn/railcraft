@@ -5,7 +5,11 @@ import net.minecraft.util.StringRepresentable;
 
 public enum ArrowDirection implements StringRepresentable {
 
-  NORTH("north"), SOUTH("south"), EAST("east"), WEST("west"), NORTH_SOUTH("north_south"),
+  NORTH("north"),
+  SOUTH("south"),
+  EAST("east"),
+  WEST("west"),
+  NORTH_SOUTH("north_south"),
   EAST_WEST("east_west");
 
   private final String name;

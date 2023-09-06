@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import mods.railcraft.Translations.Signal;
 import mods.railcraft.Translations.Tips;
-import mods.railcraft.api.core.DimensionPos;
 import mods.railcraft.api.signal.TrackLocator;
 import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -36,8 +36,11 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
 
       var signalNetwork = signal.signalNetwork();
 
-      if (this.checkAbandonPairing(stack, player, (ServerLevel) level,
+      var signalPos = getPeerPos(stack).orElse(null);
+
+      if (signalPos != null && checkAbandonPairing(signalPos, player, (ServerLevel) level,
           signalNetwork::stopLinking)) {
+        clearPeerPos(stack);
         player.displayClientMessage(
             Component.translatable(Signal.SIGNAL_SURVEYOR_ABANDONED)
                 .withStyle(ChatFormatting.LIGHT_PURPLE),
@@ -45,7 +48,6 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
         return InteractionResult.SUCCESS;
       }
 
-      var signalPos = this.getPeerPos(stack);
       var trackStatus = signal.trackLocator().trackStatus();
       if (trackStatus == TrackLocator.Status.INVALID) {
         player.displayClientMessage(
@@ -57,10 +59,11 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
             Component.translatable(Signal.SIGNAL_SURVEYOR_BEGIN)
                 .withStyle(ChatFormatting.LIGHT_PURPLE),
             true);
-        this.setPeerPos(stack, DimensionPos.from(blockEntity));
+        setPeerPos(stack,
+            GlobalPos.of(blockEntity.getLevel().dimension(), blockEntity.getBlockPos()));
         signalNetwork.startLinking();
-      } else if (!Objects.equals(pos, signalPos.getPos())) {
-        blockEntity = level.getBlockEntity(signalPos.getPos());
+      } else if (!Objects.equals(pos, signalPos.pos())) {
+        blockEntity = level.getBlockEntity(signalPos.pos());
         if (blockEntity instanceof MonitoringSignalEntity<?> otherSignal) {
           if (tryLinking(signal, otherSignal)) {
             signal.signalNetwork().stopLinking();
@@ -69,19 +72,19 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
                 Component.translatable(Signal.SIGNAL_SURVEYOR_SUCCESS)
                     .withStyle(ChatFormatting.GREEN),
                 true);
-            this.clearPeerPos(stack);
+            clearPeerPos(stack);
           } else {
             player.displayClientMessage(
                 Component.translatable(Signal.SIGNAL_SURVEYOR_INVALID_PAIR)
                     .withStyle(ChatFormatting.RED),
                 true);
           }
-        } else if (level.isLoaded(signalPos.getPos())) {
+        } else if (level.isLoaded(signalPos.pos())) {
           player.displayClientMessage(
               Component.translatable(Signal.SIGNAL_SURVEYOR_LOST).withStyle(ChatFormatting.RED),
               true);
           signalNetwork.stopLinking();
-          this.clearPeerPos(stack);
+          clearPeerPos(stack);
         } else {
           player.displayClientMessage(
               Component.translatable(Signal.SIGNAL_SURVEYOR_UNLOADED).withStyle(ChatFormatting.RED),
@@ -92,7 +95,7 @@ public class SignalBlockSurveyorItem extends PairingToolItem {
             Component.translatable(Signal.SIGNAL_SURVEYOR_ABANDONED),
             true);
         signalNetwork.stopLinking();
-        this.clearPeerPos(stack);
+        clearPeerPos(stack);
       }
     } else if (!level.isClientSide()) {
       player.displayClientMessage(

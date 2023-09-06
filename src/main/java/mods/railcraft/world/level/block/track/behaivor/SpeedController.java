@@ -88,7 +88,7 @@ public enum SpeedController implements TrackType.EventHandler {
         BlockPos pos) {
       var shape = TrackUtil.getTrackDirection(level, pos, cart);
       // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
-      return RailShapeUtil.isTurn(shape) || RailShapeUtil.isAscending(shape) ? 0.4F : 0.44F;
+      return RailShapeUtil.isTurn(shape) || shape.isAscending() ? 0.4F : 0.44F;
     }
   },
 

@@ -1,9 +1,9 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.season.Season;
 import net.minecraft.core.BlockPos;
@@ -36,8 +36,10 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
       SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
-  protected @Nullable Direction travelDirection;
-  protected @Nullable Direction verticalTravelDirection;
+  @Nullable
+  private Direction travelDirection;
+  @Nullable
+  private Direction verticalTravelDirection;
 
   protected RailcraftMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -45,6 +47,14 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   protected RailcraftMinecart(EntityType<?> type, double x, double y, double z, Level level) {
     super(type, x, y, z, level);
+  }
+
+  public Optional<Direction> travelDirection() {
+    return Optional.ofNullable(this.travelDirection);
+  }
+
+  public Optional<Direction> verticalTravelDirection() {
+    return Optional.ofNullable(this.verticalTravelDirection);
   }
 
   @Override
@@ -122,72 +132,68 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   protected void updateTravelDirection(BlockPos pos, BlockState state) {
     var shape = TrackUtil.getTrackDirection(this.level(), pos, state);
 
-    @Nullable
-    Direction facing = this.determineTravelDirection(shape);
-    @Nullable
-    Direction previousEnumFacing = travelDirectionHistory[1];
+    var direction = this.determineTravelDirection(shape);
+    var lastDirection = this.travelDirectionHistory[1];
 
-    if (previousEnumFacing != null && travelDirectionHistory[0] == previousEnumFacing) {
-      travelDirection = facing;
-      verticalTravelDirection = determineVerticalTravelDirection(shape);
+    if (lastDirection != null && this.travelDirectionHistory[0] == lastDirection) {
+      this.travelDirection = direction;
+      this.verticalTravelDirection = this.determineVerticalTravelDirection(shape);
     }
-    travelDirectionHistory[0] = previousEnumFacing;
-    travelDirectionHistory[1] = facing;
+    this.travelDirectionHistory[0] = lastDirection;
+    this.travelDirectionHistory[1] = direction;
   }
 
   @Nullable
   private Direction determineTravelDirection(RailShape shape) {
-    if (RailShapeUtil.isStraight(shape)) {
-      if (getX() - xo > 0) {
-        return Direction.EAST;
+    return switch (shape) {
+      case SOUTH_EAST -> {
+        if (this.zo > this.getZ()) {
+          yield Direction.EAST;
+        } else {
+          yield Direction.SOUTH;
+        }
       }
-      if (getX() - xo < 0) {
-        return Direction.WEST;
+      case SOUTH_WEST -> {
+        if (this.zo > this.getZ()) {
+          yield Direction.WEST;
+        } else {
+          yield Direction.SOUTH;
+        }
       }
-      if (getZ() - zo > 0) {
-        return Direction.SOUTH;
+      case NORTH_WEST -> {
+        if (this.zo > this.getZ()) {
+          yield Direction.NORTH;
+        } else {
+          yield Direction.WEST;
+        }
       }
-      if (getZ() - zo < 0) {
-        return Direction.NORTH;
+      case NORTH_EAST -> {
+        if (this.zo > this.getZ()) {
+          yield Direction.NORTH;
+        } else {
+          yield Direction.EAST;
+        }
       }
-    } else {
-      switch (shape) {
-        case SOUTH_EAST:
-          if (zo > getZ()) {
-            return Direction.EAST;
-          } else {
-            return Direction.SOUTH;
-          }
-        case SOUTH_WEST:
-          if (zo > getZ()) {
-            return Direction.WEST;
-          } else {
-            return Direction.SOUTH;
-          }
-        case NORTH_WEST:
-          if (zo > getZ()) {
-            return Direction.NORTH;
-          } else {
-            return Direction.WEST;
-          }
-        case NORTH_EAST:
-          if (zo > getZ()) {
-            return Direction.NORTH;
-          } else {
-            return Direction.EAST;
-          }
-        default:
-          break;
+      default -> {
+        if (this.getX() - this.xo > 0) {
+          yield Direction.EAST;
+        }
+        if (this.getX() - this.xo < 0) {
+          yield Direction.WEST;
+        }
+        if (this.getZ() - this.zo > 0) {
+          yield Direction.SOUTH;
+        }
+        if (this.getZ() - this.zo < 0) {
+          yield Direction.NORTH;
+        }
+        yield null;
       }
-    }
-    return null;
+    };
   }
 
   private @Nullable Direction determineVerticalTravelDirection(RailShape shape) {
-    if (shape.isAscending()) {
-      return this.yo < getY() ? Direction.UP : Direction.DOWN;
-    }
-    return null;
+    return shape.isAscending() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
   }
 
   @Override
@@ -205,9 +211,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     return false;
   }
 
-  /**
-   * Checks if the entity is in range to render.
-   */
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return MinecartUtil.isInRangeToRenderDist(this, distance);

@@ -1,9 +1,11 @@
 package mods.railcraft.world.item;
 
-import org.jetbrains.annotations.Nullable;
-import mods.railcraft.api.core.DimensionPos;
+import java.util.Optional;
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.api.item.ActivationBlockingItem;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -13,41 +15,43 @@ import net.minecraft.world.item.ItemStack;
 @ActivationBlockingItem
 public class PairingToolItem extends Item {
 
+  private static final Logger logger = LogUtils.getLogger();
+
   public PairingToolItem(Properties properties) {
     super(properties);
   }
 
-  @Nullable
-  public DimensionPos getPeerPos(ItemStack itemStack) {
-    CompoundTag tag = itemStack.getTag();
+  public static Optional<GlobalPos> getPeerPos(ItemStack itemStack) {
+    var tag = itemStack.getTag();
     return tag != null && tag.contains("peerPos", Tag.TAG_COMPOUND)
-        ? DimensionPos.readTag(tag.getCompound("peerPos"))
-        : null;
+        ? GlobalPos.CODEC
+            .parse(NbtOps.INSTANCE, tag.getCompound("peerPos"))
+            .resultOrPartial(logger::error)
+        : Optional.empty();
   }
 
-  public void setPeerPos(ItemStack itemStack, DimensionPos peerPos) {
-    itemStack.getOrCreateTag().put("peerPos", peerPos.writeTag());
+  public static void setPeerPos(ItemStack itemStack, GlobalPos peerPos) {
+    GlobalPos.CODEC
+        .encodeStart(NbtOps.INSTANCE, peerPos)
+        .resultOrPartial(logger::error)
+        .ifPresent(tag -> itemStack.getOrCreateTag().put("peerPos", tag));
   }
 
-  public void clearPeerPos(ItemStack itemStack) {
-    CompoundTag tag = itemStack.getTag();
+  public static void clearPeerPos(ItemStack itemStack) {
+    var tag = itemStack.getTag();
     if (tag != null) {
       tag.remove("peerPos");
     }
   }
 
-  public <T> boolean checkAbandonPairing(ItemStack itemStack, Player player,
+  public static <T> boolean checkAbandonPairing(GlobalPos signalPos, Player player,
       ServerLevel level, Runnable stopLinking) {
-    DimensionPos signalPos = this.getPeerPos(itemStack);
-    if (signalPos != null) {
-      if (signalPos.getDim().compareTo(level.dimension()) != 0) {
-        this.clearPeerPos(itemStack);
-        return true;
-      } else if (player.isShiftKeyDown()) {
-        stopLinking.run();
-        this.clearPeerPos(itemStack);
-        return true;
-      }
+    if (signalPos.dimension().compareTo(level.dimension()) != 0) {
+      return true;
+    }
+    if (player.isShiftKeyDown()) {
+      stopLinking.run();
+      return true;
     }
     return false;
   }

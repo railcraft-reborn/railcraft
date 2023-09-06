@@ -40,7 +40,7 @@ public final class HighSpeedTrackUtil {
       return false;
     }
     var railShape = TrackUtil.getTrackDirection(level, pos, cart);
-    if (!RailShapeUtil.isStraight(railShape)) {
+    if (RailShapeUtil.isTurn(railShape)) {
       return false;
     }
     if (RailShapeUtil.isNorthSouth(railShape)) {
