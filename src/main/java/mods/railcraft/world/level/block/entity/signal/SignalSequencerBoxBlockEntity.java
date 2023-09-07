@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.PowerUtil;
+import mods.railcraft.util.RedstoneUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Redstone;
 
 public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
@@ -31,7 +32,7 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     if (this.level.isClientSide()) {
       return;
     }
-    var powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
+    var powered = RedstoneUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (!this.powered && powered) {
       this.powered = true;
       this.incrementSequencer(true, new HashSet<>(), 0);
@@ -115,10 +116,10 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   public int getRedstoneSignal(Direction direction) {
     return this.level.getBlockEntity(
         this.getBlockPos().relative(direction)) instanceof AbstractSignalBoxBlockEntity
-            ? PowerUtil.NO_POWER
+            ? Redstone.SIGNAL_NONE
             : this.outputDirection.getOpposite() == direction
-                ? PowerUtil.FULL_POWER
-                : PowerUtil.NO_POWER;
+                ? Redstone.SIGNAL_MAX
+                : Redstone.SIGNAL_NONE;
   }
 
   @Override

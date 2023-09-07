@@ -17,8 +17,8 @@ import net.minecraftforge.common.loot.LootModifier;
 
 public class DungeonLootModifier extends LootModifier {
 
-  public static final Supplier<Codec<DungeonLootModifier>> CODEC = Suppliers.memoize(() ->
-      RecordCodecBuilder.create(inst -> codecStart(inst)
+  public static final Supplier<Codec<DungeonLootModifier>> CODEC =
+      Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst)
           .and(ResourceLocation.CODEC.fieldOf("lootTable").forGetter((m) -> m.lootTable))
           .apply(inst, DungeonLootModifier::new)));
   private final ResourceLocation lootTable;
@@ -34,7 +34,7 @@ public class DungeonLootModifier extends LootModifier {
       LootContext context) {
     if (RailcraftConfig.SERVER.changeDungeonLoot.get()) {
       var extraTable = context.getResolver().getLootTable(this.lootTable);
-      extraTable.getRandomItemsRaw(context,
+      extraTable.getRandomItems(context,
           LootTable.createStackSplitter(context.getLevel(), generatedLoot::add));
     }
     return generatedLoot;

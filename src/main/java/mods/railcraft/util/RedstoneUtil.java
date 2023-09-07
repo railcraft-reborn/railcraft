@@ -6,10 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public final class PowerUtil {
-
-  public static final int NO_POWER = 0;
-  public static final int FULL_POWER = 15;
+public final class RedstoneUtil {
 
   public static boolean hasRepeaterSignal(Level level, BlockPos pos, Direction from) {
     Block block = level.getBlockState(pos.relative(from)).getBlock();

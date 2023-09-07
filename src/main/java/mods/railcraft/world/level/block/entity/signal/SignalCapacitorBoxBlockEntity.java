@@ -7,7 +7,7 @@ import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
-import mods.railcraft.util.PowerUtil;
+import mods.railcraft.util.RedstoneUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Redstone;
 
 public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
@@ -51,7 +52,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     if (blockEntity.ticksPowered-- > 0) {
       if (blockEntity.mode == Mode.FALLING_EDGE) {
         var signalAspect = SignalAspect.GREEN;
-        var powered = PowerUtil.hasRepeaterSignal(level, blockPos);
+        var powered = RedstoneUtil.hasRepeaterSignal(level, blockPos);
         for (var direction : Direction.Plane.HORIZONTAL) {
           var neighbor = level.getBlockEntity(blockPos.relative(direction));
           if (neighbor instanceof AbstractSignalBoxBlockEntity box) {
@@ -89,7 +90,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     if (this.level.isClientSide()) {
       return;
     }
-    var powered = PowerUtil.hasRepeaterSignal(this.level, this.getBlockPos());
+    var powered = RedstoneUtil.hasRepeaterSignal(this.level, this.getBlockPos());
     if (this.ticksPowered <= 0 && powered) {
       this.ticksPowered = this.ticksToPower;
       if (this.mode == Mode.RISING_EDGE) {
@@ -116,8 +117,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     var blockEntity =
         this.level.getBlockEntity(this.getBlockPos().relative(direction.getOpposite()));
     return blockEntity instanceof AbstractSignalBoxBlockEntity || this.ticksPowered <= 0
-        ? PowerUtil.NO_POWER
-        : PowerUtil.FULL_POWER;
+        ? Redstone.SIGNAL_NONE
+        : Redstone.SIGNAL_MAX;
   }
 
   @Override

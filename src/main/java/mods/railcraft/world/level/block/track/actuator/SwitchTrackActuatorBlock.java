@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Redstone;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -115,7 +115,7 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
 
   @Override
   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-    return isSwitched(state) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
+    return isSwitched(state) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 
   @Override
@@ -134,8 +134,8 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
     }
     level.setBlockAndUpdate(blockPos, blockState.setValue(SWITCHED, switched));
     level.playSound(null, blockPos, switched
-            ? SoundEvents.PISTON_CONTRACT
-            : SoundEvents.PISTON_EXTEND,
+        ? SoundEvents.PISTON_CONTRACT
+        : SoundEvents.PISTON_EXTEND,
         SoundSource.BLOCKS, 0.25F, level.getRandom().nextFloat() * 0.25F + 0.7F);
     Direction.Plane.HORIZONTAL.forEach(direction -> {
       BlockPos neighborPos = blockPos.relative(direction);

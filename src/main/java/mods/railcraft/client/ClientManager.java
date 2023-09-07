@@ -218,6 +218,7 @@ public class ClientManager {
     shuntingAuraRenderer.clearCarts();
   }
 
+  @SuppressWarnings("unused")
   @SubscribeEvent
   static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
     var modInfo = ModList.get().getModFileById(Railcraft.ID).getMods().get(0);
