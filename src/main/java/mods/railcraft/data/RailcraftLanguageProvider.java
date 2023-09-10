@@ -856,15 +856,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.NICKEL_IRON_BATTERY,
         "A battery designed to work with the charge network. Good for general purpose usage.");
     this.add(Translations.Jei.NICKEL_ZINC_BATTERY, """
-            A battery designed to work with the charge network. \
-            Good for low draw, long term storage.""");
+        A battery designed to work with the charge network. \
+        Good for low draw, long term storage.""");
     this.add(Translations.Jei.DISPOSABLE_BATTERY, """
-            A battery designed to work with the charge network. \
-            Good for cheap, single use storage. Comes fully charged.""");
+        A battery designed to work with the charge network. \
+        Good for cheap, single use storage. Comes fully charged.""");
     this.add(Translations.Jei.DISPOSABLE_BATTERY_EMPTY, """
-            A battery designed to work with the charge network. \
-            Good for cheap, single use storage. \
-            This one is empty and can be recycled in the Crusher.""");
+        A battery designed to work with the charge network. \
+        Good for cheap, single use storage. \
+        This one is empty and can be recycled in the Crusher.""");
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
@@ -872,22 +872,21 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void signalTranslations() {
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "No Track Found Near %s");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning Survey");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully Paired Signals");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Pairing Invalid");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_LOST, "First Signal No Longer Exists");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_UNLOADED,
-        "First Signal's Chunk Has Been Unloaded");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_ABANDONED, "Survey Abandoned");
-    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Not a Valid Signal");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_TRACK, "Track not found");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_BEGIN, "Beginning signal survey");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_SUCCESS, "Successfully paired %s to %s");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_PAIR, "Invalid pair");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_LOST, "First signal has been destroyed");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_ABANDONED, "Signal survey abandoned");
+    this.add(Translations.Signal.SIGNAL_SURVEYOR_INVALID_BLOCK, "Invalid signal");
 
-    this.add(Translations.Signal.SIGNAL_TUNER_BEGIN, "Started Pairing %s With a Receiver");
-    this.add(Translations.Signal.SIGNAL_TUNER_ABANDONED, "Stopped Pairing");
-    this.add(Translations.Signal.SIGNAL_TUNER_UNLOADED,
-        "Signal Controller's Chunk Has Been Unloaded");
-    this.add(Translations.Signal.SIGNAL_TUNER_LOST, "Signal Controller No Longer Exists");
-    this.add(Translations.Signal.SIGNAL_TUNER_SUCCESS, "Successfully Paired Signal Receiver");
+    this.add(Translations.Signal.SIGNAL_TUNER_BEGIN, "Started pairing %s with a receiver");
+    this.add(Translations.Signal.SIGNAL_TUNER_INVALID_CONTROLLER, "Invalid signal controller");
+    this.add(Translations.Signal.SIGNAL_TUNER_INVALID_RECEIVER, "Invalid signal receiver");
+    this.add(Translations.Signal.SIGNAL_TUNER_ABANDONED, "Pairing abandoned");
+    this.add(Translations.Signal.SIGNAL_TUNER_ALREADY_PAIRED, "%s is already paired to %s");
+    this.add(Translations.Signal.SIGNAL_TUNER_LOST, "Signal controller has been destroyed");
+    this.add(Translations.Signal.SIGNAL_TUNER_SUCCESS, "Successfully paired %s to %s");
   }
 
   private void enchantmentTranslations() {

@@ -413,8 +413,6 @@ public class Translations {
     public static final String SIGNAL_SURVEYOR_INVALID_PAIR =
         makeKey("signal", "surveyor.invalid_pair");
     public static final String SIGNAL_SURVEYOR_LOST = makeKey("signal", "surveyor.lost");
-    public static final String SIGNAL_SURVEYOR_UNLOADED =
-        makeKey("signal", "surveyor.unloaded");
     public static final String SIGNAL_SURVEYOR_ABANDONED =
         makeKey("signal", "surveyor.abandoned");
     public static final String SIGNAL_SURVEYOR_INVALID_BLOCK =
@@ -422,7 +420,12 @@ public class Translations {
 
     public static final String SIGNAL_TUNER_BEGIN = makeKey("signal", "tuner.begin");
     public static final String SIGNAL_TUNER_ABANDONED = makeKey("signal", "tuner.abandoned");
-    public static final String SIGNAL_TUNER_UNLOADED = makeKey("signal", "tuner.unloaded");
+    public static final String SIGNAL_TUNER_INVALID_CONTROLLER =
+        makeKey("signal", "tuner.invalid_controller");
+    public static final String SIGNAL_TUNER_INVALID_RECEIVER =
+        makeKey("signal", "tuner.invalid_receiver");
+    public static final String SIGNAL_TUNER_ALREADY_PAIRED =
+        makeKey("signal", "tuner.already_paired");
     public static final String SIGNAL_TUNER_LOST = makeKey("signal", "tuner.lost");
     public static final String SIGNAL_TUNER_SUCCESS = makeKey("signal", "tuner.success");
   }
