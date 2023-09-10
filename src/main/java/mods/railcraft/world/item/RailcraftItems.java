@@ -90,12 +90,14 @@ public class RailcraftItems {
 
   public static final RegistryObject<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
-          () -> new PressureBoilerTankBlockItem(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
+          () -> new PressureBoilerTankBlockItem(
+              RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(),
               new Item.Properties()));
 
   public static final RegistryObject<PressureBoilerTankBlockItem> HIGH_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("high_pressure_steam_boiler_tank",
-          () -> new PressureBoilerTankBlockItem(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
+          () -> new PressureBoilerTankBlockItem(
+              RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(),
               new Item.Properties()));
 
   public static final RegistryObject<FueledFireboxBlockItem> SOLID_FUELED_FIREBOX =
@@ -488,12 +490,13 @@ public class RailcraftItems {
           new Item.Properties()));
 
   public static final RegistryObject<FirestoneItem> RAW_FIRESTONE =
-      deferredRegister.register("raw_firestone", () -> new FirestoneItem(
-          new Item.Properties().rarity(Rarity.RARE)));
+      deferredRegister.register("raw_firestone",
+          () -> new FirestoneItem(true,
+              new Item.Properties().rarity(Rarity.RARE)));
 
   public static final RegistryObject<RefinedFirestoneItem> REFINED_FIRESTONE =
       deferredRegister.register("refined_firestone",
-          () -> new RefinedFirestoneItem(new Item.Properties()
+          () -> new RefinedFirestoneItem(false, new Item.Properties()
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
               .rarity(Rarity.RARE)));
@@ -506,11 +509,12 @@ public class RailcraftItems {
               .rarity(Rarity.RARE)));
 
   public static final RegistryObject<FirestoneItem> CUT_FIRESTONE =
-      deferredRegister.register("cut_firestone", () -> new FirestoneItem(
-          new Item.Properties()
-              .stacksTo(1)
-              .durability(RefinedFirestoneItem.CHARGES)
-              .rarity(Rarity.RARE)));
+      deferredRegister.register("cut_firestone",
+          () -> new FirestoneItem(true,
+              new Item.Properties()
+                  .stacksTo(1)
+                  .durability(RefinedFirestoneItem.CHARGES)
+                  .rarity(Rarity.RARE)));
 
   public static final RegistryObject<Item> FORCE_TRACK_EMITTER =
       blockItem("force_track_emitter", RailcraftBlocks.FORCE_TRACK_EMITTER);
@@ -955,7 +959,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<Item> BUFFER_STOP_TRACK_KIT =
       deferredRegister.register("buffer_stop_track_kit",
-          () -> new TrackKitItem( new TrackKitItem.Properties()
+          () -> new TrackKitItem(new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_BUFFER_STOP_TRACK)
@@ -975,7 +979,8 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ACTIVATOR_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK)));
 
   public static final RegistryObject<Item> BOOSTER_TRACK_KIT =
       deferredRegister.register("booster_track_kit",
@@ -1021,7 +1026,8 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_DETECTOR_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK)));
 
   public static final RegistryObject<Item> COUPLER_TRACK_KIT =
       deferredRegister.register("coupler_track_kit",
@@ -1041,7 +1047,8 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_EMBARKING_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK)));
 
   public static final RegistryObject<Item> DISEMBARKING_TRACK_KIT =
       deferredRegister.register("disembarking_track_kit",
@@ -1111,7 +1118,8 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)));
 
   public static final RegistryObject<Item> THROTTLE_TRACK_KIT =
       deferredRegister.register("throttle_track_kit",
@@ -1123,7 +1131,8 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_THROTTLE_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK)));
 
   public static final RegistryObject<Item> ROUTING_TRACK_KIT =
       deferredRegister.register("routing_track_kit",

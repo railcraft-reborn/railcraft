@@ -7,7 +7,7 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
   public static final int HEAT = 100;
 
   public CrackedFirestoneItem(Properties properties) {
-    super(properties);
+    super(true, properties);
     this.heat = HEAT;
   }
 

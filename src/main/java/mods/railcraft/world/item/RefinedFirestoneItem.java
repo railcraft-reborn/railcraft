@@ -39,8 +39,8 @@ public class RefinedFirestoneItem extends FirestoneItem {
   protected int heat = HEAT;
   protected final RandomSource random;
 
-  public RefinedFirestoneItem(Properties properties) {
-    super(properties);
+  public RefinedFirestoneItem(boolean spawnsFire, Properties properties) {
+    super(spawnsFire, properties);
     this.random = RandomSource.create();
   }
 
@@ -82,7 +82,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public void appendHoverText(ItemStack itemStack, @Nullable Level level,
       List<Component> lines, TooltipFlag adv) {
     MutableComponent component;
-    if(itemStack.getDamageValue() >= itemStack.getMaxDamage() - 5) {
+    if (itemStack.getDamageValue() >= itemStack.getMaxDamage() - 5) {
       component = Component.translatable(Tips.FIRESTONE_EMPTY);
     } else {
       component = Component.translatable(Tips.FIRESTONE_CHARGED);
@@ -100,15 +100,18 @@ public class RefinedFirestoneItem extends FirestoneItem {
     BlockState blockState = level.getBlockState(pos);
     RandomSource random = level.getRandom();
 
-    if (level.isClientSide()) return InteractionResult.CONSUME;
-    if (stack.getDamageValue() == stack.getMaxDamage()) return InteractionResult.PASS;
+    if (level.isClientSide())
+      return InteractionResult.CONSUME;
+    if (stack.getDamageValue() == stack.getMaxDamage())
+      return InteractionResult.PASS;
 
     ServerPlayer serverPlayer = (ServerPlayer) player;
 
     if (player.mayUseItemAt(pos, side, stack)) {
       if (blockState.getBlock() != Blocks.STONE) {
         var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
-        if (drops.size() == 1 && !drops.get(0).isEmpty() && drops.get(0).getItem() instanceof BlockItem) {
+        if (drops.size() == 1 && !drops.get(0).isEmpty()
+            && drops.get(0).getItem() instanceof BlockItem) {
           var cooked = cookedItem(level, drops.get(0));
           if (cooked.getItem() instanceof BlockItem) {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);

@@ -11,6 +11,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -39,7 +40,10 @@ public class FirestoneItemEntity extends ItemEntity {
     if (this.level().isClientSide()) {
       return;
     }
-    if (++this.clock % 4 == 0) {
+    if (++this.clock % 4 == 0
+        && this.getItem().getItem() instanceof FirestoneItem item
+        && item.spawnsFire()
+        && this.level().getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
       FirestoneItem.trySpawnFire(this.level(), this.blockPosition(), getItem(), this.getOwner());
     }
   }
