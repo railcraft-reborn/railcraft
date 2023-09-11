@@ -57,10 +57,6 @@ public final class PlayerUtil {
     return a.getName() != null && a.getName().equals(b.getName());
   }
 
-  public static void swingArm(Player player, InteractionHand hand) {
-    player.swing(hand);
-  }
-
   public static boolean doesItemBlockActivation(Player player, InteractionHand hand) {
     if (player.isShiftKeyDown() || hand == InteractionHand.OFF_HAND)
       return true;

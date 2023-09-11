@@ -1,13 +1,13 @@
 package mods.railcraft.world.module;
 
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.util.container.FilteredInvWrapper;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
@@ -31,8 +32,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private final Charge network;
   private Optional<CrusherRecipe> currentRecipe;
   private int currentSlot;
-  private final LazyOptional<IItemHandler> inputHandler;
-  private final LazyOptional<IItemHandler> outputHandler;
+  private final LazyOptional<IItemHandler> itemHandler;
   private final LazyOptional<IEnergyStorage> energyHandler;
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
@@ -43,8 +43,25 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     currentRecipe = Optional.empty();
 
-    inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(inputContainer, true, false));
-    outputHandler = LazyOptional.of(() -> new FilteredInvWrapper(outputContainer, false, true));
+    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+      @Override
+      @NotNull
+      public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (slot < SLOT_OUTPUT) {
+          return ItemStack.EMPTY;
+        }
+        return super.extractItem(slot, amount, simulate);
+      }
+
+      @Override
+      @NotNull
+      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        if (slot < SLOT_OUTPUT) {
+          return super.insertItem(slot, stack, simulate);
+        }
+        return stack;
+      }
+    });
     energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
   }
 
@@ -148,12 +165,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     currentRecipe = Optional.empty();
   }
 
-  public LazyOptional<IItemHandler> getInputHandler() {
-    return inputHandler;
-  }
-
-  public LazyOptional<IItemHandler> getOutputHandler() {
-    return outputHandler;
+  public LazyOptional<IItemHandler> getItemHandler() {
+    return itemHandler;
   }
 
   public LazyOptional<IEnergyStorage> getEnergyHandler() {
@@ -161,8 +174,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   }
 
   public void invalidateCaps() {
-    inputHandler.invalidate();
-    outputHandler.invalidate();
+    itemHandler.invalidate();
     energyHandler.invalidate();
   }
 }

@@ -53,6 +53,15 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
         }
         return super.extractItem(slot, amount, simulate);
       }
+
+      @Override
+      @NotNull
+      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        if (slot == SLOT_INPUT) {
+          return super.insertItem(slot, stack, simulate);
+        }
+        return stack;
+      }
     });
 
     fluidHandler = LazyOptional.of(() -> tank);

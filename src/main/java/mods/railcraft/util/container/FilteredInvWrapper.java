@@ -18,12 +18,12 @@ public class FilteredInvWrapper extends InvWrapper {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     var that = (FilteredInvWrapper) o;
 
@@ -34,34 +34,34 @@ public class FilteredInvWrapper extends InvWrapper {
   @Override
   @NotNull
   public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-      if (!allowInsert) {
-          return stack;
-      }
+    if (!allowInsert) {
+      return stack;
+    }
     return super.insertItem(slot, stack, simulate);
   }
 
   @Override
   @NotNull
   public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (!allowExtract) {
-          return ItemStack.EMPTY;
-      }
+    if (!allowExtract) {
+      return ItemStack.EMPTY;
+    }
     return super.extractItem(slot, amount, simulate);
   }
 
   @Override
   public void setStackInSlot(int slot, @NotNull ItemStack stack) {
-      if (!allowInsert) {
-          return;
-      }
+    if (!allowInsert) {
+      return;
+    }
     super.setStackInSlot(slot, stack);
   }
 
   @Override
   public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-      if (!allowInsert) {
-          return false;
-      }
+    if (!allowInsert) {
+      return false;
+    }
     return super.isItemValid(slot, stack);
   }
 }

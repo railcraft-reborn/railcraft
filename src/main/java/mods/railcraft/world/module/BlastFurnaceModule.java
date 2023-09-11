@@ -54,6 +54,15 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
         }
         return super.extractItem(slot, amount, simulate);
       }
+
+      @Override
+      @NotNull
+      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
+          return super.insertItem(slot, stack, simulate);
+        }
+        return stack;
+      }
     });
   }
 
