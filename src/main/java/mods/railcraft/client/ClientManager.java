@@ -191,7 +191,6 @@ public class ClientManager {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
-
   private static void handleKeyRegister(RegisterKeyMappingsEvent event) {
     event.register(KeyBinding.CHANGE_AURA_KEY);
   }
