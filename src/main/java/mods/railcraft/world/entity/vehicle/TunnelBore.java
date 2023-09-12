@@ -649,7 +649,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
                   LevelUtil.playerRemoveBlock(this.level(), searchPos.immutable(),
                       MinecartUtil.getFakePlayer(this),
                       this.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
-                          && !RailcraftConfig.SERVER.boreDestorysBlocks.get());
+                          && !RailcraftConfig.SERVER.boreDestroysBlocks.get());
                 }
               }
             }
@@ -794,7 +794,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       return false;
     }
 
-    if (!RailcraftConfig.SERVER.boreDestorysBlocks.get()
+    if (!RailcraftConfig.SERVER.boreDestroysBlocks.get()
         && this.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState
           .getDrops(new LootParams.Builder((ServerLevel) this.level())
@@ -849,7 +849,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       hardness /= (e * e * 0.2d + 1);
     }
 
-    hardness /= RailcraftConfig.SERVER.boreMininigSpeedMultiplier.get();
+    hardness /= RailcraftConfig.SERVER.boreMiningSpeedMultiplier.get();
 
     return hardness;
   }

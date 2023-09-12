@@ -50,8 +50,8 @@ public class RailcraftConfig {
     public final DoubleValue locomotiveHorsepower;
     public final BooleanValue solidCarts;
     public final BooleanValue cartsCollideWithItems;
-    public final DoubleValue boreMininigSpeedMultiplier;
-    public final BooleanValue boreDestorysBlocks;
+    public final DoubleValue boreMiningSpeedMultiplier;
+    public final BooleanValue boreDestroysBlocks;
     public final BooleanValue boreMinesAllBlocks;
     public final BooleanValue cartsBreakOnDrop;
     public final DoubleValue steamLocomotiveEfficiency;
@@ -79,7 +79,6 @@ public class RailcraftConfig {
             .comment(
                 "Change to limit max speed on high speed rails, useful if your computer can't keep up with chunk loading",
                 "iron tracks operate at 0.4 blocks per tick")
-            // .translation("forge.configgui.fullBoundingBoxLadders")
             .defineInRange("maxSpeed", 1.0D, 0.6D, 1.2D);
 
         final var defaultEntities = List.of(
@@ -130,15 +129,15 @@ public class RailcraftConfig {
           .comment("Change to 'true' to restore minecart collisions with dropped items")
           .define("cartsCollideWithItems", false);
 
-      this.boreMininigSpeedMultiplier = builder
+      this.boreMiningSpeedMultiplier = builder
           .comment(
               "Adjust the speed at which the Bore mines blocks, min=0.1, default=1.0, max=50.0")
-          .defineInRange("boreMininigSpeedMultiplier", 1.0D, 0.1D, 50.0D);
+          .defineInRange("boreMiningSpeedMultiplier", 1.0D, 0.1D, 50.0D);
 
-      this.boreDestorysBlocks = builder
+      this.boreDestroysBlocks = builder
           .comment(
               "Change to true to cause the Bore to destroy the blocks it mines instead of dropping them")
-          .define("boreDestorysBlocks", false);
+          .define("boreDestroysBlocks", false);
 
       this.boreMinesAllBlocks = builder
           .comment(
