@@ -27,9 +27,6 @@ jobs:
         run: ./gradlew build --max-workers 1
 
       - name: Test
-        run: ./gradlew test --max-workers 1
-
-      - name: In-game Test
         run: ./gradlew runGameTestServer --max-workers 1
 
       - name: Upload Artifact
