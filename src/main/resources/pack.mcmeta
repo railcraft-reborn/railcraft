@@ -1,8 +1,8 @@
 {
-    "pack": {
-        "description": {
-            "text": "Railcraft resource pack"
-        },
-        "pack_format": 15
-    }
+  "pack": {
+    "description": {
+      "text": "Railcraft Reborn resource pack"
+    },
+    "pack_format": 15
+  }
 }
