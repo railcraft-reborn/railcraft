@@ -1,16 +1,15 @@
 package mods.railcraft.util;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Locale;
 
 public class HumanReadableNumberFormatter {
 
   private static final DecimalFormat SMALL_NUMBER_FORMATTER =
-      (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
+      (DecimalFormat) DecimalFormat.getInstance(Locale.ENGLISH);
   private static final DecimalFormat LARGE_NUMBER_FORMATTER =
-      (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
-  private static final String[] SUFFIX = {"", "K", "M", "B", "T", "Q"};
+      (DecimalFormat) DecimalFormat.getInstance(Locale.ENGLISH);
+  private static final String[] SUFFIX = {"", "K", "M", "B"};
 
   static {
     SMALL_NUMBER_FORMATTER.applyPattern("#,##0.###");
@@ -22,12 +21,16 @@ public class HumanReadableNumberFormatter {
   }
 
   private static String format(double number, int iteration) {
-    boolean negative = number < 0.0;
+    var prefix = number < 0.0 ? "-" : "";
     number = Math.abs(number);
     if (number < 1_000.0 || iteration == SUFFIX.length - 1) {
       var formatter = iteration > 0 ? LARGE_NUMBER_FORMATTER : SMALL_NUMBER_FORMATTER;
-      return (negative ? "-" : "") + formatter.format(number) + " " + SUFFIX[iteration];
+      var suffix = SUFFIX[iteration];
+      if (!suffix.isEmpty()) {
+        suffix = " " + suffix;
+      }
+      return prefix + formatter.format(number) + suffix;
     }
-    return (negative ? "-" : "") + format(number / 1000.0, iteration + 1);
+    return prefix + format(number / 1000.0, iteration + 1);
   }
 }

@@ -8,7 +8,7 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.80.0'
-    id 'me.modmuss50.mod-publish-plugin' version '0.3.4'
+    id 'me.modmuss50.mod-publish-plugin' version '0.3.5'
 }
 
 // Simple name to not have long names when publishing with the CI
@@ -118,11 +118,20 @@ dependencies {
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
 
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {

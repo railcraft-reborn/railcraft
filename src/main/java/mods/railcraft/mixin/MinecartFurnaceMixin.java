@@ -34,15 +34,15 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
    */
   @Overwrite
   @Override
-  public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
-    InteractionResult ret = super.interact(pPlayer, pHand);
+  public InteractionResult interact(Player player, InteractionHand hand) {
+    InteractionResult ret = super.interact(player, hand);
     if (ret.consumesAction()) {
       return ret;
     }
-    ItemStack itemstack = pPlayer.getItemInHand(pHand);
+    ItemStack itemstack = player.getItemInHand(hand);
     var burnTime = ForgeHooks.getBurnTime(itemstack, null);
     if (burnTime > 0 && this.fuel + burnTime <= 32000) {
-      if (!pPlayer.getAbilities().instabuild) {
+      if (!player.getAbilities().instabuild) {
         itemstack.shrink(1);
       }
 
@@ -50,8 +50,8 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
     }
 
     if (this.fuel > 0) {
-      this.xPush = this.getX() - pPlayer.getX();
-      this.zPush = this.getZ() - pPlayer.getZ();
+      this.xPush = this.getX() - player.getX();
+      this.zPush = this.getZ() - player.getZ();
     }
 
     return InteractionResult.sidedSuccess(this.level().isClientSide());
