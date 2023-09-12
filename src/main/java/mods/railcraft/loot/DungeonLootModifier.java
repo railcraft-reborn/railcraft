@@ -28,13 +28,14 @@ public class DungeonLootModifier extends LootModifier {
     this.lootTable = lootTable;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   @NotNull
   protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,
       LootContext context) {
     if (RailcraftConfig.SERVER.changeDungeonLoot.get()) {
       var extraTable = context.getResolver().getLootTable(this.lootTable);
-      extraTable.getRandomItems(context,
+      extraTable.getRandomItemsRaw(context,
           LootTable.createStackSplitter(context.getLevel(), generatedLoot::add));
     }
     return generatedLoot;
