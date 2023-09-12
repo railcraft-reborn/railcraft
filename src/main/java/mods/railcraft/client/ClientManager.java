@@ -43,6 +43,7 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
+import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -141,6 +142,8 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
     MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+
+    Patchouli.setup();
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
