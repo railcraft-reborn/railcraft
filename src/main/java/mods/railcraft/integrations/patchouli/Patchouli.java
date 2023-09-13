@@ -15,8 +15,8 @@ public class Patchouli {
         Patchouli::validEdge);
 
     var crusher = patchouliApi.makeMultiblock(new String[][]{
-            {"CC", "CC", "CC"},
-            {"CC", "0C", "CC"}
+            {"CC", "CC", "CC"}, //Y:1
+            {"CC", "0C", "CC"}  //Y:0
         },
         'C', crusherBlock, '0', crusherBlock
     ).setSymmetrical(false);
