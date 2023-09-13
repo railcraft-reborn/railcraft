@@ -159,13 +159,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.cartStorage.deserializeNBT(tag.getCompound("battery"));
+    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("battery", this.cartStorage.serializeNBT());
+    tag.putInt("energy", this.cartStorage.getEnergyStored());
   }
 
   @Override
@@ -175,13 +175,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     if (this.cartStorage == null) {
       this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
     }
-    this.cartStorage.deserializeNBT(tag.getCompound("battery"));
+    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
   }
 
   @Override
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
-    itemStack.getOrCreateTag().put("battery", this.cartStorage.serializeNBT());
+    itemStack.getOrCreateTag().putInt("energy", this.cartStorage.getEnergyStored());
     return itemStack;
   }
 
