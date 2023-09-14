@@ -77,6 +77,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
 
@@ -143,7 +144,9 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
     MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
 
-    Patchouli.setup();
+    if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
+      Patchouli.setup();
+    }
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
