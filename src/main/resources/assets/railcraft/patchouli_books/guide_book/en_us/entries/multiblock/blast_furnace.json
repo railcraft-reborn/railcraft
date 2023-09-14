@@ -1,6 +1,6 @@
 {
-  "name": "Crusher",
-  "icon": "railcraft:crusher",
+  "name": "Blast Furnace",
+  "icon": "railcraft:blast_furnace_bricks",
   "category": "railcraft:multiblock",
   "pages": [
     {
@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "Crusher",
-      "multiblock_id": "railcraft:crusher",
+      "name": "Blast Furnace",
+      "multiblock_id": "railcraft:blast_furnace",
       "text": "AAA"
     }
   ]

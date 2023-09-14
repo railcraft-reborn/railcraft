@@ -1,6 +1,6 @@
 {
-  "name": "Crusher",
-  "icon": "railcraft:crusher",
+  "name": "Steam Turbine",
+  "icon": "railcraft:steam_turbine",
   "category": "railcraft:multiblock",
   "pages": [
     {
@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "Crusher",
-      "multiblock_id": "railcraft:crusher",
+      "name": "Steam Turbine",
+      "multiblock_id": "railcraft:steam_turbine",
       "text": "AAA"
     }
   ]

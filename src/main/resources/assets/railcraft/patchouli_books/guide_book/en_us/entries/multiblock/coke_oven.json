@@ -1,6 +1,6 @@
 {
-  "name": "Crusher",
-  "icon": "railcraft:crusher",
+  "name": "Coke Oven",
+  "icon": "railcraft:coke_oven_bricks",
   "category": "railcraft:multiblock",
   "pages": [
     {
@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "Crusher",
-      "multiblock_id": "railcraft:crusher",
+      "name": "Coke Oven",
+      "multiblock_id": "railcraft:coke_oven",
       "text": "AAA"
     }
   ]

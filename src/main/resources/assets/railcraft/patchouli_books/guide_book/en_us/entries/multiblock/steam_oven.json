@@ -1,6 +1,6 @@
 {
-  "name": "Crusher",
-  "icon": "railcraft:crusher",
+  "name": "Steam Oven",
+  "icon": "railcraft:steam_oven",
   "category": "railcraft:multiblock",
   "pages": [
     {
@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:multiblock",
-      "name": "Crusher",
-      "multiblock_id": "railcraft:crusher",
+      "name": "Steam Oven",
+      "multiblock_id": "railcraft:steam_oven",
       "text": "AAA"
     }
   ]

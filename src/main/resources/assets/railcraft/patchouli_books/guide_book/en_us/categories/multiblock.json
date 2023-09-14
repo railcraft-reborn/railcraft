@@ -1,5 +1,5 @@
 {
-  "name": "Test Category",
-  "description": "This is a test category for testing!",
-  "icon": "minecraft:writable_book"
+  "name": "Multi-block structures",
+  "description": "Everything you need to build multi-block structures",
+  "icon": "railcraft:coke_oven_bricks"
 }
