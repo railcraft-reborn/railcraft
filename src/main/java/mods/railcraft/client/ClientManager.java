@@ -76,6 +76,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 
 public class ClientManager {
 
@@ -226,21 +227,22 @@ public class ClientManager {
 
     if (versionStatus.shouldDraw()) {
       var newVersion = result.target().toString();
-      var message = Component.literal("Railcraft Reborn: ").withStyle(ChatFormatting.GREEN)
+      var modUrl = modInfo.getModURL().get().toString();
+      var message = Component.literal(Railcraft.NAME + ": ").withStyle(ChatFormatting.GREEN)
           .append(Component.literal(
               "A new version (%s) is available to download.".formatted(newVersion))
               .withStyle(style -> style
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                      "https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn"))));
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, modUrl))));
       event.getPlayer().displayClientMessage(message, false);
     }
 
     if (Railcraft.BETA || !FMLLoader.isProduction()) {
       var type = FMLLoader.isProduction() ? "beta" : "development";
+      var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
-          Component.literal("You are using a " + type + " version of Railcraft Reborn.")
+          Component.literal("You are using a %s version of %s.".formatted(type, Railcraft.NAME))
               .withStyle(ChatFormatting.RED),
         /*Component.literal("- World saves are not stable and may break between versions.")
             .withStyle(ChatFormatting.GRAY),*/
@@ -252,8 +254,7 @@ public class ClientManager {
               .withStyle(style -> style
                   .withColor(ChatFormatting.GREEN)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                      "https://github.com/railcraft-reborn/railcraft/issues"))),
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
       event.getPlayer().displayClientMessage(message, false);
