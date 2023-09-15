@@ -19,59 +19,75 @@ body:
   - type: textarea
     id: description
     attributes:
-        label: Description of the Bug
-        description: A clear and concise description of what the bug is.
+      label: Description of the Bug
+      description: A clear and concise description of what the bug is.
     validations:
-        required: true
+      required: true
 
-  - type: textarea
+  - type: input
     attributes:
-      label: Configuration
-      description: |
-        Example:
-          - **Railcraft Reborn version**: 1.0.0
-          - **NeoForge/Forge version**: 47.1.3
-          - **Minecraft version**: 1.20.1
-          - **Are you playing on a server?**: Yes/No
-      value: |
-        - Railcraft Reborn version:
-        - NeoForge/Forge version:
-        - Minecraft version:
-        - Are you playing on a server?:
-      render: Markdown
+      label: Railcraft Reborn version
+      description: What version of Railcraft Reborn are you using?
+      placeholder: e.g. 1.0.0
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: NeoForge/Forge version
+      description: What version of NeoForge/Forge are you using?
+      placeholder: e.g. 47.1.3
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Minecraft version
+      description: What version of Minecraft are you using?
+      placeholder: e.g. 1.20.1
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Minecraft version
+      description: Are you playing on a server?
+      options:
+        - Yes
+        - No
     validations:
       required: true
 
   - type: textarea
     id: reproduce
     attributes:
-        label: To Reproduce
-        description: |
-          Steps to reproduce the issue.
-          Feel free to add more entries here. Don't skip any detail!
-        placeholder: |
-          1. Place block/cart '...'
-          2. Click on '....'
-          3. See '...'
+      label: To Reproduce
+      description: |
+        Steps to reproduce the issue.
+        Feel free to add more entries here. Don't skip any detail!
+      placeholder: |
+        1. Place block/cart '...'
+        2. Click on '....'
+        3. See '...'
     validations:
-        required: true
+      required: true
 
   - type: textarea
     id: expected_behavior
     attributes:
-        label: Expected behavior
-        description: A clear and concise description of what you expected to happen.
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
     validations:
-        required: true
+      required: true
 
   - type: textarea
     id: logs
     attributes:
-        label: Logs & Environment
-        description: |
-          Please copy and paste any relevant log output.
-          This will be automatically formatted into code, so no need for backticks.
-        render: Shell
+      label: Logs & Environment
+      description: |
+        Please copy and paste any relevant log output.
+        This will be automatically formatted into code, so no need for backticks.
+      render: Shell
 
   - type: textarea
     attributes:
