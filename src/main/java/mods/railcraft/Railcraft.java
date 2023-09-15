@@ -69,7 +69,6 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -121,7 +120,7 @@ public class Railcraft {
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
-    if (FMLEnvironment.dist == Dist.CLIENT) {
+    if (FMLEnvironment.dist.isClient()) {
       ClientManager.init(modEventBus);
     }
 

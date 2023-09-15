@@ -29,12 +29,12 @@ body:
       label: Configuration
       description: |
         Example:
-          - **Mod version**: 1.0.0
+          - **Railcraft Reborn version**: 1.0.0
           - **NeoForge/Forge version**: 47.1.3
           - **Minecraft version**: 1.20.1
           - **Are you playing on a server?**: Yes/No
       value: |
-        - Mod version:
+        - Railcraft Reborn version:
         - NeoForge/Forge version:
         - Minecraft version:
         - Are you playing on a server?:
