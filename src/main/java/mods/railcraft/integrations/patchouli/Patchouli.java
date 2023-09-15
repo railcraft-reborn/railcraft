@@ -42,8 +42,8 @@ public class Patchouli {
 
     var steamTurbineBlock = validBlock(patchouliApi, RailcraftBlocks.STEAM_TURBINE.get());
     var steamTurbine = patchouliApi.makeMultiblock(new String[][]{
-            {"BB", "BB", "BB"}, //Y:1
-            {"BB", "0B", "BB"}  //Y:0
+        {"BB", "BB", "BB"}, //Y:1
+        {"BB", "0B", "BB"}  //Y:0
         }, 'B', steamTurbineBlock, '0', steamTurbineBlock
     ).setSymmetrical(false);
     patchouliApi
@@ -51,8 +51,8 @@ public class Patchouli {
 
     var waterTankBlock = validBlock(patchouliApi, RailcraftBlocks.WATER_TANK_SIDING.get());
     var waterTank = patchouliApi.makeMultiblock(new String[][]{
-            {"BB", "BB"}, //Y:1
-            {"BB", "0B"}  //Y:0
+        {"BB", "BB"}, //Y:1
+        {"BB", "0B"}  //Y:0
         }, 'B', waterTankBlock, '0', waterTankBlock
     ).setSymmetrical(true);
     patchouliApi
@@ -60,8 +60,8 @@ public class Patchouli {
 
     var steamOvenBlock = validBlock(patchouliApi, RailcraftBlocks.STEAM_OVEN.get());
     var steamOven = patchouliApi.makeMultiblock(new String[][]{
-            {"BB", "BB"}, //Y:1
-            {"BB", "0B"}  //Y:0
+        {"BB", "BB"}, //Y:1
+        {"BB", "0B"}  //Y:0
         }, 'B', steamOvenBlock, '0', steamOvenBlock
     ).setSymmetrical(true);
     patchouliApi
