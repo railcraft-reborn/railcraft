@@ -50,11 +50,11 @@ body:
 
   - type: dropdown
     attributes:
-      label: Minecraft version
+      label: Minecraft server
       description: Are you playing on a server?
       options:
-        - Yes
-        - No
+        - 'Yes'
+        - 'No'
     validations:
       required: true
 
