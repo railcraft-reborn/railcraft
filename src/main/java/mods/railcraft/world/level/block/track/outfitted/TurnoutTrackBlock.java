@@ -70,10 +70,16 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   }
 
   protected void adjustShape(BlockState blockState, Level level, BlockPos pos) {
+    var north = pos.north();
+    var south = pos.south();
+    var east = pos.east();
+    var west = pos.west();
+    if (BaseRailBlock.isRail(level, north) && BaseRailBlock.isRail(level, south) &&
+        BaseRailBlock.isRail(level, east) && BaseRailBlock.isRail(level, west)) {
+      return;
+    }
     switch (TrackUtil.getRailShapeRaw(blockState)) {
       case EAST_WEST -> {
-        var north = pos.north();
-        var south = pos.south();
         if (!BaseRailBlock.isRail(level, north) || !BaseRailBlock.isRail(level, south)) {
           return;
         }
@@ -86,8 +92,6 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
         }
       }
       case NORTH_SOUTH -> {
-        var east = pos.east();
-        var west = pos.west();
         if (!BaseRailBlock.isRail(level, east) || !BaseRailBlock.isRail(level, west)) {
           return;
         }
