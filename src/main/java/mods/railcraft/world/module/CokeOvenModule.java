@@ -32,8 +32,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private final ContainerMapper fluidContainer;
 
-  private LazyOptional<IItemHandler> itemHandler;
-  private LazyOptional<IFluidHandler> fluidHandler;
+  private final LazyOptional<IItemHandler> itemHandler;
+  private final LazyOptional<IFluidHandler> fluidHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
@@ -132,8 +132,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
     return switch (slot) {
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
-      case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
-          RailcraftFluids.CREOSOTE.get());
+      case SLOT_LIQUID_INPUT ->
+          FluidItemHelper.isRoomInContainer(itemStack, RailcraftFluids.CREOSOTE.get());
       case SLOT_OUTPUT, SLOT_LIQUID_PROCESSING, SLOT_LIQUID_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);
