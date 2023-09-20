@@ -33,10 +33,16 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
   }
 
   protected void adjustShape(BlockState blockState, Level level, BlockPos pos) {
+    var north = pos.north();
+    var south = pos.south();
+    var east = pos.east();
+    var west = pos.west();
+    if (BaseRailBlock.isRail(level, north) && BaseRailBlock.isRail(level, south) &&
+        BaseRailBlock.isRail(level, east) && BaseRailBlock.isRail(level, west)) {
+      return;
+    }
     switch (TrackUtil.getRailShapeRaw(blockState)) {
       case NORTH_SOUTH -> {
-        var north = pos.north();
-        var south = pos.south();
         if (!BaseRailBlock.isRail(level, north) || !BaseRailBlock.isRail(level, south)) {
           return;
         }
@@ -49,8 +55,6 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
         }
       }
       case EAST_WEST -> {
-        var east = pos.east();
-        var west = pos.west();
         if (!BaseRailBlock.isRail(level, east) || !BaseRailBlock.isRail(level, west)) {
           return;
         }
