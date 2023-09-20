@@ -5,13 +5,16 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "This is a test entry, but it should show up!"
+      "text": "The Coke Oven is a 3x3x3 brick structure, hollow in the middle, for converting Coal into Coal Coke or Wood into Charcoal and producing Creosote Oil as a byproduct.$(br2)The Oven is built out of 26 special bricks made from Brick and Sand. If broken down, it takes 104 Clay and 130 Sand to build one Coke Oven. They cannot be built adjacent to each other, there must be at least one tile in between ovens."
     },
     {
       "type": "patchouli:multiblock",
       "name": "Coke Oven",
-      "multiblock_id": "railcraft:coke_oven",
-      "text": "AAA"
+      "multiblock_id": "railcraft:coke_oven"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Coal Oven can hold 64,000 units of Creosote Oil. which can be extracted and kept in either Buckets or Glass Bottles. Each Bucket or Bottle can hold 1,000 units of Creosote Oil. The filled Buckets will not stack. The filled Bottles will.$(br2)Converting Coal into Coke is a slow process. You will probably want to build several Ovens if you plan to make a lot rails."
     }
   ]
 }
