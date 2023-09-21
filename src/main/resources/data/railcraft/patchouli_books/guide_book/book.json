@@ -1,6 +1,6 @@
 {
   "name": "Railcraft Reborn Book",
-  "landing_text": "Welcome to Patchouli",
+  "landing_text": "It's a book that contains advice on Railcraft Reborn.$(br2)It is currently in beta, new categories will arrive.",
   "version": 1,
   "creative_tab": "railcraft:main_tab",
   "use_resource_pack": true

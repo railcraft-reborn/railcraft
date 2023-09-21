@@ -1,0 +1,32 @@
+{
+  "name": "Steam Boiler",
+  "icon": "railcraft:solid_fueled_firebox",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "At the heart of many industrial centers you will find a tentacled monster of a machine called a Steam Boiler. These machines can produce enough Steam to meet the energy needs of any complex. They may appear daunting at first, but our experts are here to help you install your own!$(br2)Now when building a Steam Boiler, the first layer put down must be the Firebox. We presently offer two types of Fireboxes. Solid Fueled, which burns normal furnace fuels such as Charcoal or Coal Coke, and Liquid Fueled, which uses liquid fuels such as Creosote Oil, Bio-Fuel, and good old fashioned Fuel."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "There are three base sizes of Steam Boiler: the small 1×1 Boiler, the workhorse 2×2 Boiler, and the excessive 3×3 Boiler.$(br2)Once you've laid down the Firebox, you must build a Boiler Tank above it. Boiler Tanks come in two varieties: Low Pressure and High Pressure. The difference being that High Pressure Boiler Tanks produce twice the steam, but the Low Pressure Boiler Tanks are generally more efficient."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The larger the Steam Boiler, the more efficient it is in terms of fuel usage. You will be generally better off building a single large Boiler instead of several small ones. The caveat being that its better to build Low Pressure Boilers rather than High Pressure if you want maximum fuel efficiency for short runs (where the boiler doesn't reach maximum temperature). If you're running your boilers round the clock, you get exact same amount of steam per unit of fuel.$(br2)The size of the tank you can build depends on the size of the Firebox. A 1×1 Firebox can only handle a single cubic meter tank. The 2×2 can handle 8 or 12 cubic meters of Boiler Tank. And finally, the massive 3×3 can handle 18, 27, or 36 cubic meters of Boiler Tank."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Once you've built your Steam Boiler, you will need to provide it water and fuel. A word of warning, you must supply a constant steady stream of water to the Firebox (not the Tanks) or you run the risk of a massive Boiler explosion. Introducing water to a hot and dry Boiler is exceptionally dangerous. That said, Boilers are pretty safe so long as the water supply is constant."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When first heating up a boiler, they are very inefficient and will use up to 8x more fuel than when at max heat. It is generally recommended that you leave your boiler running all the time rather than shutting it down when not in use. Especially the larger Boilers since the heat up time is dependent on size."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Steam boiler",
+      "multiblock_id": "railcraft:boiler"
+    }
+  ]
+}

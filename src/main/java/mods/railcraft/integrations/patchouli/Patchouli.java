@@ -3,6 +3,8 @@ package mods.railcraft.integrations.patchouli;
 import mods.railcraft.Railcraft;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.IronTankValveBlock;
 import mods.railcraft.world.level.block.tank.IronTankWallBlock;
@@ -93,6 +95,23 @@ public class Patchouli {
     ).setSymmetrical(true);
     patchouliApi
         .registerMultiblock(new ResourceLocation(Railcraft.ID, "iron_tank"), tank);
+
+    var solidFueledFireboxBlock = validFireboxBlock(patchouliApi,
+        RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
+    var boilerTankBlock = validSteamBoilerTankBlock(patchouliApi,
+        RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get());
+    var boiler = patchouliApi.makeMultiblock(new String[][]{
+            {"TT", "TT"}, //Y:3
+            {"TT", "TT"}, //Y:2
+            {"TT", "TT"}, //Y:1
+            {"B0", "BB"}  //Y:0
+        },
+        'B', solidFueledFireboxBlock,
+        'T', boilerTankBlock,
+        '0', solidFueledFireboxBlock
+    ).setSymmetrical(true);
+    patchouliApi
+        .registerMultiblock(new ResourceLocation(Railcraft.ID, "boiler"), boiler);
   }
 
   private static IStateMatcher validBlock(PatchouliAPI.IPatchouliAPI api, Block block) {
@@ -112,5 +131,19 @@ public class Patchouli {
   private static IStateMatcher validTankValveBlock(PatchouliAPI.IPatchouliAPI api,
       IronTankValveBlock block) {
     return api.predicateMatcher(block, state -> state.is(RailcraftTags.Blocks.IRON_TANK_VALVE));
+  }
+
+  private static IStateMatcher validFireboxBlock(PatchouliAPI.IPatchouliAPI api,
+      FireboxBlock block) {
+    return api.predicateMatcher(block,
+        state -> state.is(RailcraftBlocks.FLUID_FUELED_FIREBOX.get()) ||
+        state.is(RailcraftBlocks.SOLID_FUELED_FIREBOX.get()));
+  }
+
+  private static IStateMatcher validSteamBoilerTankBlock(PatchouliAPI.IPatchouliAPI api,
+      SteamBoilerTankBlock block) {
+    return api.predicateMatcher(block,
+        state -> state.is(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get()) ||
+            state.is(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get()));
   }
 }
