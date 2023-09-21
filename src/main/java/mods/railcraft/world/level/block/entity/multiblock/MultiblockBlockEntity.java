@@ -239,7 +239,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
     if (this.level.isClientSide()) {
       // Some mods call this method client side, in order not to crash
       // we return an Optional.empty() and print a warning.
-      logger.warn("getMembership is server-side only.");
+      // logger.warn("getMembership is server-side only.");
       return Optional.empty();
     }
     return Optional.ofNullable(this.membership);
