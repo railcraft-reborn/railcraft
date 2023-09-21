@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "tick": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "tick"
+    ]
+  ],
+  "rewards": {
+    "loot": [
+      "railcraft:advancements/patchouli_book"
+    ]
+  },
+  "sends_telemetry_event": true
+}

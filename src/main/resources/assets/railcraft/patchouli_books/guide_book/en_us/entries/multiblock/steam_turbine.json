@@ -1,0 +1,16 @@
+{
+  "name": "Steam Turbine",
+  "icon": "railcraft:steam_turbine",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Perhaps you have come to the point where you have plenty of Steam but nothing to do with it? Well we can help. We offer to you the mighty Steam Turbine, a device capable of turning Steam into Electrical Power.$(br2)It's built in a 2x3x2 pattern, the same as the Crusher. Additionally it requires that a Turbine Rotor is installed to operate. A Rotor should last for several days of constant use (real-time). You can then repair the rotor by combining two rotors using the vanilla repair mechanic."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Steam Turbine",
+      "multiblock_id": "railcraft:steam_turbine"
+    }
+  ]
+}

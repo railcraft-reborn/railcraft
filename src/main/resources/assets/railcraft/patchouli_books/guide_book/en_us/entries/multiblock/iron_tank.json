@@ -1,0 +1,20 @@
+{
+  "name": "Iron Tank",
+  "icon": "railcraft:white_iron_tank_valve",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Swimming in Creosote Oil? Drowning in Biofuel? Covered in honey… well, let's not go there. Anyway, we have a solution for you!$(br2)Today we bring you these shining new bastions of industry, the Iron Tank! Your skyline will never be the same!$(br2)They come in four varieties, 3×3, 5×5, 7×7 and 9×9. Additionally, the height can be custom ordered anywhere from 4 blocks tall to 8 blocks tall! To build one of these marvels, you need to lay down a frame of Iron Tank Wall blocks in the dimensions you desire."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Iron Tank",
+      "multiblock_id": "railcraft:iron_tank"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You must then fill the top, bottom, and sides in with any combination of Wall, Gauge, or Valve as you please.$(br2)But wait, there is more! You can also stack tanks! Just place a couple Valve blocks in the center where the tanks touch and you're good to go!"
+    }
+  ]
+}

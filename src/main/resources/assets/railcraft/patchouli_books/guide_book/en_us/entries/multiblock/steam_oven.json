@@ -1,0 +1,16 @@
+{
+  "name": "Steam Oven",
+  "icon": "railcraft:steam_oven",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Steam Oven is a 2x2x2 structure that when fed Steam will cook items for you. It can cook up to 9 items at once in the short time of 256 ticks(which is 12.8 seconds)!"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Steam Oven",
+      "multiblock_id": "railcraft:steam_oven"
+    }
+  ]
+}
