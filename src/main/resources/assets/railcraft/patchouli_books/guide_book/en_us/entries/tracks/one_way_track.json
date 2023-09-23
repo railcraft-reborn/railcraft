@@ -1,0 +1,11 @@
+{
+  "name": "One-Way Track",
+  "icon": "railcraft:iron_one_way_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "While unpowered, the behavior of this rail is identical to that of normal rails. However, when they receive power they will reverse the momentum of any cart travelling in the opposite direction of the arrow on the rail. Some of the momentum is lost of course."
+    }
+  ]
+}

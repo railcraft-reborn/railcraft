@@ -1,0 +1,5 @@
+{
+  "name": "Track Type",
+  "description": "They are represented by the rail types and the railbed types. Each of them has different abilities, such as speed, conduction, collision, whether they can be unsupported by blocks, explosion resistance, etc.",
+  "icon": "railcraft:reinforced_track"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "H.S. Transition Track",
+  "icon": "railcraft:high_speed_transition_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These directional speed rails will only boost carts in one direction when powered. Carts travelling in the opposite direction will be slowed to normal minecart speeds if the track is powered or slowed to a stop if it is not."
+    }
+  ]
+}

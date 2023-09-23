@@ -1,0 +1,11 @@
+{
+  "name": "Analog Signal Controller Box",
+  "icon": "railcraft:analog_signal_controller_box",
+  "category": "railcraft:signal_boxes",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Analog signal controller box, like it's previous version controller box emits signal, but it doesn't simply emit one signal form when powered or one form when unpowered. It emits a signal type based on received power strength. You can set in the GUI to for example emit GREEN when redstone power is 5 and emit RED when redstone power is 0 and set it OFF when redstone power is 15."
+    }
+  ]
+}

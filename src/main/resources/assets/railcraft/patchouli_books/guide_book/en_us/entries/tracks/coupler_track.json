@@ -1,0 +1,15 @@
+{
+  "name": "Coupler Track",
+  "icon": "railcraft:iron_coupler_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These track are designed to be used to create or breakdown trains of carts. They must be powered by redstone to function. Right clicking on a coupler track will change it to decoupler mode and vice versa."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Coupler Tracks can be chained to linkup an entire Train when combined with a Train Detector.$(br)Coupler tracks have an additional mode called Auto-Coupling which can be configured with a crowbar. This sets a cart to couple with the next cart it collides with."
+    }
+  ]
+}

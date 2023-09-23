@@ -1,0 +1,11 @@
+{
+  "name": "Iron",
+  "icon": "minecraft:rail",
+  "category": "railcraft:track_type",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The standard track is essentially equal to the vanilla Minecraft rail. They are built with standard rails and wooden railbeds. However, they can have Track Kits applied, like other flex tracks from Railcraft do."
+    }
+  ]
+}

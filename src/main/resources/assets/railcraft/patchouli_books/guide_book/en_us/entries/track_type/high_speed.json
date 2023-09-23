@@ -1,0 +1,11 @@
+{
+  "name": "High Speed",
+  "icon": "railcraft:high_speed_track",
+  "category": "railcraft:track_type",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This type of tracks is a little different from normal tracks. Any carts travelling on these rails can travel 2.5 times faster than normal, but only in a straight line. This speed is configurable. Additionally, attempting to leave these tracks without first slowing down will always result in an explosion. Collisions are bad too. More information can be found here."
+    }
+  ]
+}

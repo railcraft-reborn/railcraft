@@ -1,0 +1,19 @@
+{
+  "name": "Locking Track",
+  "icon": "railcraft:iron_locking_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "When unpowered these tracks will grab and hold onto any cart that passes over them. And unlike Powered Rails, the cart can't be pushed off. Additionally, if you hit the track with a Crowbar you can change modes. Some of these modes have arrows on the track. When an unpowered rail with a minecart on it becomes powered, it will launch the cart in the direction of the arrow."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Modes:$(li)Lockdown Mode - Default, releases cart when powered but does not boost it.$(li)Lockdown Train Mode - When powered, will stay powered until 10 seconds after the entire train leaves the track or another train/cart approaches. Does not boost carts.$(li)Boarding Mode - When powered, will boost the cart in the direction of the arrow."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Modes:$(li)Boarding Train Mode - When powered, will stay powered until 10 seconds after the entire train leaves the track or another train/cart approaches. Boosts in the direction of the arrow.$(li)Holding Mode - When powered, will boost the cart in the direction it was originally travelling when it was locked.$(li)Holding Train Mode - When powered, will stay powered until 10 seconds after the entire train leaves the track or another train/cart approaches. Boosts in direction of travel."
+    }
+  ]
+}

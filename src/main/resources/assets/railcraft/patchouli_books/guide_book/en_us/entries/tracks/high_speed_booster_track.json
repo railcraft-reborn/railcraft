@@ -1,0 +1,11 @@
+{
+  "name": "H.S. Booster Track",
+  "icon": "railcraft:high_speed_booster_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These rails will boost the cart to high speed when powered or slow them to and maintain normal minecart speed if they are not.$(br2)You need either these or H.S. Transition Tracks to reach the maximum speed allowed by High Speed Tracks."
+    }
+  ]
+}

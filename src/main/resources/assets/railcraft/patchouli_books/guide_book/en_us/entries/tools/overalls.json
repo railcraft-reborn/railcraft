@@ -1,0 +1,15 @@
+{
+  "name": "Overalls",
+  "icon": "railcraft:overalls",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "What railroad Engineer would be complete without his Overalls? Everything we say!$(br2)While generally not the greatest outfit for the protection, they do at least provide some stuff from becoming like those squashed pennies they are always telling you not to put on the tracks. We don't really know how they work, but hey, we'll just say they increase your nimbleness and train awareness."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Not only does it reduce locomotive damages, it also prevents electric damages at the cost of its durability."
+    }
+  ]
+}

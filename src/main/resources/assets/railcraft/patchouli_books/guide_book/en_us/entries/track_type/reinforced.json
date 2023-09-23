@@ -1,0 +1,15 @@
+{
+  "name": "Reinforced",
+  "icon": "railcraft:reinforced_track",
+  "category": "railcraft:track_type",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Reinforced Track has a couple of benefits over Iron Track Type.$(li)It has a stronger blast resistance. (45, enough for TNT explosions)$(li)It's also 25% faster than the iron track type."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Compared to H.S. Track type, it is way slower, and way safer.$(br2)However, you should use place reinforced tracks on blast resistant blocks, since the track will always drop once the supporting block is removed."
+    }
+  ]
+}

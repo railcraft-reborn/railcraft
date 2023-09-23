@@ -1,0 +1,15 @@
+{
+  "name": "Strap Iron",
+  "icon": "railcraft:strap_iron_track",
+  "category": "railcraft:track_type",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The strap iron, or wooden track type, is featured with their extremely slow speed limit-only 30% that of the iron track type. This type of tracks are made with wooden rails and wooden railbeds."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Strap iron tracks require way less iron and a little bit more wood and creosote than iron tracks. In general, you'd better build this type of track when you are short of iron. Other recommended uses include scenic tours and precision timing applications"
+    }
+  ]
+}

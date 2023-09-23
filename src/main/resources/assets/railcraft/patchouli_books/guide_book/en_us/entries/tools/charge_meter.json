@@ -1,0 +1,11 @@
+{
+  "name": "Charge Meter",
+  "icon": "railcraft:charge_meter",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Charge Meter is a tool from Railcraft, which is used to measure the Railcraft Charge in the various machines, wires, or tracks that use/transfer it, including the Electric Locomotive, Electric Feeder Unit, various Electric Tracks. It records the network usage over a 5-second period."
+    }
+  ]
+}

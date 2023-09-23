@@ -1,0 +1,11 @@
+{
+  "name": "Elevator Track",
+  "icon": "railcraft:elevator_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This rail is unique in that is can be placed vertically. When powered, it will power all the rails below it. Powered rails will lift minecarts up, unpowered rails will lower minecarts down. When a minecart reaches the top it will be pushed onto any normal rail located on the block above. The rail also doubles as a ladder."
+    }
+  ]
+}

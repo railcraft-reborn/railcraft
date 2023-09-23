@@ -1,0 +1,11 @@
+{
+  "name": "Gated Track",
+  "icon": "railcraft:iron_gated_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These rails also function as a fence gate. They can be opened/closed manually or via redstone.$(br)One-Way Gates boosts the minecart through the gate in order to prevent it from being pushed backwards by any animals in the area."
+    }
+  ]
+}

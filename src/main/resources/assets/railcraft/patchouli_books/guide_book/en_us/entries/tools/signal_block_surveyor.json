@@ -1,0 +1,11 @@
+{
+  "name": "Signal Block Surveyor",
+  "icon": "railcraft:signal_block_surveyor",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This surveying tool is used to pair two Block Signals to create a Signal Block. To begin surveying, right click a Block Signal. To complete the Signal Block, move to the signal at the other end and right-click on it too. If the Signal Block is valid, a message will appear on the screen telling you the pairing was successful. If the pairing failed a message should also appear to tell you why it failed."
+    }
+  ]
+}

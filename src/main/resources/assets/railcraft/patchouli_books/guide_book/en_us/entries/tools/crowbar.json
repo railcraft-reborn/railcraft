@@ -1,0 +1,19 @@
+{
+  "name": "Crowbar",
+  "icon": "railcraft:iron_crowbar",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Crowbar is a multi-purpose tool any rail engineer should carry. It makes removal of modern rails a breeze and even works on Detector Blocks and Loaders. Additionally, right-clicking on a rail will allow you to adjust the rail. Most of the time that means reversing the rail's direction, but some rails will open a GUIde. Right-clicking a Detector Block, Cart Dispenser, or Advanced Loader will turn the block to face the side clicked on."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Crowbar can also interact with carts in number of ways. Of interest is the ability to give carts a small boost just by whacking them with the Crowbar (right click). On Locomotives, this actually flips the facing of the locomotive. Additionally, the Crowbar can be used to link carts together with shift right-click, see Cart Linking for more information."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Diamond Crowbars are intended to be spawned in end city chests.$(br2)The Seasons Crowbar cannot link carts together; instead, it can break doors. It can only be obtained in Workshops."
+    }
+  ]
+}

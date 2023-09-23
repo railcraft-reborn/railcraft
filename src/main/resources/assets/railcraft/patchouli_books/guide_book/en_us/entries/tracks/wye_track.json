@@ -1,0 +1,15 @@
+{
+  "name": "Wye Track",
+  "icon": "railcraft:iron_wye_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Wye tracks are a good mean to adjust a minecart's travel direction.$(br2)They are placed in the world by right clicking a spike maul on a flex track and cycle through possibilities. By default, wye track kit is the second possibility, after turnout track kit."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "They can be controlled by an switch actuator, either lever (manual), motor (signal/redstone based), or routing (routing table based).$(br2)When a player break the track kit, it drops nothing and becomes a piece of flex track."
+    }
+  ]
+}

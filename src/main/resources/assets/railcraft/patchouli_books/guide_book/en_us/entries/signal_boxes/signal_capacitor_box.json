@@ -1,0 +1,19 @@
+{
+  "name": "Signal Capacitor Box",
+  "icon": "railcraft:signal_capacitor_box",
+  "category": "railcraft:signal_boxes",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This box can be placed next to a Signal Receiver Box or Signal Block Relay Box and will then emit a Redstone pulse for a predefined length of time whenever the adjacent box emits Redstone. It is conceptually similar to a RedPower State Cell."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Right clicking on the box will open its GUI. In this GUI, you can see the current amount of time it will emit redstone, which is adjustable. Additionally, there is a button that will toggle between 'Rising Edge' and 'Falling Edge'."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rising Edge will emit a redstone pulse for the length of time specified once an adjacent box emits a redstone signal. Falling edge will hold the redstone pulse until the specified time after an adjacent box stops emitting a redstone signal (creating a delay)."
+    }
+  ]
+}
