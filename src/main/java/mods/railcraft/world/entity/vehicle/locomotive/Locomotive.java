@@ -193,16 +193,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     return 1f + (float) this.random.nextGaussian() * 0.2f;
   }
 
-  /**
-   * Returns the cart's actual item.
-   */
-  protected abstract Item getItem();
-
-  @Override
-  public Item getDropItem() {
-    return getItem();
-  }
-
   @Override
   public void destroy(DamageSource source) {
     this.kill();
@@ -218,7 +208,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public ItemStack getPickResult() {
-    ItemStack itemStack = this.getItem().getDefaultInstance();
+    ItemStack itemStack = this.getDropItem().getDefaultInstance();
     if (this.isLocked()) {
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());
     }
@@ -249,7 +239,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return InteractionResult.CONSUME;
     }
     if (this.canControl(player)) {
-      super.interact(player, hand); // open gui
+      super.interact(player, hand);
     }
     return InteractionResult.CONSUME;
   }
@@ -313,13 +303,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     } else if (!getEmblem().get().equals(emblem)) {
       this.getEntityData().set(EMBLEM, emblem);
     }
-  }
-
-  /**
-   * Gets the destination ticket item.
-   */
-  public ItemStack getDestItem() {
-    return ticketContainer().getItem(1);
   }
 
   @Override
@@ -587,9 +570,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (speed != Speed.MAX) {
       float limit = switch (speed) {
-        case SLOWEST -> limit = 0.1F;
-        case SLOWER -> limit = 0.2F;
-        case NORMAL -> limit = 0.3F;
+        case SLOWEST -> 0.1F;
+        case SLOWER -> 0.2F;
+        case NORMAL -> 0.3F;
         default -> 0.4F;
       };
 

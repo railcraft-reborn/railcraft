@@ -6,8 +6,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.inventory.LocomotiveMenu;
-import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.inventory.CreativeLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.core.Direction;
@@ -72,7 +71,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public Item getItem() {
+  public Item getDropItem() {
     return RailcraftItems.CREATIVE_LOCOMOTIVE.get();
   }
 
@@ -121,7 +120,6 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
-    return new LocomotiveMenu<>(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id,
-        playerInventory, this);
+    return new CreativeLocomotiveMenu(id, playerInventory, this);
   }
 }

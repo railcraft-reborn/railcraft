@@ -11,7 +11,6 @@ import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
-import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -34,7 +33,7 @@ public class CrowbarHandler {
 
   public InteractionResult handleInteract(AbstractMinecart cart, Player player,
       InteractionHand hand) {
-    ItemStack stack = player.getItemInHand(hand);
+    var stack = player.getItemInHand(hand);
     if (stack.isEmpty() || !(stack.getItem() instanceof Crowbar crowbar)) {
       return InteractionResult.PASS;
     }
@@ -104,10 +103,9 @@ public class CrowbarHandler {
     player.causeFoodExhaustion(.25F);
 
     if (player.getVehicle() != null) {
-      // NOOP
-    } else if (cart instanceof TunnelBore) {
-      // NOOP
-    } else if (cart instanceof Directional directional) {
+      return;
+    }
+    if (cart instanceof Directional directional) {
       directional.reverse();
     } else if (cart instanceof TrackRemover trackRemover) {
       trackRemover.setMode(trackRemover.mode().next());
