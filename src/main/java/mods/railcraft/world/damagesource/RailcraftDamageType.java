@@ -4,7 +4,6 @@ import mods.railcraft.Railcraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageType;
 
 public class RailcraftDamageType {
@@ -28,6 +27,6 @@ public class RailcraftDamageType {
   }
 
   private static ResourceKey<DamageType> createKey(String name) {
-    return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Railcraft.ID, name));
+    return ResourceKey.create(Registries.DAMAGE_TYPE, Railcraft.rl(name));
   }
 }

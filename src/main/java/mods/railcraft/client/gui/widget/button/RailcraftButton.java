@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 public class RailcraftButton extends Button {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/widgets.png");
+      Railcraft.rl("textures/gui/widgets.png");
 
   private TexturePosition texturePosition;
 

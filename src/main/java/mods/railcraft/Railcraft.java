@@ -59,6 +59,7 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.SimpleContainer;
@@ -103,6 +104,10 @@ public class Railcraft {
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
     }
+  }
+
+  public static ResourceLocation rl(String path) {
+    return new ResourceLocation(ID, path);
   }
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();

@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRouterMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/routing.png");
+      Railcraft.rl("textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = 20;

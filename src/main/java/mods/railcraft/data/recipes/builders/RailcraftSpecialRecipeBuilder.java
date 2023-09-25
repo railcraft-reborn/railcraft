@@ -33,7 +33,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
       }
 
       public ResourceLocation getId() {
-        return new ResourceLocation(Railcraft.ID, id);
+        return Railcraft.rl(id);
       }
 
       @Nullable
@@ -42,7 +42,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
       }
 
       public ResourceLocation getAdvancementId() {
-        return new ResourceLocation(Railcraft.ID, "");
+        return Railcraft.rl("");
       }
     });
   }

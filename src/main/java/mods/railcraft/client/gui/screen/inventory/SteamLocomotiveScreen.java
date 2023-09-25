@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/steam_locomotive.png");
+      Railcraft.rl("textures/gui/container/steam_locomotive.png");
 
   public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv, Component title) {
     super(menu, inv, title, "steam");

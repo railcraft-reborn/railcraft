@@ -8,7 +8,6 @@ import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.IronTankValveBlock;
 import mods.railcraft.world.level.block.tank.IronTankWallBlock;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import vazkii.patchouli.api.IStateMatcher;
@@ -25,7 +24,7 @@ public class Patchouli {
         {"BB", "0B", "BB"}  //Y:0
         }, 'B', crusherBlock, '0', crusherBlock
     ).setSymmetrical(false);
-    patchouliApi.registerMultiblock(new ResourceLocation(Railcraft.ID, "crusher"), crusher);
+    patchouliApi.registerMultiblock(Railcraft.rl("crusher"), crusher);
 
     var cokeOvenBlock = validBlock(patchouliApi, RailcraftBlocks.COKE_OVEN_BRICKS.get());
     var cokeOven = patchouliApi.makeMultiblock(new String[][]{
@@ -34,7 +33,7 @@ public class Patchouli {
         {"BBB", "B0B", "BBB"}  //Y:0
         }, 'B', cokeOvenBlock, '0', cokeOvenBlock, 'A', patchouliApi.airMatcher()
     ).setSymmetrical(true);
-    patchouliApi.registerMultiblock(new ResourceLocation(Railcraft.ID, "coke_oven"), cokeOven);
+    patchouliApi.registerMultiblock(Railcraft.rl("coke_oven"), cokeOven);
 
     var blastFurnaceBlock = validBlock(patchouliApi, RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
     var blastFurnace = patchouliApi.makeMultiblock(new String[][]{
@@ -45,7 +44,7 @@ public class Patchouli {
         }, 'B', blastFurnaceBlock, '0', blastFurnaceBlock, 'A', patchouliApi.airMatcher()
     ).setSymmetrical(true);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "blast_furnace"), blastFurnace);
+        .registerMultiblock(Railcraft.rl("blast_furnace"), blastFurnace);
 
     var steamTurbineBlock = validBlock(patchouliApi, RailcraftBlocks.STEAM_TURBINE.get());
     var steamTurbine = patchouliApi.makeMultiblock(new String[][]{
@@ -54,7 +53,7 @@ public class Patchouli {
         }, 'B', steamTurbineBlock, '0', steamTurbineBlock
     ).setSymmetrical(false);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "steam_turbine"), steamTurbine);
+        .registerMultiblock(Railcraft.rl("steam_turbine"), steamTurbine);
 
     var waterTankBlock = validBlock(patchouliApi, RailcraftBlocks.WATER_TANK_SIDING.get());
     var waterTank = patchouliApi.makeMultiblock(new String[][]{
@@ -63,7 +62,7 @@ public class Patchouli {
         }, 'B', waterTankBlock, '0', waterTankBlock
     ).setSymmetrical(true);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "water_tank"), waterTank);
+        .registerMultiblock(Railcraft.rl("water_tank"), waterTank);
 
     var steamOvenBlock = validBlock(patchouliApi, RailcraftBlocks.STEAM_OVEN.get());
     var steamOven = patchouliApi.makeMultiblock(new String[][]{
@@ -72,7 +71,7 @@ public class Patchouli {
         }, 'B', steamOvenBlock, '0', steamOvenBlock
     ).setSymmetrical(true);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "steam_oven"), steamOven);
+        .registerMultiblock(Railcraft.rl("steam_oven"), steamOven);
 
     var ironTankWallBlock = validTankWallBlock(patchouliApi,
         RailcraftBlocks.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get());
@@ -94,7 +93,7 @@ public class Patchouli {
         '0', ironTankWallBlock
     ).setSymmetrical(true);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "iron_tank"), tank);
+        .registerMultiblock(Railcraft.rl("iron_tank"), tank);
 
     var solidFueledFireboxBlock = validFireboxBlock(patchouliApi,
         RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
@@ -111,7 +110,7 @@ public class Patchouli {
         '0', solidFueledFireboxBlock
     ).setSymmetrical(true);
     patchouliApi
-        .registerMultiblock(new ResourceLocation(Railcraft.ID, "boiler"), boiler);
+        .registerMultiblock(Railcraft.rl("boiler"), boiler);
   }
 
   private static IStateMatcher validBlock(PatchouliAPI.IPatchouliAPI api, Block block) {

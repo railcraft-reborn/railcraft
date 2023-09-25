@@ -2,7 +2,6 @@ package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.Railcraft;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -43,7 +42,7 @@ public class RailcraftRecipeTypes {
     return deferredRegister.register(name, () -> new RecipeType<T>() {
       @Override
       public String toString() {
-        return Railcraft.ID + ResourceLocation.NAMESPACE_SEPARATOR + name;
+        return Railcraft.rl(name).toString();
       }
     });
   }

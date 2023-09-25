@@ -23,7 +23,6 @@ import mods.railcraft.network.play.UpdateAuraByKeyMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -186,7 +185,7 @@ public enum NetworkChannel {
 
   NetworkChannel() {
     this.simpleChannel = NetworkRegistry.ChannelBuilder
-        .named(new ResourceLocation(Railcraft.ID, "game"))
+        .named(Railcraft.rl("game"))
         .clientAcceptedVersions(NETWORK_VERSION::equals)
         .serverAcceptedVersions(NETWORK_VERSION::equals)
         .networkProtocolVersion(() -> NETWORK_VERSION)

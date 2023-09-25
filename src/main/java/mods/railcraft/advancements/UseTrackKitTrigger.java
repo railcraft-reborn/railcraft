@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "use_track_kit");
+  private static final ResourceLocation ID = Railcraft.rl("use_track_kit");
 
   @Override
   public ResourceLocation getId() {

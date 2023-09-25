@@ -21,11 +21,11 @@ public abstract class MaintenanceMinecartRenderer
     extends ContentsMinecartRenderer<MaintenanceMinecart> {
 
   private static final ResourceLocation LAMP_ON_TEX =
-      new ResourceLocation(Railcraft.ID, "textures/entity/minecart/maintenance_lamp_on.png");
+      Railcraft.rl("textures/entity/minecart/maintenance_lamp_on.png");
   private static final ResourceLocation LAMP_OFF_TEX =
-      new ResourceLocation(Railcraft.ID, "textures/entity/minecart/maintenance_lamp_off.png");
+      Railcraft.rl("textures/entity/minecart/maintenance_lamp_off.png");
   private static final ResourceLocation LAMP_DISABLED_TEX =
-      new ResourceLocation(Railcraft.ID, "textures/entity/minecart/maintenance_lamp_disabled.png");
+      Railcraft.rl("textures/entity/minecart/maintenance_lamp_disabled.png");
 
   private final ResourceLocation maintenanceTextureLocation;
 

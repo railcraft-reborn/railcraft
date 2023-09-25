@@ -45,10 +45,9 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "blast_furnace/" + path);
+    var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
 
-    var advancementId = new ResourceLocation(Railcraft.ID,
-        String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

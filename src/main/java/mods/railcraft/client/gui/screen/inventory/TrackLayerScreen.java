@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrackLayerScreen extends MaintenanceMinecartScreen<TrackLayerMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/track_layer.png");
+      Railcraft.rl("textures/gui/container/track_layer.png");
 
   public TrackLayerScreen(TrackLayerMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title, menu.getTrackLayer());

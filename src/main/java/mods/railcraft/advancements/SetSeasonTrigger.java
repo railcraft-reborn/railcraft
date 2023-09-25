@@ -16,7 +16,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "set_season");
+  private static final ResourceLocation ID = Railcraft.rl("set_season");
 
   @Override
   public ResourceLocation getId() {

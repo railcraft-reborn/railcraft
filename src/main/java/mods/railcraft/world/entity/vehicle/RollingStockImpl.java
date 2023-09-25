@@ -33,8 +33,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
-  public static final ResourceLocation KEY =
-      new ResourceLocation(Railcraft.ID, "rolling_stock");
+  public static final ResourceLocation KEY = Railcraft.rl("rolling_stock");
 
   private static final double LINK_DRAG = 0.95;
 

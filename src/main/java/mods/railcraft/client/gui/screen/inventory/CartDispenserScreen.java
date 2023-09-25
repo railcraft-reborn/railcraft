@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CartDispenserScreen extends RailcraftMenuScreen<CartDispenserMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/cart_slots.png");
+      Railcraft.rl("textures/gui/container/cart_slots.png");
 
   public CartDispenserScreen(CartDispenserMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

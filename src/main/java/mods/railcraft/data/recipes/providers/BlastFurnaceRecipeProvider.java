@@ -85,6 +85,6 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
   private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
     var tag = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
-    return new ResourceLocation(Railcraft.ID, "blasting_" + tag);
+    return Railcraft.rl("blasting_" + tag);
   }
 }

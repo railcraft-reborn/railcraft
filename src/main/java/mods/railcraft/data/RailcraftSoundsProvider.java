@@ -4,7 +4,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
 import net.minecraftforge.common.data.SoundDefinitionsProvider;
@@ -50,7 +49,7 @@ public class RailcraftSoundsProvider extends SoundDefinitionsProvider {
   }
 
   protected static SoundDefinition.Sound railcraftSound(final String name) {
-    return sound(new ResourceLocation(Railcraft.ID, name));
+    return sound(Railcraft.rl(name));
   }
 
   @Override

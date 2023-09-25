@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiveMenu> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/electric_locomotive.png");
+      Railcraft.rl("textures/gui/container/electric_locomotive.png");
 
   public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory inventory,
       Component title) {

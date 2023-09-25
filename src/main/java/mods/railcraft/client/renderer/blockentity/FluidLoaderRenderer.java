@@ -18,9 +18,9 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
   public static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/fluid_loader/pipe_side");
+      Railcraft.rl("entity/fluid_loader/pipe_side");
   public static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/fluid_loader/pipe_end");
+      Railcraft.rl("entity/fluid_loader/pipe_end");
   public static final CuboidModel pipeModel = new CuboidModel(PIPE_OFFSET, 0.0F, PIPE_OFFSET,
       1.0F - PIPE_OFFSET, RenderUtil.PIXEL, 1.0F - PIPE_OFFSET);
 

@@ -4,7 +4,6 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import mods.railcraft.Railcraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftModelLayers {
 
@@ -47,6 +46,6 @@ public class RailcraftModelLayers {
   }
 
   private static ModelLayerLocation createLocation(String model, String layer) {
-    return new ModelLayerLocation(new ResourceLocation(Railcraft.ID, model), layer);
+    return new ModelLayerLocation(Railcraft.rl(model), layer);
   }
 }

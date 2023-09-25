@@ -19,7 +19,7 @@ import net.minecraft.util.Mth;
 public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
   private static final ResourceLocation TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/entity/tunnel_bore/tunnel_bore.png");
+      Railcraft.rl("textures/entity/tunnel_bore/tunnel_bore.png");
 
   protected TunnelBoreModel modelTunnelBore;
 

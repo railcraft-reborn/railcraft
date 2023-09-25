@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public class SignalReceiverBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/signal_receiver_box");
+      Railcraft.rl("entity/signal_box/signal_receiver_box");
   
   @Override
   protected ResourceLocation getTopTextureLocation() {

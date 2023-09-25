@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class PoweredRollingMachineScreen extends RailcraftMenuScreen<PoweredRollingMachineMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/powered_rolling_machine.png");
+      Railcraft.rl("textures/gui/container/powered_rolling_machine.png");
 
   public PoweredRollingMachineScreen(PoweredRollingMachineMenu menu, Inventory inventory,
       Component title) {

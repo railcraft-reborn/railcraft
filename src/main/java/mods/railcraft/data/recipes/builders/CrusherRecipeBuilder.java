@@ -67,7 +67,7 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/crushing_" + path);
+    var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.processTime));

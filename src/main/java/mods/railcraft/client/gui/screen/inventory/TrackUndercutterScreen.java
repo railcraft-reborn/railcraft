@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUndercutterMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/track_undercutter.png");
+      Railcraft.rl("textures/gui/container/track_undercutter.png");
 
   private static final Component UNDER = Component.translatable(Translations.Screen.UNDER);
   private static final Component SIDES = Component.translatable(Translations.Screen.SIDES);

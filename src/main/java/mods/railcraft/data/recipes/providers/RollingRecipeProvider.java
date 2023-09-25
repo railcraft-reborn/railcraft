@@ -10,7 +10,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -69,15 +68,15 @@ public class RollingRecipeProvider extends RecipeProvider {
         .pattern("aa ")
         .pattern("a  ")
         .define('a', RailcraftTags.Items.BRONZE_NUGGET)
-        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_bronze_nugget"));
+        .save(consumer, Railcraft.rl(name + "_bronze_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("aa")
         .define('a', Tags.Items.NUGGETS_IRON)
-        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_iron_nugget"));
+        .save(consumer, Railcraft.rl(name + "_iron_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("a")
         .define('a', RailcraftTags.Items.STEEL_NUGGET)
-        .save(consumer, new ResourceLocation(Railcraft.ID, name + "_steel_nugget"));
+        .save(consumer, Railcraft.rl(name + "_steel_nugget"));
   }
 
   private static void buildRebars(Consumer<FinishedRecipe> consumer) {

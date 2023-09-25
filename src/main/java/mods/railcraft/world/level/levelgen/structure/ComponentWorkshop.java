@@ -56,10 +56,10 @@ public class ComponentWorkshop {
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         new ResourceLocation("village/plains/houses"),
-        new ResourceLocation(Railcraft.ID, "component_workshop_cartman"), 3);
+        Railcraft.rl("component_workshop_cartman"), 3);
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         new ResourceLocation("village/plains/houses"),
-        new ResourceLocation(Railcraft.ID, "component_workshop_trackman"), 5);
+        Railcraft.rl("component_workshop_trackman"), 5);
   }
 }

@@ -17,8 +17,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class JukeboxCartPlayMusicTrigger
     extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.Instance> {
 
-  private static final ResourceLocation ID =
-      new ResourceLocation(Railcraft.ID + ":jukebox_cart_play_music");
+  private static final ResourceLocation ID = Railcraft.rl("jukebox_cart_play_music");
 
   @Override
   public ResourceLocation getId() {

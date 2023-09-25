@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
   private static final ResourceLocation TANK_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/entity/minecart/tank.png");
+      Railcraft.rl("textures/entity/minecart/tank.png");
 
   private final LowSidesMinecartModel<TankMinecart> bodyModel;
   private final LowSidesMinecartModel<TankMinecart> snowModel;

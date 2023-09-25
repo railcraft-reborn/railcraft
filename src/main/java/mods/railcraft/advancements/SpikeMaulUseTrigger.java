@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "spike_maul_use");
+  private static final ResourceLocation ID = Railcraft.rl("spike_maul_use");
 
   @Override
   public ResourceLocation getId() {

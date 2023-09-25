@@ -6,7 +6,6 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -102,12 +101,10 @@ public class RailcraftBiomeModifiers {
 
   private static HolderSet<PlacedFeature> getPlacedFeature(
       BootstapContext<BiomeModifier> context, ResourceKey<PlacedFeature> resourceKey) {
-    return HolderSet.direct(context.lookup(Registries.PLACED_FEATURE)
-        .getOrThrow(resourceKey));
+    return HolderSet.direct(context.lookup(Registries.PLACED_FEATURE).getOrThrow(resourceKey));
   }
 
   private static ResourceKey<BiomeModifier> createKey(String name) {
-    return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS,
-        new ResourceLocation(Railcraft.ID, name));
+    return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Railcraft.rl(name));
   }
 }

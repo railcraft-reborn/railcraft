@@ -14,7 +14,7 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
     extends CustomMinecartRenderer<T> {
 
   public static final ResourceLocation SNOW_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/carts/cart_snow.png");
+      Railcraft.rl("textures/carts/cart_snow.png");
 
   public static final ResourceLocation MINECART_TEXTURE_LOCATION =
       new ResourceLocation("textures/entity/minecart.png");

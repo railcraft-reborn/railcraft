@@ -14,7 +14,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "surprise");
+  private static final ResourceLocation ID = Railcraft.rl("surprise");
 
   @Override
   public ResourceLocation getId() {

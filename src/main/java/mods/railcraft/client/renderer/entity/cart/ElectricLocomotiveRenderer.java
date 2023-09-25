@@ -28,10 +28,10 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         new ElectricLocomotiveLampModel(
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
-    this.lampTextureOn = new ResourceLocation(Railcraft.ID,
-        "textures/entity/locomotive/" + modelTag + "/lamp_on.png");
-    this.lampTextureOff = new ResourceLocation(Railcraft.ID,
-        "textures/entity/locomotive/" + modelTag + "/lamp_off.png");
+    this.lampTextureOn =
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
+    this.lampTextureOff =
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
     this.setEmblemPosition(0.2F, -0.03F, -0.41F, -0.505F);
   }
 

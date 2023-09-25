@@ -143,7 +143,7 @@ public class RailcraftTags {
 
 
     private static TagKey<Item> tag(String name) {
-      return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
+      return ItemTags.create(Railcraft.rl(name));
     }
 
     private static TagKey<Item> forgeTag(String name) {
@@ -191,7 +191,7 @@ public class RailcraftTags {
     public static final TagKey<Block> SALTPETER_ORE = forgeTag("ores/salt");
 
     private static TagKey<Block> tag(String name) {
-      return BlockTags.create(new ResourceLocation(Railcraft.ID, name));
+      return BlockTags.create(Railcraft.rl(name));
     }
 
     private static TagKey<Block> forgeTag(String name) {

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/dumping_track.png");
+      Railcraft.rl("textures/gui/container/dumping_track.png");
 
   private static final Component FILTERS =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);

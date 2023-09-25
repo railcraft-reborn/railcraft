@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrainDispenserScreen extends RailcraftMenuScreen<TrainDispenserMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/train_dispenser.png");
+      Railcraft.rl("textures/gui/container/train_dispenser.png");
 
   private final static Component PATTERN =
       Component.translatable(Translations.Screen.PATTERN);

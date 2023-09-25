@@ -15,11 +15,11 @@ import vazkii.patchouli.api.PatchouliAPI;
 public class RailcraftAdvancementRewardLoot implements LootTableSubProvider {
 
   public static final ResourceLocation PATCHOULI_BOOK =
-      new ResourceLocation(Railcraft.ID, "advancements/patchouli_book");
+      Railcraft.rl("advancements/patchouli_book");
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-    var bookId = new ResourceLocation(Railcraft.ID, "guide_book");
+    var bookId = Railcraft.rl("guide_book");
     var book = PatchouliAPI.get().getBookStack(bookId).getItem();
     var tag = new CompoundTag();
     tag.putString("patchouli:book", bookId.toString());

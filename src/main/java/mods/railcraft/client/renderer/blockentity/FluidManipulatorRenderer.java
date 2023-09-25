@@ -18,7 +18,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
 
   public static final ResourceLocation INTERIOR_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/fluid_manipulator/interior");
+      Railcraft.rl("entity/fluid_manipulator/interior");
 
   private static final CuboidModel interiorModel =
       new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);

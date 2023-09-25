@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TankMinecartScreen extends RailcraftMenuScreen<TankMinecartMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/tank_minecart.png");
+      Railcraft.rl("textures/gui/container/tank_minecart.png");
 
   public TankMinecartScreen(TankMinecartMenu menu, Inventory inventory,
       Component title) {

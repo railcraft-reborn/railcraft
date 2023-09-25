@@ -14,7 +14,6 @@ import mods.railcraft.util.container.ContainerMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -230,7 +229,7 @@ public final class FluidTools {
     public void onAttachCapability(AttachCapabilitiesEvent<ItemStack> event) {
       if (event.getObject().getItem() == Items.POTION
           && PotionUtils.getPotion(event.getObject()) == Potions.WATER) {
-        event.addCapability(new ResourceLocation(Railcraft.ID, "water_bottle_container"),
+        event.addCapability(Railcraft.rl("water_bottle_container"),
             new WaterBottleCapabilityDispatcher(event.getObject()));
       }
     }

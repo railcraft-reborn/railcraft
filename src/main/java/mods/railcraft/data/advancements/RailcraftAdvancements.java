@@ -7,7 +7,6 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
@@ -19,6 +18,6 @@ class RailcraftAdvancements implements ForgeAdvancementProvider.AdvancementGener
     Advancement.Builder.advancement()
         .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
         .rewards(AdvancementRewards.Builder.loot(RailcraftAdvancementRewardLoot.PATCHOULI_BOOK))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "grant_book_on_first_join"), fileHelper);
+        .save(consumer, Railcraft.rl("grant_book_on_first_join"), fileHelper);
   }
 }

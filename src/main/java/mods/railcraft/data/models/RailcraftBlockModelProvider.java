@@ -576,7 +576,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.simpleBlock(block, model);
 
-    var side = new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory");
+    var side = Railcraft.rl("block/fluid_manipulator_side_inventory");
     var bottom = TextureMapping.getBlockTexture(block, "_bottom");
     var top = TextureMapping.getBlockTexture(block, "_top");
     this.models().cubeBottomTop(this.name(block, "_inventory"), side, bottom, top);

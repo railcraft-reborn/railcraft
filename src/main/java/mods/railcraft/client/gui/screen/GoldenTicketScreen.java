@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 public class GoldenTicketScreen extends IngameWindowScreen {
 
   private static final ResourceLocation TICKET_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/item/golden_ticket.png");
+      Railcraft.rl("textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
   private static final String PREFIX = "Dest=";

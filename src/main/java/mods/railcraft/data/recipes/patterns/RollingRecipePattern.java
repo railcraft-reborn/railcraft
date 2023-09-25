@@ -5,7 +5,6 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
@@ -29,7 +28,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern(" a ")
         .define('a', ingredient)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
+        .save(finishedRecipe, Railcraft.rl(customName));
   }
 
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -52,7 +51,7 @@ public class RollingRecipePattern {
         .pattern("a b")
         .define('a', ingred1)
         .define('b', ingred2)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
+        .save(finishedRecipe, Railcraft.rl(customName));
   }
 
 
@@ -80,7 +79,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
+        .save(finishedRecipe, Railcraft.rl(customName));
   }
 
   public static void diagonalLine(Consumer<FinishedRecipe> finishedRecipe,
@@ -93,7 +92,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern("a  ")
         .define('a', materialTag)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, customName));
+        .save(finishedRecipe, Railcraft.rl(customName));
   }
 
   public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
@@ -113,7 +112,7 @@ public class RollingRecipePattern {
         .pattern("aa")
         .pattern("aa")
         .define('a', materialTag)
-        .save(finishedRecipe, new ResourceLocation(Railcraft.ID, name + postfix));
+        .save(finishedRecipe, Railcraft.rl(name + postfix));
   }
 
   public static void hForm(Consumer<FinishedRecipe> finishedRecipe,

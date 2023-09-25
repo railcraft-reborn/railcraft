@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFueledSteamBoilerMenu> {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/fluid_fueled_steam_boiler.png");
+      Railcraft.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
 
   public FluidFueledSteamBoilerScreen(FluidFueledSteamBoilerMenu menu, Inventory inventory,
       Component title) {

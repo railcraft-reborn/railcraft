@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 public class IngameWindowScreen extends Screen {
 
   public static final ResourceLocation WIDGETS_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/widgets.png");
+      Railcraft.rl("textures/gui/widgets.png");
   public static final ResourceLocation LARGE_WINDOW_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/large_window.png");
+      Railcraft.rl("textures/gui/large_window.png");
 
   public static final int TEXT_COLOR = 0xFF404040;
   public static final int DEFAULT_WINDOW_WIDTH = 176;

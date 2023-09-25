@@ -26,7 +26,7 @@ public class LogBookScreen extends Screen {
 
   private static final int TEXT_WIDTH = 220;
   private static final ResourceLocation BOOK_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/block/logbook.png");
+      Railcraft.rl("textures/gui/block/logbook.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 181;
   private final List<String> pages = Lists.newArrayList();

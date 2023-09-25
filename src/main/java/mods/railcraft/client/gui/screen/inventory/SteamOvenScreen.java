@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SteamOvenScreen extends RailcraftMenuScreen<SteamOvenMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/steam_oven.png");
+      Railcraft.rl("textures/gui/container/steam_oven.png");
   private final SteamOvenModule steamOvenModule;
 
   public SteamOvenScreen(SteamOvenMenu menu, Inventory inventory, Component title) {

@@ -46,7 +46,7 @@ import net.minecraft.world.item.ItemStack;
 public class RoutingTableBookScreen extends Screen {
 
   public static final ResourceLocation BOOK_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/item/routing_table_book.png");
+      Railcraft.rl("textures/gui/item/routing_table_book.png");
   private static final int TEXT_WIDTH = 220;
   private static final int TEXT_HEIGHT = 128;
   private static final int IMAGE_WIDTH = 256;

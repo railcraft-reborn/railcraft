@@ -22,10 +22,10 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
     implements BlockEntityRenderer<T> {
 
   private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/off"),
-      SignalAspect.RED, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/red"),
-      SignalAspect.YELLOW, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/yellow"),
-      SignalAspect.GREEN, new ResourceLocation(Railcraft.ID, "entity/signal_aspect/green"));
+      SignalAspect.OFF, Railcraft.rl("entity/signal_aspect/off"),
+      SignalAspect.RED, Railcraft.rl("entity/signal_aspect/red"),
+      SignalAspect.YELLOW, Railcraft.rl("entity/signal_aspect/yellow"),
+      SignalAspect.GREEN, Railcraft.rl("entity/signal_aspect/green"));
 
   private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
 

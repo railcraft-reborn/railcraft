@@ -21,7 +21,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
 
   private static final int REFRESH_INTERVAL_TICKS = 20;
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/routing_track.png");
+      Railcraft.rl("textures/gui/container/routing_track.png");
   private final RoutingTrackBlockEntity routingBlockEntity;
   private MultiButton<LockableSwitchTrackActuatorBlockEntity.Lock> lockButton;
   private int refreshTimer;

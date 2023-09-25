@@ -20,8 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class MultiBlockFormedTrigger extends
     SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
 
-  private static final ResourceLocation ID =
-      new ResourceLocation(Railcraft.ID, "multiblock_formed");
+  private static final ResourceLocation ID = Railcraft.rl("multiblock_formed");
 
   @Override
   public ResourceLocation getId() {
