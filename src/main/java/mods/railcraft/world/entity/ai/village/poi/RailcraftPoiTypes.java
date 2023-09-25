@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.ai.village.poi;
 
 import com.google.common.collect.ImmutableSet;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftPoiTypes {
 
   private static final DeferredRegister<PoiType> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.POI_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.POI_TYPES, RailcraftConstants.ID);
 
   public static final RegistryObject<PoiType> MANUAL_ROLLING_MACHINE_POI = deferredRegister
       .register("manual_rolling_machine_poi",

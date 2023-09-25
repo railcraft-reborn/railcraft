@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
@@ -47,7 +47,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftItems {
 
   private static final DeferredRegister<Item> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ITEMS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.ITEMS, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

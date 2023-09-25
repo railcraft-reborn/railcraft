@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
@@ -153,7 +154,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(railType), has(railType))
         .unlockedBy(getHasName(railBedType), has(railBedType))
         .save(finishedRecipe,
-            new ResourceLocation(result.equals(Items.RAIL) ? "minecraft" : Railcraft.ID,
+            new ResourceLocation(result.equals(Items.RAIL) ? "minecraft" : RailcraftConstants.ID,
                 RecipeBuilder.getDefaultRecipeId(result).getPath()));
   }
 

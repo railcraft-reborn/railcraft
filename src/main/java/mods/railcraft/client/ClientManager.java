@@ -2,6 +2,7 @@ package mods.railcraft.client;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.emblem.EmblemClientUtil;
@@ -227,14 +228,14 @@ public class ClientManager {
   @SuppressWarnings("unused")
   @SubscribeEvent
   static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-    var modInfo = ModList.get().getModFileById(Railcraft.ID).getMods().get(0);
+    var modInfo = ModList.get().getModFileById(RailcraftConstants.ID).getMods().get(0);
     var result = VersionChecker.getResult(modInfo);
     var versionStatus = result.status();
 
     if (versionStatus.shouldDraw()) {
       var newVersion = result.target().toString();
       var modUrl = modInfo.getModURL().get().toString();
-      var message = Component.literal(Railcraft.NAME + ": ").withStyle(ChatFormatting.GREEN)
+      var message = Component.literal(RailcraftConstants.NAME + ": ").withStyle(ChatFormatting.GREEN)
           .append(Component.literal(
               "A new version (%s) is available to download.".formatted(newVersion))
               .withStyle(style -> style
@@ -248,7 +249,7 @@ public class ClientManager {
       var type = FMLLoader.isProduction() ? "beta" : "development";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
-          Component.literal("You are using a %s version of %s.".formatted(type, Railcraft.NAME))
+          Component.literal("You are using a %s version of %s.".formatted(type, RailcraftConstants.NAME))
               .withStyle(ChatFormatting.RED),
         /*Component.literal("- World saves are not stable and may break between versions.")
             .withStyle(ChatFormatting.GRAY),*/

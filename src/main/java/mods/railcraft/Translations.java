@@ -2,12 +2,13 @@ package mods.railcraft;
 
 import java.util.List;
 import java.util.stream.IntStream;
+import mods.railcraft.api.core.RailcraftConstants;
 
 public class Translations {
 
   public static class Tab {
 
-    public static final String RAILCRAFT = "itemGroup." + Railcraft.ID;
+    public static final String RAILCRAFT = "itemGroup." + RailcraftConstants.ID;
     public static final String RAILCRAFT_OUTFITTED_TRACKS = RAILCRAFT + "_outfitted_tracks";
     public static final String RAILCRAFT_DECORATIVE_BLOCKS = RAILCRAFT + "_decorative_blocks";
   }
@@ -589,6 +590,6 @@ public class Translations {
   }
 
   public static String makeKey(String type, String name) {
-    return type + "." + Railcraft.ID + "." + name;
+    return type + "." + RailcraftConstants.ID + "." + name;
   }
 }

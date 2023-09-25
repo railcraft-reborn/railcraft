@@ -1,6 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftRecipeSerializers {
 
   private static final DeferredRegister<RecipeSerializer<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, RailcraftConstants.ID);
 
   public static final RegistryObject<RecipeSerializer<?>> ROLLING =
       deferredRegister.register("rolling", RollingRecipe.Serializer::new);

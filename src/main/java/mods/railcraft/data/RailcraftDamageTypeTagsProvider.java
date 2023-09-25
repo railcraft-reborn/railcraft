@@ -1,7 +1,7 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.damagesource.RailcraftDamageType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -25,7 +25,7 @@ public class RailcraftDamageTypeTagsProvider extends TagsProvider<DamageType> {
     super(packOutput, Registries.DAMAGE_TYPE, lookupProvider.thenApply(provider ->
             BUILDER.buildPatch(RegistryAccess
                 .fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), provider)),
-        Railcraft.ID, existingFileHelper);
+        RailcraftConstants.ID, existingFileHelper);
   }
 
   @Override

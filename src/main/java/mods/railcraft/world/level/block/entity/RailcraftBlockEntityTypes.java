@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Collection;
 import java.util.stream.Stream;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
@@ -47,7 +47,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftBlockEntityTypes {
 
   private static final DeferredRegister<BlockEntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

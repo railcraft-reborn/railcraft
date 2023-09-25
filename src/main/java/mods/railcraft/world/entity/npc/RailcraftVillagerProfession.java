@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.npc;
 
 import com.google.common.collect.ImmutableSet;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftVillagerProfession {
 
   private static final DeferredRegister<VillagerProfession> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, RailcraftConstants.ID);
 
   public static final RegistryObject<VillagerProfession> TRACKMAN = deferredRegister
       .register("trackman", () -> new VillagerProfession("trackman",

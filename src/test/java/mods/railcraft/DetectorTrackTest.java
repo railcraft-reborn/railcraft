@@ -1,5 +1,6 @@
 package mods.railcraft;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -8,7 +9,7 @@ import net.minecraft.world.level.block.RedstoneLampBlock;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-@GameTestHolder(Railcraft.ID)
+@GameTestHolder(RailcraftConstants.ID)
 @PrefixGameTestTemplate(false)
 public class DetectorTrackTest {
 

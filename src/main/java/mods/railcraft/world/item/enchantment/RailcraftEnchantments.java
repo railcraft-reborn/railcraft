@@ -1,6 +1,6 @@
 package mods.railcraft.world.item.enchantment;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftEnchantments {
 
   private static final DeferredRegister<Enchantment> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, RailcraftConstants.ID);
 
   public static final RegistryObject<Enchantment> WRECKING =
       deferredRegister.register("wrecking",

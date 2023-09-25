@@ -2,7 +2,7 @@ package mods.railcraft.particle;
 
 import java.util.function.Function;
 import com.mojang.serialization.Codec;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftParticleTypes {
 
   private static final DeferredRegister<ParticleType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, RailcraftConstants.ID);
 
   public static final RegistryObject<SimpleParticleType> STEAM =
       deferredRegister.register("steam", () -> new SimpleParticleType(false));

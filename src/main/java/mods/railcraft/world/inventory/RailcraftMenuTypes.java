@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
@@ -43,7 +43,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftMenuTypes {
 
   private static final DeferredRegister<MenuType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.MENU_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.MENU_TYPES, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

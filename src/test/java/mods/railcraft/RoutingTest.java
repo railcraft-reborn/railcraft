@@ -1,5 +1,6 @@
 package mods.railcraft;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -9,7 +10,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-@GameTestHolder(Railcraft.ID)
+@GameTestHolder(RailcraftConstants.ID)
 @PrefixGameTestTemplate(false)
 public class RoutingTest {
 

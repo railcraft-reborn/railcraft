@@ -1,12 +1,13 @@
 package mods.railcraft;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-@GameTestHolder(Railcraft.ID)
+@GameTestHolder(RailcraftConstants.ID)
 @PrefixGameTestTemplate(false)
 public class LauncherTrackTest {
 

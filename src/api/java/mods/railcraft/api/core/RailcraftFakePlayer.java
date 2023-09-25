@@ -20,8 +20,8 @@ public final class RailcraftFakePlayer {
   private RailcraftFakePlayer() {}
 
   public static final GameProfile RAILCRAFT_USER_PROFILE =
-      new GameProfile(UUID.nameUUIDFromBytes(RailcraftConstantsAPI.RAILCRAFT_PLAYER.getBytes()),
-          RailcraftConstantsAPI.RAILCRAFT_PLAYER);
+      new GameProfile(UUID.nameUUIDFromBytes(RailcraftConstants.RAILCRAFT_PLAYER.getBytes()),
+          RailcraftConstants.RAILCRAFT_PLAYER);
 
   public static ServerPlayer get(final ServerLevel world, final double x, final double y,
       final double z) {

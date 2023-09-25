@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.item.ActivationBlockingItem;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.network.chat.Component;
@@ -33,7 +33,7 @@ public final class PlayerUtil {
     }
     String username = gameProfile.getName();
     return Component.literal(
-        StringUtils.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
+        StringUtils.isEmpty(username) ? RailcraftConstants.UNKNOWN_PLAYER : username);
   }
 
   public static Component getUsername(Level level, @Nullable UUID playerId) {
@@ -42,7 +42,7 @@ public final class PlayerUtil {
       if (player != null)
         return player.getDisplayName();
     }
-    return Component.literal(RailcraftConstantsAPI.UNKNOWN_PLAYER);
+    return Component.literal(RailcraftConstants.UNKNOWN_PLAYER);
   }
 
   public static boolean isOwnerOrOp(GameProfile owner, Player player) {

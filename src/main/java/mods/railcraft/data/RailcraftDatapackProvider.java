@@ -2,7 +2,7 @@ package mods.railcraft.data;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
 import mods.railcraft.data.worldgen.RailcraftStructureSets;
 import mods.railcraft.data.worldgen.RailcraftStructures;
@@ -28,6 +28,6 @@ public class RailcraftDatapackProvider extends DatapackBuiltinEntriesProvider {
 
   public RailcraftDatapackProvider(PackOutput output,
       CompletableFuture<HolderLookup.Provider> lookupProvider) {
-    super(output, lookupProvider, BUILDER, Set.of(Railcraft.ID));
+    super(output, lookupProvider, BUILDER, Set.of(RailcraftConstants.ID));
   }
 }

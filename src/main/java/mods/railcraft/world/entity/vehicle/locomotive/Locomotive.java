@@ -20,7 +20,7 @@ import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.core.Lockable;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -177,7 +177,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public void setOwner(@Nullable GameProfile owner) {
     if (owner != null && !owner.isComplete()) {
-      var ownerName = RailcraftConstantsAPI.UNKNOWN_PLAYER;
+      var ownerName = RailcraftConstants.UNKNOWN_PLAYER;
       if (!StringUtils.isBlank(owner.getName())) {
         ownerName = owner.getName();
       }

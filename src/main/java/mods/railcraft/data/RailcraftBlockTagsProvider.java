@@ -1,7 +1,7 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
@@ -16,7 +16,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
   public RailcraftBlockTagsProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> lookupProvider,
       ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, Railcraft.ID, fileHelper);
+    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")

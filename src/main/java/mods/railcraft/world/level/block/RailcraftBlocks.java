@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.Collection;
 import java.util.function.ToIntFunction;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
@@ -104,7 +104,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftBlocks {
 
   private static final DeferredRegister<Block> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.BLOCKS, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

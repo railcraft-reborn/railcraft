@@ -2,8 +2,8 @@ package mods.railcraft.data;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.effect.RailcraftMobEffects;
@@ -28,14 +28,14 @@ import net.minecraftforge.fluids.FluidType;
 public class RailcraftLanguageProvider extends LanguageProvider {
 
   public RailcraftLanguageProvider(PackOutput packOutput) {
-    super(packOutput, Railcraft.ID, "en_us");
+    super(packOutput, RailcraftConstants.ID, "en_us");
   }
 
   @Override
   protected void addTranslations() {
-    this.add(Translations.Tab.RAILCRAFT, Railcraft.NAME);
-    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, Railcraft.NAME + " Outfitted Tracks");
-    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, Railcraft.NAME + " Decorative Blocks");
+    this.add(Translations.Tab.RAILCRAFT, RailcraftConstants.NAME);
+    this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, RailcraftConstants.NAME + " Outfitted Tracks");
+    this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, RailcraftConstants.NAME + " Decorative Blocks");
 
     this.blockTranslations();
     this.itemTranslations();
@@ -1209,7 +1209,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void keyBindingTranslations() {
-    this.add(Translations.KeyBinding.CATEGORY, Railcraft.NAME);
+    this.add(Translations.KeyBinding.CATEGORY, RailcraftConstants.NAME);
     this.add(Translations.KeyBinding.CHANGE_AURA, "Change Aura");
   }
 

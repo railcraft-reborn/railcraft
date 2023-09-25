@@ -3,6 +3,7 @@ package mods.railcraft;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
@@ -91,11 +92,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-@Mod(Railcraft.ID)
+@Mod(RailcraftConstants.ID)
 public class Railcraft {
 
-  public static final String ID = "railcraft";
-  public static final String NAME = "Railcraft Reborn";
   public static final boolean BETA = true;
 
   static {
@@ -107,7 +106,7 @@ public class Railcraft {
   }
 
   public static ResourceLocation rl(String path) {
-    return new ResourceLocation(ID, path);
+    return new ResourceLocation(RailcraftConstants.ID, path);
   }
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();

@@ -3,7 +3,7 @@ package mods.railcraft.network;
 import java.util.Arrays;
 import java.util.Optional;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -70,7 +70,7 @@ public class RailcraftDataSerializers {
       };
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register("fluid_stack", () -> FLUID_STACK);

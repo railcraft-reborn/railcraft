@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftCreativeModeTabs {
 
   public static final DeferredRegister<CreativeModeTab> deferredRegister =
-      DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Railcraft.ID);
+      DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RailcraftConstants.ID);
   private static final TabVisibility DEFAULT_VISIBILITY = TabVisibility.PARENT_AND_SEARCH_TABS;
   public static final RegistryObject<CreativeModeTab> MAIN_TAB =
       deferredRegister.register("main_tab", () -> CreativeModeTab.builder()

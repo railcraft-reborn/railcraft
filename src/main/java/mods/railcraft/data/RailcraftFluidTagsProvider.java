@@ -1,7 +1,7 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.HolderLookup;
@@ -14,7 +14,7 @@ public class RailcraftFluidTagsProvider extends FluidTagsProvider {
   public RailcraftFluidTagsProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> lookupProvider,
       ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, Railcraft.ID, fileHelper);
+    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @Override

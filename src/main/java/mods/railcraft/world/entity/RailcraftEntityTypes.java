@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
@@ -21,7 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftEntityTypes {
 
   private static final DeferredRegister<EntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

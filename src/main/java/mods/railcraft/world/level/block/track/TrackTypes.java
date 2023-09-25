@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
@@ -32,7 +33,7 @@ public class TrackTypes {
       ResourceKey.createRegistryKey(Railcraft.rl("track_type"));
 
   private static final DeferredRegister<TrackType> deferredRegister =
-      DeferredRegister.create(REGISTRY_KEY, Railcraft.ID);
+      DeferredRegister.create(REGISTRY_KEY, RailcraftConstants.ID);
 
   public static final Supplier<IForgeRegistry<TrackType>> REGISTRY =
       deferredRegister.makeRegistry(RegistryBuilder::new);

@@ -12,6 +12,7 @@ import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.util.MathUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -461,7 +462,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private void forceChunk(boolean add) {
     if (this.level() instanceof ServerLevel level) {
       var chunk = this.minecart.chunkPosition();
-      ForgeChunkManager.forceChunk(level, Railcraft.ID, this.minecart.getUUID(),
+      ForgeChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
           chunk.x, chunk.z, add, false);
     }
   }

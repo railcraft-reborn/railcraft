@@ -4,6 +4,7 @@ import java.util.function.Function;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
@@ -149,7 +150,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet activeDisembarkingTrackRight;
 
   public RailcraftBlockModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, Railcraft.ID, fileHelper);
+    super(packOutput, RailcraftConstants.ID, fileHelper);
   }
 
   private ResourceLocation key(Block block) {

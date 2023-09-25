@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.material;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftFluids {
 
   private static final DeferredRegister<Fluid> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.FLUIDS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.FLUIDS, RailcraftConstants.ID);
 
   public static final RegistryObject<SteamFluid> STEAM =
       deferredRegister.register("steam", SteamFluid::new);
