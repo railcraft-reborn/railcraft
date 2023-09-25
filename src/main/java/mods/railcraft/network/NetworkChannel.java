@@ -37,7 +37,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
  */
 public enum NetworkChannel {
 
-  GAME(new ResourceLocation(Railcraft.ID, "game")) {
+  GAME {
     @Override
     public void registerMessages(SimpleChannel simpleChannel) {
       simpleChannel
@@ -178,15 +178,15 @@ public enum NetworkChannel {
   /**
    * Prevents re-registering messages.
    */
-  private static boolean registered;
+  private static boolean REGISTERED;
   /**
    * Simple channel.
    */
   private final SimpleChannel simpleChannel;
 
-  private NetworkChannel(ResourceLocation channelName) {
+  NetworkChannel() {
     this.simpleChannel = NetworkRegistry.ChannelBuilder
-        .named(channelName)
+        .named(new ResourceLocation(Railcraft.ID, "game"))
         .clientAcceptedVersions(NETWORK_VERSION::equals)
         .serverAcceptedVersions(NETWORK_VERSION::equals)
         .networkProtocolVersion(() -> NETWORK_VERSION)
@@ -194,10 +194,6 @@ public enum NetworkChannel {
   }
 
   protected abstract void registerMessages(SimpleChannel simpleChannel);
-
-  public SimpleChannel simpleChannel() {
-    return this.simpleChannel;
-  }
 
   // ================================================================================
   // Send Helper Methods
@@ -231,11 +227,11 @@ public enum NetworkChannel {
   }
 
   public static void registerAll() {
-    if (!registered) {
+    if (!REGISTERED) {
       for (var channel : values()) {
         channel.registerMessages(channel.simpleChannel);
       }
-      registered = true;
+      REGISTERED = true;
     }
   }
 }

@@ -89,7 +89,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.network.NetworkDirection;
 
 @Mod(Railcraft.ID)
 public class Railcraft {
@@ -258,8 +257,7 @@ public class Railcraft {
           .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
-          player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+      NetworkChannel.GAME.sendTo(new LinkedCartsMessage(linkedCarts), player);
     }
   }
 

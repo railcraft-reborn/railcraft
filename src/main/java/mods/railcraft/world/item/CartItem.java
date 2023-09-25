@@ -20,16 +20,15 @@ public class CartItem extends Item {
 
   @Override
   public InteractionResult useOn(UseOnContext context) {
-    var player = context.getPlayer();
-    var hand = context.getHand();
     var level = context.getLevel();
     var railPos = context.getClickedPos();
-    var railState = level.getBlockState(railPos);
-    var itemStack = player.getItemInHand(hand);
     if (!BaseRailBlock.isRail(level, railPos)) {
       return InteractionResult.FAIL;
     }
     if (level instanceof ServerLevel serverLevel) {
+      var player = context.getPlayer();
+      var railState = level.getBlockState(railPos);
+      var itemStack = player.getItemInHand(context.getHand());
       var railShape = RailShape.NORTH_SOUTH;
       if (railState.getBlock() instanceof BaseRailBlock baseRailBlock) {
         railShape = baseRailBlock.getRailDirection(railState, level, railPos, null);
