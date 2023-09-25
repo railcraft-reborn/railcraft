@@ -65,7 +65,11 @@ public class RailcraftDataSerializers {
 
         @Override
         public Optional<GameProfile> copy(Optional<GameProfile> gameProfile) {
-          return gameProfile;
+          if (gameProfile.isEmpty()) {
+            return Optional.empty();
+          }
+          var profile = gameProfile.get();
+          return Optional.of(new GameProfile(profile.getId(), profile.getName()));
         }
       };
 
