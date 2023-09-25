@@ -1,7 +1,6 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -72,24 +71,21 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
     for (int pass = 0; pass < 3; pass++) {
       float[] color = this.color[pass];
       this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      VertexConsumer vertexBuilder =
-          renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
+      var vertexBuilder = renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
       this.model.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
           color[0], color[1], color[2], alpha);
     }
 
     if (Seasons.isPolarExpress(cart)) {
       this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      VertexConsumer vertexBuilder =
-          renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
+      var vertexBuilder = renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
       this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
           OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     this.getEmblemTexture(cart).ifPresent(emblemTexture -> {
 
-      VertexConsumer vertexBuilder =
-          renderTypeBuffer.getBuffer(RenderType.entityTranslucent(emblemTexture));
+      var vertexBuilder = renderTypeBuffer.getBuffer(RenderType.entityTranslucent(emblemTexture));
 
       // float size = 0.22F;
       // float offsetX = -0.25F;

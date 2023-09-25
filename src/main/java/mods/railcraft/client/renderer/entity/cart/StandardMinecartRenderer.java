@@ -28,23 +28,20 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
       MultiBufferSource bufferSource, int packedLight,
       float red, float green, float blue, float alpha) {
     poseStack.pushPose();
-    {
-      poseStack.scale(-1.0F, -1.0F, 1.0F);
-      var bodyModel = this.getBodyModel(cart);
-      var bodyVertexConsumer =
-          bufferSource.getBuffer(bodyModel.renderType(this.getTextureLocation(cart)));
-      bodyModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-      bodyModel.renderToBuffer(poseStack, bodyVertexConsumer, packedLight,
-          OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+    poseStack.scale(-1.0F, -1.0F, 1.0F);
+    var bodyModel = this.getBodyModel(cart);
+    var bodyVertexConsumer =
+        bufferSource.getBuffer(bodyModel.renderType(this.getTextureLocation(cart)));
+    bodyModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+    bodyModel.renderToBuffer(poseStack, bodyVertexConsumer, packedLight,
+        OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 
-      if (Seasons.isPolarExpress(cart)) {
-        var snowModel = this.getSnowModel(cart);
-        var snowVertexConsumer =
-            bufferSource.getBuffer(snowModel.renderType(SNOW_TEXTURE_LOCATION));
-        snowModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-        snowModel.renderToBuffer(poseStack, snowVertexConsumer, packedLight,
-            OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-      }
+    if (Seasons.isPolarExpress(cart)) {
+      var snowModel = this.getSnowModel(cart);
+      var snowVertexConsumer = bufferSource.getBuffer(snowModel.renderType(SNOW_TEXTURE_LOCATION));
+      snowModel.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      snowModel.renderToBuffer(poseStack, snowVertexConsumer, packedLight,
+          OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     }
     poseStack.popPose();
   }

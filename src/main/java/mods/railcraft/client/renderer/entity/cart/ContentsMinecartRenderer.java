@@ -26,15 +26,13 @@ public abstract class ContentsMinecartRenderer<T extends AbstractMinecart>
     super.renderBody(cart, partialTicks, poseStack, renderTypeBuffer, packedLight,
         red, green, blue, alpha);
     poseStack.pushPose();
-    {
-      var displayOffset = cart.getDisplayOffset();
-      var scale = 0.75F;
-      poseStack.scale(scale, scale, scale);
-      poseStack.translate(-0.5D, (displayOffset - 8.0F) / 16.0F, -0.5D);
+    var displayOffset = cart.getDisplayOffset();
+    var scale = 0.75F;
+    poseStack.scale(scale, scale, scale);
+    poseStack.translate(-0.5D, (displayOffset - 8.0F) / 16.0F, -0.5D);
 
-      this.renderContents(cart, partialTicks, poseStack, renderTypeBuffer, packedLight, red, green,
-          blue, alpha);
-    }
+    this.renderContents(cart, partialTicks, poseStack, renderTypeBuffer, packedLight, red, green,
+        blue, alpha);
     poseStack.popPose();
   }
 

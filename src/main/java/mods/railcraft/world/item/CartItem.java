@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class CartItem extends Item {
 
@@ -40,6 +41,8 @@ public class CartItem extends Item {
       if (minecart != null) {
         minecart.setYRot(context.getHorizontalDirection().toYRot());
         level.addFreshEntity(minecart);
+        level.gameEvent(GameEvent.ENTITY_PLACE, railPos,
+            GameEvent.Context.of(player, level.getBlockState(railPos.below())));
         itemStack.shrink(1);
       }
     }

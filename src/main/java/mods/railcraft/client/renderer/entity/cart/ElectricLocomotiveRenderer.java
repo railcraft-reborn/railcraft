@@ -1,7 +1,6 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
@@ -43,23 +42,18 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
     super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
         alpha);
     poseStack.pushPose();
-    {
-      poseStack.scale(-1, -1, 1);
-      poseStack.translate(0.05F, 0.0F, 0.0F);
+    poseStack.scale(-1, -1, 1);
+    poseStack.translate(0.05F, 0.0F, 0.0F);
 
-      boolean bright = ((Locomotive) cart).getMode() == Locomotive.Mode.RUNNING;
+    boolean bright = cart.getMode() == Locomotive.Mode.RUNNING;
 
-      VertexConsumer vertexBuilder = bright
-          ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
-          : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
+    var vertexBuilder = bright
+        ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
+        : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
 
-      this.lampModel.renderToBuffer(poseStack, vertexBuilder,
-          bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY,
-          red, green, blue, alpha);
-
-    }
+    this.lampModel.renderToBuffer(poseStack, vertexBuilder,
+        bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY,
+        red, green, blue, alpha);
     poseStack.popPose();
   }
-
-
 }
