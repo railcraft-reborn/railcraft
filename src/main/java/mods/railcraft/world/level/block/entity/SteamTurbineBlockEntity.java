@@ -165,7 +165,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   @Override
   protected void membershipChanged(@Nullable Membership<SteamTurbineBlockEntity> membership) {
     if (membership == null) {
-      this.module.storage().setState(ChargeStorage.State.DISABLED);
+      this.module.storage().ifPresent(storage -> storage.setState(ChargeStorage.State.DISABLED));
 
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState().setValue(SteamTurbineBlock.TYPE, SteamTurbineBlock.Type.NONE));
@@ -174,7 +174,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     }
 
     if (membership.master() == this) {
-      this.module.storage().setState(ChargeStorage.State.SOURCE);
+      this.module.storage().ifPresent(storage -> storage.setState(ChargeStorage.State.SOURCE));
     }
 
     var type = switch (membership.patternElement().marker()) {

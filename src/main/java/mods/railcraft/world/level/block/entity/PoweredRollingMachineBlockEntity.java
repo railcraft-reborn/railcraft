@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
@@ -45,8 +46,8 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
     return new PoweredRollingMachineMenu(containerId, inventory, this);
   }
 
-  private ChargeStorage storage() {
-    return this.access().storage().get();
+  private Optional<? extends ChargeStorage> storage() {
+    return this.level().isClientSide() ? Optional.empty() : this.access().storage();
   }
 
   private Charge.Access access() {

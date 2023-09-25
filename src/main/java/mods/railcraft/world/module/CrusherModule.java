@@ -65,8 +65,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
   }
 
-  public ChargeStorage storage() {
-    return this.access().storage().get();
+  public Optional<? extends ChargeStorage> storage() {
+    return this.provider.level().isClientSide() ? Optional.empty() : this.access().storage();
   }
 
   private Charge.Access access() {

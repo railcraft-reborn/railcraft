@@ -1,5 +1,6 @@
 package mods.railcraft.world.module;
 
+import java.util.Optional;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.ForwardingEnergyStorage;
@@ -23,8 +24,8 @@ public class ChargeModule<T extends BlockModuleProvider> extends BaseModule<T> {
     return this.energyStorage;
   }
 
-  public ChargeStorage storage() {
-    return this.access().storage().get();
+  public Optional<? extends ChargeStorage> storage() {
+    return this.provider.level().isClientSide() ? Optional.empty() : this.access().storage();
   }
 
   public Charge.Access access() {
