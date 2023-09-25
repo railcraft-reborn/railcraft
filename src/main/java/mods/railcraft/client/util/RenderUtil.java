@@ -88,7 +88,7 @@ public class RenderUtil {
         && ((BlockHitResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
       poseStack.pushPose();
       {
-        poseStack.translate(0.5D, 1.5D, 0.5D);
+        poseStack.translate(0.5F, 1.5F, 0.5F);
         renderWorldText(minecraft.font, text, poseStack, bufferSource, packedLight);
       }
       poseStack.popPose();

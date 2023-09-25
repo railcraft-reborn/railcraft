@@ -29,7 +29,7 @@ public abstract class ContentsMinecartRenderer<T extends AbstractMinecart>
     var displayOffset = cart.getDisplayOffset();
     var scale = 0.75F;
     poseStack.scale(scale, scale, scale);
-    poseStack.translate(-0.5D, (displayOffset - 8.0F) / 16.0F, -0.5D);
+    poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, -0.5F);
 
     this.renderContents(cart, partialTicks, poseStack, renderTypeBuffer, packedLight, red, green,
         blue, alpha);

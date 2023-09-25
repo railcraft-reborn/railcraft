@@ -25,7 +25,7 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
     poseStack.pushPose();
     var yOffset = blockEntity.getYOffset(partialTick);
-    poseStack.translate(0.5, 0.95 + yOffset, 0.5);
+    poseStack.translate(0.5F, 0.95F + yOffset, 0.5F);
 
     var yaw = blockEntity.getRotationYaw(partialTick);
     poseStack.mulPose(Axis.YP.rotation(yaw));

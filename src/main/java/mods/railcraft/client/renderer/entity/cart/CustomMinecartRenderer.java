@@ -76,7 +76,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     if (cart instanceof Directional directional) {
       directional.setRenderYaw(yaw);
     }
-    poseStack.translate(0.0D, 0.375D, 0.0D);
+    poseStack.translate(0, 0.375F, 0);
 
     if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getString())
         && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getString())) {
