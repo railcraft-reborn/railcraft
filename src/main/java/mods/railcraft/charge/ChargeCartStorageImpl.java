@@ -15,20 +15,15 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   protected static final Random RANDOM = new Random();
   private static final int DRAW_INTERVAL = 8;
-  protected final float lossPerTick;
-  protected double draw;
-  protected int clock = RANDOM.nextInt();
-  protected int drewFromTrack;
-
-  public ChargeCartStorageImpl() {
-    this(5000, 0);
-  }
+  protected final int lossPerTick;
+  protected double draw, chargeDrawnThisTick;
+  protected int drewFromTrack, clock = RANDOM.nextInt(0, DRAW_INTERVAL);
 
   public ChargeCartStorageImpl(int capacity) {
     this(capacity, 0);
   }
 
-  public ChargeCartStorageImpl(int capacity, float lossPerTick) {
+  public ChargeCartStorageImpl(int capacity, int lossPerTick) {
     super(capacity);
     this.lossPerTick = lossPerTick;
   }
@@ -61,7 +56,8 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
     clock++;
     removeLosses();
 
-    draw = (draw * 24.0) / 25.0;
+    this.draw = (this.draw * 24.0 + this.chargeDrawnThisTick) / 25.0;
+    this.chargeDrawnThisTick = 0;
 
     if (drewFromTrack > 0) {
       drewFromTrack--;
@@ -79,15 +75,24 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
   @Override
   public void tickOnTrack(AbstractMinecart owner, BlockPos pos) {
     if (!owner.level().isClientSide() && needsCharging()) {
-      double drawnFromTrack = Charge.distribution
+      int drawnFromTrack = Charge.distribution
           .network((ServerLevel) owner.level())
           .access(pos)
           .removeCharge(capacity - energy, false);
-      if (drawnFromTrack > 0.0) {
+      if (drawnFromTrack > 0) {
         drewFromTrack = DRAW_INTERVAL * 4;
       }
       energy += drawnFromTrack;
     }
+  }
+
+  @Override
+  public int extractEnergy(int maxExtract, boolean simulate) {
+    int extracted = super.extractEnergy(maxExtract, simulate);
+    if (!simulate) {
+      this.chargeDrawnThisTick += extracted;
+    }
+    return extracted;
   }
 
   private boolean needsCharging() {

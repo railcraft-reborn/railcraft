@@ -389,6 +389,7 @@
   "block.railcraft.zinc_ore": "Zinc Ore",
   "block.railcraft.zinc_silver_battery": "Zinc-Silver Battery",
   "block.railcraft.zinc_silver_battery_empty": "Zinc-Silver Empty Battery",
+  "charge_meter.railcraft.cart": "Cart -> Charge: %s FE | Draw: %s FE/t | Loss: %s FE/t",
   "charge_meter.railcraft.network": "Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | Eff: %s%%",
   "charge_meter.railcraft.node": "Node -> Draw: %s FE/t | Loss: %s FE/t",
   "charge_meter.railcraft.producer": "Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | Eff: %s%%",

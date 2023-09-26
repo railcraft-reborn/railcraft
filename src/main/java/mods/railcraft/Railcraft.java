@@ -5,6 +5,7 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
@@ -42,6 +43,7 @@ import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.RailcraftItems;
@@ -63,6 +65,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -73,6 +76,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -266,15 +270,32 @@ public class Railcraft {
   }
 
   @SubscribeEvent
-  public void handleMinecartInteract(PlayerInteractEvent.EntityInteract event) {
+  public void handleEntityInteract(PlayerInteractEvent.EntityInteract event) {
     if (event.getTarget() instanceof AbstractMinecart cart) {
       var player = event.getEntity();
       var hand = event.getHand();
-      event.setCanceled(this.minecartHandler.handleInteract(cart, player));
-      var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
-      if (crowbarActionResult.consumesAction()) {
-        event.setCanceled(true);
-        event.setCancellationResult(crowbarActionResult);
+      var stack = event.getItemStack();
+
+      if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
+        player.swing(hand);
+        if (!player.level().isClientSide()) {
+          cart.getCapability(ForgeCapabilities.ENERGY)
+              .filter(ChargeCartStorageImpl.class::isInstance)
+              .map(ChargeCartStorageImpl.class::cast)
+              .ifPresent(battery -> {
+                ChargeMeterItem.sendChat(player, Translations.ChargeMeter.CART,
+                    battery.getEnergyStored(), battery.getDraw(), battery.getLosses());
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+              });
+        }
+      } else {
+        event.setCanceled(this.minecartHandler.handleInteract(cart, player));
+        var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
+        if (crowbarActionResult.consumesAction()) {
+          event.setCanceled(true);
+          event.setCancellationResult(crowbarActionResult);
+        }
       }
     }
   }
