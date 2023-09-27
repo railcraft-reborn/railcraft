@@ -4,7 +4,6 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-
 package mods.railcraft.api.charge;
 
 import java.util.Collections;
