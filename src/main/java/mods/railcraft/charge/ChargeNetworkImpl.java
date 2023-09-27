@@ -595,7 +595,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     public boolean checkUsageRecordingCompletion() {
       usageRecorder = usageRecorder.filter(UsageRecorder::run);
-      return !usageRecorder.isPresent();
+      return usageRecorder.isEmpty();
     }
 
     @Override

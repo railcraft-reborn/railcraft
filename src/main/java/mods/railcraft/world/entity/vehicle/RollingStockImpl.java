@@ -14,7 +14,6 @@ import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.event.CartLinkEvent;
-import mods.railcraft.util.MathUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
@@ -24,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -506,8 +506,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     // Fix flip
-    var distance =
-        MathUtil.getDistanceBetweenAngles(this.minecart.getYRot(), this.minecart.yRotO);
+    var distance = Mth.degreesDifference(this.minecart.getYRot(), this.minecart.yRotO);
     var cutoff = 120F;
     if (distance < -cutoff || distance >= cutoff) {
       this.minecart.setYRot(this.minecart.getYRot() + 180.0F);
