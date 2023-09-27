@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-28T12:16:15.674268	Railcraft Item Tags
+// 1.20.1	2023-09-27T10:40:46.635318	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -43,6 +43,9 @@ ba5451d28b6b6296fcde2c8e1c303489bbbb4cba data/forge/tags/items/nuggets/bronze.js
 7573402de319bd5e69b7aaf6af01669716a93291 data/forge/tags/items/nuggets/steel.json
 d7508b44d29858b83d1e638039e714f27c55ed4d data/forge/tags/items/nuggets/tin.json
 03a440b41fdd236f8c6f52f1e0f73424f859282b data/forge/tags/items/nuggets/zinc.json
+e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/items/ore_rates/dense.json
+8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/items/ore_rates/singular.json
+c31435450cdbffad0151b7e26a9cc131bf672a75 data/forge/tags/items/ores.json
 8c50a9944556e96063fbc340f5ad0cc8db547ff3 data/forge/tags/items/ores/lead.json
 83ceb2d2883c80859eebd5d5bb21fc2bfb849cf9 data/forge/tags/items/ores/nickel.json
 35a98a11222809a20225372b2d7129082cbbc2b8 data/forge/tags/items/ores/salt.json
@@ -50,6 +53,9 @@ d7508b44d29858b83d1e638039e714f27c55ed4d data/forge/tags/items/nuggets/tin.json
 7094cc9c85699e7afa6c283f7a769bab75eeeaff data/forge/tags/items/ores/sulfur.json
 0fbe7a7a55102f803486517de1004a189959f607 data/forge/tags/items/ores/tin.json
 e04f5a6285f9ec10108641e77582345991282073 data/forge/tags/items/ores/zinc.json
+ab8a6f7d61afc254cc8f018a4e9182ccac386840 data/forge/tags/items/ores_in_ground/deepslate.json
+cba1c5a31aa2960efa0703b2e57f8390f53d4ce6 data/forge/tags/items/ores_in_ground/netherrack.json
+679d265c52f455f2a0f0f9afcfb254016b47f407 data/forge/tags/items/ores_in_ground/stone.json
 4ba7bc1b06f9b82047c5bcd4d444e63e0e05e010 data/forge/tags/items/plates/brass.json
 5a23b291f3458a08993c77163dd6ae9f6729a2b0 data/forge/tags/items/plates/bronze.json
 a7ccebcdf1b41bc019d4ad2b6877842880b59e8c data/forge/tags/items/plates/copper.json
