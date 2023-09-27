@@ -77,7 +77,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -123,7 +122,6 @@ public class Railcraft {
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
-    modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
@@ -156,10 +154,7 @@ public class Railcraft {
     RailcraftStructurePieces.register(modEventBus);
   }
 
-  // ================================================================================
   // Mod Events
-  // ================================================================================
-
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     NetworkChannel.registerAll();
 
@@ -169,10 +164,6 @@ public class Railcraft {
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
     FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
-  }
-
-  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
-    event.register(RollingStock.class);
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {
@@ -218,10 +209,7 @@ public class Railcraft {
         new RailcraftSpriteSourceProvider(packOutput, fileHelper));
   }
 
-  // ================================================================================
   // Forge Events
-  // ================================================================================
-
   @SubscribeEvent
   public void handleServerAboutToStart(ServerAboutToStartEvent event) {
     ComponentWorkshop.addVillageStructures(event.getServer().registryAccess());
@@ -239,9 +227,7 @@ public class Railcraft {
     if (event.getObject() instanceof AbstractMinecart minecart) {
       event.addCapability(RollingStockImpl.KEY,
           CapabilityUtil.serializableProvider(
-              CompoundTag::new,
-              () -> new RollingStockImpl(minecart),
-              RollingStock.CAPABILITY));
+              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
     }
   }
 

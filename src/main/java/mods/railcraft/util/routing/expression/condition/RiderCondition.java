@@ -72,8 +72,8 @@ public class RiderCondition {
 
   private enum Type {
 
-    ANY(passengers -> passengers.count() > 0),
-    NONE(passengers -> passengers.count() == 0),
+    ANY(passengers -> passengers.findAny().isPresent()),
+    NONE(passengers -> passengers.findAny().isEmpty()),
     MOB(passengers -> passengers.anyMatch(Monster.class::isInstance)),
     ANIMAL(passengers -> passengers.anyMatch(Animal.class::isInstance)),
     UNNAMED(passengers -> passengers.anyMatch(p -> !p.hasCustomName())),
