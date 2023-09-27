@@ -15,12 +15,9 @@ public class Translations {
 
   public static class Screen {
 
-    public static final String STEAM_TURBINE_ROTOR =
-        makeKey("screen", "steam_turbine.rotor");
-    public static final String STEAM_TURBINE_OUTPUT =
-        makeKey("screen", "steam_turbine.output");
-    public static final String STEAM_TURBINE_USAGE =
-        makeKey("screen", "steam_turbine.usage");
+    public static final String STEAM_TURBINE_ROTOR = makeKey("screen", "steam_turbine.rotor");
+    public static final String STEAM_TURBINE_OUTPUT = makeKey("screen", "steam_turbine.output");
+    public static final String STEAM_TURBINE_USAGE = makeKey("screen", "steam_turbine.usage");
     public static final String STEAM_MODE_DESC_IDLE =
         makeKey("screen", "locomotive.steam.mode.description.idle");
     public static final String STEAM_MODE_DESC_RUNNING =
@@ -45,8 +42,7 @@ public class Translations {
         makeKey("screen", "locomotive.mode.shutdown");
     public static final String LOCOMOTIVE_MODE_RUNNING =
         makeKey("screen", "locomotive.mode.running");
-    public static final String LOCOMOTIVE_MODE_IDLE =
-        makeKey("screen", "locomotive.mode.idle");
+    public static final String LOCOMOTIVE_MODE_IDLE = makeKey("screen", "locomotive.mode.idle");
     public static final String SINGAL_CONTROLLER_BOX_DEFAULT =
         makeKey("screen", "signal_controller_box.default_aspect");
     public static final String SINGAL_CONTROLLER_BOX_POWERED =
@@ -65,32 +61,23 @@ public class Translations {
         makeKey("screen", "item_manipulator.filters");
     public static final String ITEM_MANIPULATOR_BUFFER =
         makeKey("screen", "item_manipulator.buffer");
-    public static final String TUNNEL_BORE_HEAD =
-        makeKey("screen", "tunnel_bore.head");
-    public static final String TUNNEL_BORE_FUEL =
-        makeKey("screen", "tunnel_bore.fuel");
-    public static final String TUNNEL_BORE_BALLAST =
-        makeKey("screen", "tunnel_bore.ballast");
-    public static final String TUNNEL_BORE_TRACK =
-        makeKey("screen", "tunnel_bore.track");
+    public static final String TUNNEL_BORE_HEAD = makeKey("screen", "tunnel_bore.head");
+    public static final String TUNNEL_BORE_FUEL = makeKey("screen", "tunnel_bore.fuel");
+    public static final String TUNNEL_BORE_BALLAST = makeKey("screen", "tunnel_bore.ballast");
+    public static final String TUNNEL_BORE_TRACK = makeKey("screen", "tunnel_bore.track");
     public static final String MULTIBLOCK_ASSEMBLY_FAILED =
         makeKey("screen", "multiblock.assembly_failed");
     public static final String EMBARKING_TRACK_RADIUS =
         makeKey("screen", "embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
         makeKey("screen", "launcher_track.launch_force");
-    public static final String WATER_TANK_SEE_SKY =
-        makeKey("screen", "water_tank.sky");
-    public static final String WATER_TANK_BASE_RATE =
-        makeKey("screen", "water_tank.base_rate");
-    public static final String WATER_TANK_HUMIDITY =
-        makeKey("screen", "water_tank.humidity");
+    public static final String WATER_TANK_SEE_SKY = makeKey("screen", "water_tank.sky");
+    public static final String WATER_TANK_BASE_RATE = makeKey("screen", "water_tank.base_rate");
+    public static final String WATER_TANK_HUMIDITY = makeKey("screen", "water_tank.humidity");
     public static final String WATER_TANK_PRECIPITATION =
         makeKey("screen", "water_tank.precipitation");
-    public static final String WATER_TANK_TEMP =
-        makeKey("screen", "water_tank.temperature");
-    public static final String WATER_TANK_FINAL_RATE =
-        makeKey("screen", "water_tank.final_rate");
+    public static final String WATER_TANK_TEMP = makeKey("screen", "water_tank.temperature");
+    public static final String WATER_TANK_FINAL_RATE = makeKey("screen", "water_tank.final_rate");
     public static final String PATTERN = makeKey("screen", "track_layer.patter");
     public static final String STOCK = makeKey("screen", "track_layer.stock");
     public static final String UNDER = makeKey("screen", "track_undercutter.under");
@@ -115,18 +102,13 @@ public class Translations {
 
   public static class Tips {
 
-    public static final String ROUTING_TICKET_ISSUER =
-        makeKey("tips", "routing.ticket.issuer");
-    public static final String ROUTING_TICKET_DEST =
-        makeKey("tips", "routing.ticket.dest");
-    public static final String ROUTING_TICKET_BLANK =
-        makeKey("tips", "routing.ticket.blank");
+    public static final String ROUTING_TICKET_ISSUER = makeKey("tips", "routing.ticket.issuer");
+    public static final String ROUTING_TICKET_DEST = makeKey("tips", "routing.ticket.dest");
+    public static final String ROUTING_TICKET_BLANK = makeKey("tips", "routing.ticket.blank");
     public static final String ROUTING_TABLE_BOOK_LAST_EDIT =
         makeKey("tips", "routing.routing_table_book.last_edit");
-    public static final String LOCOMOTIVE_SLOT_TICKET =
-        makeKey("tips", "locomotive.slot.ticket");
-    public static final String LOCOMOTIVE_ITEM_OWNER =
-        makeKey("tips", "locomotive.item.owner");
+    public static final String LOCOMOTIVE_SLOT_TICKET = makeKey("tips", "locomotive.slot.ticket");
+    public static final String LOCOMOTIVE_ITEM_OWNER = makeKey("tips", "locomotive.item.owner");
     public static final String LOCOMOTIVE_ITEM_PRIMARY =
         makeKey("tips", "locomotive.item.primary");
     public static final String LOCOMOTIVE_ITEM_SECONDARY =
@@ -137,84 +119,50 @@ public class Translations {
     public static final String TRACK_RELAYER = makeKey("tips", "track_relayer");
     public static final String TRACK_REMOVER = makeKey("tips", "track_remover");
     public static final String TRACK_UNDERCUTTER = makeKey("tips", "track_undercutter");
-    public static final String CRUSHED_OBSIDIAN =
-        makeKey("tips", "crushed_obsidian");
-    public static final String COKE_OVEN =
-        makeKey("tips", "coke_oven");
-    public static final String BLAST_FURNACE =
-        makeKey("tips", "blast_furnace");
-    public static final String CRUSHER =
-        makeKey("tips", "crusher");
-    public static final String WATER_TANK_SIDING =
-        makeKey("tips", "water_tank_siding");
-    public static final String MULTIBLOCK2X2X2 =
-        makeKey("tips", "multiblock2x2x2");
-    public static final String MULTIBLOCK3X2X2 =
-        makeKey("tips", "multiblock3x2x2");
-    public static final String STEAM_TURBINE_DESC_1 =
-        makeKey("tips", "steam_turbine_desc1");
-    public static final String STEAM_TURBINE_DESC_2 =
-        makeKey("tips", "steam_turbine_desc2");
-    public static final String STEAM_TURBINE_DESC_3 =
-        makeKey("tips", "steam_turbine_desc3");
-    public static final String SPIKE_MAUL =
-        makeKey("tips", "spike_maul");
+    public static final String CRUSHED_OBSIDIAN = makeKey("tips", "crushed_obsidian");
+    public static final String COKE_OVEN = makeKey("tips", "coke_oven");
+    public static final String BLAST_FURNACE = makeKey("tips", "blast_furnace");
+    public static final String CRUSHER = makeKey("tips", "crusher");
+    public static final String WATER_TANK_SIDING = makeKey("tips", "water_tank_siding");
+    public static final String MULTIBLOCK2X2X2 = makeKey("tips", "multiblock2x2x2");
+    public static final String MULTIBLOCK3X2X2 = makeKey("tips", "multiblock3x2x2");
+    public static final String STEAM_TURBINE_DESC_1 = makeKey("tips", "steam_turbine_desc1");
+    public static final String STEAM_TURBINE_DESC_2 = makeKey("tips", "steam_turbine_desc2");
+    public static final String STEAM_TURBINE_DESC_3 = makeKey("tips", "steam_turbine_desc3");
+    public static final String SPIKE_MAUL = makeKey("tips", "spike_maul");
     public static final String OVERALLS = makeKey("tips", "overalls");
     public static final String CLEAR = makeKey("tips", "clear");
-    public static final String GOOGLES_DESC =
-        makeKey("tips", "googles.desc");
-    public static final String GOOGLES_AURA =
-        makeKey("tips", "googles.aura");
-    public static final String GOOGLES_AURA_NONE =
-        makeKey("tips", "googles.aura.none");
-    public static final String GOOGLES_AURA_SHUNTING =
-        makeKey("tips", "googles.aura.shunting");
+    public static final String GOOGLES_DESC = makeKey("tips", "googles.desc");
+    public static final String GOOGLES_AURA = makeKey("tips", "googles.aura");
+    public static final String GOOGLES_AURA_NONE = makeKey("tips", "googles.aura.none");
+    public static final String GOOGLES_AURA_SHUNTING = makeKey("tips", "googles.aura.shunting");
     public static final String GOOGLES_AURA_SIGNALLING =
         makeKey("tips", "googles.aura.signalling");
-    public static final String GOOGLES_AURA_SURVEYING =
-        makeKey("tips", "googles.aura.surveying");
-    public static final String GOOGLES_AURA_TRACKING =
-        makeKey("tips", "googles.aura.tracking");
-    public static final String GOOGLES_AURA_TUNING =
-        makeKey("tips", "googles.aura.tuning");
+    public static final String GOOGLES_AURA_SURVEYING = makeKey("tips", "googles.aura.surveying");
+    public static final String GOOGLES_AURA_TRACKING = makeKey("tips", "googles.aura.tracking");
+    public static final String GOOGLES_AURA_TUNING = makeKey("tips", "googles.aura.tuning");
     public static final String GOOGLES_AURA_WORLDSPIKE =
         makeKey("tips", "googles.aura.worldspike");
-    public static final String CROWBAR_DESC =
-        makeKey("tips", "crowbar.desc");
-    public static final String CROWBAR_LINK_BROKEN =
-        makeKey("tips", "crowbar.link.broken");
-    public static final String CROWBAR_LINK_CREATED =
-        makeKey("tips", "crowbar.link.created");
-    public static final String CROWBAR_LINK_FAILED =
-        makeKey("tips", "crowbar.link.failed");
-    public static final String CROWBAR_LINK_STARTED =
-        makeKey("tips", "crowbar.link.started");
-    public static final String CROWBAR_SEASON_DESC =
-        makeKey("tips", "crowbar.season.desc");
-    public static final String SIGNAL_LABEL_DESC1 =
-        makeKey("tips", "signal_label.desc1");
-    public static final String SIGNAL_LABEL_DESC2 =
-        makeKey("tips", "signal_label.desc2");
+    public static final String CROWBAR_DESC = makeKey("tips", "crowbar.desc");
+    public static final String CROWBAR_LINK_BROKEN = makeKey("tips", "crowbar.link.broken");
+    public static final String CROWBAR_LINK_CREATED = makeKey("tips", "crowbar.link.created");
+    public static final String CROWBAR_LINK_FAILED = makeKey("tips", "crowbar.link.failed");
+    public static final String CROWBAR_LINK_STARTED = makeKey("tips", "crowbar.link.started");
+    public static final String CROWBAR_SEASON_DESC = makeKey("tips", "crowbar.season.desc");
+    public static final String SIGNAL_LABEL_DESC1 = makeKey("tips", "signal_label.desc1");
+    public static final String SIGNAL_LABEL_DESC2 = makeKey("tips", "signal_label.desc2");
     public static final String SENDS_SIGNALS_TO_RECEIVERS =
         makeKey("tips", "send_signals_to_receivers");
-    public static final String SIGNAL_RECEIVER_BOX =
-        makeKey("tips", "signal_receiver_box");
-    public static final String SIGNAL_SEQUENCER_BOX =
-        makeKey("tips", "signal_sequencer_box");
-    public static final String SIGNAL_INTERLOCK_BOX =
-        makeKey("tips", "signal_interlock_box");
-    public static final String SIGNAL_BLOCK_RELAY_BOX =
-        makeKey("tips", "signal_block_relay_box");
-    public static final String FIRESTONE_EMPTY =
-        makeKey("tips", "firestone.empty");
-    public static final String FIRESTONE_CHARGED =
-        makeKey("tips", "firestone.charged");
-    public static final String RAW_FIRESTONE =
-        makeKey("tips", "firestone.raw");
-    public static final String CUT_FIRESTONE =
-        makeKey("tips", "firestone.cut");
-    public static final String CURRENT_MODE =
-        makeKey("tips", "current_mode");
+    public static final String SIGNAL_RECEIVER_BOX = makeKey("tips", "signal_receiver_box");
+    public static final String SIGNAL_SEQUENCER_BOX = makeKey("tips", "signal_sequencer_box");
+    public static final String SIGNAL_INTERLOCK_BOX = makeKey("tips", "signal_interlock_box");
+    public static final String SIGNAL_BLOCK_RELAY_BOX = makeKey("tips", "signal_block_relay_box");
+    public static final String FIRESTONE_EMPTY = makeKey("tips", "firestone.empty");
+    public static final String FIRESTONE_CHARGED = makeKey("tips", "firestone.charged");
+    public static final String RAW_FIRESTONE = makeKey("tips", "firestone.raw");
+    public static final String CUT_FIRESTONE = makeKey("tips", "firestone.cut");
+    public static final String FIRESTONE_ORE = makeKey("tips", "firestone.ore");
+    public static final String CURRENT_MODE = makeKey("tips", "current_mode");
     public static final String TRACK_KIT_CORNERS_UNSUPPORTED =
         makeKey("tips", "track_kit.corners_unsupported");
     public static final String TRACK_KIT_SLOPES_UNSUPPORTED =
@@ -240,19 +188,14 @@ public class Translations {
     public static final String SIGNAL_SURVEYOR = makeKey("tips", "signal_surveyor");
     public static final String TOKEN_AREA = makeKey("tips", "token_area");
     public static final String FRAME = makeKey("tips", "frame");
-    public static final String SIGNAL_BLOCK_SURVEYOR =
-        makeKey("tips", "signal_block_surveyor");
+    public static final String SIGNAL_BLOCK_SURVEYOR = makeKey("tips", "signal_block_surveyor");
     public static final String LINKS_CONTROLLERS_TO_RECEIVERS =
         makeKey("tips", "links_controllers_to_receivers");
-    public static final String FUELED_BOILER_FIREBOX =
-        makeKey("tips", "fueled_boiler_firebox");
-    public static final String PRESSURE_BOILER_TANK =
-        makeKey("tips", "pressure_boiler_tank");
+    public static final String FUELED_BOILER_FIREBOX = makeKey("tips", "fueled_boiler_firebox");
+    public static final String PRESSURE_BOILER_TANK = makeKey("tips", "pressure_boiler_tank");
     public static final String PRESSURE_BOILER_TANK_PRODUCTION =
         makeKey("tips", "pressure_boiler_tank.production");
-    public static final String DIMENSIONS =
-        makeKey("tips", "dimensions");
-
+    public static final String DIMENSIONS = makeKey("tips", "dimensions");
     public static final String APPLY_REDSTONE_TO_ENABLE =
         makeKey("tips", "apply_redstone_to_enable");
     public static final String APPLY_REDSTONE_TO_DISABLE =
@@ -348,17 +291,13 @@ public class Translations {
   }
 
   public static class Container {
-    public static final String COKE_OVEN =
-        makeKey("container", "coke_oven");
-    public static final String BLAST_FURNACE =
-        makeKey("container", "blast_furnace");
+    public static final String COKE_OVEN = makeKey("container", "coke_oven");
+    public static final String BLAST_FURNACE = makeKey("container", "blast_furnace");
     public static final String CRUSHER = makeKey("container", "crusher");
     public static final String STEAM_OVEN = makeKey("container", "steam_oven");
     public static final String WATER_TANK_SIDING = makeKey("container", "water_tank_siding");
-    public static final String TANK =
-        makeKey("container", "tank");
-    public static final String STEAM_TURBINE =
-        makeKey("container", "steam_turbine");
+    public static final String TANK = makeKey("container", "tank");
+    public static final String STEAM_TURBINE = makeKey("container", "steam_turbine");
     public static final String SOLID_FUELED_STEAM_BOILER =
         makeKey("container", "solid_fueled_steam_boiler");
     public static final String FLUID_FUELED_STEAM_BOILER =
@@ -529,16 +468,12 @@ public class Translations {
 
   public static class Subtitle {
 
-    public static final String STEAM_WHISTLE =
-        makeKey("subtitle", "locomotive.steam.whistle");
+    public static final String STEAM_WHISTLE = makeKey("subtitle", "locomotive.steam.whistle");
     public static final String ELECTRIC_WHISTLE =
         makeKey("subtitle", "locomotive.electric.whistle");
-    public static final String STEAM_BURST =
-        makeKey("subtitle", "machine.steam.burst");
-    public static final String STEAM_HISS =
-        makeKey("subtitle", "machine.steam.hiss");
-    public static final String MACHINE_ZAP =
-        makeKey("subtitle", "machine.zap");
+    public static final String STEAM_BURST = makeKey("subtitle", "machine.steam.burst");
+    public static final String STEAM_HISS = makeKey("subtitle", "machine.steam.hiss");
+    public static final String MACHINE_ZAP = makeKey("subtitle", "machine.zap");
   }
 
   public static class DamageSource {

@@ -435,6 +435,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.RAW_FIRESTONE,
         "It quickens in your hands, you can feel it in the very air around you...");
     this.add(Translations.Tips.CUT_FIRESTONE, "Still its energies rage out of control...");
+    this.add(Translations.Tips.FIRESTONE_ORE, "It lies in the lava beds in the nether");
     this.add(Translations.Tips.CURRENT_MODE, "Current Mode:");
 
     this.add(LockingMode.LOCKDOWN.getTranslationKey(), "Lockdown");

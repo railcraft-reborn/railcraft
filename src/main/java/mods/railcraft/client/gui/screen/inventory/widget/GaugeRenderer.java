@@ -13,12 +13,11 @@ public class GaugeRenderer extends WidgetRenderer<GaugeWidget> {
     super(widget);
   }
 
-
   @Override
   public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
       int centreY, int mouseX, int mouseY) {
-    int scale = Math.round((float) (this.widget.getMeasurement()
-        * (double) (this.widget.isVertical() ? this.widget.h : this.widget.w)));
+    int scale = Math.round(this.widget.getMeasurement() *
+        (this.widget.isVertical() ? this.widget.h : this.widget.w));
     if (this.widget.isVertical()) {
       guiGraphics.blit(widgetLocation, centreX + this.widget.x,
           centreY + this.widget.y + this.widget.h - scale,

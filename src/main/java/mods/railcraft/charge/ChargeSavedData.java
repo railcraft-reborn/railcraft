@@ -25,7 +25,6 @@ public final class ChargeSavedData extends SavedData {
       var manager = new ChargeSavedData();
       manager.load(tag);
       return manager;
-
     }, ChargeSavedData::new, DATA_TAG_PREFIX + network.getSerializedName());
   }
 
@@ -47,9 +46,7 @@ public final class ChargeSavedData extends SavedData {
     for (int i = 0; i < batteriesTag.size(); i++) {
       var entryTag = batteriesTag.getCompound(i);
       var pos = NbtUtils.readBlockPos(entryTag.getCompound("pos"));
-      if (pos != null) {
-        this.chargeLevels.put(pos, entryTag.getInt("value"));
-      }
+      this.chargeLevels.put(pos, entryTag.getInt("value"));
     }
   }
 

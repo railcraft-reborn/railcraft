@@ -69,7 +69,7 @@ public class SteamBoilerTankBlock extends SteamBoilerBlock {
 
     private final String name;
 
-    private ConnectionType(String name) {
+    ConnectionType(String name) {
       this.name = name;
     }
 

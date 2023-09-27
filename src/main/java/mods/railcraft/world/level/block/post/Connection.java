@@ -4,13 +4,13 @@ import net.minecraft.util.StringRepresentable;
 
 public enum Connection implements StringRepresentable {
 
-  NONE("name"),
+  NONE("none"),
   SINGLE("single"),
   DOUBLE("double");
 
   private final String name;
 
-  private Connection(String name) {
+  Connection(String name) {
     this.name = name;
   }
 

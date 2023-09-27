@@ -37,11 +37,8 @@ public class TunnelBoreMenu extends RailcraftMenu {
 
     this.addInventorySlots(inventory, IMAGE_HEIGHT);
 
-    this.addDataSlot(new SimpleDataSlot(
-        tunnelBore::getBurnTime, tunnelBore::setBurnTime));
-
-    this.addDataSlot(new SimpleDataSlot(
-        tunnelBore::getFuel, tunnelBore::setFuel));
+    this.addDataSlot(new SimpleDataSlot(tunnelBore::getBurnTime, tunnelBore::setBurnTime));
+    this.addDataSlot(new SimpleDataSlot(tunnelBore::getFuel, tunnelBore::setFuel));
   }
 
   public TunnelBore getTunnelBore() {
