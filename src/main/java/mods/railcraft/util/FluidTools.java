@@ -1,4 +1,4 @@
-package mods.railcraft.world.level.material;
+package mods.railcraft.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,8 +9,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.world.level.material.FluidItemHelper;
+import mods.railcraft.world.level.material.StandardTank;
+import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -19,25 +21,17 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 public final class FluidTools {
 
@@ -86,7 +80,7 @@ public final class FluidTools {
 
     private final String name;
 
-    private ProcessState(String name) {
+    ProcessState(String name) {
       this.name = name;
     }
 
@@ -174,11 +168,6 @@ public final class FluidTools {
     return state;
   }
 
-  public static void initWaterBottle(boolean nerf) {
-    WaterBottleEventHandler.INSTANCE.amount = nerf ? 333 : 1000;
-    MinecraftForge.EVENT_BUS.register(WaterBottleEventHandler.INSTANCE);
-  }
-
   public static boolean isFullFluidBlock(Level level, BlockPos pos) {
     return isFullFluidBlock(level.getBlockState(pos), level, pos);
   }
@@ -216,81 +205,5 @@ public final class FluidTools {
           .ifPresent(targets::add);
     }
     return targets;
-  }
-
-  static final class WaterBottleEventHandler {
-
-    static final WaterBottleEventHandler INSTANCE = new WaterBottleEventHandler();
-    int amount;
-
-    private WaterBottleEventHandler() {}
-
-    @SubscribeEvent
-    public void onAttachCapability(AttachCapabilitiesEvent<ItemStack> event) {
-      if (event.getObject().getItem() == Items.POTION
-          && PotionUtils.getPotion(event.getObject()) == Potions.WATER) {
-        event.addCapability(Railcraft.rl("water_bottle_container"),
-            new WaterBottleCapabilityDispatcher(event.getObject()));
-      }
-    }
-  }
-
-  private static final class WaterBottleCapabilityDispatcher extends FluidBucketWrapper {
-
-    WaterBottleCapabilityDispatcher(ItemStack container) {
-      super(container);
-    }
-
-    @Override
-    public int fill(FluidStack resource, FluidAction doDrain) {
-      return 0;
-    }
-
-    @Override
-    protected void setFluid(FluidStack fluid) {
-      if (fluid.isEmpty()) {
-        this.container = new ItemStack(Items.GLASS_BOTTLE);
-      }
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, FluidAction doDrain) {
-      if (this.container.getCount() != 1 || resource.isEmpty()
-          || resource.getAmount() < WaterBottleEventHandler.INSTANCE.amount) {
-        return FluidStack.EMPTY;
-      }
-
-      FluidStack fluidStack = getFluid();
-      if (!fluidStack.isEmpty() && fluidStack.isFluidEqual(resource)) {
-        if (doDrain.execute()) {
-          this.setFluid(FluidStack.EMPTY);
-        }
-        return fluidStack;
-      }
-
-      return FluidStack.EMPTY;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, FluidAction doDrain) {
-      if (this.container.getCount() != 1 || maxDrain < WaterBottleEventHandler.INSTANCE.amount) {
-        return FluidStack.EMPTY;
-      }
-
-      FluidStack fluidStack = getFluid();
-      if (!fluidStack.isEmpty()) {
-        if (doDrain.execute()) {
-          this.setFluid(FluidStack.EMPTY);
-        }
-        return fluidStack;
-      }
-
-      return FluidStack.EMPTY;
-    }
-
-    @Override
-    public FluidStack getFluid() {
-      return new FluidStack(Fluids.WATER, WaterBottleEventHandler.INSTANCE.amount);
-    }
   }
 }

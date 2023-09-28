@@ -14,7 +14,7 @@ import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
-import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.module.SteamTurbineModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

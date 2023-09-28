@@ -15,7 +15,7 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.level.block.tank.TankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
-import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.module.TankModule;
 import net.minecraft.core.BlockPos;

@@ -11,7 +11,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.world.level.material.FluidTools;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

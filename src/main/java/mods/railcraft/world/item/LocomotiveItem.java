@@ -32,7 +32,7 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   @Override
   public boolean matches(ItemStack matcher, ItemStack target) {
-    return target.getItem() == this && getPrimaryColor(matcher) == getPrimaryColor(target)
+    return target.is(this) && getPrimaryColor(matcher) == getPrimaryColor(target)
         && getSecondaryColor(matcher) == getSecondaryColor(target);
   }
 

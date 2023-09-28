@@ -43,7 +43,7 @@ public enum StackFilter implements Predicate<ItemStack> {
       .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
       .isPresent()),
   FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
-      || itemStack.getItem() == Items.WHEAT
+      || itemStack.is(Items.WHEAT)
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()

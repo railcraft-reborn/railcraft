@@ -228,7 +228,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     ItemStack itemStack = player.getItemInHand(hand);
-    if (!itemStack.isEmpty() && itemStack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
+    if (!itemStack.isEmpty() && itemStack.is(RailcraftItems.WHISTLE_TUNER.get())) {
       if (this.whistleDelay <= 0) {
         this.whistlePitch = this.getNewWhistlePitch();
         this.whistle();
