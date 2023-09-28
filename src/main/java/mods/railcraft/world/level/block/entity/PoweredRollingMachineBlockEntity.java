@@ -26,6 +26,7 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
   private static final int CHARGE_PER_TICK = 10;
   private final LazyOptional<IItemHandler> inputHandler, outputHandler;
   private final LazyOptional<IEnergyStorage> energyHandler;
+
   public PoweredRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(), blockPos, blockState);
     inputHandler = LazyOptional.of(() -> new FilteredInvWrapper(this.craftMatrix, true, false));
@@ -63,7 +64,7 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
       return this.energyHandler.cast();
     }
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return side.equals(Direction.UP)
+      return side == Direction.UP
           ? this.inputHandler.cast()
           : this.outputHandler.cast();
     }
