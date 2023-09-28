@@ -53,7 +53,6 @@ public class RenderUtil {
     return argb;
   }
 
-
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {
     return fluid.isEmpty() ? combinedLight
         : calculateGlowLight(combinedLight, fluid.getFluid().getFluidType().getLightLevel(fluid));
@@ -81,35 +80,31 @@ public class RenderUtil {
     return (color >> 24 & 0xFF) / 255.0F;
   }
 
-  public static void renderBlockHoverText(BlockPos blockPos, Component text,
-      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+  public static void renderBlockHoverText(BlockPos blockPos, Component text, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight) {
     if (minecraft.hitResult != null
         && minecraft.hitResult.getType() == HitResult.Type.BLOCK
         && ((BlockHitResult) minecraft.hitResult).getBlockPos().equals(blockPos)) {
       poseStack.pushPose();
-      {
-        poseStack.translate(0.5F, 1.5F, 0.5F);
-        renderWorldText(minecraft.font, text, poseStack, bufferSource, packedLight);
-      }
+      poseStack.translate(0.5F, 1.5F, 0.5F);
+      renderWorldText(minecraft.font, text, poseStack, bufferSource, packedLight);
       poseStack.popPose();
     }
   }
 
-  public static void renderWorldText(Font font, Component text,
-      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+  public static void renderWorldText(Font font, Component text, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight) {
     poseStack.pushPose();
-    {
-      poseStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
-      poseStack.scale(-0.025F, -0.025F, 0.025F);
-      var matrix = poseStack.last().pose();
-      float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
-      int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;
-      float x = (float) (-font.width(text) / 2);
-      font.drawInBatch(text, x, 0, 0x20FFFFFF, false, matrix, bufferSource,
-          Font.DisplayMode.SEE_THROUGH, packedOverlay, packedLight);
-      font.drawInBatch(text, x, 0, -1, false, matrix, bufferSource,
-          Font.DisplayMode.NORMAL, 0, packedLight);
-    }
+    poseStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
+    poseStack.scale(-0.025F, -0.025F, 0.025F);
+    var matrix = poseStack.last().pose();
+    float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
+    int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;
+    float x = (float) (-font.width(text) / 2);
+    font.drawInBatch(text, x, 0, 0x20FFFFFF, false, matrix, bufferSource,
+        Font.DisplayMode.SEE_THROUGH, packedOverlay, packedLight);
+    font.drawInBatch(text, x, 0, -1, false, matrix, bufferSource,
+        Font.DisplayMode.NORMAL, 0, packedLight);
     poseStack.popPose();
   }
 }

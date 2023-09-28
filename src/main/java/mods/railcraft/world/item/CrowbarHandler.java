@@ -11,6 +11,7 @@ import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -102,7 +103,7 @@ public class CrowbarHandler {
       AbstractMinecart cart, Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
-    if (player.getVehicle() != null) {
+    if (player.getVehicle() != null || cart instanceof TunnelBore) {
       return;
     }
     if (cart instanceof Directional directional) {
