@@ -2,10 +2,10 @@ package mods.railcraft.world.module;
 
 import java.util.Collection;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.FluidTools.ProcessType;
+import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

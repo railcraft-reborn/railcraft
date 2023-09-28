@@ -1,12 +1,12 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;

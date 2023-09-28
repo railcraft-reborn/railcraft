@@ -34,6 +34,7 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
+import mods.railcraft.util.capability.FluidBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -72,6 +73,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
@@ -228,6 +230,14 @@ public class Railcraft {
       event.addCapability(RollingStockImpl.KEY,
           CapabilityUtil.serializableProvider(
               CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
+    }
+  }
+
+  @SubscribeEvent
+  public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+    var stack = event.getObject();
+    if (stack.is(Items.GLASS_BOTTLE)) {
+      event.addCapability(Railcraft.rl("bottle_container"), new FluidBottleWrapper(stack));
     }
   }
 
