@@ -492,8 +492,8 @@ public class Translations {
   }
 
   public static class RoutingTable {
-    public static final List<String> MANUAL_PAGES = IntStream.rangeClosed(1, 12).boxed()
-        .map(i -> makeKey("manual", "routing_table.page." + i)).toList();
+    public static final List<String> MANUAL_PAGES = IntStream.rangeClosed(1, 12)
+        .mapToObj(i -> makeKey("manual", "routing_table.page." + i)).toList();
 
     public static final String ERROR_BLANK = makeKey("error.routing", "blank");
     public static final String ERROR_INVALID_CONSTANT =
