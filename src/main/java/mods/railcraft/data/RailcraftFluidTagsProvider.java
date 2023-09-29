@@ -7,6 +7,7 @@ import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftFluidTagsProvider extends FluidTagsProvider {
@@ -22,7 +23,7 @@ public class RailcraftFluidTagsProvider extends FluidTagsProvider {
     this.tag(RailcraftTags.Fluids.STEAM)
         .add(RailcraftFluids.STEAM.get());
     //https://forge.gemwire.uk/wiki/User:ChampionAsh5357/Sandbox/Fluids_API#Gaseous_Fluids
-    this.tag(RailcraftTags.Fluids.GASEOUS)
+    this.tag(Tags.Fluids.GASEOUS)
         .add(RailcraftFluids.STEAM.get());
     this.tag(RailcraftTags.Fluids.CREOSOTE)
         .add(RailcraftFluids.CREOSOTE.get());
