@@ -508,7 +508,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
   }
 
-  private class UsageRecorder {
+  private static class UsageRecorder {
     private final int ticksToRecord;
     private final Consumer<Double> usageConsumer;
 

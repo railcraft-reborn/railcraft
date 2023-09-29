@@ -424,6 +424,15 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
         .add(RailcraftBlocks.FIRESTONE_ORE.get());
+
+    this.tag(Tags.Blocks.ENDERMAN_PLACE_ON_BLACKLIST)
+        .addTag(RailcraftTags.Blocks.STRENGTHENED_GLASS)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_GAUGE)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_VALVE)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_WALL)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_GAUGE)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_VALVE)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_WALL);
   }
 
   @Override

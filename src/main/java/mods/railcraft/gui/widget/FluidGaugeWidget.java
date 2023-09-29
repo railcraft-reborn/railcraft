@@ -34,8 +34,8 @@ public class FluidGaugeWidget extends Widget {
   @Override
   public void writeToBuf(ServerPlayer player, FriendlyByteBuf data) {
     super.writeToBuf(player, data);
-    FluidStack fluidStack = tank.getFluid();
-    this.lastSyncedFluidStack = fluidStack.isEmpty() ? FluidStack.EMPTY : fluidStack.copy();
+    var fluidStack = tank.getFluid();
+    this.lastSyncedFluidStack = fluidStack.copy();
     data.writeInt(tank.getCapacity());
     data.writeFluidStack(fluidStack);
   }

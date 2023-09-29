@@ -106,7 +106,7 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
 
   @Override
   public String toString() {
-    return String.format("%s@%s { c:%.2f }", getClass().getSimpleName(),
+    return String.format("%s@%s { energy: %d }", getClass().getSimpleName(),
         Integer.toHexString(hashCode()), this.energy);
   }
 
