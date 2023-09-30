@@ -1,7 +1,8 @@
 {
   "variants": {
     "facing=down": {
-      "model": "railcraft:block/cart_dispenser_down"
+      "model": "railcraft:block/cart_dispenser",
+      "x": 90
     },
     "facing=east": {
       "model": "railcraft:block/cart_dispenser",
@@ -15,7 +16,8 @@
       "y": 180
     },
     "facing=up": {
-      "model": "railcraft:block/cart_dispenser_up"
+      "model": "railcraft:block/cart_dispenser",
+      "x": 270
     },
     "facing=west": {
       "model": "railcraft:block/cart_dispenser",
