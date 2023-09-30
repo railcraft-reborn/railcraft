@@ -10,6 +10,7 @@ import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
 import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
+import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
@@ -587,6 +588,66 @@ public class RailcraftBlocks {
       deferredRegister.register("train_dispenser",
           () -> new TrainDispenserBlock(
               BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+
+  public static final RegistryObject<DetectorBlock> ADVANCED_DETECTOR =
+      deferredRegister.register("advanced_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.of()
+              .mapColor(MapColor.STONE)
+              .strength(2.0F, 4.5F)
+              .requiresCorrectToolForDrops()
+              .sound(SoundType.METAL)));
+
+  public static final RegistryObject<DetectorBlock> AGE_DETECTOR =
+      deferredRegister.register("age_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> ANIMAL_DETECTOR =
+      deferredRegister.register("animal_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> ANY_DETECTOR =
+      deferredRegister.register("any_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> EMPTY_DETECTOR =
+      deferredRegister.register("empty_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> ITEM_DETECTOR =
+      deferredRegister.register("item_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> LOCOMOTIVE_DETECTOR =
+      deferredRegister.register("locomotive_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> MOB_DETECTOR =
+      deferredRegister.register("mob_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> PLAYER_DETECTOR =
+      deferredRegister.register("player_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> ROUTING_DETECTOR =
+      deferredRegister.register("routing_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> SHEEP_DETECTOR =
+      deferredRegister.register("sheep_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> TANK_DETECTOR =
+      deferredRegister.register("tank_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> TRAIN_DETECTOR =
+      deferredRegister.register("train_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+
+  public static final RegistryObject<DetectorBlock> VILLAGER_DETECTOR =
+      deferredRegister.register("villager_detector",
+          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",

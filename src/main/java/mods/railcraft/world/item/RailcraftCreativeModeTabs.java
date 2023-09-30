@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.List;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -175,6 +176,21 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CART_DISPENSER.get());
             output.accept(RailcraftItems.TRAIN_DISPENSER.get());
 
+            output.accept(RailcraftBlocks.ADVANCED_DETECTOR.get());
+            output.accept(RailcraftBlocks.AGE_DETECTOR.get());
+            output.accept(RailcraftBlocks.ANIMAL_DETECTOR.get());
+            output.accept(RailcraftBlocks.ANY_DETECTOR.get());
+            output.accept(RailcraftBlocks.EMPTY_DETECTOR.get());
+            output.accept(RailcraftBlocks.ITEM_DETECTOR.get());
+            output.accept(RailcraftBlocks.LOCOMOTIVE_DETECTOR.get());
+            output.accept(RailcraftBlocks.MOB_DETECTOR.get());
+            output.accept(RailcraftBlocks.PLAYER_DETECTOR.get());
+            output.accept(RailcraftBlocks.ROUTING_DETECTOR.get());
+            output.accept(RailcraftBlocks.SHEEP_DETECTOR.get());
+            output.accept(RailcraftBlocks.TANK_DETECTOR.get());
+            output.accept(RailcraftBlocks.TRAIN_DETECTOR.get());
+            output.accept(RailcraftBlocks.VILLAGER_DETECTOR.get());
+
             output.accept(RailcraftItems.IRON_SPIKE_MAUL.get());
             output.accept(RailcraftItems.STEEL_SPIKE_MAUL.get());
             output.accept(RailcraftItems.DIAMOND_SPIKE_MAUL.get());
@@ -248,7 +264,9 @@ public class RailcraftCreativeModeTabs {
           .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
           .displayItems((params, output) -> {
             /*
-             * TODO: - Messenger track - Delayed locking track
+             * TODO:
+             *  - Messenger track
+             *  - Delayed locking track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());

@@ -342,6 +342,48 @@ public class RailcraftItems {
   public static final RegistryObject<Item> TRAIN_DISPENSER =
       blockItem("train_dispenser", RailcraftBlocks.TRAIN_DISPENSER);
 
+  public static final RegistryObject<Item> ADVANCED_DETECTOR =
+      blockItem("advanced_detector", RailcraftBlocks.ADVANCED_DETECTOR);
+
+  public static final RegistryObject<Item> AGE_DETECTOR =
+      blockItem("age_detector", RailcraftBlocks.AGE_DETECTOR);
+
+  public static final RegistryObject<Item> ANIMAL_DETECTOR =
+      blockItem("animal_detector", RailcraftBlocks.ANIMAL_DETECTOR);
+
+  public static final RegistryObject<Item> ANY_DETECTOR =
+      blockItem("any_detector", RailcraftBlocks.ANY_DETECTOR);
+
+  public static final RegistryObject<Item> EMPTY_DETECTOR =
+      blockItem("empty_detector", RailcraftBlocks.EMPTY_DETECTOR);
+
+  public static final RegistryObject<Item> ITEM_DETECTOR =
+      blockItem("item_detector", RailcraftBlocks.ITEM_DETECTOR);
+
+  public static final RegistryObject<Item> LOCOMOTIVE_DETECTOR =
+      blockItem("locomotive_detector", RailcraftBlocks.LOCOMOTIVE_DETECTOR);
+
+  public static final RegistryObject<Item> MOB_DETECTOR =
+      blockItem("mob_detector", RailcraftBlocks.MOB_DETECTOR);
+
+  public static final RegistryObject<Item> PLAYER_DETECTOR =
+      blockItem("player_detector", RailcraftBlocks.PLAYER_DETECTOR);
+
+  public static final RegistryObject<Item> ROUTING_DETECTOR =
+      blockItem("routing_detector", RailcraftBlocks.ROUTING_DETECTOR);
+
+  public static final RegistryObject<Item> SHEEP_DETECTOR =
+      blockItem("sheep_detector", RailcraftBlocks.SHEEP_DETECTOR);
+
+  public static final RegistryObject<Item> TANK_DETECTOR =
+      blockItem("tank_detector", RailcraftBlocks.TANK_DETECTOR);
+
+  public static final RegistryObject<Item> TRAIN_DETECTOR =
+      blockItem("train_detector", RailcraftBlocks.TRAIN_DETECTOR);
+
+  public static final RegistryObject<Item> VILLAGER_DETECTOR =
+      blockItem("villager_detector", RailcraftBlocks.VILLAGER_DETECTOR);
+
   public static final RegistryObject<Item> IRON_SPIKE_MAUL =
       deferredRegister.register("iron_spike_maul",
           () -> new SpikeMaulItem(11.0F, -3.5F, Tiers.IRON,

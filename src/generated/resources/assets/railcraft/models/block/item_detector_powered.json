@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "railcraft:block/item_detector_front_powered",
+    "side": "railcraft:block/item_detector_side",
+    "top": "railcraft:block/item_detector_side"
+  }
+}
