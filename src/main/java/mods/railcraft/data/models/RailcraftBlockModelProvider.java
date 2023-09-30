@@ -602,16 +602,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         horizontalTexture.get(TextureSlot.SIDE), horizontalTexture.get(TextureSlot.FRONT),
         horizontalTexture.get(TextureSlot.TOP));
 
-    var side = TextureMapping.getBlockTexture(block, "_side");
-    var front = TextureMapping.getBlockTexture(block, "_front");
-    var top = TextureMapping.getBlockTexture(block, "_top");
-    var upModel = this.models().cubeBottomTop(this.name(block, "_up"), side, top, front);
-    var downModel = this.models().cubeBottomTop(this.name(block, "_down"), side, front, top);
-
     this.getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
           Direction facing = blockState.getValue(BlockStateProperties.FACING);
           int yRot = 0;
+          int xRot = 0;
 
           switch (facing) {
             case SOUTH:
@@ -624,16 +619,18 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
               yRot = 270;
               break;
             case UP:
-              return ConfiguredModel.builder().modelFile(upModel).build();
+              xRot = 270;
+              break;
             case DOWN:
-              return ConfiguredModel.builder().modelFile(downModel).build();
+              xRot = 90;
+              break;
             default:
               break;
           }
 
           return ConfiguredModel.builder()
               .modelFile(horizontalModel)
-              .rotationX(0)
+              .rotationX(xRot)
               .rotationY(yRot)
               .build();
         }, AdvancedItemLoaderBlock.POWERED);
