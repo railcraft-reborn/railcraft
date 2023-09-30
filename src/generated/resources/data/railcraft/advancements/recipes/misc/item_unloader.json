@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_detector_track_kit": {
+    "has_item_detector": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:detector_track_kit"
+              "railcraft:item_detector"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_detector_track_kit",
+      "has_item_detector",
       "has_the_recipe"
     ]
   ],

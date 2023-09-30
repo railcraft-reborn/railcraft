@@ -3,22 +3,19 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "minecraft:cobblestone"
+      "item": "railcraft:blast_furnace_bricks"
     },
     "b": {
-      "item": "railcraft:item_detector"
-    },
-    "c": {
-      "item": "minecraft:hopper"
+      "item": "minecraft:stone_pressure_plate"
     }
   },
   "pattern": [
     "aaa",
     "aba",
-    "aca"
+    "aaa"
   ],
   "result": {
-    "item": "railcraft:item_unloader"
+    "item": "railcraft:locomotive_detector"
   },
   "show_notification": true
 }

@@ -102,6 +102,7 @@ public class RailcraftTags {
 
     public static final TagKey<Item> QUARRIED = tag("quarried");
     public static final TagKey<Item> ABYSSAL = tag("abyssal");
+    public static final TagKey<Item> DETECTOR = tag("detector");
 
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
@@ -179,6 +180,7 @@ public class RailcraftTags {
 
     public static final TagKey<Block> QUARRIED = tag("quarried");
     public static final TagKey<Block> ABYSSAL = tag("abyssal");
+    public static final TagKey<Block> DETECTOR = tag("detector");
 
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
 

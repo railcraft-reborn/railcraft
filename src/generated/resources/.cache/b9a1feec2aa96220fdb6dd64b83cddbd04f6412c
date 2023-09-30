@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-27T10:40:46.635318	Railcraft Item Tags
+// 1.20.1	2023-09-30T18:33:41.906786	Railcraft Item Tags
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -95,6 +95,7 @@ c12118bda87efc5274515a86a0a7f3b189982de6 data/minecraft/tags/items/pickaxes.json
 4276d58b0cb375037387fa9b749ae6b1e09d33c9 data/railcraft/tags/items/abandoned_track.json
 9b21abe5b3e3997560ef95937505d9a8112afa92 data/railcraft/tags/items/abyssal.json
 3f5ccd47db2e1f5b813e0f1e606034d2ba9b53e6 data/railcraft/tags/items/crowbar.json
+ce3776760cd245b3be24a2863b4f4ab016e5b8ff data/railcraft/tags/items/detector.json
 592e64113a8afc0a5dafcdbf62ae4c012d67b168 data/railcraft/tags/items/electric_track.json
 5a26ac70b2359959f7cfa554397bc28960731229 data/railcraft/tags/items/gear_chest_loot.json
 6f70aa0939666b437b1f94030c02681a1a80eedf data/railcraft/tags/items/high_speed_electric_track.json

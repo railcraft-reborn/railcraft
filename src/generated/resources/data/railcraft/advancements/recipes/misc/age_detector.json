@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item_detector": {
+    "has_spruce_log": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:item_detector"
+              "minecraft:spruce_log"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:item_loader"
+        "recipe": "railcraft:age_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_item_detector",
+      "has_spruce_log",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:item_loader"
+      "railcraft:age_detector"
     ]
   },
   "sends_telemetry_event": false

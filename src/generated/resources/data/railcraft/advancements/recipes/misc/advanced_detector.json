@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item_detector": {
+    "has_steel_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:item_detector"
+              "railcraft:steel_ingot"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:item_loader"
+        "recipe": "railcraft:advanced_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_item_detector",
+      "has_steel_ingot",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:item_loader"
+      "railcraft:advanced_detector"
     ]
   },
   "sends_telemetry_event": false

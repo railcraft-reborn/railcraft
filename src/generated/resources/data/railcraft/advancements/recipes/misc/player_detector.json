@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item_detector": {
+    "has_stone_slab": {
       "conditions": {
         "items": [
           {
             "items": [
-              "railcraft:item_detector"
+              "minecraft:stone_slab"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:item_loader"
+        "recipe": "railcraft:player_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_item_detector",
+      "has_stone_slab",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "railcraft:item_loader"
+      "railcraft:player_detector"
     ]
   },
   "sends_telemetry_event": false
