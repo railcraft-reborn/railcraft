@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.redstone.Redstone;
 
 public class DetectorBlock extends BaseEntityBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -36,13 +38,23 @@ public class DetectorBlock extends BaseEntityBlock {
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     return this.defaultBlockState()
-        .setValue(FACING, context.getNearestLookingDirection().getOpposite())
-        .setValue(POWERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+        .setValue(FACING, context.getNearestLookingDirection().getOpposite());
   }
 
   @Override
   public RenderShape getRenderShape(BlockState blockState) {
     return RenderShape.MODEL;
+  }
+
+  @Override
+  public boolean isSignalSource(BlockState state) {
+    return true;
+  }
+
+  @Override
+  public int getSignal(BlockState state, BlockGetter level, BlockPos pos,
+      Direction direction) {
+    return state.getValue(POWERED) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 
   @Nullable
