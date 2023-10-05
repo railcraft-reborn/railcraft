@@ -525,6 +525,13 @@ public class Translations {
     public static final String CHANGE_AURA = makeKey("key", "change_aura");
   }
 
+  public static class EnchantmentDescriptions {
+    public static final String DESTRUCTION = makeKey("enchantment", "destruction.desc");
+    public static final String IMPLOSION = makeKey("enchantment", "implosion.desc");
+    public static final String SMACK = makeKey("enchantment", "smack.desc");
+    public static final String WRECKING = makeKey("enchantment", "wrecking.desc");
+  }
+
   public static String makeKey(String type, String name) {
     return type + "." + RailcraftConstants.ID + "." + name;
   }
