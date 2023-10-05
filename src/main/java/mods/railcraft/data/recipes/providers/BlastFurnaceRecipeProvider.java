@@ -55,7 +55,7 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
     blastFurnaceSmelting(consumer, Items.SHEARS, 2);
     blastFurnaceSmelting(consumer, RailcraftItems.IRON_CROWBAR.get(), 3);
     blastFurnaceSmelting(consumer, Items.IRON_DOOR, 6);
-    blastFurnaceSmelting(consumer, Items.IRON_TRAPDOOR, 6);
+    blastFurnaceSmelting(consumer, Items.IRON_TRAPDOOR, 4);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_HELMET.get(), 4);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_CHESTPLATE.get(), 6);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_LEGGINGS.get(), 5);
