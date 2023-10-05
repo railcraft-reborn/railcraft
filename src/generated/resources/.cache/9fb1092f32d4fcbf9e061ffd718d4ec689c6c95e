@@ -1,4 +1,4 @@
-// 1.20.1	2023-09-30T18:40:46.128161	Recipes
+// 1.20.1	2023-10-05T12:01:30.283534	Recipes
 4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -640,7 +640,7 @@ bcf330e4e525e858a8ed9be02abea284d48d7dd6 data/railcraft/recipes/blast_furnace/bl
 d750d50e09d63a32dd2dde527146013b79fac7f3 data/railcraft/recipes/blast_furnace/blasting_iron_pickaxe.json
 fae30b542420e90c0a3c2940c0b1113bb5c7c8a6 data/railcraft/recipes/blast_furnace/blasting_iron_shovel.json
 8db66523a873149d9424546140a5ae8806098878 data/railcraft/recipes/blast_furnace/blasting_iron_sword.json
-75980281031b146400876f3787c411f9f22135a4 data/railcraft/recipes/blast_furnace/blasting_iron_trapdoor.json
+174bd1620a90b651a51e285e7befc4e8291fb18b data/railcraft/recipes/blast_furnace/blasting_iron_trapdoor.json
 e972b4f3c7f2e32bfdb6ff6e155a1f25aa71516b data/railcraft/recipes/blast_furnace/blasting_shears.json
 f887f5d9d231d498223abd21d5edd005149d5de7 data/railcraft/recipes/blast_furnace/blasting_steel_axe.json
 e38eade6b37511738da992d4096f736c03634f4d data/railcraft/recipes/blast_furnace/blasting_steel_block.json

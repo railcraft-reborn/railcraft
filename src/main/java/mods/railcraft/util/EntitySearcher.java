@@ -29,7 +29,7 @@ import net.minecraft.world.phys.AABB;
 public final class EntitySearcher {
 
   private static final EntityTypeTest<Entity, Entity> ANY_TYPE =
-      new EntityTypeTest<Entity, Entity>() {
+      new EntityTypeTest<>() {
 
         @Override
         public Entity tryCast(Entity entity) {
@@ -80,7 +80,7 @@ public final class EntitySearcher {
       if (this.box.isUndefined()) {
         throw new NullPointerException("Improperly defined EntitySearcher without a search box");
       }
-      return level.getEntities(this.typeTest, this.box.build(), this.filter::test);
+      return level.getEntities(this.typeTest, this.box.build(), this.filter);
     }
 
     public SearchParameters<T> except(Entity entity) {

@@ -42,7 +42,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     super(type, blockPos, blockState);
   }
 
-
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
     return ClientboundBlockEntityDataPacket.create(this);

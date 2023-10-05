@@ -909,6 +909,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEnchantment(RailcraftEnchantments.DESTRUCTION, "Destruction");
     this.addEnchantment(RailcraftEnchantments.IMPLOSION, "Implosion");
     this.addEnchantment(RailcraftEnchantments.SMACK, "Smack");
+
+    this.add(Translations.EnchantmentDescriptions.WRECKING, "Increases attack damage.");
+    this.add(Translations.EnchantmentDescriptions.DESTRUCTION, "Deconstructs blocks in a wider area.");
+    this.add(Translations.EnchantmentDescriptions.IMPLOSION, "Increases damage against creepers.");
+    this.add(Translations.EnchantmentDescriptions.SMACK, "Increases the boost applied to trains.");
   }
 
   private void advancementTranslations() {
