@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 1800; // 90 sec
+  public static final int DEFAULT_COOKING_TIME = 15 * 20; // 15 sec
 
   private final int creosoteOutput;
 

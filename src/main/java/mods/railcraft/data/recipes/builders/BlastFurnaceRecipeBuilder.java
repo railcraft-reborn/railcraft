@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 1280; // 64 sec
+  public static final int DEFAULT_COOKING_TIME = 17 * 20; // 17 sec
 
   private final int slagOutput;
 

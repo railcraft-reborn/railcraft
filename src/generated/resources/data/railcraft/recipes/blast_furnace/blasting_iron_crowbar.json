@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 1280,
+  "cookingTime": 340,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:iron_crowbar"
