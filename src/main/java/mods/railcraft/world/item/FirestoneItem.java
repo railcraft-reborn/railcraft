@@ -1,13 +1,10 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,12 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 
 public class FirestoneItem extends Item {
-
-  public static final Predicate<ItemStack> SPAWNS_FIRE = itemStack -> itemStack.isEmpty()
-      || itemStack.is(RailcraftItems.RAW_FIRESTONE.get())
-      || itemStack.is(RailcraftItems.CUT_FIRESTONE.get())
-      || itemStack.is(RailcraftItems.CRACKED_FIRESTONE.get())
-      || ContainerTools.isItemStackBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
 
   private final boolean spawnsFire;
 
