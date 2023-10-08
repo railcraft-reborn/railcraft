@@ -434,9 +434,4 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(RailcraftTags.Blocks.STEEL_TANK_VALVE)
         .addTag(RailcraftTags.Blocks.STEEL_TANK_WALL);
   }
-
-  @Override
-  public String getName() {
-    return "Railcraft Block Tags";
-  }
 }

@@ -281,9 +281,4 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL);
     this.tag(Tags.Items.ARMORS_BOOTS).addTags(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
   }
-
-  @Override
-  public String getName() {
-    return "Railcraft Item Tags";
-  }
 }
