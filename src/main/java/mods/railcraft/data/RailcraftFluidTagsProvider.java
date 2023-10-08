@@ -22,15 +22,9 @@ public class RailcraftFluidTagsProvider extends FluidTagsProvider {
   protected void addTags(HolderLookup.Provider provider) {
     this.tag(RailcraftTags.Fluids.STEAM)
         .add(RailcraftFluids.STEAM.get());
-    //https://forge.gemwire.uk/wiki/User:ChampionAsh5357/Sandbox/Fluids_API#Gaseous_Fluids
     this.tag(Tags.Fluids.GASEOUS)
         .add(RailcraftFluids.STEAM.get());
     this.tag(RailcraftTags.Fluids.CREOSOTE)
         .add(RailcraftFluids.CREOSOTE.get());
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Fluid Tags";
   }
 }
