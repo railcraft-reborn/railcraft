@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 340,
+  "cookingTime": 320,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_pickaxe"

@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 2040,
+  "cookingTime": 1920,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_door"

@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 680,
+  "cookingTime": 640,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_sword"

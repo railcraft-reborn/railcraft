@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 2380,
+  "cookingTime": 2240,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_leggings"

@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 1360,
+  "cookingTime": 1280,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_trapdoor"

@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 170,
+  "cookingTime": 160,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_shears"
