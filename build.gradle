@@ -184,9 +184,14 @@ mixin {
     add sourceSets.main, 'railcraft.refmap.json'
 }
 
+def penultimateTag = { ->
+    var tags = 'git tag --list --sort=-creatordate'.execute().text
+    return tags.split("\n")[1]
+}
+
 tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo = projectDir.absolutePath.toString()
-    fromRevision = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
+    fromRevision = penultimateTag()
     toRevision = 'HEAD'
     file = file('CHANGELOG.md')
     untaggedName = 'Next release'
