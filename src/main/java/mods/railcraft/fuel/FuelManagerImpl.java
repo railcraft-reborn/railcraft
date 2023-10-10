@@ -8,11 +8,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.material.Fluid;
 
-public enum FuelManagerImpl implements FuelManager {
+public class FuelManagerImpl implements FuelManager {
 
-  INSTANCE;
-
-  private static final List<Tuple<TagKey<Fluid>, Integer>> boilerFuel = new ArrayList<>();
+  private static final List<Tuple<TagKey<Fluid>, Integer>> BOILER_FUEL = new ArrayList<>();
 
   /**
    * Register the amount of heat in a bucket of liquid fuel.
@@ -22,13 +20,13 @@ public enum FuelManagerImpl implements FuelManager {
    */
   @Override
   public void addFuel(TagKey<Fluid> fluid, int heatValuePerBucket) {
-    boilerFuel.add(new Tuple<>(fluid, heatValuePerBucket));
+    BOILER_FUEL.add(new Tuple<>(fluid, heatValuePerBucket));
   }
 
   @SuppressWarnings("deprecation")
   @Override
   public float getFuelValue(Fluid fluid) {
-    return boilerFuel.stream()
+    return BOILER_FUEL.stream()
         .filter(tpl -> fluid.is(tpl.getA()))
         .map(tpl -> RailcraftConfig.SERVER.fuelMultiplier.get().floatValue() * tpl.getB())
         .findFirst()

@@ -104,7 +104,7 @@ public class Railcraft {
   public static final boolean BETA = true;
 
   static {
-    FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
+    FuelUtil._setFuelManager(new FuelManagerImpl());
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
