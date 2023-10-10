@@ -32,6 +32,7 @@ import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.util.capability.FluidBottleWrapper;
@@ -165,7 +166,7 @@ public class Railcraft {
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
-    FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
+    FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {
