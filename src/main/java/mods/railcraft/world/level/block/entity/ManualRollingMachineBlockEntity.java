@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
-  private static final int SLOT_RESULT = 0;
   private final AdvancedContainer container;
   private final FakeRollingContainer matrixListener = new FakeRollingContainer();
   protected final RollingCraftingContainer craftMatrix =
@@ -40,8 +39,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       BlockState blockState) {
     super(blockEntityType, blockPos, blockState);
     this.container = new AdvancedContainer(10);
-    this.invResult = ContainerMapper.make(this.container, SLOT_RESULT, 1);
-    this.invMatrix = ContainerMapper.make(this.container, 1, 9);
+    this.invResult = ContainerMapper.make(this.container, 0, 9);
+    this.invMatrix = ContainerMapper.make(this.container, 9, 1);
   }
 
   public ManualRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
