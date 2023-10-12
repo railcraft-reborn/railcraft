@@ -1,4 +1,4 @@
-// 1.20.1	2023-10-08T12:32:20.972503	Tags for minecraft:item mod id railcraft
+// 1.20.1	2023-10-10T19:10:14.369153	Tags for minecraft:item mod id railcraft
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -73,6 +73,7 @@ cb884e9e2d81ae8f3c727477640a978e19230d73 data/forge/tags/items/raw_materials/lea
 aff7016ddb8fcd0b4eab937ab3cd56340f084a30 data/forge/tags/items/raw_materials/silver.json
 ac5c7196c250262e53b9cac65eb85f65fb3d4236 data/forge/tags/items/raw_materials/tin.json
 283191211029190cffef9a23ea90717adb634bc5 data/forge/tags/items/raw_materials/zinc.json
+bdd9768ed490a4880c63c90017aafd2209f24042 data/forge/tags/items/slag.json
 d8a0afa9468fa132e645cb46a5cafa2846bc640e data/forge/tags/items/storage_blocks/brass.json
 6ec964a4c8a1091ef58477715200410dc4973e43 data/forge/tags/items/storage_blocks/bronze.json
 669fbe41c4cd7a363bf95870b313586076ca664a data/forge/tags/items/storage_blocks/invar.json

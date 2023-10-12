@@ -222,6 +222,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.THROTTLE_TRACK_KIT.get())
         .add(RailcraftItems.TRANSITION_TRACK_KIT.get());
 
+    this.tag(RailcraftTags.Items.SLAG)
+        .add(RailcraftItems.SLAG.get());
+
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
     this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);

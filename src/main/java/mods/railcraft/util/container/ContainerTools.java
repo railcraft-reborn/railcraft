@@ -24,16 +24,6 @@ import net.minecraft.world.phys.Vec3;
 
 public abstract class ContainerTools {
 
-  public static void requiresNotEmpty(ItemStack stack) {
-    if (stack.isEmpty())
-      throw new IllegalStateException("Item cannot be empty.");
-  }
-
-  public static boolean canMerge(ItemStack target, ItemStack source) {
-    return target.isEmpty() || source.isEmpty() || (ItemStack.isSameItem(target, source)
-        && target.getCount() + source.getCount() <= target.getMaxStackSize());
-  }
-
   public static int[] buildSlotArray(int start, int size) {
     return IntStream.range(0, size).map(i -> start + i).toArray();
   }
@@ -67,34 +57,6 @@ public abstract class ContainerTools {
       return filterItem.matches(filter, stack);
     }
     return ItemStack.isSameItem(stack, filter);
-  }
-
-  /**
-   * A more robust item comparison function.
-   * <p/>
-   * Compares stackSize as well.
-   * <p/>
-   * Two null stacks will return true, unlike the other functions.
-   * <p/>
-   * This function is primarily intended to be used to track changes to an ItemStack.
-   *
-   * @param a An ItemStack
-   * @param b An ItemStack
-   * @return True if equal
-   */
-  public static boolean isItemEqualStrict(@Nullable ItemStack a, @Nullable ItemStack b) {
-    if (a.isEmpty() && b.isEmpty())
-      return true;
-    if (a.isEmpty() || b.isEmpty())
-      return false;
-    if (a.getItem() != b.getItem())
-      return false;
-    if (a.getCount() != b.getCount())
-      return false;
-    if (a.getDamageValue() != b.getDamageValue())
-      return false;
-    return a.getTag() == null || b.getTag() == null
-        || a.getTag().equals(b.getTag());
   }
 
   public static ListTag writeContainer(Container container) {
