@@ -22,7 +22,7 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {
     CokeOvenRecipeBuilder
-        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0, 240, 250)
+        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0, 300, 250)
         .unlockedBy("has_logs", has(ItemTags.LOGS))
         .save(consumer);
 
