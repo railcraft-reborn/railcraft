@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 2880,
+  "cookingTime": 3600,
   "experience": 0.0,
   "ingredient": {
     "tag": "forge:storage_blocks/iron"

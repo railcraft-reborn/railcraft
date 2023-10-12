@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 1280,
+  "cookingTime": 1600,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_horse_armor"

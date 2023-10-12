@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 640,
+  "cookingTime": 800,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_helmet"
