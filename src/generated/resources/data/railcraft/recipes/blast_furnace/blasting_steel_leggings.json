@@ -1,12 +1,12 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 3200,
+  "cookingTime": 1200,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_leggings"
   },
   "result": {
-    "count": 5,
+    "count": 6,
     "item": "railcraft:steel_ingot"
   },
   "slagOutput": 0

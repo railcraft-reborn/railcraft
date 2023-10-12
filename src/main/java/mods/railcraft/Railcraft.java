@@ -318,9 +318,7 @@ public class Railcraft {
             .map(x -> x.getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
-          cooked = cooked.copy();
-          cooked.setCount(drop.getCount());
-          entityItem.setItem(cooked);
+          entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));
         }
       }
     }

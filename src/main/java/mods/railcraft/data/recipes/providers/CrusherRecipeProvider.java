@@ -180,6 +180,15 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Ingredient.of(Tags.Items.STORAGE_BLOCKS_QUARTZ))
         .addResult(Items.QUARTZ, 4, 1)
         .save(consumer, "tags_quartz_blocks");
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.RAW_IRON_BLOCK))
+        .addResult(Items.RAW_IRON, 9, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.RAW_COPPER_BLOCK))
+        .addResult(Items.RAW_COPPER, 9, 1)
+        .save(consumer);
+    CrusherRecipeBuilder.crush(Ingredient.of(Items.RAW_GOLD_BLOCK))
+        .addResult(Items.RAW_GOLD, 9, 1)
+        .save(consumer);
   }
 
   private static void buildRailcraft(Consumer<FinishedRecipe> consumer) {

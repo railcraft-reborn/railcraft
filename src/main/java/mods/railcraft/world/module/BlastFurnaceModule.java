@@ -121,10 +121,6 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return true;
   }
 
-  public boolean needsFuel() {
-    return this.getItem(SLOT_FUEL).getCount() < 8;
-  }
-
   private int getItemBurnTime(ItemStack itemStack) {
     return ForgeHooks.getBurnTime(itemStack, null);
   }

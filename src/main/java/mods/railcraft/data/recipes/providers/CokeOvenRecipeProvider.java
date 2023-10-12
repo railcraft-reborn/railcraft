@@ -22,7 +22,7 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {
     CokeOvenRecipeBuilder
-        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0, 250)
+        .coking(Items.CHARCOAL, Ingredient.of(ItemTags.LOGS), 0, 300, 250)
         .unlockedBy("has_logs", has(ItemTags.LOGS))
         .save(consumer);
 
@@ -32,7 +32,8 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
         .save(consumer);
 
     CokeOvenRecipeBuilder
-        .coking(RailcraftItems.COKE_BLOCK.get(), Ingredient.of(Items.COAL_BLOCK), 0, 16200, 5000)
+        .coking(RailcraftItems.COKE_BLOCK.get(), Ingredient.of(Items.COAL_BLOCK), 0,
+            CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME * 9, 5000)
         .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
         .save(consumer);
   }
