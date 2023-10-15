@@ -2,7 +2,6 @@ package mods.railcraft.world.item;
 
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.ChatFormatting;
@@ -86,7 +85,7 @@ public class FirestoneItem extends Item {
   public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Entity entity) {
     boolean spawnedFire = false;
     for (int i = 0; i < stack.getCount(); i++) {
-      spawnedFire |= spawnFire(level, pos, entity);
+      spawnedFire |= spawnFire(level, pos);
     }
     if (spawnedFire && stack.isDamageableItem()
         && stack.getDamageValue() < stack.getMaxDamage() - 1) {
@@ -97,10 +96,10 @@ public class FirestoneItem extends Item {
     return spawnedFire;
   }
 
-  public static boolean spawnFire(Level level, BlockPos pos, @Nullable Entity entity) {
+  public static boolean spawnFire(Level level, BlockPos pos) {
     var random = level.getRandom();
     int x = pos.getX() - 5 + random.nextInt(12);
-    int y = pos.getY() - 5 + random.nextInt(12);
+    int y = pos.getY() + random.nextInt(12);
     int z = pos.getZ() - 5 + random.nextInt(12);
 
     y = Mth.clamp(y, level.getMinBuildHeight() + 2, level.getMaxBuildHeight() - 1);
