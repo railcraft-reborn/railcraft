@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 1920,
+  "cookingTime": 600,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:steel_boots"

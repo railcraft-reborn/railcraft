@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 3840,
+  "cookingTime": 400,
   "experience": 0.0,
   "ingredient": {
     "item": "railcraft:iron_crowbar"
   },
   "result": {
-    "count": 3,
+    "count": 2,
     "item": "railcraft:steel_ingot"
   },
-  "slagOutput": 3
+  "slagOutput": 0
 }

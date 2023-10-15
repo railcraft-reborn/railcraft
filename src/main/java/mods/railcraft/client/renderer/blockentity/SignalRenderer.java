@@ -14,13 +14,10 @@ public class SignalRenderer extends AbstractSignalRenderer<AbstractSignalBlockEn
     var direction = blockEntity.getBlockState().getValue(SignalBlock.FACING);
     var signalAspect = blockEntity.getPrimarySignalAspect().getDisplayAspect();
     poseStack.pushPose();
-    {
-      var zOffset = -0.175D;
-      poseStack.translate(zOffset * direction.getStepX(), 0.19D,
-          zOffset * direction.getStepZ());
-      this.renderSignalAspect(
-          poseStack, bufferSource, packedLight, packedOverlay, signalAspect, direction);
-    }
+    var zOffset = -0.175D;
+    poseStack.translate(zOffset * direction.getStepX(), 0.19D, zOffset * direction.getStepZ());
+    this.renderSignalAspect(
+        poseStack, bufferSource, packedLight, packedOverlay, signalAspect, direction);
     poseStack.popPose();
   }
 }

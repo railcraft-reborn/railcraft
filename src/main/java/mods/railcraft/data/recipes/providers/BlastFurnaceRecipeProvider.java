@@ -53,18 +53,18 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
     blastFurnaceSmelting(consumer, Items.IRON_AXE, 3);
     blastFurnaceSmelting(consumer, Items.IRON_HOE, 2);
     blastFurnaceSmelting(consumer, Items.SHEARS, 2);
-    blastFurnaceSmelting(consumer, RailcraftItems.IRON_CROWBAR.get(), 3);
     blastFurnaceSmelting(consumer, Items.IRON_DOOR, 6);
     blastFurnaceSmelting(consumer, Items.IRON_TRAPDOOR, 4);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_HELMET.get(), 4);
-    blastFurnaceRecycling(consumer, RailcraftItems.STEEL_CHESTPLATE.get(), 6);
-    blastFurnaceRecycling(consumer, RailcraftItems.STEEL_LEGGINGS.get(), 5);
+    blastFurnaceRecycling(consumer, RailcraftItems.STEEL_CHESTPLATE.get(), 7);
+    blastFurnaceRecycling(consumer, RailcraftItems.STEEL_LEGGINGS.get(), 6);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_BOOTS.get(), 3);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_SWORD.get(), 1);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_PICKAXE.get(), 2);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_HOE.get(), 1);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_AXE.get(), 2);
     blastFurnaceRecycling(consumer, RailcraftItems.STEEL_SHEARS.get(), 1);
+    blastFurnaceRecycling(consumer, RailcraftItems.IRON_CROWBAR.get(), 2);
   }
 
   private static void blastFurnaceSmelting(Consumer<FinishedRecipe> consumer, ItemLike item,

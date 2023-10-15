@@ -71,7 +71,7 @@ public class TuningAuraParticle extends DimmableParticle {
 
     var sourceBE = level.getBlockEntity(BlockPos.containing(source));
     var destBE = level.getBlockEntity(BlockPos.containing(source));
-    if((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
+    if ((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
       this.remove();
     }
 

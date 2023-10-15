@@ -222,6 +222,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.THROTTLE_TRACK_KIT.get())
         .add(RailcraftItems.TRANSITION_TRACK_KIT.get());
 
+    this.tag(RailcraftTags.Items.SLAG)
+        .add(RailcraftItems.SLAG.get());
+
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
     this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);
@@ -281,10 +284,5 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL);
     this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL);
     this.tag(Tags.Items.ARMORS_BOOTS).addTags(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Item Tags";
   }
 }

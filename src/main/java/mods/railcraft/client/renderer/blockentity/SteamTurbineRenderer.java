@@ -72,54 +72,51 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
     var vertexBuffer = bufferSource.getBuffer(RailcraftRenderTypes.POSITION_COLOR_LIGHTMAP);
 
     poseStack.pushPose();
-    {
-      // move the origin to the center of the gauge
-      poseStack.translate(xx + rx * 0.5 + fx * zOffset, 0.5,
-          zz + rz * 0.5 + fz * zOffset);
-      
-      var matrix = poseStack.last().pose();
+    // move the origin to the center of the gauge
+    poseStack.translate(xx + rx * 0.5 + fx * zOffset, 0.5, zz + rz * 0.5 + fz * zOffset);
 
-      float cosA = Mth.cos(angle);
-      float sinA = Mth.sin(angle);
+    var matrix = poseStack.last().pose();
 
-      // displacement along the length of the needle
-      float glx = cosA * len;
-      float gly = sinA * len;
+    float cosA = Mth.cos(angle);
+    float sinA = Mth.sin(angle);
 
-      // displacement along the width of the needle
-      float gwx = sinA * halfWidth;
-      float gwy = cosA * halfWidth;
+    // displacement along the length of the needle
+    float glx = cosA * len;
+    float gly = sinA * len;
 
-      // half width of the horizontal needle part where it connects to the "case"
-      float baseOffset = 1.0F / Mth.sin(angle) * halfWidth;
+    // displacement along the width of the needle
+    float gwx = sinA * halfWidth;
+    float gwy = cosA * halfWidth;
 
-      // set the needle color to dark-ish red
-      int red = 100;
-      int green = 0;
-      int blue = 0;
-      int alphaOne = 255;
+    // half width of the horizontal needle part where it connects to the "case"
+    float baseOffset = 1.0F / Mth.sin(angle) * halfWidth;
 
-      vertexBuffer
-          .vertex(matrix, -rx * baseOffset, 0, -rz * baseOffset)
-          .color(red, green, blue, alphaOne)
-          .uv2(packedLight)
-          .endVertex();
-      vertexBuffer
-          .vertex(matrix, rx * baseOffset, 0, rz * baseOffset)
-          .color(red, green, blue, alphaOne)
-          .uv2(packedLight)
-          .endVertex();
-      vertexBuffer
-          .vertex(matrix, -rx * glx + rx * gwx, gly + gwy, -rz * glx + rz * gwx)
-          .color(red, green, blue, alphaOne)
-          .uv2(packedLight)
-          .endVertex();
-      vertexBuffer
-          .vertex(matrix, -rx * glx - rx * gwx, gly - gwy, -rz * glx - rz * gwx)
-          .color(red, green, blue, alphaOne)
-          .uv2(packedLight)
-          .endVertex();
-    }
+    // set the needle color to dark-ish red
+    int red = 100;
+    int green = 0;
+    int blue = 0;
+    int alphaOne = 255;
+
+    vertexBuffer
+        .vertex(matrix, -rx * baseOffset, 0, -rz * baseOffset)
+        .color(red, green, blue, alphaOne)
+        .uv2(packedLight)
+        .endVertex();
+    vertexBuffer
+        .vertex(matrix, rx * baseOffset, 0, rz * baseOffset)
+        .color(red, green, blue, alphaOne)
+        .uv2(packedLight)
+        .endVertex();
+    vertexBuffer
+        .vertex(matrix, -rx * glx + rx * gwx, gly + gwy, -rz * glx + rz * gwx)
+        .color(red, green, blue, alphaOne)
+        .uv2(packedLight)
+        .endVertex();
+    vertexBuffer
+        .vertex(matrix, -rx * glx - rx * gwx, gly - gwy, -rz * glx - rz * gwx)
+        .color(red, green, blue, alphaOne)
+        .uv2(packedLight)
+        .endVertex();
     poseStack.popPose();
   }
 }

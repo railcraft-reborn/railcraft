@@ -68,7 +68,7 @@ public class GeodeStructurePiece extends StructurePiece {
 
   private void placeStone(WorldGenLevel level, BlockPos pos, RandomSource random) {
     var state = random.nextDouble() < 0.2
-        ? random.nextDouble() < 0.5
+        ? random.nextBoolean()
           ? Blocks.DEEPSLATE.defaultBlockState()
           : Blocks.SMOOTH_BASALT.defaultBlockState()
         : RailcraftBlocks.ABYSSAL_STONE.get().defaultBlockState();
