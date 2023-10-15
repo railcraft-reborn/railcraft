@@ -46,10 +46,10 @@ public class RailcraftButton extends Button {
     RenderSystem.defaultBlendFunc();
     RenderSystem.enableDepthTest();
 
-    int xOffset = this.texturePosition.getX();
-    int yOffset = this.texturePosition.getY();
-    int h = this.texturePosition.getHeight();
-    int w = this.texturePosition.getWidth();
+    int xOffset = this.texturePosition.x();
+    int yOffset = this.texturePosition.y();
+    int h = this.texturePosition.height();
+    int w = this.texturePosition.width();
 
     guiGraphics.blit(WIDGETS_LOCATION, this.getX(), this.getY(), xOffset, yOffset + i * h, this.width / 2, h);
     guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, this.getY(),

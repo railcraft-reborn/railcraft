@@ -184,8 +184,13 @@ mixin {
 }
 
 def penultimateTag = { ->
-    var tags = 'git tag --list --sort=-creatordate'.execute().text
-    return tags.split("\n")[1]
+    final defaultTag = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
+    try {
+        var tags = 'git tag --list --sort=-creatordate'.execute().text.split("\n")
+        return tags.length > 1 ? tags[1] : defaultTag
+    } catch (Exception e) {
+        return defaultTag
+    }
 }
 
 tasks.register('makeChangelog', GitChangelogTask) {

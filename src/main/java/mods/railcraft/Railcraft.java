@@ -317,7 +317,7 @@ public class Railcraft {
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
             .map(x -> x.getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
-        if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
+        if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
           entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));
         }
       }

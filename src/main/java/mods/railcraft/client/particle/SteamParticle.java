@@ -9,7 +9,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 
 public class SteamParticle extends CampfireSmokeParticle {
 
-   SteamParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
+  SteamParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz, false);
     this.scale(1.7F);

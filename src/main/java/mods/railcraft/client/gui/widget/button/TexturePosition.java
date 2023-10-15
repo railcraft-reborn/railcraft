@@ -2,11 +2,11 @@ package mods.railcraft.client.gui.widget.button;
 
 public interface TexturePosition {
 
-  int getX();
+  int x();
 
-  int getY();
+  int y();
 
-  int getHeight();
+  int height();
 
-  int getWidth();
+  int width();
 }
