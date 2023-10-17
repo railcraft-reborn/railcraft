@@ -184,13 +184,15 @@ mixin {
 }
 
 def penultimateTag = { ->
-    final defaultTag = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
+    def stdout = new ByteArrayOutputStream()
     try {
-        var tags = 'git tag --list --sort=-creatordate'.execute().text.split("\n")
-        return tags.length > 1 ? tags[1] : defaultTag
+        project.exec { ExecSpec spec ->
+            spec.commandLine('git', 'describe', '--abbrev=0', '--tags', 'HEAD~').standardOutput(stdout)
+        }.assertNormalExitValue().rethrowFailure()
     } catch (Exception e) {
-        return defaultTag
+        throw new IllegalStateException("Failed to get the tag; check if 'git' is on the PATH", e)
     }
+    return stdout.toString()
 }
 
 tasks.register('makeChangelog', GitChangelogTask) {
