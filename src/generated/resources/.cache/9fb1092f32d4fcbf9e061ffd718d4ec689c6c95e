@@ -1,4 +1,4 @@
-// 1.20.1	2023-10-12T17:03:16.737704	Recipes
+// 1.20.1	2023-10-24T18:26:58.108985	Recipes
 4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -613,7 +613,7 @@ b1f807a75a12a0ce3ad1528f5085727871758a4b data/railcraft/recipes/blast_furnace/bl
 8b4ec1d69037afe139d42e42a28e311aa70065dd data/railcraft/recipes/blast_furnace/blasting_iron_boots.json
 1caed8b92c722c06d4848af3de14e05cf1122866 data/railcraft/recipes/blast_furnace/blasting_iron_chestplate.json
 3f877f317b0422a4e178e52cee34db3241f9a39e data/railcraft/recipes/blast_furnace/blasting_iron_crowbar.json
-ac755eb3dcdeac7d5784295bd374a230d04adf81 data/railcraft/recipes/blast_furnace/blasting_iron_door.json
+124dcaef8051a7986d31bcae25a60612232c85f3 data/railcraft/recipes/blast_furnace/blasting_iron_door.json
 8d9b84210f322f83ba679903dabab9c0c48c71b7 data/railcraft/recipes/blast_furnace/blasting_iron_helmet.json
 03cf85c65b93d851564d7257e5f162c10661c615 data/railcraft/recipes/blast_furnace/blasting_iron_hoe.json
 f8fcfbaad9e3abba42717962501fa241f4bb48ef data/railcraft/recipes/blast_furnace/blasting_iron_horse_armor.json
