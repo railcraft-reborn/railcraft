@@ -1,6 +1,7 @@
 package mods.railcraft.client;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
@@ -245,7 +246,8 @@ public class ClientManager {
       event.getPlayer().displayClientMessage(message, false);
     }
 
-    if (Railcraft.BETA || !FMLLoader.isProduction()) {
+    if (!FMLLoader.isProduction()
+        || (Railcraft.BETA && RailcraftConfig.CLIENT.showMessageBeta.get())) {
       var type = FMLLoader.isProduction() ? "beta" : "development";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
