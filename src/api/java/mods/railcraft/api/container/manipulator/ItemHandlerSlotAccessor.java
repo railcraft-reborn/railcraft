@@ -3,8 +3,8 @@ package mods.railcraft.api.container.manipulator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 public class ItemHandlerSlotAccessor<T extends IItemHandler> implements SlotAccessor {
 

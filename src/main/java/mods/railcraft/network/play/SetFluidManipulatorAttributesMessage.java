@@ -6,7 +6,7 @@ import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlock
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetFluidManipulatorAttributesMessage(BlockPos blockPos,
     ManipulatorBlockEntity.RedstoneMode redstoneMode) {

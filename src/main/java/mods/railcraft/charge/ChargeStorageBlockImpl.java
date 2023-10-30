@@ -3,7 +3,7 @@ package mods.railcraft.charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraftforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.EnergyStorage;
 
 public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStorage {
 

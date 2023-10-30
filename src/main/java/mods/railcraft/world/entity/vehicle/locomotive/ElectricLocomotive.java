@@ -26,10 +26,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
@@ -193,7 +193,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return ForgeCapabilities.ENERGY == capability
+    return Capabilities.ENERGY == capability
         ? this.energyHandler.cast()
         : super.getCapability(capability, facing);
   }

@@ -31,11 +31,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public abstract class BaseSteamLocomotive extends Locomotive implements FluidTransferHandler {
 
@@ -120,7 +120,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == ForgeCapabilities.FLUID_HANDLER
+    return capability == Capabilities.FLUID_HANDLER
         ? this.tankManager.cast()
         : super.getCapability(capability, facing);
   }
@@ -219,7 +219,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   private void ventSteam() {
-    this.steamTank.internalDrain(4, FluidAction.EXECUTE);
+    this.steamTank.internalDrain(4, IFluidHandler.FluidAction.EXECUTE);
   }
 
   public SteamBoiler boiler() {
@@ -233,7 +233,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       return 0;
     }
     if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
-      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, IFluidHandler.FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;

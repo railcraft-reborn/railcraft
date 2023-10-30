@@ -5,7 +5,7 @@ import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record UpdateAuraByKeyMessage(CompoundTag tag) {
 

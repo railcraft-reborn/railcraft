@@ -19,16 +19,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
-  FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
+  FUEL(itemStack -> CommonHooks.getBurnTime(itemStack, null) > 0),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
     var item = itemStack.getItem();
@@ -40,7 +40,7 @@ public enum StackFilter implements Predicate<ItemStack> {
   BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
       && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
   FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
+      .getCapability(Capabilities.FLUID_HANDLER_ITEM)
       .isPresent()),
   FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
       || itemStack.is(Items.WHEAT)

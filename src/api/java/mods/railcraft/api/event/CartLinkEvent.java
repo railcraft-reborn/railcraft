@@ -7,7 +7,7 @@
 package mods.railcraft.api.event;
 
 import mods.railcraft.api.carts.RollingStock;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 /**
  * These events are fired on {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.

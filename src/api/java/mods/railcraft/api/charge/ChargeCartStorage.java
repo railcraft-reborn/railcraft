@@ -2,7 +2,7 @@ package mods.railcraft.api.charge;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public interface ChargeCartStorage extends IEnergyStorage {
 

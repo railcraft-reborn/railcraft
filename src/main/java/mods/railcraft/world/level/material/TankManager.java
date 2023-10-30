@@ -12,18 +12,18 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
 
   public static final TankManager EMPTY = new TankManager(List.of());
 
   public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER =
-      (t, f) -> t.getCapability(ForgeCapabilities.FLUID_HANDLER, f).isPresent();
+      (t, f) -> t.getCapability(Capabilities.FLUID_HANDLER, f).isPresent();
   private final List<StandardTank> tanks;
 
   public TankManager(StandardTank... tanks) {

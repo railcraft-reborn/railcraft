@@ -3,11 +3,11 @@ package mods.railcraft.util.capability;
 import java.util.Set;
 import java.util.function.Supplier;
 import net.minecraft.nbt.Tag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.common.util.NonNullFunction;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.util.NonNullFunction;
 
 class SerializableCapabilityProvider<C extends INBTSerializable<T>, T extends Tag>
     extends SimpleCapabilityProvider<C> implements INBTSerializable<T> {

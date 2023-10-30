@@ -5,8 +5,8 @@ import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoile
 import mods.railcraft.world.level.material.steam.SolidFuelProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.FluidUtil;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.fluids.FluidUtil;
 
 public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledSteamBoilerBlockEntity> {
 
@@ -63,6 +63,6 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
   }
 
   private static boolean isFuel(ItemStack itemStack) {
-    return ForgeHooks.getBurnTime(itemStack, null) > 0;
+    return CommonHooks.getBurnTime(itemStack, null) > 0;
   }
 }

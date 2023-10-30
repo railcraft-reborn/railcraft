@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 
 public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
@@ -55,7 +55,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
     for (var direction : DIRECTION) {
       var blockEntity = level.getBlockEntity(pos.relative(direction));
       if (blockEntity != null &&
-          blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent()) {
+          blockEntity.getCapability(Capabilities.ITEM_HANDLER).isPresent()) {
         return blockEntity;
       }
     }
@@ -100,7 +100,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
       return;
     }
 
-    cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+    cart.getCapability(Capabilities.ITEM_HANDLER)
         .ifPresent(itemHandler -> {
           var cartInv = ContainerManipulator.of(itemHandler);
           if (!cartInv.hasItems()) {
@@ -125,7 +125,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
             }
             return;
           }
-          blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
+          blockEntity.getCapability(Capabilities.ITEM_HANDLER)
               .ifPresent(itemHandlerBlockEntity -> {
                 var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
                 cartInv.moveOneItemStackTo(blockInv);

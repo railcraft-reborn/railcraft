@@ -3,7 +3,7 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
 /**
  * Similar to an entity component system, the module system is intended for modularisation of logic

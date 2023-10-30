@@ -21,9 +21,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
@@ -113,13 +113,13 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CokeOvenBlockEntity::getCokeOvenModule);
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
+    if (cap == Capabilities.ITEM_HANDLER) {
       return masterModule
           .map(CokeOvenModule::getItemHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-    if (cap == ForgeCapabilities.FLUID_HANDLER) {
+    if (cap == Capabilities.FLUID_HANDLER) {
       return masterModule
           .map(CokeOvenModule::getFluidHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)

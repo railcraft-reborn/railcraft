@@ -17,11 +17,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public abstract class ContainerBlockEntity extends RailcraftBlockEntity
     implements ForwardingContainer, ContainerManipulator<ModifiableSlotAccessor> {
@@ -63,7 +63,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability,
       @Nullable Direction direction) {
-    if (capability == ForgeCapabilities.ITEM_HANDLER) {
+    if (capability == Capabilities.ITEM_HANDLER) {
       return direction == null
           ? this.itemHandler.cast()
           : this.directionalItemHandlers.computeIfAbsent(direction,

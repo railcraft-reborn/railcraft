@@ -26,9 +26,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -79,7 +79,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       blockEntity.getMasterBlockEntity()
           .ifPresent(master -> {
             var target = blockPos.above();
-            var energyCap = master.getCapability(ForgeCapabilities.ENERGY);
+            var energyCap = master.getCapability(Capabilities.ENERGY);
             EntitySearcher.findLiving()
                 .at(target)
                 .and(ModEntitySelector.KILLABLE)

@@ -5,7 +5,7 @@ import mods.railcraft.world.item.GoldenTicketItem;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record EditTicketAttributeMessage(InteractionHand hand, String dest) {
 

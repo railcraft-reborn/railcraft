@@ -15,11 +15,11 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 /**
  * @author Sm0keySa1m0n
@@ -79,7 +79,7 @@ final class TrainImpl implements Train {
   @Override
   public Optional<IItemHandler> itemHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        .flatMap(cart -> cart.getCapability(Capabilities.ITEM_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
         .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
@@ -92,7 +92,7 @@ final class TrainImpl implements Train {
   @Override
   public Optional<IFluidHandler> fluidHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
+        .flatMap(cart -> cart.getCapability(Capabilities.FLUID_HANDLER)
             .map(Stream::of)
             .orElse(Stream.empty()))
         .toList();

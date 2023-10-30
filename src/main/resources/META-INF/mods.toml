@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[1,)"
 license = "https://github.com/railcraft-reborn/railcraft/blob/1.20.x/LICENSE.md"
 issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
 
@@ -16,13 +16,13 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
 
 [[dependencies.railcraft]]
   mandatory = true
-  modId = "forge"
+  modId = "neoforge"
   ordering = "AFTER"
   side = "BOTH"
-  versionRange = "[47,)"
+  versionRange = "[20.2,)"
 [[dependencies.railcraft]]
   mandatory = true
   modId = "minecraft"
   ordering = "NONE"
   side = "BOTH"
-  versionRange = "[1.20.1,1.21)"
+  versionRange = "[1.20.2,1.21)"

@@ -20,15 +20,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.AutoRegisterCapability;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.capabilities.CapabilityManager;
+import net.neoforged.neoforge.common.capabilities.CapabilityToken;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
 
 /**
  * Main capability for all things minecart/locomotive related.
@@ -259,7 +259,7 @@ public interface RollingStock {
           () -> this.traverseTrain(side).iterator();
       for (var target : targets) {
         var cart = target.entity();
-        var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        var adaptor = cart.getCapability(Capabilities.ITEM_HANDLER)
             .map(ContainerManipulator::of)
             .orElse(null);
         if (adaptor != null && this.canAcceptPushedItem(cart, itemStack)) {
@@ -298,7 +298,7 @@ public interface RollingStock {
       SlotAccessor result = null;
       for (var target : targets) {
         var cart = target.entity();
-        var slot = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        var slot = cart.getCapability(Capabilities.ITEM_HANDLER)
             .map(ContainerManipulator::of)
             .flatMap(manipulator -> manipulator.findFirstExtractable(
                 filter.and(stack -> this.canProvidePulledItem(cart, stack))))
@@ -364,7 +364,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canAcceptPushedFluid(cart, remainder)) {
-          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FLUID_HANDLER).orElse(null);
           if (fluidHandler != null) {
             var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
             remainder.setAmount(remainder.getAmount() - filled);
@@ -405,7 +405,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canProvidePulledFluid(cart, fluidStack)) {
-          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FLUID_HANDLER).orElse(null);
           if (fluidHandler != null) {
             var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
             if (!drained.isEmpty()) {
@@ -495,7 +495,7 @@ public interface RollingStock {
   private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof ItemTransferHandler handler
         ? !handler.canPassItemRequests(stack)
-        : cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        : cart.getCapability(Capabilities.ITEM_HANDLER)
             .map(IItemHandler::getSlots)
             .orElse(0) < MAX_BLOCKING_ITEM_SLOTS;
   }
@@ -503,7 +503,7 @@ public interface RollingStock {
   private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidTransferHandler fluidMinecart
         ? !fluidMinecart.canPassFluidRequests(fluid)
-        : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
+        : cart.getCapability(Capabilities.FLUID_HANDLER)
             .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }

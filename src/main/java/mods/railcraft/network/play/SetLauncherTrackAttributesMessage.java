@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetLauncherTrackAttributesMessage(BlockPos blockPos, byte force) {
 

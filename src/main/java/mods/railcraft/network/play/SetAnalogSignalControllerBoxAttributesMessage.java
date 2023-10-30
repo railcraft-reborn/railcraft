@@ -7,7 +7,7 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
     Map<SignalAspect, BitSet> signalAspectTriggerSignals) {

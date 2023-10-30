@@ -10,10 +10,10 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.common.extensions.IForgeEnchantment;
+import net.neoforged.neoforge.common.extensions.IEnchantmentExtension;
 
 public class RailcraftDamageEnchantment extends RailcraftToolEnchantment
-    implements IForgeEnchantment {
+    implements IEnchantmentExtension {
 
   private final int baseEnchantability, levelEnchantability, thresholdEnchantability;
   private final Predicate<? super Entity> check;

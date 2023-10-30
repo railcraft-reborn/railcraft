@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.charge;
 
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.RegistryObject;
 
 public class ZincCarbonBatteryBlock extends DisposableBatteryBlock {
 

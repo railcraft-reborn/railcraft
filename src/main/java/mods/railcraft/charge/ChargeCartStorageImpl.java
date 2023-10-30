@@ -8,8 +8,8 @@ import mods.railcraft.api.charge.ChargeCartStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.EnergyStorage;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.EnergyStorage;
 
 public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartStorage {
 
@@ -63,7 +63,7 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
       drewFromTrack--;
     } else if (energy < (capacity * 0.5) && clock % DRAW_INTERVAL == 0) {
       RollingStock.getOrThrow(owner).train().entities()
-          .flatMap(c -> c.getCapability(ForgeCapabilities.ENERGY)
+          .flatMap(c -> c.getCapability(Capabilities.ENERGY)
               .map(Stream::of)
               .orElse(Stream.empty()))
           .findAny()

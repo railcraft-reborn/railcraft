@@ -10,10 +10,10 @@ import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.IFluidTank;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
@@ -244,7 +244,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     }
     this.partialConversions -= waterCost;
 
-    FluidStack water = this.waterTank.internalDrain(waterCost, FluidAction.SIMULATE);
+    FluidStack water = this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.SIMULATE);
     if (water.isEmpty()) {
       return 0;
     }
@@ -254,8 +254,8 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     FluidStack steam = new FluidStack(RailcraftFluids.STEAM.get(),
         SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
 
-    this.waterTank.internalDrain(waterCost, FluidAction.EXECUTE);
-    this.steamTank.internalFill(steam, FluidAction.EXECUTE);
+    this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.EXECUTE);
+    this.steamTank.internalFill(steam, IFluidHandler.FluidAction.EXECUTE);
 
     return steam.getAmount();
   }

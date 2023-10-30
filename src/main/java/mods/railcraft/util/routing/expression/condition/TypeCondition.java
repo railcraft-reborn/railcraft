@@ -3,7 +3,7 @@ package mods.railcraft.util.routing.expression.condition;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.util.routing.RoutingStatementParser;
 import mods.railcraft.util.routing.expression.Expression;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class TypeCondition {
 

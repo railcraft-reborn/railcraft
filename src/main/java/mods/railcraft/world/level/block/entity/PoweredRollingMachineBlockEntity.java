@@ -15,11 +15,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockEntity {
 
@@ -60,9 +60,9 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
   @Override
   @NotNull
   public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-    if (cap == ForgeCapabilities.ENERGY) {
+    if (cap == Capabilities.ENERGY) {
       return this.energyHandler.cast();
-    } else if (cap == ForgeCapabilities.ITEM_HANDLER) {
+    } else if (cap == Capabilities.ITEM_HANDLER) {
       return this.itemHandler.cast();
     }
     return super.getCapability(cap, side);

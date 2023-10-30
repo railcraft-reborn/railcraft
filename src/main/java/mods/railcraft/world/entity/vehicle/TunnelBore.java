@@ -62,11 +62,11 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class TunnelBore extends RailcraftMinecart implements Linkable {
 
@@ -786,9 +786,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     ServerPlayer fakePlayer = MinecartUtil.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
-    BlockEvent.BreakEvent breakEvent =
-        new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
-    MinecraftForge.EVENT_BUS.post(breakEvent);
+    var breakEvent = new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
+    NeoForge.EVENT_BUS.post(breakEvent);
 
     if (breakEvent.isCanceled()) {
       return false;
@@ -985,7 +984,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     for (int slot = 0; slot < this.fuelContainer.getContainerSize(); slot++) {
       var stack = this.fuelContainer.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = ForgeHooks.getBurnTime(stack, null);
+        burn = CommonHooks.getBurnTime(stack, null);
         if (burn > 0) {
           if (stack.getItem().hasCraftingRemainingItem(stack)) {
             this.fuelContainer.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));

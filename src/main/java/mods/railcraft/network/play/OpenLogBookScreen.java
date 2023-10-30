@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import mods.railcraft.client.ScreenFactories;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record OpenLogBookScreen(List<List<String>> pages) {
 

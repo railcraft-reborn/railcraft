@@ -19,8 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.IMinecartCollisionHandler;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.IMinecartCollisionHandler;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 

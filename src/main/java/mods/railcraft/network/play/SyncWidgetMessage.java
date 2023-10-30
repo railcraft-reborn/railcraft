@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf data) {
 

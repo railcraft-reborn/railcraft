@@ -28,9 +28,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.world.ForgeChunkManager;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
@@ -207,7 +206,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     train.copyTo(this.train());
 
-    MinecraftForge.EVENT_BUS.post(new CartLinkEvent.Link(this, rollingStock));
+    NeoForge.EVENT_BUS.post(new CartLinkEvent.Link(this, rollingStock));
     return true;
   }
 
@@ -240,7 +239,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     linkedCart.sideOf(this).ifPresent(linkedCart::removeLink);
     this.removeLink(side);
 
-    MinecraftForge.EVENT_BUS.post(new CartLinkEvent.Unlink(this, linkedCart));
+    NeoForge.EVENT_BUS.post(new CartLinkEvent.Unlink(this, linkedCart));
     return true;
   }
 

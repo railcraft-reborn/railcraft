@@ -9,7 +9,7 @@ import mods.railcraft.api.carts.Side;
 import mods.railcraft.client.ClientManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) {
 

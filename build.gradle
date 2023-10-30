@@ -2,11 +2,12 @@ import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 import static org.apache.commons.lang3.StringUtils.repeat
 
 plugins {
+    id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.5'
+    //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.3.6'
 }
@@ -36,6 +37,8 @@ sourceSets {
     api {
         // API has no resources
         resources.srcDirs = []
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
     }
     main {
         compileClasspath += sourceSets.api.output
@@ -51,54 +54,36 @@ sourceSets {
     }
 }
 
-configurations {
+/*configurations {
     apiImplementation.extendsFrom(implementation)
     apiRuntimeOnly.extendsFrom(runtimeOnly)
-}
+}*/
 
-minecraft {
-    mappings channel: mappings_channel, version: mappings_version
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    copyIdeResources = true
+runs {
+    configureEach {
+        systemProperty 'forge.logging.console.level', 'debug'
+        systemProperty 'forge.enabledGameTestNamespaces', 'railcraft'
+        //modSource project.sourceSets.api
+        modSource project.sourceSets.main
+        modSource project.sourceSets.test
+        //jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions'
+        //'-XX:+AllowRedefinitionToAddDeleteMethods'
+    }
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    client {
+    }
 
-    runs {
-        configureEach {
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'railcraft'
+    server {
+        programArgument '--nogui'
+    }
 
-            // Enables better hot reloading if using the JetBrains Runtime
-            jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+    gameTestServer {
+    }
 
-            args '--mixin', 'railcraft.mixins.json'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                    source sourceSets.test
-                }
-            }
-        }
-
-        client {
-            workingDirectory project.file('run/client')
-        }
-
-        server {
-            workingDirectory project.file('run/server')
-        }
-
-        data {
-            workingDirectory project.file('run/data')
-
-            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run/test')
-        }
+    data {
+        programArguments.addAll '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
@@ -111,22 +96,27 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
+    maven {
+        name 'curseforge'
+        url 'https://www.cursemaven.com'
+    }
 }
 
 dependencies {
-    minecraft group: 'net.neoforged', name: 'forge', version: "$minecraft_version-$neo_version"
+    implementation group: 'net.neoforged', name: 'neoforge', version: neo_version
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
+    /*compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+    */
 }
 
 test {
@@ -151,24 +141,6 @@ tasks.withType(ProcessResources).configureEach {
     }
 }
 
-tasks.named('jar', Jar).configure {
-    from([sourceSets.api.output, sourceSets.main.output])
-    manifest {
-        attributes([
-                'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
-                'Specification-Version'     : '1',
-                'Implementation-Title'      : project.name,
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-                'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'              : 'railcraft.mixins.json'
-        ])
-    }
-    finalizedBy 'reobfJar'
-}
-
 task apiJar(type: Jar, group: 'build') {
     from sourceSets.api.output
     archiveClassifier = 'api'
@@ -180,9 +152,9 @@ artifacts {
     archives apiJar
 }
 
-mixin {
+/*mixin {
     add sourceSets.main, 'railcraft.refmap.json'
-}
+}*/
 
 def penultimateTag = { ->
     def stdout = new ByteArrayOutputStream()
@@ -215,9 +187,6 @@ publishMods {
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
-    if (minecraft_version.equals('1.20.1')) {
-        modLoaders.add('forge')
-    }
     file = jar.archiveFile
     additionalFiles.from(apiJar)
 

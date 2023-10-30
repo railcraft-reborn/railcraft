@@ -9,10 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
 
@@ -60,11 +59,11 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
     }
 
     if (this.getFilterFluid()
-        .map(fluid -> cartFluidHandler.drain(fluid, FluidAction.SIMULATE).isEmpty())
+        .map(fluid -> cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty())
         .orElse(false)) {
       return false;
     }
 
-    return !cartFluidHandler.drain(1, FluidAction.SIMULATE).isEmpty();
+    return !cartFluidHandler.drain(1, IFluidHandler.FluidAction.SIMULATE).isEmpty();
   }
 }

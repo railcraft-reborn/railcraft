@@ -8,7 +8,7 @@ package mods.railcraft.api.charge;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 /**
  * Batteries the heart of the Charge Network.

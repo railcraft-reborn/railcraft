@@ -6,7 +6,7 @@ import java.util.Optional;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<CompoundTag> {
 

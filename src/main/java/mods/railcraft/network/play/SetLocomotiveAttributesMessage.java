@@ -3,7 +3,7 @@ package mods.railcraft.network.play;
 import java.util.function.Supplier;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetLocomotiveAttributesMessage(int entityId, Locomotive.Mode mode,
     Locomotive.Speed speed, Locomotive.Lock lock, boolean reverse) {

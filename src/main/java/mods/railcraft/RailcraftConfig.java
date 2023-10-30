@@ -3,32 +3,28 @@ package mods.railcraft;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForgeConfig;
 
 public class RailcraftConfig {
 
   public static final Client CLIENT;
   public static final Common COMMON;
   public static final Server SERVER;
-  private static final ForgeConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
+  private static final ModConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
 
   static {
-    final var commonPair = new ForgeConfigSpec.Builder().configure(Common::new);
+    final var commonPair = new ModConfigSpec.Builder().configure(Common::new);
     COMMON_SPEC = commonPair.getRight();
     COMMON = commonPair.getLeft();
 
-    final var clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
+    final var clientPair = new ModConfigSpec.Builder().configure(Client::new);
     CLIENT_SPEC = clientPair.getRight();
     CLIENT = clientPair.getLeft();
 
-    final var serverPair = new ForgeConfigSpec.Builder().configure(Server::new);
+    final var serverPair = new ModConfigSpec.Builder().configure(Server::new);
     SERVER_SPEC = serverPair.getRight();
     SERVER = serverPair.getLeft();
   }
@@ -41,37 +37,37 @@ public class RailcraftConfig {
 
   public static class Server {
 
-    public final DoubleValue highSpeedTrackMaxSpeed;
-    public final ConfigValue<List<? extends String>> highSpeedTrackIgnoredEntities;
-    public final DoubleValue strapIronTrackMaxSpeed;
-    public final BooleanValue chestAllowFluids;
-    public final ConfigValue<List<? extends String>> cargoBlacklist;
-    public final BooleanValue locomotiveDamageMobs;
-    public final DoubleValue locomotiveHorsepower;
-    public final BooleanValue solidCarts;
-    public final BooleanValue cartsCollideWithItems;
-    public final DoubleValue boreMiningSpeedMultiplier;
-    public final BooleanValue boreDestroysBlocks;
-    public final BooleanValue boreMinesAllBlocks;
-    public final BooleanValue cartsBreakOnDrop;
-    public final DoubleValue steamLocomotiveEfficiency;
-    public final IntValue tankCartFluidTransferRate;
-    public final IntValue tankCartFluidCapacity;
-    public final BooleanValue tankStackingEnabled;
-    public final IntValue maxTankSize;
-    public final IntValue tankCapacityPerBlock;
-    public final IntValue waterCollectionRate;
-    public final IntValue maxLauncherTrackForce;
-    public final DoubleValue lossMultiplier;
+    public final ModConfigSpec.DoubleValue highSpeedTrackMaxSpeed;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> highSpeedTrackIgnoredEntities;
+    public final ModConfigSpec.DoubleValue strapIronTrackMaxSpeed;
+    public final ModConfigSpec.BooleanValue chestAllowFluids;
+    public final ModConfigSpec.ConfigValue<List<? extends String>> cargoBlacklist;
+    public final ModConfigSpec.BooleanValue locomotiveDamageMobs;
+    public final ModConfigSpec.DoubleValue locomotiveHorsepower;
+    public final ModConfigSpec.BooleanValue solidCarts;
+    public final ModConfigSpec.BooleanValue cartsCollideWithItems;
+    public final ModConfigSpec.DoubleValue boreMiningSpeedMultiplier;
+    public final ModConfigSpec.BooleanValue boreDestroysBlocks;
+    public final ModConfigSpec.BooleanValue boreMinesAllBlocks;
+    public final ModConfigSpec.BooleanValue cartsBreakOnDrop;
+    public final ModConfigSpec.DoubleValue steamLocomotiveEfficiency;
+    public final ModConfigSpec.IntValue tankCartFluidTransferRate;
+    public final ModConfigSpec.IntValue tankCartFluidCapacity;
+    public final ModConfigSpec.BooleanValue tankStackingEnabled;
+    public final ModConfigSpec.IntValue maxTankSize;
+    public final ModConfigSpec.IntValue tankCapacityPerBlock;
+    public final ModConfigSpec.IntValue waterCollectionRate;
+    public final ModConfigSpec.IntValue maxLauncherTrackForce;
+    public final ModConfigSpec.DoubleValue lossMultiplier;
 
-    public final DoubleValue fuelMultiplier;
-    public final DoubleValue fuelPerSteamMultiplier;
+    public final ModConfigSpec.DoubleValue fuelMultiplier;
+    public final ModConfigSpec.DoubleValue fuelPerSteamMultiplier;
 
-    public final IntValue cartDispenserDelay;
+    public final ModConfigSpec.IntValue cartDispenserDelay;
 
-    public final BooleanValue changeDungeonLoot;
+    public final ModConfigSpec.BooleanValue changeDungeonLoot;
 
-    private Server(Builder builder) {
+    private Server(ModConfigSpec.Builder builder) {
       builder.comment("High Speed Track Configuration");
       builder.push("highSpeedTrack");
       {
@@ -215,12 +211,12 @@ public class RailcraftConfig {
 
   public static class Common {
 
-    public final BooleanValue seasonsEnabled;
-    public final IntValue christmas;
-    public final IntValue halloween;
-    public final IntValue harvest;
+    public final ModConfigSpec.BooleanValue seasonsEnabled;
+    public final ModConfigSpec.IntValue christmas;
+    public final ModConfigSpec.IntValue halloween;
+    public final ModConfigSpec.IntValue harvest;
 
-    private Common(Builder builder) {
+    private Common(ModConfigSpec.Builder builder) {
       builder.comment("General configuration settings")
           .push("common");
 
@@ -246,12 +242,12 @@ public class RailcraftConfig {
 
   public static class Client {
 
-    public final BooleanValue ghostTrainEnabled;
-    public final BooleanValue polarExpressEnabled;
-    public final BooleanValue showMessageBeta;
-    public final IntValue locomotiveLightLevel;
+    public final ModConfigSpec.BooleanValue ghostTrainEnabled;
+    public final ModConfigSpec.BooleanValue polarExpressEnabled;
+    public final ModConfigSpec.BooleanValue showMessageBeta;
+    public final ModConfigSpec.IntValue locomotiveLightLevel;
 
-    private Client(Builder builder) {
+    private Client(ModConfigSpec.Builder builder) {
       this.ghostTrainEnabled = builder
           .comment("Change to false to disable Ghost Train rendering")
           .define("ghostTrainEnabled", true);

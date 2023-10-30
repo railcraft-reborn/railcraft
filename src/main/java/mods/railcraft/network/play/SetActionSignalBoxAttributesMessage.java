@@ -8,7 +8,7 @@ import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
     EnumSet<SignalAspect> actionSignalAspects, LockableSignalBoxBlockEntity.Lock lock) {

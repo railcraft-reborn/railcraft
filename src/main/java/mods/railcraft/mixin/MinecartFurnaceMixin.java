@@ -11,7 +11,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.MinecartFurnace;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 
 @Mixin(MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
@@ -40,7 +40,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
       return ret;
     }
     ItemStack itemstack = player.getItemInHand(hand);
-    var burnTime = ForgeHooks.getBurnTime(itemstack, null);
+    var burnTime = CommonHooks.getBurnTime(itemstack, null);
     if (burnTime > 0 && this.fuel + burnTime <= 32000) {
       if (!player.getAbilities().instabuild) {
         itemstack.shrink(1);

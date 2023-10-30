@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public record SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) {
 

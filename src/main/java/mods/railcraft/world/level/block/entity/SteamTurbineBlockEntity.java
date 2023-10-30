@@ -27,10 +27,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidUtil;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.capabilities.Capability;
+import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.FluidUtil;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
@@ -142,13 +142,13 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
-    if (cap == ForgeCapabilities.FLUID_HANDLER) {
+    if (cap == Capabilities.FLUID_HANDLER) {
       return masterModule
           .map(SteamTurbineModule::getFluidHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-    if (cap == ForgeCapabilities.ENERGY) {
+    if (cap == Capabilities.ENERGY) {
       return masterModule
           .map(SteamTurbineModule::getEnergyStorage)
           .<LazyOptional<T>>map(LazyOptional::cast)

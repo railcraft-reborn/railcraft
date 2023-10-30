@@ -10,7 +10,7 @@ import mods.railcraft.client.renderer.entity.cart.TrackUndercutterMinecartRender
 import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
-import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 public class RailcraftEntityRenderers {
 

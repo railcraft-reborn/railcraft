@@ -3,8 +3,8 @@ package mods.railcraft.util.container;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class CombinedInvWrapper implements IItemHandlerModifiable {
 

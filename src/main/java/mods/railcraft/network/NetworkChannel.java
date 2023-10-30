@@ -26,10 +26,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.NetworkRegistry;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PlayNetworkDirection;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
 
 /**
  * Holds {@link SimpleChannel} instances for each network channel type.
@@ -41,128 +41,128 @@ public enum NetworkChannel {
     public void registerMessages(SimpleChannel simpleChannel) {
       simpleChannel
           .messageBuilder(SetLauncherTrackAttributesMessage.class, 0x00,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetLauncherTrackAttributesMessage::encode)
           .decoder(SetLauncherTrackAttributesMessage::decode)
           .consumerMainThread(SetLauncherTrackAttributesMessage::handle)
           .add();
-      simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x01, NetworkDirection.PLAY_TO_CLIENT)
+      simpleChannel.messageBuilder(SyncWidgetMessage.class, 0x01, PlayNetworkDirection.PLAY_TO_CLIENT)
           .encoder(SyncWidgetMessage::encode)
           .decoder(SyncWidgetMessage::decode)
           .consumerMainThread(SyncWidgetMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetLocomotiveAttributesMessage.class, 0x02,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetLocomotiveAttributesMessage::encode)
           .decoder(SetLocomotiveAttributesMessage::decode)
           .consumerMainThread(SetLocomotiveAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSignalControllerBoxAttributesMessage.class, 0x03,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalControllerBoxAttributesMessage::encode)
           .decoder(SetSignalControllerBoxAttributesMessage::decode)
           .consumerMainThread(SetSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetAnalogSignalControllerBoxAttributesMessage.class, 0x04,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetAnalogSignalControllerBoxAttributesMessage::encode)
           .decoder(SetAnalogSignalControllerBoxAttributesMessage::decode)
           .consumerMainThread(SetAnalogSignalControllerBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSignalCapacitorBoxAttributesMessage.class, 0x05,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSignalCapacitorBoxAttributesMessage::encode)
           .decoder(SetSignalCapacitorBoxAttributesMessage::decode)
           .consumerMainThread(SetSignalCapacitorBoxAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(LinkedCartsMessage.class, 0x06, NetworkDirection.PLAY_TO_CLIENT)
+          .messageBuilder(LinkedCartsMessage.class, 0x06, PlayNetworkDirection.PLAY_TO_CLIENT)
           .encoder(LinkedCartsMessage::encode)
           .decoder(LinkedCartsMessage::decode)
           .consumerNetworkThread(LinkedCartsMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetActionSignalBoxAttributesMessage.class, 0x07,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetActionSignalBoxAttributesMessage::encode)
           .decoder(SetActionSignalBoxAttributesMessage::decode)
           .consumerMainThread(SetActionSignalBoxAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSwitchTrackMotorAttributesMessage.class, 0x08,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSwitchTrackMotorAttributesMessage::encode)
           .decoder(SetSwitchTrackMotorAttributesMessage::decode)
           .consumerMainThread(SetSwitchTrackMotorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetItemManipulatorAttributesMessage.class, 0x09,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetItemManipulatorAttributesMessage::encode)
           .decoder(SetItemManipulatorAttributesMessage::decode)
           .consumerMainThread(SetItemManipulatorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetFluidManipulatorAttributesMessage.class, 0x0A,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetFluidManipulatorAttributesMessage::encode)
           .decoder(SetFluidManipulatorAttributesMessage::decode)
           .consumerMainThread(SetFluidManipulatorAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetEmbarkingTrackAttributesMessage.class, 0x0B,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetEmbarkingTrackAttributesMessage::encode)
           .decoder(SetEmbarkingTrackAttributesMessage::decode)
           .consumerMainThread(SetEmbarkingTrackAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(EditTicketAttributeMessage.class, 0x0C,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(EditTicketAttributeMessage::encode)
           .decoder(EditTicketAttributeMessage::decode)
           .consumerMainThread(EditTicketAttributeMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(EditRoutingTableBookMessage.class, 0x0D,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(EditRoutingTableBookMessage::encode)
           .decoder(EditRoutingTableBookMessage::decode)
           .consumerMainThread(EditRoutingTableBookMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetSwitchTrackRouterAttributesMessage.class, 0x0E,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetSwitchTrackRouterAttributesMessage::encode)
           .decoder(SetSwitchTrackRouterAttributesMessage::decode)
           .consumerMainThread(SetSwitchTrackRouterAttributesMessage::handle)
           .add();
       simpleChannel
           .messageBuilder(SetRoutingTrackAttributesMessage.class, 0x0F,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetRoutingTrackAttributesMessage::encode)
           .decoder(SetRoutingTrackAttributesMessage::decode)
           .consumerMainThread(SetRoutingTrackAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(OpenLogBookScreen.class, 0x10, NetworkDirection.PLAY_TO_CLIENT)
+          .messageBuilder(OpenLogBookScreen.class, 0x10, PlayNetworkDirection.PLAY_TO_CLIENT)
           .encoder(OpenLogBookScreen::encode)
           .decoder(OpenLogBookScreen::decode)
           .consumerMainThread(OpenLogBookScreen::handle)
           .add();
       simpleChannel
           .messageBuilder(SetMaintenanceMinecartAttributesMessage.class, 0x11,
-              NetworkDirection.PLAY_TO_SERVER)
+              PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(SetMaintenanceMinecartAttributesMessage::encode)
           .decoder(SetMaintenanceMinecartAttributesMessage::decode)
           .consumerMainThread(SetMaintenanceMinecartAttributesMessage::handle)
           .add();
       simpleChannel
-          .messageBuilder(UpdateAuraByKeyMessage.class, 0x12, NetworkDirection.PLAY_TO_SERVER)
+          .messageBuilder(UpdateAuraByKeyMessage.class, 0x12, PlayNetworkDirection.PLAY_TO_SERVER)
           .encoder(UpdateAuraByKeyMessage::encode)
           .decoder(UpdateAuraByKeyMessage::decode)
           .consumerMainThread(UpdateAuraByKeyMessage::handle)

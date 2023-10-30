@@ -29,7 +29,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.common.capabilities.Capabilities;
 
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     implements MenuProvider {
@@ -141,7 +141,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void processCart(AbstractMinecart cart) {
     this.chests = ContainerManipulator.of(this.bufferContainer, this.findAdjacentContainers());
 
-    var cartInv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
+    var cartInv = cart.getCapability(Capabilities.ITEM_HANDLER,
         this.getFacing().getOpposite()).map(ContainerManipulator::of).orElse(null);
     if (cartInv == null) {
       sendCart(cart);
@@ -192,7 +192,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
     var cartInv = cart
-        .getCapability(ForgeCapabilities.ITEM_HANDLER,
+        .getCapability(Capabilities.ITEM_HANDLER,
             this.getFacing().getOpposite())
         .map(ContainerManipulator::of)
         .orElse(null);
@@ -231,7 +231,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
-    return cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
+    return cart.getCapability(Capabilities.ITEM_HANDLER,
         this.getFacing().getOpposite())
         .map(inventory -> inventory.getSlots() > 0).orElse(false)
         && super.canHandleCart(cart);

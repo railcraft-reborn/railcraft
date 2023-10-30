@@ -18,10 +18,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
@@ -159,7 +158,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     }
 
     if (!this.tank.getFluid().isEmpty()
-        && tankCart.fill(this.tank.getFluid(), FluidAction.SIMULATE) == 0) {
+        && tankCart.fill(this.tank.getFluid(), IFluidHandler.FluidAction.SIMULATE) == 0) {
       this.setResetTimer(RESET_WAIT);
     }
   }
@@ -167,7 +166,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   private boolean cartNeedsFilling(IFluidHandler cartFluidHandler) {
     FluidStack fluidStack = this.tank.getFluid();
     return !fluidStack.isEmpty()
-        && cartFluidHandler.fill(fluidStack, FluidAction.SIMULATE) > 0;
+        && cartFluidHandler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) > 0;
   }
 
   @Override
@@ -185,9 +184,9 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     }
     switch (this.getRedstoneMode()) {
       case COMPLETE:
-        return cartFluidHandler.fill(fluid, FluidAction.SIMULATE) > 0;
+        return cartFluidHandler.fill(fluid, IFluidHandler.FluidAction.SIMULATE) > 0;
       case PARTIAL:
-        return !cartFluidHandler.drain(fluid, FluidAction.SIMULATE).isEmpty();
+        return !cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty();
       default:
         break;
     }

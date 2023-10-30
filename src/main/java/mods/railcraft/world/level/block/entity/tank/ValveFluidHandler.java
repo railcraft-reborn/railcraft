@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.tank;
 
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class ValveFluidHandler implements IFluidHandler {
 
