@@ -2,7 +2,6 @@ package mods.railcraft.network.play;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 import mods.railcraft.world.item.RoutingTableBookItem;
 import net.minecraft.nbt.ListTag;
@@ -29,8 +28,8 @@ public record EditRoutingTableBookMessage(InteractionHand hand, List<String> pag
     return new EditRoutingTableBookMessage(hand, pages, title);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var senderProfile = player.getGameProfile();
     var itemStack = player.getItemInHand(this.hand);
     if (itemStack.getItem() instanceof RoutingTableBookItem) {

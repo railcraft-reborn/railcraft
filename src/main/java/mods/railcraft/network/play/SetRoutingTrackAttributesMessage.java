@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -21,8 +20,8 @@ public record SetRoutingTrackAttributesMessage(BlockPos blockPos,
     out.writeEnum(this.lock);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var level = player.level();
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ROUTING_TRACK.get())

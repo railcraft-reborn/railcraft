@@ -2,7 +2,6 @@ package mods.railcraft.network.play;
 
 import java.util.BitSet;
 import java.util.Map;
-import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -25,8 +24,8 @@ public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
     return new SetAnalogSignalControllerBoxAttributesMessage(blockPos, signalAspectTriggerSignals);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+  public boolean handle(NetworkEvent.Context context) {
+    var level = context.getSender().level();
     level
         .getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(signalBox -> {

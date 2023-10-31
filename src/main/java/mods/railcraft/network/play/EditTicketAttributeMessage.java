@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.item.GoldenTicketItem;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,8 +17,8 @@ public record EditTicketAttributeMessage(InteractionHand hand, String dest) {
     return new EditTicketAttributeMessage(in.readEnum(InteractionHand.class), in.readUtf());
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var senderProfile = player.getGameProfile();
 
     var itemStackToUpdate = player.getItemInHand(this.hand);

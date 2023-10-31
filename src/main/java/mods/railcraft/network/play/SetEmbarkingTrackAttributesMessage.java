@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,8 +16,8 @@ public record SetEmbarkingTrackAttributesMessage(BlockPos blockPos, int radius) 
     return new SetEmbarkingTrackAttributesMessage(in.readBlockPos(), in.readVarInt());
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+  public boolean handle(NetworkEvent.Context context) {
+    var level = context.getSender().level();
     var blockState = level.getBlockState(this.blockPos);
     if (blockState.getBlock() instanceof EmbarkingTrackBlock) {
       level.setBlockAndUpdate(this.blockPos,

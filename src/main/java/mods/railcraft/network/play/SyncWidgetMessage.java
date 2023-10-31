@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +19,7 @@ public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf dat
         new FriendlyByteBuf(in.readBytes(in.readVarInt())));
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> ctx) {
+  public boolean handle(NetworkEvent.Context context) {
     processOnClient(this);
     return true;
   }

@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -21,8 +20,8 @@ public record SetFluidManipulatorAttributesMessage(BlockPos blockPos,
         in.readEnum(ManipulatorBlockEntity.RedstoneMode.class));
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+  public boolean handle(NetworkEvent.Context context) {
+    var level = context.getSender().level();
     LevelUtil.getBlockEntity(level, this.blockPos, FluidManipulatorBlockEntity.class)
         .ifPresent(manipulator -> {
           manipulator.setRedstoneMode(this.redstoneMode);

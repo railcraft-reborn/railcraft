@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import net.minecraft.network.FriendlyByteBuf;
 import net.neoforged.neoforge.network.NetworkEvent;
@@ -17,8 +16,8 @@ public record SetMaintenanceMinecartAttributesMessage(int entityId, MaintenanceM
         in.readEnum(MaintenanceMinecart.Mode.class));
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> ctx) {
-    var player = ctx.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var entity = player.level().getEntity(this.entityId);
     if (entity instanceof MaintenanceMinecart minecart) {
       minecart.setMode(this.mode);

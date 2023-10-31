@@ -2,7 +2,6 @@ package mods.railcraft.network.play;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
@@ -21,7 +20,7 @@ public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) {
     return new LinkedCartsMessage(in.readList(LinkedCart::decode));
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
+  public boolean handle(NetworkEvent.Context context) {
     ClientManager.getShuntingAuraRenderer().setLinkedCarts(this.linkedCarts);
     return true;
   }

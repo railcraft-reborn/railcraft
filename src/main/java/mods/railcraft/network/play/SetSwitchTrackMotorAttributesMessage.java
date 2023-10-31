@@ -1,7 +1,6 @@
 package mods.railcraft.network.play;
 
 import java.util.EnumSet;
-import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -29,8 +28,8 @@ public record SetSwitchTrackMotorAttributesMessage(BlockPos blockPos,
         redstoneTriggered, lock);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var level = player.level();
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())

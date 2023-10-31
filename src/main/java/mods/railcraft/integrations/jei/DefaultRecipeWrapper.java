@@ -2,7 +2,6 @@ package mods.railcraft.integrations.jei;
 
 import java.util.List;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -10,62 +9,57 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategor
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
-public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
+public class DefaultRecipeWrapper <T extends CraftingRecipe> implements ICraftingCategoryExtension<T> {
 
-  private final CustomRecipe recipe;
   private final boolean isShapeless;
   private final Component info;
   private Consumer<ItemStack> stackModifier;
 
-  DefaultRecipeWrapper(CustomRecipe recipe, boolean isShapeless, Component info) {
-    this.recipe = recipe;
+  DefaultRecipeWrapper(boolean isShapeless, Component info) {
     this.isShapeless = isShapeless;
     this.info = info;
     this.stackModifier = stack -> {};
   }
 
-  DefaultRecipeWrapper modifyInputs(Consumer<ItemStack> stackModifier) {
+  DefaultRecipeWrapper<T> modifyInputs(Consumer<ItemStack> stackModifier) {
     this.stackModifier = stackModifier;
     return this;
   }
 
-  @Nullable
   @Override
-  public ResourceLocation getRegistryName() {
-    return this.recipe.getId();
-  }
-
-  @Override
-  public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
-      double mouseY) {
+  public void drawInfo(RecipeHolder<T> recipe, int recipeWidth, int recipeHeight,
+      GuiGraphics guiGraphics, double mouseX, double mouseY) {
     var font = Minecraft.getInstance().font;
     int stringWidth = font.width(this.info) / 2;
     guiGraphics.drawString(font, this.info, 82 - stringWidth, 0, 0xFF808080, false);
   }
 
   @Override
-  public void setRecipe(IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper,
-      IFocusGroup focuses) {
-    var inputs = recipe.getIngredients().stream()
+  public void setRecipe(RecipeHolder<T> recipeHolder, IRecipeLayoutBuilder builder,
+      ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
+    var inputs = recipeHolder.value().getIngredients().stream()
         .map(ingredient -> List.of(ingredient.getItems()))
         .toList();
     inputs.forEach(l -> l.forEach(stackModifier));
     var registryAccess = Minecraft.getInstance().level.registryAccess();
-    craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
-    craftingGridHelper.createAndSetInputs(builder, inputs, getWidth(), getHeight());
+    craftingGridHelper.createAndSetOutputs(builder,
+        List.of(recipeHolder.value().getResultItem(registryAccess)));
+    var width = getWidth(recipeHolder);
+    var height = getHeight(recipeHolder);
+    craftingGridHelper.createAndSetInputs(builder, inputs, width, height);
   }
 
   @Override
-  public int getWidth() {
+  public int getWidth(RecipeHolder<T> recipeHolder) {
     return this.isShapeless ? 0 : 3;
   }
 
   @Override
-  public int getHeight() {
+  public int getHeight(RecipeHolder<T> recipeHolder) {
     return this.isShapeless ? 0 : 3;
   }
 }

@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,8 +16,8 @@ public record SetLauncherTrackAttributesMessage(BlockPos blockPos, byte force) {
     return new SetLauncherTrackAttributesMessage(in.readBlockPos(), in.readByte());
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+  public boolean handle(NetworkEvent.Context context) {
+    var level = context.getSender().level();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.LAUNCHER_TRACK.get())
         .ifPresent(track -> {
           track.setLaunchForce(this.force);

@@ -1,7 +1,6 @@
 package mods.railcraft.network.play;
 
 import java.util.EnumSet;
-import java.util.function.Supplier;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
@@ -26,9 +25,9 @@ public record SetActionSignalBoxAttributesMessage(BlockPos blockPos,
     return new SetActionSignalBoxAttributesMessage(blockPos, actionSignalAspects, lock);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
-    var senderProfile = context.get().getSender().getGameProfile();
+  public boolean handle(NetworkEvent.Context context) {
+    var level = context.getSender().level();
+    var senderProfile = context.getSender().getGameProfile();
     LevelUtil.getBlockEntity(level, this.blockPos, ActionSignalBoxBlockEntity.class)
         .filter(signalBox -> signalBox.canAccess(senderProfile))
         .ifPresent(signalBox -> {

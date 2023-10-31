@@ -15,7 +15,6 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
@@ -51,10 +50,11 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
     private static final Codec<BlastFurnaceRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.strictOptionalField(Codec.STRING, "group", "").forGetter(p_300832_ -> p_300832_.group),
-            CookingBookCategory.CODEC.fieldOf("category").orElse(CookingBookCategory.MISC).forGetter(p_300828_ -> p_300828_.category),
+
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(p_300833_ -> p_300833_.ingredient),
             BuiltInRegistries.ITEM.byNameCodec().xmap(ItemStack::new, ItemStack::getItem).fieldOf("result").forGetter(p_300827_ -> p_300827_.result),
             Codec.FLOAT.fieldOf("experience").orElse(0.0F).forGetter(p_300826_ -> p_300826_.experience),
+            Codec.INT.fieldOf("cookingtime").orElse(BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME).forGetter(p_300834_ -> p_300834_.cookingTime),
             Codec.INT.fieldOf("cookingtime").orElse(BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME).forGetter(p_300834_ -> p_300834_.cookingTime)
         ));
 

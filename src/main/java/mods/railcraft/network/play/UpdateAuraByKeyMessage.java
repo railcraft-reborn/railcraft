@@ -1,6 +1,5 @@
 package mods.railcraft.network.play;
 
-import java.util.function.Supplier;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,8 +16,8 @@ public record UpdateAuraByKeyMessage(CompoundTag tag) {
     return new UpdateAuraByKeyMessage(in.readNbt());
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
+  public boolean handle(NetworkEvent.Context context) {
+    var player = context.getSender();
     var itemStack = player.getItemBySlot(EquipmentSlot.HEAD);
     if (itemStack.getItem() instanceof GogglesItem) {
       itemStack.setTag(tag);

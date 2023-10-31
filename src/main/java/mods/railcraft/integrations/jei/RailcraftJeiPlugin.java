@@ -40,7 +40,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.registries.RegistryObject;
 
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
@@ -96,13 +97,17 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public void registerRecipes(IRecipeRegistration registration) {
     var recipeManager = Minecraft.getInstance().level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()).stream()
+            .map(RecipeHolder::value).toList());
     registration.addRecipes(RecipeTypes.COKE_OVEN,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()));
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()).stream()
+            .map(RecipeHolder::value).toList());
     registration.addRecipes(RecipeTypes.BLAST_FURNACE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()).stream()
+                .map(RecipeHolder::value).toList());
     registration.addRecipes(RecipeTypes.CRUSHER,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()));
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
+            .map(RecipeHolder::value).toList());
 
     RailcraftBlocks.entries()
         .stream()
@@ -122,23 +127,23 @@ public class RailcraftJeiPlugin implements IModPlugin {
   @Override
   public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
     var craftingCategory = registration.getCraftingCategory();
-    craftingCategory.addCategoryExtension(LocomotivePaintingRecipe.class,
-        r -> new DefaultRecipeWrapper(r, false, Component.translatable(Translations.Jei.PAINT)));
-    craftingCategory.addCategoryExtension(TicketDuplicateRecipe.class,
-        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.COPY_TAG)));
-    craftingCategory.addCategoryExtension(RotorRepairRecipe.class,
-        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.REPAIR))
+    craftingCategory.addExtension(LocomotivePaintingRecipe.class,
+        new DefaultRecipeWrapper<>(false, Component.translatable(Translations.Jei.PAINT)));
+    craftingCategory.addExtension(TicketDuplicateRecipe.class,
+        new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.COPY_TAG)));
+    craftingCategory.addExtension(RotorRepairRecipe.class,
+        new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.REPAIR))
             .modifyInputs(stack -> {
               if (stack.is(RailcraftItems.TURBINE_ROTOR.get())) {
                 stack.setDamageValue(RotorRepairRecipe.REPAIR_PER_BLADE);
               }
             }));
-    craftingCategory.addCategoryExtension(CartDisassemblyRecipe.class,
-        r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.SPLIT)) {
+    craftingCategory.addExtension(CartDisassemblyRecipe.class,
+        new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.SPLIT)) {
           @Override
-          public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
-              double mouseY) {
-            super.drawInfo(recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
+          public void drawInfo(RecipeHolder<CartDisassemblyRecipe> recipe, int recipeWidth,
+              int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+            super.drawInfo(recipe, recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
             var drawable = registration.getJeiHelpers().getGuiHelper()
                     .createDrawableItemStack(new ItemStack(Items.MINECART));
             drawable.draw(guiGraphics, 65, 35);
