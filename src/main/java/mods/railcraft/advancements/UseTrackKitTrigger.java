@@ -1,33 +1,24 @@
 package mods.railcraft.advancements;
 
+import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
-
-  private static final ResourceLocation ID = Railcraft.rl("use_track_kit");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
   @Override
   public UseTrackKitTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      Optional<ContextAwarePredicate> contextAwarePredicate,
+      DeserializationContext deserializationContext) {
     var used = JsonUtil.getAsJsonObject(json, "item")
         .map(ItemPredicate::fromJson)
         .orElse(ItemPredicate.ANY);
@@ -51,9 +42,9 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     private final ItemPredicate item;
     private final LocationPredicate location;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
         ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
-      super(UseTrackKitTrigger.ID, contextAwarePredicate);
+      super(contextAwarePredicate);
       this.item = itemPredicate;
       this.location = locationPredicate;
     }
@@ -69,12 +60,7 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       json.add("item", this.item.serializeToJson());
       json.add("location", this.location.serializeToJson());

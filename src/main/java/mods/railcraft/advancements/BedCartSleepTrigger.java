@@ -1,29 +1,20 @@
 package mods.railcraft.advancements;
 
+import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.Instance> {
-
-  private static final ResourceLocation ID = Railcraft.rl("bed_cart_sleep");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
   @Override
   protected BedCartSleepTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      Optional<ContextAwarePredicate> contextAwarePredicate,
+      DeserializationContext deserializationContext) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
@@ -42,8 +33,9 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
 
     private final MinecartPredicate cartPredicate;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate predicate) {
-      super(BedCartSleepTrigger.ID, contextAwarePredicate);
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        MinecartPredicate predicate) {
+      super(contextAwarePredicate);
       this.cartPredicate = predicate;
     }
 
@@ -56,12 +48,7 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;

@@ -1,14 +1,13 @@
 package mods.railcraft.advancements;
 
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,16 +16,10 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class JukeboxCartPlayMusicTrigger
     extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("jukebox_cart_play_music");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
   @Override
   public JukeboxCartPlayMusicTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      Optional<ContextAwarePredicate> contextAwarePredicate,
+      DeserializationContext deserializationContext) {
     var sound = JsonUtil.getAsString(json, "music")
         .map(ResourceLocation::tryParse)
         .orElse(null);
@@ -51,9 +44,9 @@ public class JukeboxCartPlayMusicTrigger
     private final ResourceLocation music;
     private final MinecartPredicate cart;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
         @Nullable ResourceLocation music, MinecartPredicate cart) {
-      super(JukeboxCartPlayMusicTrigger.ID, contextAwarePredicate);
+      super(contextAwarePredicate);
       this.music = music;
       this.cart = cart;
     }
@@ -68,18 +61,12 @@ public class JukeboxCartPlayMusicTrigger
           music, MinecartPredicate.ANY);
     }
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cart,
-        ResourceLocation sound) {
+    public boolean matches(ServerPlayer player, AbstractMinecart cart, ResourceLocation sound) {
       return (music == null || Objects.equals(sound, music)) && this.cart.test(player, cart);
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       if (this.music != null) {
         json.addProperty("music", this.music.toString());

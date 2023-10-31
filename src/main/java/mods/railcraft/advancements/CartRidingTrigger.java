@@ -1,14 +1,12 @@
 package mods.railcraft.advancements;
 
+import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
@@ -17,7 +15,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
  */
 public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("cart_riding");
   // private static final int FREQUENCY = 20;
 
   // private final Map<ServerPlayerEntity, AbstractMinecartEntity> mounting =
@@ -29,14 +26,11 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // MinecraftForge.EVENT_BUS.register(this);
   // }
 
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
 
   @Override
   public CartRidingTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      Optional<ContextAwarePredicate> contextAwarePredicate,
+      DeserializationContext deserializationContext) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
@@ -85,8 +79,9 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
 
     private final MinecartPredicate cartPredicate;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate predicate) {
-      super(CartRidingTrigger.ID, contextAwarePredicate);
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        MinecartPredicate predicate) {
+      super(contextAwarePredicate);
       this.cartPredicate = predicate;
     }
 
@@ -99,12 +94,7 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       json.add("cart", this.cartPredicate.serializeToJson());
       return json;

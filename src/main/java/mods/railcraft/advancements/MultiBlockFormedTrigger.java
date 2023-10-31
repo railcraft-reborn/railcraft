@@ -1,8 +1,8 @@
 package mods.railcraft.advancements;
 
+import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -10,26 +10,18 @@ import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.NbtPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class MultiBlockFormedTrigger extends
     SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
-
-  private static final ResourceLocation ID = Railcraft.rl("multiblock_formed");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
   @Override
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      Optional<ContextAwarePredicate> contextAwarePredicate,
+      DeserializationContext deserializationContext) {
     var type = JsonUtil.getFromRegistry(json, "type", ForgeRegistries.BLOCK_ENTITY_TYPES)
         .orElse(null);
     var nbt = JsonUtil.getAsJsonObject(json, "nbt")
@@ -51,9 +43,9 @@ public class MultiBlockFormedTrigger extends
     private final BlockEntityType<?> type;
     private final NbtPredicate predicate;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
         @Nullable BlockEntityType<?> type, NbtPredicate predicate) {
-      super(MultiBlockFormedTrigger.ID, contextAwarePredicate);
+      super(contextAwarePredicate);
       this.type = type;
       this.predicate = predicate;
     }
@@ -75,12 +67,7 @@ public class MultiBlockFormedTrigger extends
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       if (this.type != null) {
         json.addProperty("type", ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(this.type).toString());

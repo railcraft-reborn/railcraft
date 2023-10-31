@@ -20,8 +20,8 @@ public class RotorRepairRecipe extends CustomRecipe {
   private static final Ingredient ROTOR = Ingredient.of(RailcraftItems.TURBINE_ROTOR.get());
   private static final Ingredient BLADE = Ingredient.of(RailcraftItems.TURBINE_BLADE.get());
 
-  public RotorRepairRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public RotorRepairRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   @Override

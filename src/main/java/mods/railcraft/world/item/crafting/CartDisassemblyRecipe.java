@@ -15,8 +15,8 @@ import net.minecraft.world.level.Level;
 
 public class CartDisassemblyRecipe extends CustomRecipe {
 
-  public CartDisassemblyRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public CartDisassemblyRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   @Override

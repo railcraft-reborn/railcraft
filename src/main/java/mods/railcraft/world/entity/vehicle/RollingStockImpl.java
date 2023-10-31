@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.world.ForcedChunkManager;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
@@ -461,7 +462,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private void forceChunk(boolean add) {
     if (this.level() instanceof ServerLevel level) {
       var chunk = this.minecart.chunkPosition();
-      ForgeChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
+      ForcedChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
           chunk.x, chunk.z, add, false);
     }
   }

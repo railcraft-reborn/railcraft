@@ -23,7 +23,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 public class CrusherRecipe implements Recipe<Container> {
-  private final ResourceLocation recipeId;
   private final Ingredient ingredient;
   private final List<Tuple<ItemStack, Double>> probabilityItems;
   private final int processTime;
@@ -90,11 +89,6 @@ public class CrusherRecipe implements Recipe<Container> {
   @Override
   public NonNullList<Ingredient> getIngredients() {
     return NonNullList.of(Ingredient.EMPTY, ingredient);
-  }
-
-  @Override
-  public ResourceLocation getId() {
-    return this.recipeId;
   }
 
   @Override

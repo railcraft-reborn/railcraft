@@ -1,11 +1,10 @@
 package mods.railcraft.data.recipes.builders;
 
-import java.util.function.Consumer;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -41,15 +40,15 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("coke_oven/" + path);
 
     var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
-    finishedRecipe.accept(new Result(customResourceLocation,
+    recipeOutput.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.creosoteOutput, this.advancement, advancementId));
+        this.experience, this.cookingTime, this.creosoteOutput, this.advancement));
   }
 
   private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
@@ -57,10 +56,8 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     private final int creosoteOutput;
 
     public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
-        float experience, int cookingTime, int creosoteOutput, Advancement.Builder advancement,
-        ResourceLocation advancementId) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement,
-          advancementId);
+        float experience, int cookingTime, int creosoteOutput, AdvancementHolder advancement) {
+      super(id, group, result, count, ingredient, experience, cookingTime, advancement);
       this.creosoteOutput = creosoteOutput;
     }
 
@@ -70,7 +67,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     }
 
     @Override
-    public RecipeSerializer<?> getType() {
+    public RecipeSerializer<?> type() {
       return RailcraftRecipeSerializers.COKING.get();
     }
   }

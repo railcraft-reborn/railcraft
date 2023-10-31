@@ -20,6 +20,6 @@ public class RailcraftGameEvents {
 
   private static RegistryObject<GameEvent> register(String name) {
     return deferredRegister.register(name,
-        () -> new GameEvent(name, GameEvent.DEFAULT_NOTIFICATION_RADIUS));
+        () -> new GameEvent(GameEvent.DEFAULT_NOTIFICATION_RADIUS));
   }
 }

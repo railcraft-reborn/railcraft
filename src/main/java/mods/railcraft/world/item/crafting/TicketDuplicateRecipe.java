@@ -19,8 +19,8 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   private static final Ingredient SOURCE = Ingredient.of(RailcraftItems.GOLDEN_TICKET.get());
   private static final Ingredient BLANK = Ingredient.of(Items.PAPER);
 
-  public TicketDuplicateRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public TicketDuplicateRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   @Override

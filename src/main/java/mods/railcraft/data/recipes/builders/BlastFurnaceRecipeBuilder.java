@@ -1,11 +1,11 @@
 package mods.railcraft.data.recipes.builders;
 
-import java.util.function.Consumer;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -43,13 +43,13 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
 
     var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
-    finishedRecipe.accept(new Result(customResourceLocation,
+    recipeOutput.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
   }
@@ -59,10 +59,9 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     private final int slagOutput;
 
     public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
-        float experience, int cookingTime, int slagOutput, Advancement.Builder advancement,
+        float experience, int cookingTime, int slagOutput, AdvancementHolder advancement,
         ResourceLocation advancementId) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement,
-          advancementId);
+      super(id, group, result, count, ingredient, experience, cookingTime, advancement);
       this.slagOutput = slagOutput;
     }
 
@@ -72,7 +71,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     }
 
     @Override
-    public RecipeSerializer<?> getType() {
+    public RecipeSerializer<?> type() {
       return RailcraftRecipeSerializers.BLASTING.get();
     }
   }

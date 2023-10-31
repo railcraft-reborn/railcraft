@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -30,7 +31,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private final ContainerMapper inputContainer;
   private final ContainerMapper outputContainer;
   private final Charge network;
-  private Optional<CrusherRecipe> currentRecipe;
+  private Optional<RecipeHolder<CrusherRecipe>> currentRecipe;
   private int currentSlot;
   private final LazyOptional<IItemHandler> itemHandler;
   private final LazyOptional<IEnergyStorage> energyHandler;
@@ -94,6 +95,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   @Override
   protected int calculateDuration() {
     return currentRecipe
+        .map(RecipeHolder::value)
         .map(CrusherRecipe::getProcessTime)
         .orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
   }
@@ -129,7 +131,9 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   @Override
   protected boolean craftAndPush() {
-    final var recipe = currentRecipe.orElseThrow(NullPointerException::new);
+    final var recipe = currentRecipe
+        .map(RecipeHolder::value)
+        .orElseThrow(NullPointerException::new);
     var tempInv = AdvancedContainer.copyOf(outputContainer);
     var outputs = recipe.pollOutputs(provider.getLevel().getRandom());
     var hasSpace = outputs.stream()
@@ -148,12 +152,13 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   private boolean isRecipeValid() {
     return currentRecipe
+        .map(RecipeHolder::value)
         .map(r -> r.getIngredients().get(0))
         .map(r -> r.test(inputContainer.getItem(currentSlot)))
         .orElse(false);
   }
 
-  private Optional<CrusherRecipe> getRecipe(ItemStack itemStack) {
+  private Optional<RecipeHolder<CrusherRecipe>> getRecipe(ItemStack itemStack) {
     return provider.getLevel().getRecipeManager()
         .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
             new SimpleContainer(itemStack), provider.getLevel());

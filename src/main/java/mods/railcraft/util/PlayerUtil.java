@@ -50,8 +50,6 @@ public final class PlayerUtil {
   }
 
   public static boolean isSamePlayer(GameProfile a, GameProfile b) {
-    if (a.isComplete() && b.isComplete())
-      return a.equals(b);
     if (a.getId() != null && b.getId() != null)
       return a.getId().equals(b.getId());
     return a.getName() != null && a.getName().equals(b.getName());

@@ -1,14 +1,12 @@
 package mods.railcraft.advancements;
 
+import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
@@ -18,15 +16,9 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class KilledByLocomotiveTrigger
     extends SimpleCriterionTrigger<KilledByLocomotiveTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("killed_by_locomotive");
-
   @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  protected Instance createInstance(JsonObject json, ContextAwarePredicate contextAwarePredicate,
+  protected Instance createInstance(JsonObject json,
+      Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
     var predicate = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
@@ -47,8 +39,9 @@ public class KilledByLocomotiveTrigger
 
     private final MinecartPredicate cart;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate cart) {
-      super(KilledByLocomotiveTrigger.ID, contextAwarePredicate);
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        MinecartPredicate cart) {
+      super(contextAwarePredicate);
       this.cart = cart;
     }
 
@@ -57,12 +50,7 @@ public class KilledByLocomotiveTrigger
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
+    public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
       json.add("cart", this.cart.serializeToJson());
       return json;

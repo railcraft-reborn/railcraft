@@ -1,6 +1,8 @@
 package mods.railcraft.world.item.crafting;
 
+import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
@@ -18,15 +20,13 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 public class RollingRecipe implements Recipe<CraftingContainer> {
-  private final ResourceLocation recipeId;
   private final int width, height;
   private final NonNullList<Ingredient> ingredients;
   private final ItemStack result;
   private final int processTime;
 
-  public RollingRecipe(ResourceLocation recipeId, int width, int height,
-      NonNullList<Ingredient> ingredients, ItemStack result, int processTime) {
-    this.recipeId = recipeId;
+  public RollingRecipe(int width, int height, NonNullList<Ingredient> ingredients,
+      ItemStack result, int processTime) {
     this.width = width;
     this.height = height;
     this.ingredients = ingredients;
@@ -112,11 +112,6 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public ResourceLocation getId() {
-    return this.recipeId;
-  }
-
-  @Override
   public RecipeSerializer<?> getSerializer() {
     return RailcraftRecipeSerializers.ROLLING.get();
   }
@@ -152,7 +147,12 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     }
 
     @Override
-    public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+    public Codec<RollingRecipe> codec() {
+      return null;
+    }
+
+    @Override
+    public RollingRecipe fromNetwork(FriendlyByteBuf buffer) {
       int width = buffer.readVarInt();
       int height = buffer.readVarInt();
       int tickCost = buffer.readVarInt();
@@ -160,7 +160,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
           buffer.readCollection(NonNullList::createWithCapacity, Ingredient::fromNetwork);
       var result = buffer.readItem();
 
-      return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
+      return new RollingRecipe(width, height, ingredients, result, tickCost);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package mods.railcraft.data.recipes.builders;
 
-import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.CraftingRecipeBuilder;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -26,23 +25,19 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> finishedRecipeConsumer, String id) {
-    finishedRecipeConsumer.accept(new CraftingRecipeBuilder.CraftingResult(CraftingBookCategory.MISC) {
-      public RecipeSerializer<?> getType() {
+  public void save(RecipeOutput recipeOutput, String id) {
+    recipeOutput.accept(new CraftingRecipeBuilder.CraftingResult(CraftingBookCategory.MISC) {
+      public RecipeSerializer<?> type() {
         return serializer;
       }
 
-      public ResourceLocation getId() {
+      public ResourceLocation id() {
         return Railcraft.rl(id);
       }
 
       @Nullable
-      public JsonObject serializeAdvancement() {
+      public AdvancementHolder advancement() {
         return null;
-      }
-
-      public ResourceLocation getAdvancementId() {
-        return Railcraft.rl("");
       }
     });
   }

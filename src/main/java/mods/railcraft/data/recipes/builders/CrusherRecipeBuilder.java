@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -108,25 +109,20 @@ public class CrusherRecipeBuilder {
       jsonOut.add("output", result);
     }
 
-    public RecipeSerializer<?> getType() {
-      return RailcraftRecipeSerializers.CRUSHER.get();
-    }
-
-    public ResourceLocation getId() {
+    @Override
+    public ResourceLocation id() {
       return this.id;
     }
 
     @Override
-    @Nullable
-    public JsonObject serializeAdvancement() {
-      return null;
+    public RecipeSerializer<?> type() {
+      return RailcraftRecipeSerializers.CRUSHER.get();
     }
 
+    @Nullable
     @Override
-    @Nullable
-    public ResourceLocation getAdvancementId() {
+    public AdvancementHolder advancement() {
       return null;
     }
-
   }
 }

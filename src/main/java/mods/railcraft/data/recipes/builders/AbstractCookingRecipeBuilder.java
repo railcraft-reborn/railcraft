@@ -3,14 +3,15 @@ package mods.railcraft.data.recipes.builders;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
@@ -33,8 +34,8 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   }
 
   @Override
-  public RecipeBuilder unlockedBy(String name, CriterionTriggerInstance trigger) {
-    this.advancement.addCriterion(name, trigger);
+  public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
+    this.advancement.addCriterion(name, criterion);
     return this;
   }
 
@@ -58,12 +59,11 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     private final Ingredient ingredient;
     private final float experience;
     private final int cookingTime;
-    private final Advancement.Builder advancement;
-    private final ResourceLocation advancementId;
+    private final AdvancementHolder advancement;
+
 
     public AbstractResult(ResourceLocation id, String group, Item result, int count,
-        Ingredient ingredient, float experience, int cookingTime, Advancement.Builder advancement,
-        ResourceLocation advancementId) {
+        Ingredient ingredient, float experience, int cookingTime, AdvancementHolder advancement) {
       this.id = id;
       this.group = group;
       this.result = result;
@@ -72,7 +72,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
       this.experience = experience;
       this.cookingTime = cookingTime;
       this.advancement = advancement;
-      this.advancementId = advancementId;
     }
 
     @Override
@@ -81,7 +80,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
         json.addProperty("group", group);
       }
 
-      json.add("ingredient", ingredient.toJson());
+      json.add("ingredient", ingredient.toJson(false));
       var resultJson = new JsonObject();
       resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
       if (count > 1) {
@@ -97,20 +96,14 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceLocation getId() {
+    public ResourceLocation id() {
       return this.id;
     }
 
     @Override
     @Nullable
-    public JsonObject serializeAdvancement() {
-      return this.advancement.serializeToJson();
-    }
-
-    @Override
-    @Nullable
-    public ResourceLocation getAdvancementId() {
-      return this.advancementId;
+    public AdvancementHolder advancement() {
+      return this.advancement;
     }
   }
 }

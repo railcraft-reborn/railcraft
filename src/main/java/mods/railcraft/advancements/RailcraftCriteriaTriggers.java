@@ -1,5 +1,6 @@
 package mods.railcraft.advancements;
 
+import mods.railcraft.Railcraft;
 import net.minecraft.advancements.CriteriaTriggers;
 
 public class RailcraftCriteriaTriggers {
@@ -20,14 +21,14 @@ public class RailcraftCriteriaTriggers {
    * Notice: This <b>must</b> be registered during <code>FMLCommonSetupEvent</code>.
    */
   public static void register() {
-    CriteriaTriggers.register(CART_LINK);
-    CriteriaTriggers.register(MULTIBLOCK_FORM);
-    CriteriaTriggers.register(BED_CART_SLEEP);
-    CriteriaTriggers.register(JUKEBOX_CART_MUSIC_PLAY);
-    CriteriaTriggers.register(CART_SURPRISE_EXPLODE);
-    CriteriaTriggers.register(SPIKE_MAUL_USE);
-    CriteriaTriggers.register(TRACK_KIT_USE);
-    CriteriaTriggers.register(SEASON_SET);
-    CriteriaTriggers.register(KILLED_BY_LOCOMOTIVE);
+    CriteriaTriggers.register(Railcraft.rl("cart_linking").toString(), CART_LINK);
+    CriteriaTriggers.register(Railcraft.rl("multiblock_formed").toString(), MULTIBLOCK_FORM);
+    CriteriaTriggers.register(Railcraft.rl("bed_cart_sleep").toString(), BED_CART_SLEEP);
+    CriteriaTriggers.register(Railcraft.rl("jukebox_cart_play_music").toString(), JUKEBOX_CART_MUSIC_PLAY);
+    CriteriaTriggers.register(Railcraft.rl("surprise").toString(), CART_SURPRISE_EXPLODE);
+    CriteriaTriggers.register(Railcraft.rl("spike_maul_use").toString(), SPIKE_MAUL_USE);
+    CriteriaTriggers.register(Railcraft.rl("use_track_kit").toString(), TRACK_KIT_USE);
+    CriteriaTriggers.register(Railcraft.rl("set_season").toString(), SEASON_SET);
+    CriteriaTriggers.register(Railcraft.rl("killed_by_locomotive").toString(), KILLED_BY_LOCOMOTIVE);
   }
 }

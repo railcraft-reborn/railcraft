@@ -18,8 +18,8 @@ import net.neoforged.neoforge.common.Tags;
 
 public class LocomotivePaintingRecipe extends CustomRecipe {
 
-  public LocomotivePaintingRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public LocomotivePaintingRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   private ItemStack getItemStackInRow(CraftingContainer container, int row) {

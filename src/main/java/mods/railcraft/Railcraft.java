@@ -316,7 +316,7 @@ public class Railcraft {
         var drop = entityItem.getItem();
         var cooked = recipeManager
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
-            .map(x -> x.getResultItem(registryAccess))
+            .map(x -> x.value().getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
           entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));
