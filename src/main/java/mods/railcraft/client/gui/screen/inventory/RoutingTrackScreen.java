@@ -50,7 +50,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
     if (this.routingBlockEntity.getLock() != lock) {
       this.routingBlockEntity.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-              ? null : this.minecraft.getUser().getGameProfile());
+              ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -73,13 +73,13 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   }
 
   private void updateButtons() {
-    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.getUser().getGameProfile());
+    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingBlockEntity.getLock());
   }
 
   private void sendAttributes() {
-    if (!this.routingBlockEntity.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
     NetworkChannel.GAME.sendToServer(

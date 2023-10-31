@@ -42,7 +42,7 @@ public class TicketItem extends Item {
       GameProfile owner = getOwner(stack);
       if (owner != null) {
         list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
-        list.add(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY));
+        list.add(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY));
       }
 
       String dest = getDestination(stack);

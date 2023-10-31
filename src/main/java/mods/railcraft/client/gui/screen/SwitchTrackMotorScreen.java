@@ -83,7 +83,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (this.switchTrackMotor.getLock() != lock) {
       this.switchTrackMotor.setLock(
           lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -124,7 +124,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile());
+    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackMotor.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -137,7 +137,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
     NetworkChannel.GAME.sendToServer(

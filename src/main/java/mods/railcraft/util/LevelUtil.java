@@ -75,8 +75,8 @@ public class LevelUtil {
     if (actor == null)
       actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
 
-    if (NeoForge.EVENT_BUS.post(
-        new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor)))
+    if (NeoForge.EVENT_BUS
+        .post(new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor)))
       return false;
 
     return level.destroyBlock(pos, dropBlock);

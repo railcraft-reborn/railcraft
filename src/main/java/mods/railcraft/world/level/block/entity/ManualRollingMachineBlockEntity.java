@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   protected final ContainerMapper invResult, invMatrix;
 
   protected boolean isWorking, useLast;
-  private Optional<RollingRecipe> currentRecipe = Optional.empty();
+  private Optional<RecipeHolder<RollingRecipe>> currentRecipe = Optional.empty();
   private int progress, clock = 0, processTime = 100;
 
   public ManualRollingMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos,
@@ -98,7 +99,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return this.invMatrix;
   }
 
-  public Optional<RollingRecipe> getRecipe() {
+  public Optional<RecipeHolder<RollingRecipe>> getRecipe() {
     return this.level.getRecipeManager()
         .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix, this.level);
   }
@@ -110,6 +111,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     if (++blockEntity.clock % 8 == 0) {
       blockEntity.currentRecipe = blockEntity.getRecipe();
       blockEntity.processTime = blockEntity.currentRecipe
+          .map(RecipeHolder::value)
           .map(RollingRecipe::getProcessTime)
           .orElse(RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
       blockEntity.clock = 0;
@@ -117,9 +119,9 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
     if (blockEntity.currentRecipe.isPresent() && blockEntity.canMakeMore()) {
       var recipe = blockEntity.currentRecipe.get();
-      if (blockEntity.progress >= recipe.getProcessTime()) {
+      if (blockEntity.progress >= recipe.value().getProcessTime()) {
         blockEntity.isWorking = false;
-        var result = recipe.assemble(blockEntity.craftMatrix, level.registryAccess());
+        var result = recipe.value().assemble(blockEntity.craftMatrix, level.registryAccess());
         if (blockEntity.invResult.canFit(result)) {
           blockEntity.craftMatrix.getItems().forEach(x -> x.shrink(1));
           blockEntity.invResult.insert(result);

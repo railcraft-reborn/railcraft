@@ -176,15 +176,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void setOwner(@Nullable GameProfile owner) {
-    if (owner != null && !owner.isComplete()) {
-      var ownerName = RailcraftConstants.UNKNOWN_PLAYER;
-      if (!StringUtils.isBlank(owner.getName())) {
-        ownerName = owner.getName();
-      }
-
-      owner = new GameProfile(owner.getId(), ownerName);
-    }
-
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 

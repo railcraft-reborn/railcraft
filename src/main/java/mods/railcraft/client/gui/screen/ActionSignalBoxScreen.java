@@ -72,7 +72,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
       this.signalBox.setLock(lock);
       this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED
           ? null
-          : this.minecraft.getUser().getGameProfile());
+          : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -105,7 +105,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.signalBox.canAccess(this.minecraft.getUser().getGameProfile());
+    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.signalBox.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -116,7 +116,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.signalBox.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
     NetworkChannel.GAME.sendToServer(

@@ -139,7 +139,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.getMenu().getLocomotive().setLock(lock);
       this.menu.getLocomotive().setOwner(lock == Locomotive.Lock.UNLOCKED
           ? null
-          : this.minecraft.getUser().getGameProfile());
+          : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -177,7 +177,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
                 || speed.getLevel() <= locomotive.getMaxReverseSpeed().getLevel()));
     this.reverseButton.setToggled(locomotive.isReverse());
     this.lockButton.active = !locomotive.isLocked()
-        || locomotive.getOwnerOrThrow().equals(this.minecraft.getUser().getGameProfile());
+        || locomotive.getOwnerOrThrow().equals(this.minecraft.player.getGameProfile());
     this.lockButton.setState(locomotive.getLock());
   }
 }
