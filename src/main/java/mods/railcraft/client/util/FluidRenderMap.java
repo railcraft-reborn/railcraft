@@ -2,7 +2,7 @@ package mods.railcraft.client.util;
 
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidRenderMap<V> extends Object2ObjectOpenCustomHashMap<FluidStack, V> {
 

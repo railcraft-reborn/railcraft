@@ -9,7 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record FireSparkParticleOptions(Vec3 destination) implements ParticleOptions {
 
@@ -38,16 +38,13 @@ public record FireSparkParticleOptions(Vec3 destination) implements ParticleOpti
         @Override
         public FireSparkParticleOptions fromNetwork(ParticleType<FireSparkParticleOptions> type,
             FriendlyByteBuf buf) {
-          return new FireSparkParticleOptions(
-              new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
+          return new FireSparkParticleOptions(buf.readVec3());
         }
       };
 
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
-    buf.writeDouble(this.destination.x());
-    buf.writeDouble(this.destination.y());
-    buf.writeDouble(this.destination.z());
+    buf.writeVec3(this.destination);
   }
 
   @Override

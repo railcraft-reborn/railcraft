@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class LevelUtil {
@@ -45,7 +46,7 @@ public class LevelUtil {
       entity = RailcraftFakePlayer.get((ServerLevel) level, pos);
     BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
     boolean result = level.setBlockAndUpdate(pos, blockState);
-    if (ForgeEventFactory.onBlockPlace(entity, snapshot, Direction.UP)) {
+    if (EventHooks.onBlockPlace(entity, snapshot, Direction.UP)) {
       snapshot.restore(true, false);
       return false;
     }

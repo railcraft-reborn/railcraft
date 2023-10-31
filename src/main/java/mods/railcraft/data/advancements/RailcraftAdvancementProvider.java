@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class RailcraftAdvancementProvider extends ForgeAdvancementProvider {
+public class RailcraftAdvancementProvider extends AdvancementProvider {
 
   public RailcraftAdvancementProvider(PackOutput output,
       CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {

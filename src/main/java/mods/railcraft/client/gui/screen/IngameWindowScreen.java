@@ -42,7 +42,7 @@ public class IngameWindowScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
     guiGraphics.blit(this.backgroundTexture, centredX, centredY, 0, 0,

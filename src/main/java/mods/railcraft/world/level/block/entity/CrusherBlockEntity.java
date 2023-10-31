@@ -156,13 +156,13 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
+    if (cap == Capabilities.ITEM_HANDLER) {
       return masterModule
           .map(CrusherModule::getItemHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }
-    if (cap == ForgeCapabilities.ENERGY) {
+    if (cap == Capabilities.ENERGY) {
       return masterModule
           .map(CrusherModule::getEnergyHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)

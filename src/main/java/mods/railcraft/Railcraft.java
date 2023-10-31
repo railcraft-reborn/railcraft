@@ -193,7 +193,8 @@ public class Railcraft {
     generator.addProvider(event.includeServer(), new RailcraftLootTableProvider(packOutput));
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(), new RailcraftRecipeProvider(packOutput));
+    generator.addProvider(event.includeServer(),
+        new RailcraftRecipeProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeServer(),
         new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootModifierProvider(packOutput));
@@ -209,7 +210,7 @@ public class Railcraft {
     generator.addProvider(event.includeClient(),
         new RailcraftSoundsProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
-        new RailcraftSpriteSourceProvider(packOutput, fileHelper));
+        new RailcraftSpriteSourceProvider(packOutput, lookupProvider, fileHelper));
   }
 
   // Forge Events

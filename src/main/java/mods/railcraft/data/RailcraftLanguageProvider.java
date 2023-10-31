@@ -22,8 +22,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
 

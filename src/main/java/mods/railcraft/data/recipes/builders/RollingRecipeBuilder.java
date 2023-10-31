@@ -2,7 +2,6 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,13 +11,14 @@ import com.google.gson.JsonPrimitive;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
 
@@ -76,24 +76,24 @@ public class RollingRecipeBuilder {
     }
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe) {
-    this.save(finishedRecipe, ForgeRegistries.ITEMS.getKey(this.result));
+  public void save(RecipeOutput recipeOutput) {
+    this.save(recipeOutput, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, String key) {
+  public void save(RecipeOutput recipeOutput, String key) {
     var resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
     if ((new ResourceLocation(key)).equals(resourcelocation)) {
       throw new IllegalStateException(
           "Shaped Recipe %s should remove its 'save' argument".formatted(key));
     } else {
-      this.save(finishedRecipe, new ResourceLocation(key));
+      this.save(recipeOutput, new ResourceLocation(key));
     }
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("rolling/" + path);
-    finishedRecipe.accept(
+    recipeOutput.accept(
         new Result(customResourceLocation, this.result, this.count,
             this.processTime, this.rows, this.key));
   }

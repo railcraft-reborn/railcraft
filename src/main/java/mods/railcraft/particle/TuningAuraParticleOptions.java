@@ -11,7 +11,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
@@ -51,16 +51,13 @@ public record TuningAuraParticleOptions(Vec3 destination, int color) implements 
         @Override
         public TuningAuraParticleOptions fromNetwork(ParticleType<TuningAuraParticleOptions> type,
             FriendlyByteBuf buf) {
-          return new TuningAuraParticleOptions(
-              new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()), buf.readVarInt());
+          return new TuningAuraParticleOptions(buf.readVec3(), buf.readVarInt());
         }
       };
 
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
-    buf.writeDouble(this.destination.x());
-    buf.writeDouble(this.destination.y());
-    buf.writeDouble(this.destination.z());
+    buf.writeVec3(this.destination);
     buf.writeVarInt(this.color);
   }
 

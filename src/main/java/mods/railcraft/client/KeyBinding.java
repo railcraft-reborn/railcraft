@@ -4,7 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import mods.railcraft.Translations;
 import net.minecraft.client.KeyMapping;
-import net.minecraftforge.client.settings.KeyConflictContext;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
 
 public class KeyBinding {
 

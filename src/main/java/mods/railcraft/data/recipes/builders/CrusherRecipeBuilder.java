@@ -3,13 +3,13 @@ package mods.railcraft.data.recipes.builders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
@@ -57,19 +57,19 @@ public class CrusherRecipeBuilder {
     return this;
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe) {
+  public void save(RecipeOutput recipeOutput) {
     var itemPath = Arrays.stream(ingredient.getItems())
         .filter(x -> !x.is(Items.BARRIER))
         .findFirst()
         .map(x -> ForgeRegistries.ITEMS.getKey(x.getItem()).getPath())
         .orElseThrow();
-    save(finishedRecipe, itemPath);
+    save(recipeOutput, itemPath);
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
+  public void save(RecipeOutput recipeOutput, String path) {
     var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
 
-    finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
+    recipeOutput.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.processTime));
   }
 

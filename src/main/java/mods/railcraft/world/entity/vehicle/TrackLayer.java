@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.neoforged.neoforge.common.IPlantable;
+import net.neoforged.neoforge.common.IShearable;
 
 public class TrackLayer extends MaintenancePatternMinecart {
 
@@ -102,7 +103,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
     var block = state.getBlock();
     return (state.isAir() ||
         block instanceof IPlantable ||
-        block instanceof IForgeShearable ||
+        block instanceof IShearable ||
         TunnelBore.REPLACEABLE_TAGS.stream().anyMatch(state::is) ||
         TunnelBore.REPLACEABLE_BLOCKS.contains(block));
   }

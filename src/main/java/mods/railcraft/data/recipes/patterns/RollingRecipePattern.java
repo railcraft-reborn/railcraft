@@ -1,24 +1,23 @@
 package mods.railcraft.data.recipes.patterns;
 
-import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
 public class RollingRecipePattern {
 
-  public static void line(Consumer<FinishedRecipe> finishedRecipe,
+  public static void line(RecipeOutput recipeOutput,
       Ingredient ingredient,
       ItemLike result,
       int count) {
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    line(finishedRecipe, ingredient, result, count, name);
+    line(recipeOutput, ingredient, result, count, name);
   }
 
-  public static void line(Consumer<FinishedRecipe> finishedRecipe,
+  public static void line(RecipeOutput recipeOutput,
       Ingredient ingredient,
       ItemLike result,
       int count,
@@ -28,18 +27,18 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern(" a ")
         .define('a', ingredient)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(recipeOutput, Railcraft.rl(customName));
   }
 
-  public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
+  public static void parallelLines(RecipeOutput recipeOutput,
       Ingredient ingred,
       ItemLike result,
       int count,
       String customName) {
-    parallelLines(finishedRecipe, ingred, ingred, result, count, customName);
+    parallelLines(recipeOutput, ingred, ingred, result, count, customName);
   }
 
-  public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
+  public static void parallelLines(RecipeOutput recipeOutput,
       Ingredient ingred1,
       Ingredient ingred2,
       ItemLike result,
@@ -51,21 +50,21 @@ public class RollingRecipePattern {
         .pattern("a b")
         .define('a', ingred1)
         .define('b', ingred2)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(recipeOutput, Railcraft.rl(customName));
   }
 
 
-  public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
+  public static void parallelThreeLines(RecipeOutput recipeOutput,
       Ingredient ingred1,
       Ingredient ingred2,
       Ingredient ingred3,
       ItemLike result,
       int count) {
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    parallelThreeLines(finishedRecipe, ingred1, ingred2, ingred3, result, count, name);
+    parallelThreeLines(recipeOutput, ingred1, ingred2, ingred3, result, count, name);
   }
 
-  public static void parallelThreeLines(Consumer<FinishedRecipe> finishedRecipe,
+  public static void parallelThreeLines(RecipeOutput recipeOutput,
       Ingredient ingred1,
       Ingredient ingred2,
       Ingredient ingred3,
@@ -79,10 +78,10 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(recipeOutput, Railcraft.rl(customName));
   }
 
-  public static void diagonalLine(Consumer<FinishedRecipe> finishedRecipe,
+  public static void diagonalLine(RecipeOutput recipeOutput,
       Ingredient materialTag,
       ItemLike result,
       int count,
@@ -92,17 +91,17 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern("a  ")
         .define('a', materialTag)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(recipeOutput, Railcraft.rl(customName));
   }
 
-  public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+  public static void square2x2(RecipeOutput recipeOutput,
       Ingredient materialTag,
       ItemLike result,
       int count) {
-    square2x2(finishedRecipe, materialTag, result, count, "");
+    square2x2(recipeOutput, materialTag, result, count, "");
   }
 
-  public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
+  public static void square2x2(RecipeOutput recipeOutput,
       Ingredient materialTag,
       ItemLike result,
       int count,
@@ -112,10 +111,10 @@ public class RollingRecipePattern {
         .pattern("aa")
         .pattern("aa")
         .define('a', materialTag)
-        .save(finishedRecipe, Railcraft.rl(name + postfix));
+        .save(recipeOutput, Railcraft.rl(name + postfix));
   }
 
-  public static void hForm(Consumer<FinishedRecipe> finishedRecipe,
+  public static void hForm(RecipeOutput recipeOutput,
       Ingredient materialTag,
       ItemLike result,
       int count) {
@@ -124,6 +123,6 @@ public class RollingRecipePattern {
         .pattern("aaa")
         .pattern("a a")
         .define('a', materialTag)
-        .save(finishedRecipe);
+        .save(recipeOutput);
   }
 }

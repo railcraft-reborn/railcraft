@@ -11,6 +11,7 @@ import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -65,7 +66,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
         .noneMatch(stack -> getRecipe(stack).isPresent());
   }
 
-  private Optional<SmeltingRecipe> getRecipe(ItemStack itemStack) {
+  private Optional<RecipeHolder<SmeltingRecipe>> getRecipe(ItemStack itemStack) {
     return provider.getLevel().getRecipeManager()
         .getRecipeFor(RecipeType.SMELTING,
             new SimpleContainer(itemStack), provider.getLevel());

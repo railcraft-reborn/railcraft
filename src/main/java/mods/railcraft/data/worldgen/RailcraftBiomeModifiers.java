@@ -9,9 +9,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.world.BiomeModifier;
+import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class RailcraftBiomeModifiers {
 
@@ -41,59 +41,59 @@ public class RailcraftBiomeModifiers {
     var netherTag = context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_NETHER);
     var forestTag = context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_FOREST);
 
-    context.register(LEAD_ORE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(LEAD_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.LEAD_ORE),
         Decoration.UNDERGROUND_ORES));
-    context.register(TIN_ORE_SMALL, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(TIN_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.TIN_ORE_SMALL),
         Decoration.UNDERGROUND_ORES));
-    context.register(TIN_ORE_LARGE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(TIN_ORE_LARGE, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.TIN_ORE_LARGE),
         Decoration.UNDERGROUND_ORES));
-    context.register(SULFUR_ORE_UPPER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(SULFUR_ORE_UPPER, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.SULFUR_ORE_UPPER),
         Decoration.UNDERGROUND_ORES));
-    context.register(SULFUR_ORE_LOWER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(SULFUR_ORE_LOWER, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.SULFUR_ORE_LOWER),
         Decoration.UNDERGROUND_ORES));
-    context.register(ZINC_ORE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(ZINC_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.ZINC_ORE),
         Decoration.UNDERGROUND_ORES));
-    context.register(NICKEL_ORE_UPPER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(NICKEL_ORE_UPPER, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.NICKEL_ORE_UPPER),
         Decoration.UNDERGROUND_ORES));
-    context.register(NICKEL_ORE_MIDDLE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(NICKEL_ORE_MIDDLE, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.NICKEL_ORE_MIDDLE),
         Decoration.UNDERGROUND_ORES));
-    context.register(NICKEL_ORE_SMALL, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(NICKEL_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.NICKEL_ORE_SMALL),
         Decoration.UNDERGROUND_ORES));
-    context.register(SILVER_ORE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(SILVER_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.SILVER_ORE),
         Decoration.UNDERGROUND_ORES));
-    context.register(SILVER_ORE_LOWER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(SILVER_ORE_LOWER, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.SILVER_ORE_LOWER),
         Decoration.UNDERGROUND_ORES));
-    context.register(QUARRIED_STONE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(QUARRIED_STONE, new BiomeModifiers.AddFeaturesBiomeModifier(
         forestTag,
         getPlacedFeature(context, RailcraftOrePlacements.QUARRIED_STONE),
         Decoration.UNDERGROUND_ORES));
-    context.register(SALTPETER, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(SALTPETER, new BiomeModifiers.AddFeaturesBiomeModifier(
         overworldTag,
         getPlacedFeature(context, RailcraftOrePlacements.SALTPETER),
         Decoration.UNDERGROUND_ORES));
-    context.register(FIRESTONE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+    context.register(FIRESTONE, new BiomeModifiers.AddFeaturesBiomeModifier(
         netherTag,
         getPlacedFeature(context, RailcraftOrePlacements.FIRESTONE),
         Decoration.UNDERGROUND_ORES));

@@ -1,18 +1,21 @@
 package mods.railcraft.data;
 
+import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SpriteSourceProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 
 public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
-  public RailcraftSpriteSourceProvider(PackOutput output, ExistingFileHelper fileHelper) {
-    super(output, fileHelper, RailcraftConstants.ID);
+  public RailcraftSpriteSourceProvider(PackOutput output,
+      CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper fileHelper) {
+    super(output, lookupProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @Override
-  protected void addSources() {
+  protected void gather() {
     atlas(SpriteSourceProvider.BLOCKS_ATLAS)
         .addSource(new DirectoryLister("entity/signal_aspect", "entity/signal_aspect/"))
         .addSource(new DirectoryLister("entity/signal_box_aspect", "entity/signal_box_aspect/"))

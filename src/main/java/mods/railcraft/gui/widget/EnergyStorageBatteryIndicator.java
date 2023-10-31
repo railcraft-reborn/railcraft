@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import mods.railcraft.util.HumanReadableNumberFormatter;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class EnergyStorageBatteryIndicator implements Gauge {
 

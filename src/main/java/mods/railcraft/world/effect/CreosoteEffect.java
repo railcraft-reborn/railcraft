@@ -22,7 +22,7 @@ public class CreosoteEffect extends MobEffect {
   }
 
   @Override
-  public boolean isDurationEffectTick(int duration, int amplifier) {
+  public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
     int t = 25 >> amplifier;
     return t == 0 || duration % t == 0;
   }
