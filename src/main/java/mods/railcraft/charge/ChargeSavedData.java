@@ -21,11 +21,12 @@ public final class ChargeSavedData extends SavedData {
       Util.make(new Object2IntOpenHashMap<>(), map -> map.defaultReturnValue(ABSENT_VALUE));
 
   public static ChargeSavedData getFor(Charge network, ServerLevel level) {
-    return level.getDataStorage().computeIfAbsent(tag -> {
-      var manager = new ChargeSavedData();
-      manager.load(tag);
-      return manager;
-    }, ChargeSavedData::new, DATA_TAG_PREFIX + network.getSerializedName());
+    return level.getDataStorage()
+        .computeIfAbsent(new SavedData.Factory<>(ChargeSavedData::new, tag -> {
+          var manager = new ChargeSavedData();
+          manager.load(tag);
+          return manager;
+        }), DATA_TAG_PREFIX + network.getSerializedName());
   }
 
   @Override

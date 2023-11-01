@@ -1,6 +1,7 @@
 package mods.railcraft.advancements;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.track.TrackType;
@@ -8,12 +9,11 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.world.item.ItemStack;
 
-final class TrackItemPredicate extends ItemPredicate {
+final class TrackItemPredicate implements Predicate<ItemStack> {
 
-  static final Function<JsonObject, ItemPredicate> DESERIALIZER = (json) -> {
+  static final Function<JsonObject, Predicate<ItemStack>> DESERIALIZER = (json) -> {
     var highSpeed = JsonUtil.getAsBoolean(json, "high_speed").orElse(null);
     var electric = JsonUtil.getAsBoolean(json, "electric").orElse(null);
     var type = JsonUtil.getFromRegistry(json, "track_type", TrackTypes.REGISTRY.get())
@@ -33,7 +33,7 @@ final class TrackItemPredicate extends ItemPredicate {
   }
 
   @Override
-  public boolean matches(ItemStack stack) {
+  public boolean test(ItemStack stack) {
     var type = TrackUtil.getTrackType(stack);
     if (!Conditions.check(this.highSpeed, type.isHighSpeed())) {
       return false;
