@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -92,10 +91,8 @@ public class RollingRecipeBuilder {
   }
 
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
-    var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("rolling/" + path);
-    recipeOutput.accept(
-        new Result(customResourceLocation, this.result, this.count,
+    var customResourceLocation = resourceLocation.withPrefix("rolling/");
+    recipeOutput.accept(new Result(customResourceLocation, this.result, this.count,
             this.processTime, this.rows, this.key));
   }
 
@@ -104,16 +101,16 @@ public class RollingRecipeBuilder {
     private final ResourceLocation id;
     private final Item resultItem;
     private final int count;
-    private final int delay;
+    private final int processTime;
     private final List<String> pattern;
     private final Map<Character, Ingredient> key;
 
     public Result(ResourceLocation resourceLocation, Item resultItem, int resultCount,
-        int recipeDelay, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
+        int processTime, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
       this.id = resourceLocation;
       this.resultItem = resultItem;
       this.count = resultCount;
-      this.delay = recipeDelay;
+      this.processTime = processTime;
       this.pattern = recipePattern;
       this.key = ingredientMap;
     }
@@ -129,7 +126,7 @@ public class RollingRecipeBuilder {
       var jsonobject = new JsonObject();
 
       for (var entry : this.key.entrySet()) {
-        jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
+        jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
       }
 
       jsonOut.add("key", jsonobject);
@@ -140,7 +137,7 @@ public class RollingRecipeBuilder {
       }
 
       jsonOut.add("result", jsonobject1);
-      jsonOut.add("processTime", new JsonPrimitive(delay));
+      jsonOut.add("processTime", new JsonPrimitive(processTime));
     }
 
     @Override

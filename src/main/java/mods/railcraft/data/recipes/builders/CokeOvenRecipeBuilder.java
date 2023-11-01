@@ -4,6 +4,9 @@ import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -44,11 +47,16 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("coke_oven/" + path);
 
-    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = customResourceLocation.withPrefix("recipes/");;
+
+    var builder = recipeOutput.advancement()
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
+        .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
+        .requirements(AdvancementRequirements.Strategy.OR);
 
     recipeOutput.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.creosoteOutput, this.advancement));
+        this.experience, this.cookingTime, this.creosoteOutput, builder.build(advancementId)));
   }
 
   private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {

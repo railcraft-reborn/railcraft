@@ -92,7 +92,7 @@ public class CrusherRecipeBuilder {
 
     public void serializeRecipeData(JsonObject jsonOut) {
       jsonOut.addProperty("processTime", processTime);
-      jsonOut.add("ingredient", ingredient.toJson());
+      jsonOut.add("ingredient", ingredient.toJson(false));
 
       var result = new JsonArray();
       for (var item : probabilityItems) {

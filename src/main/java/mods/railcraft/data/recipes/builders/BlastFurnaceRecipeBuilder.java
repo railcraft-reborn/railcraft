@@ -3,8 +3,10 @@ package mods.railcraft.data.recipes.builders;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -47,11 +49,16 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
 
-    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = customResourceLocation.withPrefix("recipes/");
+
+    var builder = recipeOutput.advancement()
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
+        .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
+        .requirements(AdvancementRequirements.Strategy.OR);
 
     recipeOutput.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
+        this.experience, this.cookingTime, this.slagOutput, builder.build(advancementId)));
   }
 
   private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
@@ -59,8 +66,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     private final int slagOutput;
 
     public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
-        float experience, int cookingTime, int slagOutput, AdvancementHolder advancement,
-        ResourceLocation advancementId) {
+        float experience, int cookingTime, int slagOutput, AdvancementHolder advancement) {
       super(id, group, result, count, ingredient, experience, cookingTime, advancement);
       this.slagOutput = slagOutput;
     }
