@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -15,10 +14,8 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
   protected BedCartSleepTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var predicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new BedCartSleepTrigger.Instance(contextAwarePredicate, predicate);
+    var minecart = MinecartPredicate.fromJson(json.get("cart"));
+    return new BedCartSleepTrigger.Instance(contextAwarePredicate, minecart);
   }
 
   /**
@@ -31,26 +28,28 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final MinecartPredicate cartPredicate;
+    private final Optional<MinecartPredicate> cart;
 
     private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        MinecartPredicate predicate) {
+        Optional<MinecartPredicate> cart) {
       super(contextAwarePredicate);
-      this.cartPredicate = predicate;
+      this.cart = cart;
     }
 
     public static BedCartSleepTrigger.Instance hasSlept() {
-      return new BedCartSleepTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
+      return new BedCartSleepTrigger.Instance(Optional.empty(), Optional.empty());
     }
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cartPredicate) {
-      return this.cartPredicate.test(player, cartPredicate) && player.isSleeping();
+    public boolean matches(ServerPlayer player, AbstractMinecart cart) {
+      return this.cart
+          .map(x -> x.matches(player, cart))
+          .orElse(false) && player.isSleeping();
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      json.add("cart", this.cartPredicate.serializeToJson());
+      var json = super.serializeToJson();
+      this.cart.ifPresent(x -> json.add("cart", x.serializeToJson()));
       return json;
     }
   }

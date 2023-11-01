@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -19,12 +18,8 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   public UseTrackKitTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var used = JsonUtil.getAsJsonObject(json, "item")
-        .map(ItemPredicate::fromJson)
-        .orElse(ItemPredicate.ANY);
-    var location = JsonUtil.getAsJsonObject(json, "location")
-        .map(LocationPredicate::fromJson)
-        .orElse(LocationPredicate.ANY);
+    var used = ItemPredicate.fromJson(json.get("item"));
+    var location = LocationPredicate.fromJson(json.get("location"));
     return new UseTrackKitTrigger.Instance(contextAwarePredicate, used, location);
   }
 
@@ -39,31 +34,32 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final ItemPredicate item;
-    private final LocationPredicate location;
+    private final Optional<ItemPredicate> item;
+    private final Optional<LocationPredicate> location;
 
     private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
+        Optional<ItemPredicate> itemPredicate, Optional<LocationPredicate> locationPredicate) {
       super(contextAwarePredicate);
       this.item = itemPredicate;
       this.location = locationPredicate;
     }
 
     public static UseTrackKitTrigger.Instance hasUsedTrackKit() {
-      return new UseTrackKitTrigger.Instance(ContextAwarePredicate.ANY,
-          ItemPredicate.ANY, LocationPredicate.ANY);
+      return new UseTrackKitTrigger.Instance(Optional.empty(),
+          Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {
-      return item.matches(stack)
-          && this.location.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+      return this.item.map(x -> x.matches(stack)).orElse(false)
+          && this.location.map(x ->
+          x.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      json.add("item", this.item.serializeToJson());
-      json.add("location", this.location.serializeToJson());
+      var json = super.serializeToJson();
+      this.item.ifPresent(x -> json.add("item", x.serializeToJson()));
+      this.location.ifPresent(x -> json.add("location", x.serializeToJson()));
       return json;
     }
   }

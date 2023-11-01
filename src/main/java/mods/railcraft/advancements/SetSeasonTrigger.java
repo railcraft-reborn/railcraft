@@ -1,10 +1,9 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -18,18 +17,14 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
   public Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var season = JsonUtil.getAsString(json, "season")
-        .map(Integer::valueOf)
-        .map(x -> Season.values()[x])
-        .orElse(null);
-    var cartPredicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new SetSeasonTrigger.Instance(contextAwarePredicate, season, cartPredicate);
+    // TODO: Test season encoding/decoding
+    var season = Season.CODEC.parse(JsonOps.INSTANCE, json.get("season")).result();
+    var minecart = MinecartPredicate.fromJson(json.get("cart"));
+    return new SetSeasonTrigger.Instance(contextAwarePredicate, season, minecart);
   }
 
   /**
-   * Invoked when the user changes the cart's season option i think?.
+   * Invoked when the user changes the cart's season option I think?.
    */
   public void trigger(ServerPlayer playerEntity, AbstractMinecart cart,
       Season target) {
@@ -38,35 +33,35 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {
+    private final Optional<Season> season;
+    private final Optional<MinecartPredicate> cart;
 
-    @Nullable
-    private final Season season;
-    private final MinecartPredicate cartPredicate;
-
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate, @Nullable Season season,
-        MinecartPredicate predicate) {
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        Optional<Season> season, Optional<MinecartPredicate> cart) {
       super(contextAwarePredicate);
       this.season = season;
-      this.cartPredicate = predicate;
+      this.cart = cart;
     }
 
     public static SetSeasonTrigger.Instance onSeasonSet() {
-      return new SetSeasonTrigger.Instance(Optional.of(ContextAwarePredicate.ANY),
-          null, MinecartPredicate.ANY);
+      return new SetSeasonTrigger.Instance(Optional.empty(), Optional.empty(), Optional.empty());
     }
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cart, Season target) {
-      return (this.season == null || this.season.equals(target))
-          && this.cartPredicate.test(player, cart);
+    public boolean matches(ServerPlayer player, AbstractMinecart cart, Season season) {
+      if (this.season.isPresent() && !this.season.get().equals(season)) {
+        return false;
+      }
+      return this.cart.map(x -> x.matches(player, cart)).orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      if (this.season != null) {
-        json.addProperty("season", this.season.ordinal());
-      }
-      json.add("cart", this.cartPredicate.serializeToJson());
+      var json = super.serializeToJson();
+      this.season.ifPresent(x -> {
+        var encode = Season.CODEC.encodeStart(JsonOps.INSTANCE, x).result();
+        json.add("season", encode.get());
+      });
+      this.cart.ifPresent(x -> json.add("cart", x.serializeToJson()));
       return json;
     }
   }

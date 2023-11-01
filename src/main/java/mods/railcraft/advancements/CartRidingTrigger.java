@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -31,10 +30,8 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   public CartRidingTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var predicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new CartRidingTrigger.Instance(contextAwarePredicate, predicate);
+    var minecart = MinecartPredicate.fromJson(json.get("cart"));
+    return new CartRidingTrigger.Instance(contextAwarePredicate, minecart);
   }
 
   /**
@@ -77,26 +74,26 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final MinecartPredicate cartPredicate;
+    private final Optional<MinecartPredicate> cartPredicate;
 
     private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        MinecartPredicate predicate) {
+        Optional<MinecartPredicate> predicate) {
       super(contextAwarePredicate);
       this.cartPredicate = predicate;
     }
 
     public static CartRidingTrigger.Instance hasRidden() {
-      return new CartRidingTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
+      return new CartRidingTrigger.Instance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
-      return cartPredicate.test(player, cart);
+      return cartPredicate.map(x -> x.matches(player, cart)).orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      json.add("cart", this.cartPredicate.serializeToJson());
+      var json = super.serializeToJson();
+      this.cartPredicate.ifPresent(x -> json.add("cart", x.serializeToJson()));
       return json;
     }
   }

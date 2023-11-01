@@ -6,12 +6,12 @@ import com.google.gson.JsonObject;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.ForgeRegistries;
@@ -50,14 +50,14 @@ public class MultiBlockFormedTrigger extends
       this.predicate = predicate;
     }
 
-    public static MultiBlockFormedTrigger.Instance formedMultiBlock(
+    public static Criterion<?> formedMultiBlock(
         BlockEntityType<?> tileEntityType) {
       return formedMultiBlock(tileEntityType, NbtPredicate.ANY);
     }
 
     public static MultiBlockFormedTrigger.Instance formedMultiBlock(
         BlockEntityType<?> tileEntityType, NbtPredicate nbtPredicate) {
-      return new MultiBlockFormedTrigger.Instance(ContextAwarePredicate.ANY, tileEntityType,
+      return new MultiBlockFormedTrigger.Instance(Optional.empty(), tileEntityType,
           nbtPredicate);
     }
 

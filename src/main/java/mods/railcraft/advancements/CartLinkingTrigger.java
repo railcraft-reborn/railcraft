@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -15,12 +14,8 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
   public CartLinkingTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var owned = JsonUtil.getAsJsonObject(json, "owned")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    var other = JsonUtil.getAsJsonObject(json, "other")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
+    var owned = MinecartPredicate.fromJson(json.get("owned"));
+    var other = MinecartPredicate.fromJson(json.get("other"));
     return new CartLinkingTrigger.Instance(contextAwarePredicate, owned, other);
   }
 
@@ -30,36 +25,35 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
   public void trigger(ServerPlayer playerEntity, AbstractMinecart owned,
       AbstractMinecart other) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, owned, other));
+        criterionInstance -> criterionInstance.matches(playerEntity, owned, other));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final MinecartPredicate owned;
-    private final MinecartPredicate other;
+    private final Optional<MinecartPredicate> owned, other;
 
     private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        MinecartPredicate owned, MinecartPredicate other) {
+        Optional<MinecartPredicate> owned, Optional<MinecartPredicate> other) {
       super(contextAwarePredicate);
       this.owned = owned;
       this.other = other;
     }
 
     public static CartLinkingTrigger.Instance hasLinked() {
-      return new CartLinkingTrigger.Instance(ContextAwarePredicate.ANY,
-          MinecartPredicate.ANY, MinecartPredicate.ANY);
+      return new CartLinkingTrigger.Instance(Optional.empty(),
+          Optional.empty(), Optional.empty());
     }
 
-    public boolean matches(ServerPlayer player, AbstractMinecart owned,
-        AbstractMinecart other) {
-      return this.owned.test(player, owned) && this.other.test(player, other);
+    public boolean matches(ServerPlayer player, AbstractMinecart owned, AbstractMinecart other) {
+      return this.owned.map(x -> x.matches(player, owned)).orElse(false)
+          && this.other.map(x -> x.matches(player, other)).orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      json.add("owned", this.owned.serializeToJson());
-      json.add("other", this.other.serializeToJson());
+      var json = super.serializeToJson();
+      this.owned.ifPresent(x -> json.add("owned", x.serializeToJson()));
+      this.other.ifPresent(x -> json.add("other", x.serializeToJson()));
       return json;
     }
   }

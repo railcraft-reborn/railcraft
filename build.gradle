@@ -54,18 +54,13 @@ sourceSets {
     }
 }
 
-/*configurations {
-    apiImplementation.extendsFrom(implementation)
-    apiRuntimeOnly.extendsFrom(runtimeOnly)
-}*/
-
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
 runs {
     configureEach {
         systemProperty 'forge.logging.console.level', 'debug'
         systemProperty 'forge.enabledGameTestNamespaces', 'railcraft'
-        //modSource project.sourceSets.api
+        modSource project.sourceSets.api
         modSource project.sourceSets.main
         modSource project.sourceSets.test
         //jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions'
@@ -152,9 +147,6 @@ artifacts {
     archives apiJar
 }
 
-/*mixin {
-    add sourceSets.main, 'railcraft.refmap.json'
-}*/
 
 def penultimateTag = { ->
     def stdout = new ByteArrayOutputStream()

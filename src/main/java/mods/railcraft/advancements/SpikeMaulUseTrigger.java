@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -23,16 +22,9 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
   public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var tag = JsonUtil.getAsJsonObject(json, "nbt")
-        .map(NbtPredicate::fromJson)
-        .orElse(NbtPredicate.ANY);
-    var tool = JsonUtil.getAsJsonObject(json, "tool")
-        .map(ItemPredicate::fromJson)
-        .orElse(ItemPredicate.ANY);
-    var locationPredicate = JsonUtil.getAsJsonObject(json, "location")
-        .map(LocationPredicate::fromJson)
-        .orElse(LocationPredicate.ANY);
-    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, tag, tool, locationPredicate);
+    var tool = ItemPredicate.fromJson(json.get("tool"));
+    var location = LocationPredicate.fromJson(json.get("location"));
+    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, Optional.empty(), tool, location);
   }
 
   /**
@@ -45,38 +37,38 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final NbtPredicate nbt;
-    private final ItemPredicate tool;
-    private final LocationPredicate location;
+    private final Optional<NbtPredicate> nbt; // TODO: Remove?
+    private final Optional<ItemPredicate> tool;
+    private final Optional<LocationPredicate> location;
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate, NbtPredicate nbt,
-        ItemPredicate tool, LocationPredicate predicate) {
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        Optional<NbtPredicate> nbt, Optional<ItemPredicate> tool,
+        Optional<LocationPredicate> location) {
       super(contextAwarePredicate);
       this.nbt = nbt;
       this.tool = tool;
-      this.location = predicate;
+      this.location = location;
     }
 
     public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
-      return new SpikeMaulUseTrigger.Instance(ContextAwarePredicate.ANY,
-          NbtPredicate.ANY, ItemPredicate.ANY, LocationPredicate.ANY);
+      return new SpikeMaulUseTrigger.Instance(Optional.empty(),
+          Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
       return LevelUtil.getBlockEntity(level, pos)
           .map(BlockEntity::saveWithoutMetadata)
-          .map(this.nbt::matches)
+          .map(tag -> this.nbt.map(x -> x.matches(tag)).orElse(false))
           .orElse(false)
-          && this.tool.matches(item)
-          && this.location.matches(level, pos.getX(), pos.getY(), pos.getZ());
+          && this.tool.map(x -> x.matches(item)).orElse(false)
+          && this.location.map(x -> x.matches(level, pos.getX(), pos.getY(), pos.getZ())).orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      json.add("nbt", this.nbt.serializeToJson());
-      json.add("tool", this.tool.serializeToJson());
-      json.add("location", this.location.serializeToJson());
+      var json = super.serializeToJson();
+      this.tool.ifPresent(x -> json.add("tool", x.serializeToJson()));
+      this.location.ifPresent(x -> json.add("location", x.serializeToJson()));
       return json;
     }
   }

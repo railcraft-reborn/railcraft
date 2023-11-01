@@ -2,7 +2,6 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -16,10 +15,8 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
   public SurpriseTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var predicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new SurpriseTrigger.Instance(contextAwarePredicate, predicate);
+    var minecart = MinecartPredicate.fromJson(json.get("cart"));
+    return new SurpriseTrigger.Instance(contextAwarePredicate, minecart);
   }
 
   /**
@@ -32,25 +29,28 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
 
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final MinecartPredicate cartPredicate;
+    private final Optional<MinecartPredicate> cart;
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate, MinecartPredicate predicate) {
+    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
+        Optional<MinecartPredicate> cart) {
       super(contextAwarePredicate);
-      this.cartPredicate = predicate;
+      this.cart = cart;
     }
 
     public static SurpriseTrigger.Instance hasExplodedCart() {
-      return new SurpriseTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
+      return new SurpriseTrigger.Instance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
-      return cartPredicate.test(player, cart);
+      return this.cart
+          .map(x -> x.matches(player, cart))
+          .orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
       JsonObject json = new JsonObject();
-      json.add("cart", this.cartPredicate.serializeToJson());
+      this.cart.ifPresent(x -> json.add("cart", x.serializeToJson()));
       return json;
     }
   }
