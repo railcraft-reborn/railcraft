@@ -107,11 +107,10 @@ dependencies {
 
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-forge-api:$jei_version"
-    /*runtimeOnly "mezz.jei:jei-$minecraft_version-forge:$jei_version"
+    //runtimeOnly "mezz.jei:jei-$minecraft_version-forge:$jei_version"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
-    */
+    compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
+    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
 }
 
 test {
