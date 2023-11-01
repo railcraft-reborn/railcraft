@@ -2,6 +2,7 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -28,6 +29,12 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
         criterionInstance -> criterionInstance.matches(playerEntity, owned, other));
   }
 
+  public static Criterion<Instance> hasLinked() {
+    return RailcraftCriteriaTriggers.CART_LINK.createCriterion(
+        new CartLinkingTrigger.Instance(Optional.empty(),
+        Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
     private final Optional<MinecartPredicate> owned, other;
@@ -37,11 +44,6 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
       super(contextAwarePredicate);
       this.owned = owned;
       this.other = other;
-    }
-
-    public static CartLinkingTrigger.Instance hasLinked() {
-      return new CartLinkingTrigger.Instance(Optional.empty(),
-          Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart owned, AbstractMinecart other) {

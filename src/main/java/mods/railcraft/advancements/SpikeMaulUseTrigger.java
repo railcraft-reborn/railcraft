@@ -2,7 +2,10 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.util.LevelUtil;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -22,9 +25,11 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
   public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
+    var nbt = NbtPredicate.CODEC.decode(JsonOps.INSTANCE, json.get("nbt")).result()
+        .map(Pair::getFirst);
     var tool = ItemPredicate.fromJson(json.get("tool"));
     var location = LocationPredicate.fromJson(json.get("location"));
-    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, Optional.empty(), tool, location);
+    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, nbt, tool, location);
   }
 
   /**
@@ -35,9 +40,14 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     this.trigger(player, (criterionInstance) -> criterionInstance.matches(item, serverLevel, pos));
   }
 
+  public static Criterion<Instance> hasUsedSpikeMaul() {
+    return RailcraftCriteriaTriggers.SPIKE_MAUL_USE.createCriterion(
+        new Instance(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    private final Optional<NbtPredicate> nbt; // TODO: Remove?
+    private final Optional<NbtPredicate> nbt;
     private final Optional<ItemPredicate> tool;
     private final Optional<LocationPredicate> location;
 
@@ -48,11 +58,6 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
       this.nbt = nbt;
       this.tool = tool;
       this.location = location;
-    }
-
-    public static SpikeMaulUseTrigger.Instance hasUsedSpikeMaul() {
-      return new SpikeMaulUseTrigger.Instance(Optional.empty(),
-          Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
@@ -69,6 +74,11 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
       var json = super.serializeToJson();
       this.tool.ifPresent(x -> json.add("tool", x.serializeToJson()));
       this.location.ifPresent(x -> json.add("location", x.serializeToJson()));
+      this.nbt.ifPresent(x -> {
+        var encode = NbtPredicate.CODEC
+            .encodeStart(JsonOps.INSTANCE, x).result();
+        json.add("nbt", encode.get());
+      });
       return json;
     }
   }

@@ -22,8 +22,8 @@ public enum Season implements StringRepresentable {
   private static final Map<String, Season> BY_NAME = Arrays.stream(values())
       .collect(Collectors.toUnmodifiableMap(Season::getSerializedName, Function.identity()));
 
-  public static final Codec<Season> CODEC = Codec.STRING.comapFlatMap(Season::read,
-      season -> season.name).stable();
+  public static final Codec<Season> CODEC = Codec.STRING
+      .comapFlatMap(Season::read, season -> season.name).stable();
   private final String name;
 
   Season(String name) {
@@ -32,7 +32,12 @@ public enum Season implements StringRepresentable {
 
   private static DataResult<Season> read(String season) {
     try {
-      return DataResult.success(BY_NAME.get(season));
+      var s = BY_NAME.get(season);
+      if (s != null) {
+        return DataResult.success(s);
+      } else {
+        return DataResult.error(() -> "Not a valid season: " + season);
+      }
     } catch (Exception e) {
       return DataResult.error(() -> "Not a valid season: " + season);
     }

@@ -2,6 +2,7 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -27,6 +28,11 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
         (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
   }
 
+  public static Criterion<Instance> hasExplodedCart() {
+    return RailcraftCriteriaTriggers.CART_SURPRISE_EXPLODE.createCriterion(
+        new Instance(Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
     private final Optional<MinecartPredicate> cart;
@@ -35,10 +41,6 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
         Optional<MinecartPredicate> cart) {
       super(contextAwarePredicate);
       this.cart = cart;
-    }
-
-    public static SurpriseTrigger.Instance hasExplodedCart() {
-      return new SurpriseTrigger.Instance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

@@ -112,36 +112,30 @@ public class TrackTypes {
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 
-  private static class CompositeHandler implements TrackType.EventHandler {
+  private record CompositeHandler(CollisionHandler collisionHandler,
+                                  SpeedController speedController) implements
+      TrackType.EventHandler {
 
-    private final CollisionHandler collisionHandler;
-    private final SpeedController speedController;
+      @Override
+      public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
+        this.speedController.minecartPass(level, cart, pos);
+      }
 
-    public CompositeHandler(CollisionHandler collisionHandler, SpeedController speedController) {
-      this.collisionHandler = collisionHandler;
-      this.speedController = speedController;
+      @Override
+      public void entityInside(ServerLevel level, BlockPos pos, BlockState blockState,
+          Entity entity) {
+        this.collisionHandler.entityInside(level, pos, blockState, entity);
+      }
+
+      @Override
+      public Optional<RailShape> getRailShapeOverride(BlockGetter level,
+          BlockPos pos, BlockState blockState, @Nullable AbstractMinecart cart) {
+        return this.speedController.getRailShapeOverride(level, pos, blockState, cart);
+      }
+
+      @Override
+      public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
+        return this.speedController.getMaxSpeed(level, cart, pos);
+      }
     }
-
-    @Override
-    public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
-      this.speedController.minecartPass(level, cart, pos);
-    }
-
-    @Override
-    public void entityInside(ServerLevel level, BlockPos pos, BlockState blockState,
-        Entity entity) {
-      this.collisionHandler.entityInside(level, pos, blockState, entity);
-    }
-
-    @Override
-    public Optional<RailShape> getRailShapeOverride(BlockGetter level,
-        BlockPos pos, BlockState blockState, @Nullable AbstractMinecart cart) {
-      return this.speedController.getRailShapeOverride(level, pos, blockState, cart);
-    }
-
-    @Override
-    public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
-      return this.speedController.getMaxSpeed(level, cart, pos);
-    }
-  }
 }

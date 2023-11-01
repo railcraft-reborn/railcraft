@@ -3,6 +3,7 @@ package mods.railcraft.advancements;
 import java.util.Optional;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -33,6 +34,16 @@ public class JukeboxCartPlayMusicTrigger
         (criterionInstance) -> criterionInstance.matches(playerEntity, cart, music));
   }
 
+  public static Criterion<Instance> hasPlayedAnyMusic() {
+    return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
+        new Instance(Optional.empty(), null, Optional.empty()));
+  }
+
+  public static Criterion<Instance> hasPlayedMusic(Optional<ResourceLocation> music) {
+    return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
+        new Instance(Optional.empty(), music, Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
     private final Optional<ResourceLocation> music;
@@ -43,16 +54,6 @@ public class JukeboxCartPlayMusicTrigger
       super(contextAwarePredicate);
       this.music = music;
       this.cart = cart;
-    }
-
-    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedAnyMusic() {
-      return new JukeboxCartPlayMusicTrigger.Instance(Optional.empty(),
-          null, Optional.empty());
-    }
-
-    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedMusic(Optional<ResourceLocation> music) {
-      return new JukeboxCartPlayMusicTrigger.Instance(Optional.empty(),
-          music, Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart, ResourceLocation music) {

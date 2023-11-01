@@ -4,6 +4,7 @@ import java.util.Optional;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import mods.railcraft.season.Season;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -32,6 +33,11 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
         (criterionInstance) -> criterionInstance.matches(playerEntity, cart, target));
   }
 
+  public static Criterion<Instance> onSeasonSet() {
+    return RailcraftCriteriaTriggers.SEASON_SET.createCriterion(
+        new Instance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
     private final Optional<Season> season;
     private final Optional<MinecartPredicate> cart;
@@ -41,10 +47,6 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
       super(contextAwarePredicate);
       this.season = season;
       this.cart = cart;
-    }
-
-    public static SetSeasonTrigger.Instance onSeasonSet() {
-      return new SetSeasonTrigger.Instance(Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart, Season season) {

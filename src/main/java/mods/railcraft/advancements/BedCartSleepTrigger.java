@@ -2,6 +2,7 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -26,6 +27,11 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
         (criterionInstance) -> criterionInstance.matches(playerEntity, cartPredicate));
   }
 
+  public static Criterion<Instance> hasSlept() {
+    return RailcraftCriteriaTriggers.BED_CART_SLEEP.createCriterion(
+        new Instance(Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
     private final Optional<MinecartPredicate> cart;
@@ -34,10 +40,6 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
         Optional<MinecartPredicate> cart) {
       super(contextAwarePredicate);
       this.cart = cart;
-    }
-
-    public static BedCartSleepTrigger.Instance hasSlept() {
-      return new BedCartSleepTrigger.Instance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

@@ -2,6 +2,7 @@ package mods.railcraft.advancements;
 
 import java.util.Optional;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
@@ -32,6 +33,11 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
         (criterionInstance) -> criterionInstance.matches(serverLevel, blockPos, stack));
   }
 
+  public static Criterion<Instance> hasUsedTrackKit() {
+    return RailcraftCriteriaTriggers.TRACK_KIT_USE.createCriterion(
+        new Instance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
     private final Optional<ItemPredicate> item;
@@ -42,11 +48,6 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
       super(contextAwarePredicate);
       this.item = itemPredicate;
       this.location = locationPredicate;
-    }
-
-    public static UseTrackKitTrigger.Instance hasUsedTrackKit() {
-      return new UseTrackKitTrigger.Instance(Optional.empty(),
-          Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {

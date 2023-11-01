@@ -93,8 +93,9 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
         .addSlot(RecipeIngredientRole.OUTPUT, 46, 20)
         .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     // Not the actual capacity, but is 10000 for a better visibility
-    builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
+    // TODO: FIXMEEEEE
+    /*builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
         .addIngredient(ForgeTypes.FLUID_STACK, recipe.getCreosote())
-        .setFluidRenderer(10_000, true, 48, 47);
+        .setFluidRenderer(10_000, true, 48, 47);*/
   }
 }

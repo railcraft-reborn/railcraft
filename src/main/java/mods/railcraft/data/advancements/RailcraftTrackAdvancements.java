@@ -58,7 +58,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             FrameType.TASK,
             true, false, false)
         .parent(root)
-        .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger.Instance
+        .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
         .save(consumer, Railcraft.rl("tracks/blast_furnace"), fileHelper);
 
@@ -71,7 +71,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             FrameType.TASK,
             true, true, false)
         .parent(root)
-        .addCriterion("has_coke_oven", MultiBlockFormedTrigger.Instance
+        .addCriterion("has_coke_oven", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
         .save(consumer, Railcraft.rl("tracks/coke_oven"), fileHelper);
 
@@ -124,7 +124,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             FrameType.GOAL,
             true, true, false)
         .parent(basicTrack)
-        .addCriterion("has_used_track_kit", UseTrackKitTrigger.Instance.hasUsedTrackKit())
+        .addCriterion("has_used_track_kit", UseTrackKitTrigger.hasUsedTrackKit())
         .save(consumer, Railcraft.rl("tracks/track_kit"), fileHelper);
 
     Advancement.Builder.advancement()
@@ -136,7 +136,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             FrameType.GOAL,
             true, false, false)
         .parent(basicTrack)
-        .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.Instance.hasUsedSpikeMaul())
+        .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.hasUsedSpikeMaul())
         .save(consumer, Railcraft.rl("tracks/junctions"), fileHelper);
 
     Advancement.Builder.advancement()

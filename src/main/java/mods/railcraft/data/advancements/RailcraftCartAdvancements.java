@@ -45,7 +45,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             null,
             FrameType.TASK,
             true, false, false)
-        .addCriterion("linked_carts", CartLinkingTrigger.Instance.hasLinked())
+        .addCriterion("linked_carts", CartLinkingTrigger.hasLinked())
         .parent(root)
         .save(consumer, Railcraft.rl("carts/link_carts"), fileHelper);
 
@@ -57,7 +57,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             null,
             FrameType.GOAL,
             true, false, false)
-        .addCriterion("on_season_set", SetSeasonTrigger.Instance.onSeasonSet())
+        .addCriterion("on_season_set", SetSeasonTrigger.onSeasonSet())
         .parent(root)
         .save(consumer, Railcraft.rl("carts/seasons"), fileHelper);
 
@@ -82,7 +82,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             null,
             FrameType.TASK,
             true, false, false)
-        .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.Instance.hasSlept())
+        .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.hasSlept())
         .parent(rcLocomotive)
         .save(consumer, Railcraft.rl("carts/bed_cart"), fileHelper);
 
@@ -94,7 +94,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             null,
             FrameType.TASK,
             true, false, false)
-        .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.Instance.hasPlayedAnyMusic())
+        .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.hasPlayedAnyMusic())
         .parent(rcLocomotive)
         .save(consumer, Railcraft.rl("carts/jukebox_cart"), fileHelper);
 
@@ -106,7 +106,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             null,
             FrameType.TASK,
             true, true, false)
-        .addCriterion("has_exploded_track", SurpriseTrigger.Instance.hasExplodedCart())
+        .addCriterion("has_exploded_track", SurpriseTrigger.hasExplodedCart())
         .parent(rcLocomotive)
         .save(consumer, Railcraft.rl("carts/surprise"), fileHelper);
   }

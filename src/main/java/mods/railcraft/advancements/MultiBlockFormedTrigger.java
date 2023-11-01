@@ -1,10 +1,9 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.util.Conditions;
-import mods.railcraft.util.JsonUtil;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.JsonOps;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
@@ -22,11 +21,12 @@ public class MultiBlockFormedTrigger extends
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var type = JsonUtil.getFromRegistry(json, "type", ForgeRegistries.BLOCK_ENTITY_TYPES)
-        .orElse(null);
-    var nbt = JsonUtil.getAsJsonObject(json, "nbt")
-        .map(NbtPredicate::fromJson)
-        .orElse(NbtPredicate.ANY);
+    var type = ForgeRegistries.BLOCK_ENTITY_TYPES.getCodec()
+        .decode(JsonOps.INSTANCE, json.get("type"))
+        .map(Pair::getFirst)
+        .result();
+    var nbt = NbtPredicate.CODEC.decode(JsonOps.INSTANCE, json.get("nbt")).result()
+        .map(Pair::getFirst);
     return new MultiBlockFormedTrigger.Instance(contextAwarePredicate, type, nbt);
   }
 
@@ -37,42 +37,47 @@ public class MultiBlockFormedTrigger extends
     this.trigger(playerEntity, (criterionInstance) -> criterionInstance.matches(blockEntity));
   }
 
+  public static Criterion<?> formedMultiBlock(BlockEntityType<?> tileEntityType) {
+    return formedMultiBlock(tileEntityType, Optional.empty());
+  }
+
+  public static Criterion<Instance> formedMultiBlock(
+      BlockEntityType<?> tileEntityType, Optional<NbtPredicate> nbtPredicate) {
+    return RailcraftCriteriaTriggers.MULTIBLOCK_FORM.createCriterion(
+        new Instance(Optional.empty(), Optional.of(tileEntityType), nbtPredicate));
+  }
+
   public static class Instance extends AbstractCriterionTriggerInstance {
 
-    @Nullable
-    private final BlockEntityType<?> type;
-    private final NbtPredicate predicate;
+    private final Optional<? extends BlockEntityType<?>> type;
+    private final Optional<NbtPredicate> nbt;
 
     private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        @Nullable BlockEntityType<?> type, NbtPredicate predicate) {
+        Optional<? extends BlockEntityType<?>> type, Optional<NbtPredicate> nbt) {
       super(contextAwarePredicate);
       this.type = type;
-      this.predicate = predicate;
-    }
-
-    public static Criterion<?> formedMultiBlock(
-        BlockEntityType<?> tileEntityType) {
-      return formedMultiBlock(tileEntityType, NbtPredicate.ANY);
-    }
-
-    public static MultiBlockFormedTrigger.Instance formedMultiBlock(
-        BlockEntityType<?> tileEntityType, NbtPredicate nbtPredicate) {
-      return new MultiBlockFormedTrigger.Instance(Optional.empty(), tileEntityType,
-          nbtPredicate);
+      this.nbt = nbt;
     }
 
     public boolean matches(RailcraftBlockEntity blockEntity) {
-      return Conditions.check(this.type, blockEntity.getType())
-          && this.predicate.matches(blockEntity.saveWithoutMetadata());
+      return this.type.map(type -> type.equals(blockEntity.getType())).orElse(false)
+          && this.nbt.map(predicate -> predicate.matches(blockEntity.saveWithoutMetadata()))
+          .orElse(false);
     }
 
     @Override
     public JsonObject serializeToJson() {
-      JsonObject json = new JsonObject();
-      if (this.type != null) {
-        json.addProperty("type", ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(this.type).toString());
-      }
-      json.add("nbt", this.predicate.serializeToJson());
+      var json = super.serializeToJson();
+      this.type.ifPresent(x -> {
+        var encode = ForgeRegistries.BLOCK_ENTITY_TYPES.getCodec()
+            .encodeStart(JsonOps.INSTANCE, x).result();
+        json.add("type", encode.get());
+      });
+      this.nbt.ifPresent(x -> {
+        var encode = NbtPredicate.CODEC
+            .encodeStart(JsonOps.INSTANCE, x).result();
+        json.add("nbt", encode.get());
+      });
       return json;
     }
   }
