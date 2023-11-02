@@ -5,7 +5,7 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.5'
+    id 'net.neoforged.gradle.userdev' version '7.0.21'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
@@ -37,20 +37,22 @@ sourceSets {
     api {
         // API has no resources
         resources.srcDirs = []
-        compileClasspath += sourceSets.main.compileClasspath
-        runtimeClasspath += sourceSets.main.runtimeClasspath
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
     }
     main {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
+        compileClasspath += api.output
+        runtimeClasspath += api.output
         resources {
             srcDir 'src/generated/resources'
             exclude '.cache'
         }
     }
     test {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
+        // test has no resources
+        resources.srcDirs = []
+        compileClasspath += api.output
+        runtimeClasspath += api.output
     }
 }
 
@@ -122,11 +124,19 @@ test {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
-            mod_version: mod_version
+            minecraft_version       : minecraft_version,
+            minecraft_version_range : minecraft_version_range,
+            neo_version             : neo_version,
+            neo_version_range       : neo_version_range,
+            loader_version_range    : loader_version_range,
+            mod_license             : mod_license,
+            mod_version             : mod_version,
+            pack_format_number      : pack_format_number,
     ]
     inputs.properties replaceProperties
 
