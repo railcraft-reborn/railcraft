@@ -87,8 +87,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
-        .save(consumer, Railcraft.rl("tracks/manual_rolling_machine"),
-            fileHelper);
+        .save(consumer, Railcraft.rl("tracks/manual_rolling_machine"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(

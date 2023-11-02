@@ -182,6 +182,8 @@ public class Railcraft {
     var packOutput = generator.getPackOutput();
     var lookupProvider = event.getLookupProvider();
     var fileHelper = event.getExistingFileHelper();
+    // Bootstrap our advancement triggers as common setup doesn't run
+    RailcraftCriteriaTriggers.register();
 
     var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
     var blockTagsLookup = blockTags.contentsGetter();

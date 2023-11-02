@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
