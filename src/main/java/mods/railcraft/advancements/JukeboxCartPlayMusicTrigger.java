@@ -36,7 +36,7 @@ public class JukeboxCartPlayMusicTrigger
 
   public static Criterion<Instance> hasPlayedAnyMusic() {
     return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
-        new Instance(Optional.empty(), null, Optional.empty()));
+        new Instance(Optional.empty(), Optional.empty(), Optional.empty()));
   }
 
   public static Criterion<Instance> hasPlayedMusic(Optional<ResourceLocation> music) {
