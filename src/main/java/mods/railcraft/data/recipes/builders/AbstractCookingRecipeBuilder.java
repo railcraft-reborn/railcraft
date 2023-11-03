@@ -22,8 +22,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   protected final float experience;
   protected final int cookingTime;
   protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
-  @Nullable
-  protected String group;
 
   public AbstractCookingRecipeBuilder(ItemLike result, int count, Ingredient ingredient,
       float experience, int cookingTime) {
@@ -42,8 +40,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
   @Override
   public RecipeBuilder group(String group) {
-    this.group = group;
-    return this;
+    throw new IllegalStateException("Group not allow");
   }
 
   @Override
