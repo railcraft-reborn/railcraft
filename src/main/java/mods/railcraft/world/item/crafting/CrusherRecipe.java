@@ -110,22 +110,21 @@ public class CrusherRecipe implements Recipe<Container> {
 
   public static class Serializer implements RecipeSerializer<CrusherRecipe> {
 
-    private static final Codec<Pair<ItemStack, Double>> CODEC_PAIR =
-        RecordCodecBuilder.create(instance ->
-        instance.group(
+    private static final Codec<Pair<ItemStack, Double>> CODEC_PAIR = RecordCodecBuilder
+        .create(instance -> instance.group(
             CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(Pair::getFirst),
             Codec.doubleRange(0, 1).fieldOf("probability").forGetter(Pair::getSecond)
         ).apply(instance, Pair::of));
 
-    private static final Codec<CrusherRecipe> CODEC =
-        RecordCodecBuilder.create(instance -> instance.group(
+    private static final Codec<CrusherRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
                 .forGetter(recipe -> recipe.ingredient),
-                CODEC_PAIR.listOf().fieldOf("outputs").orElse(Collections.emptyList())
+            CODEC_PAIR.listOf().fieldOf("outputs").orElse(Collections.emptyList())
                 .forGetter(crusherRecipe -> crusherRecipe.probabilityItems),
             Codec.INT.fieldOf("processTime").orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
-                .forGetter(recipe -> recipe.processTime))
-            .apply(instance, CrusherRecipe::new));
+                .forGetter(recipe -> recipe.processTime)
+        ).apply(instance, CrusherRecipe::new));
 
     @Override
     public Codec<CrusherRecipe> codec() {
@@ -136,11 +135,7 @@ public class CrusherRecipe implements Recipe<Container> {
     public CrusherRecipe fromNetwork(FriendlyByteBuf buffer) {
       var tickCost = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
-      var probabilityItems = buffer.readList(buf -> {
-        var result = buf.readItem();
-        var probability = buf.readDouble();
-        return new Pair<>(result, probability);
-      });
+      var probabilityItems = buffer.readList(buf -> new Pair<>(buf.readItem(), buf.readDouble()));
       return new CrusherRecipe(ingredient, probabilityItems, tickCost);
     }
 

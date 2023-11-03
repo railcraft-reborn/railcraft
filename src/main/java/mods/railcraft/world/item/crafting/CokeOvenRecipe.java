@@ -6,7 +6,6 @@ import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -19,9 +18,9 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
   private final FluidStack creosote;
 
-  public CokeOvenRecipe(String group, Ingredient ingredient, ItemStack result,
+  public CokeOvenRecipe(Ingredient ingredient, ItemStack result,
       float experience, int cookingTime, int creosoteOutput) {
-    super(RailcraftRecipeTypes.COKING.get(), group, CookingBookCategory.MISC,
+    super(RailcraftRecipeTypes.COKING.get(), "", CookingBookCategory.MISC,
         ingredient, result, experience, cookingTime);
     this.creosote = new FluidStack(RailcraftFluids.CREOSOTE.get(), creosoteOutput);
   }
@@ -49,14 +48,20 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
     private static final Codec<CokeOvenRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            ExtraCodecs.strictOptionalField(
-                Codec.STRING, "group", "").forGetter(recipe -> recipe.group),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-                CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Codec.FLOAT.fieldOf("experience").orElse(0.0F).forGetter(recipe -> recipe.experience),
-                Codec.INT.fieldOf("cookingTime").orElse(CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME).forGetter(recipe -> recipe.cookingTime),
-                Codec.INT.fieldOf("creosoteOutput").orElse(1000).forGetter(recipe -> recipe.creosote.getAmount()))
-            .apply(instance, CokeOvenRecipe::new));
+            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+                .forGetter(recipe -> recipe.ingredient),
+            CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result")
+                .forGetter(recipe -> recipe.result),
+            Codec.FLOAT.fieldOf("experience")
+                .orElse(0.0F)
+                .forGetter(recipe -> recipe.experience),
+            Codec.INT.fieldOf("cookingTime")
+                .orElse(CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME)
+                .forGetter(recipe -> recipe.cookingTime),
+            Codec.INT.fieldOf("creosoteOutput")
+                .orElse(1000)
+                .forGetter(recipe -> recipe.creosote.getAmount())
+            ).apply(instance, CokeOvenRecipe::new));
 
     @Override
     public Codec<CokeOvenRecipe> codec() {
@@ -65,18 +70,16 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
     @Override
     public CokeOvenRecipe fromNetwork(FriendlyByteBuf buffer) {
-      var group = buffer.readUtf();
       var creosoteOutput = buffer.readVarInt();
       var cookingTime = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
       var result = buffer.readItem();
       var experience = buffer.readFloat();
-      return new CokeOvenRecipe(group, ingredient, result, experience, cookingTime, creosoteOutput);
+      return new CokeOvenRecipe(ingredient, result, experience, cookingTime, creosoteOutput);
     }
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, CokeOvenRecipe recipe) {
-      buffer.writeUtf(recipe.group);
       buffer.writeVarInt(recipe.creosote.getAmount());
       buffer.writeVarInt(recipe.cookingTime);
       recipe.ingredient.toNetwork(buffer);

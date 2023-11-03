@@ -55,8 +55,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    recipeOutput.accept(new Result(customResourceLocation,
-        this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
+    recipeOutput.accept(new Result(customResourceLocation, this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.creosoteOutput, builder.build(advancementId)));
   }
 
@@ -64,9 +63,9 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     private final int creosoteOutput;
 
-    public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
+    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
         float experience, int cookingTime, int creosoteOutput, AdvancementHolder advancement) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement);
+      super(id, result, count, ingredient, experience, cookingTime, advancement);
       this.creosoteOutput = creosoteOutput;
     }
 

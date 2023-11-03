@@ -54,7 +54,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   public static abstract class AbstractResult implements FinishedRecipe {
 
     private final ResourceLocation id;
-    private final String group;
     private final Item result;
     private final int count;
     private final Ingredient ingredient;
@@ -63,10 +62,9 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     private final AdvancementHolder advancement;
 
 
-    public AbstractResult(ResourceLocation id, String group, Item result, int count,
+    public AbstractResult(ResourceLocation id, Item result, int count,
         Ingredient ingredient, float experience, int cookingTime, AdvancementHolder advancement) {
       this.id = id;
-      this.group = group;
       this.result = result;
       this.count = count;
       this.ingredient = ingredient;
@@ -77,10 +75,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public final void serializeRecipeData(JsonObject json) {
-      if (!group.isEmpty()) {
-        json.addProperty("group", group);
-      }
-
       json.add("ingredient", ingredient.toJson(false));
       var resultJson = new JsonObject();
       resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());

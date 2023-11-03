@@ -17,9 +17,9 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
   private final int slagOutput;
 
-  public BlastFurnaceRecipe(String group, Ingredient ingredient, ItemStack result,
+  public BlastFurnaceRecipe(Ingredient ingredient, ItemStack result,
       float experience, int cookingTime, int slagOutput) {
-    super(RailcraftRecipeTypes.BLASTING.get(), group, CookingBookCategory.MISC,
+    super(RailcraftRecipeTypes.BLASTING.get(), "", CookingBookCategory.MISC,
         ingredient, result, experience, cookingTime);
     this.slagOutput = slagOutput;
   }
@@ -46,13 +46,19 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
     private static final Codec<BlastFurnaceRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            ExtraCodecs.strictOptionalField(
-                Codec.STRING, "group", "").forGetter(recipe -> recipe.group),
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-                CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Codec.FLOAT.fieldOf("experience").orElse(0.0F).forGetter(recipe -> recipe.experience),
-                Codec.INT.fieldOf("cookingTime").orElse(BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME).forGetter(recipe -> recipe.cookingTime),
-                Codec.INT.fieldOf("slagOutput").orElse(1).forGetter(recipe -> recipe.slagOutput))
+            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+                .forGetter(recipe -> recipe.ingredient),
+            CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result")
+                .forGetter(recipe -> recipe.result),
+            Codec.FLOAT.fieldOf("experience")
+                .orElse(0.0F)
+                .forGetter(recipe -> recipe.experience),
+            Codec.INT.fieldOf("cookingTime")
+                .orElse(BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
+                .forGetter(recipe -> recipe.cookingTime),
+            Codec.INT.fieldOf("slagOutput")
+                .orElse(1)
+                .forGetter(recipe -> recipe.slagOutput))
             .apply(instance, BlastFurnaceRecipe::new));
 
     @Override
@@ -62,18 +68,16 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
     @Override
     public BlastFurnaceRecipe fromNetwork(FriendlyByteBuf buffer) {
-      var group = buffer.readUtf();
       var slagOutput = buffer.readVarInt();
       var cookingTime = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
       var result = buffer.readItem();
       var experience = buffer.readFloat();
-      return new BlastFurnaceRecipe(group, ingredient, result, experience, cookingTime, slagOutput);
+      return new BlastFurnaceRecipe(ingredient, result, experience, cookingTime, slagOutput);
     }
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, BlastFurnaceRecipe recipe) {
-      buffer.writeUtf(recipe.group);
       buffer.writeVarInt(recipe.slagOutput);
       buffer.writeVarInt(recipe.cookingTime);
       recipe.ingredient.toNetwork(buffer);

@@ -57,8 +57,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    recipeOutput.accept(new Result(customResourceLocation,
-        this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
+    recipeOutput.accept(new Result(customResourceLocation, this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.slagOutput, builder.build(advancementId)));
   }
 
@@ -66,9 +65,9 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     private final int slagOutput;
 
-    public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
+    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
         float experience, int cookingTime, int slagOutput, AdvancementHolder advancement) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement);
+      super(id, result, count, ingredient, experience, cookingTime, advancement);
       this.slagOutput = slagOutput;
     }
 
