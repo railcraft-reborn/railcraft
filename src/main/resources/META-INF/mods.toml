@@ -26,3 +26,6 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   ordering = "NONE"
   side = "BOTH"
   versionRange = "${minecraft_version_range}"
+
+[[mixins]]
+  config = "railcraft.mixins.json"

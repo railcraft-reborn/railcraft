@@ -5,9 +5,8 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.21'
+    id 'net.neoforged.gradle.userdev' version '7.0.26'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.3.6'
 }
@@ -49,8 +48,6 @@ sourceSets {
         }
     }
     test {
-        // test has no resources
-        resources.srcDirs = []
         compileClasspath += api.output
         runtimeClasspath += api.output
     }
@@ -62,11 +59,12 @@ runs {
     configureEach {
         systemProperty 'forge.logging.console.level', 'debug'
         systemProperty 'forge.enabledGameTestNamespaces', 'railcraft'
+
         modSource project.sourceSets.api
         modSource project.sourceSets.main
         modSource project.sourceSets.test
-        //jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions'
-        //'-XX:+AllowRedefinitionToAddDeleteMethods'
+
+        jvmArguments.add("-XX:+AllowEnhancedClassRedefinition")
     }
 
     client {
@@ -155,7 +153,6 @@ artifacts {
     archives jar
     archives apiJar
 }
-
 
 def penultimateTag = { ->
     def stdout = new ByteArrayOutputStream()

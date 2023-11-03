@@ -77,12 +77,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
@@ -118,17 +118,16 @@ public class Railcraft {
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
-  public Railcraft() {
+  public Railcraft(IEventBus modEventBus, Dist dist) {
     NeoForge.EVENT_BUS.register(this);
 
     RailcraftConfig.registerConfig(ModLoadingContext.get());
 
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
-    if (FMLEnvironment.dist.isClient()) {
+    if (dist.isClient()) {
       ClientManager.init(modEventBus);
     }
 
