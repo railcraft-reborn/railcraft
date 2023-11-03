@@ -55,6 +55,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
         .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
         .requirements(AdvancementRequirements.Strategy.OR);
+    this.criteria.forEach(builder::addCriterion);
 
     recipeOutput.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

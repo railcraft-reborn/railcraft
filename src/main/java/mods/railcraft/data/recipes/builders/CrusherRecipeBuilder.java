@@ -106,7 +106,7 @@ public class CrusherRecipeBuilder {
         pattern.addProperty("probability", item.getB());
         result.add(pattern);
       }
-      jsonOut.add("output", result);
+      jsonOut.add("outputs", result);
     }
 
     @Override

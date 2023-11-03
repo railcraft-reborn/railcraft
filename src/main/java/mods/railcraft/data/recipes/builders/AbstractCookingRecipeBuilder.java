@@ -1,8 +1,9 @@
 package mods.railcraft.data.recipes.builders;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -20,7 +21,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   protected final Ingredient ingredient;
   protected final float experience;
   protected final int cookingTime;
-  protected final Advancement.Builder advancement = Advancement.Builder.advancement();
+  protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
   @Nullable
   protected String group;
 
@@ -35,7 +36,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
   @Override
   public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
-    this.advancement.addCriterion(name, criterion);
+    this.criteria.put(name, criterion);
     return this;
   }
 

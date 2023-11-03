@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -9,11 +10,11 @@ import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -109,15 +110,21 @@ public class CrusherRecipe implements Recipe<Container> {
 
   public static class Serializer implements RecipeSerializer<CrusherRecipe> {
 
-    private static final Codec<List<Pair<ItemStack, Double>>> LIST_CODEC = Codec.compoundList(
-        BuiltInRegistries.ITEM.byNameCodec().xmap(ItemStack::new, ItemStack::getItem).fieldOf("result").codec(),
-        Codec.doubleRange(0, 1).fieldOf("probability").codec());
+    private static final Codec<Pair<ItemStack, Double>> CODEC_PAIR =
+        RecordCodecBuilder.create(instance ->
+        instance.group(
+            CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(Pair::getFirst),
+            Codec.doubleRange(0, 1).fieldOf("probability").forGetter(Pair::getSecond)
+        ).apply(instance, Pair::of));
 
     private static final Codec<CrusherRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-            LIST_CODEC.fieldOf("outputs").forGetter(crusherRecipe -> crusherRecipe.probabilityItems),
-            Codec.INT.fieldOf("processTime").orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME).forGetter(recipe -> recipe.processTime))
+            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+                .forGetter(recipe -> recipe.ingredient),
+                CODEC_PAIR.listOf().fieldOf("outputs").orElse(Collections.emptyList())
+                .forGetter(crusherRecipe -> crusherRecipe.probabilityItems),
+            Codec.INT.fieldOf("processTime").orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
+                .forGetter(recipe -> recipe.processTime))
             .apply(instance, CrusherRecipe::new));
 
     @Override

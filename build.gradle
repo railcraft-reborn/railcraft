@@ -134,7 +134,6 @@ tasks.withType(ProcessResources).configureEach {
             loader_version_range    : loader_version_range,
             mod_license             : mod_license,
             mod_version             : mod_version,
-            pack_format_number      : pack_format_number,
     ]
     inputs.properties replaceProperties
 

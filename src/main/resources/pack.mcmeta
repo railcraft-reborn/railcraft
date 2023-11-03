@@ -3,6 +3,6 @@
     "description": {
       "text": "Railcraft Reborn resource pack"
     },
-    "pack_format": ${pack_format_number}
+    "pack_format": 18
   }
 }
