@@ -2,9 +2,6 @@
   "parent": "railcraft:carts/locomotive",
   "criteria": {
     "stal_played": {
-      "conditions": {
-        "cart": {}
-      },
       "trigger": "railcraft:jukebox_cart_play_music"
     }
   },

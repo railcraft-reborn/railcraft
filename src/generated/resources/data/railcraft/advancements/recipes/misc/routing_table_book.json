@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_writable_book",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_writable_book"
     ]
   ],
   "rewards": {

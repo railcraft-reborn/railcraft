@@ -1,6 +1,6 @@
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "railcraft:silver_ore",
+  "features": "railcraft:zinc_ore",
   "step": "underground_ores"
 }

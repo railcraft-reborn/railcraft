@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "railcraft:firestone_ore"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

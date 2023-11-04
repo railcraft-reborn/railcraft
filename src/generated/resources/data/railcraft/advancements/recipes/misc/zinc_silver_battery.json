@@ -34,9 +34,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zinc_electrode",
-      "has_silver_electrode",
-      "has_the_recipe"
+      "has_silver_electrode"
     ]
   ],
   "rewards": {

@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_cart_dispenser",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_cart_dispenser"
     ]
   ],
   "rewards": {

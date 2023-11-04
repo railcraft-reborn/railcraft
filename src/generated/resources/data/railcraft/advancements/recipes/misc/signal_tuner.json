@@ -32,9 +32,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_redstone",
-      "has_receiver_circuit",
-      "has_the_recipe"
+      "has_receiver_circuit"
     ]
   ],
   "rewards": {

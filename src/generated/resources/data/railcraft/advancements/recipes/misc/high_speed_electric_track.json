@@ -34,9 +34,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_high_speed_rail",
-      "has_stone_railbed",
-      "has_the_recipe"
+      "has_stone_railbed"
     ]
   ],
   "rewards": {

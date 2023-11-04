@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "minecraft:stone_bricks"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

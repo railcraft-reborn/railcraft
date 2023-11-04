@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_controller_circuit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_controller_circuit"
     ]
   ],
   "rewards": {

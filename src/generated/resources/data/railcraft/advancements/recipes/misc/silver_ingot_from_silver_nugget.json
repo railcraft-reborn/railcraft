@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_silver_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_silver_nugget"
     ]
   ],
   "rewards": {

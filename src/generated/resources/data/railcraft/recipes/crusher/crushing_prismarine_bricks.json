@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:prismarine_bricks"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

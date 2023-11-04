@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_disembarking_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_disembarking_track_kit"
     ]
   ],
   "rewards": {

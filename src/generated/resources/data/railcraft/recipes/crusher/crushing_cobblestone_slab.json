@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:cobblestone_slab"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.45,
       "result": {

@@ -20,8 +20,8 @@
   },
   "requirements": [
     [
-      "has_steel_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_steel_nugget"
     ]
   ],
   "rewards": {

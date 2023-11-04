@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_manual_rolling_machine",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_manual_rolling_machine"
     ]
   ],
   "rewards": {

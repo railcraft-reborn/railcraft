@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "railcraft:blast_furnace_bricks"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.75,
       "result": {

@@ -2,7 +2,6 @@
   "parent": "railcraft:tracks/regular_track",
   "criteria": {
     "has_used_track_kit": {
-      "conditions": {},
       "trigger": "railcraft:use_track_kit"
     }
   },

@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_white_iron_tank_wall",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_white_iron_tank_wall"
     ]
   ],
   "rewards": {

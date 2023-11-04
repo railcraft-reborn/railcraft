@@ -1,5 +1,4 @@
-// 1.20.1	2023-09-14T09:51:29.144073	Loot Tables
-ffb5382640dd4a5184faf3bfe33f8c7cdb323def data/railcraft/loot_tables/advancements/patchouli_book.json
+// 1.20.2	2023-11-04T11:45:02.968603	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json

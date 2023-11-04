@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_nickel_raw",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_nickel_raw"
     ]
   ],
   "rewards": {

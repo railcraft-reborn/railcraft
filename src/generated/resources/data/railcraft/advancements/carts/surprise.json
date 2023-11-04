@@ -2,9 +2,6 @@
   "parent": "railcraft:carts/locomotive",
   "criteria": {
     "has_exploded_track": {
-      "conditions": {
-        "cart": {}
-      },
       "trigger": "railcraft:surprise"
     }
   },

@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_white_steel_tank_gauge",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_white_steel_tank_gauge"
     ]
   ],
   "rewards": {

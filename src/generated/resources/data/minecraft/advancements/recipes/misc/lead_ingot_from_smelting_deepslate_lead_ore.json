@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_deepslate_lead_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_lead_ore"
     ]
   ],
   "rewards": {

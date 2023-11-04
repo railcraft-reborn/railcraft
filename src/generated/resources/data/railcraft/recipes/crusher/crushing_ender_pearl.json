@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:ender_pearl"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

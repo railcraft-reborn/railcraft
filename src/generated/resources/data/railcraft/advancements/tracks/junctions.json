@@ -2,7 +2,6 @@
   "parent": "railcraft:tracks/regular_track",
   "criteria": {
     "has_used_spikemaul": {
-      "conditions": {},
       "trigger": "railcraft:spike_maul_use"
     }
   },

@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_piston",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_piston"
     ]
   ],
   "rewards": {

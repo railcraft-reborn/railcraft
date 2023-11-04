@@ -30,9 +30,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zinc_ingot",
-      "has_copper_ingot",
-      "has_the_recipe"
+      "has_copper_ingot"
     ]
   ],
   "rewards": {

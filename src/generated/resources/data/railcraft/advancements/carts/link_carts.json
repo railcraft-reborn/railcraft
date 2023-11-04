@@ -2,10 +2,6 @@
   "parent": "railcraft:carts/root",
   "criteria": {
     "linked_carts": {
-      "conditions": {
-        "other": {},
-        "owned": {}
-      },
       "trigger": "railcraft:cart_linking"
     }
   },

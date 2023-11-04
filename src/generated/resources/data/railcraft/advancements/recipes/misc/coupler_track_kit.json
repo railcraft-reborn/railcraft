@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_track_parts",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_track_parts"
     ]
   ],
   "rewards": {

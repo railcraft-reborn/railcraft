@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_charge_spool_small",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_charge_spool_small"
     ]
   ],
   "rewards": {

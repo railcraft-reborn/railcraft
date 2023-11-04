@@ -30,9 +30,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_saltpeter_dust",
-      "has_sulfur_dust",
-      "has_the_recipe"
+      "has_sulfur_dust"
     ]
   ],
   "rewards": {

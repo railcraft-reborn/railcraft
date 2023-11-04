@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_buffer_stop_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_buffer_stop_track_kit"
     ]
   ],
   "rewards": {

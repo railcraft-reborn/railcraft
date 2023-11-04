@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_zinc_raw",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_zinc_raw"
     ]
   ],
   "rewards": {

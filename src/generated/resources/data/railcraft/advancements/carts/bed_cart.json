@@ -2,9 +2,6 @@
   "parent": "railcraft:carts/locomotive",
   "criteria": {
     "has_slept_in_rc_bed": {
-      "conditions": {
-        "cart": {}
-      },
       "trigger": "railcraft:bed_cart_sleep"
     }
   },

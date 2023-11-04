@@ -34,9 +34,9 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_dispenser",
-      "has_minecart",
-      "has_the_recipe"
+      "has_minecart"
     ]
   ],
   "rewards": {

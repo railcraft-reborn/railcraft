@@ -19,7 +19,7 @@ public class RailcraftAdvancementRewardLoot implements LootTableSubProvider {
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
-    var bookId = Railcraft.rl("guide_book");
+    /*var bookId = Railcraft.rl("guide_book");
     var book = PatchouliAPI.get().getBookStack(bookId).getItem();
     var tag = new CompoundTag();
     tag.putString("patchouli:book", bookId.toString());
@@ -28,6 +28,6 @@ public class RailcraftAdvancementRewardLoot implements LootTableSubProvider {
             .setRolls(ConstantValue.exactly(1))
             .add(LootItem.lootTableItem(book).apply(SetNbtFunction.setTag(tag)))
         )
-    );
+    );*/
   }
 }

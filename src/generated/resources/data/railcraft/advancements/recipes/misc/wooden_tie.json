@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_creosote_bucket",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_creosote_bucket"
     ]
   ],
   "rewards": {

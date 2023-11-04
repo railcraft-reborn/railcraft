@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_abyssal_paver",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_abyssal_paver"
     ]
   ],
   "rewards": {

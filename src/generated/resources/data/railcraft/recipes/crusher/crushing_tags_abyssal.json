@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "railcraft:abyssal"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

@@ -48,6 +48,8 @@ sourceSets {
         }
     }
     test {
+        // test has no resources
+        resources.srcDirs = []
         compileClasspath += api.output
         runtimeClasspath += api.output
     }
@@ -139,6 +141,22 @@ tasks.withType(ProcessResources).configureEach {
 
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    from([sourceSets.api.output, sourceSets.main.output])
+    manifest {
+        attributes([
+                'Specification-Title'       : project.name,
+                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
+                'Specification-Version'     : '1',
+                'Implementation-Title'      : project.name,
+                'Implementation-Version'    : project.version,
+                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
+                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
+                'MixinConfigs'              : 'railcraft.mixins.json'
+        ])
     }
 }
 

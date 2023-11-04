@@ -22,8 +22,8 @@
   },
   "requirements": [
     [
-      "has_turbine_disk",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_turbine_disk"
     ]
   ],
   "rewards": {

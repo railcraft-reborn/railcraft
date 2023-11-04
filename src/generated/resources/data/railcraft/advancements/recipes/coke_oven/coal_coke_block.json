@@ -1,4 +1,5 @@
 {
+  "parent": "minecraft:recipes/root",
   "criteria": {
     "has_coal_block": {
       "conditions": {
@@ -11,12 +12,24 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:coke_oven/coal_coke_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_coal_block"
     ]
   ],
-  "sends_telemetry_event": true
+  "rewards": {
+    "recipes": [
+      "railcraft:coke_oven/coal_coke_block"
+    ]
+  },
+  "sends_telemetry_event": false
 }
