@@ -12,7 +12,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-@Mixin(Slot.class)
+@Mixin(value = Slot.class, remap = false)
 public class SlotMixin {
 
   @Shadow

@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 
-@Mixin(MinecartFurnace.class)
+@Mixin(value = MinecartFurnace.class, remap = false)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
 
   @Shadow

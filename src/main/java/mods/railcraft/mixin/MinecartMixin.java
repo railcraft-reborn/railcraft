@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import net.minecraft.world.entity.vehicle.Minecart;
 
-@Mixin(Minecart.class)
+@Mixin(value = Minecart.class, remap = false)
 public class MinecartMixin {
 
   @Redirect(method = "activateMinecart",
