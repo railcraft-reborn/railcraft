@@ -48,8 +48,6 @@ sourceSets {
         }
     }
     test {
-        // test has no resources
-        resources.srcDirs = []
         compileClasspath += api.output
         runtimeClasspath += api.output
     }
