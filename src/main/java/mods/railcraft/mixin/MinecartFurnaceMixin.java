@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.CommonHooks;
 
-@Mixin(value = MinecartFurnace.class, remap = false)
+@Mixin(value = MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
 
   @Shadow
@@ -30,7 +30,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
 
   /**
    * Replace fuel checks with
-   * {@link ForgeHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
+   * {@link CommonHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
    */
   @Overwrite
   @Override

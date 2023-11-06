@@ -8,7 +8,7 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import net.minecraft.world.entity.vehicle.MinecartHopper;
 
-@Mixin(value = MinecartHopper.class, remap = false)
+@Mixin(value = MinecartHopper.class)
 public class MinecartHopperMixin {
 
   private static final int PUSH_COOLDOWN_TICKS = 5;

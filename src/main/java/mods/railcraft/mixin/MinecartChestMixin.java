@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 @ValidateSlots
-@Mixin(value = MinecartChest.class, remap = false)
+@Mixin(value = MinecartChest.class)
 public abstract class MinecartChestMixin extends AbstractMinecartContainer {
 
   protected MinecartChestMixin(EntityType<?> type, Level level) {

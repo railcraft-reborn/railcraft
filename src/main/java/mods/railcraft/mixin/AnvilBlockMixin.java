@@ -8,7 +8,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(value = AnvilBlock.class, remap = false)
+@Mixin(value = AnvilBlock.class)
 public class AnvilBlockMixin {
 
   @Inject(method = "damage", at = @At("HEAD"), cancellable = true)

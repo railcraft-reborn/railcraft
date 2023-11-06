@@ -6,6 +6,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.neoforged.gradle.userdev' version '7.0.26'
+    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
@@ -84,10 +85,6 @@ runs {
 
 repositories {
     maven {
-        name 'sponge'
-        url 'https://repo.spongepowered.org/repository/maven-public'
-    }
-    maven {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
@@ -100,8 +97,6 @@ repositories {
 dependencies {
     implementation group: 'net.neoforged', name: 'neoforge', version: neo_version
 
-    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
-    testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
@@ -167,6 +162,10 @@ task apiJar(type: Jar, group: 'build') {
 artifacts {
     archives jar
     archives apiJar
+}
+
+mixin {
+    config 'railcraft.mixins.json'
 }
 
 def penultimateTag = { ->

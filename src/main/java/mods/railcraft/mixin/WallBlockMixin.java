@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-@Mixin(value = WallBlock.class, remap = false)
+@Mixin(value = WallBlock.class)
 public class WallBlockMixin {
 
   @Inject(method = "connectsTo", at = @At("HEAD"), cancellable = true)

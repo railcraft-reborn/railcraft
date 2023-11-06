@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
-@Mixin(value = FenceBlock.class, remap = false)
+@Mixin(value = FenceBlock.class)
 public class FenceBlockMixin {
 
   @Inject(method = "connectsTo", at = @At("HEAD"), cancellable = true)
