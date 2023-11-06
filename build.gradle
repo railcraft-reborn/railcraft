@@ -88,10 +88,6 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
-    maven {
-        name 'curseforge'
-        url 'https://www.cursemaven.com'
-    }
 }
 
 dependencies {
