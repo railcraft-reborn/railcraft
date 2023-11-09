@@ -18,16 +18,11 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 public class RailcraftLootTableProvider extends LootTableProvider {
 
   public RailcraftLootTableProvider(PackOutput packOutput) {
-    super(packOutput, Set.of(), List.of());
-  }
-
-  @Override
-  public List<LootTableProvider.SubProviderEntry> getTables() {
-    return List.of(
+    super(packOutput, Set.of(), List.of(
         new LootTableProvider.SubProviderEntry(RailcraftBlockLoot::new, LootContextParamSets.BLOCK),
         new LootTableProvider.SubProviderEntry(
             RailcraftAdvancementRewardLoot::new, LootContextParamSets.ADVANCEMENT_REWARD),
-        new LootTableProvider.SubProviderEntry(RailcraftChestLoot::new, LootContextParamSets.CHEST));
+        new LootTableProvider.SubProviderEntry(RailcraftChestLoot::new, LootContextParamSets.CHEST)));
   }
 
   @Override

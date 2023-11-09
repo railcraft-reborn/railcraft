@@ -13,12 +13,10 @@ import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record FireSparkParticleOptions(Vec3 destination) implements ParticleOptions {
 
-  public static final Codec<FireSparkParticleOptions> CODEC =
-      RecordCodecBuilder.create(instance -> instance
-          .group(Vec3.CODEC
-              .fieldOf("destination")
-              .forGetter(FireSparkParticleOptions::destination))
-          .apply(instance, FireSparkParticleOptions::new));
+  public static final Codec<FireSparkParticleOptions> CODEC = RecordCodecBuilder.create(
+      instance -> instance.group(
+          Vec3.CODEC.fieldOf("destination").forGetter(FireSparkParticleOptions::destination)
+      ).apply(instance, FireSparkParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<FireSparkParticleOptions> DESERIALIZER =

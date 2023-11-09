@@ -53,7 +53,9 @@ public class IngameWindowScreen extends Screen {
     GuiUtil.drawCenteredString(guiGraphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
     this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
     poseStack.popPose();
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    for(var renderable : this.renderables) {
+      renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
+    }
   }
 
   protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,

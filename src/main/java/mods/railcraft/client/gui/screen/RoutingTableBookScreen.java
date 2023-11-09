@@ -434,7 +434,7 @@ public class RoutingTableBookScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+    super.render(guiGraphics, mouseX, mouseY, partialTicks);
     this.setFocused(null);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
@@ -474,7 +474,6 @@ public class RoutingTableBookScreen extends Screen {
       this.renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
     }
     this.updateButtonVisibility();
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
   }
 
   private void renderCursor(GuiGraphics guiGraphics, Pos2i cursorPos, boolean isEndOfText) {

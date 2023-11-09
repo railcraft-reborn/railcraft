@@ -12,13 +12,10 @@ import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record ForceSpawnParticleOptions(int color) implements ParticleOptions {
 
-  public static final Codec<ForceSpawnParticleOptions> CODEC =
-      RecordCodecBuilder.create(instance -> instance
-          .group(
-              Codec.INT
-                  .fieldOf("color")
-                  .forGetter(ForceSpawnParticleOptions::color))
-          .apply(instance, ForceSpawnParticleOptions::new));
+  public static final Codec<ForceSpawnParticleOptions> CODEC = RecordCodecBuilder.create(
+      instance -> instance.group(
+          Codec.INT.fieldOf("color").forGetter(ForceSpawnParticleOptions::color)
+      ).apply(instance, ForceSpawnParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<ForceSpawnParticleOptions> DESERIALIZER =
