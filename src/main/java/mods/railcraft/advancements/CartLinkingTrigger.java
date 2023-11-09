@@ -47,8 +47,8 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart owned, AbstractMinecart other) {
-      return this.owned.map(x -> x.matches(player, owned)).orElse(false)
-          && this.other.map(x -> x.matches(player, other)).orElse(false);
+      return this.owned.map(x -> x.matches(player, owned)).orElse(true)
+          && this.other.map(x -> x.matches(player, other)).orElse(true);
     }
 
     @Override

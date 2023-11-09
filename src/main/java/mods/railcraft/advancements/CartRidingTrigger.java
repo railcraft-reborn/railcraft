@@ -87,7 +87,7 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
-      return cartPredicate.map(x -> x.matches(player, cart)).orElse(false);
+      return cartPredicate.map(x -> x.matches(player, cart)).orElse(true);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class SurpriseTrigger extends SimpleCriterionTrigger<SurpriseTrigger.Inst
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
       return this.cart
           .map(x -> x.matches(player, cart))
-          .orElse(false);
+          .orElse(true);
     }
 
     @Override

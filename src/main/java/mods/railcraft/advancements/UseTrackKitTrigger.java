@@ -51,9 +51,9 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     }
 
     public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {
-      return this.item.map(x -> x.matches(stack)).orElse(false)
+      return this.item.map(x -> x.matches(stack)).orElse(true)
           && this.location.map(x ->
-          x.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse(false);
+          x.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse(true);
     }
 
     @Override

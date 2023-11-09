@@ -53,7 +53,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.In
       if (this.season.isPresent() && !this.season.get().equals(season)) {
         return false;
       }
-      return this.cart.map(x -> x.matches(player, cart)).orElse(false);
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
     }
 
     @Override

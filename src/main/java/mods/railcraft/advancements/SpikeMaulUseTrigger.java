@@ -63,10 +63,10 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
       return LevelUtil.getBlockEntity(level, pos)
           .map(BlockEntity::saveWithoutMetadata)
-          .map(tag -> this.nbt.map(x -> x.matches(tag)).orElse(false))
+          .map(tag -> this.nbt.map(x -> x.matches(tag)).orElse(true))
           .orElse(false)
-          && this.tool.map(x -> x.matches(item)).orElse(false)
-          && this.location.map(x -> x.matches(level, pos.getX(), pos.getY(), pos.getZ())).orElse(false);
+          && this.tool.map(x -> x.matches(item)).orElse(true)
+          && this.location.map(x -> x.matches(level, pos.getX(), pos.getY(), pos.getZ())).orElse(true);
     }
 
     @Override

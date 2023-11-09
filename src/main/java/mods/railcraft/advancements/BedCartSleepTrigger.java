@@ -45,7 +45,7 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
       return this.cart
           .map(x -> x.matches(player, cart))
-          .orElse(false) && player.isSleeping();
+          .orElse(true) && player.isSleeping();
     }
 
     @Override

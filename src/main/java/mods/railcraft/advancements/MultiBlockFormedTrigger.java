@@ -60,9 +60,9 @@ public class MultiBlockFormedTrigger extends
     }
 
     public boolean matches(RailcraftBlockEntity blockEntity) {
-      return this.type.map(type -> type.equals(blockEntity.getType())).orElse(false)
+      return this.type.map(type -> type.equals(blockEntity.getType())).orElse(true)
           && this.nbt.map(predicate -> predicate.matches(blockEntity.saveWithoutMetadata()))
-          .orElse(false);
+          .orElse(true);
     }
 
     @Override

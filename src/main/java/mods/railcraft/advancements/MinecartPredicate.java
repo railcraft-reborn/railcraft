@@ -81,7 +81,7 @@ public record MinecartPredicate(
     if (!this.speed.matchesSqr(MinecartUtil.getCartSpeedUncappedSquared(cart.getDeltaMovement()))) {
       return false;
     }
-    return this.parent.map(x -> x.matches(player, cart)).orElse(false);
+    return this.parent.map(x -> x.matches(player, cart)).orElse(true);
   }
 
   public JsonElement serializeToJson() {

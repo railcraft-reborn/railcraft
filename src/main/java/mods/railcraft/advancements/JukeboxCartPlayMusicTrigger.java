@@ -60,7 +60,7 @@ public class JukeboxCartPlayMusicTrigger
       if (this.music.isPresent() && !this.music.get().equals(music)) {
         return false;
       }
-      return this.cart.map(x -> x.matches(player, cart)).orElse(false);
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
     }
 
     @Override
