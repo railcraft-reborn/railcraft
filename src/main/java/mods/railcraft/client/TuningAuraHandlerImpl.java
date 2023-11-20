@@ -11,12 +11,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraHandlerImpl implements TuningAuraHandler {
 
-  private final Minecraft minecraft = Minecraft.getInstance();
-
   @Override
   public boolean isTuningAuraActive() {
-    return GogglesItem.isGoggleAuraActive(this.minecraft.player, GogglesItem.Aura.TUNING)
-        || GogglesItem.isGoggleAuraActive(this.minecraft.player, GogglesItem.Aura.SIGNALLING);
+    return GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.TUNING)
+        || GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.SIGNALLING);
   }
 
   @Override
@@ -33,7 +31,7 @@ public class TuningAuraHandlerImpl implements TuningAuraHandler {
     var pz = pos.getZ() + getRandomParticleOffset(random);
 
     var colorProfile =
-        GogglesItem.isGoggleAuraActive(this.minecraft.player, GogglesItem.Aura.SIGNALLING)
+        GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.SIGNALLING)
             ? SignalAuraRenderUtil.ColorProfile.CONTROLLER_ASPECT
             : SignalAuraRenderUtil.ColorProfile.COORD_RAINBOW;
 

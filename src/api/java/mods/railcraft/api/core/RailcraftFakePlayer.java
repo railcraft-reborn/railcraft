@@ -6,8 +6,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.core;
 
-import java.util.UUID;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,19 +16,15 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 public final class RailcraftFakePlayer {
   private RailcraftFakePlayer() {}
 
-  public static final GameProfile RAILCRAFT_USER_PROFILE =
-      new GameProfile(UUID.nameUUIDFromBytes(RailcraftConstants.RAILCRAFT_PLAYER.getBytes()),
-          RailcraftConstants.RAILCRAFT_PLAYER);
-
   public static ServerPlayer get(final ServerLevel world, final double x, final double y,
       final double z) {
-    ServerPlayer player = FakePlayerFactory.get(world, RAILCRAFT_USER_PROFILE);
+    ServerPlayer player = FakePlayerFactory.get(world, RailcraftConstants.FAKE_GAMEPROFILE);
     player.setPos(x, y, z);
     return player;
   }
 
   public static ServerPlayer get(final ServerLevel world, final BlockPos pos) {
-    ServerPlayer player = FakePlayerFactory.get(world, RAILCRAFT_USER_PROFILE);
+    ServerPlayer player = FakePlayerFactory.get(world, RailcraftConstants.FAKE_GAMEPROFILE);
     player.setPos(pos.getX(), pos.getY(), pos.getZ());
     return player;
   }

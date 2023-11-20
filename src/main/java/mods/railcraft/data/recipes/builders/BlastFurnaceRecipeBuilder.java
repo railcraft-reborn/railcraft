@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.JsonConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -73,7 +74,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     @Override
     protected void addJsonProperty(JsonObject json) {
-      json.addProperty("slagOutput", this.slagOutput);
+      json.addProperty(JsonConstants.SLAG_OUTPUT, this.slagOutput);
     }
 
     @Override

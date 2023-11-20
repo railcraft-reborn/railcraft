@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.JsonConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -91,22 +92,22 @@ public class CrusherRecipeBuilder {
     }
 
     public void serializeRecipeData(JsonObject jsonOut) {
-      jsonOut.addProperty("processTime", processTime);
-      jsonOut.add("ingredient", ingredient.toJson(false));
+      jsonOut.addProperty(JsonConstants.PROCESS_TIME, processTime);
+      jsonOut.add(JsonConstants.INGREDIENT, ingredient.toJson(false));
 
       var result = new JsonArray();
       for (var item : probabilityItems) {
         var pattern = new JsonObject();
 
         var itemStackObject = new JsonObject();
-        itemStackObject.addProperty("item",
+        itemStackObject.addProperty(JsonConstants.ITEM,
             ForgeRegistries.ITEMS.getKey(item.getA().getItem()).toString());
-        itemStackObject.addProperty("count", item.getA().getCount());
-        pattern.add("result", itemStackObject);
-        pattern.addProperty("probability", item.getB());
+        itemStackObject.addProperty(JsonConstants.COUNT, item.getA().getCount());
+        pattern.add(JsonConstants.RESULT, itemStackObject);
+        pattern.addProperty(JsonConstants.PROBABILITY, item.getB());
         result.add(pattern);
       }
-      jsonOut.add("outputs", result);
+      jsonOut.add(JsonConstants.OUTPUTS, result);
     }
 
     @Override

@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.JsonConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -71,7 +72,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     @Override
     protected void addJsonProperty(JsonObject json) {
-      json.addProperty("creosoteOutput", creosoteOutput);
+      json.addProperty(JsonConstants.CREOSOTE_OUTPUT, creosoteOutput);
     }
 
     @Override

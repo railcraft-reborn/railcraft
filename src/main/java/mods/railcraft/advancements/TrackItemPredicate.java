@@ -31,7 +31,7 @@ public record TrackItemPredicate(
               .forGetter(TrackItemPredicate::electric),
           ExtraCodecs.strictOptionalField(TRACK_TYPE_CODEC, "track_type")
               .forGetter(TrackItemPredicate::type)
-          ).apply(instance, TrackItemPredicate::new));
+      ).apply(instance, TrackItemPredicate::new));
 
   public static Optional<TrackItemPredicate> fromJson(@Nullable JsonElement jsonElement) {
     return jsonElement != null && !jsonElement.isJsonNull()

@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import mods.railcraft.api.core.JsonConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -122,22 +123,23 @@ public class RollingRecipeBuilder {
         jsonarray.add(s);
       }
 
-      jsonOut.add("pattern", jsonarray);
+      jsonOut.add(JsonConstants.PATTERN, jsonarray);
       var jsonobject = new JsonObject();
 
       for (var entry : this.key.entrySet()) {
         jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
       }
 
-      jsonOut.add("key", jsonobject);
+      jsonOut.add(JsonConstants.KEY, jsonobject);
       var jsonobject1 = new JsonObject();
-      jsonobject1.addProperty("item", ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
+      jsonobject1.addProperty(JsonConstants.ITEM,
+          ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
       if (this.count > 1) {
-        jsonobject1.addProperty("count", this.count);
+        jsonobject1.addProperty(JsonConstants.COUNT, this.count);
       }
 
-      jsonOut.add("result", jsonobject1);
-      jsonOut.add("processTime", new JsonPrimitive(processTime));
+      jsonOut.add(JsonConstants.RESULT, jsonobject1);
+      jsonOut.add(JsonConstants.PROCESS_TIME, new JsonPrimitive(processTime));
     }
 
     @Override

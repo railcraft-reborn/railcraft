@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
+import mods.railcraft.api.core.JsonConstants;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -72,15 +73,15 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public final void serializeRecipeData(JsonObject json) {
-      json.add("ingredient", ingredient.toJson(false));
+      json.add(JsonConstants.INGREDIENT, ingredient.toJson(false));
       var resultJson = new JsonObject();
-      resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+      resultJson.addProperty(JsonConstants.ITEM, ForgeRegistries.ITEMS.getKey(result).toString());
       if (count > 1) {
-        resultJson.addProperty("count", count);
+        resultJson.addProperty(JsonConstants.COUNT, count);
       }
-      json.add("result", resultJson);
-      json.addProperty("experience", experience);
-      json.addProperty("cookingTime", cookingTime);
+      json.add(JsonConstants.RESULT, resultJson);
+      json.addProperty(JsonConstants.EXPERIENCE, experience);
+      json.addProperty(JsonConstants.COOKING_TIME, cookingTime);
       addJsonProperty(json);
     }
 
