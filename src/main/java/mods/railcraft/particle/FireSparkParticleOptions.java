@@ -7,16 +7,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record FireSparkParticleOptions(Vec3 destination) implements ParticleOptions {
 
   public static final Codec<FireSparkParticleOptions> CODEC = RecordCodecBuilder.create(
       instance -> instance.group(
-          Vec3.CODEC.fieldOf("destination").forGetter(FireSparkParticleOptions::destination)
-      ).apply(instance, FireSparkParticleOptions::new));
+          Vec3.CODEC.fieldOf("destination").forGetter(FireSparkParticleOptions::destination))
+          .apply(instance, FireSparkParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<FireSparkParticleOptions> DESERIALIZER =
@@ -48,7 +48,7 @@ public record FireSparkParticleOptions(Vec3 destination) implements ParticleOpti
   @Override
   public String writeToString() {
     return String.format(Locale.ROOT, "%s %.2f %.2f %.2f",
-        ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
+        BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
         this.destination.x(),
         this.destination.y(),
         this.destination.z());

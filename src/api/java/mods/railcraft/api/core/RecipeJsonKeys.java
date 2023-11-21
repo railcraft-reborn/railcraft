@@ -1,9 +1,8 @@
 package mods.railcraft.api.core;
 
-public class JsonConstants {
+public class RecipeJsonKeys {
 
-  private JsonConstants() {
-  }
+  private RecipeJsonKeys() {}
 
   public static final String INGREDIENT = "ingredient";
   public static final String COUNT = "count";

@@ -117,7 +117,7 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.POWERED_ROLLING_MACHINE);
   }
 }

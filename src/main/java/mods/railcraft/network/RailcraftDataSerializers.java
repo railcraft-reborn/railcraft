@@ -11,7 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RailcraftDataSerializers {
 
@@ -74,7 +74,8 @@ public class RailcraftDataSerializers {
       };
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);
+      DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,
+          RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register("fluid_stack", () -> FLUID_STACK);

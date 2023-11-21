@@ -9,6 +9,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.IMinecartCollisionHandler;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
@@ -204,7 +204,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
 
       if (!other.isAlive() || RailcraftConfig.SERVER.highSpeedTrackIgnoredEntities.get()
-          .contains(ForgeRegistries.ENTITY_TYPES.getKey(other.getType()).toString())) {
+          .contains(BuiltInRegistries.ENTITY_TYPE.getKey(other.getType()).toString())) {
         return;
       }
 

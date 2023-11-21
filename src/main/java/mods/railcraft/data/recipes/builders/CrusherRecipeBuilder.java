@@ -7,9 +7,10 @@ import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.core.JsonConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
@@ -60,54 +60,46 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(RecipeOutput recipeOutput) {
-    var itemPath = Arrays.stream(ingredient.getItems())
+    var itemPath = Arrays.stream(this.ingredient.getItems())
         .filter(x -> !x.is(Items.BARRIER))
         .findFirst()
-        .map(x -> ForgeRegistries.ITEMS.getKey(x.getItem()).getPath())
+        .map(x -> BuiltInRegistries.ITEM.getKey(x.getItem()).getPath())
         .orElseThrow();
-    save(recipeOutput, itemPath);
+    this.save(recipeOutput, itemPath);
   }
 
   public void save(RecipeOutput recipeOutput, String path) {
-    var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
-
-    recipeOutput.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
+    recipeOutput.accept(new Result(
+        Railcraft.rl("crusher/crushing_" + path),
+        this.ingredient,
+        this.probabilityItems,
         this.processTime));
   }
 
-  private static class Result implements FinishedRecipe {
+  private record Result(
+      ResourceLocation id,
+      Ingredient ingredient,
+      List<Tuple<ItemStack, Double>> probabilityItems,
+      int processTime) implements FinishedRecipe {
 
-    private final ResourceLocation id;
-    private final Ingredient ingredient;
-    private final List<Tuple<ItemStack, Double>> probabilityItems;
-    private final int processTime;
-
-    public Result(ResourceLocation resourceLocation, Ingredient ingredient,
-        List<Tuple<ItemStack, Double>> probabilityItems,
-        int processTime) {
-      this.id = resourceLocation;
-      this.ingredient = ingredient;
-      this.probabilityItems = probabilityItems;
-      this.processTime = processTime;
-    }
-
+    @Override
     public void serializeRecipeData(JsonObject jsonOut) {
-      jsonOut.addProperty(JsonConstants.PROCESS_TIME, processTime);
-      jsonOut.add(JsonConstants.INGREDIENT, ingredient.toJson(false));
+      jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, this.processTime);
+      jsonOut.add(RecipeJsonKeys.INGREDIENT, this.ingredient.toJson(false));
 
       var result = new JsonArray();
-      for (var item : probabilityItems) {
+      for (var item : this.probabilityItems) {
         var pattern = new JsonObject();
 
         var itemStackObject = new JsonObject();
-        itemStackObject.addProperty(JsonConstants.ITEM,
-            ForgeRegistries.ITEMS.getKey(item.getA().getItem()).toString());
-        itemStackObject.addProperty(JsonConstants.COUNT, item.getA().getCount());
-        pattern.add(JsonConstants.RESULT, itemStackObject);
-        pattern.addProperty(JsonConstants.PROBABILITY, item.getB());
+        itemStackObject.addProperty(RecipeJsonKeys.ITEM,
+            BuiltInRegistries.ITEM.getKey(item.getA().getItem()).toString());
+        itemStackObject.addProperty(RecipeJsonKeys.COUNT, item.getA().getCount());
+        pattern.add(RecipeJsonKeys.RESULT, itemStackObject);
+        pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.getB());
         result.add(pattern);
       }
-      jsonOut.add(JsonConstants.OUTPUTS, result);
+      jsonOut.add(RecipeJsonKeys.OUTPUTS, result);
     }
 
     @Override

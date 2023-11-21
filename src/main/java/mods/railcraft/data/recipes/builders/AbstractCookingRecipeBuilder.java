@@ -4,16 +4,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.api.core.JsonConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.Criterion;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
@@ -73,20 +73,20 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public final void serializeRecipeData(JsonObject json) {
-      json.add(JsonConstants.INGREDIENT, ingredient.toJson(false));
+      json.add(RecipeJsonKeys.INGREDIENT, this.ingredient.toJson(false));
       var resultJson = new JsonObject();
-      resultJson.addProperty(JsonConstants.ITEM, ForgeRegistries.ITEMS.getKey(result).toString());
-      if (count > 1) {
-        resultJson.addProperty(JsonConstants.COUNT, count);
+      resultJson.addProperty(RecipeJsonKeys.ITEM,
+          BuiltInRegistries.ITEM.getKey(this.result).toString());
+      if (this.count > 1) {
+        resultJson.addProperty(RecipeJsonKeys.COUNT, this.count);
       }
-      json.add(JsonConstants.RESULT, resultJson);
-      json.addProperty(JsonConstants.EXPERIENCE, experience);
-      json.addProperty(JsonConstants.COOKING_TIME, cookingTime);
+      json.add(RecipeJsonKeys.RESULT, resultJson);
+      json.addProperty(RecipeJsonKeys.EXPERIENCE, this.experience);
+      json.addProperty(RecipeJsonKeys.COOKING_TIME, this.cookingTime);
       addJsonProperty(json);
     }
 
-    protected void addJsonProperty(JsonObject json) {
-    }
+    protected void addJsonProperty(JsonObject json) {}
 
     @Override
     public ResourceLocation id() {

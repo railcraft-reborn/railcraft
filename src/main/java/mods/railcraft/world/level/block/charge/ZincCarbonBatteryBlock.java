@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.charge;
 
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class ZincCarbonBatteryBlock extends DisposableBatteryBlock {
 
@@ -14,8 +13,8 @@ public class ZincCarbonBatteryBlock extends DisposableBatteryBlock {
   }
 
   @Override
-  RegistryObject<EmptyBatteryBlock> getBatteryBlockEmpty() {
-    return RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY;
+  protected EmptyBatteryBlock emptyBlock() {
+    return RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get();
   }
 
   @Override

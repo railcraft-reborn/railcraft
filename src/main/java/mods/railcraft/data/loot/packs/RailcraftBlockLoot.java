@@ -1,6 +1,7 @@
 package mods.railcraft.data.loot.packs;
 
 import java.util.Set;
+import java.util.function.Supplier;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class RailcraftBlockLoot extends BlockLootSubProvider {
 
@@ -65,26 +65,26 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
     this.dropSelf(RailcraftBlocks.FRAME.get());
 
-    this.add(RailcraftBlocks.LEAD_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
-    this.add(RailcraftBlocks.NICKEL_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
-    this.add(RailcraftBlocks.SILVER_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
-    this.add(RailcraftBlocks.TIN_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
-    this.add(RailcraftBlocks.ZINC_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
-    this.add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
-    this.add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
-    this.add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
-    this.add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
-    this.add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(), block ->
-        this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
+    this.add(RailcraftBlocks.LEAD_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
+    this.add(RailcraftBlocks.NICKEL_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
+    this.add(RailcraftBlocks.SILVER_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
+    this.add(RailcraftBlocks.TIN_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
+    this.add(RailcraftBlocks.ZINC_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.NICKEL_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.SILVER_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.TIN_RAW.get()));
+    this.add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get(),
+        block -> this.createOreDrop(block, RailcraftItems.ZINC_RAW.get()));
     this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
     this.dropSelf(RailcraftBlocks.QUARRIED_STONE.get());
@@ -430,6 +430,6 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
 
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return RailcraftBlocks.entries().stream().map(RegistryObject::get).toList();
+    return RailcraftBlocks.entries().stream().<Block>map(Supplier::get).toList();
   }
 }

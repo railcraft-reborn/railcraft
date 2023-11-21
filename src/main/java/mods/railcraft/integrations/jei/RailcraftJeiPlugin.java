@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei;
 
+import java.util.function.Supplier;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -41,7 +42,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
@@ -104,28 +104,29 @@ public class RailcraftJeiPlugin implements IModPlugin {
             .map(RecipeHolder::value).toList());
     registration.addRecipes(RecipeTypes.BLAST_FURNACE,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()).stream()
-                .map(RecipeHolder::value).toList());
+            .map(RecipeHolder::value).toList());
     registration.addRecipes(RecipeTypes.CRUSHER,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
             .map(RecipeHolder::value).toList());
 
     RailcraftBlocks.entries()
         .stream()
-        .filter(x -> x.get() instanceof JeiSearchable)
-        .map(RegistryObject::get)
-        .forEach(x ->
-            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+        .map(Supplier::get)
+        .filter(JeiSearchable.class::isInstance)
+        .forEach(x -> registration.addItemStackInfo(
+            new ItemStack(x), ((JeiSearchable) x).jeiDescription()));
     RailcraftItems.entries()
         .stream()
-        .filter(x -> x.get() instanceof JeiSearchable)
-        .map(RegistryObject::get)
-        .forEach(x ->
-            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+        .map(Supplier::get)
+        .filter(JeiSearchable.class::isInstance)
+        .forEach(x -> registration.addItemStackInfo(
+            new ItemStack(x), ((JeiSearchable) x).jeiDescription()));
   }
 
 
   @Override
-  public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+  public void registerVanillaCategoryExtensions(
+      IVanillaCategoryExtensionRegistration registration) {
     var craftingCategory = registration.getCraftingCategory();
     craftingCategory.addExtension(LocomotivePaintingRecipe.class,
         new DefaultRecipeWrapper<>(false, Component.translatable(Translations.Jei.PAINT)));
@@ -145,7 +146,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
               int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
             super.drawInfo(recipe, recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
             var drawable = registration.getJeiHelpers().getGuiHelper()
-                    .createDrawableItemStack(new ItemStack(Items.MINECART));
+                .createDrawableItemStack(new ItemStack(Items.MINECART));
             drawable.draw(guiGraphics, 65, 35);
           }
         });

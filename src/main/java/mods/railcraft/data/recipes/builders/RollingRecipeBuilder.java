@@ -8,9 +8,10 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mods.railcraft.api.core.JsonConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
 
@@ -78,12 +78,12 @@ public class RollingRecipeBuilder {
   }
 
   public void save(RecipeOutput recipeOutput) {
-    this.save(recipeOutput, ForgeRegistries.ITEMS.getKey(this.result));
+    this.save(recipeOutput, BuiltInRegistries.ITEM.getKey(this.result));
   }
 
   public void save(RecipeOutput recipeOutput, String key) {
-    var resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
-    if ((new ResourceLocation(key)).equals(resourcelocation)) {
+    var resourcelocation = BuiltInRegistries.ITEM.getKey(this.result);
+    if (new ResourceLocation(key).equals(resourcelocation)) {
       throw new IllegalStateException(
           "Shaped Recipe %s should remove its 'save' argument".formatted(key));
     } else {
@@ -94,52 +94,40 @@ public class RollingRecipeBuilder {
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var customResourceLocation = resourceLocation.withPrefix("rolling/");
     recipeOutput.accept(new Result(customResourceLocation, this.result, this.count,
-            this.processTime, this.rows, this.key));
+        this.processTime, this.rows, this.key));
   }
 
-  private static class Result implements FinishedRecipe {
+  private record Result(
+      ResourceLocation id,
+      Item item,
+      int count,
+      int processTime,
+      List<String> pattern,
+      Map<Character, Ingredient> key) implements FinishedRecipe {
 
-    private final ResourceLocation id;
-    private final Item resultItem;
-    private final int count;
-    private final int processTime;
-    private final List<String> pattern;
-    private final Map<Character, Ingredient> key;
-
-    public Result(ResourceLocation resourceLocation, Item resultItem, int resultCount,
-        int processTime, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
-      this.id = resourceLocation;
-      this.resultItem = resultItem;
-      this.count = resultCount;
-      this.processTime = processTime;
-      this.pattern = recipePattern;
-      this.key = ingredientMap;
-    }
-
+    @Override
     public void serializeRecipeData(JsonObject jsonOut) {
-      var jsonarray = new JsonArray();
-
+      var patternJson = new JsonArray();
       for (var s : this.pattern) {
-        jsonarray.add(s);
+        patternJson.add(s);
       }
+      jsonOut.add(RecipeJsonKeys.PATTERN, patternJson);
 
-      jsonOut.add(JsonConstants.PATTERN, jsonarray);
-      var jsonobject = new JsonObject();
-
+      var keyJson = new JsonObject();
       for (var entry : this.key.entrySet()) {
-        jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
+        keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
       }
+      jsonOut.add(RecipeJsonKeys.KEY, keyJson);
 
-      jsonOut.add(JsonConstants.KEY, jsonobject);
-      var jsonobject1 = new JsonObject();
-      jsonobject1.addProperty(JsonConstants.ITEM,
-          ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
+      var resultJson = new JsonObject();
+      resultJson.addProperty(RecipeJsonKeys.ITEM,
+          BuiltInRegistries.ITEM.getKey(this.item).toString());
       if (this.count > 1) {
-        jsonobject1.addProperty(JsonConstants.COUNT, this.count);
+        resultJson.addProperty(RecipeJsonKeys.COUNT, this.count);
       }
+      jsonOut.add(RecipeJsonKeys.RESULT, resultJson);
 
-      jsonOut.add(JsonConstants.RESULT, jsonobject1);
-      jsonOut.add(JsonConstants.PROCESS_TIME, new JsonPrimitive(processTime));
+      jsonOut.add(RecipeJsonKeys.PROCESS_TIME, new JsonPrimitive(this.processTime));
     }
 
     @Override

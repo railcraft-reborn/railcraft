@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RailcraftBiomeModifiers {
 
@@ -105,6 +105,6 @@ public class RailcraftBiomeModifiers {
   }
 
   private static ResourceKey<BiomeModifier> createKey(String name) {
-    return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Railcraft.rl(name));
+    return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Railcraft.rl(name));
   }
 }

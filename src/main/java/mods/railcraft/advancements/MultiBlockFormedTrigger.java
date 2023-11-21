@@ -11,9 +11,9 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class MultiBlockFormedTrigger extends
     SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
@@ -21,7 +21,7 @@ public class MultiBlockFormedTrigger extends
   protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
       Optional<ContextAwarePredicate> contextAwarePredicate,
       DeserializationContext deserializationContext) {
-    var type = ForgeRegistries.BLOCK_ENTITY_TYPES.getCodec()
+    var type = BuiltInRegistries.BLOCK_ENTITY_TYPE.byNameCodec()
         .decode(JsonOps.INSTANCE, json.get("type"))
         .map(Pair::getFirst)
         .result();
@@ -62,14 +62,14 @@ public class MultiBlockFormedTrigger extends
     public boolean matches(RailcraftBlockEntity blockEntity) {
       return this.type.map(type -> type.equals(blockEntity.getType())).orElse(true)
           && this.nbt.map(predicate -> predicate.matches(blockEntity.saveWithoutMetadata()))
-          .orElse(true);
+              .orElse(true);
     }
 
     @Override
     public JsonObject serializeToJson() {
       var json = super.serializeToJson();
       this.type.ifPresent(x -> {
-        var encode = ForgeRegistries.BLOCK_ENTITY_TYPES.getCodec()
+        var encode = BuiltInRegistries.BLOCK_ENTITY_TYPE.byNameCodec()
             .encodeStart(JsonOps.INSTANCE, x).result();
         json.add("type", encode.get());
       });

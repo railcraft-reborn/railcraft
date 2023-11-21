@@ -70,7 +70,7 @@ public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSea
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.MANUAL_ROLLING_MACHINE);
   }
 }

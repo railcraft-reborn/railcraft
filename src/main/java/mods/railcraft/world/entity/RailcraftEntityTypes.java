@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity;
 
+import java.util.function.Supplier;
 import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
@@ -11,24 +12,23 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class RailcraftEntityTypes {
 
   private static final DeferredRegister<EntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, RailcraftConstants.ID);
+      DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
 
-  public static final RegistryObject<EntityType<TankMinecart>> TANK_MINECART =
+  public static final Supplier<EntityType<TankMinecart>> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> create("tank_minecart",
               EntityType.Builder
@@ -37,7 +37,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<TrackRemover>> TRACK_REMOVER =
+  public static final Supplier<EntityType<TrackRemover>> TRACK_REMOVER =
       deferredRegister.register("track_remover",
           () -> create("track_remover",
               EntityType.Builder
@@ -46,7 +46,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<TrackLayer>> TRACK_LAYER =
+  public static final Supplier<EntityType<TrackLayer>> TRACK_LAYER =
       deferredRegister.register("track_layer",
           () -> create("track_layer",
               EntityType.Builder
@@ -55,7 +55,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<TrackRelayer>> TRACK_RELAYER =
+  public static final Supplier<EntityType<TrackRelayer>> TRACK_RELAYER =
       deferredRegister.register("track_relayer",
           () -> create("track_relayer",
               EntityType.Builder
@@ -64,7 +64,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<TrackUndercutter>> TRACK_UNDERCUTTER =
+  public static final Supplier<EntityType<TrackUndercutter>> TRACK_UNDERCUTTER =
       deferredRegister.register("track_undercutter",
           () -> create("track_undercutter",
               EntityType.Builder
@@ -73,7 +73,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
 
-  public static final RegistryObject<EntityType<TunnelBore>> TUNNEL_BORE =
+  public static final Supplier<EntityType<TunnelBore>> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
           () -> create("tunnel_bore",
               EntityType.Builder
@@ -82,7 +82,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(TunnelBore.LENGTH, TunnelBore.HEIGHT)));
 
-  public static final RegistryObject<EntityType<CreativeLocomotive>> CREATIVE_LOCOMOTIVE =
+  public static final Supplier<EntityType<CreativeLocomotive>> CREATIVE_LOCOMOTIVE =
       deferredRegister.register("creative_locomotive",
           () -> create("creative_locomotive",
               EntityType.Builder
@@ -91,7 +91,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
 
-  public static final RegistryObject<EntityType<ElectricLocomotive>> ELECTRIC_LOCOMOTIVE =
+  public static final Supplier<EntityType<ElectricLocomotive>> ELECTRIC_LOCOMOTIVE =
       deferredRegister.register("electric_locomotive",
           () -> create("electric_locomotive",
               EntityType.Builder
@@ -100,7 +100,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
 
-  public static final RegistryObject<EntityType<SteamLocomotive>> STEAM_LOCOMOTIVE =
+  public static final Supplier<EntityType<SteamLocomotive>> STEAM_LOCOMOTIVE =
       deferredRegister.register("steam_locomotive",
           () -> create("steam_locomotive",
               EntityType.Builder
@@ -109,7 +109,7 @@ public class RailcraftEntityTypes {
                   .updateInterval(2)
                   .sized(0.98F, 1F)));
 
-  public static final RegistryObject<EntityType<FirestoneItemEntity>> FIRESTONE =
+  public static final Supplier<EntityType<FirestoneItemEntity>> FIRESTONE =
       deferredRegister.register("firestone",
           () -> create("firestone",
               EntityType.Builder

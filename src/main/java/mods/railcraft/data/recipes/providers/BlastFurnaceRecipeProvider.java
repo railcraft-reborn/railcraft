@@ -6,6 +6,7 @@ import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
@@ -24,8 +24,7 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
   }
 
   @Override
-  protected void buildRecipes(RecipeOutput recipeOutput) {
-  }
+  protected void buildRecipes(RecipeOutput recipeOutput) {}
 
   public static void genRecipes(RecipeOutput recipeOutput) {
     BlastFurnaceRecipeBuilder
@@ -86,7 +85,7 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
   }
 
   private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
-    var tag = ForgeRegistries.ITEMS.getKey(item.asItem()).getPath();
+    var tag = BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
     return Railcraft.rl("blasting_" + tag);
   }
 }

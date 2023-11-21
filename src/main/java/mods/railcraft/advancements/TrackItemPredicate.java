@@ -18,10 +18,9 @@ import net.minecraft.world.item.ItemStack;
 public record TrackItemPredicate(
     Optional<Boolean> highSpeed,
     Optional<Boolean> electric,
-    Optional<TrackType> type
-) {
+    Optional<TrackType> type) {
 
-  private static final Codec<TrackType> TRACK_TYPE_CODEC = TrackTypes.REGISTRY.get().getCodec();
+  private static final Codec<TrackType> TRACK_TYPE_CODEC = TrackTypes.REGISTRY.byNameCodec();
 
   public static final Codec<TrackItemPredicate> CODEC = RecordCodecBuilder.create(
       instance -> instance.group(
@@ -30,13 +29,13 @@ public record TrackItemPredicate(
           ExtraCodecs.strictOptionalField(Codec.BOOL, "electric")
               .forGetter(TrackItemPredicate::electric),
           ExtraCodecs.strictOptionalField(TRACK_TYPE_CODEC, "track_type")
-              .forGetter(TrackItemPredicate::type)
-      ).apply(instance, TrackItemPredicate::new));
+              .forGetter(TrackItemPredicate::type))
+          .apply(instance, TrackItemPredicate::new));
 
   public static Optional<TrackItemPredicate> fromJson(@Nullable JsonElement jsonElement) {
     return jsonElement != null && !jsonElement.isJsonNull()
         ? Optional.of(Util.getOrThrow(
-        CODEC.parse(JsonOps.INSTANCE, jsonElement), JsonParseException::new))
+            CODEC.parse(JsonOps.INSTANCE, jsonElement), JsonParseException::new))
         : Optional.empty();
   }
 

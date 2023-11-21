@@ -113,7 +113,7 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.LOGBOOK);
   }
 }

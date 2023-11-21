@@ -8,13 +8,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
 
   private final Class<K> keyType;
-  private final Map<K, RegistryObject<? extends V>> variants;
+  private final Map<K, DeferredHolder<? super V, ? extends V>> variants;
   private final DeferredRegister<? super V> deferredRegister;
 
   public static <V extends Enum<V> & StringRepresentable, T> VariantRegistrar<V, T> from(
@@ -28,23 +28,23 @@ public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
     this.deferredRegister = deferredRegister;
   }
 
-  public RegistryObject<? extends V> variantFor(K key) {
+  public Supplier<? extends V> variantFor(K key) {
     return this.variants.get(key);
   }
 
-  public Collection<RegistryObject<? extends V>> variants() {
+  public Collection<DeferredHolder<? super V, ? extends V>> variants() {
     return this.variants.values();
   }
 
   public Stream<? extends V> resolveVariants() {
-    return this.variants().stream().map(RegistryObject::get);
+    return this.variants().stream().map(Supplier::get);
   }
 
-  private void put(K key, RegistryObject<? extends V> registryObject) {
+  private void put(K key, DeferredHolder<? super V, ? extends V> registryObject) {
     this.variants.put(key, registryObject);
   }
 
-  public void forEach(BiConsumer<K, RegistryObject<? extends V>> consumer) {
+  public void forEach(BiConsumer<K, DeferredHolder<? super V, ? extends V>> consumer) {
     this.variants.forEach(consumer);
   }
 

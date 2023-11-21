@@ -7,17 +7,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
   public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder.create(
       instance -> instance.group(
           Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
-          Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color)
-      ).apply(instance, TuningAuraParticleOptions::new));
+          Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color))
+          .apply(instance, TuningAuraParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<TuningAuraParticleOptions> DESERIALIZER =
@@ -52,7 +52,7 @@ public record TuningAuraParticleOptions(Vec3 destination, int color) implements 
   @Override
   public String writeToString() {
     return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d",
-        ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
+        BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
         this.destination.x(),
         this.destination.y(),
         this.destination.z(),

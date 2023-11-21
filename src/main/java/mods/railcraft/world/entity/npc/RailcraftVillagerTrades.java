@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 public class RailcraftVillagerTrades {
 
@@ -111,7 +111,7 @@ public class RailcraftVillagerTrades {
 
   public static void addTradeForArmorer(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
     trades.get(1)
-            .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
     trades.get(1)
         .add(new GenericTrade(new Offer(RailcraftItems.COAL_COKE.get(), 4, 6),
             new Offer(Items.EMERALD)));
@@ -149,7 +149,7 @@ public class RailcraftVillagerTrades {
             new Offer(Items.EMERALD, 6, 12)));
   }
 
-    private static class Offer {
+  private static class Offer {
 
     private final Item item;
     private final int min, max;
@@ -223,7 +223,7 @@ public class RailcraftVillagerTrades {
 
     static {
       TRACK_KITS = RailcraftItems.entries().stream()
-          .map(RegistryObject::get)
+          .map(Supplier::get)
           .map(ItemStack::new)
           .filter(kit -> kit.is(RailcraftTags.Items.TRACK_KIT))
           .collect(Collectors.toList());
@@ -257,18 +257,18 @@ public class RailcraftVillagerTrades {
       CHEAP.add(EntityType.CHEST_MINECART);
       CHEAP.add(EntityType.HOPPER_MINECART);
       CHEAP.add(EntityType.TNT_MINECART);
-      //CHEAP.add(RailcraftCarts.CARGO);
-      //CHEAP.add(RailcraftCarts.JUKEBOX);
-      //CHEAP.add(RailcraftCarts.BED);
+      // CHEAP.add(RailcraftCarts.CARGO);
+      // CHEAP.add(RailcraftCarts.JUKEBOX);
+      // CHEAP.add(RailcraftCarts.BED);
       CHEAP.add(RailcraftEntityTypes.TANK_MINECART.get());
-      //CHEAP.add(RailcraftCarts.TNT_WOOD);
-      //CHEAP.add(RailcraftCarts.WORK);
+      // CHEAP.add(RailcraftCarts.TNT_WOOD);
+      // CHEAP.add(RailcraftCarts.WORK);
       EXPENSIVE.add(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get());
       EXPENSIVE.add(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get());
-      //EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_PERSONAL);
-      //EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_STANDARD);
-      //EXPENSIVE.add(RailcraftCarts.CHEST_METALS);
-      //EXPENSIVE.add(RailcraftCarts.CHEST_VOID);
+      // EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_PERSONAL);
+      // EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_STANDARD);
+      // EXPENSIVE.add(RailcraftCarts.CHEST_METALS);
+      // EXPENSIVE.add(RailcraftCarts.CHEST_VOID);
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_LAYER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_RELAYER.get());
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_REMOVER.get());

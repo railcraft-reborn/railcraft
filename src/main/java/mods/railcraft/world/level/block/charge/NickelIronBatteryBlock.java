@@ -19,7 +19,7 @@ public class NickelIronBatteryBlock extends BatteryBlock {
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.NICKEL_IRON_BATTERY);
   }
 }

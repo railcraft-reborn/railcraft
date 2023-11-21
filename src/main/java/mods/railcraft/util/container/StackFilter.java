@@ -11,6 +11,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.material.FluidItemHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
@@ -49,7 +49,7 @@ public enum StackFilter implements Predicate<ItemStack> {
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
       || !FluidItemHelper.isContainer(itemStack))
       && !RailcraftConfig.SERVER.cargoBlacklist.get()
-          .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
+          .contains(BuiltInRegistries.ITEM.getKey(itemStack.getItem()).toString())),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 
   private final Predicate<ItemStack> predicate;
