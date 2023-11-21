@@ -223,12 +223,18 @@ public interface RollingStock {
           @Override
           public boolean tryAdvance(Consumer<? super RollingStock> action) {
             Objects.requireNonNull(action);
+
+            if (this.current == null) {
+              return false;
+            }
+
             this.current = this.current.linkAt(side).orElse(null);
             if (this.current == null) {
               return false;
             }
 
             action.accept(this.current);
+
             return true;
           }
         };

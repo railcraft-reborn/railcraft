@@ -11,7 +11,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class AbstractMinecartMixin {
 
   @Inject(method = "tick", at = @At("HEAD"))
-  public void tick(CallbackInfo callbackInfo) {
+  public void railcraft$tick(CallbackInfo callbackInfo) {
     RollingStock.getOrThrow((AbstractMinecart) (Object) this).tick();
   }
 }

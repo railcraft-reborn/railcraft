@@ -484,6 +484,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public void tick() {
     super.tick();
 
+    if (this.isRemoved()) {
+      return;
+    }
+
     if (this.level().isClientSide()) {
       if (Seasons.isPolarExpress(this)
           && (!MathUtil.nearZero(this.getDeltaMovement().x())
@@ -535,10 +539,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   protected void applyNaturalSlowdown() {
+    if (this.isRemoved()) {
+      return;
+    }
+
     this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
 
     if (this.isReverse() && this.getSpeed().getLevel() > this.getMaxReverseSpeed().getLevel()) {
-      setSpeed(getMaxReverseSpeed());
+      this.setSpeed(this.getMaxReverseSpeed());
     }
 
     var speed = this.getSpeed();

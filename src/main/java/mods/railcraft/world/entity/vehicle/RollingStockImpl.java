@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
@@ -110,14 +111,18 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private void resolveLinks() {
     if (this.unresolvedBackLink != null) {
       this.resolveLink(this.unresolvedBackLink)
-          .ifPresent(cart -> this.backLink = cart);
-      this.unresolvedBackLink = null;
+          .ifPresent(cart -> {
+            this.backLink = cart;
+            this.unresolvedBackLink = null;
+          });
     }
 
     if (this.unresolvedFrontLink != null) {
       this.resolveLink(this.unresolvedFrontLink)
-          .ifPresent(cart -> this.frontLink = cart);
-      this.unresolvedFrontLink = null;
+          .ifPresent(cart -> {
+            this.frontLink = cart;
+            this.unresolvedFrontLink = null;
+          });
     }
   }
 
@@ -129,7 +134,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
             .filter(cart -> {
               var result = cart.isLinkedWith(this);
               if (!result) {
-                logger.warn("Link mismatch between {} and {} (link was missing on {1})",
+                logger.warn("Link mismatch between {0} and {1} (link was missing on {1})",
                     this.minecart, cart.entity());
               }
               return result;
@@ -139,6 +144,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
   @Override
   public Optional<Side> sideOf(RollingStock rollingStock) {
+    Objects.requireNonNull(rollingStock, "rollingStock cannot be null.");
+
     if (this.unresolvedBackLink != null
         && rollingStock.entity().getUUID().equals(this.unresolvedBackLink)) {
       this.unresolvedBackLink = null;
@@ -550,24 +557,6 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     var linkedB = this.maintainLink(Side.FRONT);
     var linked = linkedA || linkedB;
 
-    // Centroid
-    // List<BlockPos> points =
-    // Train.streamCarts(cart).map(Entity::getPosition).collect(Collectors.toList());
-    // Vec2D centroid = new Vec2D(MathTools.centroid(points));
-    //
-    // Vec2D cartPos = new Vec2D(cart);
-    // Vec2D unit = Vec2D.unit(cartPos, centroid);
-    //
-    // double amount = 0.2;
-    // double pushX = amount * unit.getX();
-    // double pushZ = amount * unit.getY();
-    //
-    // pushX = limitForce(pushX);
-    // pushZ = limitForce(pushZ);
-    //
-    // cart.motionX += pushX;
-    // cart.motionZ += pushZ;
-
     // Drag
     if (linked && !this.isHighSpeed()) {
       this.minecart.setDeltaMovement(
@@ -591,22 +580,22 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
    * 
    * @return {@code true} if linked, {@code false} otherwise
    */
-  public boolean maintainLink(Side linkType) {
-    var cart2 = this.linkAt(linkType).orElse(null);
-    if (cart2 == null) {
+  public boolean maintainLink(Side linkSide) {
+    var linkedStock = this.linkAt(linkSide).orElse(null);
+    if (linkedStock == null) {
       return false;
     }
 
-    if (cart2.isLaunched() || cart2.isOnElevator()) {
+    if (linkedStock.isLaunched() || linkedStock.isOnElevator()) {
       return false;
     }
 
-    var cart2Entity = cart2.entity();
+    var linkedEntity = linkedStock.entity();
 
-    var sameDimension = this.level().dimension().equals(cart2Entity.level().dimension());
+    var sameDimension = this.level().dimension().equals(linkedEntity.level().dimension());
 
     var unlink = false;
-    switch (linkType) {
+    switch (linkSide) {
       case BACK -> {
         if (sameDimension) {
           this.primaryLinkTimeoutTicks = 0;
@@ -628,48 +617,30 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     };
 
     if (unlink) {
-      logger.debug("Linked minecart in separate dimension, unlinking: {}", cart2Entity);
-      this.unlink(linkType);
+      logger.debug("Linked rolling stock in separate dimension, unlinking: {}", linkedEntity);
+      this.unlink(linkSide);
       return false;
     }
 
-    double dist = this.minecart.distanceTo(cart2Entity);
+    double dist = this.minecart.distanceTo(linkedEntity);
     if (dist > MAX_DISTANCE) {
-      logger.debug("Max distance exceeded, unlinking: {}", cart2Entity);
-      this.unlink(linkType);
+      logger.debug("Max distance exceeded, unlinking: {}", linkedEntity);
+      this.unlink(linkSide);
       return false;
     }
 
-    var adj1 = this.canCartBeAdjustedBy(cart2);
-    var adj2 = cart2.canCartBeAdjustedBy(this);
+    var adj1 = this.canCartBeAdjustedBy(linkedStock);
+    var adj2 = linkedStock.canCartBeAdjustedBy(this);
 
     var cart1Pos = new Vector2d(this.minecart.getX(), this.minecart.getZ());
-    var cart2Pos = new Vector2d(cart2Entity.getX(), cart2Entity.getZ());
+    var cart2Pos = new Vector2d(linkedEntity.getX(), linkedEntity.getZ());
 
     var sub = cart2Pos.sub(cart1Pos);
-    var unit = sub.equals(0, 0) ? sub : sub.normalize(); //Check for NaN
-
-    // Energy transfer
-
-    // double transX = TRANSFER * (cart2.motionX - cart1.motionX);
-    // double transZ = TRANSFER * (cart2.motionZ - cart1.motionZ);
-    //
-    // transX = limitForce(transX);
-    // transZ = limitForce(transZ);
-    //
-    // if(adj1) {
-    // cart1.motionX += transX;
-    // cart1.motionZ += transZ;
-    // }
-    //
-    // if(adj2) {
-    // cart2.motionX -= transX;
-    // cart2.motionZ -= transZ;
-    // }
+    var unit = sub.equals(0, 0) ? sub : sub.normalize(); // Check for NaN
 
     // Spring force
 
-    float optDist = this.getOptimalDistance(cart2);
+    float optDist = this.getOptimalDistance(linkedStock);
     double stretch = dist - optDist;
     // stretch = Math.max(0.0, stretch);
     // if(Math.abs(stretch) > 0.5) {
@@ -690,7 +661,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     if (adj2) {
-      cart2Entity.setDeltaMovement(cart2Entity.getDeltaMovement().subtract(springX, 0.0D, springZ));
+      linkedEntity.setDeltaMovement(linkedEntity.getDeltaMovement().subtract(springX, 0.0D, springZ));
     }
 
     // Damping
@@ -698,8 +669,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
         this.minecart.getDeltaMovement().x(),
         this.minecart.getDeltaMovement().z());
     var cart2Vel = new Vector2d(
-        cart2Entity.getDeltaMovement().x(),
-        cart2Entity.getDeltaMovement().z());
+        linkedEntity.getDeltaMovement().x(),
+        linkedEntity.getDeltaMovement().z());
 
     var dot = cart2Vel.sub(cart1Vel).dot(unit);
 
@@ -715,7 +686,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     if (adj2) {
-      cart2Entity.setDeltaMovement(cart2Entity.getDeltaMovement().subtract(dampX, 0.0D, dampZ));
+      linkedEntity.setDeltaMovement(linkedEntity.getDeltaMovement().subtract(dampX, 0.0D, dampZ));
     }
 
     return true;
