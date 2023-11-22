@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -50,6 +50,9 @@ public class RailcraftItems {
   private static final DeferredRegister.Items deferredRegister =
       DeferredRegister.createItems(RailcraftConstants.ID);
 
+  private static final Function<Block, BlockItem> BLOCK_TO_BLOCK_ITEM =
+      block -> new BlockItem(block, new Item.Properties());
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
@@ -58,36 +61,54 @@ public class RailcraftItems {
     return deferredRegister.getEntries();
   }
 
-  public static final VariantRegistrar<DyeColor, BlockItem> STRENGTHENED_GLASS =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> POST =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_GAUGE =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_VALVE =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> IRON_TANK_WALL =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_GAUGE =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_VALVE =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-  public static final VariantRegistrar<DyeColor, BlockItem> STEEL_TANK_WALL =
-      VariantRegistrar.from(DyeColor.class, deferredRegister);
-
-  static {
-    Function<Block, BlockItem> itemFactory = block -> new BlockItem(block, new Item.Properties());
-    STRENGTHENED_GLASS.registerUsing(RailcraftBlocks.STRENGTHENED_GLASS, itemFactory);
-    POST.registerUsing(RailcraftBlocks.POST, itemFactory);
-
-    IRON_TANK_GAUGE.registerUsing(RailcraftBlocks.IRON_TANK_GAUGE, itemFactory);
-    IRON_TANK_VALVE.registerUsing(RailcraftBlocks.IRON_TANK_VALVE, itemFactory);
-    IRON_TANK_WALL.registerUsing(RailcraftBlocks.IRON_TANK_WALL, itemFactory);
-
-    STEEL_TANK_GAUGE.registerUsing(RailcraftBlocks.STEEL_TANK_GAUGE, itemFactory);
-    STEEL_TANK_VALVE.registerUsing(RailcraftBlocks.STEEL_TANK_VALVE, itemFactory);
-    STEEL_TANK_WALL.registerUsing(RailcraftBlocks.STEEL_TANK_WALL, itemFactory);
-  }
+  public static final VariantSet<DyeColor, Item, BlockItem> STRENGTHENED_GLASS =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.STRENGTHENED_GLASS,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> POST =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.POST,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_GAUGE =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.IRON_TANK_GAUGE,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_VALVE =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.IRON_TANK_VALVE,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_WALL =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.IRON_TANK_WALL,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_GAUGE =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.STEEL_TANK_GAUGE,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_VALVE =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.STEEL_TANK_VALVE,
+          BLOCK_TO_BLOCK_ITEM);
+  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_WALL =
+      VariantSet.ofMapped(
+          DyeColor.class,
+          deferredRegister,
+          RailcraftBlocks.STEEL_TANK_WALL,
+          BLOCK_TO_BLOCK_ITEM);
 
   public static final DeferredItem<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",

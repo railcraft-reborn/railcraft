@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.Collection;
 import java.util.function.ToIntFunction;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
@@ -114,30 +114,54 @@ public class RailcraftBlocks {
     return deferredRegister.getEntries();
   }
 
-  public static final VariantRegistrar<DyeColor, StrengthenedGlassBlock> STRENGTHENED_GLASS =
-      VariantRegistrar.<DyeColor, StrengthenedGlassBlock>from(DyeColor.class, deferredRegister)
-          .register("strengthened_glass", RailcraftBlocks::buildStrengthenedGlass);
-  public static final VariantRegistrar<DyeColor, IronTankGaugeBlock> IRON_TANK_GAUGE =
-      VariantRegistrar.<DyeColor, IronTankGaugeBlock>from(DyeColor.class, deferredRegister)
-          .register("iron_tank_gauge", RailcraftBlocks::buildIronTankGauge);
-  public static final VariantRegistrar<DyeColor, IronTankValveBlock> IRON_TANK_VALVE =
-      VariantRegistrar.<DyeColor, IronTankValveBlock>from(DyeColor.class, deferredRegister)
-          .register("iron_tank_valve", RailcraftBlocks::buildIronTankValve);
-  public static final VariantRegistrar<DyeColor, IronTankWallBlock> IRON_TANK_WALL =
-      VariantRegistrar.<DyeColor, IronTankWallBlock>from(DyeColor.class, deferredRegister)
-          .register("iron_tank_wall", RailcraftBlocks::buildIronTankWall);
-  public static final VariantRegistrar<DyeColor, SteelTankGaugeBlock> STEEL_TANK_GAUGE =
-      VariantRegistrar.<DyeColor, SteelTankGaugeBlock>from(DyeColor.class, deferredRegister)
-          .register("steel_tank_gauge", RailcraftBlocks::buildSteelTankGauge);
-  public static final VariantRegistrar<DyeColor, SteelTankValveBlock> STEEL_TANK_VALVE =
-      VariantRegistrar.<DyeColor, SteelTankValveBlock>from(DyeColor.class, deferredRegister)
-          .register("steel_tank_valve", RailcraftBlocks::buildSteelTankValve);
-  public static final VariantRegistrar<DyeColor, SteelTankWallBlock> STEEL_TANK_WALL =
-      VariantRegistrar.<DyeColor, SteelTankWallBlock>from(DyeColor.class, deferredRegister)
-          .register("steel_tank_wall", RailcraftBlocks::buildSteelTankWall);
-  public static final VariantRegistrar<DyeColor, PostBlock> POST =
-      VariantRegistrar.<DyeColor, PostBlock>from(DyeColor.class, deferredRegister)
-          .register("post", RailcraftBlocks::buildPost);
+  public static final VariantSet<DyeColor, Block, StrengthenedGlassBlock> STRENGTHENED_GLASS =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "strengthened_glass",
+          RailcraftBlocks::buildStrengthenedGlass);
+  public static final VariantSet<DyeColor, Block, IronTankGaugeBlock> IRON_TANK_GAUGE =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "iron_tank_gauge",
+          RailcraftBlocks::buildIronTankGauge);
+  public static final VariantSet<DyeColor, Block, IronTankValveBlock> IRON_TANK_VALVE =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "iron_tank_valve",
+          RailcraftBlocks::buildIronTankValve);
+  public static final VariantSet<DyeColor, Block, IronTankWallBlock> IRON_TANK_WALL =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "iron_tank_wall",
+          RailcraftBlocks::buildIronTankWall);
+  public static final VariantSet<DyeColor, Block, SteelTankGaugeBlock> STEEL_TANK_GAUGE =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "steel_tank_gauge",
+          RailcraftBlocks::buildSteelTankGauge);
+  public static final VariantSet<DyeColor, Block, SteelTankValveBlock> STEEL_TANK_VALVE =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "steel_tank_valve",
+          RailcraftBlocks::buildSteelTankValve);
+  public static final VariantSet<DyeColor, Block, SteelTankWallBlock> STEEL_TANK_WALL =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "steel_tank_wall",
+          RailcraftBlocks::buildSteelTankWall);
+  public static final VariantSet<DyeColor, Block, PostBlock> POST =
+      VariantSet.of(
+          DyeColor.class,
+          deferredRegister,
+          "post",
+          RailcraftBlocks::buildPost);
 
   private static StrengthenedGlassBlock buildStrengthenedGlass() {
     return new StrengthenedGlassBlock(BlockBehaviour.Properties.of()
