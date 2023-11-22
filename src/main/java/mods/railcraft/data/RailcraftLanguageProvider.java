@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
@@ -1230,12 +1230,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void addBlockColorVariants(
-      VariantRegistrar<DyeColor, ? extends Block> blocks, String name) {
+      VariantSet<DyeColor, Block, ? extends Block> blocks, String name) {
     this.addBlockVariants(blocks, name, RailcraftLanguageProvider::getColorName);
   }
 
   private <K extends Enum<K> & StringRepresentable> void addBlockVariants(
-      VariantRegistrar<K, ? extends Block> blocks, String name, Function<K, String> nameGetter) {
+      VariantSet<K, Block, ? extends Block> blocks, String name, Function<K, String> nameGetter) {
     blocks.forEach((color, block) -> this.addBlock(block, nameGetter.apply(color) + " " + name));
   }
 

@@ -11,7 +11,7 @@ import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
 import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.core.HolderLookup;
@@ -1707,7 +1707,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void tankWall(RecipeOutput recipeOutput,
       TagKey<Item> ingredientTag,
-      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      VariantSet<DyeColor, Item, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
@@ -1725,7 +1725,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void tankValve(RecipeOutput recipeOutput,
       TagKey<Item> ingredientTag,
-      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      VariantSet<DyeColor, Item, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
@@ -1746,7 +1746,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private static void tankGauge(RecipeOutput recipeOutput,
       TagKey<Item> ingredientTag,
-      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      VariantSet<DyeColor, Item, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     var result = colorItems.variantFor(DyeColor.WHITE).get();
     var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
@@ -1982,13 +1982,13 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private static void coloredBlockVariant(RecipeOutput recipeOutput,
-      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      VariantSet<DyeColor, Item, BlockItem> colorItems,
       TagKey<Item> tagItem) {
     coloredBlockVariant(recipeOutput, colorItems, tagItem, DyeColor.WHITE);
   }
 
   private static void coloredBlockVariant(RecipeOutput recipeOutput,
-      VariantRegistrar<DyeColor, BlockItem> colorItems,
+      VariantSet<DyeColor, Item, BlockItem> colorItems,
       TagKey<Item> tagItem,
       DyeColor baseColor) {
     var base = colorItems.variantFor(baseColor).get();
