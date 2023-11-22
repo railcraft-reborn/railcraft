@@ -5,7 +5,7 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.26'
+    id 'net.neoforged.gradle.userdev' version '7.0.45'
     id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
