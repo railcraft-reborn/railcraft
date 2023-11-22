@@ -74,8 +74,8 @@ public class RailcraftDataSerializers {
       };
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
-      DeferredRegister.create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS,
-          RailcraftConstants.ID);
+      DeferredRegister
+          .create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register("fluid_stack", () -> FLUID_STACK);

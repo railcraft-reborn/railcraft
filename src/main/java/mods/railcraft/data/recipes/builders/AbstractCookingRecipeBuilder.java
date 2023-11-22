@@ -75,10 +75,9 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     public final void serializeRecipeData(JsonObject json) {
       json.add(RecipeJsonKeys.INGREDIENT, this.ingredient.toJson(false));
       var resultJson = new JsonObject();
-      resultJson.addProperty(RecipeJsonKeys.ITEM,
-          BuiltInRegistries.ITEM.getKey(this.result).toString());
-      if (this.count > 1) {
-        resultJson.addProperty(RecipeJsonKeys.COUNT, this.count);
+      resultJson.addProperty(RecipeJsonKeys.ITEM, BuiltInRegistries.ITEM.getKey(result).toString());
+      if (count > 1) {
+        resultJson.addProperty(RecipeJsonKeys.COUNT, count);
       }
       json.add(RecipeJsonKeys.RESULT, resultJson);
       json.addProperty(RecipeJsonKeys.EXPERIENCE, this.experience);

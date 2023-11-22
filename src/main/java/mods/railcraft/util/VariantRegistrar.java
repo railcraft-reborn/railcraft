@@ -14,15 +14,15 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
 
   private final Class<K> keyType;
-  private final Map<K, DeferredHolder<? super V, ? extends V>> variants;
-  private final DeferredRegister<? super V> deferredRegister;
+  private final Map<K, DeferredHolder<V, ? extends V>> variants;
+  private final DeferredRegister<V> deferredRegister;
 
   public static <V extends Enum<V> & StringRepresentable, T> VariantRegistrar<V, T> from(
-      Class<V> variantType, DeferredRegister<? super T> deferredRegister) {
+      Class<V> variantType, DeferredRegister<T> deferredRegister) {
     return new VariantRegistrar<>(variantType, deferredRegister);
   }
 
-  private VariantRegistrar(Class<K> keyType, DeferredRegister<? super V> deferredRegister) {
+  private VariantRegistrar(Class<K> keyType, DeferredRegister<V> deferredRegister) {
     this.keyType = keyType;
     this.variants = new EnumMap<>(keyType);
     this.deferredRegister = deferredRegister;
@@ -32,7 +32,7 @@ public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
     return this.variants.get(key);
   }
 
-  public Collection<DeferredHolder<? super V, ? extends V>> variants() {
+  public Collection<DeferredHolder<V, ? extends V>> variants() {
     return this.variants.values();
   }
 
@@ -40,7 +40,7 @@ public class VariantRegistrar<K extends Enum<K> & StringRepresentable, V> {
     return this.variants().stream().map(Supplier::get);
   }
 
-  private void put(K key, DeferredHolder<? super V, ? extends V> registryObject) {
+  private void put(K key, DeferredHolder<V, ? extends V> registryObject) {
     this.variants.put(key, registryObject);
   }
 

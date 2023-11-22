@@ -17,8 +17,8 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
 
   private ItemModelBuilder basicCustomItem(Item item, String model) {
     var rl = BuiltInRegistries.ITEM.getKey(item);
-    return this.withExistingParent(rl.getPath(), "item/" + model)
-        .texture("layer0", this.modLoc("item/" + rl.getPath()));
+    return withExistingParent(rl.getPath(), "item/" + model)
+        .texture("layer0", modLoc("item/" + rl.getPath()));
   }
 
   private ItemModelBuilder basicHandheldItem(Item item) {

@@ -3,7 +3,6 @@ package mods.railcraft.world.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftVillagerTrades {
 
@@ -223,7 +223,7 @@ public class RailcraftVillagerTrades {
 
     static {
       TRACK_KITS = RailcraftItems.entries().stream()
-          .map(Supplier::get)
+          .map(DeferredHolder::get)
           .map(ItemStack::new)
           .filter(kit -> kit.is(RailcraftTags.Items.TRACK_KIT))
           .collect(Collectors.toList());

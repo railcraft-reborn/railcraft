@@ -7,7 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public abstract class DisposableBatteryBlock extends BatteryBlock implements JeiSearchable {
 
@@ -15,14 +17,14 @@ public abstract class DisposableBatteryBlock extends BatteryBlock implements Jei
     super(properties);
   }
 
-  protected abstract EmptyBatteryBlock emptyBlock();
+  protected abstract DeferredHolder<Block, EmptyBatteryBlock> getBatteryBlockEmpty();
 
   @Override
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     Charge.distribution.network(level).access(pos).storage().ifPresent(storage -> {
       if (storage.getEnergyStored() <= 0)
-        level.setBlockAndUpdate(pos, this.emptyBlock().defaultBlockState());
+        level.setBlockAndUpdate(pos, this.getBatteryBlockEmpty().get().defaultBlockState());
     });
   }
 

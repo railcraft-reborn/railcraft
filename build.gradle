@@ -5,8 +5,8 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.26'
-    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
+    id 'net.neoforged.gradle.userdev' version '7.0.45'
+    id 'net.neoforged.gradle.mixin' version '7.0.45'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
@@ -88,6 +88,10 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
+    maven {
+        name 'curseforge'
+        url 'https://www.cursemaven.com'
+    }
 }
 
 dependencies {
@@ -102,6 +106,14 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+
+    /*
+    runtimeOnly fg.deobf('curse.maven:edivadlib-638508:4717006')
+    runtimeOnly fg.deobf('curse.maven:solargeneration-336538:4717199')
+    runtimeOnly fg.deobf('curse.maven:pipez-443900:4713656')
+    runtimeOnly fg.deobf('curse.maven:the-one-probe-245211:4629624')
+    runtimeOnly fg.deobf('curse.maven:morejeiinfo-902996:4707564')
+    */
 }
 
 test {

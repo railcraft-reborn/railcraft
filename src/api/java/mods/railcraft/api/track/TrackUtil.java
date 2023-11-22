@@ -18,6 +18,7 @@ import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.item.TrackTypeLike;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -33,7 +34,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 /**
  * A number of utility functions related to rails.
@@ -196,7 +196,7 @@ public final class TrackUtil {
     if (block instanceof BaseRailBlock railBlock) {
       return railBlock;
     }
-    throw new IllegalArgumentException(ForgeRegistries.BLOCKS.getKey(block).toString()
+    throw new IllegalArgumentException(BuiltInRegistries.BLOCK.getKey(block)
         + " is not a rail block.");
   }
 
