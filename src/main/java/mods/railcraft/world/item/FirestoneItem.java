@@ -75,6 +75,7 @@ public class FirestoneItem extends Item {
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
       boolean isSelected) {
     if (this.spawnsFire
+        && !level.isClientSide()
         && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
