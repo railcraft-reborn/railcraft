@@ -92,10 +92,6 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
-    maven {
-        name 'curseforge'
-        url 'https://www.cursemaven.com'
-    }
 }
 
 dependencies {
@@ -110,14 +106,6 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
-
-    /*
-    runtimeOnly fg.deobf('curse.maven:edivadlib-638508:4717006')
-    runtimeOnly fg.deobf('curse.maven:solargeneration-336538:4717199')
-    runtimeOnly fg.deobf('curse.maven:pipez-443900:4713656')
-    runtimeOnly fg.deobf('curse.maven:the-one-probe-245211:4629624')
-    runtimeOnly fg.deobf('curse.maven:morejeiinfo-902996:4707564')
-    */
 }
 
 test {

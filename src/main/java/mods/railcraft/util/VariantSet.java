@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V extends R> {
 
-  Supplier<? extends V> variantFor(K key);
+  DeferredHolder<R, ? extends V> variantFor(K key);
 
   Collection<DeferredHolder<R, ? extends V>> variants();
 
@@ -24,7 +24,7 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
 
   void forEach(BiConsumer<K, DeferredHolder<R, ? extends V>> action);
 
-  public static <K extends Enum<K> & StringRepresentable, R, V extends R> VariantSet<K, R, V> of(
+  static <K extends Enum<K> & StringRepresentable, R, V extends R> VariantSet<K, R, V> of(
       Class<K> keyType,
       DeferredRegister<R> deferredRegister,
       String nameSuffix,
@@ -37,7 +37,7 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
     return new MappedVariantSet<>(variants);
   }
 
-  public static <K extends Enum<K> & StringRepresentable, R, V extends R, SR, SV extends SR> VariantSet<K, R, V> ofMapped(
+  static <K extends Enum<K> & StringRepresentable, R, V extends R, SR, SV extends SR> VariantSet<K, R, V> ofMapped(
       Class<K> keyType,
       DeferredRegister<R> deferredRegister,
       VariantSet<K, SR, SV> source,
@@ -60,7 +60,7 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
     }
 
     @Override
-    public Supplier<? extends V> variantFor(K key) {
+    public DeferredHolder<R, ? extends V> variantFor(K key) {
       return this.variantsByKey.get(key);
     }
 
