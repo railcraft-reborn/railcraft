@@ -5,8 +5,8 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.45'
-    id 'net.neoforged.gradle.mixin' version '[7.0.5,)'
+    id 'net.neoforged.gradle.userdev' version '7.0.46'
+    id 'net.neoforged.gradle.mixin' version '7.0.46'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
@@ -22,7 +22,9 @@ base {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.JETBRAINS
+        if (System.getProperty('idea.active')) {
+            vendor = JvmVendorSpec.JETBRAINS
+        }
     }
 }
 
@@ -65,7 +67,9 @@ runs {
         modSource project.sourceSets.main
         modSource project.sourceSets.test
 
-        jvmArguments.add("-XX:+AllowEnhancedClassRedefinition")
+        if (System.getProperty('idea.active')) {
+            jvmArguments.add("-XX:+AllowEnhancedClassRedefinition")
+        }
     }
 
     client {
