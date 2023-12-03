@@ -8,7 +8,7 @@ plugins {
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
-    id 'me.modmuss50.mod-publish-plugin' version '0.3.6'
+    id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
 }
 
 version = "$minecraft_version-$mod_version"
@@ -21,7 +21,9 @@ base {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.JETBRAINS
+        if (System.getProperty('idea.active')) {
+            vendor = JvmVendorSpec.JETBRAINS
+        }
     }
 }
 
@@ -69,7 +71,9 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
             // Enables better hot reloading if using the JetBrains Runtime
-            jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+            if (System.getProperty('idea.active')) {
+                jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+            }
 
             args '--mixin', 'railcraft.mixins.json'
 
@@ -138,6 +142,7 @@ test {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 }
 
 tasks.withType(ProcessResources).configureEach {
