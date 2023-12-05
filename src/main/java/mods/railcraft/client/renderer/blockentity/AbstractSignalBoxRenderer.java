@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.phys.AABB;
 
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
@@ -100,5 +101,10 @@ public abstract class AbstractSignalBoxRenderer
 
     CuboidModelRenderer.render(this.model, poseStack, vertexConsumer,
         0xFFFFFFFF, FaceDisplay.BOTH, false);
+  }
+
+  @Override
+  public AABB getRenderBoundingBox(AbstractSignalBoxBlockEntity blockEntity) {
+    return new AABB(blockEntity.getBlockPos().offset(-1, 0, -1), blockEntity.getBlockPos().offset(2, 2, 2));
   }
 }

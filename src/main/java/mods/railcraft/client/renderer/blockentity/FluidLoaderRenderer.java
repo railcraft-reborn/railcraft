@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.phys.AABB;
 
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
 
@@ -58,5 +59,10 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
           CuboidModelRenderer.FaceDisplay.BOTH, false);
     }
     poseStack.popPose();
+  }
+
+  @Override
+  public AABB getRenderBoundingBox(FluidLoaderBlockEntity blockEntity) {
+    return new AABB(blockEntity.getBlockPos().offset(0, -1, 0), blockEntity.getBlockPos().offset(1, 1, 1));
   }
 }

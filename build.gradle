@@ -5,11 +5,11 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.46'
-    id 'net.neoforged.gradle.mixin' version '7.0.46'
+    id 'net.neoforged.gradle.userdev' version '7.0.57'
+    id 'net.neoforged.gradle.mixin' version '7.0.57'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
-    id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
+    id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
 }
 
 version = "$minecraft_version-$mod_version"

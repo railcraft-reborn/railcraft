@@ -13,7 +13,6 @@ import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
-import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.common.world.ForcedChunkManager;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
@@ -47,7 +45,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private static final float FORCE_LIMITER = 6F;
   private static final int DIMENSION_TIMEOUT_TICKS = 10 * SharedConstants.TICKS_PER_SECOND;
 
-  private static final Logger logger = LogUtils.getLogger();
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   private final AbstractMinecart minecart;
 
@@ -134,7 +132,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
             .filter(cart -> {
               var result = cart.isLinkedWith(this);
               if (!result) {
-                logger.warn("Link mismatch between {0} and {1} (link was missing on {1})",
+                LOGGER.warn("Link mismatch between {0} and {1} (link was missing on {1})",
                     this.minecart, cart.entity());
               }
               return result;
@@ -469,8 +467,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private void forceChunk(boolean add) {
     if (this.level() instanceof ServerLevel level) {
       var chunk = this.minecart.chunkPosition();
-      ForcedChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
-          chunk.x, chunk.z, add, false);
+      Railcraft.CHUNK_CONTROLLER
+          .forceChunk(level, this.minecart.getUUID(), chunk.x, chunk.z, add, true);
     }
   }
 
@@ -617,14 +615,14 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     };
 
     if (unlink) {
-      logger.debug("Linked rolling stock in separate dimension, unlinking: {}", linkedEntity);
+      LOGGER.debug("Linked rolling stock in separate dimension, unlinking: {}", linkedEntity);
       this.unlink(linkSide);
       return false;
     }
 
     double dist = this.minecart.distanceTo(linkedEntity);
     if (dist > MAX_DISTANCE) {
-      logger.debug("Max distance exceeded, unlinking: {}", linkedEntity);
+      LOGGER.debug("Max distance exceeded, unlinking: {}", linkedEntity);
       this.unlink(linkSide);
       return false;
     }

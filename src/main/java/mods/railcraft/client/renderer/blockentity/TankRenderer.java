@@ -8,6 +8,7 @@ import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
@@ -54,5 +55,10 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
         RenderUtil.getColorARGB(fluidStack, 1.0F),
         CuboidModelRenderer.FaceDisplay.FRONT, true);
     poseStack.popPose();
+  }
+
+  @Override
+  public AABB getRenderBoundingBox(TankBlockEntity blockEntity) {
+    return INFINITE_EXTENT_AABB;
   }
 }

@@ -31,7 +31,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -368,11 +367,6 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
     pattern.add(bottom);
     return pattern;
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return BlockEntity.INFINITE_EXTENT_AABB;
   }
 
   @FunctionalInterface

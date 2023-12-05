@@ -17,7 +17,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -69,12 +68,6 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   private boolean isPipeRetracted() {
     return this.pipeLength <= 0;
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return new AABB(this.getX(), this.getY() - 1, this.getZ(), this.getX() + 1,
-        this.getY() + 1, this.getZ() + 1);
   }
 
   @Override

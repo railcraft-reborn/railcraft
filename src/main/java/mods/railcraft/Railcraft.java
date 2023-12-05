@@ -1,5 +1,7 @@
 package mods.railcraft;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
@@ -86,6 +88,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -102,6 +106,7 @@ import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 public class Railcraft {
 
   public static final boolean BETA = true;
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   static {
     FuelUtil._setFuelManager(new FuelManagerImpl());
@@ -118,6 +123,16 @@ public class Railcraft {
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
+  public static final TicketController CHUNK_CONTROLLER =
+      new TicketController(Railcraft.rl("default"), (level, ticketHelper) -> {
+        for (var entry : ticketHelper.getEntityTickets().entrySet()) {
+          var key = entry.getKey();
+          int ticketCount = entry.getValue().nonTicking().size();
+          int tickingTicketCount = entry.getValue().ticking().size();
+          LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for entity: {}.", ticketCount, tickingTicketCount, key);
+        }
+      });
+
   public Railcraft(IEventBus modEventBus, Dist dist) {
     NeoForge.EVENT_BUS.register(this);
 
@@ -126,6 +141,7 @@ public class Railcraft {
     modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::registerChunkControllers);
 
     if (dist.isClient()) {
       ClientManager.init(modEventBus);
@@ -212,6 +228,10 @@ public class Railcraft {
         new RailcraftSoundsProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
         new RailcraftSpriteSourceProvider(packOutput, lookupProvider, fileHelper));
+  }
+
+  private void registerChunkControllers(RegisterTicketControllersEvent event) {
+    event.register(CHUNK_CONTROLLER);
   }
 
   // Forge Events
