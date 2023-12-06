@@ -132,8 +132,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
             .filter(cart -> {
               var result = cart.isLinkedWith(this);
               if (!result) {
-                LOGGER.warn("Link mismatch between {0} and {1} (link was missing on {1})",
-                    this.minecart, cart.entity());
+                LOGGER.warn("Link mismatch between {} and {} (link was missing on {})",
+                    this.minecart, cart.entity(), cart.entity());
               }
               return result;
             })
@@ -388,11 +388,15 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       tag.put("train", this.train.toTag());
     }
 
-    if (this.backLink != null) {
+    if (this.unresolvedBackLink != null) {
+      tag.putUUID("backLink", this.unresolvedBackLink);
+    } else if (this.backLink != null) {
       tag.putUUID("backLink", this.backLink.entity().getUUID());
     }
 
-    if (this.frontLink != null) {
+    if (this.unresolvedFrontLink != null) {
+      tag.putUUID("frontLink", this.unresolvedFrontLink);
+    } else if (this.frontLink != null) {
       tag.putUUID("frontLink", this.frontLink.entity().getUUID());
     }
 
@@ -659,7 +663,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     if (adj2) {
-      linkedEntity.setDeltaMovement(linkedEntity.getDeltaMovement().subtract(springX, 0.0D, springZ));
+      linkedEntity
+          .setDeltaMovement(linkedEntity.getDeltaMovement().subtract(springX, 0.0D, springZ));
     }
 
     // Damping
