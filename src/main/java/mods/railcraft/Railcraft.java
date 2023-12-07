@@ -85,6 +85,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
@@ -139,6 +140,7 @@ public class Railcraft {
     RailcraftConfig.registerConfig(ModLoadingContext.get());
 
     modEventBus.addListener(this::handleCommonSetup);
+    modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::registerChunkControllers);
@@ -182,6 +184,9 @@ public class Railcraft {
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
     FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
+  }
+
+  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {

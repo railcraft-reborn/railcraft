@@ -13,18 +13,17 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.AutoRegisterCapability;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.CapabilityManager;
-import net.neoforged.neoforge.common.capabilities.CapabilityToken;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -58,10 +57,12 @@ public interface RollingStock {
   int MAX_BLOCKING_ITEM_SLOTS = 8;
   int MAX_BLOCKING_TANK_CAPACITY = 8 * FluidType.BUCKET_VOLUME;
 
-  Capability<RollingStock> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+  EntityCapability<RollingStock, Void> CAPABILITY =
+      EntityCapability.create(new ResourceLocation(RailcraftConstants.ID, "rolling_stock"),
+          RollingStock.class, Void.class);
 
   static RollingStock getOrThrow(AbstractMinecart minecart) {
-    return minecart.getCapability(CAPABILITY)
+    return Optional.ofNullable(minecart.getCapability(CAPABILITY))
         .orElseThrow(() -> new IllegalStateException("RollingStock missing on " + minecart));
   }
 
@@ -265,9 +266,10 @@ public interface RollingStock {
           () -> this.traverseTrain(side).iterator();
       for (var target : targets) {
         var cart = target.entity();
-        var adaptor = cart.getCapability(Capabilities.ITEM_HANDLER)
-            .map(ContainerManipulator::of)
-            .orElse(null);
+        var adaptor =
+            Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY, null))
+                .map(ContainerManipulator::of)
+                .orElse(null);
         if (adaptor != null && this.canAcceptPushedItem(cart, itemStack)) {
           itemStack = adaptor.insert(itemStack);
         }
@@ -304,7 +306,7 @@ public interface RollingStock {
       SlotAccessor result = null;
       for (var target : targets) {
         var cart = target.entity();
-        var slot = cart.getCapability(Capabilities.ITEM_HANDLER)
+        var slot = Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
             .map(ContainerManipulator::of)
             .flatMap(manipulator -> manipulator.findFirstExtractable(
                 filter.and(stack -> this.canProvidePulledItem(cart, stack))))
@@ -370,7 +372,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canAcceptPushedFluid(cart, remainder)) {
-          var fluidHandler = cart.getCapability(Capabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
           if (fluidHandler != null) {
             var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
             remainder.setAmount(remainder.getAmount() - filled);
@@ -411,7 +413,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canProvidePulledFluid(cart, fluidStack)) {
-          var fluidHandler = cart.getCapability(Capabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
           if (fluidHandler != null) {
             var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
             if (!drained.isEmpty()) {
@@ -501,7 +503,7 @@ public interface RollingStock {
   private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof ItemTransferHandler handler
         ? !handler.canPassItemRequests(stack)
-        : cart.getCapability(Capabilities.ITEM_HANDLER)
+        : Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
             .map(IItemHandler::getSlots)
             .orElse(0) < MAX_BLOCKING_ITEM_SLOTS;
   }
@@ -509,7 +511,7 @@ public interface RollingStock {
   private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidTransferHandler fluidMinecart
         ? !fluidMinecart.canPassFluidRequests(fluid)
-        : cart.getCapability(Capabilities.FLUID_HANDLER)
+        : Optional.ofNullable(cart.getCapability(Capabilities.FluidHandler.ENTITY, null))
             .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }

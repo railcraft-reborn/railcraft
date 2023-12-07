@@ -128,7 +128,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     var level = (ServerLevel) this.minecart.level();
     var entity = level.getEntity(minecartId);
     return entity instanceof AbstractMinecart minecart
-        ? minecart.getCapability(CAPABILITY)
+        ? Optional.ofNullable(minecart.getCapability(CAPABILITY))
             .filter(cart -> {
               var result = cart.isLinkedWith(this);
               if (!result) {

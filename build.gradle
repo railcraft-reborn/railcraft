@@ -5,8 +5,8 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.57'
-    id 'net.neoforged.gradle.mixin' version '7.0.57'
+    id 'net.neoforged.gradle.userdev' version '7.0.58'
+    id 'net.neoforged.gradle.mixin' version '7.0.58'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
@@ -100,8 +100,8 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
-    compileOnly "mezz.jei:jei-$minecraft_version-forge-api:$jei_version"
+    compileOnly "mezz.jei:jei-1.20.2-common-api:$jei_version"
+    compileOnly "mezz.jei:jei-1.20.2-forge-api:$jei_version"
     //runtimeOnly "mezz.jei:jei-$minecraft_version-forge:$jei_version"
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
