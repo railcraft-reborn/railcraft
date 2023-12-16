@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.item.SpikeMaulTarget;
@@ -46,6 +47,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     super(false, properties);
     this.trackType = trackType;
     this.registerDefaultState(this.buildDefaultState(this.stateDefinition.any()));
+  }
+
+  @Override
+  protected MapCodec<? extends BaseRailBlock> codec() {
+    return simpleCodec(properties -> new TrackBlock(this.trackType, properties));
   }
 
   @Override
