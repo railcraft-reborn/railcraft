@@ -97,7 +97,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.ELECTRIC_LOCOMOTIVE.get();
   }
 

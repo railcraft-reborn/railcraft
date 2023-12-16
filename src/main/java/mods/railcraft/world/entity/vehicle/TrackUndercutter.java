@@ -53,7 +53,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TRACK_UNDERCUTTER.get();
   }
 

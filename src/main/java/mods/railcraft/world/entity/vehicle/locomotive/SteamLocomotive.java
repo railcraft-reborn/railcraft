@@ -169,7 +169,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.STEAM_LOCOMOTIVE.get();
   }
 }

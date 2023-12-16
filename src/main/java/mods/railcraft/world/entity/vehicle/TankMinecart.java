@@ -223,7 +223,7 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TANK_MINECART.get();
   }
 

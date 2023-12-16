@@ -480,7 +480,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TUNNEL_BORE.get();
   }
 

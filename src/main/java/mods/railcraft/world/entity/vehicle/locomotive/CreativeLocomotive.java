@@ -71,7 +71,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.CREATIVE_LOCOMOTIVE.get();
   }
 

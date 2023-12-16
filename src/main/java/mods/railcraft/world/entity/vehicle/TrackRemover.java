@@ -86,7 +86,7 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TRACK_REMOVER.get();
   }
 }
