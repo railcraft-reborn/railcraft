@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -40,8 +41,16 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
           new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 8000, 1000, 1));
 
+  private static final MapCodec<PoweredRollingMachineBlock> CODEC =
+      simpleCodec(PoweredRollingMachineBlock::new);
+
   public PoweredRollingMachineBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override

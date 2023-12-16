@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.LogBookBlockEntity;
@@ -35,10 +36,17 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBlock, JeiSearchable {
 
+  private static final MapCodec<LogBookBlock> CODEC = simpleCodec(LogBookBlock::new);
+
   public LogBookBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(FACING, Direction.NORTH));
+  }
+
+  @Override
+  protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    return CODEC;
   }
 
   @Override

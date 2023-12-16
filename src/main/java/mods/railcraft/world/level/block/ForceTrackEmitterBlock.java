@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -46,7 +48,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 
 public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlock {
 
@@ -57,6 +58,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   private static final Map<Charge, Spec> CHARGE_SPECS =
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
           new ChargeStorage.Spec(State.RECHARGEABLE, 1000, 1000, 1));
+  private static final MapCodec<ForceTrackEmitterBlock> CODEC =
+      simpleCodec(ForceTrackEmitterBlock::new);
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -64,6 +67,11 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
         .setValue(FACING, Direction.NORTH)
         .setValue(POWERED, false)
         .setValue(COLOR, DEFAULT_COLOR));
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override
@@ -115,8 +123,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public ItemStack getCloneItemStack(BlockState blockState, HitResult target, BlockGetter world,
-      BlockPos pos, Player player) {
+  public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState) {
     return this.getItem(blockState);
   }
 

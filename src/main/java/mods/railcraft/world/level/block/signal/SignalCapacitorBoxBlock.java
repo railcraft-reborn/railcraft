@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.signal;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -26,8 +28,16 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlock {
 
+  private static final MapCodec<SignalCapacitorBoxBlock> CODEC =
+      simpleCodec(SignalCapacitorBoxBlock::new);
+
   public SignalCapacitorBoxBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends CrossCollisionBlock> codec() {
+    return CODEC;
   }
 
   @Override

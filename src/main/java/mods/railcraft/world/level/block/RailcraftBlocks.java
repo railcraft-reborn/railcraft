@@ -78,6 +78,7 @@ import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
@@ -264,7 +265,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<SteamBoilerTankBlock> HIGH_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("high_pressure_steam_boiler_tank",
           () -> new SteamBoilerTankBlock(
-              BlockBehaviour.Properties.copy(LOW_PRESSURE_STEAM_BOILER_TANK.get())));
+              BlockBehaviour.Properties.ofFullCopy(LOW_PRESSURE_STEAM_BOILER_TANK.get())));
 
   public static final DeferredBlock<SolidFueledFireboxBlock> SOLID_FUELED_FIREBOX =
       deferredRegister.register("solid_fueled_firebox",
@@ -278,7 +279,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<FluidFueledFireboxBlock> FLUID_FUELED_FIREBOX =
       deferredRegister.register("fluid_fueled_firebox",
           () -> new FluidFueledFireboxBlock(
-              BlockBehaviour.Properties.copy(SOLID_FUELED_FIREBOX.get())));
+              BlockBehaviour.Properties.ofFullCopy(SOLID_FUELED_FIREBOX.get())));
 
   public static final DeferredBlock<SteamTurbineBlock> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -348,27 +349,27 @@ public class RailcraftBlocks {
   public static final DeferredBlock<NickelIronBatteryBlock> NICKEL_IRON_BATTERY =
       deferredRegister.register("nickel_iron_battery",
           () -> new NickelIronBatteryBlock(
-              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ZINC_BATTERY.get())));
 
   public static final DeferredBlock<ZincCarbonBatteryBlock> ZINC_CARBON_BATTERY =
       deferredRegister.register("zinc_carbon_battery",
           () -> new ZincCarbonBatteryBlock(
-              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ZINC_BATTERY.get())));
 
   public static final DeferredBlock<EmptyBatteryBlock> ZINC_CARBON_BATTERY_EMPTY =
       deferredRegister.register("zinc_carbon_battery_empty",
           () -> new EmptyBatteryBlock(
-              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ZINC_BATTERY.get())));
 
   public static final DeferredBlock<ZincSilverBatteryBlock> ZINC_SILVER_BATTERY =
       deferredRegister.register("zinc_silver_battery",
           () -> new ZincSilverBatteryBlock(
-              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ZINC_BATTERY.get())));
 
   public static final DeferredBlock<EmptyBatteryBlock> ZINC_SILVER_BATTERY_EMPTY =
       deferredRegister.register("zinc_silver_battery_empty",
           () -> new EmptyBatteryBlock(
-              BlockBehaviour.Properties.copy(NICKEL_ZINC_BATTERY.get())));
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ZINC_BATTERY.get())));
 
   public static final DeferredBlock<AnvilBlock> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",
@@ -382,11 +383,11 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<AnvilBlock> CHIPPED_STEEL_ANVIL =
       deferredRegister.register("chipped_steel_anvil",
-          () -> new AnvilBlock(BlockBehaviour.Properties.copy(STEEL_ANVIL.get())));
+          () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(STEEL_ANVIL.get())));
 
   public static final DeferredBlock<AnvilBlock> DAMAGED_STEEL_ANVIL =
       deferredRegister.register("damaged_steel_anvil",
-          () -> new AnvilBlock(BlockBehaviour.Properties.copy(STEEL_ANVIL.get())));
+          () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(STEEL_ANVIL.get())));
 
   public static final DeferredBlock<Block> STEEL_BLOCK =
       deferredRegister.register("steel_block",
@@ -461,7 +462,7 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> LEAD_ORE =
       deferredRegister.register("lead_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
@@ -469,14 +470,15 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> DEEPSLATE_LEAD_ORE =
       deferredRegister.register("deepslate_lead_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> NICKEL_ORE =
       deferredRegister.register("nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
@@ -484,14 +486,15 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> DEEPSLATE_NICKEL_ORE =
       deferredRegister.register("deepslate_nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(NICKEL_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(NICKEL_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> SILVER_ORE =
       deferredRegister.register("silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
@@ -499,29 +502,31 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE =
       deferredRegister.register("deepslate_silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(SILVER_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> SULFUR_ORE =
       deferredRegister.register("sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(UniformInt.of(2, 5), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops(), UniformInt.of(2, 5)));
+              .requiresCorrectToolForDrops()));
 
   public static final DeferredBlock<Block> DEEPSLATE_SULFUR_ORE =
       deferredRegister.register("deepslate_sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFUR_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE), UniformInt.of(2, 5)));
+          () -> new DropExperienceBlock(UniformInt.of(2, 5),
+              BlockBehaviour.Properties.ofFullCopy(SULFUR_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> TIN_ORE =
       deferredRegister.register("tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
@@ -529,14 +534,15 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE =
       deferredRegister.register("deepslate_tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(TIN_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(TIN_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> ZINC_ORE =
       deferredRegister.register("zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .instrument(NoteBlockInstrument.BASEDRUM)
               .strength(3.0F, 3.0F)
@@ -544,10 +550,11 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> DEEPSLATE_ZINC_ORE =
       deferredRegister.register("deepslate_zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(ZINC_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(ZINC_ORE.get())
+                  .mapColor(MapColor.DEEPSLATE)
+                  .strength(4.5F, 3.0F)
+                  .sound(SoundType.DEEPSLATE)));
 
   public static final DeferredBlock<Block> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
@@ -559,12 +566,12 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
+          () -> new DropExperienceBlock(UniformInt.of(2, 5), BlockBehaviour.Properties.of()
               .mapColor(MapColor.SAND)
               .instrument(NoteBlockInstrument.SNARE)
               .requiresCorrectToolForDrops()
               .strength(0.8F)
-              .sound(SoundType.SAND), UniformInt.of(2, 5)));
+              .sound(SoundType.SAND)));
 
   public static final DeferredBlock<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
@@ -577,7 +584,7 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<FluidUnloaderBlock> FLUID_UNLOADER =
       deferredRegister.register("fluid_unloader",
-          () -> new FluidUnloaderBlock(BlockBehaviour.Properties.copy(FLUID_LOADER.get())));
+          () -> new FluidUnloaderBlock(BlockBehaviour.Properties.ofFullCopy(FLUID_LOADER.get())));
 
   public static final DeferredBlock<AdvancedItemLoaderBlock> ADVANCED_ITEM_LOADER =
       deferredRegister.register("advanced_item_loader",
@@ -590,27 +597,27 @@ public class RailcraftBlocks {
   public static final DeferredBlock<AdvancedItemUnloaderBlock> ADVANCED_ITEM_UNLOADER =
       deferredRegister.register("advanced_item_unloader",
           () -> new AdvancedItemUnloaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+              BlockBehaviour.Properties.ofFullCopy(ADVANCED_ITEM_LOADER.get())));
 
   public static final DeferredBlock<ItemLoaderBlock> ITEM_LOADER =
       deferredRegister.register("item_loader",
           () -> new ItemLoaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+              BlockBehaviour.Properties.ofFullCopy(ADVANCED_ITEM_LOADER.get())));
 
   public static final DeferredBlock<ItemUnloaderBlock> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
           () -> new ItemUnloaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+              BlockBehaviour.Properties.ofFullCopy(ADVANCED_ITEM_LOADER.get())));
 
   public static final DeferredBlock<CartDispenserBlock> CART_DISPENSER =
       deferredRegister.register("cart_dispenser",
           () -> new CartDispenserBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+              BlockBehaviour.Properties.ofFullCopy(ADVANCED_ITEM_LOADER.get())));
 
   public static final DeferredBlock<TrainDispenserBlock> TRAIN_DISPENSER =
       deferredRegister.register("train_dispenser",
           () -> new TrainDispenserBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+              BlockBehaviour.Properties.ofFullCopy(ADVANCED_ITEM_LOADER.get())));
 
   public static final DeferredBlock<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",
@@ -622,77 +629,77 @@ public class RailcraftBlocks {
   public static final DeferredBlock<SwitchTrackActuatorBlock> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> new SwitchTrackMotorBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SwitchTrackRouterBlock> SWITCH_TRACK_ROUTER =
       deferredRegister.register("switch_track_router",
           () -> new SwitchTrackRouterBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> ANALOG_SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("analog_signal_controller_box",
           () -> new AnalogSignalControllerBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_SEQUENCER_BOX =
       deferredRegister.register("signal_sequencer_box",
           () -> new SignalSequencerBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_CAPACITOR_BOX =
       deferredRegister.register("signal_capacitor_box",
           () -> new SignalCapacitorBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_INTERLOCK_BOX =
       deferredRegister.register("signal_interlock_box",
           () -> new SignalInterlockBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_BLOCK_RELAY_BOX =
       deferredRegister.register("signal_block_relay_box",
           () -> new SignalBlockRelayBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_RECEIVER_BOX =
       deferredRegister.register("signal_receiver_box",
           () -> new SignalReceiverBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<SignalBoxBlock> SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("signal_controller_box",
           () -> new SignalControllerBoxBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<DualBlockSignalBlock> DUAL_BLOCK_SIGNAL =
       deferredRegister.register("dual_block_signal",
           () -> new DualBlockSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<DualDistantSignalBlock> DUAL_DISTANT_SIGNAL =
       deferredRegister.register("dual_distant_signal",
           () -> new DualDistantSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<DualTokenSignalBlock> DUAL_TOKEN_SIGNAL =
       deferredRegister.register("dual_token_signal",
           () -> new DualTokenSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<BlockSignalBlock> BLOCK_SIGNAL =
       deferredRegister.register("block_signal",
           () -> new BlockSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<DistantSignalBlock> DISTANT_SIGNAL =
       deferredRegister.register("distant_signal",
           () -> new DistantSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<TokenSignalBlock> TOKEN_SIGNAL =
       deferredRegister.register("token_signal",
           () -> new TokenSignalBlock(
-              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+              BlockBehaviour.Properties.ofFullCopy(SWITCH_TRACK_LEVER.get())));
 
   public static final DeferredBlock<ForceTrackBlock> FORCE_TRACK =
       deferredRegister.register("force_track",
@@ -721,102 +728,102 @@ public class RailcraftBlocks {
   public static final DeferredBlock<LockingTrackBlock> ABANDONED_LOCKING_TRACK =
       deferredRegister.register("abandoned_locking_track",
           () -> new LockingTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<BufferStopTrackBlock> ABANDONED_BUFFER_STOP_TRACK =
       deferredRegister.register("abandoned_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> ABANDONED_ACTIVATOR_TRACK =
       deferredRegister.register("abandoned_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> ABANDONED_BOOSTER_TRACK =
       deferredRegister.register("abandoned_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<ControlTrackBlock> ABANDONED_CONTROL_TRACK =
       deferredRegister.register("abandoned_control_track",
           () -> new ControlTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<GatedTrackBlock> ABANDONED_GATED_TRACK =
       deferredRegister.register("abandoned_gated_track",
           () -> new GatedTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> ABANDONED_DETECTOR_TRACK =
       deferredRegister.register("abandoned_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<CouplerTrackBlock> ABANDONED_COUPLER_TRACK =
       deferredRegister.register("abandoned_coupler_track",
           () -> new CouplerTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<EmbarkingTrackBlock> ABANDONED_EMBARKING_TRACK =
       deferredRegister.register("abandoned_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<DisembarkingTrackBlock> ABANDONED_DISEMBARKING_TRACK =
       deferredRegister.register("abandoned_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<DumpingTrackBlock> ABANDONED_DUMPING_TRACK =
       deferredRegister.register("abandoned_dumping_track",
           () -> new DumpingTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.register("abandoned_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> ABANDONED_TURNOUT_TRACK =
       deferredRegister.register("abandoned_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> ABANDONED_JUNCTION_TRACK =
       deferredRegister.register("abandoned_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<LauncherTrackBlock> ABANDONED_LAUNCHER_TRACK =
       deferredRegister.register("abandoned_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<OneWayTrackBlock> ABANDONED_ONE_WAY_TRACK =
       deferredRegister.register("abandoned_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> ABANDONED_WHISTLE_TRACK =
       deferredRegister.register("abandoned_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> ABANDONED_LOCOMOTIVE_TRACK =
       deferredRegister.register("abandoned_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> ABANDONED_THROTTLE_TRACK =
       deferredRegister.register("abandoned_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<RoutingTrackBlock> ABANDONED_ROUTING_TRACK =
       deferredRegister.register("abandoned_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
   public static final DeferredBlock<ElectricTrackBlock> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
@@ -829,101 +836,101 @@ public class RailcraftBlocks {
   public static final DeferredBlock<LockingTrackBlock> ELECTRIC_LOCKING_TRACK =
       deferredRegister.register("electric_locking_track",
           () -> new LockingTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<BufferStopTrackBlock> ELECTRIC_BUFFER_STOP_TRACK =
       deferredRegister.register("electric_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> ELECTRIC_ACTIVATOR_TRACK =
       deferredRegister.register("electric_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> ELECTRIC_BOOSTER_TRACK =
       deferredRegister.register("electric_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<ControlTrackBlock> ELECTRIC_CONTROL_TRACK =
       deferredRegister.register("electric_control_track",
           () -> new ControlTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<GatedTrackBlock> ELECTRIC_GATED_TRACK =
       deferredRegister.register("electric_gated_track",
           () -> new GatedTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> ELECTRIC_DETECTOR_TRACK =
       deferredRegister.register("electric_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<CouplerTrackBlock> ELECTRIC_COUPLER_TRACK =
       deferredRegister.register("electric_coupler_track",
           () -> new CouplerTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<EmbarkingTrackBlock> ELECTRIC_EMBARKING_TRACK =
       deferredRegister.register("electric_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<DisembarkingTrackBlock> ELECTRIC_DISEMBARKING_TRACK =
       deferredRegister.register("electric_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<DumpingTrackBlock> ELECTRIC_DUMPING_TRACK =
       deferredRegister.register("electric_dumping_track",
           () -> new DumpingTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> ELECTRIC_WYE_TRACK =
       deferredRegister.register("electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("electric_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<LauncherTrackBlock> ELECTRIC_LAUNCHER_TRACK =
       deferredRegister.register("electric_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<OneWayTrackBlock> ELECTRIC_ONE_WAY_TRACK =
       deferredRegister.register("electric_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> ELECTRIC_WHISTLE_TRACK =
       deferredRegister.register("electric_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
   public static final DeferredBlock<LocomotiveTrackBlock> ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("electric_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> ELECTRIC_THROTTLE_TRACK =
       deferredRegister.register("electric_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<RoutingTrackBlock> ELECTRIC_ROUTING_TRACK =
       deferredRegister.register("electric_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<HighSpeedTrackBlock> HIGH_SPEED_TRACK =
       deferredRegister.register("high_speed_track",
@@ -935,57 +942,57 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_TRANSITION_TRACK =
       deferredRegister.register("high_speed_transition_track",
           () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<LockingTrackBlock> HIGH_SPEED_LOCKING_TRACK =
       deferredRegister.register("high_speed_locking_track",
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> HIGH_SPEED_ACTIVATOR_TRACK =
       deferredRegister.register("high_speed_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> HIGH_SPEED_BOOSTER_TRACK =
       deferredRegister.register("high_speed_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> HIGH_SPEED_DETECTOR_TRACK =
       deferredRegister.register("high_speed_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.register("high_speed_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> HIGH_SPEED_TURNOUT_TRACK =
       deferredRegister.register("high_speed_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> HIGH_SPEED_JUNCTION_TRACK =
       deferredRegister.register("high_speed_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> HIGH_SPEED_WHISTLE_TRACK =
       deferredRegister.register("high_speed_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> HIGH_SPEED_LOCOMOTIVE_TRACK =
       deferredRegister.register("high_speed_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> HIGH_SPEED_THROTTLE_TRACK =
       deferredRegister.register("high_speed_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
   public static final DeferredBlock<HighSpeedElectricTrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.register("high_speed_electric_track",
@@ -998,57 +1005,57 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
       deferredRegister.register("high_speed_electric_transition_track",
           () -> new TransitionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<LockingTrackBlock> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
       deferredRegister.register("high_speed_electric_locking_track",
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK =
       deferredRegister.register("high_speed_electric_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> HIGH_SPEED_ELECTRIC_BOOSTER_TRACK =
       deferredRegister.register("high_speed_electric_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> HIGH_SPEED_ELECTRIC_DETECTOR_TRACK =
       deferredRegister.register("high_speed_electric_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
       deferredRegister.register("high_speed_electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("high_speed_electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("high_speed_electric_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> HIGH_SPEED_ELECTRIC_WHISTLE_TRACK =
       deferredRegister.register("high_speed_electric_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK =
       deferredRegister.register("high_speed_electric_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> HIGH_SPEED_ELECTRIC_THROTTLE_TRACK =
       deferredRegister.register("high_speed_electric_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final DeferredBlock<LockingTrackBlock> IRON_LOCKING_TRACK =
       deferredRegister.register("iron_locking_track",
@@ -1061,97 +1068,97 @@ public class RailcraftBlocks {
   public static final DeferredBlock<BufferStopTrackBlock> IRON_BUFFER_STOP_TRACK =
       deferredRegister.register("iron_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> IRON_ACTIVATOR_TRACK =
       deferredRegister.register("iron_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> IRON_BOOSTER_TRACK =
       deferredRegister.register("iron_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<ControlTrackBlock> IRON_CONTROL_TRACK =
       deferredRegister.register("iron_control_track",
           () -> new ControlTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<GatedTrackBlock> IRON_GATED_TRACK =
       deferredRegister.register("iron_gated_track",
           () -> new GatedTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> IRON_DETECTOR_TRACK =
       deferredRegister.register("iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<CouplerTrackBlock> IRON_COUPLER_TRACK =
       deferredRegister.register("iron_coupler_track",
           () -> new CouplerTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<EmbarkingTrackBlock> IRON_EMBARKING_TRACK =
       deferredRegister.register("iron_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<DisembarkingTrackBlock> IRON_DISEMBARKING_TRACK =
       deferredRegister.register("iron_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<DumpingTrackBlock> IRON_DUMPING_TRACK =
       deferredRegister.register("iron_dumping_track",
           () -> new DumpingTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.register("iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> IRON_TURNOUT_TRACK =
       deferredRegister.register("iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> IRON_JUNCTION_TRACK =
       deferredRegister.register("iron_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<LauncherTrackBlock> IRON_LAUNCHER_TRACK =
       deferredRegister.register("iron_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<OneWayTrackBlock> IRON_ONE_WAY_TRACK =
       deferredRegister.register("iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> IRON_WHISTLE_TRACK =
       deferredRegister.register("iron_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("iron_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> IRON_THROTTLE_TRACK =
       deferredRegister.register("iron_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<RoutingTrackBlock> IRON_ROUTING_TRACK =
       deferredRegister.register("iron_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
 
   public static final DeferredBlock<ReinforcedTrackBlock> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
@@ -1163,102 +1170,102 @@ public class RailcraftBlocks {
   public static final DeferredBlock<LockingTrackBlock> REINFORCED_LOCKING_TRACK =
       deferredRegister.register("reinforced_locking_track",
           () -> new LockingTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<BufferStopTrackBlock> REINFORCED_BUFFER_STOP_TRACK =
       deferredRegister.register("reinforced_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> REINFORCED_ACTIVATOR_TRACK =
       deferredRegister.register("reinforced_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> REINFORCED_BOOSTER_TRACK =
       deferredRegister.register("reinforced_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<ControlTrackBlock> REINFORCED_CONTROL_TRACK =
       deferredRegister.register("reinforced_control_track",
           () -> new ControlTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<GatedTrackBlock> REINFORCED_GATED_TRACK =
       deferredRegister.register("reinforced_gated_track",
           () -> new GatedTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> REINFORCED_DETECTOR_TRACK =
       deferredRegister.register("reinforced_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<CouplerTrackBlock> REINFORCED_COUPLER_TRACK =
       deferredRegister.register("reinforced_coupler_track",
           () -> new CouplerTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<EmbarkingTrackBlock> REINFORCED_EMBARKING_TRACK =
       deferredRegister.register("reinforced_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<DisembarkingTrackBlock> REINFORCED_DISEMBARKING_TRACK =
       deferredRegister.register("reinforced_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<DumpingTrackBlock> REINFORCED_DUMPING_TRACK =
       deferredRegister.register("reinforced_dumping_track",
           () -> new DumpingTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.register("reinforced_wye_track",
           () -> new WyeTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> REINFORCED_TURNOUT_TRACK =
       deferredRegister.register("reinforced_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> REINFORCED_JUNCTION_TRACK =
       deferredRegister.register("reinforced_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<LauncherTrackBlock> REINFORCED_LAUNCHER_TRACK =
       deferredRegister.register("reinforced_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<OneWayTrackBlock> REINFORCED_ONE_WAY_TRACK =
       deferredRegister.register("reinforced_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> REINFORCED_WHISTLE_TRACK =
       deferredRegister.register("reinforced_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> REINFORCED_LOCOMOTIVE_TRACK =
       deferredRegister.register("reinforced_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> REINFORCED_THROTTLE_TRACK =
       deferredRegister.register("reinforced_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<RoutingTrackBlock> REINFORCED_ROUTING_TRACK =
       deferredRegister.register("reinforced_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
   public static final DeferredBlock<StrapIronTrackBlock> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
@@ -1270,102 +1277,102 @@ public class RailcraftBlocks {
   public static final DeferredBlock<LockingTrackBlock> STRAP_IRON_LOCKING_TRACK =
       deferredRegister.register("strap_iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<BufferStopTrackBlock> STRAP_IRON_BUFFER_STOP_TRACK =
       deferredRegister.register("strap_iron_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<ActivatorTrackBlock> STRAP_IRON_ACTIVATOR_TRACK =
       deferredRegister.register("strap_iron_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<BoosterTrackBlock> STRAP_IRON_BOOSTER_TRACK =
       deferredRegister.register("strap_iron_booster_track",
           () -> new BoosterTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<ControlTrackBlock> STRAP_IRON_CONTROL_TRACK =
       deferredRegister.register("strap_iron_control_track",
           () -> new ControlTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<GatedTrackBlock> STRAP_IRON_GATED_TRACK =
       deferredRegister.register("strap_iron_gated_track",
           () -> new GatedTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<DetectorTrackBlock> STRAP_IRON_DETECTOR_TRACK =
       deferredRegister.register("strap_iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<CouplerTrackBlock> STRAP_IRON_COUPLER_TRACK =
       deferredRegister.register("strap_iron_coupler_track",
           () -> new CouplerTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<EmbarkingTrackBlock> STRAP_IRON_EMBARKING_TRACK =
       deferredRegister.register("strap_iron_embarking_track",
           () -> new EmbarkingTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<DisembarkingTrackBlock> STRAP_IRON_DISEMBARKING_TRACK =
       deferredRegister.register("strap_iron_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<DumpingTrackBlock> STRAP_IRON_DUMPING_TRACK =
       deferredRegister.register("strap_iron_dumping_track",
           () -> new DumpingTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<WyeTrackBlock> STRAP_IRON_WYE_TRACK =
       deferredRegister.register("strap_iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<TurnoutTrackBlock> STRAP_IRON_TURNOUT_TRACK =
       deferredRegister.register("strap_iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<JunctionTrackBlock> STRAP_IRON_JUNCTION_TRACK =
       deferredRegister.register("strap_iron_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<LauncherTrackBlock> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.register("strap_iron_launcher_track",
           () -> new LauncherTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<OneWayTrackBlock> STRAP_IRON_ONE_WAY_TRACK =
       deferredRegister.register("strap_iron_one_way_track",
           () -> new OneWayTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<WhistleTrackBlock> STRAP_IRON_WHISTLE_TRACK =
       deferredRegister.register("strap_iron_whistle_track",
           () -> new WhistleTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<LocomotiveTrackBlock> STRAP_IRON_LOCOMOTIVE_TRACK =
       deferredRegister.register("strap_iron_locomotive_track",
           () -> new LocomotiveTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<ThrottleTrackBlock> STRAP_IRON_THROTTLE_TRACK =
       deferredRegister.register("strap_iron_throttle_track",
           () -> new ThrottleTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<RoutingTrackBlock> STRAP_IRON_ROUTING_TRACK =
       deferredRegister.register("strap_iron_routing_track",
           () -> new RoutingTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
 
   public static final DeferredBlock<ElevatorTrackBlock> ELEVATOR_TRACK =
       deferredRegister.register("elevator_track",
@@ -1449,95 +1456,95 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> QUARRIED_STONE =
       deferredRegister.register("quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
 
   public static final DeferredBlock<Block> QUARRIED_COBBLESTONE =
       deferredRegister.register("quarried_cobblestone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE)));
 
   public static final DeferredBlock<Block> POLISHED_QUARRIED_STONE =
       deferredRegister.register("polished_quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_ANDESITE)));
 
   public static final DeferredBlock<Block> CHISELED_QUARRIED_STONE =
       deferredRegister.register("chiseled_quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_STONE_BRICKS)));
 
   public static final DeferredBlock<Block> ETCHED_QUARRIED_STONE =
       deferredRegister.register("etched_quarried_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<Block> QUARRIED_BRICKS =
       deferredRegister.register("quarried_bricks",
-          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<StairBlock> QUARRIED_BRICK_STAIRS =
       deferredRegister.register("quarried_brick_stairs",
           () -> new StairBlock(() -> QUARRIED_BRICKS.get().defaultBlockState(),
-              BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+              BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<SlabBlock> QUARRIED_BRICK_SLAB =
       deferredRegister.register("quarried_brick_slab",
-          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+          () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<Block> QUARRIED_PAVER =
       deferredRegister.register("quarried_paver",
-          () -> new Block(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<StairBlock> QUARRIED_PAVER_STAIRS =
       deferredRegister.register("quarried_paver_stairs",
           () -> new StairBlock(() -> QUARRIED_PAVER.get().defaultBlockState(),
-              BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+              BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<SlabBlock> QUARRIED_PAVER_SLAB =
       deferredRegister.register("quarried_paver_slab",
-          () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+          () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(QUARRIED_STONE.get())));
 
   public static final DeferredBlock<Block> ABYSSAL_STONE =
       deferredRegister.register("abyssal_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
 
   public static final DeferredBlock<Block> ABYSSAL_COBBLESTONE =
       deferredRegister.register("abyssal_cobblestone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE)));
 
   public static final DeferredBlock<Block> POLISHED_ABYSSAL_STONE =
       deferredRegister.register("polished_abyssal_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_ANDESITE)));
 
   public static final DeferredBlock<Block> CHISELED_ABYSSAL_STONE =
       deferredRegister.register("chiseled_abyssal_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_STONE_BRICKS)));
 
   public static final DeferredBlock<Block> ETCHED_ABYSSAL_STONE =
       deferredRegister.register("etched_abyssal_stone",
-          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<Block> ABYSSAL_BRICKS =
       deferredRegister.register("abyssal_bricks",
-          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<StairBlock> ABYSSAL_BRICK_STAIRS =
       deferredRegister.register("abyssal_brick_stairs",
           () -> new StairBlock(() -> ABYSSAL_BRICKS.get().defaultBlockState(),
-              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<SlabBlock> ABYSSAL_BRICK_SLAB =
       deferredRegister.register("abyssal_brick_slab",
-          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+          () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<Block> ABYSSAL_PAVER =
       deferredRegister.register("abyssal_paver",
-          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<StairBlock> ABYSSAL_PAVER_STAIRS =
       deferredRegister.register("abyssal_paver_stairs",
           () -> new StairBlock(() -> ABYSSAL_PAVER.get().defaultBlockState(),
-              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   public static final DeferredBlock<SlabBlock> ABYSSAL_PAVER_SLAB =
       deferredRegister.register("abyssal_paver_slab",
-          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+          () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

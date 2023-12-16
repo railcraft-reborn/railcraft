@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
@@ -34,10 +35,16 @@ import net.neoforged.neoforge.network.NetworkHooks;
 public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+  private static final MapCodec<FeedStationBlock> CODEC = simpleCodec(FeedStationBlock::new);
 
   protected FeedStationBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override

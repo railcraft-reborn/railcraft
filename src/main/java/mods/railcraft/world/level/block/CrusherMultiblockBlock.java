@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -40,6 +41,8 @@ public class CrusherMultiblockBlock extends MultiblockBlock implements ChargeBlo
           new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
               80000, 8000, 1));
 
+  private static final MapCodec<CrusherMultiblockBlock> CODEC =
+      simpleCodec(CrusherMultiblockBlock::new);
 
   public CrusherMultiblockBlock(Properties properties) {
     super(properties);
@@ -47,6 +50,11 @@ public class CrusherMultiblockBlock extends MultiblockBlock implements ChargeBlo
         .setValue(TYPE, Type.NONE)
         .setValue(ROTATED, false)
         .setValue(OUTPUT, false));
+  }
+
+  @Override
+  protected MapCodec<? extends MultiblockBlock> codec() {
+    return CODEC;
   }
 
   @Override
