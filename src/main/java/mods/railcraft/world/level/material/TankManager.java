@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -22,8 +22,8 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
 
   public static final TankManager EMPTY = new TankManager(List.of());
 
-  public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER =
-      (t, f) -> t.getCapability(Capabilities.FLUID_HANDLER, f).isPresent();
+  public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER = (be, dir) ->
+      be.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), dir) != null;
   private final List<StandardTank> tanks;
 
   public TankManager(StandardTank... tanks) {

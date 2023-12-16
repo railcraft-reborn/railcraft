@@ -1,14 +1,14 @@
 package mods.railcraft.charge;
 
+import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeCartStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.EnergyStorage;
 
 public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartStorage {
@@ -63,9 +63,8 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
       drewFromTrack--;
     } else if (energy < (capacity * 0.5) && clock % DRAW_INTERVAL == 0) {
       RollingStock.getOrThrow(owner).train().entities()
-          .flatMap(c -> c.getCapability(Capabilities.ENERGY)
-              .map(Stream::of)
-              .orElse(Stream.empty()))
+          .flatMap(c -> Optional.ofNullable(
+              c.getCapability(Capabilities.EnergyStorage.ENTITY, null)).stream())
           .findAny()
           .ifPresent(
               energyStorage -> energy += energyStorage.extractEnergy(capacity - energy, false));

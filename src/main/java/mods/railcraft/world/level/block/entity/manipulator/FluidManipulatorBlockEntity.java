@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -82,8 +83,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Nullable
   protected static IFluidHandler getFluidHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(Capabilities.FLUID_HANDLER, direction)
-        .orElse(null);
+    return cart.getCapability(Capabilities.FluidHandler.ENTITY, direction);
   }
 
   public boolean use(Player player, InteractionHand hand) {
@@ -93,8 +93,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart
-        .getCapability(Capabilities.FLUID_HANDLER, this.getFacing().getOpposite())
-        .isPresent()
+        .getCapability(Capabilities.FluidHandler.ENTITY, this.getFacing().getOpposite()) != null
         && super.canHandleCart(cart);
   }
 

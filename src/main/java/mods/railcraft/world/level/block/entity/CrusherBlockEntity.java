@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -79,18 +80,19 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       blockEntity.getMasterBlockEntity()
           .ifPresent(master -> {
             var target = blockPos.above();
-            var energyCap = master.getCapability(Capabilities.ENERGY);
+            var energyCap = level
+                .getCapability(Capabilities.EnergyStorage.BLOCK, master.getBlockPos(), null);
             EntitySearcher.findLiving()
                 .at(target)
                 .and(ModEntitySelector.KILLABLE)
                 .list(level)
                 .forEach(livingEntity -> {
-                  energyCap.ifPresent(energyStorage -> {
-                    if (energyStorage.getEnergyStored() >= KILLING_POWER_COST) {
+                  if (energyCap != null) {
+                    if (energyCap.getEnergyStored() >= KILLING_POWER_COST) {
                       livingEntity.hurt(RailcraftDamageSources.crusher(level.registryAccess()), 5);
-                      energyStorage.extractEnergy(KILLING_POWER_COST, false);
+                      energyCap.extractEnergy(KILLING_POWER_COST, false);
                     }
-                  });
+                  }
                 });
           });
     }

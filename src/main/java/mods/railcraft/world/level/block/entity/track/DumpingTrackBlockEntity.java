@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
@@ -54,8 +54,8 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   private static BlockEntity getBlockEntityAround(Level level, BlockPos pos) {
     for (var direction : DIRECTION) {
       var blockEntity = level.getBlockEntity(pos.relative(direction));
-      if (blockEntity != null &&
-          blockEntity.getCapability(Capabilities.ITEM_HANDLER).isPresent()) {
+      if (blockEntity != null && level.getCapability(Capabilities.ItemHandler.BLOCK,
+          blockEntity.getBlockPos(), null) != null) {
         return blockEntity;
       }
     }
@@ -100,37 +100,38 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
       return;
     }
 
-    cart.getCapability(Capabilities.ITEM_HANDLER)
-        .ifPresent(itemHandler -> {
-          var cartInv = ContainerManipulator.of(itemHandler);
-          if (!cartInv.hasItems()) {
-            return;
-          }
-          this.ticksSinceLastDrop = 0;
+    var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+    if (itemHandler != null) {
+      var cartInv = ContainerManipulator.of(itemHandler);
+      if (!cartInv.hasItems()) {
+        return;
+      }
+      this.ticksSinceLastDrop = 0;
 
-          var blockEntity = getBlockEntityAround(this.level, this.blockPos());
-          if (blockEntity == null) {
-            var below = this.blockPos().below();
-            if (this.itemFilter.isEmpty()) {
-              cartInv.streamItems()
-                  .forEach(itemStack -> Containers.dropItemStack(this.level,
-                      below.getX(), below.getY(), below.getZ(),
-                      itemStack));
-            } else {
-              cartInv.streamItems()
-                  .filter(this.itemMatcher)
-                  .forEach(itemStack -> Containers.dropItemStack(this.level,
-                      below.getX(), below.getY(), below.getZ(),
-                      itemStack));
-            }
-            return;
-          }
-          blockEntity.getCapability(Capabilities.ITEM_HANDLER)
-              .ifPresent(itemHandlerBlockEntity -> {
-                var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
-                cartInv.moveOneItemStackTo(blockInv);
-              });
-        });
+      var blockEntity = getBlockEntityAround(this.level, this.blockPos());
+      if (blockEntity == null) {
+        var below = this.blockPos().below();
+        if (this.itemFilter.isEmpty()) {
+          cartInv.streamItems()
+              .forEach(itemStack -> Containers.dropItemStack(this.level,
+                  below.getX(), below.getY(), below.getZ(),
+                  itemStack));
+        } else {
+          cartInv.streamItems()
+              .filter(this.itemMatcher)
+              .forEach(itemStack -> Containers.dropItemStack(this.level,
+                  below.getX(), below.getY(), below.getZ(),
+                  itemStack));
+        }
+        return;
+      }
+      var itemHandlerBlockEntity = this.level
+          .getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+      if (itemHandlerBlockEntity != null) {
+        var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
+        cartInv.moveOneItemStackTo(blockInv);
+      }
+    }
   }
 
   @Override
