@@ -1,18 +1,14 @@
 package mods.railcraft.data.recipes.builders;
 
-import com.google.gson.JsonObject;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.core.RecipeJsonKeys;
-import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import net.minecraft.advancements.AdvancementHolder;
+import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
@@ -48,7 +44,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     var path = resourceLocation.getPath();
     var customResourceLocation = Railcraft.rl("coke_oven/" + path);
 
-    var advancementId = customResourceLocation.withPrefix("recipes/");;
+    var advancementId = customResourceLocation.withPrefix("recipes/");
 
     var builder = recipeOutput.advancement()
         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
@@ -56,35 +52,8 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    recipeOutput.accept(new Result(customResourceLocation, this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.creosoteOutput, builder.build(advancementId)));
-  }
-
-  private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
-
-    private final int creosoteOutput;
-
-    public Result(
-        ResourceLocation id,
-        Item result,
-        int count,
-        Ingredient ingredient,
-        float experience,
-        int cookingTime,
-        int creosoteOutput,
-        AdvancementHolder advancement) {
-      super(id, result, count, ingredient, experience, cookingTime, advancement);
-      this.creosoteOutput = creosoteOutput;
-    }
-
-    @Override
-    protected void addJsonProperty(JsonObject json) {
-      json.addProperty(RecipeJsonKeys.CREOSOTE_OUTPUT, this.creosoteOutput);
-    }
-
-    @Override
-    public RecipeSerializer<?> type() {
-      return RailcraftRecipeSerializers.COKING.get();
-    }
+    var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result), this.experience,
+        this.cookingTime, this.creosoteOutput);
+    recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
   }
 }

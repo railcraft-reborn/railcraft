@@ -2,23 +2,17 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.List;
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import mods.railcraft.api.core.RecipeJsonKeys;
-import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import net.minecraft.advancements.AdvancementHolder;
+import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 
 public class RollingRecipeBuilder {
@@ -93,57 +87,9 @@ public class RollingRecipeBuilder {
 
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var customResourceLocation = resourceLocation.withPrefix("rolling/");
-    recipeOutput.accept(new Result(customResourceLocation, this.result, this.count,
-        this.processTime, this.rows, this.key));
-  }
-
-  private record Result(
-      ResourceLocation id,
-      Item item,
-      int count,
-      int processTime,
-      List<String> pattern,
-      Map<Character, Ingredient> key) implements FinishedRecipe {
-
-    @Override
-    public void serializeRecipeData(JsonObject jsonOut) {
-      var patternJson = new JsonArray();
-      for (var s : this.pattern) {
-        patternJson.add(s);
-      }
-      jsonOut.add(RecipeJsonKeys.PATTERN, patternJson);
-
-      var keyJson = new JsonObject();
-      for (var entry : this.key.entrySet()) {
-        keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson(false));
-      }
-      jsonOut.add(RecipeJsonKeys.KEY, keyJson);
-
-      var resultJson = new JsonObject();
-      resultJson.addProperty(RecipeJsonKeys.ITEM,
-          BuiltInRegistries.ITEM.getKey(this.item).toString());
-      if (this.count > 1) {
-        resultJson.addProperty(RecipeJsonKeys.COUNT, this.count);
-      }
-      jsonOut.add(RecipeJsonKeys.RESULT, resultJson);
-
-      jsonOut.add(RecipeJsonKeys.PROCESS_TIME, new JsonPrimitive(this.processTime));
-    }
-
-    @Override
-    public ResourceLocation id() {
-      return this.id;
-    }
-
-    @Override
-    public RecipeSerializer<?> type() {
-      return RailcraftRecipeSerializers.ROLLING.get();
-    }
-
-    @Nullable
-    @Override
-    public AdvancementHolder advancement() {
-      return null;
-    }
+    var pattern = ShapedRecipePattern.of(this.key, this.rows);
+    var recipe = new RollingRecipe(pattern, new ItemStack(this.result, this.count),
+        this.processTime);
+    recipeOutput.accept(customResourceLocation, recipe, null);
   }
 }

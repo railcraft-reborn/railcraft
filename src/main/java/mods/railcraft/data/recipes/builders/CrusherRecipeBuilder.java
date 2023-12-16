@@ -3,22 +3,14 @@ package mods.railcraft.data.recipes.builders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import mods.railcraft.Railcraft;
-import mods.railcraft.api.core.RecipeJsonKeys;
-import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
-import net.minecraft.advancements.AdvancementHolder;
+import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 
 public class CrusherRecipeBuilder {
@@ -27,7 +19,7 @@ public class CrusherRecipeBuilder {
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;
-  private final List<Tuple<ItemStack, Double>> probabilityItems;
+  private final List<Pair<ItemStack, Double>> probabilityItems;
   private final int processTime;
 
   private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
@@ -55,7 +47,7 @@ public class CrusherRecipeBuilder {
     }
 
     var itemStack = new ItemStack(item, quantity);
-    probabilityItems.add(new Tuple<>(itemStack, probability));
+    probabilityItems.add(new Pair<>(itemStack, probability));
     return this;
   }
 
@@ -69,53 +61,7 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(RecipeOutput recipeOutput, String path) {
-    recipeOutput.accept(new Result(
-        Railcraft.rl("crusher/crushing_" + path),
-        this.ingredient,
-        this.probabilityItems,
-        this.processTime));
-  }
-
-  private record Result(
-      ResourceLocation id,
-      Ingredient ingredient,
-      List<Tuple<ItemStack, Double>> probabilityItems,
-      int processTime) implements FinishedRecipe {
-
-    @Override
-    public void serializeRecipeData(JsonObject jsonOut) {
-      jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, this.processTime);
-      jsonOut.add(RecipeJsonKeys.INGREDIENT, this.ingredient.toJson(false));
-
-      var result = new JsonArray();
-      for (var item : this.probabilityItems) {
-        var pattern = new JsonObject();
-
-        var itemStackObject = new JsonObject();
-        itemStackObject.addProperty(RecipeJsonKeys.ITEM,
-            BuiltInRegistries.ITEM.getKey(item.getA().getItem()).toString());
-        itemStackObject.addProperty(RecipeJsonKeys.COUNT, item.getA().getCount());
-        pattern.add(RecipeJsonKeys.RESULT, itemStackObject);
-        pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.getB());
-        result.add(pattern);
-      }
-      jsonOut.add(RecipeJsonKeys.OUTPUTS, result);
-    }
-
-    @Override
-    public ResourceLocation id() {
-      return this.id;
-    }
-
-    @Override
-    public RecipeSerializer<?> type() {
-      return RailcraftRecipeSerializers.CRUSHER.get();
-    }
-
-    @Nullable
-    @Override
-    public AdvancementHolder advancement() {
-      return null;
-    }
+    var recipe = new CrusherRecipe(this.ingredient, this.probabilityItems, this.processTime);
+    recipeOutput.accept(Railcraft.rl("crusher/crushing_" + path), recipe, null);
   }
 }
