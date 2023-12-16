@@ -9,7 +9,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
-import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -50,7 +49,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
         RecordCodecBuilder.create(instance -> instance.group(
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
                 .forGetter(recipe -> recipe.ingredient),
-            CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result")
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result")
                 .forGetter(recipe -> recipe.result),
             Codec.FLOAT.fieldOf("experience")
                 .orElse(0.0F)

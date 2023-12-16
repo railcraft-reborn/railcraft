@@ -34,7 +34,6 @@ import net.neoforged.neoforge.items.IItemHandler;
  * 
  * @author Sm0keySa1m0n
  */
-@AutoRegisterCapability
 public interface RollingStock {
 
   /**
@@ -58,8 +57,8 @@ public interface RollingStock {
   int MAX_BLOCKING_TANK_CAPACITY = 8 * FluidType.BUCKET_VOLUME;
 
   EntityCapability<RollingStock, Void> CAPABILITY =
-      EntityCapability.create(new ResourceLocation(RailcraftConstants.ID, "rolling_stock"),
-          RollingStock.class, Void.class);
+      EntityCapability.createVoid(new ResourceLocation(RailcraftConstants.ID, "rolling_stock"),
+          RollingStock.class);
 
   static RollingStock getOrThrow(AbstractMinecart minecart) {
     return Optional.ofNullable(minecart.getCapability(CAPABILITY))

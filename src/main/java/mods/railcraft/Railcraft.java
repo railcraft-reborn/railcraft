@@ -65,6 +65,7 @@ import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -85,6 +86,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
@@ -187,6 +189,20 @@ public class Railcraft {
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
+    //event.register(RollingStock.class);
+    for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
+      event.registerEntity(RollingStock.CAPABILITY, entityType, (entity, ctx) ->
+          entity instanceof AbstractMinecart minecart ? new RollingStockImpl(minecart) : null);
+    }
+
+    /*if (event.getObject() instanceof AbstractMinecart minecart) {
+      event.addCapability(RollingStockImpl.KEY,
+          CapabilityUtil.serializableProvider(
+              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
+    }*/
+
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new FluidBottleWrapper(stack), Items.GLASS_BOTTLE);
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {
@@ -261,13 +277,13 @@ public class Railcraft {
     }
   }
 
-  @SubscribeEvent
+  /*@SubscribeEvent
   public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
     var stack = event.getObject();
     if (stack.is(Items.GLASS_BOTTLE)) {
       event.addCapability(Railcraft.rl("bottle_container"), new FluidBottleWrapper(stack));
     }
-  }
+  }*/
 
   @SubscribeEvent
   public void handleLevelTick(TickEvent.LevelTickEvent event) {

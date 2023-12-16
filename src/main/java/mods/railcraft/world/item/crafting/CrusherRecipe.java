@@ -14,7 +14,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipeCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -112,7 +111,7 @@ public class CrusherRecipe implements Recipe<Container> {
 
     private static final Codec<Pair<ItemStack, Double>> CODEC_PAIR = RecordCodecBuilder
         .create(instance -> instance.group(
-            CraftingRecipeCodecs.ITEMSTACK_OBJECT_CODEC.fieldOf("result").forGetter(Pair::getFirst),
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(Pair::getFirst),
             Codec.doubleRange(0, 1).fieldOf("probability").forGetter(Pair::getSecond)
         ).apply(instance, Pair::of));
 
