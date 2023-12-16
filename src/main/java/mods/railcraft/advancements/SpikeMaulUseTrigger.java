@@ -1,14 +1,12 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
@@ -16,49 +14,47 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
-
-  @Override
-  public SpikeMaulUseTrigger.Instance createInstance(JsonObject json,
-      Optional<ContextAwarePredicate> contextAwarePredicate,
-      DeserializationContext deserializationContext) {
-    var nbt = NbtPredicate.CODEC.decode(JsonOps.INSTANCE, json.get("nbt")).result()
-        .map(Pair::getFirst);
-    var tool = ItemPredicate.fromJson(json.get("tool"));
-    var location = LocationPredicate.fromJson(json.get("location"));
-    return new SpikeMaulUseTrigger.Instance(contextAwarePredicate, nbt, tool, location);
-  }
+public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user successfully uses a spike maul.
    */
   public void trigger(ServerPlayer player, ItemStack item,
       ServerLevel serverLevel, BlockPos pos) {
-    this.trigger(player, (criterionInstance) -> criterionInstance.matches(item, serverLevel, pos));
+    this.trigger(player, criterionInstance -> criterionInstance.matches(item, serverLevel, pos));
   }
 
-  public static Criterion<Instance> hasUsedSpikeMaul() {
+  public static Criterion<TriggerInstance> hasUsedSpikeMaul() {
     return RailcraftCriteriaTriggers.SPIKE_MAUL_USE.createCriterion(
-        new Instance(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private final Optional<NbtPredicate> nbt;
-    private final Optional<ItemPredicate> tool;
-    private final Optional<LocationPredicate> location;
+  public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                Optional<NbtPredicate> nbt,
+                                Optional<ItemPredicate> tool,
+                                Optional<LocationPredicate> location)
+      implements SimpleCriterionTrigger.SimpleInstance {
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        Optional<NbtPredicate> nbt, Optional<ItemPredicate> tool,
-        Optional<LocationPredicate> location) {
-      super(contextAwarePredicate);
-      this.nbt = nbt;
-      this.tool = tool;
-      this.location = location;
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(NbtPredicate.CODEC, "nbt")
+                .forGetter(TriggerInstance::nbt),
+            ExtraCodecs.strictOptionalField(ItemPredicate.CODEC, "tool")
+                .forGetter(TriggerInstance::tool),
+            ExtraCodecs.strictOptionalField(LocationPredicate.CODEC, "location")
+                .forGetter(TriggerInstance::location)
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ItemStack item, ServerLevel level, BlockPos pos) {
       return LevelUtil.getBlockEntity(level, pos)
@@ -70,16 +66,8 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     }
 
     @Override
-    public JsonObject serializeToJson() {
-      var json = super.serializeToJson();
-      this.tool.ifPresent(x -> json.add("tool", x.serializeToJson()));
-      this.location.ifPresent(x -> json.add("location", x.serializeToJson()));
-      this.nbt.ifPresent(x -> {
-        var encode = NbtPredicate.CODEC
-            .encodeStart(JsonOps.INSTANCE, x).result();
-        json.add("nbt", encode.get());
-      });
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

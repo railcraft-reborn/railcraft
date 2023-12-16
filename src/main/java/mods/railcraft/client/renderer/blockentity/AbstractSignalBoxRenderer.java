@@ -105,6 +105,8 @@ public abstract class AbstractSignalBoxRenderer
 
   @Override
   public AABB getRenderBoundingBox(AbstractSignalBoxBlockEntity blockEntity) {
-    return new AABB(blockEntity.getBlockPos().offset(-1, 0, -1), blockEntity.getBlockPos().offset(2, 2, 2));
+    var pos = blockEntity.getBlockPos();
+    return new AABB(pos.getX() - 1, pos.getY(), pos.getZ() - 1,
+        pos.getX() + 2, pos.getY() + 2, pos.getZ() + 2);
   }
 }

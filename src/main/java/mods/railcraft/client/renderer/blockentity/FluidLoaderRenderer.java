@@ -63,6 +63,8 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
 
   @Override
   public AABB getRenderBoundingBox(FluidLoaderBlockEntity blockEntity) {
-    return new AABB(blockEntity.getBlockPos().offset(0, -1, 0), blockEntity.getBlockPos().offset(1, 1, 1));
+    var pos = blockEntity.getBlockPos();
+    return new AABB(pos.getX(), pos.getY() - 1, pos.getZ(),
+        pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
   }
 }

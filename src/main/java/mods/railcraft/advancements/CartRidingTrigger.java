@@ -1,18 +1,19 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * TODO: Implament this on carts.
  */
-public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.Instance> {
+public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.TriggerInstance> {
 
   // private static final int FREQUENCY = 20;
 
@@ -25,21 +26,16 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // MinecraftForge.EVENT_BUS.register(this);
   // }
 
-
-  @Override
-  public CartRidingTrigger.Instance createInstance(JsonObject json,
-      Optional<ContextAwarePredicate> contextAwarePredicate,
-      DeserializationContext deserializationContext) {
-    var minecart = MinecartPredicate.fromJson(json.get("cart"));
-    return new CartRidingTrigger.Instance(contextAwarePredicate, minecart);
-  }
-
   /**
    * Invoked when the user rides a cart.
    */
   public void trigger(ServerPlayer playerEntity, AbstractMinecart cart) {
-    this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
+    this.trigger(playerEntity, criterionInstance -> criterionInstance.matches(playerEntity, cart));
+  }
+
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
   }
 
   // @SubscribeEvent
@@ -72,29 +68,29 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // }
   // }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                Optional<MinecartPredicate> cart)
+      implements SimpleCriterionTrigger.SimpleInstance {
 
-    private final Optional<MinecartPredicate> cartPredicate;
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
+        ).apply(instance, TriggerInstance::new));
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        Optional<MinecartPredicate> predicate) {
-      super(contextAwarePredicate);
-      this.cartPredicate = predicate;
-    }
-
-    public static CartRidingTrigger.Instance hasRidden() {
-      return new CartRidingTrigger.Instance(Optional.empty(), Optional.empty());
+    public static TriggerInstance hasRidden() {
+      return new TriggerInstance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
-      return cartPredicate.map(x -> x.matches(player, cart)).orElse(true);
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
     }
 
     @Override
-    public JsonObject serializeToJson() {
-      var json = super.serializeToJson();
-      this.cartPredicate.ifPresent(x -> json.add("cart", x.serializeToJson()));
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

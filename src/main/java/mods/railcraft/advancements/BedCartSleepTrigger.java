@@ -1,46 +1,46 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.Instance> {
-  @Override
-  protected BedCartSleepTrigger.Instance createInstance(JsonObject json,
-      Optional<ContextAwarePredicate> contextAwarePredicate,
-      DeserializationContext deserializationContext) {
-    var minecart = MinecartPredicate.fromJson(json.get("cart"));
-    return new BedCartSleepTrigger.Instance(contextAwarePredicate, minecart);
-  }
+public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user sleeps on a cart.
    */
-  public void trigger(ServerPlayer playerEntity, AbstractMinecart cartPredicate) {
-    this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cartPredicate));
+  public void trigger(ServerPlayer playerEntity, AbstractMinecart cart) {
+    this.trigger(playerEntity, criterionInstance -> criterionInstance.matches(playerEntity, cart));
   }
 
-  public static Criterion<Instance> hasSlept() {
+  public static Criterion<TriggerInstance> hasSlept() {
     return RailcraftCriteriaTriggers.BED_CART_SLEEP.createCriterion(
-        new Instance(Optional.empty(), Optional.empty()));
+        new TriggerInstance(Optional.empty(), Optional.empty()));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private final Optional<MinecartPredicate> cart;
+  public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                Optional<MinecartPredicate> cart)
+      implements SimpleCriterionTrigger.SimpleInstance {
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        Optional<MinecartPredicate> cart) {
-      super(contextAwarePredicate);
-      this.cart = cart;
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
+            ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
       return this.cart
@@ -49,10 +49,8 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
     }
 
     @Override
-    public JsonObject serializeToJson() {
-      var json = super.serializeToJson();
-      this.cart.ifPresent(x -> json.add("cart", x.serializeToJson()));
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

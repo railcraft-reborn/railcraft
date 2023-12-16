@@ -20,8 +20,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.CommonHooks;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
@@ -40,8 +40,7 @@ public enum StackFilter implements Predicate<ItemStack> {
   BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
       && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
   FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(Capabilities.FLUID_HANDLER_ITEM)
-      .isPresent()),
+      .getCapability(Capabilities.FluidHandler.ITEM) != null),
   FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
       || itemStack.is(Items.WHEAT)
       || itemStack.getItem() instanceof BlockItem blockItem
@@ -54,7 +53,7 @@ public enum StackFilter implements Predicate<ItemStack> {
 
   private final Predicate<ItemStack> predicate;
 
-  private StackFilter(Predicate<ItemStack> predicate) {
+  StackFilter(Predicate<ItemStack> predicate) {
     this.predicate = predicate;
   }
 

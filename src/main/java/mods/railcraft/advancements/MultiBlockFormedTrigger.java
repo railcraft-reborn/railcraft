@@ -1,34 +1,21 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class MultiBlockFormedTrigger extends
-    SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
-  @Override
-  protected MultiBlockFormedTrigger.Instance createInstance(JsonObject json,
-      Optional<ContextAwarePredicate> contextAwarePredicate,
-      DeserializationContext deserializationContext) {
-    var type = BuiltInRegistries.BLOCK_ENTITY_TYPE.byNameCodec()
-        .decode(JsonOps.INSTANCE, json.get("type"))
-        .map(Pair::getFirst)
-        .result();
-    var nbt = NbtPredicate.CODEC.decode(JsonOps.INSTANCE, json.get("nbt")).result()
-        .map(Pair::getFirst);
-    return new MultiBlockFormedTrigger.Instance(contextAwarePredicate, type, nbt);
-  }
+    SimpleCriterionTrigger<MultiBlockFormedTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user forms a multiblock.
@@ -41,23 +28,31 @@ public class MultiBlockFormedTrigger extends
     return formedMultiBlock(tileEntityType, Optional.empty());
   }
 
-  public static Criterion<Instance> formedMultiBlock(
+  public static Criterion<TriggerInstance> formedMultiBlock(
       BlockEntityType<?> tileEntityType, Optional<NbtPredicate> nbtPredicate) {
     return RailcraftCriteriaTriggers.MULTIBLOCK_FORM.createCriterion(
-        new Instance(Optional.empty(), Optional.of(tileEntityType), nbtPredicate));
+        new TriggerInstance(Optional.empty(), Optional.of(tileEntityType), nbtPredicate));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private final Optional<? extends BlockEntityType<?>> type;
-    private final Optional<NbtPredicate> nbt;
+  public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                Optional<BlockEntityType<?>> type,
+                                Optional<NbtPredicate> nbt)
+      implements SimpleCriterionTrigger.SimpleInstance {
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        Optional<? extends BlockEntityType<?>> type, Optional<NbtPredicate> nbt) {
-      super(contextAwarePredicate);
-      this.type = type;
-      this.nbt = nbt;
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(BuiltInRegistries.BLOCK_ENTITY_TYPE.byNameCodec(), "type")
+                .forGetter(TriggerInstance::type),
+            ExtraCodecs.strictOptionalField(NbtPredicate.CODEC, "nbt")
+                .forGetter(TriggerInstance::nbt)
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(RailcraftBlockEntity blockEntity) {
       return this.type.map(type -> type.equals(blockEntity.getType())).orElse(true)
@@ -66,20 +61,8 @@ public class MultiBlockFormedTrigger extends
     }
 
     @Override
-    public JsonObject serializeToJson() {
-      var json = super.serializeToJson();
-      this.type.ifPresent(x -> {
-        var encode = BuiltInRegistries.BLOCK_ENTITY_TYPE.byNameCodec()
-            .encodeStart(JsonOps.INSTANCE, x).result();
-        json.add("type", encode.get());
-      });
-      this.nbt.ifPresent(x -> {
-        var encode = NbtPredicate.CODEC
-            .encodeStart(JsonOps.INSTANCE, x).result();
-        json.add("nbt", encode.get());
-      });
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
-
 }

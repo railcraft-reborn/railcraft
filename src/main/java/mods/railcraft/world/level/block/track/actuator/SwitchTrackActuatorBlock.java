@@ -1,6 +1,8 @@
 package mods.railcraft.world.level.block.track.actuator;
 
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.track.ArrowDirection;
+import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -48,7 +50,8 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
       Shapes.or(BASE_SHAPE, NORTH_SOUTH_WINGS_SHAPE, POST_SHAPE);
   private static final VoxelShape EAST_WEST_SHAPE =
       Shapes.or(BASE_SHAPE, EAST_WEST_WINGS_SHAPE, POST_SHAPE);
-
+  private static final MapCodec<SwitchTrackActuatorBlock> CODEC =
+      simpleCodec(SwitchTrackActuatorBlock::new);
 
   public SwitchTrackActuatorBlock(Properties properties) {
     super(properties);
@@ -57,6 +60,11 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
         .setValue(RED_ARROW_DIRECTION, ArrowDirection.NORTH_SOUTH)
         .setValue(WHITE_ARROW_DIRECTION, ArrowDirection.EAST_WEST)
         .setValue(SWITCHED, false));
+  }
+
+  @Override
+  protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    return CODEC;
   }
 
   @Override

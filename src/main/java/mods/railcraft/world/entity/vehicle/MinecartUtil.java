@@ -233,7 +233,7 @@ public final class MinecartUtil {
             pos.getY() + 0.0625D + h, pos.getZ() + 0.5, level);
       } else if (cartItem.getItem() instanceof MinecartItem minecartItem) {
         cart = AbstractMinecart.createMinecart(level, pos.getX() + 0.5,
-            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, minecartItem.type);
+            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, minecartItem.type, cartItem, null);
       }
 
       if (cart == null) {

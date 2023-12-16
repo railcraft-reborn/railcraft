@@ -1,28 +1,21 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 
-public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
-  @Override
-  public UseTrackKitTrigger.Instance createInstance(JsonObject json,
-      Optional<ContextAwarePredicate> contextAwarePredicate,
-      DeserializationContext deserializationContext) {
-    var used = ItemPredicate.fromJson(json.get("item"));
-    var location = LocationPredicate.fromJson(json.get("location"));
-    return new UseTrackKitTrigger.Instance(contextAwarePredicate, used, location);
-  }
+public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user explodes a cart.
@@ -30,25 +23,33 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   public void trigger(ServerPlayer playerEntity, ServerLevel serverLevel,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(serverLevel, blockPos, stack));
+        criterionInstance -> criterionInstance.matches(serverLevel, blockPos, stack));
   }
 
-  public static Criterion<Instance> hasUsedTrackKit() {
+  public static Criterion<TriggerInstance> hasUsedTrackKit() {
     return RailcraftCriteriaTriggers.TRACK_KIT_USE.createCriterion(
-        new Instance(Optional.empty(), Optional.empty(), Optional.empty()));
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private final Optional<ItemPredicate> item;
-    private final Optional<LocationPredicate> location;
+  public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                Optional<ItemPredicate> item,
+                                Optional<LocationPredicate> location)
+      implements SimpleCriterionTrigger.SimpleInstance {
 
-    private Instance(Optional<ContextAwarePredicate> contextAwarePredicate,
-        Optional<ItemPredicate> itemPredicate, Optional<LocationPredicate> locationPredicate) {
-      super(contextAwarePredicate);
-      this.item = itemPredicate;
-      this.location = locationPredicate;
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(ItemPredicate.CODEC, "item")
+                .forGetter(TriggerInstance::item),
+            ExtraCodecs.strictOptionalField(LocationPredicate.CODEC, "location")
+                .forGetter(TriggerInstance::location)
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {
       return this.item.map(x -> x.matches(stack)).orElse(true)
@@ -57,11 +58,8 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     }
 
     @Override
-    public JsonObject serializeToJson() {
-      var json = super.serializeToJson();
-      this.item.ifPresent(x -> json.add("item", x.serializeToJson()));
-      this.location.ifPresent(x -> json.add("location", x.serializeToJson()));
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

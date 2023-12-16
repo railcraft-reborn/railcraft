@@ -268,7 +268,7 @@ public class Railcraft {
     }
   }
 
-  @SubscribeEvent
+  /*@SubscribeEvent
   public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
     if (event.getObject() instanceof AbstractMinecart minecart) {
       event.addCapability(RollingStockImpl.KEY,
@@ -277,7 +277,7 @@ public class Railcraft {
     }
   }
 
-  /*@SubscribeEvent
+  @SubscribeEvent
   public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
     var stack = event.getObject();
     if (stack.is(Items.GLASS_BOTTLE)) {
