@@ -10,7 +10,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
@@ -30,7 +30,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.ROOT),
             Component.translatable(Translations.Advancement.Tracks.ROOT_DESC),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
-            FrameType.TASK,
+            AdvancementType.TASK,
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
@@ -42,7 +42,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE),
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE_DESC),
             null,
-            FrameType.CHALLENGE,
+            AdvancementType.CHALLENGE,
             true, true, false)
         .parent(root)
         .addCriterion("inv_changed",
@@ -55,7 +55,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE),
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(root)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger
@@ -68,7 +68,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN),
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, true, false)
         .parent(root)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger
@@ -81,7 +81,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE),
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
@@ -95,7 +95,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.CRUSHER),
             Component.translatable(Translations.Advancement.Tracks.CRUSHER_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
@@ -108,7 +108,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK),
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
@@ -120,7 +120,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT),
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, true, false)
         .parent(basicTrack)
         .addCriterion("has_used_track_kit", UseTrackKitTrigger.hasUsedTrackKit())
@@ -132,7 +132,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS),
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(basicTrack)
         .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.hasUsedSpikeMaul())
@@ -144,7 +144,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK),
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK_DESC),
             null,
-            FrameType.CHALLENGE,
+            AdvancementType.CHALLENGE,
             true, true, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",
@@ -157,7 +157,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK),
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",
