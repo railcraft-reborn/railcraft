@@ -10,10 +10,8 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.common.extensions.IForgeEnchantment;
 
-public class RailcraftDamageEnchantment extends RailcraftToolEnchantment
-    implements IForgeEnchantment {
+public class RailcraftDamageEnchantment extends Enchantment {
 
   private final int baseEnchantability, levelEnchantability, thresholdEnchantability;
   private final Predicate<? super Entity> check;
@@ -22,8 +20,9 @@ public class RailcraftDamageEnchantment extends RailcraftToolEnchantment
 
   public RailcraftDamageEnchantment(Rarity rarity, int baseEnchantability,
       int levelEnchantability, int thresholdEnchantability,
-      @Nullable Predicate<? super Entity> check, float damageBonusPerLevel) {
-    super(rarity, EquipmentSlot.MAINHAND);
+      @Nullable Predicate<? super Entity> check, float damageBonusPerLevel,
+      EquipmentSlot... slots) {
+    super(rarity, RailcraftEnchantmentCategories.RAILWAY_TOOL, slots);
     this.baseEnchantability = baseEnchantability;
     this.levelEnchantability = levelEnchantability;
     this.thresholdEnchantability = thresholdEnchantability;
