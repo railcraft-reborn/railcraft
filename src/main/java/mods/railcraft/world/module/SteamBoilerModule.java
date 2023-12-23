@@ -35,8 +35,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final SteamBoiler boiler;
 
   private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
-  private final LazyOptional<
-      IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+  private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(
+      () -> new InvWrapper(this) {
         @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
