@@ -15,13 +15,13 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   description = "Redefine your rails"
 
 [[dependencies.railcraft]]
-  type="required"
+  type = "required"
   modId = "neoforge"
   ordering = "AFTER"
   side = "BOTH"
   versionRange = "${neo_version_range}"
 [[dependencies.railcraft]]
-  type="required"
+  type = "required"
   modId = "minecraft"
   ordering = "NONE"
   side = "BOTH"
