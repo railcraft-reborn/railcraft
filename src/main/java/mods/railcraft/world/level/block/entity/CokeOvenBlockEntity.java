@@ -61,9 +61,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
       CokeOvenBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
-    if (blockEntity.isMaster()) {
-      blockEntity.cokeOvenModule.serverTick();
-    }
 
     blockEntity.getMasterBlockEntity()
         .ifPresent(master -> {

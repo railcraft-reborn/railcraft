@@ -71,9 +71,6 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       CrusherBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
-    if (blockEntity.isMaster()) {
-      blockEntity.crusherModule.serverTick();
-    }
 
     if (++blockEntity.tick % 8 == 0) {
       blockEntity.tick = 0;

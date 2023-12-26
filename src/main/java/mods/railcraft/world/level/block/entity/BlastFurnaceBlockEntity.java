@@ -70,9 +70,6 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
       BlastFurnaceBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
-    if (blockEntity.isMaster()) {
-      blockEntity.blastFurnaceModule.serverTick();
-    }
 
     blockEntity.getMasterBlockEntity()
         .ifPresent(master -> {
