@@ -7,8 +7,8 @@ plugins {
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
-    id 'me.modmuss50.mod-publish-plugin' version '0.4.2'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.4'
+    id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
 }
 
 version = "$minecraft_version-$mod_version"
@@ -160,21 +160,22 @@ tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-                'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
-                'Specification-Version'     : '1',
-                'Implementation-Title'      : project.name,
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-                'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'              : 'railcraft.mixins.json'
+            'Specification-Title'       : project.name,
+            'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
+            'Specification-Version'     : '1',
+            'Implementation-Title'      : project.name,
+            'Implementation-Version'    : project.version,
+            'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
+            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
+            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
     finalizedBy 'reobfJar'
 }
 
-task apiJar(type: Jar, group: 'build') {
+tasks.register('apiJar', Jar) {
+    group = 'build'
     from sourceSets.api.output
     archiveClassifier = 'api'
     manifest.from(jar.manifest)
@@ -220,7 +221,7 @@ publishMods {
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
-    if (minecraft_version.equals('1.20.1')) {
+    if (minecraft_version == '1.20.1') {
         modLoaders.add('forge')
     }
     file = jar.archiveFile
