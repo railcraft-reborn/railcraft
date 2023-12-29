@@ -8,7 +8,7 @@ plugins {
     id 'net.neoforged.gradle.userdev' version '7.0.61'
     id 'net.neoforged.gradle.mixin' version '7.0.61'
     //id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.4'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
 }
 
@@ -141,19 +141,19 @@ tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-                'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
-                'Specification-Version'     : '1',
-                'Implementation-Title'      : project.name,
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
-                'MixinConfigs'              : 'railcraft.mixins.json'
+            'Specification-Title'       : project.name,
+            'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
+            'Specification-Version'     : '1',
+            'Implementation-Title'      : project.name,
+            'Implementation-Version'    : project.version,
+            'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
+            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
         ])
     }
 }
 
-task apiJar(type: Jar, group: 'build') {
+tasks.register('apiJar', Jar) {
+    group = 'build'
     from sourceSets.api.output
     archiveClassifier = 'api'
     manifest.from(jar.manifest)
