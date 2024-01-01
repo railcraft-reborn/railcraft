@@ -13,7 +13,7 @@ public final class RailcraftConstants {
 
   public static final String ID = "railcraft";
   public static final String NAME = "Railcraft Reborn";
-  public static final String RAILCRAFT_PLAYER = "[railcraft]";
+  private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
 }
