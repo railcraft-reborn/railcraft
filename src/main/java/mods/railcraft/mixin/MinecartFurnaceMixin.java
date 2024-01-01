@@ -35,7 +35,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
   @Overwrite
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    InteractionResult ret = super.interact(player, hand);
+    var ret = super.interact(player, hand);
     if (ret.consumesAction()) {
       return ret;
     }

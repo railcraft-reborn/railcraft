@@ -42,9 +42,8 @@ public class SignalReceiverBoxBlock extends SignalBoxBlock implements EntityBloc
     if (level.isClientSide()) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get())
           .ifPresent(ScreenFactories::openActionSignalBoxScreen);
-      return InteractionResult.SUCCESS;
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

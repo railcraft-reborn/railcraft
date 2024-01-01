@@ -102,14 +102,14 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var random = level.getRandom();
 
     if (level.isClientSide())
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.CONSUME;
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
 
-    ServerPlayer serverPlayer = (ServerPlayer) player;
+    var serverPlayer = (ServerPlayer) player;
 
     if (player.mayUseItemAt(pos, side, stack)) {
-      if (blockState.getBlock() != Blocks.STONE) {
+      if (!blockState.is(Blocks.STONE)) {
         var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
@@ -158,7 +158,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
           SoundSource.AMBIENT, 1.0F, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
-      return InteractionResult.SUCCESS;
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

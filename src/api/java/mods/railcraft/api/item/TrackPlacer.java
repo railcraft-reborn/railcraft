@@ -35,13 +35,13 @@ public interface TrackPlacer {
    * Attempts to place a track.
    *
    * @param stack The track to place
-   * @param world The World object
+   * @param level The World object
    * @param pos The position
    * @param trackShape The preferred EnumRailDirection. May be null. If the shape is invalid for
    *        your track, use your default value.
    * @return true if successful
    */
-  default boolean placeTrack(ItemStack stack, @NotNull Player player, Level world,
+  default boolean placeTrack(ItemStack stack, @NotNull Player player, Level level,
       BlockPos pos, @Nullable RailShape trackShape) {
     return stack.getItem().useOn(
         new UseOnContext(player, InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.ZERO,

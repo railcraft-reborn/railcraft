@@ -89,9 +89,9 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (!player.level().isClientSide()) {
+    if (player instanceof ServerPlayer serverPlayer) {
       if (this.hasMenu()) {
-        ((ServerPlayer) player).openMenu(this, data -> data.writeVarInt(this.getId()));
+        serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));
       }
       PiglinAi.angerNearbyPiglins(player, true);
     }
