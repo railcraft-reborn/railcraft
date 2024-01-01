@@ -2,8 +2,8 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetFluidManipulatorMessage;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +22,7 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
 
   @Override
   protected void sendAttributes() {
-    NetworkChannel.GAME.sendToServer(new SetFluidManipulatorAttributesMessage(
+    PacketHandler.sendToServer(new SetFluidManipulatorMessage(
         this.menu.getManipulator().getBlockPos(), this.menu.getManipulator().getRedstoneMode()));
   }
 

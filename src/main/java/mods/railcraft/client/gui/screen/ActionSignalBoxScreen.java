@@ -8,8 +8,8 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetActionSignalBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.client.gui.components.Tooltip;
@@ -119,8 +119,8 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetActionSignalBoxAttributesMessage(this.signalBox.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetActionSignalBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));
   }

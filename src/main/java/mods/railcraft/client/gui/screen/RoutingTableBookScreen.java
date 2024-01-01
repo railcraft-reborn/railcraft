@@ -17,8 +17,8 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.EditRoutingTableBookMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.EditRoutingTableBookMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
@@ -247,7 +247,7 @@ public class RoutingTableBookScreen extends Screen {
     if (this.isModified) {
       this.eraseEmptyTrailingPages();
       this.updateLocalCopy();
-      NetworkChannel.GAME.sendToServer(new EditRoutingTableBookMessage(this.hand, this.pages,
+      PacketHandler.sendToServer(new EditRoutingTableBookMessage(this.hand, this.pages,
           Optional.of(this.title.trim())));
     }
   }

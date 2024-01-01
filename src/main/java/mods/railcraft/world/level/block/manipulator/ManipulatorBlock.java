@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.redstone.Redstone;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends BaseEntityBlock {
 
@@ -49,14 +48,13 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
   @Override
   public InteractionResult use(BlockState blockState, Level level,
       BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (!level.isClientSide()) {
+    if (player instanceof ServerPlayer serverPlayer) {
       BlockEntity blockEntity = level.getBlockEntity(blockPos);
       if (!this.blockEntityType.isInstance(blockEntity)) {
         return InteractionResult.PASS;
       }
 
-      NetworkHooks.openScreen(
-          (ServerPlayer) player, this.blockEntityType.cast(blockEntity), blockPos);
+      serverPlayer.openMenu(this.blockEntityType.cast(blockEntity), blockPos);
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

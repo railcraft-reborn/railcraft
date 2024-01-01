@@ -5,8 +5,8 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import mods.railcraft.api.signal.SignalAspect;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -117,8 +117,8 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
         this.parseRegex(this.textFields.get(entry.getKey()).getValue(), entry.getValue());
       }
       this.signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals);
-      NetworkChannel.GAME.sendToServer(
-          new SetAnalogSignalControllerBoxAttributesMessage(this.signalBox.getBlockPos(),
+      PacketHandler.sendToServer(
+          new SetAnalogSignalControllerBoxMessage(this.signalBox.getBlockPos(),
               this.signalAspectTriggerSignals));
     }
   }

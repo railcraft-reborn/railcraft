@@ -4,7 +4,7 @@ import java.util.Collection;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.network.play.LinkedCartsMessage;
+import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.client.Camera;

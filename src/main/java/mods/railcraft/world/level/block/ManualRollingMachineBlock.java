@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSearchable {
 
@@ -63,12 +62,11 @@ public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSea
   @Override
   public InteractionResult use(BlockState blockState, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
+    if (player instanceof ServerPlayer serverPlayer) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get())
+          .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    level.getBlockEntity(pos, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get())
-        .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

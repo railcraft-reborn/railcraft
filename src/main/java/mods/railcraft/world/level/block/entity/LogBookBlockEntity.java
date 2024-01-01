@@ -13,8 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.OpenLogBookScreen;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_client.OpenLogBookScreen;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -108,7 +108,7 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
   }
 
   public void use(ServerPlayer player) {
-    NetworkChannel.GAME.sendTo(new OpenLogBookScreen(getPages(this.log)), player);
+    PacketHandler.sendTo(player, new OpenLogBookScreen(getPages(this.log)));
   }
 
   private static List<List<String>> getPages(Multimap<LocalDate, GameProfile> log) {

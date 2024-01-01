@@ -1,5 +1,6 @@
 package mods.railcraft;
 
+import java.util.Optional;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -29,9 +30,9 @@ import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.loot.RailcraftLootModifiers;
-import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
-import mods.railcraft.network.play.LinkedCartsMessage;
+import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
@@ -87,11 +88,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -143,6 +142,7 @@ public class Railcraft {
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::registerChunkControllers);
+    modEventBus.addListener(PacketHandler::registerPayloadHandler);
 
     if (dist.isClient()) {
       ClientManager.init(modEventBus);
@@ -175,8 +175,6 @@ public class Railcraft {
 
   // Mod Events
   private void handleCommonSetup(FMLCommonSetupEvent event) {
-    NetworkChannel.registerAll();
-
     event.enqueueWork(() -> {
       RailcraftCriteriaTriggers.register();
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
@@ -302,7 +300,7 @@ public class Railcraft {
           .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.sendTo(new LinkedCartsMessage(linkedCarts), player);
+      PacketHandler.sendTo(player, new LinkedCartsMessage(linkedCarts));
     }
   }
 
@@ -316,7 +314,7 @@ public class Railcraft {
       if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
         player.swing(hand);
         if (!player.level().isClientSide()) {
-          cart.getCapability(Capabilities.ENERGY)
+          Optional.ofNullable(cart.getCapability(Capabilities.EnergyStorage.ENTITY, null))
               .filter(ChargeCartStorageImpl.class::isInstance)
               .map(ChargeCartStorageImpl.class::cast)
               .ifPresent(battery -> {

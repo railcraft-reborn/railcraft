@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class RoutingTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
@@ -57,10 +56,9 @@ public class RoutingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    if (!level.isClientSide()) {
+    if (player instanceof ServerPlayer serverPlayer) {
       level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.ROUTING_TRACK.get())
-          .ifPresent(blockEntity ->
-              NetworkHooks.openScreen((ServerPlayer) player, blockEntity, blockPos));
+          .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, blockPos));
     }
     return true;
   }

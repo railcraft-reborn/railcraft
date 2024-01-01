@@ -2,8 +2,8 @@ package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetEmbarkingTrackMessage;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -44,8 +44,8 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   private void setRadius(int radius) {
     this.radius = radius;
     this.updateButtons();
-    NetworkChannel.GAME.sendToServer(
-        new SetEmbarkingTrackAttributesMessage(this.blockPos, this.radius));
+    PacketHandler.sendToServer(
+        new SetEmbarkingTrackMessage(this.blockPos, this.radius));
   }
 
   private void updateButtons() {

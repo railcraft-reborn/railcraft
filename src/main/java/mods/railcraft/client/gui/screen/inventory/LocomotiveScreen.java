@@ -11,8 +11,8 @@ import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
@@ -152,8 +152,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   protected void sendAttributes() {
     this.updateButtons();
     Locomotive locomotive = this.getMenu().getLocomotive();
-    NetworkChannel.GAME.sendToServer(
-        new SetLocomotiveAttributesMessage(this.menu.getLocomotive().getId(),
+    PacketHandler.sendToServer(
+        new SetLocomotiveMessage(this.menu.getLocomotive().getId(),
             locomotive.getMode(), locomotive.getSpeed(), locomotive.getLock(),
             locomotive.isReverse()));
   }

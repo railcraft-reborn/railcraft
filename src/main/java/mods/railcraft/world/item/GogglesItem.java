@@ -4,8 +4,8 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.UpdateAuraByKeyMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.UpdateAuraByKeyMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -51,7 +51,7 @@ public class GogglesItem extends ArmorItem {
     }
     var aura = incrementAura(itemStack);
     player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
-    NetworkChannel.GAME.sendToServer(new UpdateAuraByKeyMessage(itemStack.getTag()));
+    PacketHandler.sendToServer(new UpdateAuraByKeyMessage(itemStack.getTag()));
   }
 
   public static boolean isGoggleAuraActive(Player player, Aura aura) {

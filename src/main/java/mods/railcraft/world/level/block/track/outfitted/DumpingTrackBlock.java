@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.NetworkHooks;
 
 public class DumpingTrackBlock extends PoweredOutfittedTrackBlock implements EntityBlock {
 
@@ -63,10 +62,9 @@ public class DumpingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    if (!level.isClientSide()) {
+    if (player instanceof ServerPlayer serverPlayer) {
       level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.DUMPING_TRACK.get())
-          .ifPresent(dumpingTrack ->
-              NetworkHooks.openScreen((ServerPlayer) player, dumpingTrack, blockPos));
+          .ifPresent(dumpingTrack -> serverPlayer.openMenu(dumpingTrack, blockPos));
     }
     return true;
   }

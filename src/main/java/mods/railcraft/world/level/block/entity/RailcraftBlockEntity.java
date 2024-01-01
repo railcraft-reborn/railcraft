@@ -8,7 +8,7 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.PacketHandler;
 import mods.railcraft.world.module.BlockModuleProvider;
 import mods.railcraft.world.module.Module;
 import mods.railcraft.world.module.ModuleDispatcher;
@@ -97,7 +97,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public void syncToClient() {
     if (this.level instanceof ServerLevel serverLevel) {
       var packet = this.getUpdatePacket();
-      NetworkChannel.sendToTrackingChunk(packet, serverLevel, this.getBlockPos());
+      PacketHandler.sendToTrackingChunk(packet, serverLevel, this.getBlockPos());
     }
   }
 

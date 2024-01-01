@@ -5,8 +5,8 @@ import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetRoutingTrackMessage;
 import mods.railcraft.world.inventory.RoutingTrackMenu;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -82,8 +82,8 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
     if (!this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetRoutingTrackAttributesMessage(this.routingBlockEntity.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetRoutingTrackMessage(this.routingBlockEntity.getBlockPos(),
             this.lockButton.getState()));
   }
 
