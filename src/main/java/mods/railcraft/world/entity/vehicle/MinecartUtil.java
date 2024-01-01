@@ -106,8 +106,7 @@ public final class MinecartUtil {
   }
 
   public static ServerPlayer getFakePlayer(AbstractMinecart cart) {
-    return RailcraftFakePlayer.get((ServerLevel) cart.level(), cart.getX(), cart.getY(),
-        cart.getZ());
+    return RailcraftFakePlayer.get((ServerLevel) cart.level(), cart.position());
   }
 
   public static ServerPlayer getFakePlayerWith(AbstractMinecart cart, ItemStack stack) {

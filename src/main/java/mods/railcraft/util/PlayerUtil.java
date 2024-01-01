@@ -1,9 +1,7 @@
 package mods.railcraft.util;
 
-import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.item.ActivationBlockingItem;
@@ -15,15 +13,6 @@ import net.minecraft.world.level.Level;
 
 public final class PlayerUtil {
 
-  @Nullable
-  public static Player getPlayer(Level level, GameProfile gameProfile) {
-    var playerId = gameProfile.getId();
-    if (playerId != null) {
-      return level.getPlayerByUUID(playerId);
-    }
-    return null;
-  }
-
   public static Component getUsername(Level level, @NotNull GameProfile gameProfile) {
     var playerId = gameProfile.getId();
     if (playerId != null) {
@@ -34,15 +23,6 @@ public final class PlayerUtil {
     String username = gameProfile.getName();
     return Component.literal(
         StringUtils.isEmpty(username) ? RailcraftConstants.UNKNOWN_PLAYER : username);
-  }
-
-  public static Component getUsername(Level level, @Nullable UUID playerId) {
-    if (playerId != null) {
-      var player = level.getPlayerByUUID(playerId);
-      if (player != null)
-        return player.getDisplayName();
-    }
-    return Component.literal(RailcraftConstants.UNKNOWN_PLAYER);
   }
 
   public static boolean isOwnerOrOp(GameProfile owner, Player player) {

@@ -124,15 +124,13 @@ public class SpikeMaulItem extends TieredItem {
     level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS,
         (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
-    if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
+    if (level instanceof ServerLevel serverLevel) {
+      RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(
+          (ServerPlayer) player, heldStack, serverLevel, blockPos);
+
+      heldStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
     }
-
-    RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(
-        (ServerPlayer) player, heldStack, (ServerLevel) level, blockPos);
-
-    heldStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
-    return InteractionResult.SUCCESS;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override
