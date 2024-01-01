@@ -140,12 +140,12 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
 
   @Override
   public boolean shouldSwitch(RollingStock rollingStock) {
-    var shouldSwitch = this.logic()
+    boolean shouldSwitch = this.logic()
         .map(logic -> logic.matches(this, rollingStock))
         .orElse(false);
     if (this.railway == Railway.PRIVATE) {
       shouldSwitch = rollingStock.owner()
-          .filter(owner -> PlayerUtil.isSamePlayer(owner, this.getOwnerOrThrow()))
+          .filter(owner -> owner.equals(this.getOwnerOrThrow()))
           .isPresent();
     }
     SwitchTrackActuatorBlock.setSwitched(
