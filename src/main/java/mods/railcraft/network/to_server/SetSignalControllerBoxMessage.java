@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ public record SetSignalControllerBoxMessage(
     BlockPos blockPos, SignalAspect defaultAspect,
     SignalAspect poweredAspect) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_signal_controller_box");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_signal_controller_box");
 
   public static SetSignalControllerBoxMessage read(FriendlyByteBuf buf) {
     return new SetSignalControllerBoxMessage(buf.readBlockPos(),

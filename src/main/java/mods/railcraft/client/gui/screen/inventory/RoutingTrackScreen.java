@@ -1,8 +1,8 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.Optional;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.PacketHandler;
@@ -21,7 +21,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
 
   private static final int REFRESH_INTERVAL_TICKS = 20;
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/routing_track.png");
+      RailcraftConstants.rl("textures/gui/container/routing_track.png");
   private final RoutingTrackBlockEntity routingBlockEntity;
   private MultiButton<LockableSwitchTrackActuatorBlockEntity.Lock> lockButton;
   private int refreshTimer;

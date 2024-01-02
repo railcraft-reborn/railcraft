@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -14,7 +14,7 @@ public record SetFluidManipulatorMessage(
     BlockPos blockPos,
     ManipulatorBlockEntity.RedstoneMode redstoneMode) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_fluid_manipulator");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_fluid_manipulator");
 
   public static SetFluidManipulatorMessage read(FriendlyByteBuf buf) {
     return new SetFluidManipulatorMessage(buf.readBlockPos(),

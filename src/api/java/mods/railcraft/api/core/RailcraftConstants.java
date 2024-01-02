@@ -8,6 +8,7 @@ package mods.railcraft.api.core;
 
 import java.util.UUID;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.resources.ResourceLocation;
 
 public final class RailcraftConstants {
 
@@ -16,4 +17,8 @@ public final class RailcraftConstants {
   private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
+
+  public static ResourceLocation rl(String path) {
+    return new ResourceLocation(ID, path);
+  }
 }

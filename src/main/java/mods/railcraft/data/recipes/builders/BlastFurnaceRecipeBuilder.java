@@ -1,6 +1,6 @@
 package mods.railcraft.data.recipes.builders;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -44,7 +44,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
+    var customResourceLocation = RailcraftConstants.rl("blast_furnace/" + path);
 
     var advancementId = customResourceLocation.withPrefix("recipes/");
 

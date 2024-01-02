@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.TrackUndercutterMenu;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUndercutterMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/track_undercutter.png");
+      RailcraftConstants.rl("textures/gui/container/track_undercutter.png");
 
   private static final Component UNDER = Component.translatable(Translations.Screen.UNDER);
   private static final Component SIDES = Component.translatable(Translations.Screen.SIDES);

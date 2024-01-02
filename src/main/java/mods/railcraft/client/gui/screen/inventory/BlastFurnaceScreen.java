@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class BlastFurnaceScreen extends RailcraftMenuScreen<BlastFurnaceMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      Railcraft.rl("textures/gui/container/blast_furnace.png");
+      RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
 
   public BlastFurnaceScreen(BlastFurnaceMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

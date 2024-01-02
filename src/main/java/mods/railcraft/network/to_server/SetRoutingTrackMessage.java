@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ public record SetRoutingTrackMessage(
     BlockPos blockPos,
     LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_routing_track");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_routing_track");
 
   public static SetRoutingTrackMessage decode(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();

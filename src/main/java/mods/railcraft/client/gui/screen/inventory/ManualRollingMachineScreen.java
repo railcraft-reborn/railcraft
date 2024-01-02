@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollingMachineMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      Railcraft.rl("textures/gui/container/manual_rolling_machine.png");
+      RailcraftConstants.rl("textures/gui/container/manual_rolling_machine.png");
 
   public ManualRollingMachineScreen(ManualRollingMachineMenu menu, Inventory inventory,
       Component title) {

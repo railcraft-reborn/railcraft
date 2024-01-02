@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/steam_locomotive.png");
+      RailcraftConstants.rl("textures/gui/container/steam_locomotive.png");
 
   public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv, Component title) {
     super(menu, inv, title, "steam");

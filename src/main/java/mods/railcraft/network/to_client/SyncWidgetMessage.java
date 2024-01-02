@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_client;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -10,7 +10,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 public record SyncWidgetMessage(
     int windowId, byte widgetId, FriendlyByteBuf data) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("sync_widget");
+  public static final ResourceLocation ID = RailcraftConstants.rl("sync_widget");
 
   public static SyncWidgetMessage read(FriendlyByteBuf buf) {
     return new SyncWidgetMessage(buf.readVarInt(), buf.readByte(),

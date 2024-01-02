@@ -1,6 +1,6 @@
 package mods.railcraft.data.worldgen;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.levelgen.structure.GeodeStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 public class RailcraftStructures {
 
   public static final ResourceKey<Structure> GEODE = ResourceKey
-      .create(Registries.STRUCTURE, Railcraft.rl("geode"));
+      .create(Registries.STRUCTURE, RailcraftConstants.rl("geode"));
 
   public static void bootstrap(BootstapContext<Structure> context) {
     var holdergetter = context.lookup(Registries.BIOME);

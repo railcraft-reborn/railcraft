@@ -1,6 +1,6 @@
 package mods.railcraft.data.recipes.builders;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
@@ -42,7 +42,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("coke_oven/" + path);
+    var customResourceLocation = RailcraftConstants.rl("coke_oven/" + path);
 
     var advancementId = customResourceLocation.withPrefix("recipes/");
 

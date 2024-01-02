@@ -3,7 +3,7 @@ package mods.railcraft.client.renderer.entity.cart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
   private static final ResourceLocation TANK_TEXTURE_LOCATION =
-      Railcraft.rl("textures/entity/minecart/tank.png");
+      RailcraftConstants.rl("textures/entity/minecart/tank.png");
 
   private final LowSidesMinecartModel<TankMinecart> bodyModel;
   private final LowSidesMinecartModel<TankMinecart> snowModel;

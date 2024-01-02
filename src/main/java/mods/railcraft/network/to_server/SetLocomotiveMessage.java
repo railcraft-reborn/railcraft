@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -12,7 +12,7 @@ public record SetLocomotiveMessage(
     Locomotive.Speed speed, Locomotive.Lock lock,
     boolean reverse) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_locomotive");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_locomotive");
 
   public static SetLocomotiveMessage read(FriendlyByteBuf buf) {
     return new SetLocomotiveMessage(buf.readVarInt(),

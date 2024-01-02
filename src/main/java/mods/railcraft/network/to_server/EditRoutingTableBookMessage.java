@@ -3,7 +3,7 @@ package mods.railcraft.network.to_server;
 import java.util.List;
 import java.util.Optional;
 import com.google.common.collect.Lists;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RoutingTableBookItem;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -17,7 +17,7 @@ public record EditRoutingTableBookMessage(
     InteractionHand hand, List<String> pages,
     Optional<String> title) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("edit_routing_table_book");
+  public static final ResourceLocation ID = RailcraftConstants.rl("edit_routing_table_book");
   private static final int BOOK_MAX_PAGES = 50;
 
   public static EditRoutingTableBookMessage read(FriendlyByteBuf buf) {

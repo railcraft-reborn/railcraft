@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import com.mojang.datafixers.util.Pair;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -62,6 +62,6 @@ public class CrusherRecipeBuilder {
 
   public void save(RecipeOutput recipeOutput, String path) {
     var recipe = new CrusherRecipe(this.ingredient, this.probabilityItems, this.processTime);
-    recipeOutput.accept(Railcraft.rl("crusher/crushing_" + path), recipe, null);
+    recipeOutput.accept(RailcraftConstants.rl("crusher/crushing_" + path), recipe, null);
   }
 }

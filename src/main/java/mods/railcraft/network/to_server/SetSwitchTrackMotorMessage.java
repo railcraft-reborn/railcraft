@@ -1,7 +1,7 @@
 package mods.railcraft.network.to_server;
 
 import java.util.EnumSet;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -17,7 +17,7 @@ public record SetSwitchTrackMotorMessage(
     boolean redstoneTriggered,
     LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_switch_track_motor");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_switch_track_motor");
 
   public static SetSwitchTrackMotorMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();

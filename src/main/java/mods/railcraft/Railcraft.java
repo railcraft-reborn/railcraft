@@ -66,7 +66,6 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -115,15 +114,11 @@ public class Railcraft {
     }
   }
 
-  public static ResourceLocation rl(String path) {
-    return new ResourceLocation(RailcraftConstants.ID, path);
-  }
-
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
   public static final TicketController CHUNK_CONTROLLER =
-      new TicketController(Railcraft.rl("default"), (level, ticketHelper) -> {
+      new TicketController(RailcraftConstants.rl("default"), (level, ticketHelper) -> {
         for (var entry : ticketHelper.getEntityTickets().entrySet()) {
           var key = entry.getKey();
           int ticketCount = entry.getValue().nonTicking().size();

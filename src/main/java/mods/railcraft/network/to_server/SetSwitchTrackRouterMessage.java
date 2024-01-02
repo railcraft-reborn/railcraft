@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -14,7 +14,7 @@ public record SetSwitchTrackRouterMessage(
     SwitchTrackRouterBlockEntity.Railway railway,
     SwitchTrackRouterBlockEntity.Lock lock) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_switch_track_router");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_switch_track_router");
 
   public static SetSwitchTrackRouterMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();

@@ -1,21 +1,15 @@
 package mods.railcraft.data.loot.packs;
 
 import java.util.function.BiConsumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftAdvancementRewardLoot implements LootTableSubProvider {
 
   public static final ResourceLocation PATCHOULI_BOOK =
-      Railcraft.rl("advancements/patchouli_book");
+      RailcraftConstants.rl("advancements/patchouli_book");
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {

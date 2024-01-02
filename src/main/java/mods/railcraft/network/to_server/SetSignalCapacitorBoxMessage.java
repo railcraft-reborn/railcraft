@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ public record SetSignalCapacitorBoxMessage(
     BlockPos blockPos, short ticksToPower,
     SignalCapacitorBoxBlockEntity.Mode mode) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_signal_capacitor_box");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_signal_capacitor_box");
 
   public static SetSignalCapacitorBoxMessage read(FriendlyByteBuf buf) {
     return new SetSignalCapacitorBoxMessage(buf.readBlockPos(), buf.readShort(),

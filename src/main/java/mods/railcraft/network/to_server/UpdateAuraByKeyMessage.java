@@ -1,6 +1,6 @@
 package mods.railcraft.network.to_server;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +11,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record UpdateAuraByKeyMessage(CompoundTag tag) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("update_aura_by_key");
+  public static final ResourceLocation ID = RailcraftConstants.rl("update_aura_by_key");
 
   public static UpdateAuraByKeyMessage read(FriendlyByteBuf buf) {
     return new UpdateAuraByKeyMessage(buf.readNbt());

@@ -1,6 +1,6 @@
 package mods.railcraft.data.worldgen;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -105,6 +105,6 @@ public class RailcraftBiomeModifiers {
   }
 
   private static ResourceKey<BiomeModifier> createKey(String name) {
-    return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Railcraft.rl(name));
+    return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftConstants.rl(name));
   }
 }

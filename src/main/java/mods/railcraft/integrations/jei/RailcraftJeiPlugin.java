@@ -9,8 +9,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
@@ -48,7 +48,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public ResourceLocation getPluginUid() {
-    return Railcraft.rl("jei_plugin");
+    return RailcraftConstants.rl("jei_plugin");
   }
 
   @Override

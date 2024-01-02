@@ -3,7 +3,6 @@ package mods.railcraft.data.recipes;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
@@ -91,7 +90,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     if (optionalName.isEmpty()) {
       path = RecipeBuilder.getDefaultRecipeId(to);
     } else {
-      path = Railcraft.rl(optionalName);
+      path = RailcraftConstants.rl(optionalName);
     }
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, to, count)
         .requires(from)
@@ -130,7 +129,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.STANDARD_RAIL.get())
         .requires(Items.RAIL, 8)
         .unlockedBy(getHasName(Items.RAIL), has(Items.RAIL))
-        .save(recipeOutput, Railcraft.rl("standard_rail_from_rail"));
+        .save(recipeOutput, RailcraftConstants.rl("standard_rail_from_rail"));
 
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.WOODEN_RAILBED.get())
         .requires(RailcraftItems.WOODEN_TIE.get(), 4)
@@ -1002,7 +1001,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('S', RailcraftItems.CUT_FIRESTONE.get())
         .unlockedBy(getHasName(RailcraftItems.CUT_FIRESTONE.get()),
             has(RailcraftItems.CUT_FIRESTONE.get()))
-        .save(recipeOutput, Railcraft.rl("firestone_lava_refinement"));
+        .save(recipeOutput, RailcraftConstants.rl("firestone_lava_refinement"));
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.REFINED_FIRESTONE.get())
         .pattern("LFL")
@@ -1014,7 +1013,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('F', RailcraftItems.RAW_FIRESTONE.get())
         .unlockedBy(getHasName(RailcraftItems.CRACKED_FIRESTONE.get()),
             has(RailcraftItems.CRACKED_FIRESTONE.get()))
-        .save(recipeOutput, Railcraft.rl("firestone_cracked_fixing"));
+        .save(recipeOutput, RailcraftConstants.rl("firestone_cracked_fixing"));
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CUT_FIRESTONE.get())
         .pattern(" a ")
@@ -1077,7 +1076,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.STICK)
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(recipeOutput, Railcraft.rl("torch_creosote"));
+        .save(recipeOutput, RailcraftConstants.rl("torch_creosote"));
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.GOLDEN_TICKET.get())
         .requires(Items.PAPER)
         .requires(Tags.Items.NUGGETS_GOLD)
@@ -1594,7 +1593,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aaa")
         .define('a', unpacked)
         .unlockedBy(getHasName(unpacked), has(unpacked))
-        .save(recipeOutput, Railcraft.rl(packingRecipeName));
+        .save(recipeOutput, RailcraftConstants.rl(packingRecipeName));
   }
 
   private void buildIngotsRecipes(RecipeOutput recipeOutput) {
@@ -1606,7 +1605,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.TIN_INGOT.get()),
             has(RailcraftTags.Items.TIN_INGOT))
         .unlockedBy(getHasName(Items.COPPER_INGOT), has(Tags.Items.INGOTS_COPPER))
-        .save(recipeOutput, Railcraft.rl("bronze_ingot_crafted_with_ingots"));
+        .save(recipeOutput, RailcraftConstants.rl("bronze_ingot_crafted_with_ingots"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BRASS_INGOT.get(), 4)
         .pattern("ab")
         .pattern("bb")
@@ -1615,7 +1614,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.ZINC_INGOT.get()),
             has(RailcraftTags.Items.ZINC_INGOT))
         .unlockedBy(getHasName(Items.COPPER_INGOT), has(Tags.Items.INGOTS_COPPER))
-        .save(recipeOutput, Railcraft.rl("brass_ingot_crafted_with_ingots"));
+        .save(recipeOutput, RailcraftConstants.rl("brass_ingot_crafted_with_ingots"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.INVAR_INGOT.get(), 3)
         .pattern("ab")
         .pattern("b ")
@@ -1624,7 +1623,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.NICKEL_INGOT.get()),
             has(RailcraftTags.Items.NICKEL_INGOT))
         .unlockedBy(getHasName(Items.IRON_INGOT), has(Tags.Items.INGOTS_IRON))
-        .save(recipeOutput, Railcraft.rl("invar_ingot_crafted_with_ingots"));
+        .save(recipeOutput, RailcraftConstants.rl("invar_ingot_crafted_with_ingots"));
   }
 
   private void buildStrengthenedGlass(RecipeOutput recipeOutput) {
@@ -1653,7 +1652,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .define('d', Items.WATER_BUCKET)
           .unlockedBy(getHasName(RailcraftItems.SALTPETER_DUST.get()),
               has(RailcraftItems.SALTPETER_DUST.get()))
-          .save(recipeOutput, Railcraft.rl(recipeName));
+          .save(recipeOutput, RailcraftConstants.rl(recipeName));
     }
 
     coloredBlockVariant(recipeOutput, colorItems, tagItem);
@@ -1675,7 +1674,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', ItemTags.WOODEN_SLABS)
         .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
             has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(recipeOutput, Railcraft.rl("wooden_tie_bottle"));
+        .save(recipeOutput, RailcraftConstants.rl("wooden_tie_bottle"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STONE_TIE.get())
         .pattern(" a ")
         .pattern("bcb")
@@ -1702,7 +1701,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', Items.QUARTZ)
         .define('c', RailcraftItems.SLAG.get())
         .unlockedBy(getHasName(RailcraftItems.SLAG.get()), has(RailcraftItems.SLAG.get()))
-        .save(recipeOutput, Railcraft.rl("bag_of_cement_slag"));
+        .save(recipeOutput, RailcraftConstants.rl("bag_of_cement_slag"));
   }
 
   private static void tankWall(RecipeOutput recipeOutput,
@@ -1718,7 +1717,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aa")
         .define('a', ingredientTag)
         .unlockedBy(ingredient, has(ingredientTag))
-        .save(recipeOutput, Railcraft.rl(name.substring(name.indexOf('_') + 1)));
+        .save(recipeOutput, RailcraftConstants.rl(name.substring(name.indexOf('_') + 1)));
 
     coloredBlockVariant(recipeOutput, colorItems, tagItem);
   }
@@ -1739,7 +1738,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('b', ingredientTag)
         .define('c', Items.LEVER)
         .unlockedBy(ingredient, has(ingredientTag))
-        .save(recipeOutput, Railcraft.rl(name.substring(name.indexOf('_') + 1)));
+        .save(recipeOutput, RailcraftConstants.rl(name.substring(name.indexOf('_') + 1)));
 
     coloredBlockVariant(recipeOutput, colorItems, tagItem);
   }
@@ -1759,7 +1758,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', Items.GLASS_PANE)
         .define('b', ingredientTag)
         .unlockedBy(ingredient, has(ingredientTag))
-        .save(recipeOutput, Railcraft.rl(name.substring(name.indexOf('_') + 1)));
+        .save(recipeOutput, RailcraftConstants.rl(name.substring(name.indexOf('_') + 1)));
 
     coloredBlockVariant(recipeOutput, colorItems, tagItem);
   }
@@ -1806,14 +1805,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_STONE.get()),
             has(RailcraftItems.QUARRIED_STONE.get()))
         .save(recipeOutput,
-            Railcraft.rl("polished_quarried_stone_from_quarried_stone_in_stonecutter"));
+            RailcraftConstants.rl("polished_quarried_stone_from_quarried_stone_in_stonecutter"));
     SingleItemRecipeBuilder.stonecutting(
         Ingredient.of(new ItemStack(RailcraftItems.QUARRIED_COBBLESTONE.get())),
         RecipeCategory.MISC, RailcraftItems.POLISHED_QUARRIED_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.QUARRIED_COBBLESTONE.get()),
             has(RailcraftItems.QUARRIED_COBBLESTONE.get()))
         .save(recipeOutput,
-            Railcraft.rl("polished_quarried_stone_from_quarried_cobblestone_in_stonecutter"));
+            RailcraftConstants.rl("polished_quarried_stone_from_quarried_cobblestone_in_stonecutter"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHISELED_QUARRIED_STONE.get(), 8)
         .pattern("aaa")
         .pattern("a a")
@@ -1863,14 +1862,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.ABYSSAL_STONE.get()),
             has(RailcraftItems.ABYSSAL_STONE.get()))
         .save(recipeOutput,
-            Railcraft.rl("polished_abyssal_stone_from_abyssal_stone_in_stonecutter"));
+            RailcraftConstants.rl("polished_abyssal_stone_from_abyssal_stone_in_stonecutter"));
     SingleItemRecipeBuilder.stonecutting(
             Ingredient.of(new ItemStack(RailcraftItems.ABYSSAL_COBBLESTONE.get())),
             RecipeCategory.MISC, RailcraftItems.POLISHED_ABYSSAL_STONE.get())
         .unlockedBy(getHasName(RailcraftItems.ABYSSAL_COBBLESTONE.get()),
             has(RailcraftItems.ABYSSAL_COBBLESTONE.get()))
         .save(recipeOutput,
-            Railcraft.rl("polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"));
+            RailcraftConstants.rl("polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CHISELED_ABYSSAL_STONE.get(), 8)
         .pattern("aaa")
         .pattern("a a")
@@ -1953,7 +1952,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', tag)
         .define('b', RailcraftItems.REBAR.get())
         .unlockedBy(getHasName(RailcraftItems.REBAR.get()), has(RailcraftItems.REBAR.get()))
-        .save(recipeOutput, Railcraft.rl(name + suffix));
+        .save(recipeOutput, RailcraftConstants.rl(name + suffix));
   }
 
   private static void square2x2(RecipeOutput recipeOutput,
@@ -1964,7 +1963,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
       .pattern("aa")
       .define('a', ingredient)
       .unlockedBy("has_material", has(ingredient))
-      .save(recipeOutput, Railcraft.rl(name + suffix));
+      .save(recipeOutput, RailcraftConstants.rl(name + suffix));
 }
 
   private static void square2x2(RecipeOutput recipeOutput,
@@ -1978,7 +1977,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aa")
         .define('a', ingredient)
         .unlockedBy(getHasName(ingredient), has(ingredient))
-        .save(recipeOutput, Railcraft.rl(name + suffix));
+        .save(recipeOutput, RailcraftConstants.rl(name + suffix));
   }
 
   private static void coloredBlockVariant(RecipeOutput recipeOutput,

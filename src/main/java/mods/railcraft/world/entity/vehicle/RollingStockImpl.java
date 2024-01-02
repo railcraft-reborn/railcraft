@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.event.CartLinkEvent;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
@@ -33,7 +34,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
-  public static final ResourceLocation KEY = Railcraft.rl("rolling_stock");
+  public static final ResourceLocation KEY = RailcraftConstants.rl("rolling_stock");
 
   private static final double LINK_DRAG = 0.95;
 

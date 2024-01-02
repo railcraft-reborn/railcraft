@@ -1,7 +1,7 @@
 package mods.railcraft.data.loot.packs;
 
 import java.util.function.BiConsumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.data.loot.LootTableSubProvider;
@@ -20,10 +20,10 @@ public class RailcraftChestLoot implements LootTableSubProvider {
   // If you change the name, remember to regenerate the chest inside the structure
   // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}
   private static final ResourceLocation COMPONENT_WORKSHOP =
-      Railcraft.rl("chests/component_workshop");
+      RailcraftConstants.rl("chests/component_workshop");
   public static final ResourceLocation ABANDONED_MINESHAFT =
-      Railcraft.rl("chests/abandoned_mineshaft");
-  public static final ResourceLocation SIMPLE_DUNGEON = Railcraft.rl("chests/simple_dungeon");
+      RailcraftConstants.rl("chests/abandoned_mineshaft");
+  public static final ResourceLocation SIMPLE_DUNGEON = RailcraftConstants.rl("chests/simple_dungeon");
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {

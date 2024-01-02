@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.providers;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -86,6 +86,6 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
   private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
     var tag = BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
-    return Railcraft.rl("blasting_" + tag);
+    return RailcraftConstants.rl("blasting_" + tag);
   }
 }

@@ -1,7 +1,7 @@
 package mods.railcraft.network.to_server;
 
 import java.util.EnumSet;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
@@ -17,7 +17,7 @@ public record SetActionSignalBoxMessage(
     EnumSet<SignalAspect> actionSignalAspects,
     LockableSignalBoxBlockEntity.Lock lock) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_action_signal_box");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_action_signal_box");
 
   public static SetActionSignalBoxMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();

@@ -2,7 +2,7 @@ package mods.railcraft.network.to_server;
 
 import java.util.BitSet;
 import java.util.Map;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -15,7 +15,7 @@ public record SetAnalogSignalControllerBoxMessage(
     BlockPos blockPos,
     Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("set_analog_signal_controller_box");
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_analog_signal_controller_box");
 
   public static SetAnalogSignalControllerBoxMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();

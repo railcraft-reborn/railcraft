@@ -1,7 +1,7 @@
 package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.loot.packs.RailcraftAdvancementRewardLoot;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -19,6 +19,6 @@ class RailcraftAdvancements implements AdvancementProvider.AdvancementGenerator 
     Advancement.Builder.advancement()
         .addCriterion("tick", PlayerTrigger.TriggerInstance.tick())
         .rewards(AdvancementRewards.Builder.loot(RailcraftAdvancementRewardLoot.PATCHOULI_BOOK))
-        .save(consumer, Railcraft.rl("grant_book_on_first_join"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("grant_book_on_first_join"), fileHelper);
   }
 }

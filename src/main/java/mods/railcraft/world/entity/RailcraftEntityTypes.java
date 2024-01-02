@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
@@ -119,6 +118,6 @@ public class RailcraftEntityTypes {
 
   private static <T extends Entity> EntityType<T> create(String registryName,
       EntityType.Builder<T> builder) {
-    return builder.build(Railcraft.rl(registryName).toString());
+    return builder.build(RailcraftConstants.rl(registryName).toString());
   }
 }

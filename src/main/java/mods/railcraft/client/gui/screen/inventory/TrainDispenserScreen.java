@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TrainDispenserMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TrainDispenserScreen extends RailcraftMenuScreen<TrainDispenserMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/train_dispenser.png");
+      RailcraftConstants.rl("textures/gui/container/train_dispenser.png");
 
   private final static Component PATTERN =
       Component.translatable(Translations.Screen.PATTERN);

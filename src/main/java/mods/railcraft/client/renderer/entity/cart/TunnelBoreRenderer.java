@@ -3,8 +3,8 @@ package mods.railcraft.client.renderer.entity.cart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.TunnelBoreHead;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.model.TunnelBoreModel;
 import mods.railcraft.season.Seasons;
@@ -19,7 +19,7 @@ import net.minecraft.util.Mth;
 public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
   private static final ResourceLocation TEXTURE =
-      Railcraft.rl("textures/entity/tunnel_bore/tunnel_bore.png");
+      RailcraftConstants.rl("textures/entity/tunnel_bore/tunnel_bore.png");
 
   protected TunnelBoreModel modelTunnelBore;
 

@@ -1,6 +1,6 @@
 package mods.railcraft.tags;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -144,7 +144,7 @@ public class RailcraftTags {
 
 
     private static TagKey<Item> tag(String name) {
-      return ItemTags.create(Railcraft.rl(name));
+      return ItemTags.create(RailcraftConstants.rl(name));
     }
 
     private static TagKey<Item> forgeTag(String name) {
@@ -192,7 +192,7 @@ public class RailcraftTags {
     public static final TagKey<Block> SALTPETER_ORE = forgeTag("ores/salt");
 
     private static TagKey<Block> tag(String name) {
-      return BlockTags.create(Railcraft.rl(name));
+      return BlockTags.create(RailcraftConstants.rl(name));
     }
 
     private static TagKey<Block> forgeTag(String name) {

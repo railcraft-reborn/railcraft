@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -27,7 +26,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class TrackTypes {
 
   private static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
-      ResourceKey.createRegistryKey(Railcraft.rl("track_type"));
+      ResourceKey.createRegistryKey(RailcraftConstants.rl("track_type"));
 
   private static final DeferredRegister<TrackType> deferredRegister =
       DeferredRegister.create(REGISTRY_KEY, RailcraftConstants.ID);

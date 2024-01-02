@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.builders;
 
 import javax.annotation.Nullable;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.data.recipes.CraftingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -32,7 +32,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
       }
 
       public ResourceLocation id() {
-        return Railcraft.rl(id);
+        return RailcraftConstants.rl(id);
       }
 
       @Nullable

@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Seasons;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,7 +14,7 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
     extends CustomMinecartRenderer<T> {
 
   public static final ResourceLocation SNOW_TEXTURE_LOCATION =
-      Railcraft.rl("textures/carts/cart_snow.png");
+      RailcraftConstants.rl("textures/carts/cart_snow.png");
 
   public static final ResourceLocation MINECART_TEXTURE_LOCATION =
       new ResourceLocation("textures/entity/minecart.png");

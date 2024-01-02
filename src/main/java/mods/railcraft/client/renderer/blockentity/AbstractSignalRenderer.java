@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
@@ -23,10 +23,10 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
     implements BlockEntityRenderer<T> {
 
   private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, Railcraft.rl("entity/signal_aspect/off"),
-      SignalAspect.RED, Railcraft.rl("entity/signal_aspect/red"),
-      SignalAspect.YELLOW, Railcraft.rl("entity/signal_aspect/yellow"),
-      SignalAspect.GREEN, Railcraft.rl("entity/signal_aspect/green"));
+      SignalAspect.OFF, RailcraftConstants.rl("entity/signal_aspect/off"),
+      SignalAspect.RED, RailcraftConstants.rl("entity/signal_aspect/red"),
+      SignalAspect.YELLOW, RailcraftConstants.rl("entity/signal_aspect/yellow"),
+      SignalAspect.GREEN, RailcraftConstants.rl("entity/signal_aspect/green"));
 
   private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
 
