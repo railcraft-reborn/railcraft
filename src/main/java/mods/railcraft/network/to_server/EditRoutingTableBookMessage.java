@@ -13,8 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record EditRoutingTableBookMessage(InteractionHand hand, List<String> pages,
-                                          Optional<String> title) implements CustomPacketPayload {
+public record EditRoutingTableBookMessage(
+    InteractionHand hand, List<String> pages,
+    Optional<String> title) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("edit_routing_table_book");
   private static final int BOOK_MAX_PAGES = 50;

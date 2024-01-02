@@ -5,7 +5,7 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.network.to_client.OpenLogBookScreen;
 import mods.railcraft.network.to_client.SyncWidgetMessage;
 import mods.railcraft.network.to_server.EditRoutingTableBookMessage;
-import mods.railcraft.network.to_server.EditTicketAttributeMessage;
+import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.network.to_server.SetActionSignalBoxMessage;
 import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.network.to_server.SetEmbarkingTrackMessage;
@@ -43,8 +43,8 @@ public final class PacketHandler {
   private static void registerClientToServer(IPayloadRegistrar registrar) {
     registrar.play(EditRoutingTableBookMessage.ID, EditRoutingTableBookMessage::read,
         handler -> handler.server(EditRoutingTableBookMessage::handle));
-    registrar.play(EditTicketAttributeMessage.ID, EditTicketAttributeMessage::read,
-        handler -> handler.server(EditTicketAttributeMessage::handle));
+    registrar.play(EditTicketMessage.ID, EditTicketMessage::read,
+        handler -> handler.server(EditTicketMessage::handle));
     registrar.play(SetActionSignalBoxMessage.ID, SetActionSignalBoxMessage::read,
         handler -> handler.server(SetActionSignalBoxMessage::handle));
     registrar.play(SetAnalogSignalControllerBoxMessage.ID,

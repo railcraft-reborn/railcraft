@@ -104,7 +104,7 @@ dependencies {
     //runtimeOnly "mezz.jei:jei-$minecraft_version-forge:$jei_version"
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
-    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+    //runtimeOnly "vazkii.patchouli:Patchouli:$patchouli_version"
 }
 
 test {

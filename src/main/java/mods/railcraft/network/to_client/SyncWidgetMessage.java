@@ -7,8 +7,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SyncWidgetMessage(int windowId, byte widgetId, FriendlyByteBuf data) implements
-    CustomPacketPayload {
+public record SyncWidgetMessage(
+    int windowId, byte widgetId, FriendlyByteBuf data) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("sync_widget");
 

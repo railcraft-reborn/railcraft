@@ -10,10 +10,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetItemManipulatorMessage(BlockPos blockPos,
-                                        ManipulatorBlockEntity.RedstoneMode redstoneMode,
-                                        ManipulatorBlockEntity.TransferMode transferMode) implements
-    CustomPacketPayload {
+public record SetItemManipulatorMessage(
+    BlockPos blockPos,
+    ManipulatorBlockEntity.RedstoneMode redstoneMode,
+    ManipulatorBlockEntity.TransferMode transferMode) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("set_item_manipulator");
 

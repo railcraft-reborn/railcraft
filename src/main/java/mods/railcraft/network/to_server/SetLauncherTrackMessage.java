@@ -8,8 +8,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetLauncherTrackMessage(BlockPos blockPos, byte force) implements
-    CustomPacketPayload {
+public record SetLauncherTrackMessage(
+    BlockPos blockPos, byte force) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("set_launcher_track");
 

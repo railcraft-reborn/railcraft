@@ -11,11 +11,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetSwitchTrackMotorMessage(BlockPos blockPos,
-                                         EnumSet<SignalAspect> actionSignalAspects,
-                                         boolean redstoneTriggered,
-                                         LockableSwitchTrackActuatorBlockEntity.Lock lock) implements
-    CustomPacketPayload {
+public record SetSwitchTrackMotorMessage(
+    BlockPos blockPos,
+    EnumSet<SignalAspect> actionSignalAspects,
+    boolean redstoneTriggered,
+    LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("set_switch_track_motor");
 

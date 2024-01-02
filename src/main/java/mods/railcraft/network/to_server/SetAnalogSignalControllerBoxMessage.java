@@ -11,9 +11,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetAnalogSignalControllerBoxMessage(BlockPos blockPos,
-                                                  Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements
-    CustomPacketPayload {
+public record SetAnalogSignalControllerBoxMessage(
+    BlockPos blockPos,
+    Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("set_analog_signal_controller_box");
 

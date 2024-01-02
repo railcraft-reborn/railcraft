@@ -16,8 +16,8 @@ public record TuningAuraParticleOptions(Vec3 destination, int color) implements 
   public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder.create(
       instance -> instance.group(
           Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
-          Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color))
-          .apply(instance, TuningAuraParticleOptions::new));
+          Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color)
+      ).apply(instance, TuningAuraParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<TuningAuraParticleOptions> DESERIALIZER =

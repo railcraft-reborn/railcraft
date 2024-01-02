@@ -9,13 +9,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record EditTicketAttributeMessage(InteractionHand hand, String dest) implements
-    CustomPacketPayload {
+public record EditTicketMessage(
+    InteractionHand hand, String dest) implements CustomPacketPayload {
 
-  public static final ResourceLocation ID = Railcraft.rl("edit_ticket_attribute");
+  public static final ResourceLocation ID = Railcraft.rl("edit_ticket");
 
-  public static EditTicketAttributeMessage read(FriendlyByteBuf buf) {
-    return new EditTicketAttributeMessage(buf.readEnum(InteractionHand.class), buf.readUtf());
+  public static EditTicketMessage read(FriendlyByteBuf buf) {
+    return new EditTicketMessage(buf.readEnum(InteractionHand.class), buf.readUtf());
   }
 
   @Override

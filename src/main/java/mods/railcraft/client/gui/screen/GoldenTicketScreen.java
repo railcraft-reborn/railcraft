@@ -7,7 +7,7 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.PacketHandler;
-import mods.railcraft.network.to_server.EditTicketAttributeMessage;
+import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
@@ -115,7 +115,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
         this.minecraft.player.getGameProfile());
     if (success) {
-      PacketHandler.sendToServer(new EditTicketAttributeMessage(this.hand, destWithoutPrefix));
+      PacketHandler.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
     }
   }
 }

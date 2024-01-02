@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record LinkedCartsMessage(Collection<LinkedCart> linkedCarts) implements
-    CustomPacketPayload {
+public record LinkedCartsMessage(
+    Collection<LinkedCart> linkedCarts) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("linked_carts");
 

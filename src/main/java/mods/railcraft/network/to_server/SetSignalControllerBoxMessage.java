@@ -9,9 +9,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetSignalControllerBoxMessage(BlockPos blockPos, SignalAspect defaultAspect,
-                                            SignalAspect poweredAspect) implements
-    CustomPacketPayload {
+public record SetSignalControllerBoxMessage(
+    BlockPos blockPos, SignalAspect defaultAspect,
+    SignalAspect poweredAspect) implements CustomPacketPayload {
 
   public static final ResourceLocation ID = Railcraft.rl("set_signal_controller_box");
 

@@ -15,8 +15,8 @@ public record FireSparkParticleOptions(Vec3 destination) implements ParticleOpti
 
   public static final Codec<FireSparkParticleOptions> CODEC = RecordCodecBuilder.create(
       instance -> instance.group(
-          Vec3.CODEC.fieldOf("destination").forGetter(FireSparkParticleOptions::destination))
-          .apply(instance, FireSparkParticleOptions::new));
+          Vec3.CODEC.fieldOf("destination").forGetter(FireSparkParticleOptions::destination)
+      ).apply(instance, FireSparkParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<FireSparkParticleOptions> DESERIALIZER =
