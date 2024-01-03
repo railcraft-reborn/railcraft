@@ -7,14 +7,14 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.ClientManager;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record LinkedCartsMessage(
-    Collection<LinkedCart> linkedCarts) implements CustomPacketPayload {
+    Collection<LinkedCart> linkedCarts) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("linked_carts");
 
@@ -32,6 +32,7 @@ public record LinkedCartsMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     ClientManager.getShuntingAuraRenderer().setLinkedCarts(this.linkedCarts);
   }

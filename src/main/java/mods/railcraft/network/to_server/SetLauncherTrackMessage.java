@@ -1,15 +1,15 @@
 package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetLauncherTrackMessage(
-    BlockPos blockPos, byte force) implements CustomPacketPayload {
+    BlockPos blockPos, byte force) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_launcher_track");
 
@@ -28,6 +28,7 @@ public record SetLauncherTrackMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.level()
         .flatMap(level ->

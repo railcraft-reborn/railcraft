@@ -4,16 +4,16 @@ import java.util.BitSet;
 import java.util.Map;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetAnalogSignalControllerBoxMessage(
     BlockPos blockPos,
-    Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements CustomPacketPayload {
+    Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_analog_signal_controller_box");
 
@@ -36,6 +36,7 @@ public record SetAnalogSignalControllerBoxMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.level()
         .flatMap(level -> level.getBlockEntity(this.blockPos,

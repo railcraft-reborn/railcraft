@@ -2,16 +2,16 @@ package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetSignalControllerBoxMessage(
     BlockPos blockPos, SignalAspect defaultAspect,
-    SignalAspect poweredAspect) implements CustomPacketPayload {
+    SignalAspect poweredAspect) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_signal_controller_box");
 
@@ -32,6 +32,7 @@ public record SetSignalControllerBoxMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.level()
         .flatMap(level -> level

@@ -1,21 +1,21 @@
 package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetRoutingTrackMessage(
     BlockPos blockPos,
-    LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
+    LockableSwitchTrackActuatorBlockEntity.Lock lock) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_routing_track");
 
-  public static SetRoutingTrackMessage decode(FriendlyByteBuf buf) {
+  public static SetRoutingTrackMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();
     var lock = buf.readEnum(LockableSwitchTrackActuatorBlockEntity.Lock.class);
     return new SetRoutingTrackMessage(blockPos, lock);
@@ -32,6 +32,7 @@ public record SetRoutingTrackMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.player().ifPresent(player -> {
       var level = player.level();

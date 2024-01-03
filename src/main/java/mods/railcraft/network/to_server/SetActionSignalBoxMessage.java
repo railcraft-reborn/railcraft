@@ -3,19 +3,19 @@ package mods.railcraft.network.to_server;
 import java.util.EnumSet;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetActionSignalBoxMessage(
     BlockPos blockPos,
     EnumSet<SignalAspect> actionSignalAspects,
-    LockableSignalBoxBlockEntity.Lock lock) implements CustomPacketPayload {
+    LockableSignalBoxBlockEntity.Lock lock) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_action_signal_box");
 
@@ -38,6 +38,7 @@ public record SetActionSignalBoxMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.player().ifPresent(player -> {
       var senderProfile = player.getGameProfile();

@@ -1,18 +1,18 @@
 package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetFluidManipulatorMessage(
     BlockPos blockPos,
-    ManipulatorBlockEntity.RedstoneMode redstoneMode) implements CustomPacketPayload {
+    ManipulatorBlockEntity.RedstoneMode redstoneMode) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_fluid_manipulator");
 
@@ -32,6 +32,7 @@ public record SetFluidManipulatorMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.level()
         .flatMap(level -> LevelUtil

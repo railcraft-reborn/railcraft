@@ -1,14 +1,14 @@
 package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetMaintenanceMinecartMessage(
-    int entityId, MaintenanceMinecart.Mode mode) implements CustomPacketPayload {
+    int entityId, MaintenanceMinecart.Mode mode) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_maintenance_minecart");
 
@@ -29,6 +29,7 @@ public record SetMaintenanceMinecartMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.level().ifPresent(level -> {
       var entity = level.getEntity(this.entityId);

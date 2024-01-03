@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Optional;
 import com.google.common.collect.Lists;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.item.RoutingTableBookItem;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record EditRoutingTableBookMessage(
     InteractionHand hand, List<String> pages,
-    Optional<String> title) implements CustomPacketPayload {
+    Optional<String> title) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("edit_routing_table_book");
   private static final int BOOK_MAX_PAGES = 50;
@@ -40,6 +40,7 @@ public record EditRoutingTableBookMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.player().ifPresent(player -> {
       var senderProfile = player.getGameProfile();

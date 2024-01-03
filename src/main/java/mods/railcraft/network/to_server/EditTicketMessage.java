@@ -1,16 +1,16 @@
 package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.item.GoldenTicketItem;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record EditTicketMessage(
-    InteractionHand hand, String dest) implements CustomPacketPayload {
+    InteractionHand hand, String dest) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("edit_ticket");
 
@@ -29,6 +29,7 @@ public record EditTicketMessage(
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     context.player().ifPresent(player -> {
       var senderProfile = player.getGameProfile();

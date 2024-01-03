@@ -3,12 +3,12 @@ package mods.railcraft.network.to_client;
 import java.util.List;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.ScreenFactories;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record OpenLogBookScreen(List<List<String>> pages) implements CustomPacketPayload {
+public record OpenLogBookScreen(List<List<String>> pages) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("open_log_book");
 
@@ -27,6 +27,7 @@ public record OpenLogBookScreen(List<List<String>> pages) implements CustomPacke
     return ID;
   }
 
+  @Override
   public void handle(PlayPayloadContext context) {
     ScreenFactories.openLogBookScreen(pages);
   }
