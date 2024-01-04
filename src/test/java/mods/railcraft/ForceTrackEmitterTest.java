@@ -15,9 +15,10 @@ public class ForceTrackEmitterTest {
 
   @GameTest(template = "force_track_active", timeoutTicks = 200)
   public static void forceTrackActive(GameTestHelper helper) {
+    var pos =  helper.absolutePos(new BlockPos(4, 2, 2));
     helper.onEachTick(() -> {
       var energyStorage = helper.getLevel()
-          .getCapability(Capabilities.EnergyStorage.BLOCK, new BlockPos(4, 2, 2), null);
+          .getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
       if (energyStorage != null) {
         energyStorage.receiveEnergy(10000, false);
       }

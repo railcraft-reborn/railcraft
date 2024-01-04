@@ -342,23 +342,6 @@ public class Railcraft {
     }
   }
 
-  /*@SubscribeEvent
-  public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-    if (event.getObject() instanceof AbstractMinecart minecart) {
-      event.addCapability(RollingStockImpl.KEY,
-          CapabilityUtil.serializableProvider(
-              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
-    }
-  }
-
-  @SubscribeEvent
-  public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
-    var stack = event.getObject();
-    if (stack.is(Items.GLASS_BOTTLE)) {
-      event.addCapability(Railcraft.rl("bottle_container"), new FluidBottleWrapper(stack));
-    }
-  }*/
-
   @SubscribeEvent
   public void handleLevelTick(TickEvent.LevelTickEvent event) {
     if (event.level instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
