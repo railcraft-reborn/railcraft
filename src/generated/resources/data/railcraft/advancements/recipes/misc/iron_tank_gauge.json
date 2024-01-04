@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:iron_tank_gauge"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -9,16 +9,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.tracks.coke_oven.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "railcraft:coke_oven_bricks"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.coke_oven.name"
     }

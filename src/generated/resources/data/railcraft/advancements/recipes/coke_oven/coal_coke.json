@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:coke_oven/coal_coke"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

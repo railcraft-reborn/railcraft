@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:track_undercutter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

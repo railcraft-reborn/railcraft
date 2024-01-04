@@ -10,12 +10,9 @@
     "description": {
       "translate": "advancements.railcraft.carts.bed_cart.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:minecart"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.bed_cart.name"
     }

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:bronze_block_from_bronze_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-04T11:45:02.979216	Block States: railcraft
+// 1.20.4	2024-01-04T21:08:04.00142	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -16,7 +16,7 @@ fc4e8766f21e05be11bd07609884cdfa1a887db0 assets/railcraft/blockstates/abandoned_
 31192af4aced57ee12e5c6bcc412aa0a9613c586 assets/railcraft/blockstates/abandoned_one_way_track.json
 9a523543237248bef251472d702f64b85512c18f assets/railcraft/blockstates/abandoned_routing_track.json
 704cee2d8b0bd27dfb5349acc62250b92b6c7ef3 assets/railcraft/blockstates/abandoned_throttle_track.json
-3f5fd11e3d852a01116043ab2e4bdc3c02a1add3 assets/railcraft/blockstates/abandoned_track.json
+ae06b54e5fcab715ce35b54377fb9bd9a0cc9521 assets/railcraft/blockstates/abandoned_track.json
 a2d74d835b553a98845dd8f80db35fd6871594a0 assets/railcraft/blockstates/abandoned_turnout_track.json
 a983a2a8d39533fd3a7918f861dabae652abe9d1 assets/railcraft/blockstates/abandoned_whistle_track.json
 e692a4bb96ac98858d3f5cab422196caacb8152f assets/railcraft/blockstates/abandoned_wye_track.json

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:advanced_item_unloader"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

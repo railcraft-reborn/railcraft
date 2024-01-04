@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:high_speed_electric_turnout_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

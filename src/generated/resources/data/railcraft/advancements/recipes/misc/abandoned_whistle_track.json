@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abandoned_whistle_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

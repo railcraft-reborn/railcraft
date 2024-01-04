@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abyssal_paver"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

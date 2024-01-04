@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:polished_abyssal_stone_from_abyssal_cobblestone_in_stonecutter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

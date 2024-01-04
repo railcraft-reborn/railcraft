@@ -52,8 +52,8 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result), this.experience,
-        this.cookingTime, this.creosoteOutput);
+    var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result, this.count),
+        this.experience, this.cookingTime, this.creosoteOutput);
     recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
   }
 }

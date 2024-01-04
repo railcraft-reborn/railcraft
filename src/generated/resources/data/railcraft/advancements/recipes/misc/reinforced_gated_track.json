@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:reinforced_gated_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

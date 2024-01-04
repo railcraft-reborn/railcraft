@@ -19,12 +19,9 @@
     "description": {
       "translate": "advancements.railcraft.tracks.wooden_track.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "railcraft:strap_iron_track"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.wooden_track.name"
     }

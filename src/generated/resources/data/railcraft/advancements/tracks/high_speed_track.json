@@ -15,16 +15,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.tracks.high_speed_track.desc"
     },
     "frame": "challenge",
-    "hidden": false,
     "icon": {
       "item": "railcraft:high_speed_track"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.high_speed_track.name"
     }

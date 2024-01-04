@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:diamond_crowbar"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

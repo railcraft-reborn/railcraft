@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:purple_steel_tank_gauge"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

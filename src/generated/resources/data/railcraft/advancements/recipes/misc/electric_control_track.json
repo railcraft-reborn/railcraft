@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:electric_control_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

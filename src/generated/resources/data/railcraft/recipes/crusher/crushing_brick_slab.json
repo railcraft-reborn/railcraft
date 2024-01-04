@@ -7,14 +7,12 @@
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     }

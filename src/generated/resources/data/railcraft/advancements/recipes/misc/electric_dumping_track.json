@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:electric_dumping_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

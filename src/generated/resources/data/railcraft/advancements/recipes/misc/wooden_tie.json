@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:wooden_tie"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

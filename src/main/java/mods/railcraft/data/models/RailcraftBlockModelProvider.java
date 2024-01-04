@@ -1486,7 +1486,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.getMultipartBuilder(block)
         .part()
-        .modelFile(this.models().getExistingFile(this.mcLoc("block/grass"))).addModel()
+        .modelFile(this.models().getExistingFile(this.mcLoc("block/short_grass"))).addModel()
         .condition(AbandonedTrackBlock.GRASS, true).end()
         .part()
         .modelFile(flatModel0).nextModel().modelFile(flatModel1).addModel()

@@ -7,21 +7,18 @@
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     },
     {
       "probability": 0.85,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     }

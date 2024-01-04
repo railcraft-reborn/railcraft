@@ -19,12 +19,9 @@
     "description": {
       "translate": "advancements.railcraft.tracks.regular_track.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:rail"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.regular_track.name"
     }

@@ -14,21 +14,18 @@
     {
       "probability": 0.65,
       "result": {
-        "count": 1,
         "item": "railcraft:coal_dust"
       }
     },
     {
       "probability": 0.15,
       "result": {
-        "count": 1,
         "item": "minecraft:coal"
       }
     },
     {
       "probability": 0.001,
       "result": {
-        "count": 1,
         "item": "minecraft:diamond"
       }
     }

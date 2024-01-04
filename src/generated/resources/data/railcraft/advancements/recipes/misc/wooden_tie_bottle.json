@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:wooden_tie_bottle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

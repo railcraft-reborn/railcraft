@@ -11,12 +11,10 @@
       "translate": "advancements.railcraft.tracks.junctions.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:iron_spike_maul",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.junctions.name"
     }

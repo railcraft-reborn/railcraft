@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:black_iron_tank_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

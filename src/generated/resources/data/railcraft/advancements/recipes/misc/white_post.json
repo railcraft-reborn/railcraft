@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:white_post"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

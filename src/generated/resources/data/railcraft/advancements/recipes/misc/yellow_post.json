@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:yellow_post"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

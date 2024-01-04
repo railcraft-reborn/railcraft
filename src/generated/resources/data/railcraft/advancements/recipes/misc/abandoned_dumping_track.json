@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abandoned_dumping_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -20,11 +20,9 @@
       "translate": "advancements.railcraft.tracks.crusher.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:crusher"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.crusher.name"
     }

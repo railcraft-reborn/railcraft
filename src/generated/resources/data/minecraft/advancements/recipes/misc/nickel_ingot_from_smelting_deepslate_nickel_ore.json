@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:nickel_ingot_from_smelting_deepslate_nickel_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

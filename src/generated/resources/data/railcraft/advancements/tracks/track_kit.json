@@ -6,16 +6,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.tracks.track_kit.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:buffer_stop_track_kit"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.track_kit.name"
     }

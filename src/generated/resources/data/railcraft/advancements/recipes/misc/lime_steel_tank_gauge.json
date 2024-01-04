@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:lime_steel_tank_gauge"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

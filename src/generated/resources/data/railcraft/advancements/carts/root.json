@@ -19,13 +19,10 @@
     "description": {
       "translate": "advancements.railcraft.carts.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "railcraft:diamond_crowbar",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.root.name"
     }

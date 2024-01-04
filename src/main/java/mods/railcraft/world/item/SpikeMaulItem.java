@@ -125,7 +125,7 @@ public class SpikeMaulItem extends TieredItem {
         (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
     if (level instanceof ServerLevel serverLevel) {
-      RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(
+      RailcraftCriteriaTriggers.SPIKE_MAUL_USE.value().trigger(
           (ServerPlayer) player, heldStack, serverLevel, blockPos);
 
       heldStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));

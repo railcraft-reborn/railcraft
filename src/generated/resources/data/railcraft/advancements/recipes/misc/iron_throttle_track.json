@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:iron_throttle_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

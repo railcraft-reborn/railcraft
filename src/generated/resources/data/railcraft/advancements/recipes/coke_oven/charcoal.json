@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:coke_oven/charcoal"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

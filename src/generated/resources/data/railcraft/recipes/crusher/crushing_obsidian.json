@@ -7,14 +7,12 @@
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "railcraft:crushed_obsidian"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "railcraft:obsidian_dust"
       }
     }

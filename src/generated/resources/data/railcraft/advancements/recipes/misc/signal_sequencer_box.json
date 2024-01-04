@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:signal_sequencer_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

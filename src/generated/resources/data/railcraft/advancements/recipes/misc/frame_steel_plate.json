@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:frame_steel_plate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

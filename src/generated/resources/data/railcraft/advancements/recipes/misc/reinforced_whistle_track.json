@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:reinforced_whistle_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

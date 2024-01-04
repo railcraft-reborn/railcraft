@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:dual_token_signal"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

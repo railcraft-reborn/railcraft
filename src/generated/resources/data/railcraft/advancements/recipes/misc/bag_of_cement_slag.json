@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:bag_of_cement_slag"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

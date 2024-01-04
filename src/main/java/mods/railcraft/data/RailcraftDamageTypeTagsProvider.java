@@ -19,11 +19,13 @@ public class RailcraftDamageTypeTagsProvider extends DamageTypeTagsProvider {
 
   @Override
   protected void addTags(HolderLookup.Provider provider) {
+    //FIXME: Have to use addOptional, as the add method causes an error
+    // about missing references for some reason
     this.tag(DamageTypeTags.BYPASSES_ARMOR)
-        .add(RailcraftDamageType.BORE)
-        .add(RailcraftDamageType.ELECTRIC)
-        .add(RailcraftDamageType.TRACK_ELECTRIC)
-        .add(RailcraftDamageType.TRAIN)
-        .add(RailcraftDamageType.CREOSOTE);
+        .addOptional(RailcraftDamageType.BORE.location())
+        .addOptional(RailcraftDamageType.ELECTRIC.location())
+        .addOptional(RailcraftDamageType.TRACK_ELECTRIC.location())
+        .addOptional(RailcraftDamageType.TRAIN.location())
+        .addOptional(RailcraftDamageType.CREOSOTE.location());
   }
 }

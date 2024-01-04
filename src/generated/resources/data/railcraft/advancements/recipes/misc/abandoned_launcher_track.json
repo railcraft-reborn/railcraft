@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:abandoned_launcher_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

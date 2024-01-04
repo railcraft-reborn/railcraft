@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:blast_furnace/blasting_iron_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

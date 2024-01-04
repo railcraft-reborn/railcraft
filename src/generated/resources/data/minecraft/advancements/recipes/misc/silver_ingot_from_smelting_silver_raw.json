@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:silver_ingot_from_smelting_silver_raw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

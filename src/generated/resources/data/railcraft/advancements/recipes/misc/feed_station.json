@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:feed_station"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:tank_minecart"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:blast_furnace/blasting_steel_boots"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -43,6 +43,5 @@
     "recipes": [
       "railcraft:cart_dispenser"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

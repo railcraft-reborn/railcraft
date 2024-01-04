@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:brass_gear"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

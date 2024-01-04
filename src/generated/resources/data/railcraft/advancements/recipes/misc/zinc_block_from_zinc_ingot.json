@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:zinc_block_from_zinc_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

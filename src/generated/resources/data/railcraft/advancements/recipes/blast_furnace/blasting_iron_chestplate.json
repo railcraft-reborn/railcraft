@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:blast_furnace/blasting_iron_chestplate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

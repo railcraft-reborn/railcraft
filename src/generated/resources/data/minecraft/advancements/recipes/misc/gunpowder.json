@@ -39,6 +39,5 @@
     "recipes": [
       "minecraft:gunpowder"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

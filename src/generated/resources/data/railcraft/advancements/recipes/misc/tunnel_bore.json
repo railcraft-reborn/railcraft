@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:tunnel_bore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

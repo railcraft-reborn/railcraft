@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:chiseled_abyssal_stone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

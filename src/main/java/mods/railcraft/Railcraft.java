@@ -186,12 +186,12 @@ public class Railcraft {
     RailcraftLootModifiers.register(modEventBus);
     RailcraftStructureTypes.register(modEventBus);
     RailcraftStructurePieces.register(modEventBus);
+    RailcraftCriteriaTriggers.register(modEventBus);
   }
 
   // Mod Events
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     event.enqueueWork(() -> {
-      RailcraftCriteriaTriggers.register();
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
@@ -294,8 +294,6 @@ public class Railcraft {
     var packOutput = generator.getPackOutput();
     var lookupProvider = event.getLookupProvider();
     var fileHelper = event.getExistingFileHelper();
-    // Bootstrap our advancement triggers as common setup doesn't run
-    RailcraftCriteriaTriggers.register();
 
     var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
     var blockTagsLookup = blockTags.contentsGetter();

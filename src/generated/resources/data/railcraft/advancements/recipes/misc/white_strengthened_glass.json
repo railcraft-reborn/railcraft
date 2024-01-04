@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:white_strengthened_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

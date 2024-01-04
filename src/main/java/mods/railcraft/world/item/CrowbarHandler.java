@@ -48,7 +48,7 @@ public class CrowbarHandler {
         && RailcraftConfig.COMMON.seasonsEnabled.get()) {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
-      RailcraftCriteriaTriggers.SEASON_SET.trigger((ServerPlayer) player, cart, season);
+      RailcraftCriteriaTriggers.SEASON_SET.value().trigger((ServerPlayer) player, cart, season);
       return InteractionResult.CONSUME;
     }
 
@@ -88,7 +88,8 @@ public class CrowbarHandler {
       }
 
       if (!player.level().isClientSide()) {
-        RailcraftCriteriaTriggers.CART_LINK.trigger((ServerPlayer) player, last.entity(), cart);
+        RailcraftCriteriaTriggers.CART_LINK.value()
+            .trigger((ServerPlayer) player, last.entity(), cart);
       }
 
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)

@@ -658,7 +658,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
                   Mth.cos(yaw) * KNOCKBACK * 0.5F));
         } else {
           if (living instanceof ServerPlayer serverPlayer) {
-            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.trigger(serverPlayer, this);
+            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.value().trigger(serverPlayer, this);
           }
         }
         return;

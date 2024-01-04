@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:strap_iron_gated_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

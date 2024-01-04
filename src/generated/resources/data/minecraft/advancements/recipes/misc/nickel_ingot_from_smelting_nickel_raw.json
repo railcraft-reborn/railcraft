@@ -30,6 +30,5 @@
     "recipes": [
       "minecraft:nickel_ingot_from_smelting_nickel_raw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

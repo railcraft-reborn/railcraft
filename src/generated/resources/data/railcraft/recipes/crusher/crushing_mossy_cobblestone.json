@@ -7,14 +7,12 @@
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:gravel"
       }
     },
     {
       "probability": 0.8,
       "result": {
-        "count": 1,
         "item": "minecraft:vine"
       }
     }

@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:steel_leggings"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

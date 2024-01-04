@@ -19,8 +19,6 @@
     "description": {
       "translate": "advancements.railcraft.tracks.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "railcraft:reinforced_track"
     },

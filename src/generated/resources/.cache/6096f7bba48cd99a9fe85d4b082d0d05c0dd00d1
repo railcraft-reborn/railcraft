@@ -1,4 +1,4 @@
-// 1.20.2	2023-11-04T11:45:02.966958	Global Loot Modifiers : railcraft
+// 1.20.4	2024-01-04T21:08:03.992333	Global Loot Modifiers : railcraft
 65ad395f76f4223eb6783e680dfbed57147b9c17 data/neoforge/loot_modifiers/global_loot_modifiers.json
 16e59dbf9d9bf0b818ed46e4d8e14b5521a88cda data/railcraft/loot_modifiers/chests/abandoned_mineshaft.json
 94e692f317874a895e1a93b7d6e95968a34db451 data/railcraft/loot_modifiers/chests/simple_dungeon.json

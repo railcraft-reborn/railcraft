@@ -30,6 +30,5 @@
     "recipes": [
       "railcraft:booster_track_kit"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

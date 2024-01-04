@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:blast_furnace/blasting_steel_block"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

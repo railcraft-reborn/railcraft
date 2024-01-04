@@ -54,7 +54,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    var recipe = new BlastFurnaceRecipe(this.ingredient, new ItemStack(this.result),
+    var recipe = new BlastFurnaceRecipe(this.ingredient, new ItemStack(this.result, this.count),
         this.experience, this.cookingTime, this.slagOutput);
     recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
   }

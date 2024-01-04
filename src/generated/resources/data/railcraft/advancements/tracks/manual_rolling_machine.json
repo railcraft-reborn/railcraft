@@ -20,11 +20,9 @@
       "translate": "advancements.railcraft.tracks.manual_rolling_machine.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:manual_rolling_machine"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.manual_rolling_machine.name"
     }

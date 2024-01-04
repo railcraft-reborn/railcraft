@@ -28,6 +28,5 @@
     "recipes": [
       "railcraft:bushing_gear_bronze"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

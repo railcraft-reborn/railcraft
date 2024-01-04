@@ -85,7 +85,7 @@ public class TrackKitItem extends Item {
       level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
       if (!level.isClientSide()) {
-        RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
+        RailcraftCriteriaTriggers.TRACK_KIT_USE.value().trigger(
             (ServerPlayer) player, (ServerLevel) level, blockPos, itemStack);
       }
 

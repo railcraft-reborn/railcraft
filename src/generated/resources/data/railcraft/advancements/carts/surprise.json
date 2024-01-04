@@ -6,16 +6,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancements.railcraft.carts.surprise.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:minecart"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.surprise.name"
     }
