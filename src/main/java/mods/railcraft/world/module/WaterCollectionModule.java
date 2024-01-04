@@ -14,7 +14,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -31,7 +30,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   private final WaterTankSidingBlockEntity blockEntity;
   private final StandardTank tank;
-  private final LazyOptional<IFluidHandler> fluidHandler;
 
   private State state = State.INACTIVE;
   private int refillTicks;
@@ -43,7 +41,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
     super(provider, 3);
     this.blockEntity = provider;
     this.tank = StandardTank.ofBuckets(RailcraftConfig.SERVER.tankCapacityPerBlock.get() * 26);
-    this.fluidHandler = LazyOptional.of(() -> this.tank);
   }
 
   public State getState() {
@@ -98,10 +95,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   public StandardTank getTank() {
     return this.tank;
-  }
-
-  public LazyOptional<IFluidHandler> getFluidHandler() {
-    return this.fluidHandler;
   }
 
   @Override

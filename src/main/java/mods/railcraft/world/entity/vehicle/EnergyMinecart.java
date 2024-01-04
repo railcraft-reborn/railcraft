@@ -1,8 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,17 +8,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.EnergyStorage;
 
 public class EnergyMinecart extends RailcraftMinecart {
 
   public static final int MAX_CHARGE = 100000;
   public static final int CHARGE_LIMIT = 1000;
-  private final LazyOptional<EnergyStorage> cartBattery =
-      LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
+  private final EnergyStorage cartBattery = new EnergyStorage(MAX_CHARGE);
 
   protected EnergyMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -36,23 +30,15 @@ public class EnergyMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (Capabilities.ENERGY == capability) {
-      return this.cartBattery.cast();
-    }
-    return super.getCapability(capability, facing);
-  }
-
-  @Override
   public void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cell -> cell.deserializeNBT(data.getCompound("battery")));
+    this.cartBattery.deserializeNBT(data.getCompound("battery"));
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
-    this.cartBattery.ifPresent(cell -> data.put("battery", cell.serializeNBT()));
+    data.put("battery", this.cartBattery.serializeNBT());
   }
 
   // @Override
@@ -68,10 +54,8 @@ public class EnergyMinecart extends RailcraftMinecart {
 
   @Override
   public ItemStack getPickResult() {
-    ItemStack itemStack = super.getPickResult();
-    this.cartBattery.ifPresent(cell -> {
-      itemStack.getOrCreateTag().putInt("batteryEnergy", cell.getEnergyStored());
-    });
+    var itemStack = super.getPickResult();
+    itemStack.getOrCreateTag().putInt("batteryEnergy", this.cartBattery.getEnergyStored());
     return itemStack;
   }
 

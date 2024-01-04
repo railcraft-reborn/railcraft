@@ -9,7 +9,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -21,16 +20,15 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public static final int SLOT_OUTPUT = 2;
   private final StandardTank tank;
 
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
-        @NotNull
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-          if (slot == SLOT_OUTPUT)
-            return ItemStack.EMPTY;
-          return super.extractItem(slot, amount, simulate);
-        }
-      });
+  private final IItemHandler itemHandler = new InvWrapper(this) {
+    @NotNull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      if (slot == SLOT_OUTPUT)
+        return ItemStack.EMPTY;
+      return super.extractItem(slot, amount, simulate);
+    }
+  };
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;
@@ -65,7 +63,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
     } && super.canPlaceItem(slot, stack);
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return this.itemHandler;
   }
 

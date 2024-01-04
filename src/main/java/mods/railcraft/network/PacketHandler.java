@@ -100,15 +100,17 @@ public final class PacketHandler {
     }
   }
 
-  public void sendToAll(RailcraftCustomPacketPayload packet) {
+  public static void sendToAll(RailcraftCustomPacketPayload packet) {
     PacketDistributor.ALL.noArg().send(packet);
   }
 
-  public void sendToAllAround(RailcraftCustomPacketPayload packet, PacketDistributor.TargetPoint zone) {
+  public static void sendToAllAround(RailcraftCustomPacketPayload packet,
+      PacketDistributor.TargetPoint zone) {
     PacketDistributor.NEAR.with(zone).send(packet);
   }
 
-  public void sendToDimension(RailcraftCustomPacketPayload packet, ResourceKey<Level> dimensionId) {
+  public static void sendToDimension(RailcraftCustomPacketPayload packet,
+      ResourceKey<Level> dimensionId) {
     PacketDistributor.DIMENSION.with(dimensionId).send(packet);
   }
 }

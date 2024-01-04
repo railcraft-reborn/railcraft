@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -28,8 +27,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   private static final int ITEMS_SMELTED = 9;
   protected final StandardTank steamTank;
   private final ContainerMapper inputContainer, outputContainer;
-  private final LazyOptional<IItemHandler> itemHandler;
-  private final LazyOptional<IFluidHandler> fluidHandler;
+  private final IItemHandler itemHandler;
 
   public SteamOvenModule(SteamOvenBlockEntity provider) {
     super(provider, 18);
@@ -37,7 +35,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
         .setValidator(fluidStack -> RailcraftFluids.STEAM.get().isSame(fluidStack.getFluid()));
     this.inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
-    this.itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+    this.itemHandler = new InvWrapper(this) {
       @Override
       @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -55,8 +53,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
         }
         return super.insertItem(slot, stack, simulate);
       }
-    });
-    this.fluidHandler = LazyOptional.of(() -> this.steamTank);
+    };
   }
 
   @Override
@@ -137,16 +134,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     return this.steamTank;
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return this.itemHandler;
-  }
-
-  public LazyOptional<IFluidHandler> getFluidHandler() {
-    return this.fluidHandler;
-  }
-
-  public void invalidItemHandler() {
-    this.itemHandler.invalidate();
-    this.fluidHandler.invalidate();
   }
 }

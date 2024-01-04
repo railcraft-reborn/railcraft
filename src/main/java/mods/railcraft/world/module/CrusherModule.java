@@ -17,7 +17,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -33,8 +32,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private final Charge network;
   private Optional<RecipeHolder<CrusherRecipe>> currentRecipe;
   private int currentSlot;
-  private final LazyOptional<IItemHandler> itemHandler;
-  private final LazyOptional<IEnergyStorage> energyHandler;
+  private final IItemHandler itemHandler;
+  private final IEnergyStorage energyHandler;
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
     super(provider, 18);
@@ -44,7 +43,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     currentRecipe = Optional.empty();
 
-    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+    itemHandler = new InvWrapper(this) {
       @Override
       @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -62,8 +61,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
         }
         return stack;
       }
-    });
-    energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
+    };
+    energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 
   public Optional<? extends ChargeStorage> storage() {
@@ -80,7 +79,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   public void serverTick() {
     super.serverTick();
     if (!lacksRequirements()) {
-      energyHandler.ifPresent(storage -> storage.extractEnergy(COST_PER_TICK, false));
+      energyHandler.extractEnergy(COST_PER_TICK, false);
     }
   }
 
@@ -107,9 +106,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   @Override
   protected boolean doProcessStep() {
-    return energyHandler
-        .map(storage -> storage.getEnergyStored() > COST_PER_STEP)
-        .orElse(false);
+    return energyHandler.getEnergyStored() > COST_PER_STEP;
   }
 
   @Override
@@ -170,16 +167,11 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     currentRecipe = Optional.empty();
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return itemHandler;
   }
 
-  public LazyOptional<IEnergyStorage> getEnergyHandler() {
+  public IEnergyStorage getEnergyHandler() {
     return energyHandler;
-  }
-
-  public void invalidateCaps() {
-    itemHandler.invalidate();
-    energyHandler.invalidate();
   }
 }

@@ -23,9 +23,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
 
@@ -124,15 +122,10 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
     return Component.translatable(Translations.Container.BLAST_FURNACE);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    if (cap == Capabilities.ITEM_HANDLER) {
-      return this.getMasterBlockEntity()
-          .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
-          .map(BlastFurnaceModule::getItemHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+  public IItemHandler getItemCap(Direction side) {
+    return this.getMasterBlockEntity()
+        .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
+        .map(BlastFurnaceModule::getItemHandler)
+        .orElse(null);
   }
 }

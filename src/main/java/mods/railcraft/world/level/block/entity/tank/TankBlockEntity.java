@@ -35,9 +35,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -55,7 +52,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private int maxY;
   private int maxZ;
 
-  private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+  private IFluidHandler fluidHandler;
 
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern<Void>> patterns) {
@@ -68,15 +65,15 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   @Override
   protected void serverTick() {
     super.serverTick();
-    this.fluidHandler.ifPresent(fluidHandler -> {
+    if (this.fluidHandler != null) {
       var neighbors = FluidTools.findNeighbors(this.getLevel(), this.getBlockPos(),
           blockEntity -> !(blockEntity instanceof TankBlockEntity tank)
               || !tank.getMembership().equals(this.getMembership()),
           Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
       for (var neighbor : neighbors) {
-        FluidUtil.tryFluidTransfer(neighbor, fluidHandler, FLOW_RATE, true);
+        FluidUtil.tryFluidTransfer(neighbor, this.fluidHandler, FLOW_RATE, true);
       }
-    });
+    }
   }
 
   private void lightChanged(int light) {
@@ -161,9 +158,10 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     if (membership == null) {
       this.getModule().getTank().setFluid(FluidStack.EMPTY);
       this.lightChanged(BlockStateProperties.MIN_LEVEL);
-      this.fluidHandler = LazyOptional.empty();
+      level.invalidateCapabilities(this.getBlockPos());
+      this.fluidHandler = null;
     } else if (this.getBlockState().getBlock() instanceof TankValveBlock) {
-      this.fluidHandler = LazyOptional.of(() -> new ValveFluidHandler(this, membership.master()));
+      this.fluidHandler = new ValveFluidHandler(this, membership.master());
     }
 
     if (this.getBlockState().getBlock() instanceof TankGaugeBlock block) {
@@ -177,13 +175,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-    if (capability == Capabilities.FLUID_HANDLER) {
-      return this.fluidHandler.cast();
-    }
-
-    return super.getCapability(capability, side);
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.fluidHandler;
   }
 
   @Override

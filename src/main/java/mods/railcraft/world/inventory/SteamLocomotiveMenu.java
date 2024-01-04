@@ -16,9 +16,9 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, inventory, locomotive, HEIGHT);
 
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().tankManager().get(0), 53, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(this.getLocomotive().getTankManager().get(0), 53, 23, 176, 0, 16, 47));
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().tankManager().get(1), 17, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(this.getLocomotive().getTankManager().get(1), 17, 23, 176, 0, 16, 47));
 
     this.addWidget(new GaugeWidget(
         this.getLocomotive().boiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));

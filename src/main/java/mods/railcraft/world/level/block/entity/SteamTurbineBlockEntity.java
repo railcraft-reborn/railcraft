@@ -27,10 +27,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
@@ -93,17 +92,14 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
           Predicate<BlockEntity> filter = other -> !(other instanceof SteamTurbineBlockEntity tank)
               || !tank.getMembership().equals(blockEntity.getMembership());
 
-          master.getEnergyStorage()
-              .ifPresent(energyStorage -> EnergyUtil.pushToSides(level, blockPos, energyStorage,
-                  ENERGY_OUTPUT_RATE, filter, Direction.values()));
+          EnergyUtil.pushToSides(level, blockPos, master.getEnergyStorage(),
+              ENERGY_OUTPUT_RATE, filter, Direction.values());
 
-          master.getFluidHandler().ifPresent(fluidHandler -> {
-            var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
-                Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
-            for (var neighbor : neighbors) {
-              FluidUtil.tryFluidTransfer(neighbor, fluidHandler, WATER_OUTPUT_RATE, true);
-            }
-          });
+          var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
+              Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+          for (var neighbor : neighbors) {
+            FluidUtil.tryFluidTransfer(neighbor, master.getFluidHandler(), WATER_OUTPUT_RATE, true);
+          }
         });
 
     if (blockEntity.syncTicks++ >= 4) {
@@ -138,23 +134,20 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     this.masterOperatingRatio = in.readFloat();
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+  public IFluidHandler getFluidCap(Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
-    if (cap == Capabilities.FLUID_HANDLER) {
-      return masterModule
-          .map(SteamTurbineModule::getFluidHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    if (cap == Capabilities.ENERGY) {
-      return masterModule
-          .map(SteamTurbineModule::getEnergyStorage)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+    return masterModule
+        .map(SteamTurbineModule::getFluidHandler)
+        .orElse(null);
+  }
+
+  public IEnergyStorage getEnergyCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(SteamTurbineBlockEntity::getSteamTurbineModule);
+    return masterModule
+        .map(SteamTurbineModule::getEnergyStorage)
+        .orElse(null);
   }
 
   @Override

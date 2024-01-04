@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
@@ -15,7 +14,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
 import mods.railcraft.world.level.material.steam.SteamConstants;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -31,9 +29,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -69,8 +64,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   protected final ContainerMapper invWaterContainers =
       ContainerMapper.make(this, SLOT_WATER_INPUT, 3).ignoreItemChecks();
 
-  private final LazyOptional<TankManager> tankManager =
-      LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
+  private final TankManager tankManager = new TankManager(this.waterTank, this.steamTank);
 
   private int fluidProcessingTimer = 0;
 
@@ -109,20 +103,13 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    return FluidTools.interactWithFluidHandler(player, hand, this.tankManager())
+    return FluidTools.interactWithFluidHandler(player, hand, this.getTankManager())
         ? InteractionResult.SUCCESS
         : super.interact(player, hand);
   }
 
-  public TankManager tankManager() {
-    return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == Capabilities.FLUID_HANDLER
-        ? this.tankManager.cast()
-        : super.getCapability(capability, facing);
+  public TankManager getTankManager() {
+    return this.tankManager;
   }
 
   @Override
@@ -242,7 +229,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("tankManager", this.tankManager().serializeNBT());
+    tag.put("tankManager", this.getTankManager().serializeNBT());
     tag.put("boiler", this.boiler.serializeNBT());
     tag.putString("processState", this.processState.getSerializedName());
   }
@@ -250,7 +237,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.tankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(tag.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);

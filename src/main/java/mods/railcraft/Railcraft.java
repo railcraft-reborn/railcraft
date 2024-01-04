@@ -56,7 +56,26 @@ import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
+import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
+import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
@@ -99,6 +118,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
@@ -185,14 +205,80 @@ public class Railcraft {
           entity instanceof AbstractMinecart minecart ? new RollingStockImpl(minecart) : null);
     }
 
-    /*if (event.getObject() instanceof AbstractMinecart minecart) {
-      event.addCapability(RollingStockImpl.KEY,
-          CapabilityUtil.serializableProvider(
-              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
-    }*/
+    event.registerEntity(Capabilities.FluidHandler.ENTITY,
+        RailcraftEntityTypes.TANK_MINECART.get(), (e, side) -> e.getTankManager());
+    event.registerEntity(Capabilities.EnergyStorage.ENTITY,
+        RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), (e, side) -> e.getBatteryCart());
+    event.registerEntity(Capabilities.FluidHandler.ENTITY,
+        RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getTankManager());
+
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.BATTERY.get(), BatteryBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(),
+        ForceTrackEmitterBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.WATER_TANK_SIDING.get(), WaterTankSidingBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.COKE_OVEN.get(), CokeOvenBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.COKE_OVEN.get(), CokeOvenBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_OVEN.get(), SteamOvenBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_OVEN.get(), SteamOvenBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.CRUSHER.get(), CrusherBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.CRUSHER.get(), CrusherBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.BLAST_FURNACE.get(), BlastFurnaceBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_BOILER.get(), SteamBoilerBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_BOILER.get(), SteamBoilerBlockEntity::getFluidCap);
+
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(),
+        PoweredRollingMachineBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(),
+        PoweredRollingMachineBlockEntity::getEnergyCap);
+
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.IRON_TANK.get(), IronTankBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEEL_TANK.get(), SteelTankBlockEntity::getFluidCap);
+
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.CART_DISPENSER.get(), CartDispenserBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.TRAIN_DISPENSER.get(), TrainDispenserBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FEED_STATION.get(), FeedStationBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_LOADER.get(), FluidLoaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_LOADER.get(), FluidLoaderBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_UNLOADER.get(), FluidUnloaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_UNLOADER.get(), FluidUnloaderBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_LOADER.get(), ItemLoaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.FluidHandler.ITEM,
         (stack, ctx) -> new FluidBottleWrapper(stack), Items.GLASS_BOTTLE);
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new FluidBottleWrapper(stack), RailcraftItems.CREOSOTE_BOTTLE);
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {

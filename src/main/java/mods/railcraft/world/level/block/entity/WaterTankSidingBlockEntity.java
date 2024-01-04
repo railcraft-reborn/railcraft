@@ -20,9 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankSidingBlockEntity, Void> {
 
@@ -87,15 +85,10 @@ public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankS
     return Component.translatable(Container.WATER_TANK_SIDING);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    if (cap == Capabilities.FLUID_HANDLER) {
-      return this.getMasterBlockEntity()
-          .map(WaterTankSidingBlockEntity::getModule)
-          .map(WaterCollectionModule::getFluidHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.getMasterBlockEntity()
+        .map(WaterTankSidingBlockEntity::getModule)
+        .map(WaterCollectionModule::getTank)
+        .orElse(null);
   }
 }

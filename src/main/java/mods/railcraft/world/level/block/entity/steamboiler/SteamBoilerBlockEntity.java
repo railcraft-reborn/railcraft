@@ -28,9 +28,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -54,8 +51,8 @@ public class SteamBoilerBlockEntity
     return patterns.build();
   });
 
-  private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
-  private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
+  private IFluidHandler fluidHandler;
+  private IItemHandler itemHandler;
 
   public SteamBoilerBlockEntity(BlockPos blockPos, BlockState blockState) {
     this(RailcraftBlockEntityTypes.STEAM_BOILER.get(), blockPos, blockState);
@@ -79,18 +76,12 @@ public class SteamBoilerBlockEntity
             : super.use(player, hand);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    if (capability == Capabilities.FLUID_HANDLER) {
-      return this.fluidHandler.cast();
-    }
+  public IItemHandler getItemCap(Direction side) {
+    return this.itemHandler;
+  }
 
-    if (capability == Capabilities.ITEM_HANDLER) {
-      return this.itemHandler.cast();
-    }
-
-    return LazyOptional.empty();
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.fluidHandler;
   }
 
   @Override
@@ -106,8 +97,8 @@ public class SteamBoilerBlockEntity
   @Override
   protected void membershipChanged(@Nullable Membership<SteamBoilerBlockEntity> membership) {
     if (membership == null) {
-      this.fluidHandler = LazyOptional.empty();
-      this.itemHandler = LazyOptional.empty();
+      this.fluidHandler = null;
+      this.itemHandler = null;
       this.getModule(SteamBoilerModule.class)
           .ifPresent(module -> Containers.dropContents(this.level, this.getBlockPos(), module));
     } else {
@@ -117,7 +108,7 @@ public class SteamBoilerBlockEntity
         module.update(this.getCurrentPattern().get().getMetadata());
       }
 
-      this.fluidHandler = module.getFluidHandler();
+      this.fluidHandler = module.getTankManager();
       this.itemHandler = module.getItemHandler();
     }
 

@@ -27,9 +27,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -151,22 +150,19 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     return Component.translatable(Container.CRUSHER);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+  public IItemHandler getItemCap(Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
-    if (cap == Capabilities.ITEM_HANDLER) {
-      return masterModule
-          .map(CrusherModule::getItemHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    if (cap == Capabilities.ENERGY) {
-      return masterModule
-          .map(CrusherModule::getEnergyHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+    return masterModule
+        .map(CrusherModule::getItemHandler)
+        .orElse(null);
+  }
+
+  public IEnergyStorage getEnergyCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(CrusherBlockEntity::getCrusherModule);
+    return masterModule
+        .map(CrusherModule::getEnergyHandler)
+        .orElse(null);
   }
 }

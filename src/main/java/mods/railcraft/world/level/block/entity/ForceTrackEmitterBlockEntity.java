@@ -24,9 +24,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
@@ -39,12 +36,12 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
    * Field to prevent recursive removing of tracks when a track is broken by the emitter.
    */
   private boolean removingTrack;
-  private final LazyOptional<IEnergyStorage> energyHandler;
+  private final IEnergyStorage energyHandler;
 
   public ForceTrackEmitterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(), blockPos, blockState);
     this.loadState(ForceTrackEmitterState.RETRACTED);
-    this.energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
+    this.energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 
   public ForceTrackEmitterState.Instance getStateInstance() {
@@ -238,10 +235,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
         .access(this.blockPos());
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    return cap == Capabilities.ENERGY
-        ? this.energyHandler.cast()
-        : super.getCapability(cap, side);
+  public IEnergyStorage getEnergyCap(Direction side) {
+    return this.energyHandler;
   }
 }

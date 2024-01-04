@@ -17,7 +17,6 @@ import mods.railcraft.world.item.tunnelbore.TunnelBoreItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
@@ -37,8 +36,6 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -1462,12 +1459,6 @@ public class RailcraftItems {
               new Item.Properties()
                   .stacksTo(1)
                   .craftRemainder(Items.BUCKET)) {
-            @Override
-            public ICapabilityProvider initCapabilities(ItemStack stack,
-                @Nullable CompoundTag nbt) {
-              return new FluidBucketWrapper(stack);
-            }
-
             @Override
             public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
               return 800;

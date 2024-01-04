@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -15,24 +14,19 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 
 public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockEntity {
 
   private static final int CHARGE_PER_TICK = 10;
-  private final LazyOptional<IItemHandler> itemHandler;
-  private final LazyOptional<IEnergyStorage> energyHandler;
+  private final IItemHandler itemHandler;
+  private final IEnergyStorage energyHandler;
 
   public PoweredRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(), blockPos, blockState);
-    this.itemHandler = LazyOptional.of(() ->
-        new CombinedInvWrapper(this.craftMatrix, this.invResult));
-    this.energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
+    this.itemHandler = new CombinedInvWrapper(this.craftMatrix, this.invResult);
+    this.energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 
   @Override
@@ -58,21 +52,11 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
         .access(this.blockPos());
   }
 
-  @Override
-  @NotNull
-  public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-    if (cap == Capabilities.ENERGY) {
-      return this.energyHandler.cast();
-    } else if (cap == Capabilities.ITEM_HANDLER) {
-      return this.itemHandler.cast();
-    }
-    return super.getCapability(cap, side);
+  public IItemHandler getItemCap(Direction side) {
+    return this.itemHandler;
   }
 
-  @Override
-  public void invalidateCaps() {
-    super.invalidateCaps();
-    this.energyHandler.invalidate();
-    this.itemHandler.invalidate();
+  public IEnergyStorage getEnergyCap(Direction side) {
+    return this.energyHandler;
   }
 }

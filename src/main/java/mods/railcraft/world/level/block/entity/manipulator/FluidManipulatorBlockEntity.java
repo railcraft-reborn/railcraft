@@ -26,9 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -45,7 +42,6 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected final AdvancedContainer fluidFilterContainer =
       new AdvancedContainer(1).listener((Container) this).phantom();
   protected final TankManager tankManager = new TankManager();
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
   protected final StandardTank tank = StandardTank.ofBuckets(32);
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int fluidProcessingTimer;
@@ -181,10 +177,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.readPacketData(data);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == Capabilities.FLUID_HANDLER
-        ? this.fluidHandler.cast()
-        : super.getCapability(capability, facing);
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.tankManager;
   }
 }

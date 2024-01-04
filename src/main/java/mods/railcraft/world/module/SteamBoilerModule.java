@@ -15,10 +15,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
@@ -34,17 +32,15 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
 
   protected final SteamBoiler boiler;
 
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
-  private final LazyOptional<IItemHandler> itemHandler =
-      LazyOptional.of(() -> new InvWrapper(this) {
-        @NotNull
-        @Override
-        public ItemStack extractItem(int slot, int amount, boolean simulate) {
-          if (slot != SLOT_LIQUID_OUTPUT)
-            return ItemStack.EMPTY;
-          return super.extractItem(slot, amount, simulate);
-        }
-      });
+  private final IItemHandler itemHandler = new InvWrapper(this) {
+    @NotNull
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      if (slot != SLOT_LIQUID_OUTPUT)
+        return ItemStack.EMPTY;
+      return super.extractItem(slot, amount, simulate);
+    }
+  };
 
   protected final TankManager tankManager = new TankManager();
 
@@ -92,11 +88,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     return this.tankManager;
   }
 
-  public LazyOptional<IFluidHandler> getFluidHandler() {
-    return this.fluidHandler;
-  }
-
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return this.itemHandler;
   }
 

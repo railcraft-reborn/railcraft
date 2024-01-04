@@ -12,7 +12,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -33,7 +32,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private float operatingRatio;
   private int energy;
 
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(FluidHandler::new);
+  private final IFluidHandler fluidHandler = new FluidHandler();
 
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
@@ -48,7 +47,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
         .changeCallback(provider::setChanged);
   }
 
-  public LazyOptional<IFluidHandler> getFluidHandler() {
+  public IFluidHandler getFluidHandler() {
     return this.fluidHandler;
   }
 

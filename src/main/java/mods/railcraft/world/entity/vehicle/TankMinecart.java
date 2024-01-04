@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
@@ -30,12 +29,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TankMinecart extends FilteredMinecart
     implements WorldlyContainer, FluidTransferHandler {
@@ -57,8 +52,6 @@ public class TankMinecart extends FilteredMinecart
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)
               .orElse(true));
-  private final LazyOptional<IFluidHandler> fluidHandlerCapability =
-      LazyOptional.of(() -> this.tank);
   private final ContainerMapper invLiquids = ContainerMapper.make(this).ignoreItemChecks();
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -96,13 +89,6 @@ public class TankMinecart extends FilteredMinecart
 
   public StandardTank getTankManager() {
     return this.tank;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == Capabilities.FLUID_HANDLER
-        ? this.fluidHandlerCapability.cast()
-        : super.getCapability(capability, facing);
   }
 
   @Override

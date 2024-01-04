@@ -12,7 +12,11 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
+import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -730,7 +734,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(recipeOutput);
-    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.ROTOR_REPAIR.get())
+    RailcraftSpecialRecipeBuilder.special(RotorRepairRecipe::new)
         .save(recipeOutput, "rotor_repair");
   }
 
@@ -1082,7 +1086,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .requires(Tags.Items.NUGGETS_GOLD)
         .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
         .save(recipeOutput);
-    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.TICKET_DUPLICATE.get())
+    RailcraftSpecialRecipeBuilder.special(TicketDuplicateRecipe::new)
         .save(recipeOutput, getItemName(RailcraftItems.TICKET.get()));
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.ROUTING_TABLE_BOOK.get())
         .requires(Items.WRITABLE_BOOK)
@@ -1223,9 +1227,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(Items.MINECART), has(Items.MINECART))
         .save(recipeOutput);
 
-    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get())
+    RailcraftSpecialRecipeBuilder.special(LocomotivePaintingRecipe::new)
         .save(recipeOutput, "locomotive_color_variant");
-    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.CART_DISASSEMBLY.get())
+    RailcraftSpecialRecipeBuilder.special(CartDisassemblyRecipe::new)
         .save(recipeOutput, "cart_disassembly");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())

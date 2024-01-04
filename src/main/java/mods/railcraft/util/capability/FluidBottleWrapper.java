@@ -1,23 +1,15 @@
 package mods.railcraft.util.capability;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.item.FluidBottleItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public class FluidBottleWrapper implements IFluidHandlerItem, ICapabilityProvider {
-
-  private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
+public class FluidBottleWrapper implements IFluidHandlerItem {
 
   @NotNull
   protected ItemStack container;
@@ -123,13 +115,6 @@ public class FluidBottleWrapper implements IFluidHandlerItem, ICapabilityProvide
     }
 
     return FluidStack.EMPTY;
-  }
-
-  @Override
-  @NotNull
-  public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability,
-      @Nullable Direction facing) {
-    return Capabilities.FLUID_HANDLER_ITEM.orEmpty(capability, this.holder);
   }
 }
 
