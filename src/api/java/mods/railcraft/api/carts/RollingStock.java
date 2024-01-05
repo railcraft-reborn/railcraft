@@ -10,13 +10,13 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -244,6 +244,7 @@ public interface RollingStock {
     return Stream.concat(Stream.of(this), this.traverseTrain(side));
   }
 
+  @Nullable
   Train train();
 
   default boolean isSameTrainAs(@NotNull RollingStock rollingStock) {
