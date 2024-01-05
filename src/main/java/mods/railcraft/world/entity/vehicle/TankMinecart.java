@@ -4,7 +4,7 @@ import java.util.Optional;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;

@@ -8,7 +8,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.EnergyUtil;
-import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;

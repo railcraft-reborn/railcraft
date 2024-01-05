@@ -1,4 +1,4 @@
-package mods.railcraft.util.capability;
+package mods.railcraft.util.fluids.capability.wrapper;
 
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.world.item.FluidBottleItem;

@@ -1,4 +1,4 @@
-package mods.railcraft.util;
+package mods.railcraft.util.fluids;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,7 +135,7 @@ public final class FluidTools {
   public static ProcessState processContainer(Container container, StandardTank tank,
       ProcessType type, ProcessState state) {
     var itemStack = container.getItem(1);
-    if (itemStack.isEmpty() || !FluidUtil.getFluidHandler(itemStack).isPresent()) {
+    if (itemStack.isEmpty() || FluidUtil.getFluidHandler(itemStack).isEmpty()) {
       sendToProcessing(container);
       return ProcessState.RESET;
     }

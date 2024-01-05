@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.particle.FireSparkParticleOptions;
-import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

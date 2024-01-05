@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
-import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.inventory.TankMenu;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;

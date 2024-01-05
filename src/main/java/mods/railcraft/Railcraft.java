@@ -37,7 +37,7 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.capability.FluidBottleWrapper;
+import mods.railcraft.util.fluids.capability.wrapper.FluidBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -199,7 +199,6 @@ public class Railcraft {
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
-    //event.register(RollingStock.class);
     for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
       event.registerEntity(RollingStock.CAPABILITY, entityType, (entity, ctx) ->
           entity instanceof AbstractMinecart minecart ? new RollingStockImpl(minecart) : null);
@@ -281,7 +280,7 @@ public class Railcraft {
         (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
   }
 
-  public void buildContents(BuildCreativeModeTabContentsEvent event) {
+  private void buildContents(BuildCreativeModeTabContentsEvent event) {
     if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
       RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
     } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {

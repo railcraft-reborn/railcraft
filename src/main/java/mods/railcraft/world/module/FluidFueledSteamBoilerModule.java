@@ -1,8 +1,8 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.fuel.FuelUtil;
-import mods.railcraft.util.FluidTools;
-import mods.railcraft.util.FluidTools.ProcessType;
+import mods.railcraft.util.fluids.FluidTools;
+import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.steam.FluidFuelProvider;
