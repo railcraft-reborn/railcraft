@@ -427,8 +427,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
         ? tag.getUUID("frontLink")
         : null;
 
-    this.backAutoLinkEnabled = tag.getBoolean("primaryAutoLinkEnabled");
-    this.frontAutoLinkEnabled = tag.getBoolean("secondaryAutoLinkEnabled");
+    this.backAutoLinkEnabled = tag.getBoolean("backAutoLinkEnabled");
+    this.frontAutoLinkEnabled = tag.getBoolean("frontAutoLinkEnabled");
 
     this.launchState = LaunchState.getByName(tag.getString("launchState"))
         .orElse(LaunchState.LANDED);
