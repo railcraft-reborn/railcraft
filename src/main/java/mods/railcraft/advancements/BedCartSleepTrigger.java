@@ -11,7 +11,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.TriggerInstance> {
+public class BedCartSleepTrigger extends
+    SimpleCriterionTrigger<BedCartSleepTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user sleeps on a cart.
@@ -30,9 +31,9 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<MinecartPredicate> cart)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
@@ -40,7 +41,7 @@ public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrig
                 .forGetter(TriggerInstance::player),
             ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
                 .forGetter(TriggerInstance::cart)
-            ).apply(instance, TriggerInstance::new));
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
       return this.cart

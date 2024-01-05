@@ -6,11 +6,13 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -111,17 +113,21 @@ public class CrusherRecipe implements Recipe<Container> {
 
     private static final Codec<Pair<ItemStack, Double>> CODEC_PAIR = RecordCodecBuilder
         .create(instance -> instance.group(
-            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(Pair::getFirst),
-            Codec.doubleRange(0, 1).fieldOf("probability").forGetter(Pair::getSecond)
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
+                .forGetter(Pair::getFirst),
+            Codec.doubleRange(0, 1).fieldOf(RecipeJsonKeys.PROBABILITY)
+                .forGetter(Pair::getSecond)
         ).apply(instance, Pair::of));
 
     private static final Codec<CrusherRecipe> CODEC = RecordCodecBuilder
         .create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
-            CODEC_PAIR.listOf().fieldOf("outputs").orElse(Collections.emptyList())
+            CODEC_PAIR.listOf().fieldOf(RecipeJsonKeys.OUTPUTS).orElse(Collections.emptyList())
                 .forGetter(crusherRecipe -> crusherRecipe.probabilityItems),
-            Codec.INT.fieldOf("processTime").orElse(CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.PROCESS_TIME,
+                    CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
                 .forGetter(recipe -> recipe.processTime)
         ).apply(instance, CrusherRecipe::new));
 

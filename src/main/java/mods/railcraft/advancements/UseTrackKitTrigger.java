@@ -36,10 +36,10 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<ItemPredicate> item,
-                                Optional<LocationPredicate> location)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<ItemPredicate> item,
+      Optional<LocationPredicate> location) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(

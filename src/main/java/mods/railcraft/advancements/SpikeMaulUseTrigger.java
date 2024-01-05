@@ -18,7 +18,8 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.TriggerInstance> {
+public class SpikeMaulUseTrigger extends
+    SimpleCriterionTrigger<SpikeMaulUseTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user successfully uses a spike maul.
@@ -30,7 +31,8 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
 
   public static Criterion<TriggerInstance> hasUsedSpikeMaul() {
     return RailcraftCriteriaTriggers.SPIKE_MAUL_USE.createCriterion(
-        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty(),
+            Optional.empty()));
   }
 
   @Override
@@ -38,11 +40,11 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<NbtPredicate> nbt,
-                                Optional<ItemPredicate> tool,
-                                Optional<LocationPredicate> location)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<NbtPredicate> nbt,
+      Optional<ItemPredicate> tool,
+      Optional<LocationPredicate> location) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
@@ -62,7 +64,8 @@ public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrig
           .map(tag -> this.nbt.map(x -> x.matches(tag)).orElse(true))
           .orElse(false)
           && this.tool.map(x -> x.matches(item)).orElse(true)
-          && this.location.map(x -> x.matches(level, pos.getX(), pos.getY(), pos.getZ())).orElse(true);
+          && this.location.map(x -> x.matches(level, pos.getX(), pos.getY(), pos.getZ()))
+          .orElse(true);
     }
 
     @Override

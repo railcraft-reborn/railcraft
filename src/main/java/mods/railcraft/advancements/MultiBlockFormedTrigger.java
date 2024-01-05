@@ -39,10 +39,10 @@ public class MultiBlockFormedTrigger extends
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<BlockEntityType<?>> type,
-                                Optional<NbtPredicate> nbt)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<BlockEntityType<?>> type,
+      Optional<NbtPredicate> nbt) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
@@ -57,7 +57,7 @@ public class MultiBlockFormedTrigger extends
     public boolean matches(RailcraftBlockEntity blockEntity) {
       return this.type.map(type -> type.equals(blockEntity.getType())).orElse(true)
           && this.nbt.map(predicate -> predicate.matches(blockEntity.saveWithoutMetadata()))
-              .orElse(true);
+          .orElse(true);
     }
 
     @Override

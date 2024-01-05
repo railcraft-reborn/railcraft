@@ -8,7 +8,6 @@
   "pattern": [
     "aa"
   ],
-  "processTime": 100,
   "result": {
     "item": "railcraft:track_parts"
   }

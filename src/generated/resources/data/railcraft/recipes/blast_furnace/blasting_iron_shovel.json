@@ -1,6 +1,5 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 400,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_shovel"

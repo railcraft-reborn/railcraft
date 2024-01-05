@@ -13,7 +13,6 @@
     "a b",
     "a b"
   ],
-  "processTime": 100,
   "result": {
     "count": 16,
     "item": "railcraft:standard_rail"

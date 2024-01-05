@@ -2,10 +2,12 @@ package mods.railcraft.world.item.crafting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
+import mods.railcraft.api.core.RecipeJsonKeys;
+import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -47,18 +49,18 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
     private static final Codec<CokeOvenRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
-            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result")
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
                 .forGetter(recipe -> recipe.result),
-            Codec.FLOAT.fieldOf("experience")
+            Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
                 .orElse(0.0F)
                 .forGetter(recipe -> recipe.experience),
-            Codec.INT.fieldOf("cookingTime")
-                .orElse(CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME)
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.COOKING_TIME,
+                    BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
                 .forGetter(recipe -> recipe.cookingTime),
-            Codec.INT.fieldOf("creosoteOutput")
-                .orElse(1000)
+            ExtraCodecs.POSITIVE_INT.fieldOf(RecipeJsonKeys.CREOSOTE_OUTPUT)
                 .forGetter(recipe -> recipe.creosote.getAmount())
             ).apply(instance, CokeOvenRecipe::new));
 

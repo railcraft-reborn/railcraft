@@ -8,7 +8,6 @@
   "pattern": [
     "a"
   ],
-  "processTime": 100,
   "result": {
     "item": "railcraft:charge_spool_small"
   }

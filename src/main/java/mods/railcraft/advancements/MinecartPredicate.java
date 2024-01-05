@@ -1,16 +1,11 @@
 package mods.railcraft.advancements;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
-import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,13 +43,6 @@ public record MinecartPredicate(
               .forGetter(MinecartPredicate::parent)
       ).apply(instance, MinecartPredicate::new));
 
-  public static Optional<MinecartPredicate> fromJson(@Nullable JsonElement jsonElement) {
-    return jsonElement != null && !jsonElement.isJsonNull()
-        ? Optional.of(Util.getOrThrow(
-            CODEC.parse(JsonOps.INSTANCE, jsonElement), JsonParseException::new))
-        : Optional.empty();
-  }
-
   public boolean matches(ServerPlayer player, AbstractMinecart cart) {
     var rollingStock = RollingStock.getOrThrow(cart);
 
@@ -82,9 +70,5 @@ public record MinecartPredicate(
       return false;
     }
     return this.parent.map(x -> x.matches(player, cart)).orElse(true);
-  }
-
-  public JsonElement serializeToJson() {
-    return Util.getOrThrow(CODEC.encodeStart(JsonOps.INSTANCE, this), IllegalStateException::new);
   }
 }

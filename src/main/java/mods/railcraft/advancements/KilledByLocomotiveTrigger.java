@@ -25,16 +25,16 @@ public class KilledByLocomotiveTrigger
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                       Optional<MinecartPredicate> cart)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-          ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
-              .forGetter(TriggerInstance::player),
-          ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
-              .forGetter(TriggerInstance::cart)
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
         ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {

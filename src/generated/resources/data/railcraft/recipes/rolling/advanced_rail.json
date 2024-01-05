@@ -13,7 +13,6 @@
     "a b",
     "a b"
   ],
-  "processTime": 100,
   "result": {
     "count": 8,
     "item": "railcraft:advanced_rail"

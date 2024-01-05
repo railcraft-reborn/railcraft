@@ -2,9 +2,11 @@ package mods.railcraft.world.item.crafting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -44,21 +46,21 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
     private static final Codec<BlastFurnaceRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf("ingredient")
+            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
-            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result")
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
                 .forGetter(recipe -> recipe.result),
-            Codec.FLOAT.fieldOf("experience")
+            Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
                 .orElse(0.0F)
                 .forGetter(recipe -> recipe.experience),
-            Codec.INT.fieldOf("cookingTime")
-                .orElse(BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.COOKING_TIME,
+                    BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
                 .forGetter(recipe -> recipe.cookingTime),
-            Codec.INT.fieldOf("slagOutput")
-                .orElse(1)
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.NON_NEGATIVE_INT, RecipeJsonKeys.SLAG_OUTPUT, 0)
                 .forGetter(recipe -> recipe.slagOutput))
             .apply(instance, BlastFurnaceRecipe::new));
-
     @Override
     public Codec<BlastFurnaceRecipe> codec() {
       return CODEC;

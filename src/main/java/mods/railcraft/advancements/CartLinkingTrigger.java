@@ -32,20 +32,20 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<MinecartPredicate> owned,
-                                Optional<MinecartPredicate> other)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<MinecartPredicate> owned,
+      Optional<MinecartPredicate> other) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
-                    .forGetter(TriggerInstance::player),
-                ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "owned")
-                    .forGetter(TriggerInstance::owned),
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "owned")
+                .forGetter(TriggerInstance::owned),
             ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "other")
                 .forGetter(TriggerInstance::other)
-            ).apply(instance, TriggerInstance::new));
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerPlayer player, AbstractMinecart owned, AbstractMinecart other) {
       return this.owned.map(x -> x.matches(player, owned)).orElse(true)

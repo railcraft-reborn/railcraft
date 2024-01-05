@@ -39,10 +39,10 @@ public class JukeboxCartPlayMusicTrigger
     return TriggerInstance.CODEC;
   }
 
-  public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                Optional<ResourceLocation> music,
-                                Optional<MinecartPredicate> cart)
-      implements SimpleCriterionTrigger.SimpleInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<ResourceLocation> music,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(

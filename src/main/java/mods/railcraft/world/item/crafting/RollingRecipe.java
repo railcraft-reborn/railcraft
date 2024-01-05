@@ -2,11 +2,13 @@ package mods.railcraft.world.item.crafting;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -95,8 +97,12 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
     private static final Codec<RollingRecipe> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
             ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
-            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-            Codec.INT.fieldOf("processTime").orElse(RollingRecipeBuilder.DEFAULT_PROCESSING_TIME).forGetter(recipe -> recipe.processTime))
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
+                .forGetter(recipe -> recipe.result),
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.PROCESS_TIME,
+                    RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
+                .forGetter(recipe -> recipe.processTime))
         .apply(instance, RollingRecipe::new)
     );
 
