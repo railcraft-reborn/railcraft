@@ -107,7 +107,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var serverPlayer = (ServerPlayer) player;
 
     if (player.mayUseItemAt(pos, side, stack)) {
-      if (blockState.getBlock() != Blocks.STONE) {
+      if (!blockState.is(Blocks.STONE)) {
         var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
