@@ -704,21 +704,13 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
   }
 
-  /**
-   * Returns the optimal distance between two linked carts that the LinkageHandler will attempt to
-   * maintain at all times.
-   *
-   * @param cart1 AbstractMinecartEntity
-   * @param cart2 AbstractMinecartEntity
-   * @return The optimal distance
-   */
-  private float getOptimalDistance(RollingStock cart2) {
+  private float getOptimalDistance(RollingStock rollingStock) {
     float dist = 0;
     if (this.minecart instanceof Linkable handler)
-      dist += handler.getOptimalDistance(cart2);
+      dist += handler.getOptimalDistance(rollingStock);
     else
       dist += OPTIMAL_LINK_DISTANCE;
-    if (cart2.entity() instanceof Linkable handler)
+    if (rollingStock.entity() instanceof Linkable handler)
       dist += handler.getOptimalDistance(this);
     else
       dist += OPTIMAL_LINK_DISTANCE;
@@ -729,21 +721,14 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     return Math.copySign(Math.min(Math.abs(force), FORCE_LIMITER), force);
   }
 
-  /**
-   * Returns the square of the max distance two carts can be and still be linkable.
-   *
-   * @param cart1 First Cart
-   * @param cart2 Second Cart
-   * @return The square of the linkage distance
-   */
-  private float getLinkageDistanceSq(RollingStock cart2) {
+  private float getLinkageDistanceSq(RollingStock rollingStock) {
     float dist = 0;
     if (this.minecart instanceof Linkable handler) {
-      dist += handler.getLinkageDistance(cart2);
+      dist += handler.getLinkageDistance(rollingStock);
     } else {
       dist += MAX_LINK_DISTANCE;
     }
-    if (cart2.entity() instanceof Linkable handler) {
+    if (rollingStock.entity() instanceof Linkable handler) {
       dist += handler.getLinkageDistance(this);
     } else {
       dist += MAX_LINK_DISTANCE;

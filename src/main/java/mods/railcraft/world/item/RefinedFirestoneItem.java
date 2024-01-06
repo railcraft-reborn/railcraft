@@ -7,8 +7,6 @@ import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +28,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class RefinedFirestoneItem extends FirestoneItem {
 
@@ -101,7 +98,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var blockState = level.getBlockState(pos);
     var random = level.getRandom();
 
-    if (level.isClientSide())
+    if (!(level instanceof ServerLevel serverLevel))
       return InteractionResult.sidedSuccess(level.isClientSide());
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
@@ -110,7 +107,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
 
     if (player.mayUseItemAt(pos, side, stack)) {
       if (blockState.getBlock() != Blocks.STONE) {
-        var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
+        var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
           var cooked = cookedItem(level, drops.get(0));
