@@ -11,6 +11,11 @@ plugins {
     id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
 }
 
+def isRelease = System.getenv('IS_RELEASE')
+if (!isRelease) {
+    mod_version += "-snapshot"
+}
+
 version = "$minecraft_version-$mod_version"
 
 group = 'mods.railcraft'

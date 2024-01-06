@@ -577,13 +577,13 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
   }
 
-  private float getOptimalDistance(RollingStock cart) {
+  private float getOptimalDistance(RollingStock rollingStock) {
     float dist = 0;
     if (this.minecart instanceof Linkable handler)
-      dist += handler.getOptimalDistance(cart);
+      dist += handler.getOptimalDistance(rollingStock);
     else
       dist += OPTIMAL_LINK_DISTANCE;
-    if (cart.entity() instanceof Linkable handler)
+    if (rollingStock.entity() instanceof Linkable handler)
       dist += handler.getOptimalDistance(this);
     else
       dist += OPTIMAL_LINK_DISTANCE;
@@ -594,14 +594,14 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     return Math.copySign(Math.min(Math.abs(force), FORCE_LIMITER), force);
   }
 
-  private float getLinkageDistanceSq(RollingStock cart) {
+  private float getLinkageDistanceSq(RollingStock rollingStock) {
     float dist = 0;
     if (this.minecart instanceof Linkable handler) {
-      dist += handler.getLinkageDistance(cart);
+      dist += handler.getLinkageDistance(rollingStock);
     } else {
       dist += MAX_LINK_DISTANCE;
     }
-    if (cart.entity() instanceof Linkable handler) {
+    if (rollingStock.entity() instanceof Linkable handler) {
       dist += handler.getLinkageDistance(this);
     } else {
       dist += MAX_LINK_DISTANCE;

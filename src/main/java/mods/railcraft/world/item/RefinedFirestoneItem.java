@@ -98,16 +98,17 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var blockState = level.getBlockState(pos);
     var random = level.getRandom();
 
-    if (level.isClientSide())
-      return InteractionResult.CONSUME;
+    if (!(level instanceof ServerLevel serverLevel))
+      return InteractionResult.sidedSuccess(level.isClientSide());
+
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
 
     var serverPlayer = (ServerPlayer) player;
 
     if (player.mayUseItemAt(pos, side, stack)) {
-      if (!blockState.is(Blocks.STONE)) {
-        var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
+      if (blockState.getBlock() != Blocks.STONE) {
+        var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
           var cooked = cookedItem(level, drops.get(0));
