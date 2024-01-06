@@ -79,7 +79,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       var byteBuf = new FriendlyByteBuf(Unpooled.buffer());
       try {
         widget.writeToBuf(player, byteBuf);
-        var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf);
+        var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf.array());
         PacketHandler.sendTo(player, message);
       } finally {
         byteBuf.release();
