@@ -13,7 +13,7 @@ plugins {
 
 def isRelease = System.getenv('IS_RELEASE')
 if (!isRelease) {
-    mod_version = mod_version + "-snapshot"
+    mod_version += "-snapshot"
 }
 
 version = "$minecraft_version-$mod_version"
