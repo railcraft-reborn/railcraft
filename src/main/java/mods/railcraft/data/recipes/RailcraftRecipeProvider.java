@@ -22,6 +22,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -36,6 +37,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
@@ -1182,6 +1186,13 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.SULFUR_DUST.get()),
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(consumer);
+
+    ConditionalRecipe.builder()
+        .addCondition(new ModLoadedCondition(PatchouliAPI.MOD_ID))
+        .addRecipe(c ->
+            SpecialRecipeBuilder.special(RailcraftRecipeSerializers.PATCHOULI_BOOK_CRAFTING.get())
+                .save(c, Railcraft.rl("patchouli_book_crafting").toString()))
+        .build(consumer, Railcraft.rl("patchouli_book_crafting"));
   }
 
   private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {
