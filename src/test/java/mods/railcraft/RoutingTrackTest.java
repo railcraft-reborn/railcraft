@@ -60,7 +60,7 @@ public class RoutingTrackTest {
     train.setMode(Locomotive.Mode.RUNNING);
     helper.succeedWhen(() -> {
       helper.assertEntityInstancePresent(train, DEST);
-      if (train.getDestination().equals("")) {
+      if (train.getDestination().isEmpty()) {
         helper.succeed();
       } else {
         helper.fail("Expected empty destination");

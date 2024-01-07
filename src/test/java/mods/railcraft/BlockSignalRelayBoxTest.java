@@ -32,9 +32,9 @@ public class BlockSignalRelayBoxTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.GREEN) &&
             right.getPrimarySignalAspect().equals(SignalAspect.GREEN)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Green on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Green on both Signal Block");
       }
     });
   }
@@ -51,9 +51,9 @@ public class BlockSignalRelayBoxTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.RED) &&
             right.getPrimarySignalAspect().equals(SignalAspect.RED)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Red on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Red on both Signal Block");
       }
     });
   }
@@ -79,9 +79,9 @@ public class BlockSignalRelayBoxTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.GREEN) &&
             right.getPrimarySignalAspect().equals(SignalAspect.GREEN)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Green on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Green on both Signal Block");
       }
     });
   }
@@ -102,9 +102,9 @@ public class BlockSignalRelayBoxTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.RED) &&
             right.getPrimarySignalAspect().equals(SignalAspect.RED)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Red on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Red on both Signal Block");
       }
     });
   }
