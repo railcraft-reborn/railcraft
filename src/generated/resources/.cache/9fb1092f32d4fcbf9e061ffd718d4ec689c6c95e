@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-05T10:19:29.937443	Recipes
+// 1.20.4	2024-01-07T12:47:14.147069	Recipes
 e5eea85f717041af4946ce58e2d6232c3465a0e5 data/minecraft/advancements/recipes/misc/gunpowder.json
 011a9cc786ff54ea803474ac272fce81d4fa3a32 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3ee54895662683658430d64e469613e26f9136f6 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -943,6 +943,7 @@ ff27a3d7662da9d18cc3ce9e5f5592f0eec39152 data/railcraft/recipes/orange_steel_tan
 d82097f330d2f7201e0fd9e4dbc22120ddfc11b8 data/railcraft/recipes/orange_steel_tank_wall.json
 3f03e724ec4f29ecee35c9ed6c83c007fed9a2b5 data/railcraft/recipes/orange_strengthened_glass.json
 a2cced19967d6ac235503d1be0fcd235a19b79b9 data/railcraft/recipes/overalls.json
+3ba84e66bee8e492f7876436d511fe264b09b122 data/railcraft/recipes/patchouli_book_crafting.json
 b922362ed1fd6bce66b27aa8f86d174e47993c70 data/railcraft/recipes/pink_iron_tank_gauge.json
 a19546ded4727fa6c487d7c146a333b5764b822d data/railcraft/recipes/pink_iron_tank_valve.json
 66520a816ef3003d09a128aa4d9f0d208e890b0e data/railcraft/recipes/pink_iron_tank_wall.json

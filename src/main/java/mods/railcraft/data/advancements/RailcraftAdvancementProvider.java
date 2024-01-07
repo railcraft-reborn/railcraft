@@ -13,8 +13,7 @@ public class RailcraftAdvancementProvider extends AdvancementProvider {
       CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
     super(output, registries, existingFileHelper, List.of(
         new RailcraftTrackAdvancements(),
-        new RailcraftCartAdvancements(),
-        new RailcraftAdvancements()
+        new RailcraftCartAdvancements()
     ));
   }
 }

@@ -14,7 +14,7 @@ import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
-import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import net.minecraft.core.HolderLookup;
@@ -40,8 +40,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import vazkii.patchouli.api.PatchouliAPI;
 
-public class RailcraftRecipeProvider extends RecipeProvider {
+public class RailcraftRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
   public RailcraftRecipeProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> lookupProvider) {
@@ -1180,6 +1182,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.SULFUR_DUST.get()),
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(recipeOutput);
+
+    RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
+        .save(recipeOutput
+                .withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");
   }
 
   private void buildCartsVariant(RecipeOutput recipeOutput) {

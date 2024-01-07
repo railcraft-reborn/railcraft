@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-04T21:08:04.005678	Advancements
+// 1.20.4	2024-01-07T12:47:14.151943	Advancements
 eac1d4089e8314bf69d2d665e3e2d52dc4452ea9 data/railcraft/advancements/carts/bed_cart.json
 19f17fad5c05f2baa4a191e57585ebbf8b839d49 data/railcraft/advancements/carts/jukebox_cart.json
 656b332d0bea284faa1dce64127112c679aa800d data/railcraft/advancements/carts/link_carts.json
@@ -6,7 +6,6 @@ fcab100a5395a6ec896f8d1c10bb36f5fcf978ca data/railcraft/advancements/carts/locom
 50f067c792ee69dca663b4720cb1582f479a92eb data/railcraft/advancements/carts/root.json
 51ce389c5a9264a3936ea791c4f4a66ae710b845 data/railcraft/advancements/carts/seasons.json
 06d98dfecde59ef29fa36f11dfecee4b59ef2c32 data/railcraft/advancements/carts/surprise.json
-d8709e458d2571ef587653d3f38dd656a08eb294 data/railcraft/advancements/grant_book_on_first_join.json
 3cba3e42cc139fcc4b73dfb70c2ade4d90a810b5 data/railcraft/advancements/tracks/blast_furnace.json
 70dd98b87f259dc28e3925d4803e33c768fb9c08 data/railcraft/advancements/tracks/coke_oven.json
 96a0d89c09d87e524327913a35de64e819deffdb data/railcraft/advancements/tracks/crusher.json
