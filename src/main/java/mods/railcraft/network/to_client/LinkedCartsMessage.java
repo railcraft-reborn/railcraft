@@ -43,11 +43,11 @@ public record LinkedCartsMessage(
       this(
           extension.entity().getId(),
           extension.train().id(),
-          extension.linkAt(Side.BACK)
+          extension.backLink()
               .map(RollingStock::entity)
               .map(AbstractMinecart::getId)
               .orElse(-1),
-          extension.linkAt(Side.FRONT)
+          extension.frontLink()
               .map(RollingStock::entity)
               .map(AbstractMinecart::getId)
               .orElse(-1));

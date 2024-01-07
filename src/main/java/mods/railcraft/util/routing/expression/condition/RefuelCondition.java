@@ -13,7 +13,7 @@ public class RefuelCondition {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
     var needsRefuel = Boolean.parseBoolean(statement.value());
     return (router, rollingStock) -> rollingStock.train()
-        .entities()
+        .entities(rollingStock.level())
         .filter(NeedsFuel.class::isInstance)
         .map(NeedsFuel.class::cast)
         .anyMatch(x -> x.needsFuel() == needsRefuel);

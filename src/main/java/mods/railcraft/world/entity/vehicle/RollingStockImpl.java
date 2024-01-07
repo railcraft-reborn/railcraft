@@ -21,8 +21,6 @@ import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -30,9 +28,8 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
+public class RollingStockImpl implements RollingStock {
 
   private static final double LINK_DRAG = 0.95;
 
@@ -49,9 +46,6 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private final AbstractMinecart minecart;
 
   private int primaryLinkTimeoutTicks, secondaryLinkTimeoutTicks;
-
-  @Nullable
-  private TrainImpl train;
 
   public RollingStockImpl(AbstractMinecart minecart) {
     this.minecart = minecart;
@@ -72,7 +66,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   private Optional<RollingStock> resolveLink(UUID minecartId) {
-    var level = (ServerLevel) this.minecart.level();
+    var level = (ServerLevel) this.level();
     var entity = level.getEntity(minecartId);
     if (entity == null)
       return Optional.empty();
@@ -142,7 +136,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
   @Override
   public void completeLink(RollingStock rollingStock, Side side) {
-    this.getDataAttachment().setLink(side, rollingStock);
+    this.setLink(side, rollingStock);
     this.setAutoLinkEnabled(side, false);
     if (this.minecart instanceof Linkable handler) {
       handler.linked(rollingStock);
@@ -152,7 +146,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   @Override
   public void removeLink(Side side) {
     this.linkAt(side).ifPresent(linked -> {
-      this.getDataAttachment().setLink(side, null);
+      this.setLink(side, null);
       if (this.minecart instanceof Linkable handler) {
         handler.unlinked(linked);
       }
@@ -178,6 +172,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     return this.getDataAttachment().getLink(side);
   }
 
+  private void setLink(Side side, @Nullable RollingStock rollingStock) {
+    this.getDataAttachment().setLink(side, rollingStock);
+  }
+
   @Override
   public boolean swapLinks(Side side) {
     var next = this.getLink(side);
@@ -191,8 +189,8 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     var oldFront = this.getLink(Side.FRONT);
-    this.getDataAttachment().setLink(Side.FRONT, this.getLink(Side.BACK));
-    this.getDataAttachment().setLink(Side.BACK, oldFront);
+    this.setLink(Side.FRONT, this.getLink(Side.BACK));
+    this.setLink(Side.BACK, oldFront);
     return true;
   }
 
@@ -263,7 +261,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   @Override
   public void checkHighSpeed(BlockPos blockPos) {
     var currentMotion = this.minecart.getDeltaMovement();
-    if (this.getDataAttachment().isHighSpeed()) {
+    if (this.isHighSpeed()) {
       HighSpeedTrackUtil.checkSafetyAndExplode(this.level(), blockPos, this.minecart);
       return;
     }
@@ -276,13 +274,13 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     if (Math.abs(currentMotion.x()) > HIGH_SPEED_THRESHOLD) {
       double motionX = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.x());
       this.minecart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
-      this.getDataAttachment().setHighSpeed(true);
+      this.setHighSpeed(true);
     }
 
     if (Math.abs(currentMotion.z()) > HIGH_SPEED_THRESHOLD) {
       double motionZ = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.z());
       this.minecart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
-      this.getDataAttachment().setHighSpeed(true);
+      this.setHighSpeed(true);
     }
   }
 
@@ -293,26 +291,13 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     this.minecart.setDeltaMovement(motionX, motion.y(), motionZ);
   }
 
+  private void setHighSpeed(boolean highSpeed) {
+    this.getDataAttachment().setHighSpeed(highSpeed);
+  }
+
   @Override
   public AbstractMinecart entity() {
     return this.minecart;
-  }
-
-  @Override
-  public CompoundTag serializeNBT() {
-    var tag = new CompoundTag();
-
-    if (this.train != null) {
-      tag.put("train", this.train.toTag());
-    }
-    return tag;
-  }
-
-  @Override
-  public void deserializeNBT(CompoundTag tag) {
-    this.train = tag.contains("train", Tag.TAG_COMPOUND)
-        ? TrainImpl.fromTag(tag.getCompound("train"), this)
-        : null;
   }
 
   @Override
@@ -321,20 +306,14 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   private boolean validateTrainOwnership() {
-    var front = this.isFront();
-    if (!front && this.train != null) {
-      this.train = null;
-    }
-    if (front && this.train == null) {
-      this.train = TrainImpl.create(this);
-    }
-    return front;
+    return this.getDataAttachment()
+        .validateTrainOwnership(this::resolveLink, this.minecart.getUUID());
   }
 
   @Override
   @Nullable
   public Train train() {
-    return this.validateTrainOwnership() ? this.train : this.getLink(Side.FRONT).train();
+    return this.getDataAttachment().train(this::resolveLink, this.minecart.getUUID());
   }
 
   @Override
@@ -343,7 +322,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       this.forceChunk(false);
       this.unlinkAll();
     } else {
-      this.forceChunk(this.train().size() > 1);
+      this.forceChunk(this.train().size(this.level()) > 1);
     }
   }
 
@@ -380,9 +359,9 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       MinecartUtil.explodeCart(this.entity());
     }
 
-    if (this.getDataAttachment().isHighSpeed()) {
+    if (this.isHighSpeed()) {
       if (MinecartUtil.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
-        this.getDataAttachment().setHighSpeed(false);
+        this.setHighSpeed(false);
       } else if (this.getDataAttachment().checkLaunchState(LaunchState.LANDED)) {
         HighSpeedTrackUtil
             .checkSafetyAndExplode(this.level(), this.minecart.blockPosition(), this.entity());
@@ -442,7 +421,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     // Speed & End Drag
     if (this.validateTrainOwnership()) {
-      this.train.refreshMaxSpeed();
+      this.getDataAttachment().trainRefreshMaxSpeed(this.level());
       // if (linked && !(cart instanceof EntityLocomotive)) {
       // double drag = 0.97;
       // cart.motionX *= drag;

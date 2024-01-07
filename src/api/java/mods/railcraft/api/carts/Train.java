@@ -1,7 +1,6 @@
 package mods.railcraft.api.carts;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,42 +10,46 @@ import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 
 /**
  * @author Sm0keySa1m0n
  */
-public interface Train extends Iterable<RollingStock> {
+public interface Train {
 
   UUID id();
 
-  RollingStock front();
+  UUID idMinecartFront();
+
+  default RollingStock front(Level level) {
+    var entity = level.getEntities().get(idMinecartFront());
+    if (entity instanceof AbstractMinecart minecart) {
+      return RollingStock.getOrThrow(minecart);
+    }
+    throw new IllegalStateException();
+  }
 
   void copyTo(Train train);
 
-  default Stream<RollingStock> stream() {
-    return this.front().traverseTrainWithSelf(Side.BACK);
+  default Stream<RollingStock> stream(Level level) {
+    return this.front(level).traverseTrainWithSelf(Side.BACK);
   }
 
-  default Stream<? extends AbstractMinecart> entities() {
-    return this.stream().map(RollingStock::entity);
+  default Stream<? extends AbstractMinecart> entities(Level level) {
+    return this.stream(level).map(RollingStock::entity);
   }
 
-  default Stream<Entity> passengers() {
-    return this.entities()
+  default Stream<Entity> passengers(Level level) {
+    return this.entities(level)
         .flatMap(minecart -> minecart.getPassengers().stream());
   }
 
-  @Override
-  default Iterator<RollingStock> iterator() {
-    return this.stream().iterator();
-  }
+  int getNumRunningLocomotives(Level level);
 
-  int getNumRunningLocomotives();
-
-  default int size() {
-    return (int) this.stream().count();
+  default int size(Level level) {
+    return (int) this.stream(level).count();
   }
 
   State state();
@@ -69,9 +72,9 @@ public interface Train extends Iterable<RollingStock> {
     return this.state() == State.IDLE || this.isLocked();
   }
 
-  Optional<IItemHandler> itemHandler();
+  Optional<IItemHandler> itemHandler(Level level);
 
-  Optional<IFluidHandler> fluidHandler();
+  Optional<IFluidHandler> fluidHandler(Level level);
 
   enum State implements StringRepresentable {
 

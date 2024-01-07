@@ -10,12 +10,7 @@ import mods.railcraft.api.carts.RollingStock;
 import net.neoforged.bus.api.Event;
 
 /**
- * These events are fired on {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}.
- *
- * <p>
- * In order to cancel linking, call
- * {@link mods.railcraft.api.carts.LinkageManager#breakLink(AbstractMinecartEntity, AbstractMinecartEntity)}
- * </p>
+ * These events are fired on {@link net.neoforged.neoforge.common.NeoForge#EVENT_BUS}.
  */
 public class CartLinkEvent extends Event {
 

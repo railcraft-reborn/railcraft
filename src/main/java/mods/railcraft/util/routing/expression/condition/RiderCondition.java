@@ -29,7 +29,11 @@ public class RiderCondition {
     checkSyntax(type, tokens, line);
 
     var context = new Context(statement, tokens);
-    return (router, rollingStock) -> type.matches(rollingStock.train().passengers(), context);
+
+    return (router, rollingStock) -> {
+      var level = rollingStock.entity().level();
+      return type.matches(rollingStock.train().passengers(level), context);
+    };
   }
 
   private static void checkRegexSyntax(Type type, String[] tokens, String line)

@@ -118,9 +118,10 @@ public class CrowbarHandler {
       }
       var extension = RollingStock.getOrThrow(cart);
       var train = extension.train();
+      var level = player.level();
       var smackVelocity = (SMACK_VELOCITY * (float) Math.pow(1.7, lvl))
-          / (float) Math.pow(train.size(), 1D / (1 + lvl));
-      train.entities().forEach(
+          / (float) Math.pow(train.size(level), 1D / (1 + lvl));
+      train.entities(level).forEach(
           each -> MinecartUtil.smackCart(cart, each, player, smackVelocity));
     }
     crowbar.onBoost(player, hand, stack, cart);

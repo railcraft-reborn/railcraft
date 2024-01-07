@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
@@ -14,6 +13,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -23,25 +23,31 @@ import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 /**
  * @author Sm0keySa1m0n
  */
-final class TrainImpl implements Train {
+public final class TrainImpl implements Train {
 
-  private final UUID id;
-  private final RollingStockImpl front;
+
+  private final UUID trainUUID;
+  private final UUID minecartFrontUUID;
   private final Set<UUID> locks = new HashSet<>();
   private State state = State.NORMAL;
 
-  static TrainImpl create(RollingStockImpl owner) {
-    return new TrainImpl(UUID.randomUUID(), owner);
+  public static TrainImpl create(UUID idMinecartFront) {
+    return new TrainImpl(UUID.randomUUID(), idMinecartFront);
   }
 
-  private TrainImpl(UUID id, RollingStockImpl front) {
-    this.id = id;
-    this.front = front;
+  private TrainImpl(UUID trainUUID, UUID minecartFrontUUID) {
+    this.trainUUID = trainUUID;
+    this.minecartFrontUUID = minecartFrontUUID;
   }
 
   @Override
   public UUID id() {
-    return this.id;
+    return this.trainUUID;
+  }
+
+  @Override
+  public UUID idMinecartFront() {
+    return this.minecartFrontUUID;
   }
 
   @Override
@@ -57,27 +63,22 @@ final class TrainImpl implements Train {
   }
 
   @Override
-  public RollingStock front() {
-    return this.front;
-  }
-
-  @Override
   public void copyTo(Train train) {
     this.locks.forEach(train::addLock);
     train.setStateIfHigherPriority(this.state);
   }
 
   @Override
-  public int getNumRunningLocomotives() {
-    return (int) this.entities()
+  public int getNumRunningLocomotives(Level level) {
+    return (int) this.entities(level)
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(Locomotive::isRunning)
         .count();
   }
 
   @Override
-  public Optional<IItemHandler> itemHandler() {
-    var cartHandlers = this.entities()
+  public Optional<IItemHandler> itemHandler(Level level) {
+    var cartHandlers = this.entities(level)
         .flatMap(cart ->
             Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY)).stream())
         .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
@@ -88,8 +89,8 @@ final class TrainImpl implements Train {
   }
 
   @Override
-  public Optional<IFluidHandler> fluidHandler() {
-    var cartHandlers = this.entities()
+  public Optional<IFluidHandler> fluidHandler(Level level) {
+    var cartHandlers = this.entities(level)
         .flatMap(cart -> Optional.ofNullable(
             cart.getCapability(Capabilities.FluidHandler.ENTITY, null)).stream())
         .toList();
@@ -98,13 +99,13 @@ final class TrainImpl implements Train {
         : Optional.of(new CompositeFluidHandler(cartHandlers));
   }
 
-  public void refreshMaxSpeed() {
-    setMaxSpeed(calculateMaxSpeed());
+  public void refreshMaxSpeed(Level level) {
+    setMaxSpeed(level, calculateMaxSpeed(level));
   }
 
-  private float calculateMaxSpeed() {
-    double locoBoost = Math.max(0.0, this.getNumRunningLocomotives() - 1.0) * 0.075;
-    return (float) this.entities()
+  private float calculateMaxSpeed(Level level) {
+    double locoBoost = Math.max(0.0, this.getNumRunningLocomotives(level) - 1.0) * 0.075;
+    return (float) this.entities(level)
         .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), this.softMaxSpeed(c) + locoBoost))
         .min()
         .orElse(1.2F);
@@ -116,8 +117,8 @@ final class TrainImpl implements Train {
         : cart.getMaxCartSpeedOnRail();
   }
 
-  private void setMaxSpeed(float trainSpeed) {
-    this.entities().forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
+  private void setMaxSpeed(Level level, float trainSpeed) {
+    this.entities(level).forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
   }
 
   @Override
@@ -143,22 +144,23 @@ final class TrainImpl implements Train {
     if (!(obj instanceof TrainImpl other)) {
       return false;
     }
-    return id.equals(other.id);
+    return trainUUID.equals(other.trainUUID);
   }
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return trainUUID.hashCode();
   }
 
   @Override
   public String toString() {
-    return String.format("Train{id=%s,n=%d}", this.id, this.size());
+    return String.format("Train{id=%s}", this.trainUUID);
   }
 
-  static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
-    var id = tag.getUUID("id");
-    var train = new TrainImpl(id, minecart);
+  public static TrainImpl fromTag(CompoundTag tag) {
+    var trainUUID = tag.getUUID("trainUUID");
+    var idMinecartFront = tag.getUUID("idMinecartFront");
+    var train = new TrainImpl(trainUUID, idMinecartFront);
     State.getByName(tag.getString("state")).ifPresent(train::setState);
     tag.getList("locks", Tag.TAG_INT_ARRAY).stream()
         .map(NbtUtils::loadUUID)
@@ -166,9 +168,10 @@ final class TrainImpl implements Train {
     return train;
   }
 
-  CompoundTag toTag() {
+  public CompoundTag toTag() {
     var tag = new CompoundTag();
-    tag.putUUID("id", this.id);
+    tag.putUUID("trainUUID", this.trainUUID);
+    tag.putUUID("idMinecartFront", this.minecartFrontUUID);
     tag.putString("state", this.state.getSerializedName());
     var locksTag = new ListTag();
     for (var uuid : this.locks) {

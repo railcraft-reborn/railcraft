@@ -47,15 +47,15 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     AUTO_COUPLER("auto_coupler", 0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        RollingStock.getOrThrow(cart).setAutoLinkEnabled(
-            CouplerTrackBlock.isPowered(track.getBlockState()));
+        RollingStock.getOrThrow(cart)
+            .setAutoLinkEnabled(CouplerTrackBlock.isPowered(track.getBlockState()));
       }
     };
 
     private final String name;
     private final int powerPropagation;
 
-    private Mode(String name, int powerPropagation) {
+    Mode(String name, int powerPropagation) {
       this.name = name;
       this.powerPropagation = powerPropagation;
     }

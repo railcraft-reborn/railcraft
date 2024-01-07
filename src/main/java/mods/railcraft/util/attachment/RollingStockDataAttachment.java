@@ -6,11 +6,18 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
+import mods.railcraft.api.carts.Train;
 import mods.railcraft.world.entity.vehicle.LaunchState;
+import mods.railcraft.world.entity.vehicle.TrainImpl;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class RollingStockDataAttachment implements INBTSerializable<CompoundTag> {
+
+  @Nullable
+  private TrainImpl train;
 
   @Nullable
   private RollingStock frontLink;
@@ -52,10 +59,10 @@ public class RollingStockDataAttachment implements INBTSerializable<CompoundTag>
     return Optional.ofNullable(getLink(side));
   }
 
-  public void setLink(Side side, @Nullable RollingStock minecart) {
+  public void setLink(Side side, @Nullable RollingStock rollingStock) {
     switch (side) {
-      case FRONT -> this.frontLink = minecart;
-      case BACK -> this.backLink = minecart;
+      case FRONT -> this.frontLink = rollingStock;
+      case BACK -> this.backLink = rollingStock;
     }
   }
 
@@ -186,9 +193,36 @@ public class RollingStockDataAttachment implements INBTSerializable<CompoundTag>
     }
   }
 
+  public boolean validateTrainOwnership(Function<UUID, Optional<RollingStock>> resolveLink,
+      UUID idMinecartFront) {
+    var front = this.isFront(resolveLink);
+    if (!front && this.train != null) {
+      this.train = null;
+    }
+    if (front && this.train == null) {
+      this.train = TrainImpl.create(idMinecartFront);
+    }
+    return front;
+  }
+
+  public Train train(Function<UUID, Optional<RollingStock>> resolveLink, UUID idMinecartFront) {
+    return this.validateTrainOwnership(resolveLink, idMinecartFront)
+        ? this.train
+        : this.getLink(Side.FRONT).train();
+  }
+
+  public void trainRefreshMaxSpeed(Level level) {
+    this.train.refreshMaxSpeed(level);
+  }
+
   @Override
   public CompoundTag serializeNBT() {
     var tag = new CompoundTag();
+
+    if (this.train != null) {
+      tag.put("train", this.train.toTag());
+    }
+
     if (this.unresolvedBackLink != null) {
       tag.putUUID("backLink", this.unresolvedBackLink);
     } else if (this.backLink != null) {
@@ -215,6 +249,10 @@ public class RollingStockDataAttachment implements INBTSerializable<CompoundTag>
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
+    this.train = tag.contains("train", Tag.TAG_COMPOUND)
+        ? TrainImpl.fromTag(tag.getCompound("train"))
+        : null;
+
     this.unresolvedBackLink = tag.hasUUID("backLink")
         ? tag.getUUID("backLink")
         : null;

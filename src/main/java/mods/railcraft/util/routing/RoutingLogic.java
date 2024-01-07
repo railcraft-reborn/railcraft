@@ -37,7 +37,8 @@ public record RoutingLogic(Deque<Expression> expressions) {
 
   private static RollingStock getRoutableCart(RollingStock rollingStock) {
     var train = rollingStock.train();
-    if (train.size() <= 1) {
+    var level = rollingStock.level();
+    if (train.size(level) <= 1) {
       return rollingStock;
     }
     if (rollingStock.isEnd()) {
@@ -51,7 +52,7 @@ public record RoutingLogic(Deque<Expression> expressions) {
         return rollingStock;
       }
     }
-    return train.front();
+    return train.front(level);
   }
 
   public boolean matches(RouterBlockEntity router, RollingStock rollingStock) {

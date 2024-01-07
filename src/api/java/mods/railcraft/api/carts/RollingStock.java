@@ -116,16 +116,10 @@ public interface RollingStock {
    */
   Optional<RollingStock> linkAt(Side side);
 
-  /**
-   * Shorthand for {@link #linkAt(Side.FRONT)}
-   */
   default Optional<RollingStock> frontLink() {
     return this.linkAt(Side.FRONT);
   }
 
-  /**
-   * Shorthand for {@link #linkAt(Side.BACK)}
-   */
   default Optional<RollingStock> backLink() {
     return this.linkAt(Side.BACK);
   }

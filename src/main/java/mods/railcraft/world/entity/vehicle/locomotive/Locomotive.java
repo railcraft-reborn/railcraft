@@ -643,7 +643,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
       var extension = RollingStock.getOrThrow(this);
 
-      if (extension.train().entities().noneMatch(t -> t.hasPassenger(entity))
+      if (extension.train().entities(this.level()).noneMatch(t -> t.hasPassenger(entity))
           && (this.isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
@@ -773,7 +773,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
-    var locos = RollingStock.getOrThrow(this).train().entities()
+    var locos = RollingStock.getOrThrow(this).train().entities(this.level())
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {
