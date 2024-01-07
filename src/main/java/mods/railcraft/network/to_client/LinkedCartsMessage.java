@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.network.RailcraftCustomPacketPayload;

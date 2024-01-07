@@ -32,7 +32,6 @@ import net.neoforged.neoforge.common.NeoForge;
 public class RollingStockImpl implements RollingStock {
 
   private static final double LINK_DRAG = 0.95;
-
   private static final float MAX_DISTANCE = 8F;
   private static final float STIFFNESS = 0.7F;
   private static final float HS_STIFFNESS = 0.7F;

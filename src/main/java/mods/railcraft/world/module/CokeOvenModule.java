@@ -1,8 +1,8 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
-import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;

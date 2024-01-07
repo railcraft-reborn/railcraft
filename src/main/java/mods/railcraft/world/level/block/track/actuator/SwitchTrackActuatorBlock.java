@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track.actuator;
 
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
