@@ -26,20 +26,30 @@ jobs:
           distribution: 'adopt'
           java-version: 17
 
-      - name: Setup Gradle
+      - name: Build
         uses: gradle/gradle-build-action@v2.11.1
         with:
           gradle-version: wrapper
           cache-read-only: false
-
-      - name: Compile
-        run: ./gradlew build --max-workers 1
+          arguments: build
 
       - name: Test
-        run: ./gradlew runGameTestServer --max-workers 1
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: runGameTestServer
 
       - name: Make Changelog
-        run: ./gradlew makeChangelog --max-workers 1
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: makeChangelog
 
-      - name: Publish
-        run: ./gradlew publishMods --max-workers 1
+      - name: Make Changelog
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: publishMods
