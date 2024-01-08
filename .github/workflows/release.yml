@@ -47,7 +47,7 @@ jobs:
           cache-read-only: false
           arguments: makeChangelog
 
-      - name: Make Changelog
+      - name: Publish
         uses: gradle/gradle-build-action@v2.11.1
         with:
           gradle-version: wrapper
