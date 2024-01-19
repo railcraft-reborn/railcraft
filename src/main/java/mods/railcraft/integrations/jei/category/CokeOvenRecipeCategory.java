@@ -5,6 +5,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -92,9 +93,8 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
         .addSlot(RecipeIngredientRole.OUTPUT, 46, 20)
         .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     // Not the actual capacity, but is 10000 for a better visibility
-    // TODO: FIXMEEEEE
-    /*builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
-        .addIngredient(ForgeTypes.FLUID_STACK, recipe.getCreosote())
-        .setFluidRenderer(10_000, true, 48, 47);*/
+    builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
+        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.getCreosote())
+        .setFluidRenderer(10_000, true, 48, 47);
   }
 }

@@ -104,9 +104,9 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly "mezz.jei:jei-1.20.2-common-api:$jei_version"
-    compileOnly "mezz.jei:jei-1.20.2-forge-api:$jei_version"
-    //runtimeOnly "mezz.jei:jei-$minecraft_version-forge:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
+    runtimeOnly "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     //runtimeOnly "vazkii.patchouli:Patchouli:$patchouli_version"
