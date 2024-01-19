@@ -57,7 +57,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -75,6 +74,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -87,6 +87,7 @@ public class ClientManager {
   private static ShuntingAuraRenderer shuntingAuraRenderer;
 
   public static void init(IEventBus modEventBus) {
+    modEventBus.addListener(ClientManager::handleRegisterMenuScreens);
     modEventBus.addListener(ClientManager::handleClientSetup);
     modEventBus.addListener(ClientManager::handleItemColors);
     modEventBus.addListener(ClientManager::handleBlockColors);
@@ -109,44 +110,41 @@ public class ClientManager {
   // Mod Events
   // ================================================================================
 
-  private static void handleClientSetup(FMLClientSetupEvent event) {
-    // === Menu Screens ===
-    MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
+  private static void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
+    event.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
         SolidFueledSteamBoilerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
+    event.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
         FluidFueledSteamBoilerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
-        WaterTankSidingScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
-        CreativeLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
-        ElectricLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
+    event.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
+    event.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
+    event.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(), WaterTankSidingScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
+    event.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
+    event.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
+    event.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), CreativeLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(), ElectricLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
+    event.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
         PoweredRollingMachineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(), CokeOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(), CrusherScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_OVEN.get(), SteamOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), ItemManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), FluidManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
-        SwitchTrackRouterScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+    event.register(RailcraftMenuTypes.COKE_OVEN.get(), CokeOvenScreen::new);
+    event.register(RailcraftMenuTypes.CRUSHER.get(), CrusherScreen::new);
+    event.register(RailcraftMenuTypes.STEAM_OVEN.get(), SteamOvenScreen::new);
+    event.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), ItemManipulatorScreen::new);
+    event.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), FluidManipulatorScreen::new);
+    event.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
+    event.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
+    event.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
+    event.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), SwitchTrackRouterScreen::new);
+    event.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
+    event.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
+    event.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+  }
 
+  private static void handleClientSetup(FMLClientSetupEvent event) {
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();
     }
