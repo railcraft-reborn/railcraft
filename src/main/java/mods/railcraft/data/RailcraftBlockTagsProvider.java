@@ -185,20 +185,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
-        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
-            RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
-            RailcraftBlocks.SWITCH_TRACK_ROUTER.get(),
-            RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
-            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
-            RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
-            RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-            RailcraftBlocks.BLOCK_SIGNAL.get(),
-            RailcraftBlocks.DISTANT_SIGNAL.get(),
-            RailcraftBlocks.TOKEN_SIGNAL.get(),
+        .add(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.ELEVATOR_TRACK.get())
         .addTag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .addTag(RailcraftTags.Blocks.ASPECT_RECEIVER)
+        .addTag(RailcraftTags.Blocks.SIGNAL)
+        .addTag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .addTag(BlockTags.RAILS);
 
     this.tag(BlockTags.ANVIL)

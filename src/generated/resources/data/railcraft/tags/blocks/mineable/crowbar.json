@@ -1,19 +1,11 @@
 {
   "values": [
-    "railcraft:switch_track_lever",
-    "railcraft:switch_track_motor",
-    "railcraft:switch_track_router",
     "railcraft:analog_signal_controller_box",
-    "railcraft:signal_block_relay_box",
-    "railcraft:dual_block_signal",
-    "railcraft:dual_distant_signal",
-    "railcraft:dual_token_signal",
-    "railcraft:block_signal",
-    "railcraft:distant_signal",
-    "railcraft:token_signal",
     "railcraft:elevator_track",
     "#railcraft:aspect_emitter",
     "#railcraft:aspect_receiver",
+    "#railcraft:signal",
+    "#railcraft:switch_track_actuator",
     "#minecraft:rails"
   ]
 }
