@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.model.EntityModel;
@@ -27,10 +27,10 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
       EntityModel<? super Locomotive> model,
       EntityModel<? super Locomotive> snowLayer) {
     this(context, modelTag, model, snowLayer, new ResourceLocation[] {
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/primary.png"),
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/secondary.png"),
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/nocolor.png"),
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/snow.png")
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/primary.png"),
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/secondary.png"),
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/nocolor.png"),
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/snow.png")
     });
   }
 

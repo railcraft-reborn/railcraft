@@ -8,7 +8,6 @@ import org.joml.Vector2d;
 import org.slf4j.Logger;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
@@ -35,7 +34,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
-  public static final ResourceLocation KEY = Railcraft.rl("rolling_stock");
+  public static final ResourceLocation KEY = RailcraftConstants.rl("rolling_stock");
 
   private static final double LINK_DRAG = 0.95;
 

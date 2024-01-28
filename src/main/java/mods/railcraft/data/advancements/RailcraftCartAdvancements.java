@@ -1,13 +1,13 @@
 package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.BedCartSleepTrigger;
 import mods.railcraft.advancements.CartLinkingTrigger;
 import mods.railcraft.advancements.JukeboxCartPlayMusicTrigger;
 import mods.railcraft.advancements.SetSeasonTrigger;
 import mods.railcraft.advancements.SurpriseTrigger;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
@@ -34,7 +34,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, Railcraft.rl("carts/root"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/root"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -46,7 +46,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.Instance.hasLinked())
         .parent(root)
-        .save(consumer, Railcraft.rl("carts/link_carts"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/link_carts"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -58,7 +58,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.Instance.onSeasonSet())
         .parent(root)
-        .save(consumer, Railcraft.rl("carts/seasons"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/seasons"), fileHelper);
 
     Advancement rcLocomotive = Advancement.Builder.advancement()
         .display(
@@ -71,7 +71,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(root)
-        .save(consumer, Railcraft.rl("carts/locomotive"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/locomotive"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -83,7 +83,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.Instance.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, Railcraft.rl("carts/bed_cart"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/bed_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -95,7 +95,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.Instance.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, Railcraft.rl("carts/jukebox_cart"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/jukebox_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -107,6 +107,6 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.Instance.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, Railcraft.rl("carts/surprise"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/surprise"), fileHelper);
   }
 }

@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +67,7 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
-    var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
+    var customResourceLocation = RailcraftConstants.rl("crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.processTime));

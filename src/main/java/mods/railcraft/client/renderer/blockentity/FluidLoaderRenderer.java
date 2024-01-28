@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.RenderUtil;
@@ -18,9 +18,9 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
   public static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
-      Railcraft.rl("entity/fluid_loader/pipe_side");
+      RailcraftConstants.rl("entity/fluid_loader/pipe_side");
   public static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
-      Railcraft.rl("entity/fluid_loader/pipe_end");
+      RailcraftConstants.rl("entity/fluid_loader/pipe_end");
   public static final CuboidModel pipeModel = new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
       1 - PIPE_OFFSET, RenderUtil.PIXEL, 1 - PIPE_OFFSET);
 

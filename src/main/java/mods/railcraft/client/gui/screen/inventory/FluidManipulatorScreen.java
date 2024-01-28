@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/fluid_manipulator.png");
+      RailcraftConstants.rl("textures/gui/container/fluid_manipulator.png");
 
   public FluidManipulatorScreen(FluidManipulatorMenu menu, Inventory inventory,
       Component title) {

@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.providers;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.data.recipes.patterns.RollingRecipePattern;
 import mods.railcraft.tags.RailcraftTags;
@@ -68,15 +68,15 @@ public class RollingRecipeProvider extends RecipeProvider {
         .pattern("aa ")
         .pattern("a  ")
         .define('a', RailcraftTags.Items.BRONZE_NUGGET)
-        .save(consumer, Railcraft.rl(name + "_bronze_nugget"));
+        .save(consumer, RailcraftConstants.rl(name + "_bronze_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("aa")
         .define('a', Tags.Items.NUGGETS_IRON)
-        .save(consumer, Railcraft.rl(name + "_iron_nugget"));
+        .save(consumer, RailcraftConstants.rl(name + "_iron_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("a")
         .define('a', RailcraftTags.Items.STEEL_NUGGET)
-        .save(consumer, Railcraft.rl(name + "_steel_nugget"));
+        .save(consumer, RailcraftConstants.rl(name + "_steel_nugget"));
   }
 
   private static void buildRebars(Consumer<FinishedRecipe> consumer) {

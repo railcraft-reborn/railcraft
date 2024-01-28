@@ -2,8 +2,8 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import java.util.Optional;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRouterMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      Railcraft.rl("textures/gui/container/routing.png");
+      RailcraftConstants.rl("textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = 20;

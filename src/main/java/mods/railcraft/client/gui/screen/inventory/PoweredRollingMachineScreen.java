@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class PoweredRollingMachineScreen extends RailcraftMenuScreen<PoweredRollingMachineMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      Railcraft.rl("textures/gui/container/powered_rolling_machine.png");
+      RailcraftConstants.rl("textures/gui/container/powered_rolling_machine.png");
 
   public PoweredRollingMachineScreen(PoweredRollingMachineMenu menu, Inventory inventory,
       Component title) {

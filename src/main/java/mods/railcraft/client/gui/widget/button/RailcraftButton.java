@@ -3,7 +3,7 @@ package mods.railcraft.client.gui.widget.button;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 public class RailcraftButton extends Button {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      Railcraft.rl("textures/gui/widgets.png");
+      RailcraftConstants.rl("textures/gui/widgets.png");
 
   private TexturePosition texturePosition;
 

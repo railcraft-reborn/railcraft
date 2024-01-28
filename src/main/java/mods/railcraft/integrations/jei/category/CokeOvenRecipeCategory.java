@@ -10,8 +10,8 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
@@ -27,7 +27,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   private static final int HEIGHT = 49;
 
   private static final ResourceLocation COKE_OVEN_BACKGROUND =
-      Railcraft.rl("textures/gui/container/coke_oven.png");
+      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
 
   private final IDrawable background, icon, flame, arrow;
 

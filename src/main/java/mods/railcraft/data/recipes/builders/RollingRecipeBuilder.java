@@ -9,7 +9,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -92,7 +92,7 @@ public class RollingRecipeBuilder {
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("rolling/" + path);
+    var customResourceLocation = RailcraftConstants.rl("rolling/" + path);
     finishedRecipe.accept(
         new Result(customResourceLocation, this.result, this.count,
             this.processTime, this.rows, this.key));

@@ -9,8 +9,8 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
@@ -26,7 +26,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation CRUSHER_BACKGROUND =
-      Railcraft.rl("textures/gui/container/crusher.png");
+      RailcraftConstants.rl("textures/gui/container/crusher.png");
 
   private final IDrawable background, icon, arrow;
 

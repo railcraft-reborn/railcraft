@@ -3,7 +3,7 @@ package mods.railcraft.advancements;
 import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -17,7 +17,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class JukeboxCartPlayMusicTrigger
     extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("jukebox_cart_play_music");
+  private static final ResourceLocation ID = RailcraftConstants.rl("jukebox_cart_play_music");
 
   @Override
   public ResourceLocation getId() {

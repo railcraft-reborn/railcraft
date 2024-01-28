@@ -2,7 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.function.Consumer;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -43,9 +43,9 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("coke_oven/" + path);
+    var customResourceLocation = RailcraftConstants.rl("coke_oven/" + path);
 
-    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = RailcraftConstants.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.network.chat.Component;
@@ -11,7 +11,7 @@ public class CreativeLocomotiveScreen
     extends LocomotiveScreen<LocomotiveMenu<CreativeLocomotive>> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/creative_locomotive.png");
+      RailcraftConstants.rl("textures/gui/container/creative_locomotive.png");
 
   public CreativeLocomotiveScreen(LocomotiveMenu<CreativeLocomotive> menu,
       Inventory inventory, Component title) {

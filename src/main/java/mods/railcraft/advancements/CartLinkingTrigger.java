@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("cart_linking");
+  private static final ResourceLocation ID = RailcraftConstants.rl("cart_linking");
 
   @Override
   public ResourceLocation getId() {

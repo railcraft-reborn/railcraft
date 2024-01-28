@@ -1,11 +1,11 @@
 package mods.railcraft.data.advancements;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.MultiBlockFormedTrigger;
 import mods.railcraft.advancements.SpikeMaulUseTrigger;
 import mods.railcraft.advancements.UseTrackKitTrigger;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
@@ -33,7 +33,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer, Railcraft.rl("tracks/root"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/root"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -46,7 +46,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
-        .save(consumer, Railcraft.rl("tracks/firestone"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/firestone"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -59,7 +59,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(root)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
-        .save(consumer, Railcraft.rl("tracks/blast_furnace"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/blast_furnace"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -72,7 +72,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(root)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger.Instance
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
-        .save(consumer, Railcraft.rl("tracks/coke_oven"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/coke_oven"), fileHelper);
 
     var rollingTable = Advancement.Builder.advancement()
         .display(
@@ -86,7 +86,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
-        .save(consumer, Railcraft.rl("tracks/manual_rolling_machine"),
+        .save(consumer, RailcraftConstants.rl("tracks/manual_rolling_machine"),
             fileHelper);
 
     Advancement.Builder.advancement()
@@ -100,7 +100,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
-        .save(consumer, Railcraft.rl("tracks/crusher"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/crusher"), fileHelper);
 
     var basicTrack = Advancement.Builder.advancement()
         .display(
@@ -112,7 +112,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
-        .save(consumer, Railcraft.rl("tracks/regular_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/regular_track"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -124,7 +124,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             true, true, false)
         .parent(basicTrack)
         .addCriterion("has_used_track_kit", UseTrackKitTrigger.Instance.hasUsedTrackKit())
-        .save(consumer, Railcraft.rl("tracks/track_kit"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/track_kit"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -136,7 +136,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             true, false, false)
         .parent(basicTrack)
         .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.Instance.hasUsedSpikeMaul())
-        .save(consumer, Railcraft.rl("tracks/junctions"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/junctions"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -149,7 +149,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
-        .save(consumer, Railcraft.rl("tracks/high_speed_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/high_speed_track"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -162,6 +162,6 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
-        .save(consumer, Railcraft.rl("tracks/wooden_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/wooden_track"), fileHelper);
   }
 }

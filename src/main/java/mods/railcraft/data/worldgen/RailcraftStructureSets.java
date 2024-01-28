@@ -1,6 +1,6 @@
 package mods.railcraft.data.worldgen;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 public class RailcraftStructureSets {
 
   private static final ResourceKey<StructureSet> GEODE = ResourceKey
-      .create(Registries.STRUCTURE_SET, Railcraft.rl("geode"));
+      .create(Registries.STRUCTURE_SET, RailcraftConstants.rl("geode"));
 
   public static void bootstrap(BootstapContext<StructureSet> context) {
     var holdergetter = context.lookup(Registries.STRUCTURE);

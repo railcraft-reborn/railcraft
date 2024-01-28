@@ -2,7 +2,7 @@ package mods.railcraft.client.model;
 
 import java.util.Set;
 import com.google.common.collect.Sets;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
 public class RailcraftModelLayers {
@@ -37,7 +37,7 @@ public class RailcraftModelLayers {
   }
 
   private static ModelLayerLocation register(String model, String layer) {
-    var layerLocation = new ModelLayerLocation(Railcraft.rl(model), layer);
+    var layerLocation = new ModelLayerLocation(RailcraftConstants.rl(model), layer);
     if (!allModels.add(layerLocation)) {
       throw new IllegalStateException("Duplicate registration for " + layerLocation);
     } else {

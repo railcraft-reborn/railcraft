@@ -64,7 +64,6 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -109,10 +108,6 @@ public class Railcraft {
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
     }
-  }
-
-  public static ResourceLocation rl(String path) {
-    return new ResourceLocation(RailcraftConstants.ID, path);
   }
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
@@ -238,7 +233,7 @@ public class Railcraft {
   public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
     var stack = event.getObject();
     if (stack.is(Items.GLASS_BOTTLE)) {
-      event.addCapability(Railcraft.rl("bottle_container"), new FluidBottleWrapper(stack));
+      event.addCapability(RailcraftConstants.rl("bottle_container"), new FluidBottleWrapper(stack));
     }
   }
 

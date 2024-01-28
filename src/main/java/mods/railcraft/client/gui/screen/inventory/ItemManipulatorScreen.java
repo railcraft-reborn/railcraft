@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/item_manipulator.png");
+      RailcraftConstants.rl("textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);

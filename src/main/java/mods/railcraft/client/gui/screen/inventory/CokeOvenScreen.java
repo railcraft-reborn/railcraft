@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      Railcraft.rl("textures/gui/container/coke_oven.png");
+      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
 
   public CokeOvenScreen(CokeOvenMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

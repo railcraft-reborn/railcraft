@@ -1,6 +1,5 @@
 package mods.railcraft.world.item.crafting;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
@@ -43,7 +42,7 @@ public class RailcraftRecipeTypes {
     return deferredRegister.register(name, () -> new RecipeType<T>() {
       @Override
       public String toString() {
-        return Railcraft.rl(name).toString();
+        return RailcraftConstants.rl(name).toString();
       }
     });
   }

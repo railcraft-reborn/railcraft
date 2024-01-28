@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.SteamOvenMenu;
 import mods.railcraft.world.module.SteamOvenModule;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SteamOvenScreen extends RailcraftMenuScreen<SteamOvenMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      Railcraft.rl("textures/gui/container/steam_oven.png");
+      RailcraftConstants.rl("textures/gui/container/steam_oven.png");
   private final SteamOvenModule steamOvenModule;
 
   public SteamOvenScreen(SteamOvenMenu menu, Inventory inventory, Component title) {

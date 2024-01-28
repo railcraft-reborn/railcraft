@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class KilledByLocomotiveTrigger
     extends SimpleCriterionTrigger<KilledByLocomotiveTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("killed_by_locomotive");
+  private static final ResourceLocation ID = RailcraftConstants.rl("killed_by_locomotive");
 
   @Override
   public ResourceLocation getId() {

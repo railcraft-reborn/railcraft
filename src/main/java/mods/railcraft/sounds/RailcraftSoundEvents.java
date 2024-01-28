@@ -1,6 +1,5 @@
 package mods.railcraft.sounds;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +30,6 @@ public class RailcraftSoundEvents {
 
   private static RegistryObject<SoundEvent> register(String name) {
     return deferredRegister.register(name,
-        () -> SoundEvent.createVariableRangeEvent(Railcraft.rl(name)));
+        () -> SoundEvent.createVariableRangeEvent(RailcraftConstants.rl(name)));
   }
 }

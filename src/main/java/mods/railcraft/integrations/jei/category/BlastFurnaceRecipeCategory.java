@@ -9,8 +9,8 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
@@ -26,7 +26,7 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation BLAST_FURNACE_BACKGROUND =
-      Railcraft.rl("textures/gui/container/blast_furnace.png");
+      RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
 
   private final IDrawable background, icon, flame, arrow;
 
