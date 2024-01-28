@@ -7,12 +7,12 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -26,7 +26,7 @@ public class CrusherRecipeBuilder {
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;
-  private final List<Tuple<ItemStack, Double>> probabilityItems;
+  private final List<Pair<ItemStack, Double>> probabilityItems;
   private final int processTime;
 
   private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
@@ -54,7 +54,7 @@ public class CrusherRecipeBuilder {
     }
 
     var itemStack = new ItemStack(item, quantity);
-    probabilityItems.add(new Tuple<>(itemStack, probability));
+    probabilityItems.add(new Pair<>(itemStack, probability));
     return this;
   }
 
@@ -78,11 +78,11 @@ public class CrusherRecipeBuilder {
 
     private final ResourceLocation id;
     private final Ingredient ingredient;
-    private final List<Tuple<ItemStack, Double>> probabilityItems;
+    private final List<Pair<ItemStack, Double>> probabilityItems;
     private final int processTime;
 
     public Result(ResourceLocation resourceLocation, Ingredient ingredient,
-        List<Tuple<ItemStack, Double>> probabilityItems,
+        List<Pair<ItemStack, Double>> probabilityItems,
         int processTime) {
       this.id = resourceLocation;
       this.ingredient = ingredient;
@@ -100,10 +100,10 @@ public class CrusherRecipeBuilder {
 
         var itemStackObject = new JsonObject();
         itemStackObject.addProperty(RecipeJsonKeys.ITEM,
-            ForgeRegistries.ITEMS.getKey(item.getA().getItem()).toString());
-        itemStackObject.addProperty(RecipeJsonKeys.COUNT, item.getA().getCount());
+            ForgeRegistries.ITEMS.getKey(item.getFirst().getItem()).toString());
+        itemStackObject.addProperty(RecipeJsonKeys.COUNT, item.getFirst().getCount());
         pattern.add(RecipeJsonKeys.RESULT, itemStackObject);
-        pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.getB());
+        pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.getSecond());
         result.add(pattern);
       }
       jsonOut.add(RecipeJsonKeys.OUTPUTS, result);
