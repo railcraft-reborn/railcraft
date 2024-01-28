@@ -18,6 +18,9 @@ public final class RailcraftConstants {
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
 
+  private RailcraftConstants() {
+  }
+
   public static ResourceLocation rl(String path) {
     return new ResourceLocation(ID, path);
   }
