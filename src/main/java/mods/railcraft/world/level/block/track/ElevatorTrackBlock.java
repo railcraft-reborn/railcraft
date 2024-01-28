@@ -250,8 +250,8 @@ public class ElevatorTrackBlock extends Block {
 
   private void holdPosition(BlockState state, AbstractMinecart cart, BlockPos pos) {
     cart.moveTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
-        getCartRotation(state, cart), 0F);
-    cart.setDeltaMovement(cart.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D));
+        getCartRotation(state, cart), 0);
+    cart.setDeltaMovement(cart.getDeltaMovement().multiply(1, 0, 1));
   }
 
   /**

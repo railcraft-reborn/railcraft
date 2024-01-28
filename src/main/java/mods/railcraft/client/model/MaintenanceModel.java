@@ -19,12 +19,12 @@ public class MaintenanceModel extends SimpleModel {
         CubeListBuilder.create()
             .texOffs(0, 1)
             .addBox(-8, -8, -8, 16, 16, 16),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("bracket",
         CubeListBuilder.create()
             .texOffs(1, 35)
             .addBox(-3, 8, -3, 6, 1, 6),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+        PartPose.offset(8, 8, 8));
     return LayerDefinition.create(mesh, 64, 64);
   }
 }

@@ -122,7 +122,7 @@ public class SpikeMaulItem extends TieredItem {
     var newBlockState = level.getBlockState(blockPos);
     var soundtype = newBlockState.getSoundType(level, blockPos, player);
     level.playSound(player, blockPos, soundtype.getPlaceSound(), SoundSource.BLOCKS,
-        (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+        (soundtype.getVolume() + 1) / 2, soundtype.getPitch() * 0.8F);
 
     if (level instanceof ServerLevel serverLevel) {
       RailcraftCriteriaTriggers.SPIKE_MAUL_USE.trigger(

@@ -65,17 +65,17 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
 
     for (int pass = 0; pass < 3; pass++) {
       float[] color = this.color[pass];
-      this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      this.model.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       var vertexBuilder = renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
       this.model.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
           color[0], color[1], color[2], alpha);
     }
 
     if (Seasons.isPolarExpress(cart)) {
-      this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      this.snowLayer.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       var vertexBuilder = renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
       this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
-          OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+          OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
     }
 
     this.getEmblemTexture(cart).ifPresent(emblemTexture -> {

@@ -62,14 +62,14 @@ public class ShuntingAuraRenderer {
 
           consumer
               .vertex(pose.pose(), cartX, cartY, cartZ)
-              .color(red, green, blue, 1.0F)
-              .normal(pose.normal(), 0.0F, 0.0F, 0.0F)
+              .color(red, green, blue, 1)
+              .normal(pose.normal(), 0, 0, 0)
               .endVertex();
 
           consumer
-              .vertex(pose.pose(), cartX, cartY + 2.0F, cartZ)
-              .color(red, green, blue, 1.0F)
-              .normal(pose.normal(), 0.0F, 0.0F, 0.0F)
+              .vertex(pose.pose(), cartX, cartY + 2, cartZ)
+              .color(red, green, blue, 1)
+              .normal(pose.normal(), 0, 0, 0)
               .endVertex();
 
           this.renderLink(player.level(), cartX, cartY, cartZ, linkedCart.linkAId(), red,
@@ -98,15 +98,15 @@ public class ShuntingAuraRenderer {
 
     var cartAPosition = cartA.getPosition(partialTick);
     consumer
-        .vertex(pose.pose(), cartX, cartY + 2.0F, cartZ)
-        .color(red, green, blue, 1.0F)
-        .normal(pose.normal(), 0.0F, 0.0F, 0.0F)
+        .vertex(pose.pose(), cartX, cartY + 2, cartZ)
+        .color(red, green, blue, 1)
+        .normal(pose.normal(), 0, 0, 0)
         .endVertex();
     consumer
         .vertex(pose.pose(), (float) cartAPosition.x(), (float) cartAPosition.y() + 1.5F,
             (float) cartAPosition.z())
-        .color(red, green, blue, 1.0F)
-        .normal(pose.normal(), 0.0F, 0.0F, 0.0F)
+        .color(red, green, blue, 1)
+        .normal(pose.normal(), 0, 0, 0)
         .endVertex();
   }
 }

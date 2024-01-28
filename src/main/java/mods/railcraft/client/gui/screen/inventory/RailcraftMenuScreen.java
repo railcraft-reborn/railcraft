@@ -36,7 +36,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     var left = this.leftPos;
     var top = this.topPos;
 
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    RenderSystem.setShaderColor(1, 1, 1, 1);
 
     if (this.menu.getCarried().isEmpty()) {
       for (var renderer : this.widgetRenderers) {

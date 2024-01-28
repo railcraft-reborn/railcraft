@@ -107,9 +107,9 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       cart.setDeltaMovement(Math.copySign(0.3F, deltaMovement.x()), deltaMovement.y(),
           deltaMovement.z());
     }
-    if (Math.abs(deltaMovement.z()) > 0.0F) {
+    if (Math.abs(deltaMovement.z()) > 0) {
       cart.setDeltaMovement(deltaMovement.x(), deltaMovement.y(),
-          Math.copySign(0.3f, deltaMovement.z()));
+          Math.copySign(0.3F, deltaMovement.z()));
     }
   }
 

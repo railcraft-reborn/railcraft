@@ -47,7 +47,7 @@ public class RailcraftDamageEnchantment extends Enchantment {
 
   @Override
   public float getDamageBonus(int level, MobType mobType, ItemStack enchantedItem) {
-    float modifier = 0.0f;
+    float modifier = 0;
     if (target != null && check.test(target.get())) {
       modifier = level * damageBonusPerLevel;
     }

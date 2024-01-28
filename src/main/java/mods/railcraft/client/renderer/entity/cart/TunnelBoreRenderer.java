@@ -43,14 +43,14 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
     matrixStack.translate(0F, 0.375F, 0F);
 
-    matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+    matrixStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
+    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
 
     float roll = (float) bore.getHurtTime() - partialTicks;
     float damage = bore.getDamage() - partialTicks;
-    if (damage < 0.0F)
-      damage = 0.0F;
-    if (roll > 0.0F) {
+    if (damage < 0)
+      damage = 0;
+    if (roll > 0) {
       matrixStack.mulPose(Axis.XP.rotationDegrees(
           Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
     }
@@ -71,16 +71,16 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
       modelTunnelBore.setRenderBoreHead(false);
     }
 
-    matrixStack.scale(-1F, -1F, 1.0F);
+    matrixStack.scale(-1, -1, 1);
 
     this.modelTunnelBore.setBoreHeadRotation(bore.getBoreRotationAngle());
     this.modelTunnelBore.setBoreActive(bore.isMinecartPowered());
-    this.modelTunnelBore.setupAnim(bore, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+    this.modelTunnelBore.setupAnim(bore, 0, 0, -0.1F, 0, 0);
     VertexConsumer vertexBuilder = renderTypeBuffer.getBuffer(
         this.modelTunnelBore.renderType(textureLocation));
     this.modelTunnelBore.renderToBuffer(matrixStack, vertexBuilder, packedLight,
         OverlayTexture.NO_OVERLAY, colorIntensity, colorIntensity, colorIntensity,
-        ghostTrain ? 0.8F : 1.0F);
+        ghostTrain ? 0.8F : 1);
     matrixStack.popPose();
   }
 

@@ -47,7 +47,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0 : super.consumeFuel();
       }
     });
   }
@@ -59,7 +59,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0 : super.consumeFuel();
       }
     });
   }

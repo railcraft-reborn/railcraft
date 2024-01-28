@@ -88,7 +88,7 @@ public interface ChargeStorage extends IEnergyStorage {
   }
 
   default float getEfficiency() {
-    return 1.0F;
+    return 1;
   }
 
   /**

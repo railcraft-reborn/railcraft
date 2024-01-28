@@ -8,14 +8,12 @@ import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 
 public class TankMinecartMenu extends RailcraftMenu {
 
   private final FluidGaugeWidget fluidGauge;
 
-  public TankMinecartMenu(int id, Inventory inventory,
-      TankMinecart tankMinecart) {
+  public TankMinecartMenu(int id, Inventory inventory, TankMinecart tankMinecart) {
     super(RailcraftMenuTypes.TANK_MINECART.get(), id, inventory.player, tankMinecart::stillValid);
 
     this.addWidget(this.fluidGauge =
@@ -30,15 +28,7 @@ public class TankMinecartMenu extends RailcraftMenu {
     this.addSlot(new OutputSlot(tankMinecart.getInvLiquids(),
         TankMinecart.SLOT_OUTPUT, 80, 57));
 
-    for (int y = 0; y < 3; y++) {
-      for (int x = 0; x < 9; x++) {
-        this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-      }
-    }
-
-    for (int x = 0; x < 9; x++) {
-      this.addSlot(new Slot(inventory, x, 8 + x * 18, 142));
-    }
+    this.addInventorySlots(inventory);
   }
 
   public FluidGaugeWidget getFluidGauge() {

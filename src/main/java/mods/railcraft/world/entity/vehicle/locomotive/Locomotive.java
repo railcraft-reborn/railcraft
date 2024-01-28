@@ -468,7 +468,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void reverse() {
-    this.setYRot(this.getYRot() + 180.0F);
+    this.setYRot(this.getYRot() + 180);
     this.setDeltaMovement(this.getDeltaMovement().multiply(-1.0D, 1.0D, -1.0D));
   }
 
@@ -484,8 +484,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
-          1.0F, 1.0F);
+      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, 1);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }
@@ -570,7 +569,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
           force *= HS_FORCE_BONUS;
         }
       }
-      double yaw = this.getYRot() * Math.PI / 180D;
+      double yaw = this.getYRot() * Mth.DEG_TO_RAD;
       this.setDeltaMovement(
           this.getDeltaMovement().add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force));
     }
@@ -662,7 +661,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
               getDamageToRoadKill(living));
         }
         if (living.getHealth() > 0) {
-          float yaw = (this.getYRot() - 90) * (float) Math.PI / 180.0F;
+          float yaw = (this.getYRot() - 90) * Mth.DEG_TO_RAD;
           this.setDeltaMovement(
               this.getDeltaMovement().add(-Mth.sin(yaw) * KNOCKBACK * 0.5F, 0.2D,
                   Mth.cos(yaw) * KNOCKBACK * 0.5F));

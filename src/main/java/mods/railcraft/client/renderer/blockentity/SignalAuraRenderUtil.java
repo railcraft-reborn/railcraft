@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.BlockSignalEntity;
-import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -72,14 +72,14 @@ public class SignalAuraRenderUtil {
       }
 
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
-      float c1 = (float) (color >> 16 & 255) / 255.0F;
-      float c2 = (float) (color >> 8 & 255) / 255.0F;
-      float c3 = (float) (color & 255) / 255.0F;
+      float red = RenderUtil.getRed(color);
+      float green = RenderUtil.getGreen(color);
+      float blue = RenderUtil.getBlue(color);
 
       consumer
           .vertex(matrix, 0.5F, 0.5F, 0.5F)
-          .color(c1, c2, c3, 1.0F)
-          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
           .endVertex();
 
       float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
@@ -88,8 +88,8 @@ public class SignalAuraRenderUtil {
 
       consumer
           .vertex(matrix, endX, endY, endZ)
-          .color(c1, c2, c3, 1.0F)
-          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
           .endVertex();
     }
     poseStack.popPose();
@@ -123,9 +123,8 @@ public class SignalAuraRenderUtil {
     CONTROLLER_ASPECT {
       @Override
       public int getColor(BlockEntity blockEntity, BlockPos source, BlockPos target) {
-        if (blockEntity instanceof SignalControllerEntity) {
-          SignalAspect aspect =
-              ((SignalControllerEntity) blockEntity).getSignalController().aspect();
+        if (blockEntity instanceof SignalControllerEntity signalControllerEntity) {
+          var aspect = signalControllerEntity.getSignalController().aspect();
           return switch (aspect) {
             case GREEN -> DyeColor.LIME.getFireworkColor();
             case YELLOW, BLINK_YELLOW -> DyeColor.YELLOW.getFireworkColor();

@@ -115,7 +115,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);
             if (newState != null) {
               level.setBlockAndUpdate(pos, newState);
-              level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1.0F,
+              level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1,
                   random.nextFloat() * 0.4F + 0.8F);
               stack.hurt(1, random, serverPlayer);
               return InteractionResult.SUCCESS;
@@ -127,7 +127,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
       pos = pos.relative(side);
 
       if (player.mayUseItemAt(pos, side, stack) && level.getBlockState(pos).isAir()) {
-        level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1.0F,
+        level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1,
             random.nextFloat() * 0.4F + 0.8F);
         level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
         stack.hurt(1, random, serverPlayer);
@@ -152,7 +152,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
       livingEntity.setSecondsOnFire(5);
       itemStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
       level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
-          SoundSource.AMBIENT, 1.0F, player.getRandom().nextFloat() * 0.4F + 0.8F);
+          SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
       return InteractionResult.SUCCESS;

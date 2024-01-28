@@ -518,11 +518,11 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
     // Fix flip
     var distance = Mth.degreesDifference(this.minecart.getYRot(), this.minecart.yRotO);
-    var cutoff = 120F;
+    var cutoff = 120;
     if (distance < -cutoff || distance >= cutoff) {
-      this.minecart.setYRot(this.minecart.getYRot() + 180.0F);
+      this.minecart.setYRot(this.minecart.getYRot() + 180);
       this.minecart.flipped = !this.minecart.flipped;
-      this.minecart.setYRot(this.minecart.getYRot() % 360.0F);
+      this.minecart.setYRot(this.minecart.getYRot() % 360);
     }
 
     if (BaseRailBlock.isRail(this.level(), this.minecart.blockPosition())) {
