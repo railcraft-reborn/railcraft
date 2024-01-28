@@ -7,13 +7,12 @@ import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +28,6 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class RefinedFirestoneItem extends FirestoneItem {
 
@@ -92,16 +90,16 @@ public class RefinedFirestoneItem extends FirestoneItem {
 
   @Override
   public InteractionResult useOn(UseOnContext context) {
-    Player player = context.getPlayer();
-    ItemStack stack = context.getItemInHand();
-    Level level = context.getLevel();
-    BlockPos pos = context.getClickedPos();
-    Direction side = context.getClickedFace();
-    BlockState blockState = level.getBlockState(pos);
-    RandomSource random = level.getRandom();
+    var player = context.getPlayer();
+    var stack = context.getItemInHand();
+    var level = context.getLevel();
+    var pos = context.getClickedPos();
+    var side = context.getClickedFace();
+    var blockState = level.getBlockState(pos);
+    var random = level.getRandom();
 
-    if (level.isClientSide())
-      return InteractionResult.CONSUME;
+    if (!(level instanceof ServerLevel serverLevel))
+      return InteractionResult.sidedSuccess(level.isClientSide());
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
 
@@ -109,7 +107,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
 
     if (player.mayUseItemAt(pos, side, stack)) {
       if (blockState.getBlock() != Blocks.STONE) {
-        var drops = Block.getDrops(blockState, (ServerLevel) level, pos, level.getBlockEntity(pos));
+        var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
           var cooked = cookedItem(level, drops.get(0));
@@ -117,7 +115,8 @@ public class RefinedFirestoneItem extends FirestoneItem {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);
             if (newState != null) {
               level.setBlockAndUpdate(pos, newState);
-              player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+              level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1,
+                  random.nextFloat() * 0.4F + 0.8F);
               stack.hurt(1, random, serverPlayer);
               return InteractionResult.SUCCESS;
             }
@@ -128,13 +127,13 @@ public class RefinedFirestoneItem extends FirestoneItem {
       pos = pos.relative(side);
 
       if (player.mayUseItemAt(pos, side, stack) && level.getBlockState(pos).isAir()) {
-        player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F, random.nextFloat() * 0.4F + 0.8F);
+        level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.AMBIENT, 1,
+            random.nextFloat() * 0.4F + 0.8F);
         level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
         stack.hurt(1, random, serverPlayer);
-        return InteractionResult.SUCCESS;
       }
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @NotNull
@@ -148,16 +147,17 @@ public class RefinedFirestoneItem extends FirestoneItem {
   @Override
   public InteractionResult interactLivingEntity(ItemStack itemStack, Player player,
       LivingEntity livingEntity, InteractionHand hand) {
-    if (player instanceof ServerPlayer && !livingEntity.fireImmune()) {
+    var level = player.level();
+    if (level instanceof ServerLevel && !livingEntity.fireImmune()) {
       livingEntity.setSecondsOnFire(5);
       itemStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
-      player.playSound(SoundEvents.FIRECHARGE_USE, 1.0F,
-          player.getRandom().nextFloat() * 0.4F + 0.8F);
+      level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
+          SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
-      player.level().setBlockAndUpdate(player.blockPosition(), Blocks.FIRE.defaultBlockState());
+      level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
       return InteractionResult.SUCCESS;
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

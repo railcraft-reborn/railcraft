@@ -16,9 +16,9 @@ public class FluidRenderer {
     var model = new CuboidModel();
     model.setAll(model.new Face().setSprite(FluidRenderer.getFluidTexture(fluid, type)));
 
-    model.setMinX(0.0F);
-    model.setMinY(0.0F);
-    model.setMinZ(0.0F);
+    model.setMinX(0);
+    model.setMinY(0);
+    model.setMinZ(0);
 
     model.setMaxX(maxX);
     model.setMaxY(maxY);

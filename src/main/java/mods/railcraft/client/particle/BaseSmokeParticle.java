@@ -8,7 +8,7 @@ public abstract class BaseSmokeParticle extends DimmableParticle {
   public static final float SMOKE_GRAVITY = -0.1F;
 
   protected BaseSmokeParticle(ClientLevel level, double x, double y, double z) {
-    this(level, x, y, z, 0.0D, 0.0D, 0.0D, 3.0F);
+    this(level, x, y, z, 0, 0, 0, 3.0F);
   }
 
   protected BaseSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy,

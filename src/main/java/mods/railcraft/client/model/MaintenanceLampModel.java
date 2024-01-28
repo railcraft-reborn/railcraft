@@ -19,7 +19,7 @@ public class MaintenanceLampModel extends SimpleModel {
         CubeListBuilder.create()
             .texOffs(0, 1)
             .addBox(-2, 10.75F, -2, 4, 4, 4),
-        PartPose.offset(8.0F, 6.0F, 8.0F));
+        PartPose.offset(8, 6, 8));
     return LayerDefinition.create(mesh, 16, 16);
   }
 }

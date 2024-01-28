@@ -106,7 +106,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
         x + 0.9, y, z + 0.9, 1, 0, 0, 0, 0);
 
     serverLevel.playSound(
-        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
+        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1);
   }
 
   boolean placeTrack(BlockPos blockPos, BlockState existingBlockState, RailShape railShape) {

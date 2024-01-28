@@ -44,7 +44,7 @@ public class GaugeWidget extends Widget {
 
   @Override
   public boolean requiresSync(ServerPlayer listener) {
-    float previousValue = this.previousValues.getOrDefault(listener, 0.0F);
+    float previousValue = this.previousValues.getOrDefault(listener, 0);
     return previousValue != this.gauge.getServerValue();
   }
 

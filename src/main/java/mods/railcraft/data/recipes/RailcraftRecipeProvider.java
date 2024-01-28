@@ -22,6 +22,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -36,6 +37,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
@@ -802,9 +806,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("ace")
         .pattern("adf")
         .define('a', Items.GLASS_PANE)
-        .define('b', Items.LIME_DYE)
-        .define('c', Items.YELLOW_DYE)
-        .define('d', Items.RED_DYE)
+        .define('b', Tags.Items.DYES_LIME)
+        .define('c', Tags.Items.DYES_YELLOW)
+        .define('d', Tags.Items.DYES_RED)
         .define('e', Items.GLOWSTONE_DUST)
         .define('f', Items.REDSTONE)
         .unlockedBy(getHasName(Items.GLOWSTONE_DUST), has(Items.GLOWSTONE_DUST))
@@ -819,7 +823,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', RailcraftItems.SIGNAL_LAMP.get())
         .define('b', circuit)
         .define('c', Items.IRON_INGOT)
-        .define('d', Items.INK_SAC)
+        .define('d', Tags.Items.DYES_BLACK)
         .unlockedBy(getHasName(circuit), has(circuit))
         .save(finishedRecipe);
   }
@@ -833,7 +837,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', RailcraftItems.SIGNAL_LAMP.get())
         .define('b', circuit)
         .define('c', Items.IRON_INGOT)
-        .define('d', Items.INK_SAC)
+        .define('d', Tags.Items.DYES_BLACK)
         .define('e', RailcraftItems.RECEIVER_CIRCUIT.get())
         .unlockedBy(getHasName(circuit), has(circuit))
         .save(finishedRecipe);
@@ -883,8 +887,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result)
         .pattern("abc")
         .pattern("def")
-        .define('a', Items.RED_DYE)
-        .define('b', Items.INK_SAC)
+        .define('a', Tags.Items.DYES_RED)
+        .define('b', Tags.Items.DYES_BLACK)
         .define('c', Items.BONE_MEAL)
         .define('d', Items.PISTON)
         .define('e', circuit)
@@ -1182,6 +1186,13 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.SULFUR_DUST.get()),
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(consumer);
+
+    ConditionalRecipe.builder()
+        .addCondition(new ModLoadedCondition(PatchouliAPI.MOD_ID))
+        .addRecipe(c ->
+            SpecialRecipeBuilder.special(RailcraftRecipeSerializers.PATCHOULI_BOOK_CRAFTING.get())
+                .save(c, Railcraft.rl("patchouli_book_crafting").toString()))
+        .build(consumer, Railcraft.rl("patchouli_book_crafting"));
   }
 
   private void buildCartsVariant(Consumer<FinishedRecipe> consumer) {
@@ -1238,7 +1249,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
-        .define('a', Items.YELLOW_DYE)
+        .define('a', Tags.Items.DYES_YELLOW)
         .define('b', Items.REDSTONE_LAMP)
         .define('c', Items.ANVIL)
         .define('d', RailcraftTags.Items.STEEL_BLOCK)
@@ -1251,7 +1262,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
-        .define('a', Items.YELLOW_DYE)
+        .define('a', Tags.Items.DYES_YELLOW)
         .define('b', Items.REDSTONE_LAMP)
         .define('c', Items.BLAZE_ROD)
         .define('d', RailcraftTags.Items.STEEL_BLOCK)
@@ -1264,7 +1275,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
-        .define('a', Items.YELLOW_DYE)
+        .define('a', Tags.Items.DYES_YELLOW)
         .define('b', Items.REDSTONE_LAMP)
         .define('c', Items.STICKY_PISTON)
         .define('d', RailcraftTags.Items.STEEL_BLOCK)
@@ -1276,7 +1287,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("cdc")
         .pattern("efe")
-        .define('a', Items.YELLOW_DYE)
+        .define('a', Tags.Items.DYES_YELLOW)
         .define('b', Items.REDSTONE_LAMP)
         .define('c', Items.PISTON)
         .define('d', RailcraftTags.Items.STEEL_BLOCK)
@@ -1392,11 +1403,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.THROTTLE_TRACK_KIT.get(), 4, List.of(
         new Tuple<>(Ingredient.of(Tags.Items.DYES_YELLOW), 1),
-        new Tuple<>(Ingredient.of(Items.INK_SAC), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DYES_BLACK), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
     kits(consumer, RailcraftItems.WHISTLE_TRACK_KIT.get(), 8, List.of(
         new Tuple<>(Ingredient.of(Tags.Items.DYES_YELLOW), 1),
-        new Tuple<>(Ingredient.of(Items.INK_SAC), 1),
+        new Tuple<>(Ingredient.of(Tags.Items.DYES_BLACK), 1),
         new Tuple<>(Ingredient.of(Items.NOTE_BLOCK), 1),
         new Tuple<>(Ingredient.of(Tags.Items.DUSTS_REDSTONE), 1)));
   }

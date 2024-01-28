@@ -1,13 +1,13 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 2400,
+  "cookingTime": 800,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_door"
   },
   "result": {
-    "count": 6,
+    "count": 2,
     "item": "railcraft:steel_ingot"
   },
-  "slagOutput": 6
+  "slagOutput": 2
 }

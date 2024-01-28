@@ -58,8 +58,7 @@ public class SteamBoilerBlockEntity
   private LazyOptional<IItemHandler> itemHandler = LazyOptional.empty();
 
   public SteamBoilerBlockEntity(BlockPos blockPos, BlockState blockState) {
-    super(RailcraftBlockEntityTypes.STEAM_BOILER.get(), blockPos, blockState,
-        SteamBoilerBlockEntity.class, PATTERNS);
+    this(RailcraftBlockEntityTypes.STEAM_BOILER.get(), blockPos, blockState);
   }
 
   public SteamBoilerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {

@@ -18,8 +18,8 @@ public class PumpkinParticle extends SteamParticle {
 
   @Override
   public float getQuadSize(float partialTicks) {
-    return this.quadSize * Mth.sin(
-        Mth.clamp((this.age + partialTicks) / this.lifetime, 0.0F, 1.0F) * (float) Math.PI);
+    return this.quadSize *
+        Mth.sin(Mth.clamp((this.age + partialTicks) / this.lifetime, 0, 1) * Mth.PI);
   }
 
   public static class Provider implements ParticleProvider<SimpleParticleType> {

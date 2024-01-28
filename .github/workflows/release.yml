@@ -14,25 +14,42 @@ jobs:
       MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+          fetch-tags: true
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: 17
-          cache: 'gradle'
 
-      - name: Compile
-        run: ./gradlew build --max-workers 1
+      - name: Build
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: build
 
       - name: Test
-        run: ./gradlew runGameTestServer --max-workers 1
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: runGameTestServer
 
       - name: Make Changelog
-        run: ./gradlew makeChangelog --max-workers 1
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: makeChangelog
 
       - name: Publish
-        run: ./gradlew publishMods --max-workers 1
+        uses: gradle/gradle-build-action@v2.11.1
+        with:
+          gradle-version: wrapper
+          cache-read-only: false
+          arguments: publishMods

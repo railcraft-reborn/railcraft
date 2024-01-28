@@ -7,8 +7,13 @@ plugins {
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.3'
-    id 'me.modmuss50.mod-publish-plugin' version '0.3.6'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.4'
+    id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
+}
+
+def isRelease = System.getenv('CURSEFORGE_TOKEN')
+if (!isRelease) {
+    mod_version += "-snapshot"
 }
 
 version = "$minecraft_version-$mod_version"
@@ -21,6 +26,9 @@ base {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
+        if (System.getProperty('idea.active')) {
+            vendor = JvmVendorSpec.JETBRAINS
+        }
     }
 }
 
@@ -68,7 +76,9 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'railcraft'
 
             // Enables better hot reloading if using the JetBrains Runtime
-            jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+            if (System.getProperty('idea.active')) {
+                jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+            }
 
             args '--mixin', 'railcraft.mixins.json'
 
@@ -137,6 +147,7 @@ test {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -154,21 +165,22 @@ tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-                'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
-                'Specification-Version'     : '1',
-                'Implementation-Title'      : project.name,
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-                'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'              : 'railcraft.mixins.json'
+            'Specification-Title'       : project.name,
+            'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
+            'Specification-Version'     : '1',
+            'Implementation-Title'      : project.name,
+            'Implementation-Version'    : project.version,
+            'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
+            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
+            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
     finalizedBy 'reobfJar'
 }
 
-task apiJar(type: Jar, group: 'build') {
+tasks.register('apiJar', Jar) {
+    group = 'build'
     from sourceSets.api.output
     archiveClassifier = 'api'
     manifest.from(jar.manifest)
@@ -184,13 +196,15 @@ mixin {
 }
 
 def penultimateTag = { ->
-    final defaultTag = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
+    def stdout = new ByteArrayOutputStream()
     try {
-        var tags = 'git tag --list --sort=-creatordate'.execute().text.split("\n")
-        return tags.length > 1 ? tags[1] : defaultTag
+        project.exec { ExecSpec spec ->
+            spec.commandLine('git', 'describe', '--abbrev=0', '--tags', 'HEAD~').standardOutput(stdout)
+        }.assertNormalExitValue().rethrowFailure()
     } catch (Exception e) {
-        return defaultTag
+        throw new IllegalStateException("Failed to get the tag; check if 'git' is on the PATH", e)
     }
+    return stdout.toString()
 }
 
 tasks.register('makeChangelog', GitChangelogTask) {
@@ -212,7 +226,7 @@ publishMods {
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
-    if (minecraft_version.equals('1.20.1')) {
+    if (minecraft_version == '1.20.1') {
         modLoaders.add('forge')
     }
     file = jar.archiveFile

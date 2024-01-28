@@ -41,6 +41,10 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("cart_disassembly",
           () -> new SimpleCraftingRecipeSerializer<>(CartDisassemblyRecipe::new));
 
+  public static final RegistryObject<SimpleCraftingRecipeSerializer<PatchouliBookCrafting>> PATCHOULI_BOOK_CRAFTING =
+      deferredRegister.register("patchouli_book_crafting",
+          () -> new SimpleCraftingRecipeSerializer<>(PatchouliBookCrafting::new));
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }

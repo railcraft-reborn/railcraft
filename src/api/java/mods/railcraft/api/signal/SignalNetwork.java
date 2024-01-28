@@ -40,7 +40,7 @@ public interface SignalNetwork<T> {
   default Stream<T> stream() {
     return this.peers().stream()
         .map(this::peerAt)
-        .flatMap(optional -> optional.isPresent() ? Stream.of(optional.get()) : Stream.empty());
+        .flatMap(Optional::stream);
   }
 
   default int peerCount() {

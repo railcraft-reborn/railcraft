@@ -23,7 +23,8 @@ public class FirestoneOreBlockItem extends BlockItem {
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
       boolean isSelected) {
-    if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+    if (!level.isClientSide()
+        && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
       FirestoneItem.trySpawnFire(player.level(), player.blockPosition(), stack, player);

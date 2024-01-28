@@ -248,12 +248,10 @@ public class RailcraftConfig {
 
     public final BooleanValue ghostTrainEnabled;
     public final BooleanValue polarExpressEnabled;
+    public final BooleanValue showMessageBeta;
     public final IntValue locomotiveLightLevel;
 
     private Client(Builder builder) {
-      builder.comment("Client only settings, mostly things related to rendering")
-          .push("client");
-
       this.ghostTrainEnabled = builder
           .comment("Change to false to disable Ghost Train rendering")
           .define("ghostTrainEnabled", true);
@@ -268,7 +266,9 @@ public class RailcraftConfig {
               "If it is '0' then locomotive lightning will be disabled.")
           .defineInRange("locomotiveLightLevel", 14, 0, 15);
 
-      builder.pop();
+      this.showMessageBeta = builder
+          .comment("Set to false to disable the message that informs you that you are using a beta version.")
+          .define("showMessageBeta", true);
     }
   }
 
