@@ -52,7 +52,6 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
       if (!this.blockEntityType.isInstance(blockEntity)) {
         return InteractionResult.PASS;
       }
-
       serverPlayer.openMenu(this.blockEntityType.cast(blockEntity), blockPos);
     }
     return InteractionResult.sidedSuccess(level.isClientSide());

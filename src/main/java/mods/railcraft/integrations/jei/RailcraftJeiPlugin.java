@@ -123,7 +123,6 @@ public class RailcraftJeiPlugin implements IModPlugin {
             new ItemStack(x), ((JeiSearchable) x).jeiDescription()));
   }
 
-
   @Override
   public void registerVanillaCategoryExtensions(
       IVanillaCategoryExtensionRegistration registration) {
