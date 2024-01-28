@@ -11,6 +11,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +35,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   // as of 2021 all the numbers have been increased due to RF/FE usage
-  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; // the original value
+  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = SharedConstants.TICKS_PER_SECOND; // the original value
   private static final int FUEL_PER_REQUEST = 1;
   // multiplied by 4 because rf
   private static final int CHARGE_USE_PER_REQUEST =

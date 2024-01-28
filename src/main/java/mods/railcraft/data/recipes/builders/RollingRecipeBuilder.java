@@ -12,6 +12,7 @@ import com.google.gson.JsonPrimitive;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -23,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 100;
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 5;
   private final Item result;
   private final int count;
   private final int processTime;

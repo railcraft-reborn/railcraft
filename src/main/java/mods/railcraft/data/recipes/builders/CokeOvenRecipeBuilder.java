@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 20 * 20; // 20 sec
+  public static final int DEFAULT_COOKING_TIME = SharedConstants.TICKS_PER_SECOND * 20;
 
   private final int creosoteOutput;
 

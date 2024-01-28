@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.track.TrackScanUtil;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
@@ -28,7 +29,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
 
   private static final Logger logger = LogUtils.getLogger();
 
-  public static final int SIGNAL_VALIDATION_INTERVAL = 4 * 60 * 20;
+  public static final int SIGNAL_VALIDATION_INTERVAL = 4 * SharedConstants.TICKS_PER_MINUTE;
   private final Set<BlockPos> signalsToRevalidate = new HashSet<>();
 
   private final Map<BlockPos, TrackScanUtil.Result> trackScans = new HashMap<>();

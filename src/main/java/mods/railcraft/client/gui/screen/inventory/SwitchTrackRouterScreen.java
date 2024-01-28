@@ -11,6 +11,7 @@ import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -23,7 +24,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
       RailcraftConstants.rl("textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
   private final SwitchTrackRouterBlockEntity switchTrackRouter;
 
   private MultiButton<SwitchTrackRouterBlockEntity.Lock> lockButton;

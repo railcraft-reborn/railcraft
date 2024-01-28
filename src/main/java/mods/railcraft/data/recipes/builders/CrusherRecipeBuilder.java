@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 10 * 20; // 10 sec
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 10;
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;

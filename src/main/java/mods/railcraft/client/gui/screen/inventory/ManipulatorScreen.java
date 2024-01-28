@@ -6,6 +6,7 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
     extends RailcraftMenuScreen<T> {
 
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
 
   private static final Component CART_FILTER_TEXT =
       Component.translatable(Translations.Screen.CART_FILTERS);
