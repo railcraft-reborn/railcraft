@@ -23,11 +23,11 @@ public class FireSparkParticle extends TextureSheetParticle {
 
     this.maxHorizontalDist = getHorizontalDistSq(destination);
     calculateVector(maxHorizontalDist);
-    scale(0.5f);
+    scale(0.5F);
 
-    this.rCol = this.gCol = this.bCol = 1.0f;
+    this.rCol = this.gCol = this.bCol = 1;
 
-    this.quadSize *= random.nextFloat() * 2.0f + 0.2f;
+    this.quadSize *= random.nextFloat() * 2 + 0.2F;
     this.lavaParticleScale = quadSize;
     setLifetime(2000);
     this.hasPhysics = false;
@@ -46,7 +46,7 @@ public class FireSparkParticle extends TextureSheetParticle {
     Vec3 vel = destination.subtract(vecParticle);
     vel = vel.normalize();
 
-    float velScale = 0.1f;
+    float velScale = 0.1F;
     this.xd = vel.x * velScale;
     this.yd = vel.y * velScale + 0.4 * (dist / maxHorizontalDist);
     this.zd = vel.z * velScale;

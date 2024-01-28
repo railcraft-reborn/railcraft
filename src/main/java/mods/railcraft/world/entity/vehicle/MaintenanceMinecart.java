@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
@@ -139,7 +138,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
     var drops = state.getDrops(new LootParams.Builder((ServerLevel) this.level())
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
+        .withParameter(LootContextParams.ORIGIN, pos.getCenter()));
 
     var rollingStock = RollingStock.getOrThrow(this);
     for (var stack : drops) {

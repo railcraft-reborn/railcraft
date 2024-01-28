@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": {
-      "item": "minecraft:yellow_dye"
+      "tag": "forge:dyes/yellow"
     },
     "b": {
       "item": "minecraft:redstone_lamp"

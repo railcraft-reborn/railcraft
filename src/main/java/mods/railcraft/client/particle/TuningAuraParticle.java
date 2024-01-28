@@ -1,6 +1,7 @@
 package mods.railcraft.client.particle;
 
 import mods.railcraft.api.signal.SignalUtil;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.particle.TuningAuraParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -23,14 +24,11 @@ public class TuningAuraParticle extends DimmableParticle {
 
     this.scale(0.5F);
 
-    float c1 = (float) (options.color() >> 16 & 255) / 255.0F;
-    float c2 = (float) (options.color() >> 8 & 255) / 255.0F;
-    float c3 = (float) (options.color() & 255) / 255.0F;
-
+    var color = options.color();
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
-    this.rCol = c1 * variant;
-    this.gCol = c2 * variant;
-    this.bCol = c3 * variant;
+    this.rCol = RenderUtil.getRed(color) * variant;
+    this.gCol = RenderUtil.getGreen(color) * variant;
+    this.bCol = RenderUtil.getBlue(color) * variant;
     this.setLifetime(2000);
     this.hasPhysics = false;
     this.pickSprite(sprites);

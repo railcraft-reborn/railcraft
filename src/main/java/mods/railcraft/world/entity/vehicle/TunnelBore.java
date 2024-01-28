@@ -423,7 +423,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
             setDelay(FAIL_DELAY);
             setActive(false);
           } else {
-            setDelay((int) Math.ceil(getLayerHardness(targetPos, dir)));
+            setDelay(Mth.ceil(getLayerHardness(targetPos, dir)));
             if (getDelay() != 0) {
               boreLayer = true;
             }
@@ -837,7 +837,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   protected double getLayerHardness(BlockPos targetPos, RailShape dir) {
-    double hardness = layerAction(targetPos, dir, 0F, this::getBlockHardness, (s, r) -> s + r);
+    double hardness = layerAction(targetPos, dir, 0F, this::getBlockHardness, Float::sum);
     hardness *= HARDNESS_MULTIPLIER;
 
     var boreSlot = this.getItem(0);

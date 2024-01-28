@@ -17,12 +17,10 @@ public abstract class DimmableParticle extends TextureSheetParticle {
   @Override
   public int getLightColor(float partialTicks) {
     int lightColor = super.getLightColor(partialTicks);
-    float progress = (float) this.age / (float) this.lifetime;
-    progress *= progress;
-    progress *= progress;
+    double progress = Math.pow((double) this.age / this.lifetime, 3);
     int var4 = lightColor & 255;
     int var5 = lightColor >> 16 & 255;
-    var5 += (int) (progress * 15.0F * 16.0F);
+    var5 += (int) (progress * 15 * 16);
 
     if (var5 > 240) {
       var5 = 240;

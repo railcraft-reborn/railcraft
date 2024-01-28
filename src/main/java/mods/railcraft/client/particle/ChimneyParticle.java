@@ -20,11 +20,11 @@ public class ChimneyParticle extends BaseSmokeParticle {
     super(level, x, y, z, dx, dy, dz, scale);
     this.gravity = SMOKE_GRAVITY;
     this.rCol =
-        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getRed(color), 0f, 1f);
+        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getRed(color), 0, 1);
     this.gCol =
-        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getGreen(color), 0f, 1f);
+        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getGreen(color), 0, 1);
     this.bCol =
-        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getBlue(color), 0f, 1f);
+        Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + RenderUtil.getBlue(color), 0, 1);
     this.lifetime = (int) ((24.0F / (this.random.nextFloat() * 0.5F + 0.2F)) * scale);
   }
 }

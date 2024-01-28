@@ -8,6 +8,7 @@ import mods.railcraft.gui.widget.FluidGaugeWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
@@ -54,7 +55,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
       }
     }
 
-    var mask = (int) Math.floor(this.widget.h * scale);
+    var mask = Mth.floor(this.widget.h * scale);
     if (mask == 0 && fluidStack.getAmount() > 0) {
       mask = 1;
     }

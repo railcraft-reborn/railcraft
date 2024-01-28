@@ -29,8 +29,7 @@ public class RailcraftSoundEvents {
   }
 
   private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
-    var registryName = RailcraftConstants.rl(name);
     return deferredRegister.register(name,
-        () -> SoundEvent.createVariableRangeEvent(registryName));
+        () -> SoundEvent.createVariableRangeEvent(RailcraftConstants.rl(name)));
   }
 }

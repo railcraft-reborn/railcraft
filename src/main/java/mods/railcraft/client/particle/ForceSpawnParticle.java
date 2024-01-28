@@ -11,7 +11,7 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
 
   private ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, int color, SpriteSet sprites) {
-    this(level, x, y, z, dx, dy, dz, color, 1.0F, sprites);
+    this(level, x, y, z, dx, dy, dz, color, 1, sprites);
   }
 
   public ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,

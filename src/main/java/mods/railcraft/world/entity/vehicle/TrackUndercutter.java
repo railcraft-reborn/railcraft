@@ -147,7 +147,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
           this.level().getBlockEntity(pos));
       if (stockBlock != null && this.level().setBlockAndUpdate(pos, stockBlock)) {
         this.level().playSound(null, pos, stockBlock.getSoundType().getPlaceSound(),
-            SoundSource.AMBIENT, (1f + 1.0F) / 2.0F, 0.8F);
+            SoundSource.AMBIENT, 1, 0.8F);
 
         this.removeItem(stockSlot, 1);
         var rollingStock = RollingStock.getOrThrow(this);

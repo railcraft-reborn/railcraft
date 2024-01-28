@@ -78,8 +78,8 @@ public class SignalAuraRenderUtil {
 
       consumer
           .vertex(matrix, 0.5F, 0.5F, 0.5F)
-          .color(red, green, blue, 1.0F)
-          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
           .endVertex();
 
       float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
@@ -88,8 +88,8 @@ public class SignalAuraRenderUtil {
 
       consumer
           .vertex(matrix, endX, endY, endZ)
-          .color(red, green, blue, 1.0F)
-          .normal(normal, 1.0F, 0.0F, 0.0F)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
           .endVertex();
     }
     poseStack.popPose();

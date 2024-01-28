@@ -95,9 +95,9 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
 
     float roll = (float) cart.getHurtTime() - partialTicks;
     float damage = cart.getDamage() - partialTicks;
-    if (damage < 0.0F)
-      damage = 0.0F;
-    if (roll > 0.0F) {
+    if (damage < 0)
+      damage = 0;
+    if (roll > 0) {
       poseStack.mulPose(Axis.XP.rotationDegrees(
           Mth.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }

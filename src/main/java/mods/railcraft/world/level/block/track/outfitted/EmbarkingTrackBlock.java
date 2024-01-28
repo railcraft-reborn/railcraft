@@ -139,8 +139,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
       level.addParticle(ParticleTypes.PORTAL, pX, pY, pZ, vX, vY, vZ);
     }
 
-    level.playSound(
-        null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
+    level.playSound(null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1);
   }
 
   public static int getRadius(BlockState blockState) {

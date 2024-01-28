@@ -38,8 +38,8 @@ public abstract class FurnaceMultiblockBlock extends MultiblockBlock {
       var y = blockPos.getY() + 0.4D;
       var z = blockPos.getZ() + 0.5D;
       if (random.nextDouble() < 0.1D) {
-        level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F,
-            1.0F, false);
+        level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1,
+            1, false);
       }
 
       for (var direction : Direction.Plane.HORIZONTAL) {

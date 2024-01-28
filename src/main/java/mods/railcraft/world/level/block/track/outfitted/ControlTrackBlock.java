@@ -9,6 +9,7 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -70,7 +71,7 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
     }
 
     if (cart instanceof Locomotive locomotive && locomotive.isShutdown()) {
-      double yaw = cart.getYRot() * Math.PI / 180D;
+      double yaw = cart.getYRot() * Mth.DEG_TO_RAD;
       double cos = Math.cos(yaw);
       double sin = Math.sin(yaw);
       float limit = 0.01f;

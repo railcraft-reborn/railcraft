@@ -82,7 +82,7 @@ public final class TrackUtil {
         var soundType = railBlock.getSoundType(blockState, level, pos, null);
         level.playSound(null, pos,
             soundType.getPlaceSound(),
-            SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
+            SoundSource.BLOCKS, (soundType.getVolume() + 1) / 2,
             soundType.getPitch() * 0.8F);
       }
       return success;

@@ -13,7 +13,7 @@ public abstract class BaseShrinkingSmokeParticle extends BaseSmokeParticle {
   @Override
   public float getQuadSize(float partialTicks) {
     return this.quadSize * Mth.clamp(
-        (this.age + partialTicks) / this.lifetime * 32.0F, 0.0F, 1.0F);
+        (this.age + partialTicks) / this.lifetime * 32.0F, 0, 1.0F);
   }
 }
 

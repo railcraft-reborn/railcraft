@@ -17,7 +17,7 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
 
   public TunnelBorePart(TunnelBore parent, float width, float height,
       float forwardOffset) {
-    this(parent, width, height, forwardOffset, 0.0F);
+    this(parent, width, height, forwardOffset, 0);
   }
 
   public TunnelBorePart(TunnelBore parent, float width, float height,
@@ -44,7 +44,7 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   private void updatePosition() {
     double x = this.getParent().getOffsetX(getParent().getX(), this.forwardOffset, this.sideOffset);
     double z = this.getParent().getOffsetZ(getParent().getZ(), this.forwardOffset, this.sideOffset);
-    this.moveTo(x, this.getParent().getY() + 0.3F, z, 0.0F, 0.0F);
+    this.moveTo(x, this.getParent().getY() + 0.3F, z, 0, 0);
   }
 
   @Override

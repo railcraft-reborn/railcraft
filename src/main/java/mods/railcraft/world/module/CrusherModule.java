@@ -141,8 +141,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
       outputs.forEach(outputContainer::insert);
       inputContainer.extract(recipe.getIngredients().get(0));
       provider.getLevel().playSound(null, provider.blockPos(),
-          SoundEvents.IRON_GOLEM_DEATH, SoundSource.BLOCKS, 1.0f,
-          provider.getLevel().getRandom().nextFloat() * 0.25f + 0.7f);
+          SoundEvents.IRON_GOLEM_DEATH, SoundSource.BLOCKS, 1,
+          provider.getLevel().getRandom().nextFloat() * 0.25F + 0.7F);
     }
     return hasSpace;
   }

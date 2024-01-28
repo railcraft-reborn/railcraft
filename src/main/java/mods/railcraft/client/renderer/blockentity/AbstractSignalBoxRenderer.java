@@ -37,7 +37,7 @@ public abstract class AbstractSignalBoxRenderer
       RailcraftConstants.rl("entity/signal_box/bottom");
 
   private final CuboidModel model =
-      new CuboidModel(2 / 16.0F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
+      new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
 
   protected abstract ResourceLocation getTopTextureLocation();
 

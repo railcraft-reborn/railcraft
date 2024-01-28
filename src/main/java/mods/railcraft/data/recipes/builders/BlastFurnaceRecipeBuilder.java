@@ -25,20 +25,20 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   public static BlastFurnaceRecipeBuilder smelting(ItemLike result, int count,
       Ingredient ingredient, int multiplier, int slagOutput) {
-    return new BlastFurnaceRecipeBuilder(result, count, ingredient, 0.0F,
+    return new BlastFurnaceRecipeBuilder(result, count, ingredient, 0,
         DEFAULT_COOKING_TIME * multiplier, slagOutput);
   }
 
   public static BlastFurnaceRecipeBuilder smelting(ItemLike result, Ingredient ingredient,
       int multiplier, int slagOutput) {
     return new BlastFurnaceRecipeBuilder(result.asItem(), multiplier, ingredient,
-        0.0F, DEFAULT_COOKING_TIME * multiplier, slagOutput);
+        0, DEFAULT_COOKING_TIME * multiplier, slagOutput);
   }
 
   public static BlastFurnaceRecipeBuilder recycling(ItemLike result, Ingredient ingredient,
       int multiplier) {
     return new BlastFurnaceRecipeBuilder(result.asItem(),
-        multiplier, ingredient, 0.0F, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
+        multiplier, ingredient, 0, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
   }
 
   @Override

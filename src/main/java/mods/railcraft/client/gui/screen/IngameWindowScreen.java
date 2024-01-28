@@ -49,7 +49,7 @@ public class IngameWindowScreen extends Screen {
         this.windowWidth, this.windowHeight);
     var poseStack = guiGraphics.pose();
     poseStack.pushPose();
-    poseStack.translate(centredX, centredY, 0.0F);
+    poseStack.translate(centredX, centredY, 0);
     GuiUtil.drawCenteredString(guiGraphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
     this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
     poseStack.popPose();

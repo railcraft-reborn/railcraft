@@ -40,7 +40,7 @@ public class RailcraftButton extends Button {
   public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+    RenderSystem.setShaderColor(1, 1, 1, this.alpha);
     int i = this.getYImage(this.isHoveredOrFocused());
     RenderSystem.enableBlend();
     RenderSystem.defaultBlendFunc();

@@ -43,7 +43,7 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         alpha);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
-    poseStack.translate(0.05F, 0.0F, 0.0F);
+    poseStack.translate(0.05F, 0, 0);
 
     boolean bright = cart.getMode() == Locomotive.Mode.RUNNING;
 
