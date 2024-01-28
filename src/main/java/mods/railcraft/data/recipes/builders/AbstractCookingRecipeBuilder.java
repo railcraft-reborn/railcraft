@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -78,18 +79,18 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     @Override
     public final void serializeRecipeData(JsonObject json) {
       if (!group.isEmpty()) {
-        json.addProperty("group", group);
+        json.addProperty(RecipeJsonKeys.GROUP, group);
       }
 
-      json.add("ingredient", ingredient.toJson());
+      json.add(RecipeJsonKeys.INGREDIENT, ingredient.toJson());
       var resultJson = new JsonObject();
-      resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+      resultJson.addProperty(RecipeJsonKeys.ITEM, ForgeRegistries.ITEMS.getKey(result).toString());
       if (count > 1) {
-        resultJson.addProperty("count", count);
+        resultJson.addProperty(RecipeJsonKeys.COUNT, count);
       }
-      json.add("result", resultJson);
-      json.addProperty("experience", experience);
-      json.addProperty("cookingTime", cookingTime);
+      json.add(RecipeJsonKeys.RESULT, resultJson);
+      json.addProperty(RecipeJsonKeys.EXPERIENCE, experience);
+      json.addProperty(RecipeJsonKeys.COOKING_TIME, cookingTime);
       addJsonProperty(json);
     }
 

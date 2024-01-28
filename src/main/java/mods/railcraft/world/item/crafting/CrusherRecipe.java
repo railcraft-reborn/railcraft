@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.datafixers.util.Pair;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
@@ -13,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 public class CrusherRecipe implements Recipe<Container> {
   private final ResourceLocation recipeId;
   private final Ingredient ingredient;
-  private final List<Tuple<ItemStack, Double>> probabilityItems;
+  private final List<Pair<ItemStack, Double>> probabilityItems;
   private final int processTime;
 
   /**
@@ -38,7 +39,7 @@ public class CrusherRecipe implements Recipe<Container> {
    * @param processTime      - The time cost of the recipe
    */
   public CrusherRecipe(ResourceLocation recipeId, Ingredient ingredient,
-      List<Tuple<ItemStack, Double>> probabilityItems, int processTime) {
+      List<Pair<ItemStack, Double>> probabilityItems, int processTime) {
     this.recipeId = recipeId;
     this.ingredient = ingredient;
     this.probabilityItems = probabilityItems;
@@ -74,15 +75,15 @@ public class CrusherRecipe implements Recipe<Container> {
     return ItemStack.EMPTY;
   }
 
-  public List<Tuple<ItemStack, Double>> getProbabilityItems() {
+  public List<Pair<ItemStack, Double>> getProbabilityItems() {
     return probabilityItems;
   }
 
   public List<ItemStack> pollOutputs(RandomSource random) {
     var result = new ArrayList<ItemStack>();
     for(var item : probabilityItems) {
-      if(random.nextDouble() < item.getB()) {
-        result.add(item.getA().copy());
+      if(random.nextDouble() < item.getSecond()) {
+        result.add(item.getFirst().copy());
       }
     }
     return result;
@@ -123,17 +124,17 @@ public class CrusherRecipe implements Recipe<Container> {
     @Override
     public CrusherRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
       int processTime = GsonHelper
-          .getAsInt(json, "processTime", CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
-      var ingredient = Ingredient.fromJson(json.get("ingredient"));
-      var probabilityItems = new ArrayList<Tuple<ItemStack, Double>>();
+          .getAsInt(json, RecipeJsonKeys.PROCESS_TIME, CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME);
+      var ingredient = Ingredient.fromJson(json.get(RecipeJsonKeys.INGREDIENT));
+      var probabilityItems = new ArrayList<Pair<ItemStack, Double>>();
 
-      var outputs = GsonHelper.getAsJsonArray(json, "output");
+      var outputs = GsonHelper.getAsJsonArray(json, RecipeJsonKeys.OUTPUTS);
       for (var output : outputs) {
         var outputObj = output.getAsJsonObject();
-        var probability = GsonHelper.getAsDouble(outputObj, "probability", 1);
+        var probability = GsonHelper.getAsDouble(outputObj, RecipeJsonKeys.PROBABILITY, 1);
         probability = Mth.clamp(probability, 0, 1); //[0,1]
-        var result = itemFromJson(GsonHelper.getAsJsonObject(outputObj, "result"));
-        probabilityItems.add(new Tuple<>(result, probability));
+        var result = itemFromJson(GsonHelper.getAsJsonObject(outputObj, RecipeJsonKeys.RESULT));
+        probabilityItems.add(new Pair<>(result, probability));
       }
       return new CrusherRecipe(recipeId, ingredient, probabilityItems, processTime);
     }
@@ -145,7 +146,7 @@ public class CrusherRecipe implements Recipe<Container> {
       var probabilityItems = buffer.readList(buf -> {
         var result = buf.readItem();
         var probability = buf.readDouble();
-        return new Tuple<>(result, probability);
+        return new Pair<>(result, probability);
       });
       return new CrusherRecipe(recipeId, ingredient, probabilityItems, tickCost);
     }
@@ -155,13 +156,13 @@ public class CrusherRecipe implements Recipe<Container> {
       buffer.writeVarInt(recipe.processTime);
       recipe.ingredient.toNetwork(buffer);
       buffer.writeCollection(recipe.probabilityItems, (buf, item) -> {
-        buf.writeItem(item.getA());
-        buf.writeDouble(item.getB());
+        buf.writeItem(item.getFirst());
+        buf.writeDouble(item.getSecond());
       });
     }
 
-    public static ItemStack itemFromJson(JsonObject json) {
-      if (!json.has("item")) {
+    private static ItemStack itemFromJson(JsonObject json) {
+      if (!json.has(RecipeJsonKeys.ITEM)) {
         throw new JsonParseException("No item key found");
       }
       return CraftingHelper.getItemStack(json, true);

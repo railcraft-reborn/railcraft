@@ -14,10 +14,13 @@ public final class RailcraftConstants {
 
   public static final String ID = "railcraft";
   public static final String NAME = "Railcraft Reborn";
-  private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final String UNKNOWN_PLAYER = "[unknown]";
+  private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
+
+  private RailcraftConstants() {
+  }
 
   public static ResourceLocation rl(String path) {
     return new ResourceLocation(ID, path);

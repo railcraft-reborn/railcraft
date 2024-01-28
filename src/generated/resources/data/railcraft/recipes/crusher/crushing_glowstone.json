@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:glowstone"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

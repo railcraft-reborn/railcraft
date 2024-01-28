@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:raw_gold_block"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

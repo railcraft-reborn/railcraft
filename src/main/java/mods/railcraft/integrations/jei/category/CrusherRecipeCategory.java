@@ -80,14 +80,14 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
         int index = 1 + x + (y * 3);
         ItemStack itemStack = ItemStack.EMPTY;
         if (outputs.size() > index - 1) {
-          itemStack = outputs.get(index - 1).getA();
+          itemStack = outputs.get(index - 1).getFirst();
         }
         var recipeLayout = builder
             .addSlot(RecipeIngredientRole.OUTPUT, 91 + x * 18, y * 18 + 1)
             .addItemStack(itemStack);
         if (!itemStack.isEmpty()) {
           recipeLayout.addTooltipCallback((recipeSlotView, tooltip) -> {
-            double probability = outputs.get(index - 1).getB() * 100;
+            double probability = outputs.get(index - 1).getSecond() * 100;
             var probText = Component.translatable(Translations.Jei.CRUSHER_TIP, probability)
                 .withStyle(ChatFormatting.GRAY);
             tooltip.add(probText);

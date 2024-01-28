@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:amethyst_block"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:mossy_cobblestone"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

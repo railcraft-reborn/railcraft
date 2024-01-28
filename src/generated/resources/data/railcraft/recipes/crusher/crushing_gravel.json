@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:gravel"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

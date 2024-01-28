@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:ice"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.85,
       "result": {

@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.network.FriendlyByteBuf;
@@ -47,13 +48,13 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
     @Override
     public BlastFurnaceRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      var group = GsonHelper.getAsString(json, "group", "");
-      var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
+      var group = GsonHelper.getAsString(json, RecipeJsonKeys.GROUP, "");
+      var cookingTime = GsonHelper.getAsInt(json, RecipeJsonKeys.COOKING_TIME,
           BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME);
-      var slagOutput = GsonHelper.getAsInt(json, "slagOutput", 1);
-      var ingredient = Ingredient.fromJson(json.get("ingredient"));
-      var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
-      var experience = GsonHelper.getAsFloat(json, "experience", 0);
+      var slagOutput = GsonHelper.getAsInt(json, RecipeJsonKeys.SLAG_OUTPUT, 1);
+      var ingredient = Ingredient.fromJson(json.get(RecipeJsonKeys.INGREDIENT));
+      var result = itemFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
+      var experience = GsonHelper.getAsFloat(json, RecipeJsonKeys.EXPERIENCE, 0);
       return new BlastFurnaceRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           slagOutput);
     }
@@ -80,8 +81,8 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
       buffer.writeFloat(recipe.experience);
     }
 
-    public static ItemStack itemFromJson(JsonObject json) {
-      if (!json.has("item")) {
+    private static ItemStack itemFromJson(JsonObject json) {
+      if (!json.has(RecipeJsonKeys.ITEM)) {
         throw new JsonParseException("No item key found");
       }
       return CraftingHelper.getItemStack(json, true);

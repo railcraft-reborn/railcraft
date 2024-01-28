@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:raw_copper_block"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

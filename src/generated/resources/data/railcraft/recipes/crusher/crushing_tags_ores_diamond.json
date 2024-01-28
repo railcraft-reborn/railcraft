@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:ores/diamond"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

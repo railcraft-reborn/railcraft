@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.RailcraftFluids;
@@ -51,13 +52,13 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
     @Override
     public CokeOvenRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      var group = GsonHelper.getAsString(json, "group", "");
-      var cookingTime = GsonHelper.getAsInt(json, "cookingTime",
+      var group = GsonHelper.getAsString(json, RecipeJsonKeys.GROUP, "");
+      var cookingTime = GsonHelper.getAsInt(json, RecipeJsonKeys.COOKING_TIME,
           CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME);
-      var creosoteOutput = GsonHelper.getAsInt(json, "creosoteOutput", 1000); // 1 bucket
-      var ingredient = Ingredient.fromJson(json.get("ingredient"));
-      var result = itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
-      var experience = GsonHelper.getAsFloat(json, "experience", 0);
+      var creosoteOutput = GsonHelper.getAsInt(json, RecipeJsonKeys.CREOSOTE_OUTPUT, 1000); // 1 bucket
+      var ingredient = Ingredient.fromJson(json.get(RecipeJsonKeys.INGREDIENT));
+      var result = itemFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
+      var experience = GsonHelper.getAsFloat(json, RecipeJsonKeys.EXPERIENCE, 0);
       return new CokeOvenRecipe(recipeId, group, ingredient, result, experience, cookingTime,
           creosoteOutput);
     }
@@ -84,8 +85,8 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
       buffer.writeFloat(recipe.experience);
     }
 
-    public static ItemStack itemFromJson(JsonObject json) {
-      if (!json.has("item")) {
+    private static ItemStack itemFromJson(JsonObject json) {
+      if (!json.has(RecipeJsonKeys.ITEM)) {
         throw new JsonParseException("No item key found");
       }
       return CraftingHelper.getItemStack(json, true);
