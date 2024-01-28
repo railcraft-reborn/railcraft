@@ -58,7 +58,7 @@ public class TunnelBoreItem extends Item implements JeiSearchable {
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.TUNNEL_BORE);
   }
 }

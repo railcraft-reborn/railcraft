@@ -49,14 +49,12 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
   @Override
   public InteractionResult use(BlockState blockState, Level level,
       BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (!level.isClientSide()) {
-      BlockEntity blockEntity = level.getBlockEntity(blockPos);
+    if (player instanceof ServerPlayer serverPlayer) {
+      var blockEntity = level.getBlockEntity(blockPos);
       if (!this.blockEntityType.isInstance(blockEntity)) {
         return InteractionResult.PASS;
       }
-
-      NetworkHooks.openScreen(
-          (ServerPlayer) player, this.blockEntityType.cast(blockEntity), blockPos);
+      NetworkHooks.openScreen(serverPlayer, this.blockEntityType.cast(blockEntity), blockPos);
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

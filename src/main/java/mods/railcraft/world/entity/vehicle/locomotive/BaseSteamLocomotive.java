@@ -109,12 +109,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    return FluidTools.interactWithFluidHandler(player, hand, this.tankManager())
+    return FluidTools.interactWithFluidHandler(player, hand, this.getTankManager())
         ? InteractionResult.SUCCESS
         : super.interact(player, hand);
   }
 
-  public TankManager tankManager() {
+  public TankManager getTankManager() {
     return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
   }
 
@@ -242,7 +242,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("tankManager", this.tankManager().serializeNBT());
+    tag.put("tankManager", this.getTankManager().serializeNBT());
     tag.put("boiler", this.boiler.serializeNBT());
     tag.putString("processState", this.processState.getSerializedName());
   }
@@ -250,7 +250,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.tankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(tag.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);

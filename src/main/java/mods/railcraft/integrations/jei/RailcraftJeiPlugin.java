@@ -109,13 +109,13 @@ public class RailcraftJeiPlugin implements IModPlugin {
         .filter(x -> x.get() instanceof JeiSearchable)
         .map(RegistryObject::get)
         .forEach(x ->
-            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));
     RailcraftItems.entries()
         .stream()
         .filter(x -> x.get() instanceof JeiSearchable)
         .map(RegistryObject::get)
         .forEach(x ->
-            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).addJeiInfo()));
+            registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));
   }
 
 
