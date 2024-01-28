@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public class AnalogSignalControllerBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/signal_box/analog_signal_controller_box");
+      Railcraft.rl("entity/signal_box/analog_signal_controller_box");
 
   @Override
   protected ResourceLocation getTopTextureLocation() {

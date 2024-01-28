@@ -236,13 +236,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @return an optional {@link Membership}
    */
   public Optional<Membership<T>> getMembership() {
-    if (this.level.isClientSide()) {
-      // Some mods call this method client side, in order not to crash
-      // we return an Optional.empty() and print a warning.
-      logger.warn("getMembership is server-side only.");
-      return Optional.empty();
-    }
-    return Optional.ofNullable(this.membership);
+    return this.level.isClientSide() ? Optional.empty() : Optional.ofNullable(this.membership);
   }
 
   public Optional<T> getMasterBlockEntity() {

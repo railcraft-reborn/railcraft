@@ -20,12 +20,11 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
   private static final ResourceLocation TANK_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/entity/minecart/tank.png");
+      Railcraft.rl("textures/entity/minecart/tank.png");
 
   private final LowSidesMinecartModel<TankMinecart> bodyModel;
   private final LowSidesMinecartModel<TankMinecart> snowModel;
@@ -45,71 +44,64 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
   protected void renderContents(TankMinecart cart, float partialTicks,
       PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
-    VertexConsumer vertexBuilder =
+    var vertexBuilder =
         renderTypeBuffer.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
     this.tankModel.renderToBuffer(matrixStack, vertexBuilder, packedLight,
         OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-    this.renderTank(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight, red, green,
-        blue, alpha);
+    this.renderTank(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight);
     if (cart.hasFilter()) {
-      this.renderFilterItem(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight, red,
-          green, blue, alpha);
+      this.renderFilterItem(cart, matrixStack, renderTypeBuffer, packedLight);
     }
   }
 
   private void renderTank(TankMinecart cart, float partialTicks, PoseStack poseStack,
-      MultiBufferSource renderTypeBuffer, int packedLight, float red,
-      float green, float blue, float alpha) {
+      MultiBufferSource renderTypeBuffer, int packedLight) {
     var tank = cart.getTankManager();
     if (tank != null) {
       var fluidStack = tank.getFluid();
       float capacity = tank.getCapacity();
       if (capacity > 0 && fluidStack != null && fluidStack.getAmount() > 0) {
         poseStack.pushPose();
-        {
-          var level = fluidStack.getAmount() / capacity;
-          var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
-              ? 1.0F
-              : Math.min(1.0F, level);
+        var level = fluidStack.getAmount() / capacity;
+        var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
+            ? 1
+            : Math.min(1, level);
 
-          var fluidModel = FluidRenderer.getFluidModel(fluidStack,
-              1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
-              fluidMaxY - (RenderUtil.SCALED_PIXEL * 2.0F),
-              1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
-              FluidRenderer.FluidType.STILL);
+        var fluidModel = FluidRenderer.getFluidModel(fluidStack,
+            1 - (RenderUtil.SCALED_PIXEL * 2),
+            fluidMaxY - (RenderUtil.SCALED_PIXEL * 2),
+            1 - (RenderUtil.SCALED_PIXEL * 2),
+            FluidRenderer.FluidType.STILL);
 
-          poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
-              RenderUtil.SCALED_PIXEL);
+        poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
+            RenderUtil.SCALED_PIXEL);
 
-          if (fluidModel != null) {
-            fluidModel.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
-            fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-            var builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
-            CuboidModelRenderer.render(fluidModel, poseStack, builder,
-                RenderUtil.getColorARGB(fluidStack, level),
-                CuboidModelRenderer.FaceDisplay.FRONT, true);
-          }
+        if (fluidModel != null) {
+          fluidModel.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+          fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
+          var builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
+          CuboidModelRenderer.render(fluidModel, poseStack, builder,
+              RenderUtil.getColorARGB(fluidStack, level),
+              CuboidModelRenderer.FaceDisplay.FRONT, true);
         }
         poseStack.popPose();
 
         if (cart.isFilling()) {
           poseStack.pushPose();
-          {
-            final var size = 0.3F;
-            poseStack.translate(0.5F - size / 2.0F, 0F, 0.5F - size / 2.0F);
+          final var size = 0.3F;
+          poseStack.translate(0.5F - size / 2, 0F, 0.5F - size / 2);
 
-            var fillingFluidModel =
-                FluidRenderer.getFluidModel(fluidStack, size, 1.0F - RenderUtil.SCALED_PIXEL, size,
-                    FluidRenderer.FluidType.FLOWING);
-            if (fillingFluidModel != null) {
-              fillingFluidModel.setPackedLight(
-                  RenderUtil.calculateGlowLight(packedLight, fluidStack));
-              fillingFluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-              VertexConsumer builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
-              CuboidModelRenderer.render(fillingFluidModel, poseStack, builder,
-                  RenderUtil.getColorARGB(fluidStack, 1.0F),
-                  CuboidModelRenderer.FaceDisplay.FRONT, true);
-            }
+          var fillingFluidModel =
+              FluidRenderer.getFluidModel(fluidStack, size, 1 - RenderUtil.SCALED_PIXEL, size,
+                  FluidRenderer.FluidType.FLOWING);
+          if (fillingFluidModel != null) {
+            fillingFluidModel.setPackedLight(
+                RenderUtil.calculateGlowLight(packedLight, fluidStack));
+            fillingFluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
+            VertexConsumer builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
+            CuboidModelRenderer.render(fillingFluidModel, poseStack, builder,
+                RenderUtil.getColorARGB(fluidStack, 1),
+                CuboidModelRenderer.FaceDisplay.FRONT, true);
           }
           poseStack.popPose();
         }
@@ -118,33 +110,28 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     }
   }
 
-  private void renderFilterItem(TankMinecart cart, float partialTicks,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
-      float green, float blue, float alpha) {
+  private void renderFilterItem(TankMinecart cart, PoseStack matrixStack,
+      MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
-    {
-      ItemStack itemStack = cart.getFilterItem().copy();
+    var itemStack = cart.getFilterItem().copy();
 
-      final float scale = 1.2F;
+    final float scale = 1.2F;
 
-      matrixStack.pushPose();
-      {
-        matrixStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-        matrixStack.translate(0.0F, -0.9F, 0.68F);
-        matrixStack.scale(scale, scale, scale);
-        Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-            ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-            matrixStack, renderTypeBuffer, cart.level(), 0);
-      }
-      matrixStack.popPose();
+    matrixStack.pushPose();
+    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
+    matrixStack.translate(0, -0.9F, 0.68F);
+    matrixStack.scale(scale, scale, scale);
+    Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
+        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+        matrixStack, renderTypeBuffer, cart.level(), 0);
+    matrixStack.popPose();
 
-      matrixStack.mulPose(Axis.YN.rotationDegrees(90.0F));
-      matrixStack.translate(0.0F, -0.9F, 0.68F);
-      matrixStack.scale(scale, scale, scale);
-      Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-          ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-          matrixStack, renderTypeBuffer, cart.level(), 0);
-    }
+    matrixStack.mulPose(Axis.YN.rotationDegrees(90));
+    matrixStack.translate(0, -0.9F, 0.68F);
+    matrixStack.scale(scale, scale, scale);
+    Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
+        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+        matrixStack, renderTypeBuffer, cart.level(), 0);
     matrixStack.popPose();
   }
 

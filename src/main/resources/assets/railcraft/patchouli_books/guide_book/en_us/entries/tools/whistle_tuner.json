@@ -1,0 +1,11 @@
+{
+  "name": "Whistle Tuner",
+  "icon": "railcraft:whistle_tuner",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Looking for the perfect whistle pitch for your Locomotive? This tool will let you do that. Just break the Locomotive with it."
+    }
+  ]
+}

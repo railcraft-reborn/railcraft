@@ -129,6 +129,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
       var nbt = new CompoundTag();
       nbt.putString("name", entry.getKey().getSerializedName());
       nbt.putByteArray("signals", entry.getValue().toByteArray());
+      aspectsTag.add(nbt);
     }
     tag.put("signalAspectTriggerSignals", aspectsTag);
 

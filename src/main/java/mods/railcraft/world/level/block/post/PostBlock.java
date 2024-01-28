@@ -14,7 +14,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -147,8 +146,8 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      ItemStack itemStack = player.getItemInHand(hand);
-      return itemStack.getItem() == Items.LEAD ? InteractionResult.SUCCESS : InteractionResult.PASS;
+      var itemStack = player.getItemInHand(hand);
+      return itemStack.is(Items.LEAD) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     } else {
       return LeadItem.bindPlayerMobs(player, level, pos);
     }
@@ -156,17 +155,17 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
-    Level level = context.getLevel();
-    BlockPos blockPos = context.getClickedPos();
-    FluidState fluidState = level.getFluidState(context.getClickedPos());
-    BlockPos northPos = blockPos.north();
-    BlockPos eastPos = blockPos.east();
-    BlockPos southPos = blockPos.south();
-    BlockPos westPos = blockPos.west();
-    BlockState northState = level.getBlockState(northPos);
-    BlockState eastState = level.getBlockState(eastPos);
-    BlockState southState = level.getBlockState(southPos);
-    BlockState westState = level.getBlockState(westPos);
+    var level = context.getLevel();
+    var blockPos = context.getClickedPos();
+    var fluidState = level.getFluidState(context.getClickedPos());
+    var northPos = blockPos.north();
+    var eastPos = blockPos.east();
+    var southPos = blockPos.south();
+    var westPos = blockPos.west();
+    var northState = level.getBlockState(northPos);
+    var eastState = level.getBlockState(eastPos);
+    var southState = level.getBlockState(southPos);
+    var westState = level.getBlockState(westPos);
     return super.getStateForPlacement(context)
         .setValue(COLUMN, this.getColumn(level, blockPos))
         .setValue(NORTH, this.getConnection(northState,
@@ -177,7 +176,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
             southState.isFaceSturdy(level, southPos, Direction.NORTH), Direction.NORTH))
         .setValue(WEST, this.getConnection(westState,
             westState.isFaceSturdy(level, westPos, Direction.EAST), Direction.EAST))
-        .setValue(WATERLOGGED, Boolean.valueOf(fluidState.getType() == Fluids.WATER));
+        .setValue(WATERLOGGED, fluidState.getType().isSame(Fluids.WATER));
   }
 
 
@@ -212,10 +211,10 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   }
 
   public Column getColumn(BlockGetter level, BlockPos blockPos) {
-    BlockPos abovePos = blockPos.above();
-    BlockState aboveState = level.getBlockState(abovePos);
-    BlockPos belowPos = blockPos.below();
-    BlockState belowState = level.getBlockState(belowPos);
+    var abovePos = blockPos.above();
+    var aboveState = level.getBlockState(abovePos);
+    var belowPos = blockPos.below();
+    var belowState = level.getBlockState(belowPos);
 
     if (aboveState.is(BlockTags.RAILS)) {
       return Column.PLATFORM;
@@ -232,10 +231,6 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     return Column.SMALL;
-  }
-
-  public boolean isPlatform(BlockState state) {
-    return false;
   }
 
   @Override

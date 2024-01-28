@@ -20,11 +20,10 @@ public class RailcraftChestLoot implements LootTableSubProvider {
   // If you change the name, remember to regenerate the chest inside the structure
   // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}
   private static final ResourceLocation COMPONENT_WORKSHOP =
-      new ResourceLocation(Railcraft.ID, "chests/component_workshop");
+      Railcraft.rl("chests/component_workshop");
   public static final ResourceLocation ABANDONED_MINESHAFT =
-      new ResourceLocation(Railcraft.ID, "chests/abandoned_mineshaft");
-  public static final ResourceLocation SIMPLE_DUNGEON =
-      new ResourceLocation(Railcraft.ID, "chests/simple_dungeon");
+      Railcraft.rl("chests/abandoned_mineshaft");
+  public static final ResourceLocation SIMPLE_DUNGEON = Railcraft.rl("chests/simple_dungeon");
 
   @Override
   public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {

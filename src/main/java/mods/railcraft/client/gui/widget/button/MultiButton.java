@@ -24,7 +24,7 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   @Override
   public void onPress() {
     if (!this.locked && this.active) {
-      this.setState(this.state.getNext());
+      this.setState(this.state.next());
     }
   }
 
@@ -36,8 +36,8 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
     if (this.state != state && this.stateCallback != null) {
       this.state = state;
       this.stateCallback.accept(this.state);
-      this.setTexturePosition(this.state.getTexturePosition());
-      this.setMessage(this.state.getLabel());
+      this.setTexturePosition(this.state.texturePosition());
+      this.setMessage(this.state.label());
       this.setTooltip(this.tooltipFactory.createTooltip(this.state).orElse(null));
     }
   }
@@ -75,7 +75,7 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   @FunctionalInterface
   public interface TooltipFactory<T extends ButtonState<?>> {
 
-    TooltipFactory<ButtonState<?>> DEFAULT = state -> state.getTooltip().map(Tooltip::create);
+    TooltipFactory<ButtonState<?>> DEFAULT = state -> state.tooltip().map(Tooltip::create);
 
     Optional<Tooltip> createTooltip(T state);
   }

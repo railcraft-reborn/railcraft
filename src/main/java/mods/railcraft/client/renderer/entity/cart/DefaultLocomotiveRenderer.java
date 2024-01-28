@@ -21,16 +21,11 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<? super Locomotive> model,
       EntityModel<? super Locomotive> snowLayer) {
-    // Notice: do NOT remove the .png on these, they are needed.
     this(context, modelTag, model, snowLayer, new ResourceLocation[] {
-        new ResourceLocation(Railcraft.ID,
-            "textures/entity/locomotive/" + modelTag + "/primary.png"),
-        new ResourceLocation(Railcraft.ID,
-            "textures/entity/locomotive/" + modelTag + "/secondary.png"),
-        new ResourceLocation(Railcraft.ID,
-            "textures/entity/locomotive/" + modelTag + "/nocolor.png"),
-        new ResourceLocation(Railcraft.ID,
-            "textures/entity/locomotive/" + modelTag + "/snow.png")
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/primary.png"),
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/secondary.png"),
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/nocolor.png"),
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/snow.png")
     });
   }
 
@@ -58,17 +53,17 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
 
     for (int pass = 0; pass < 3; pass++) {
       float[] color = this.color[pass];
-      this.model.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      this.model.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       var vertexBuilder = renderTypeBuffer.getBuffer(this.model.renderType(this.textures[pass]));
       this.model.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
           color[0], color[1], color[2], alpha);
     }
 
     if (Seasons.isPolarExpress(cart)) {
-      this.snowLayer.setupAnim(cart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
+      this.snowLayer.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       var vertexBuilder = renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
       this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
-          OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+          OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
     }
     poseStack.popPose();
   }

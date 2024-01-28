@@ -4,7 +4,6 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import mods.railcraft.Railcraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftModelLayers {
 
@@ -38,15 +37,11 @@ public class RailcraftModelLayers {
   }
 
   private static ModelLayerLocation register(String model, String layer) {
-    ModelLayerLocation layerLocation = createLocation(model, layer);
+    var layerLocation = new ModelLayerLocation(Railcraft.rl(model), layer);
     if (!allModels.add(layerLocation)) {
       throw new IllegalStateException("Duplicate registration for " + layerLocation);
     } else {
       return layerLocation;
     }
-  }
-
-  private static ModelLayerLocation createLocation(String model, String layer) {
-    return new ModelLayerLocation(new ResourceLocation(Railcraft.ID, model), layer);
   }
 }

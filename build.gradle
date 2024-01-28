@@ -4,15 +4,18 @@ import static org.apache.commons.lang3.StringUtils.repeat
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'maven-publish'
     id 'net.neoforged.gradle' version '[6.0.18,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.79.0'
-    id 'me.modmuss50.mod-publish-plugin' version '0.3.3'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.4'
+    id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
 }
 
-// Simple name to not have long names when publishing with the CI
+def isRelease = System.getenv('CURSEFORGE_TOKEN')
+if (!isRelease) {
+    mod_version += "-snapshot"
+}
+
 version = "$minecraft_version-$mod_version"
 
 group = 'mods.railcraft'
@@ -23,6 +26,9 @@ base {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
+        if (System.getProperty('idea.active')) {
+            vendor = JvmVendorSpec.JETBRAINS
+        }
     }
 }
 
@@ -43,6 +49,7 @@ sourceSets {
         runtimeClasspath += sourceSets.api.output
         resources {
             srcDir 'src/generated/resources'
+            exclude '.cache'
         }
     }
     test {
@@ -67,6 +74,11 @@ minecraft {
         configureEach {
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'railcraft'
+
+            // Enables better hot reloading if using the JetBrains Runtime
+            if (System.getProperty('idea.active')) {
+                jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
+            }
 
             args '--mixin', 'railcraft.mixins.json'
 
@@ -105,7 +117,7 @@ repositories {
         url 'https://repo.spongepowered.org/repository/maven-public'
     }
     maven {
-        name 'JEI'
+        name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
 }
@@ -115,15 +127,27 @@ dependencies {
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
 
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -141,21 +165,22 @@ tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
     manifest {
         attributes([
-                'Specification-Title'       : project.name,
-                'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
-                'Specification-Version'     : '1',
-                'Implementation-Title'      : project.name,
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-                'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(), // this exists if you used git clone else its null.
-                'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                'MixinConfigs'              : 'railcraft.mixins.json'
+            'Specification-Title'       : project.name,
+            'Specification-Vendor'      : 'Sm0keySa1m0n, Edivad99',
+            'Specification-Version'     : '1',
+            'Implementation-Title'      : project.name,
+            'Implementation-Version'    : project.version,
+            'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
+            'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
+            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
     finalizedBy 'reobfJar'
 }
 
-task apiJar(type: Jar, group: 'build') {
+tasks.register('apiJar', Jar) {
+    group = 'build'
     from sourceSets.api.output
     archiveClassifier = 'api'
     manifest.from(jar.manifest)
@@ -170,13 +195,26 @@ mixin {
     add sourceSets.main, 'railcraft.refmap.json'
 }
 
+def penultimateTag = { ->
+    def stdout = new ByteArrayOutputStream()
+    try {
+        project.exec { ExecSpec spec ->
+            spec.commandLine('git', 'describe', '--abbrev=0', '--tags', 'HEAD~').standardOutput(stdout)
+        }.assertNormalExitValue().rethrowFailure()
+    } catch (Exception e) {
+        throw new IllegalStateException("Failed to get the tag; check if 'git' is on the PATH", e)
+    }
+    return stdout.toString()
+}
+
 tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo = projectDir.absolutePath.toString()
-    fromCommit = 'cbe30d7fab88e74ddf748ddb3dcf0112b7e645d3'
-    toRef = 'HEAD'
+    fromRevision = penultimateTag()
+    toRevision = 'HEAD'
     file = file('CHANGELOG.md')
     untaggedName = 'Next release'
     templateContent = file('changelog.mustache').text
+    ignoreCommitsIfMessageMatches = '^.*Merge branch.*$'
 }
 
 publishMods {
@@ -188,7 +226,7 @@ publishMods {
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
-    if (minecraft_version.equals('1.20.1')) {
+    if (minecraft_version == '1.20.1') {
         modLoaders.add('forge')
     }
     file = jar.archiveFile

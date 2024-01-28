@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollingMachineMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/manual_rolling_machine.png");
+      Railcraft.rl("textures/gui/container/manual_rolling_machine.png");
 
   public ManualRollingMachineScreen(ManualRollingMachineMenu menu, Inventory inventory,
       Component title) {

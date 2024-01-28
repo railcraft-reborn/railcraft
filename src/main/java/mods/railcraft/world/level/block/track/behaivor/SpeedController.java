@@ -3,11 +3,11 @@ package mods.railcraft.world.level.block.track.behaivor;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
@@ -26,11 +26,9 @@ public enum SpeedController implements TrackType.EventHandler {
     }
 
     private boolean isDerailing(RollingStock cart) {
-      if (CartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
-          && cart.level().getRandom().nextInt(500) == 250) {
-        return true;
-      }
-      return cart.train().stream().anyMatch(RollingStock::isDerailed);
+      return (MinecartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
+          && cart.level().getRandom().nextInt(500) == 250)
+          || cart.train().stream().anyMatch(RollingStock::isDerailed);
     }
 
     @Override
@@ -74,15 +72,13 @@ public enum SpeedController implements TrackType.EventHandler {
 
     @Override
     public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {
-      HighSpeedTools.performHighSpeedChecks(level, pos, RollingStock.getOrThrow(cart));
+      RollingStock.getOrThrow(cart).checkHighSpeed(pos);
     }
 
     @Override
     public double getMaxSpeed(Level level, @Nullable AbstractMinecart cart,
         BlockPos pos) {
-      return TrackUtil.getTrackDirection(level, pos, cart).isAscending()
-          ? HighSpeedTools.SPEED_SLOPE
-          : HighSpeedTools.speedForNextTrack(level, pos, 0, cart);
+      return HighSpeedTrackUtil.getMaxSpeed(level, cart, pos);
     }
   },
   REINFORCED {
@@ -92,7 +88,7 @@ public enum SpeedController implements TrackType.EventHandler {
         BlockPos pos) {
       var shape = TrackUtil.getTrackDirection(level, pos, cart);
       // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
-      return RailShapeUtil.isTurn(shape) || RailShapeUtil.isAscending(shape) ? 0.4F : 0.44F;
+      return RailShapeUtil.isTurn(shape) || shape.isAscending() ? 0.4F : 0.44F;
     }
   },
 

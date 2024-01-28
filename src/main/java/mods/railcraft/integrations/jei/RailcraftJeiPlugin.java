@@ -47,7 +47,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public ResourceLocation getPluginUid() {
-    return new ResourceLocation(Railcraft.ID, "jei_plugin");
+    return Railcraft.rl("jei_plugin");
   }
 
   @Override

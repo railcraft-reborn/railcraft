@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -61,6 +63,51 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   }
 
   @Override
+  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState,
+      boolean moved) {
+    this.adjustShape(state, level, pos);
+    super.onPlace(state, level, pos, oldBlockState, moved);
+  }
+
+  protected void adjustShape(BlockState blockState, Level level, BlockPos pos) {
+    var north = pos.north();
+    var south = pos.south();
+    var east = pos.east();
+    var west = pos.west();
+    if (BaseRailBlock.isRail(level, north) && BaseRailBlock.isRail(level, south) &&
+        BaseRailBlock.isRail(level, east) && BaseRailBlock.isRail(level, west)) {
+      return;
+    }
+    switch (TrackUtil.getRailShapeRaw(blockState)) {
+      case EAST_WEST -> {
+        if (!BaseRailBlock.isRail(level, north) || !BaseRailBlock.isRail(level, south)) {
+          return;
+        }
+
+        var northShape = TrackUtil.getTrackDirection(level, north);
+        var southShape = TrackUtil.getTrackDirection(level, south);
+
+        if (northShape.equals(RailShape.NORTH_SOUTH) && southShape.equals(RailShape.NORTH_SOUTH)) {
+          TrackUtil.setRailShape(level, pos, RailShape.NORTH_SOUTH);
+        }
+      }
+      case NORTH_SOUTH -> {
+        if (!BaseRailBlock.isRail(level, east) || !BaseRailBlock.isRail(level, west)) {
+          return;
+        }
+
+        var eastShape = TrackUtil.getTrackDirection(level, east);
+        var westShape = TrackUtil.getTrackDirection(level, west);
+
+        if (eastShape.equals(RailShape.EAST_WEST) && westShape.equals(RailShape.EAST_WEST)) {
+          TrackUtil.setRailShape(level, pos, RailShape.EAST_WEST);
+        }
+      }
+      default -> {}
+    }
+  }
+
+  @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       BlockPos neighborPos, boolean moved) {
     level.setBlockAndUpdate(pos,
@@ -80,18 +127,13 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
       @Nullable AbstractMinecart cart) {
     final boolean mirrored = isMirrored(blockState);
     if (isSwitched(blockState)) {
-      switch (getFacing(blockState)) {
-        case NORTH:
-          return mirrored ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
-        case SOUTH:
-          return mirrored ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
-        case EAST:
-          return mirrored ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
-        case WEST:
-          return mirrored ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
-        default:
-          throw new IllegalStateException("Invalid facing direction.");
-      }
+      return switch (getFacing(blockState)) {
+        case NORTH -> mirrored ? RailShape.SOUTH_WEST : RailShape.SOUTH_EAST;
+        case SOUTH -> mirrored ? RailShape.NORTH_EAST : RailShape.NORTH_WEST;
+        case EAST -> mirrored ? RailShape.NORTH_WEST : RailShape.SOUTH_WEST;
+        case WEST -> mirrored ? RailShape.SOUTH_EAST : RailShape.NORTH_EAST;
+        default -> throw new IllegalStateException("Invalid facing direction.");
+      };
     }
     return getRailShapeRaw(blockState);
   }

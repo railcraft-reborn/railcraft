@@ -26,33 +26,33 @@ public class ElectricLocomotiveModel extends HierarchicalModel<Locomotive> {
     root.addOrReplaceChild("wheels",
         CubeListBuilder.create()
             .texOffs(1, 25)
-            .addBox(-20F, -5F, -16F, 23, 2, 16, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-20, -5, -16, 23, 2, 16, deformation),
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("frame",
         CubeListBuilder.create()
             .texOffs(1, 1)
-            .addBox(-21F, -10F, -17F, 25, 5, 18, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-21, -10, -17, 25, 5, 18, deformation),
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("engine",
         CubeListBuilder.create()
             .texOffs(67, 37)
-            .addBox(-15F, -19F, -16F, 13, 9, 16, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-15, -19, -16, 13, 9, 16, deformation),
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("sideA",
         CubeListBuilder.create()
             .texOffs(35, 45)
-            .addBox(-20F, -17F, -13F, 5, 7, 10, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-20, -17, -13, 5, 7, 10, deformation),
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("sideB",
         CubeListBuilder.create()
             .texOffs(35, 45)
-            .addBox(-2F, -17F, -13F, 5, 7, 10, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-2, -17, -13, 5, 7, 10, deformation),
+        PartPose.offset(8, 8, 8));
     root.addOrReplaceChild("light",
         CubeListBuilder.create()
             .texOffs(1, 55)
-            .addBox(-21F, -18F, -10F, 6, 4, 4, deformation),
-        PartPose.offset(8.0F, 8.0F, 8.0F));
+            .addBox(-21, -18, -10, 6, 4, 4, deformation),
+        PartPose.offset(8, 8, 8));
 
     return LayerDefinition.create(mesh, 128, 64);
   }

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.behaivor.CollisionHandler;
@@ -11,7 +12,6 @@ import mods.railcraft.world.level.block.track.behaivor.SpeedController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -30,10 +30,10 @@ import net.minecraftforge.registries.RegistryObject;
 public class TrackTypes {
 
   private static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
-      ResourceKey.createRegistryKey(new ResourceLocation(Railcraft.ID, "track_type"));
+      ResourceKey.createRegistryKey(Railcraft.rl("track_type"));
 
   private static final DeferredRegister<TrackType> deferredRegister =
-      DeferredRegister.create(REGISTRY_KEY, Railcraft.ID);
+      DeferredRegister.create(REGISTRY_KEY, RailcraftConstants.ID);
 
   public static final Supplier<IForgeRegistry<TrackType>> REGISTRY =
       deferredRegister.makeRegistry(RegistryBuilder::new);

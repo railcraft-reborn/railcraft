@@ -29,8 +29,10 @@ public record SetAnalogSignalControllerBoxAttributesMessage(BlockPos blockPos,
     var level = context.get().getSender().level();
     level
         .getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
-        .ifPresent(
-            signalBox -> signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals));
+        .ifPresent(signalBox -> {
+          signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals);
+          signalBox.setChanged();
+        });
     return true;
   }
 }

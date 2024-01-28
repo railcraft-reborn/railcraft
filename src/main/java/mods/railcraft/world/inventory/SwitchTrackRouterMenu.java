@@ -1,8 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import java.util.Optional;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.world.item.RoutingTableBookItem;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,7 +15,8 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
 
   public SwitchTrackRouterMenu(int id, Inventory inventory,
       SwitchTrackRouterBlockEntity blockEntity) {
-    super(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), id, inventory.player, blockEntity::isStillValid);
+    super(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), id, inventory.player,
+        blockEntity::isStillValid);
     this.switchTrackRouter = blockEntity;
 
     var routingTableBookSlot = new Slot(switchTrackRouter, 0, 35, 24) {
@@ -43,7 +42,7 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
       public void setChanged() {
         super.setChanged();
         switchTrackRouter.resetLogic();
-        switchTrackRouter.getLogic().ifPresent(logic -> error.hidden = logic.getError() == null);
+        error.hidden = switchTrackRouter.logicError().isEmpty();
       }
     };
 
@@ -58,9 +57,5 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
 
   public Widget getErrorWidget() {
     return this.error;
-  }
-
-  public Optional<RoutingLogic> getLogic() {
-    return this.switchTrackRouter.getLogic();
   }
 }

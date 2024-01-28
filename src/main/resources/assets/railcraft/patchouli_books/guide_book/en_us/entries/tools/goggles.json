@@ -1,0 +1,15 @@
+{
+  "name": "Trackman's Goggles",
+  "icon": "railcraft:goggles",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Sometimes, the world you see isn't really all that is actually there. To help with this issue we bring you the latest developments in Augmented Reality, the Trackman's Goggles! These handy eyepieces let you see things about the world normally hidden, such as the Ender Fields that Anchor our world in place or the signals that link a Controller and Receiver together. It also possible to track player movement over that last 30 minutes, even other players."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Glasses must be attuned to the precise aura you wish to see and can only display one aura at a time. To change the current aura, you need to put the glasses in your hand and right-click or keep them on and press the letter $(k:railcraft.change_aura)."
+    }
+  ]
+}

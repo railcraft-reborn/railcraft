@@ -10,7 +10,6 @@ import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.util.BoxBuilder;
-import mods.railcraft.world.entity.vehicle.CartTools;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -115,7 +114,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
 
         if (!entity.isPassenger()) {
           teleportEffect(entity, cart.position());
-          CartTools.addPassenger(cart, entity);
+          entity.startRiding(cart);
         }
       }
     }
@@ -140,8 +139,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
       level.addParticle(ParticleTypes.PORTAL, pX, pY, pZ, vX, vY, vZ);
     }
 
-    level.playSound(
-        null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
+    level.playSound(null, entity, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1);
   }
 
   public static int getRadius(BlockState blockState) {

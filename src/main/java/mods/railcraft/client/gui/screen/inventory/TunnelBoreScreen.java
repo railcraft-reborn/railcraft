@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/tunnel_bore.png");
+      Railcraft.rl("textures/gui/container/tunnel_bore.png");
 
   private static final Component HEAD =
       Component.translatable(Translations.Screen.TUNNEL_BORE_HEAD);

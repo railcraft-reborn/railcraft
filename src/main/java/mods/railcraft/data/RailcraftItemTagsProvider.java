@@ -1,7 +1,7 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
@@ -19,7 +19,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
       CompletableFuture<HolderLookup.Provider> lookupProvider,
       CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider,
       ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, blockTagProvider, Railcraft.ID, fileHelper);
+    super(packOutput, lookupProvider, blockTagProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
@@ -212,6 +212,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.DETECTOR_TRACK_KIT.get())
         .add(RailcraftItems.DISEMBARKING_TRACK_KIT.get())
         .add(RailcraftItems.EMBARKING_TRACK_KIT.get())
+        .add(RailcraftItems.DUMPING_TRACK_KIT.get())
         .add(RailcraftItems.GATED_TRACK_KIT.get())
         .add(RailcraftItems.LAUNCHER_TRACK_KIT.get())
         .add(RailcraftItems.LOCKING_TRACK_KIT.get())
@@ -220,6 +221,9 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.ROUTING_TRACK_KIT.get())
         .add(RailcraftItems.THROTTLE_TRACK_KIT.get())
         .add(RailcraftItems.TRANSITION_TRACK_KIT.get());
+
+    this.tag(RailcraftTags.Items.SLAG)
+        .add(RailcraftItems.SLAG.get());
 
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
@@ -237,6 +241,13 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(RailcraftTags.Blocks.ZINC_ORE, RailcraftTags.Items.ZINC_ORE);
     this.copy(RailcraftTags.Blocks.SALTPETER_ORE, RailcraftTags.Items.SALTPETER_ORE);
 
+    this.copy(Tags.Blocks.ORE_RATES_SINGULAR, Tags.Items.ORE_RATES_SINGULAR);
+    this.copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
+    this.copy(Tags.Blocks.ORES, Tags.Items.ORES);
+    this.copy(Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE);
+    this.copy(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE);
+    this.copy(Tags.Blocks.ORES_IN_GROUND_NETHERRACK, Tags.Items.ORES_IN_GROUND_NETHERRACK);
+
     this.copy(RailcraftTags.Blocks.ABANDONED_TRACK, RailcraftTags.Items.ABANDONED_TRACK);
     this.copy(RailcraftTags.Blocks.ELECTRIC_TRACK, RailcraftTags.Items.ELECTRIC_TRACK);
     this.copy(RailcraftTags.Blocks.HIGH_SPEED_TRACK, RailcraftTags.Items.HIGH_SPEED_TRACK);
@@ -247,6 +258,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.copy(RailcraftTags.Blocks.STRAP_IRON_TRACK, RailcraftTags.Items.STRAP_IRON_TRACK);
 
     this.copy(RailcraftTags.Blocks.QUARRIED, RailcraftTags.Items.QUARRIED);
+    this.copy(RailcraftTags.Blocks.ABYSSAL, RailcraftTags.Items.ABYSSAL);
 
     // TOOLS
     this.tag(RailcraftTags.Items.TOOLS_AXES_STEEL).add(RailcraftItems.STEEL_AXE.get());
@@ -271,10 +283,5 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL);
     this.tag(Tags.Items.ARMORS_LEGGINGS).addTags(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL);
     this.tag(Tags.Items.ARMORS_BOOTS).addTags(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
-  }
-
-  @Override
-  public String getName() {
-    return "Railcraft Item Tags";
   }
 }

@@ -1,6 +1,7 @@
 package mods.railcraft.charge;
 
 import java.util.Random;
+import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeCartStorage;
@@ -14,20 +15,15 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   protected static final Random RANDOM = new Random();
   private static final int DRAW_INTERVAL = 8;
-  protected final float lossPerTick;
-  protected double draw;
-  protected int clock = RANDOM.nextInt();
-  protected int drewFromTrack;
-
-  public ChargeCartStorageImpl() {
-    this(5000, 0);
-  }
+  protected final int lossPerTick;
+  protected double draw, chargeDrawnThisTick;
+  protected int drewFromTrack, clock = RANDOM.nextInt(0, DRAW_INTERVAL);
 
   public ChargeCartStorageImpl(int capacity) {
     this(capacity, 0);
   }
 
-  public ChargeCartStorageImpl(int capacity, float lossPerTick) {
+  public ChargeCartStorageImpl(int capacity, int lossPerTick) {
     super(capacity);
     this.lossPerTick = lossPerTick;
   }
@@ -54,42 +50,49 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   @Override
   public void tick(AbstractMinecart owner) {
-    if (owner.level().isClientSide) {
+    if (owner.level().isClientSide()) {
       return;
     }
     clock++;
     removeLosses();
 
-    draw = (draw * 24.0) / 25.0;
+    this.draw = (this.draw * 24.0 + this.chargeDrawnThisTick) / 25.0;
+    this.chargeDrawnThisTick = 0;
 
     if (drewFromTrack > 0) {
       drewFromTrack--;
     } else if (energy < (capacity * 0.5) && clock % DRAW_INTERVAL == 0) {
-      RollingStock.getOrThrow(owner)
-          .train()
-          .stream()
-          .map(RollingStock::entity)
-          .map(c -> c.getCapability(ForgeCapabilities.ENERGY))
+      RollingStock.getOrThrow(owner).train().entities()
+          .flatMap(c -> c.getCapability(ForgeCapabilities.ENERGY)
+              .map(Stream::of)
+              .orElse(Stream.empty()))
           .findAny()
-          .ifPresent(c ->
-              c.ifPresent(energyStorage ->
-                  energy += energyStorage.extractEnergy(capacity - energy, false)
-              ));
+          .ifPresent(
+              energyStorage -> energy += energyStorage.extractEnergy(capacity - energy, false));
     }
   }
 
   @Override
   public void tickOnTrack(AbstractMinecart owner, BlockPos pos) {
-    if (!owner.level().isClientSide && needsCharging()) {
-      double drawnFromTrack = Charge.distribution
+    if (!owner.level().isClientSide() && needsCharging()) {
+      int drawnFromTrack = Charge.distribution
           .network((ServerLevel) owner.level())
           .access(pos)
           .removeCharge(capacity - energy, false);
-      if (drawnFromTrack > 0.0) {
+      if (drawnFromTrack > 0) {
         drewFromTrack = DRAW_INTERVAL * 4;
       }
       energy += drawnFromTrack;
     }
+  }
+
+  @Override
+  public int extractEnergy(int maxExtract, boolean simulate) {
+    int extracted = super.extractEnergy(maxExtract, simulate);
+    if (!simulate) {
+      this.chargeDrawnThisTick += extracted;
+    }
+    return extracted;
   }
 
   private boolean needsCharging() {

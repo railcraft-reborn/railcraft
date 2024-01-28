@@ -4,17 +4,22 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SteamBoilerTankBlock extends SteamBoilerBlock {
 
   public static final Property<ConnectionType> CONNECTION_TYPE =
       EnumProperty.create("connection_type", ConnectionType.class);
+
+  private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
 
   public SteamBoilerTankBlock(Properties properties) {
     super(properties);
@@ -25,6 +30,18 @@ public class SteamBoilerTankBlock extends SteamBoilerBlock {
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(CONNECTION_TYPE);
+  }
+
+  @Override
+  public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
+    return SHAPE;
+  }
+
+  @Override
+  public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
+    return SHAPE;
   }
 
   @Override
@@ -52,7 +69,7 @@ public class SteamBoilerTankBlock extends SteamBoilerBlock {
 
     private final String name;
 
-    private ConnectionType(String name) {
+    ConnectionType(String name) {
       this.name = name;
     }
 

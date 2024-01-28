@@ -4,9 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import net.minecraft.world.entity.vehicle.MinecartHopper;
 
 @Mixin(MinecartHopper.class)
@@ -28,14 +27,13 @@ public class MinecartHopperMixin {
   }
 
   private static void tryPushItem(MinecartHopper self) {
-    var transferService = CartUtil.transferService();
     var manipulator = ContainerManipulator.of(self);
     var rollingStock = RollingStock.getOrThrow(self);
     var full = true;
     // Push full stacks whenever possible
     for (var slot : manipulator) {
       if (slot.isFull()) {
-        slot.setItem(transferService.pushStack(rollingStock, slot.item()));
+        slot.setItem(rollingStock.pushItem(slot.item()));
       }
 
       if (slot.isEmpty()) {
@@ -49,7 +47,7 @@ public class MinecartHopperMixin {
 
     // If all slots are occupied, try to clear one of the slots.
     for (var slot : manipulator) {
-      var left = transferService.pushStack(rollingStock, slot.item());
+      var left = rollingStock.pushItem(slot.item());
       slot.setItem(left);
       if (left.isEmpty()) {
         return;

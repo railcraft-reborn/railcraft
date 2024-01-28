@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class FeedStationScreen extends AbstractContainerScreen<FeedStationMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/single_slot.png");
+      Railcraft.rl("textures/gui/container/single_slot.png");
 
   public FeedStationScreen(FeedStationMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

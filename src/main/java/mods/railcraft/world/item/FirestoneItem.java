@@ -1,19 +1,12 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.util.LevelUtil;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -21,19 +14,21 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BaseFireBlock;
 
 public class FirestoneItem extends Item {
 
-  public static final Predicate<ItemStack> SPAWNS_FIRE = itemStack -> itemStack.isEmpty()
-      || itemStack.is(RailcraftItems.RAW_FIRESTONE.get())
-      || itemStack.is(RailcraftItems.CUT_FIRESTONE.get())
-      || itemStack.is(RailcraftItems.CRACKED_FIRESTONE.get())
-      || ContainerTools.isStackEqualToBlock(itemStack, RailcraftBlocks.FIRESTONE_ORE.get());
+  private final boolean spawnsFire;
 
-  public FirestoneItem(Properties properties) {
+  public FirestoneItem(boolean spawnsFire, Properties properties) {
     super(properties);
+    this.spawnsFire = spawnsFire;
+  }
+
+  public boolean spawnsFire() {
+    return this.spawnsFire;
   }
 
   @Override
@@ -79,51 +74,42 @@ public class FirestoneItem extends Item {
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
       boolean isSelected) {
-    if (entity instanceof Player player
+    if (this.spawnsFire
+        && !level.isClientSide()
+        && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+        && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
       trySpawnFire(player.level(), player.blockPosition(), stack, player);
     }
   }
 
   public static boolean trySpawnFire(Level level, BlockPos pos, ItemStack stack, Entity entity) {
-    if (!SPAWNS_FIRE.test(stack))
-      return false;
     boolean spawnedFire = false;
     for (int i = 0; i < stack.getCount(); i++) {
-      spawnedFire |= spawnFire(level, pos, entity);
+      spawnedFire |= spawnFire(level, pos);
     }
-    if (spawnedFire && stack.isDamageableItem() && stack.getDamageValue() < stack.getMaxDamage() - 1) {
-      if (entity instanceof Player player)
+    if (spawnedFire && stack.isDamageableItem()
+        && stack.getDamageValue() < stack.getMaxDamage() - 1) {
+      if (entity instanceof Player player) {
         stack.hurtAndBreak(1, player, t -> {});
+      }
     }
     return spawnedFire;
   }
 
-  public static boolean spawnFire(Level level, BlockPos pos, @Nullable Entity entity) {
+  public static boolean spawnFire(Level level, BlockPos pos) {
     var random = level.getRandom();
     int x = pos.getX() - 5 + random.nextInt(12);
-    int y = pos.getY() - 5 + random.nextInt(12);
+    int y = pos.getY() + random.nextInt(12);
     int z = pos.getZ() - 5 + random.nextInt(12);
 
     y = Mth.clamp(y, level.getMinBuildHeight() + 2, level.getMaxBuildHeight() - 1);
 
-    BlockPos firePos = new BlockPos(x, y, z);
-    return canBurn(level, firePos)
-        && LevelUtil.setBlockState(level, firePos, Blocks.FIRE.defaultBlockState(), entity);
-  }
-
-  private static boolean canBurn(Level level, BlockPos pos) {
-    if (level.getBlockState(pos).isAir()) {
-      return false;
-    }
-    for (var side : Direction.values()) {
-      var offset = pos.relative(side);
-      var offsetBlockState = level.getBlockState(offset);
-      if (!offsetBlockState.isAir() && !offsetBlockState.is(BlockTags.FIRE)) {
-        return true;
-      }
-    }
-    return false;
+    var firePos = new BlockPos(x, y, z);
+    var blockState = BaseFireBlock.getState(level, firePos);
+    return level.getBlockState(firePos).isAir()
+        && blockState.canSurvive(level, firePos)
+        && level.setBlockAndUpdate(firePos, blockState);
   }
 
   @Override

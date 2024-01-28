@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "tag": "forge:dyes/yellow"
+    },
+    "b": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "c": {
+      "item": "minecraft:blaze_rod"
+    },
+    "d": {
+      "tag": "forge:storage_blocks/steel"
+    },
+    "e": {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    "f": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "pattern": [
+    "aba",
+    "cdc",
+    "efe"
+  ],
+  "result": {
+    "item": "railcraft:track_relayer"
+  },
+  "show_notification": true
+}

@@ -1,6 +1,6 @@
 package mods.railcraft.world.item.alchemy;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.alchemy.Potion;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftPotions {
 
   private static final DeferredRegister<Potion> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.POTIONS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.POTIONS, RailcraftConstants.ID);
 
   public static final RegistryObject<Potion> CREOSOTE =
       deferredRegister.register("creosote",

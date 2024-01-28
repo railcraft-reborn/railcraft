@@ -8,7 +8,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -137,7 +136,6 @@ public class RailcraftOreFeatures {
   }
 
   private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-    return ResourceKey.create(Registries.CONFIGURED_FEATURE,
-        new ResourceLocation(Railcraft.ID, name));
+    return ResourceKey.create(Registries.CONFIGURED_FEATURE, Railcraft.rl(name));
   }
 }

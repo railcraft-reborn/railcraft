@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
@@ -59,7 +59,7 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
         cart.setDeltaMovement(
             motion.add((motion.x() / speed) * boostFactor, 0, (motion.z() / speed) * boostFactor));
       } else {
-        CartTools.startBoost(cart, pos, dir, START_BOOST);
+        MinecartUtil.startBoost(cart, pos, dir, START_BOOST);
       }
       return;
     }
@@ -82,7 +82,7 @@ public class BoosterTrackBlock extends PoweredOutfittedTrackBlock {
             motion.add((motion.x() / speed) * BOOST_FACTOR_HS, 0,
                 (motion.z() / speed) * BOOST_FACTOR_HS));
       } else {
-        CartTools.startBoost(cart, pos, dir, START_BOOST);
+        MinecartUtil.startBoost(cart, pos, dir, START_BOOST);
       }
       return;
     }

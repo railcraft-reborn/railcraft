@@ -14,33 +14,31 @@ import net.minecraft.world.item.ItemStack;
 
 public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntity> {
 
-    private final ItemRenderer itemRenderer;
+  private final ItemRenderer itemRenderer;
 
-    public RitualBlockRenderer(BlockEntityRendererProvider.Context context) {
-        this.itemRenderer = context.getItemRenderer();
-    }
+  public RitualBlockRenderer(BlockEntityRendererProvider.Context context) {
+    this.itemRenderer = context.getItemRenderer();
+  }
 
-    @Override
-    public void render(RitualBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        poseStack.pushPose();
-        float yOffset = blockEntity.preYOffset +
-            (blockEntity.yOffset - blockEntity.preYOffset) * partialTick;
-        poseStack.translate(0.5, 0.95 + yOffset, 0.5);
+  @Override
+  public void render(RitualBlockEntity blockEntity, float partialTick, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    poseStack.pushPose();
+    var yOffset = blockEntity.getYOffset(partialTick);
+    poseStack.translate(0.5F, 0.95F + yOffset, 0.5F);
 
-        float yaw = blockEntity.preRotationYaw +
-            (blockEntity.rotationYaw - blockEntity.preRotationYaw) * partialTick;
-        poseStack.mulPose(Axis.YP.rotation(yaw));
+    var yaw = blockEntity.getRotationYaw(partialTick);
+    poseStack.mulPose(Axis.YP.rotation(yaw));
 
-        poseStack.scale(0.6F, 0.6F, 0.6F);
+    poseStack.scale(0.6F, 0.6F, 0.6F);
 
-        var firestone = new ItemStack(blockEntity.getBlockState().getValue(RitualBlock.CRACKED)
-            ? RailcraftItems.CRACKED_FIRESTONE.get()
-            : RailcraftItems.REFINED_FIRESTONE.get());
+    var firestone = new ItemStack(blockEntity.getBlockState().getValue(RitualBlock.CRACKED)
+        ? RailcraftItems.CRACKED_FIRESTONE.get()
+        : RailcraftItems.REFINED_FIRESTONE.get());
 
-        int id = (int) blockEntity.getBlockPos().asLong();
-        itemRenderer.renderStatic(firestone, ItemDisplayContext.NONE, packedLight, packedOverlay,
-            poseStack, bufferSource, blockEntity.level(), id);
-        poseStack.popPose();
-    }
+    int id = (int) blockEntity.getBlockPos().asLong();
+    this.itemRenderer.renderStatic(firestone, ItemDisplayContext.NONE, packedLight, packedOverlay,
+        poseStack, bufferSource, blockEntity.level(), id);
+    poseStack.popPose();
+  }
 }

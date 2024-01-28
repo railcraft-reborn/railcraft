@@ -17,7 +17,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
  */
 public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "cart_riding");
+  private static final ResourceLocation ID = Railcraft.rl("cart_riding");
   // private static final int FREQUENCY = 20;
 
   // private final Map<ServerPlayerEntity, AbstractMinecartEntity> mounting =

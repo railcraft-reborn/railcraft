@@ -63,7 +63,7 @@ public class ChargeMeterItem extends Item {
     return returnValue;
   }
 
-  private void sendChat(Player player, String translation, Object... args) {
+  public static void sendChat(Player player, String translation, Object... args) {
     for (int i = 0; i < args.length; i++) {
       if (args[i] instanceof Double doubleArg)
         args[i] = HumanReadableNumberFormatter.format(doubleArg);

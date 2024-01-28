@@ -4,7 +4,6 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-
 package mods.railcraft.api.signal;
 
 import java.util.Collection;
@@ -41,7 +40,7 @@ public interface SignalNetwork<T> {
   default Stream<T> stream() {
     return this.peers().stream()
         .map(this::peerAt)
-        .flatMap(optional -> optional.isPresent() ? Stream.of(optional.get()) : Stream.empty());
+        .flatMap(Optional::stream);
   }
 
   default int peerCount() {

@@ -105,7 +105,8 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   @Override
   protected void membershipChanged(@Nullable Membership<CrusherBlockEntity> membership) {
     if (membership == null) {
-      this.crusherModule.storage().setState(ChargeStorage.State.DISABLED);
+      this.crusherModule.storage()
+          .ifPresent(storage -> storage.setState(ChargeStorage.State.DISABLED));
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState()
               .setValue(CrusherMultiblockBlock.TYPE, CrusherMultiblockBlock.Type.NONE)
@@ -115,7 +116,8 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       return;
     }
     if (membership.master() == this) {
-      this.crusherModule.storage().setState(ChargeStorage.State.RECHARGEABLE);
+      this.crusherModule.storage()
+          .ifPresent(storage -> storage.setState(ChargeStorage.State.RECHARGEABLE));
     }
 
     var type = switch (membership.patternElement().marker()) {
@@ -153,12 +155,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         .map(CrusherBlockEntity::getCrusherModule);
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
       return masterModule
-          .map(m -> {
-            if (this.getBlockState().getValue(CrusherMultiblockBlock.OUTPUT)) {
-              return m.getOutputHandler();
-            }
-            return m.getInputHandler();
-          })
+          .map(CrusherModule::getItemHandler)
           .<LazyOptional<T>>map(LazyOptional::cast)
           .orElse(LazyOptional.empty());
     }

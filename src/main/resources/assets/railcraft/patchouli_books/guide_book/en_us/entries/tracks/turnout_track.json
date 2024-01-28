@@ -1,0 +1,15 @@
+{
+  "name": "Turnout Track",
+  "icon": "railcraft:iron_turnout_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Switch Rails allow you move minecarts from one rail line to another. They differ from vanilla Minecraft switches in that they allow you to either go straight or to turn, instead of either turning left or right."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "However, they cannot be operated directly by redstone. To do that you need a Switch Motor. The Switch Motor must be placed opposite the turnout. Alternatively, if you only want a manual switch, you can use a Switch Lever.$(br2)Minecarts approaching from the Diverging Line will temporally spring the switch regardless of its current setting, allowing them to traverse the switch without the need to manually realign it."
+    }
+  ]
+}

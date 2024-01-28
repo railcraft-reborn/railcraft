@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/crusher.png");
+      Railcraft.rl("textures/gui/container/crusher.png");
 
   public CrusherScreen(CrusherMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

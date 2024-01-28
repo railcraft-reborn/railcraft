@@ -1,0 +1,11 @@
+{
+  "name": "Buffer Stop Track",
+  "icon": "railcraft:iron_buffer_stop_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In need of a stylish bookend for your rail lines? Then this track is for you! Its the perfect end cap to prevent carts from rolling off the end of your tracks. Cart's won't bounce off or explode here, too!"
+    }
+  ]
+}

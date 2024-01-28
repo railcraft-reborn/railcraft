@@ -25,8 +25,8 @@ public abstract class SteamBoilerBlock extends MultiblockBlock {
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
       BlockEntityType<T> type) {
-    return level.isClientSide() ? null
-        : createTickerHelper(type, this.getBlockEntityType(),
-            SteamBoilerBlockEntity::serverTick);
+    return level.isClientSide()
+        ? null
+        : createTickerHelper(type, this.getBlockEntityType(), SteamBoilerBlockEntity::serverTick);
   }
 }

@@ -20,6 +20,7 @@ import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.core.Lockable;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -33,8 +34,8 @@ import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
-import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.Directional;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -62,7 +63,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -169,21 +169,20 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void setOwner(@Nullable GameProfile owner) {
+    if (owner != null && !owner.isComplete()) {
+      var ownerName = RailcraftConstants.UNKNOWN_PLAYER;
+      if (!StringUtils.isBlank(owner.getName())) {
+        ownerName = owner.getName();
+      }
+
+      owner = new GameProfile(owner.getId(), ownerName);
+    }
+
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 
   private float getNewWhistlePitch() {
     return 1f + (float) this.random.nextGaussian() * 0.2f;
-  }
-
-  /**
-   * Returns the cart's actual item.
-   */
-  protected abstract Item getItem();
-
-  @Override
-  public Item getDropItem() {
-    return getItem();
   }
 
   @Override
@@ -201,7 +200,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public ItemStack getPickResult() {
-    ItemStack itemStack = this.getItem().getDefaultInstance();
+    ItemStack itemStack = this.getDropItem().getDefaultInstance();
     if (this.isLocked()) {
       LocomotiveItem.setOwnerData(itemStack, this.getOwnerOrThrow());
     }
@@ -221,7 +220,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     ItemStack itemStack = player.getItemInHand(hand);
-    if (!itemStack.isEmpty() && itemStack.getItem() == RailcraftItems.WHISTLE_TUNER.get()) {
+    if (!itemStack.isEmpty() && itemStack.is(RailcraftItems.WHISTLE_TUNER.get())) {
       if (this.whistleDelay <= 0) {
         this.whistlePitch = this.getNewWhistlePitch();
         this.whistle();
@@ -231,7 +230,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return InteractionResult.CONSUME;
     }
     if (this.canControl(player)) {
-      super.interact(player, hand); // open gui
+      super.interact(player, hand);
     }
     return InteractionResult.CONSUME;
   }
@@ -284,13 +283,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.entityData.set(LOCK, (byte) lock.ordinal());
   }
 
-  /**
-   * Gets the destination ticket item.
-   */
-  public ItemStack getDestItem() {
-    return getTicketInventory().getItem(1);
-  }
-
   @Override
   public String getDestination() {
     return this.getEntityData().get(DESTINATION);
@@ -324,7 +316,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       var destination = TicketItem.getDestination(ticket);
       if (!destination.equals(this.getDestination())) {
         this.setDestination(destination);
-        this.getTicketInventory().setItem(1, TicketItem.copyTicket(ticket));
+        this.ticketContainer().setItem(1, TicketItem.copyTicket(ticket));
         return true;
       }
     }
@@ -455,7 +447,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void reverse() {
-    this.setYRot(this.getYRot() + 180.0F);
+    this.setYRot(this.getYRot() + 180);
     this.setDeltaMovement(this.getDeltaMovement().multiply(-1.0D, 1.0D, -1.0D));
   }
 
@@ -471,8 +463,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(),
-          1.0F, 1.0F);
+      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, 1);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }
@@ -480,6 +471,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public void tick() {
     super.tick();
+
+    if (this.isRemoved()) {
+      return;
+    }
 
     if (this.level().isClientSide()) {
       if (Seasons.isPolarExpress(this)
@@ -515,30 +510,35 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
   }
 
-  protected abstract Container getTicketInventory();
+  protected abstract Container ticketContainer();
 
   private void processTicket() {
-    Container invTicket = this.getTicketInventory();
-    ItemStack stack = invTicket.getItem(0);
-    if (stack.getItem() instanceof TicketItem) {
-      if (setDestination(stack)) {
-        invTicket.setItem(0, ContainerTools.depleteItem(stack));
+    var ticketContainer = this.ticketContainer();
+    var ticketStack = ticketContainer.getItem(0);
+    if (ticketStack.getItem() instanceof TicketItem) {
+      if (this.setDestination(ticketStack)) {
+        ticketContainer.setItem(0, ContainerTools.depleteItem(ticketStack));
       }
-    } else {
-      invTicket.setItem(0, ItemStack.EMPTY);
+      return;
     }
+
+    ticketContainer.setItem(0, ItemStack.EMPTY);
   }
 
   @Override
   protected void applyNaturalSlowdown() {
-    this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
-
-    if (isReverse() && getSpeed().getLevel() > getMaxReverseSpeed().getLevel()) {
-      setSpeed(getMaxReverseSpeed());
+    if (this.isRemoved()) {
+      return;
     }
 
-    Speed speed = getSpeed();
-    if (isRunning()) {
+    this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
+
+    if (this.isReverse() && this.getSpeed().getLevel() > this.getMaxReverseSpeed().getLevel()) {
+      this.setSpeed(this.getMaxReverseSpeed());
+    }
+
+    var speed = this.getSpeed();
+    if (this.isRunning()) {
       double force = RailcraftConfig.SERVER.locomotiveHorsepower.get() * 0.01F;
       if (isReverse()) {
         force = -force;
@@ -548,20 +548,20 @@ public abstract class Locomotive extends RailcraftMinecart implements
           force *= HS_FORCE_BONUS;
         }
       }
-      double yaw = this.getYRot() * Math.PI / 180D;
+      double yaw = this.getYRot() * Mth.DEG_TO_RAD;
       this.setDeltaMovement(
           this.getDeltaMovement().add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force));
     }
 
     if (speed != Speed.MAX) {
-      float limit = 0.4f;
-      switch (speed) {
-        case SLOWEST -> limit = 0.1f;
-        case SLOWER -> limit = 0.2f;
-        case NORMAL -> limit = 0.3f;
-      }
+      float limit = switch (speed) {
+        case SLOWEST -> 0.1F;
+        case SLOWER -> 0.2F;
+        case NORMAL -> 0.3F;
+        default -> 0.4F;
+      };
 
-      Vec3 motion = this.getDeltaMovement();
+      var motion = this.getDeltaMovement();
 
       this.setDeltaMovement(
           Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
@@ -571,16 +571,19 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   private int getFuelUse() {
-    if (isRunning()) {
+    if (this.isRunning()) {
       return switch (getSpeed()) {
         case SLOWEST -> 2;
         case SLOWER -> 4;
         case NORMAL -> 6;
         default -> 8;
       };
-    } else if (isIdle()) {
-      return getIdleFuelUse();
     }
+
+    if (this.isIdle()) {
+      return this.getIdleFuelUse();
+    }
+
     return 0;
   }
 
@@ -628,10 +631,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
       var extension = RollingStock.getOrThrow(this);
 
-      if (extension.train().stream()
-          .map(RollingStock::entity)
-          .noneMatch(t -> t.hasPassenger(entity))
-          && (isVelocityHigherThan(0.2f) || extension.isHighSpeed())
+      if (extension.train().entities().noneMatch(t -> t.hasPassenger(entity))
+          && (this.isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
@@ -639,7 +640,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
               getDamageToRoadKill(living));
         }
         if (living.getHealth() > 0) {
-          float yaw = (this.getYRot() - 90) * (float) Math.PI / 180.0F;
+          float yaw = (this.getYRot() - 90) * Mth.DEG_TO_RAD;
           this.setDeltaMovement(
               this.getDeltaMovement().add(-Mth.sin(yaw) * KNOCKBACK * 0.5F, 0.2D,
                   Mth.cos(yaw) * KNOCKBACK * 0.5F));
@@ -687,12 +688,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void remove(RemovalReason reason) {
-    this.getTicketInventory().setItem(1, ItemStack.EMPTY);
+    this.ticketContainer().setItem(1, ItemStack.EMPTY);
     super.remove(reason);
   }
 
   public void explode() {
-    CartTools.explodeCart(this);
+    MinecartUtil.explodeCart(this);
     this.remove(RemovalReason.KILLED);
   }
 
@@ -756,8 +757,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
-    var locos = RollingStock.getOrThrow(this).train().stream()
-        .map(RollingStock::entity)
+    var locos = RollingStock.getOrThrow(this).train().entities()
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {
@@ -915,17 +915,17 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.empty();
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return this.texture;
     }
 
     @Override
-    public Lock getNext() {
+    public Lock next() {
       return EnumUtil.next(this, values());
     }
 

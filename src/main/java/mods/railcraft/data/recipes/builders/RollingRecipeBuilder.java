@@ -92,7 +92,7 @@ public class RollingRecipeBuilder {
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "rolling/" + path);
+    var customResourceLocation = Railcraft.rl("rolling/" + path);
     finishedRecipe.accept(
         new Result(customResourceLocation, this.result, this.count,
             this.processTime, this.rows, this.key));

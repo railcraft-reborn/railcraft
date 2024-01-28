@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class WaterTankSidingScreen extends RailcraftMenuScreen<WaterTankSidingMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/tank.png");
+      Railcraft.rl("textures/gui/container/tank.png");
 
   public WaterTankSidingScreen(WaterTankSidingMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

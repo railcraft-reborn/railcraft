@@ -8,7 +8,6 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SyncWidgetMessage;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -167,7 +166,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
         Slot slot = this.slots.get(slotIndex);
         ItemStack stackInSlot = slot.getItem();
-        if (!stackInSlot.isEmpty() && ContainerTools.isItemEqual(stackInSlot, stackToShift)) {
+        if (!stackInSlot.isEmpty() && ItemStack.isSameItem(stackInSlot, stackToShift)) {
           int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
           int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
           if (resultingStackSize <= max) {

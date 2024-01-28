@@ -17,8 +17,8 @@ import net.minecraftforge.common.loot.LootModifier;
 
 public class DungeonLootModifier extends LootModifier {
 
-  public static final Supplier<Codec<DungeonLootModifier>> CODEC = Suppliers.memoize(() ->
-      RecordCodecBuilder.create(inst -> codecStart(inst)
+  public static final Supplier<Codec<DungeonLootModifier>> CODEC =
+      Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> codecStart(inst)
           .and(ResourceLocation.CODEC.fieldOf("lootTable").forGetter((m) -> m.lootTable))
           .apply(inst, DungeonLootModifier::new)));
   private final ResourceLocation lootTable;
@@ -28,6 +28,7 @@ public class DungeonLootModifier extends LootModifier {
     this.lootTable = lootTable;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   @NotNull
   protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,

@@ -9,7 +9,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
+import com.mojang.datafixers.util.Either;
 import mods.railcraft.Translations;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -19,9 +21,8 @@ import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
-import mods.railcraft.util.routing.RouterLogic;
 import mods.railcraft.util.routing.RoutingLogic;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
@@ -34,16 +35,15 @@ import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements ForwardingContainer, MenuProvider, RouterBlockEntity, RouterLogic, SwitchActuator {
+    implements ForwardingContainer, MenuProvider, RouterBlockEntity, SwitchActuator {
 
   private final AdvancedContainer container;
   @Nullable
-  private RoutingLogic logic;
+  private Either<RoutingLogic, RoutingLogicException> logic;
   private Railway railway = Railway.PUBLIC;
   private boolean powered;
 
@@ -103,44 +103,50 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     this.powered = data.readBoolean();
   }
 
-  @Override
   public boolean isPowered() {
     return this.powered;
   }
 
-  @Override
-  public Optional<RoutingLogic> getLogic() {
-    refreshLogic();
-    return Optional.ofNullable(logic);
+  public Optional<Either<RoutingLogic, RoutingLogicException>> logicResult() {
+    this.refreshLogic();
+    return Optional.ofNullable(this.logic);
   }
 
-  @Override
+  public Optional<RoutingLogic> logic() {
+    return this.logicResult().flatMap(x -> x.left());
+  }
+
+  public Optional<RoutingLogicException> logicError() {
+    return this.logicResult().flatMap(x -> x.right());
+  }
+
   public void resetLogic() {
-    logic = null;
+    this.logic = null;
   }
 
   private void refreshLogic() {
-    if (logic == null && !container.getItem(0).isEmpty()) {
-      var item = container.getItem(0);
+    if (this.logic == null && !this.container.getItem(0).isEmpty()) {
+      var item = this.container.getItem(0);
       if (item.getTag() != null && item.getTag().contains("pages")) {
         var content = loadPages(item.getTag());
-        logic = RoutingLogic.buildLogic(content);
+        try {
+          this.logic = Either.left(RoutingLogic.parseTable(content));
+        } catch (RoutingLogicException e) {
+          this.logic = Either.right(e);
+        }
       }
     }
   }
 
   @Override
-  public boolean shouldSwitch(@Nullable AbstractMinecart cart) {
-    boolean shouldSwitch = getLogic()
-        .map(l -> cart != null && l.isValid() && l.matches(this, cart))
+  public boolean shouldSwitch(RollingStock rollingStock) {
+    var shouldSwitch = this.logic()
+        .map(logic -> logic.matches(this, rollingStock))
         .orElse(false);
-    if (cart != null && railway.equals(Railway.PRIVATE)) {
-      var cartOwner = CartTools.getCartOwner(cart);
-      if (cartOwner == null) {
-        shouldSwitch = false;
-      } else {
-        shouldSwitch = shouldSwitch && PlayerUtil.isSamePlayer(cartOwner, this.getOwnerOrThrow());
-      }
+    if (this.railway == Railway.PRIVATE) {
+      shouldSwitch = rollingStock.owner()
+          .filter(owner -> PlayerUtil.isSamePlayer(owner, this.getOwnerOrThrow()))
+          .isPresent();
     }
     SwitchTrackActuatorBlock.setSwitched(
         this.getBlockState(), this.level, this.getBlockPos(), shouldSwitch);
@@ -150,7 +156,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   private static Deque<String> loadPages(CompoundTag tag) {
     Deque<String> contents = new LinkedList<>();
     var pages = tag.getList("pages", Tag.TAG_STRING).copy();
-    for(int i = 0; i < pages.size(); i++) {
+    for (int i = 0; i < pages.size(); i++) {
       var page = pages.getString(i).split("\n");
       contents.addAll(Arrays.asList(page));
     }
@@ -188,18 +194,18 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.translatable(Translations.makeKey("screen",
           String.format("switch_track_router.%s_railway", this.name)));
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public Railway getNext() {
+    public Railway next() {
       return EnumUtil.next(this, values());
     }
 

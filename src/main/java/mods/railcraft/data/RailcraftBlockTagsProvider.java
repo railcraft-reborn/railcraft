@@ -1,7 +1,7 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
@@ -16,7 +16,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
   public RailcraftBlockTagsProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> lookupProvider,
       ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, Railcraft.ID, fileHelper);
+    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
@@ -60,6 +60,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
             RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK.get(),
+            RailcraftBlocks.ABANDONED_DUMPING_TRACK.get(),
             RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
             RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
             RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
@@ -80,6 +81,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_DUMPING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
             RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
             RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
@@ -125,6 +127,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.IRON_COUPLER_TRACK.get(),
             RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.IRON_DISEMBARKING_TRACK.get(),
+            RailcraftBlocks.IRON_DUMPING_TRACK.get(),
             RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.IRON_WYE_TRACK.get(),
             RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
@@ -145,6 +148,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
             RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK.get(),
+            RailcraftBlocks.REINFORCED_DUMPING_TRACK.get(),
             RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
             RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
             RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
@@ -165,6 +169,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_DUMPING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
@@ -180,20 +185,12 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.TOKEN_SIGNAL.get(), RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
             RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(), RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
     this.tag(RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR)
-        .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get(),
-            RailcraftBlocks.SWITCH_TRACK_MOTOR.get(),
-            RailcraftBlocks.SWITCH_TRACK_ROUTER.get(),
-            RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
-            RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
-            RailcraftBlocks.DUAL_BLOCK_SIGNAL.get(),
-            RailcraftBlocks.DUAL_DISTANT_SIGNAL.get(),
-            RailcraftBlocks.DUAL_TOKEN_SIGNAL.get(),
-            RailcraftBlocks.BLOCK_SIGNAL.get(),
-            RailcraftBlocks.DISTANT_SIGNAL.get(),
-            RailcraftBlocks.TOKEN_SIGNAL.get(),
+        .add(RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
             RailcraftBlocks.ELEVATOR_TRACK.get())
         .addTag(RailcraftTags.Blocks.ASPECT_EMITTER)
         .addTag(RailcraftTags.Blocks.ASPECT_RECEIVER)
+        .addTag(RailcraftTags.Blocks.SIGNAL)
+        .addTag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .addTag(BlockTags.RAILS);
 
     this.tag(BlockTags.ANVIL)
@@ -265,7 +262,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.STEEL_TANK_GAUGE,
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
             RailcraftTags.Blocks.STEEL_TANK_WALL,
-            RailcraftTags.Blocks.QUARRIED);
+            RailcraftTags.Blocks.QUARRIED,
+            RailcraftTags.Blocks.ABYSSAL);
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
@@ -336,6 +334,15 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ETCHED_QUARRIED_STONE.get(),
             RailcraftBlocks.QUARRIED_BRICKS.get(),
             RailcraftBlocks.QUARRIED_PAVER.get());
+
+    this.tag(RailcraftTags.Blocks.ABYSSAL)
+        .add(RailcraftBlocks.ABYSSAL_STONE.get(),
+            RailcraftBlocks.ABYSSAL_COBBLESTONE.get(),
+            RailcraftBlocks.POLISHED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.CHISELED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.ETCHED_ABYSSAL_STONE.get(),
+            RailcraftBlocks.ABYSSAL_BRICKS.get(),
+            RailcraftBlocks.ABYSSAL_PAVER.get());
 
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)
@@ -409,10 +416,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
     this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
         .add(RailcraftBlocks.FIRESTONE_ORE.get());
-  }
 
-  @Override
-  public String getName() {
-    return "Railcraft Block Tags";
+    this.tag(Tags.Blocks.ENDERMAN_PLACE_ON_BLACKLIST)
+        .addTag(RailcraftTags.Blocks.STRENGTHENED_GLASS)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_GAUGE)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_VALVE)
+        .addTag(RailcraftTags.Blocks.IRON_TANK_WALL)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_GAUGE)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_VALVE)
+        .addTag(RailcraftTags.Blocks.STEEL_TANK_WALL);
   }
 }

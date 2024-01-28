@@ -3,10 +3,8 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.charge.ChargeCartStorage;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.util.RailcraftNBTUtil;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -28,6 +26,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
@@ -47,15 +48,18 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   private final Container ticketInventory =
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
-  private ChargeCartStorage cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
+  private ChargeCartStorageImpl cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
+  private final LazyOptional<IEnergyStorage> energyHandler;
 
   public ElectricLocomotive(EntityType<?> type, Level level) {
     super(type, level);
+    this.energyHandler = LazyOptional.of(() -> this.cartStorage);
   }
 
   public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, serverLevel);
+    this.energyHandler = LazyOptional.of(() -> this.cartStorage);
   }
 
   @Override
@@ -93,7 +97,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public Item getItem() {
+  public Item getDropItem() {
     return RailcraftItems.ELECTRIC_LOCOMOTIVE.get();
   }
 
@@ -103,7 +107,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  protected Container getTicketInventory() {
+  protected Container ticketContainer() {
     return this.ticketInventory;
   }
 
@@ -161,13 +165,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    RailcraftNBTUtil.loadEnergyCell(tag.getCompound("battery"), this.cartStorage);
+    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("battery", RailcraftNBTUtil.saveEnergyCell(this.cartStorage));
+    tag.putInt("energy", this.cartStorage.getEnergyStored());
   }
 
   @Override
@@ -177,15 +181,21 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     if (this.cartStorage == null) {
       this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
     }
-    RailcraftNBTUtil.loadEnergyCell(tag.getCompound("battery"), this.cartStorage);
+    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
   }
 
   @Override
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
-    itemStack.getOrCreateTag()
-        .put("battery", RailcraftNBTUtil.saveEnergyCell(this.cartStorage));
+    itemStack.getOrCreateTag().putInt("energy", this.cartStorage.getEnergyStored());
     return itemStack;
+  }
+
+  @Override
+  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
+    return ForgeCapabilities.ENERGY == capability
+        ? this.energyHandler.cast()
+        : super.getCapability(capability, facing);
   }
 
   @Override

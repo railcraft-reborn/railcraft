@@ -1,12 +1,12 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.world.level.material.FluidTools;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
@@ -32,8 +32,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private final ContainerMapper fluidContainer;
 
-  private LazyOptional<IItemHandler> itemHandler;
-  private LazyOptional<IFluidHandler> fluidHandler;
+  private final LazyOptional<IItemHandler> itemHandler;
+  private final LazyOptional<IFluidHandler> fluidHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
@@ -52,6 +52,15 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
           return ItemStack.EMPTY;
         }
         return super.extractItem(slot, amount, simulate);
+      }
+
+      @Override
+      @NotNull
+      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+        if (slot == SLOT_INPUT) {
+          return super.insertItem(slot, stack, simulate);
+        }
+        return stack;
       }
     });
 
@@ -123,8 +132,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
     return switch (slot) {
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
-      case SLOT_LIQUID_INPUT -> FluidItemHelper.isRoomInContainer(itemStack,
-          RailcraftFluids.CREOSOTE.get());
+      case SLOT_LIQUID_INPUT ->
+          FluidItemHelper.isRoomInContainer(itemStack, RailcraftFluids.CREOSOTE.get());
       case SLOT_OUTPUT, SLOT_LIQUID_PROCESSING, SLOT_LIQUID_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);

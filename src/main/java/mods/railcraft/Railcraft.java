@@ -1,16 +1,17 @@
 package mods.railcraft;
 
-import java.util.Set;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
+import mods.railcraft.data.RailcraftDatapackProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
@@ -24,9 +25,6 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
-import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
-import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
-import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.NetworkChannel;
@@ -34,10 +32,11 @@ import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
+import mods.railcraft.util.capability.FluidBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
-import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
@@ -45,8 +44,8 @@ import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
-import mods.railcraft.world.entity.vehicle.TrainTransferServiceImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.RailcraftItems;
@@ -59,30 +58,28 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataProvider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -100,22 +97,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod(Railcraft.ID)
+@Mod(RailcraftConstants.ID)
 public class Railcraft {
 
-  public static final String ID = "railcraft";
   public static final boolean BETA = true;
 
   static {
-    FuelUtil._setFuelManager(FuelManagerImpl.INSTANCE);
-    CartUtil._setTransferService(TrainTransferServiceImpl.INSTANCE);
+    FuelUtil._setFuelManager(new FuelManagerImpl());
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
     }
+  }
+
+  public static ResourceLocation rl(String path) {
+    return new ResourceLocation(RailcraftConstants.ID, path);
   }
 
   private final CrowbarHandler crowbarHandler = new CrowbarHandler();
@@ -128,11 +125,10 @@ public class Railcraft {
 
     var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
-    modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
 
-    if (FMLEnvironment.dist == Dist.CLIENT) {
+    if (FMLEnvironment.dist.isClient()) {
       ClientManager.init(modEventBus);
     }
 
@@ -157,12 +153,11 @@ public class Railcraft {
     RailcraftPoiTypes.register(modEventBus);
     RailcraftVillagerProfession.register(modEventBus);
     RailcraftLootModifiers.register(modEventBus);
+    RailcraftStructureTypes.register(modEventBus);
+    RailcraftStructurePieces.register(modEventBus);
   }
 
-  // ================================================================================
   // Mod Events
-  // ================================================================================
-
   private void handleCommonSetup(FMLCommonSetupEvent event) {
     NetworkChannel.registerAll();
 
@@ -171,11 +166,7 @@ public class Railcraft {
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
-    FuelUtil.fuelManager().addFuel(RailcraftFluids.CREOSOTE.get(), 4800);
-  }
-
-  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
-    event.register(RollingStock.class);
+    FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
   }
 
   public void buildContents(BuildCreativeModeTabContentsEvent event) {
@@ -206,6 +197,10 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(), new RailcraftLootModifierProvider(packOutput));
+    generator.addProvider(event.includeServer(),
+        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider, fileHelper));
+    generator.addProvider(event.includeServer(),
+        new RailcraftDatapackProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
@@ -215,27 +210,9 @@ public class Railcraft {
         new RailcraftSoundsProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
         new RailcraftSpriteSourceProvider(packOutput, fileHelper));
-
-    var builder = new RegistrySetBuilder()
-        .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
-        .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
-        .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
-        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap);
-
-    generator.addProvider(event.includeServer(),
-        (DataProvider.Factory<DatapackBuiltinEntriesProvider>) output ->
-            new DatapackBuiltinEntriesProvider(output, lookupProvider, builder, Set.of(ID)));
-
-    generator.addProvider(event.includeServer(),
-        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider.thenApply(provider ->
-            builder.buildPatch(RegistryAccess
-                .fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), provider)), fileHelper));
   }
 
-  // ================================================================================
   // Forge Events
-  // ================================================================================
-
   @SubscribeEvent
   public void handleServerAboutToStart(ServerAboutToStartEvent event) {
     ComponentWorkshop.addVillageStructures(event.getServer().registryAccess());
@@ -253,9 +230,15 @@ public class Railcraft {
     if (event.getObject() instanceof AbstractMinecart minecart) {
       event.addCapability(RollingStockImpl.KEY,
           CapabilityUtil.serializableProvider(
-              CompoundTag::new,
-              () -> new RollingStockImpl(minecart),
-              RollingStock.CAPABILITY));
+              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
+    }
+  }
+
+  @SubscribeEvent
+  public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+    var stack = event.getObject();
+    if (stack.is(Items.GLASS_BOTTLE)) {
+      event.addCapability(Railcraft.rl("bottle_container"), new FluidBottleWrapper(stack));
     }
   }
 
@@ -279,21 +262,37 @@ public class Railcraft {
           .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.simpleChannel().sendTo(new LinkedCartsMessage(linkedCarts),
-          player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+      NetworkChannel.GAME.sendTo(new LinkedCartsMessage(linkedCarts), player);
     }
   }
 
   @SubscribeEvent
-  public void handleMinecartInteract(PlayerInteractEvent.EntityInteract event) {
+  public void handleEntityInteract(PlayerInteractEvent.EntityInteract event) {
     if (event.getTarget() instanceof AbstractMinecart cart) {
       var player = event.getEntity();
       var hand = event.getHand();
-      event.setCanceled(this.minecartHandler.handleInteract(cart, player));
-      var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
-      if (crowbarActionResult.consumesAction()) {
-        event.setCanceled(true);
-        event.setCancellationResult(crowbarActionResult);
+      var stack = event.getItemStack();
+
+      if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
+        player.swing(hand);
+        if (!player.level().isClientSide()) {
+          cart.getCapability(ForgeCapabilities.ENERGY)
+              .filter(ChargeCartStorageImpl.class::isInstance)
+              .map(ChargeCartStorageImpl.class::cast)
+              .ifPresent(battery -> {
+                ChargeMeterItem.sendChat(player, Translations.ChargeMeter.CART,
+                    battery.getEnergyStored(), battery.getDraw(), battery.getLosses());
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+              });
+        }
+      } else {
+        event.setCanceled(this.minecartHandler.handleInteract(cart, player));
+        var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
+        if (crowbarActionResult.consumesAction()) {
+          event.setCanceled(true);
+          event.setCancellationResult(crowbarActionResult);
+        }
       }
     }
   }
@@ -318,10 +317,8 @@ public class Railcraft {
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
             .map(x -> x.getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
-        if (!cooked.isEmpty() && level.getRandom().nextDouble() < 0.5) {
-          cooked = cooked.copy();
-          cooked.setCount(drop.getCount());
-          entityItem.setItem(cooked);
+        if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
+          entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));
         }
       }
     }

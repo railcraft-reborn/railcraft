@@ -5,7 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public abstract class CrafterModule<T extends ModuleProvider> extends ContainerModule<T> {
 
-  public static final int PROGRESS_STEP = 16;
+  protected static final int PROGRESS_STEP = 16;
 
   protected int progress;
   protected int duration;
@@ -58,7 +58,7 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
   }
 
   public final int getDuration() {
-    return duration;
+    return this.duration;
   }
 
   protected abstract int calculateDuration();

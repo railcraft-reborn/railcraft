@@ -4,13 +4,13 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
-import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Redstone;
 
 public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements SignalReceiverEntity {
@@ -39,8 +39,8 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public int getRedstoneSignal(Direction direction) {
     return this.isActionSignalAspect(this.signalReceiver.getPrimarySignalAspect())
-        ? PowerUtil.FULL_POWER
-        : PowerUtil.NO_POWER;
+        ? Redstone.SIGNAL_MAX
+        : Redstone.SIGNAL_NONE;
   }
 
   @Override

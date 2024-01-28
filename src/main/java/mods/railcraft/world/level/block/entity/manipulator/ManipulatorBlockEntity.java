@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -14,6 +13,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.entity.ContainerBlockEntity;
 import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import net.minecraft.ChatFormatting;
@@ -136,8 +136,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     if (this.isManualMode()) {
       return;
     }
-    if (CartUtil.cartVelocityIsLessThan(cart.getDeltaMovement(), STOP_VELOCITY)
-        || cart.isPoweredCart()) {
+    if (MinecartUtil.cartVelocityIsLessThan(cart, STOP_VELOCITY) || cart.isPoweredCart()) {
       this.setPowered(true);
     }
   }
@@ -293,14 +292,14 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return this.label;
     }
 
     @Override
-    public Optional<Component> getTooltip() {
+    public Optional<Component> tooltip() {
       return Optional.of(CommonComponents.joinLines(
-          this.getLabel().copy()
+          this.label().copy()
               .withStyle(ChatFormatting.WHITE),
           Component.translatable(this.getTranslationKey())
               .withStyle(ChatFormatting.DARK_GREEN),
@@ -316,12 +315,12 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public TransferMode getNext() {
+    public TransferMode next() {
       return EnumUtil.next(this, values());
     }
   }
@@ -342,14 +341,14 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return this.label;
     }
 
     @Override
-    public Optional<Component> getTooltip() {
+    public Optional<Component> tooltip() {
       return Optional.of(CommonComponents.joinLines(
-          this.getLabel().copy()
+          this.label().copy()
               .withStyle(ChatFormatting.WHITE),
           Component.translatable(this.getTranslationKey())
               .withStyle(ChatFormatting.DARK_GREEN),
@@ -365,12 +364,12 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public RedstoneMode getNext() {
+    public RedstoneMode next() {
       return EnumUtil.next(this, values());
     }
   }

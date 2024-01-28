@@ -36,10 +36,10 @@ public final class RayTraceUtil {
     float reachAttribute = (float) player
         .getAttribute(ForgeMod.BLOCK_REACH.get()).getValue();
     double reachDistance = player.isCreative() ? reachAttribute : reachAttribute - 0.5F;
-    HitResult hitResult = player.pick(reachDistance, 1.0F, false);
-    Vec3 eyePosition = player.getEyePosition(1.0F);
-    boolean flag = !player.isCreative() && reachDistance > 3.0D;
-    double distance = player.isCreative() ? 6.0D : reachDistance;
+    HitResult hitResult = player.pick(reachDistance, 1, false);
+    Vec3 eyePosition = player.getEyePosition(1);
+    boolean flag = !player.isCreative() && reachDistance > 3;
+    double distance = player.isCreative() ? 6 : reachDistance;
     if (player.isCreative()) {
       reachDistance = distance;
     }
@@ -49,7 +49,7 @@ public final class RayTraceUtil {
       distance = hitResult.getLocation().distanceToSqr(eyePosition);
     }
 
-    Vec3 viewVector = player.getViewVector(1.0F);
+    Vec3 viewVector = player.getViewVector(1);
     Vec3 reachPosition = eyePosition.add(
         viewVector.x * reachDistance, viewVector.y * reachDistance, viewVector.z * reachDistance);
     AABB boundingBox = player.getBoundingBox()

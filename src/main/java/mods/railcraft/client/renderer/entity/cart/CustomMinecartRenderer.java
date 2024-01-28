@@ -30,15 +30,15 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f1 = (((float) (i >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-    poseStack.translate((double) f, (double) f1, (double) f2);
-    double d0 = Mth.lerp((double) partialTicks, cart.xOld, cart.getX());
-    double d1 = Mth.lerp((double) partialTicks, cart.yOld, cart.getY());
-    double d2 = Mth.lerp((double) partialTicks, cart.zOld, cart.getZ());
+    poseStack.translate(f, f1, f2);
+    double d0 = Mth.lerp(partialTicks, cart.xOld, cart.getX());
+    double d1 = Mth.lerp(partialTicks, cart.yOld, cart.getY());
+    double d2 = Mth.lerp(partialTicks, cart.zOld, cart.getZ());
     Vec3 vector3d = cart.getPos(d0, d1, d2);
     float pitch = Mth.lerp(partialTicks, cart.xRotO, cart.getXRot());
     if (vector3d != null) {
-      Vec3 vector3d1 = cart.getPosOffs(d0, d1, d2, (double) 0.3F);
-      Vec3 vector3d2 = cart.getPosOffs(d0, d1, d2, (double) -0.3F);
+      Vec3 vector3d1 = cart.getPosOffs(d0, d1, d2, 0.3F);
+      Vec3 vector3d2 = cart.getPosOffs(d0, d1, d2, -0.3F);
       if (vector3d1 == null) {
         vector3d1 = vector3d;
       }
@@ -52,8 +52,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       Vec3 vector3d3 = vector3d2.add(-vector3d1.x, -vector3d1.y, -vector3d1.z);
       if (vector3d3.length() != 0.0D) {
         vector3d3 = vector3d3.normalize();
-        yaw = (float) (Math.atan2(vector3d3.z, vector3d3.x) * 180.0D / Math.PI);
-        pitch = (float) (Math.atan(vector3d3.y) * 73.0D);
+        yaw = (float) (Math.atan2(vector3d3.z, vector3d3.x) * 180 / Math.PI);
+        pitch = (float) (Math.atan(vector3d3.y) * 73);
       }
     }
     yaw %= 360;
@@ -61,7 +61,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       yaw += 360;
     yaw += 360;
 
-    double serverYaw = cart.getYRot();
+    float serverYaw = cart.getYRot();
     serverYaw += 180;
     serverYaw %= 360;
     if (serverYaw < 0)
@@ -73,13 +73,13 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       pitch = -pitch;
     }
 
-    if (cart instanceof Directional) {
-      ((Directional) cart).setRenderYaw(yaw);
+    if (cart instanceof Directional directional) {
+      directional.setRenderYaw(yaw);
     }
-    poseStack.translate(0.0D, 0.375D, 0.0D);
+    poseStack.translate(0, 0.375F, 0);
 
-    if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getContents())
-        && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getContents())) {
+    if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getString())
+        && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getString())) {
       this.renderNameTag(cart, cart.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
@@ -95,9 +95,9 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
 
     float roll = (float) cart.getHurtTime() - partialTicks;
     float damage = cart.getDamage() - partialTicks;
-    if (damage < 0.0F)
-      damage = 0.0F;
-    if (roll > 0.0F) {
+    if (damage < 0)
+      damage = 0;
+    if (roll > 0) {
       poseStack.mulPose(Axis.XP.rotationDegrees(
           Mth.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }
@@ -110,12 +110,10 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
 
     if (ghostTrain) {
       poseStack.pushPose();
-      {
-        float scale = 1.1F;
-        poseStack.scale(scale, scale, scale);
-        this.renderBody(cart, partialTicks, poseStack, bufferSource, packedLight,
-            1.0F, 1.0F, 1.0F, 0.4F);
-      }
+      float scale = 1.1F;
+      poseStack.scale(scale, scale, scale);
+      this.renderBody(cart, partialTicks, poseStack, bufferSource, packedLight,
+          1.0F, 1.0F, 1.0F, 0.4F);
       poseStack.popPose();
     }
 

@@ -11,48 +11,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class EnergyUtil {
 
-  public static final IEnergyStorage DUMMY_STORAGE = new IEnergyStorage() {
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-      return 0;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-      return 0;
-    }
-
-    @Override
-    public int getEnergyStored() {
-      return 0;
-    }
-
-    @Override
-    public int getMaxEnergyStored() {
-      return 0;
-    }
-
-    @Override
-    public boolean canExtract() {
-      return false;
-    }
-
-    @Override
-    public boolean canReceive() {
-      return false;
-    }
-  };
-
-  public static int pushToSide(BlockEntity blockEntity, Direction side, int powerToTransfer) {
-    if (powerToTransfer <= 0) {
-      return 0;
-    }
-    return blockEntity.getCapability(ForgeCapabilities.ENERGY, side)
-        .filter(IEnergyStorage::canReceive)
-        .map(storage -> storage.receiveEnergy(powerToTransfer, false))
-        .orElse(0);
-  }
-
   public static int pushToSides(Level level, BlockPos blockPos, IEnergyStorage energyStorage,
       int pushPerSide, Predicate<BlockEntity> filter, Direction... sides) {
     return Arrays.stream(sides)

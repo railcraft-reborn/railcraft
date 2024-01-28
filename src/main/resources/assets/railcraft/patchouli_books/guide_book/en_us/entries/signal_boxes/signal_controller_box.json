@@ -1,0 +1,15 @@
+{
+  "name": "Signal Controller Box",
+  "icon": "railcraft:signal_controller_box",
+  "category": "railcraft:signal_boxes",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This box can be placed next to a Signal Receiver Box and will then send the Signal Aspect from the Receiver Box to a paired Receiver. Multiple Controller Boxes can be placed next to a single Receiver Box. This enables a single Block Signal to control multiple Switch Motors or Distant Signals.$(br2)Placing two Receiver Boxes next to a Controller Box will cause the Controller Box to send the most restrictive Signal Aspect between the two. Additionally it can be powered via Redstone to emit an Aspect chosen via a GUI."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It will not activate on the Redstone current emitted directly from a Signal Receiver Box. It will however always emit the most restrictive Aspect between the one chosen in the GUI and one received from a Receiver Box. You cannot link a controller to two receivers. Placing a receiver next to a controller will make the receiver give information to the controller but will not actually link them together."
+    }
+  ]
+}

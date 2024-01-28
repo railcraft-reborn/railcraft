@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 1800; // 90 sec
+  public static final int DEFAULT_COOKING_TIME = 20 * 20; // 20 sec
 
   private final int creosoteOutput;
 
@@ -43,10 +43,9 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "coke_oven/" + path);
+    var customResourceLocation = Railcraft.rl("coke_oven/" + path);
 
-    var advancementId = new ResourceLocation(Railcraft.ID,
-        String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

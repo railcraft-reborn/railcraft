@@ -2,13 +2,14 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidMinecart;
+import mods.railcraft.api.carts.FluidTransferHandler;
+import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.FluidTools.ProcessType;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.world.level.material.FluidTools;
-import mods.railcraft.world.level.material.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
@@ -27,7 +28,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -37,7 +37,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public abstract class BaseSteamLocomotive extends Locomotive implements FluidMinecart {
+public abstract class BaseSteamLocomotive extends Locomotive implements FluidTransferHandler {
 
   protected static final int SLOT_WATER_INPUT = 0;
   protected static final int SLOT_WATER_PROCESSING = 1;
@@ -109,12 +109,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    return FluidTools.interactWithFluidHandler(player, hand, getTankManager())
+    return FluidTools.interactWithFluidHandler(player, hand, this.tankManager())
         ? InteractionResult.SUCCESS
         : super.interact(player, hand);
   }
 
-  public TankManager getTankManager() {
+  public TankManager tankManager() {
     return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
   }
 
@@ -128,31 +128,37 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide) {
-      clientTick();
-    } else {
-      if (this.waterTank.isEmpty()) {
-        this.setMode(Mode.SHUTDOWN);
+
+    if (this.isRemoved()) {
+      return;
+    }
+
+    if (this.level().isClientSide()) {
+      this.clientTick();
+      return;
+    }
+
+    if (this.waterTank.isEmpty()) {
+      this.setMode(Mode.SHUTDOWN);
+    }
+    this.setSteaming(this.steamTank.getFluidAmount() > 0);
+
+    if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
+        || this.isShutdown()) {
+      this.boiler.tick(1);
+
+      this.setSmoking(this.boiler.isBurning());
+
+      // TODO: make venting a toggleable thing (why autodump while train has no coal??)
+      if (!this.boiler.isBurning()) {
+        this.ventSteam();
       }
-      this.setSteaming(this.steamTank.getFluidAmount() > 0);
+    }
 
-      if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
-          || this.isShutdown()) {
-        this.boiler.tick(1);
-
-        this.setSmoking(this.boiler.isBurning());
-
-        // TODO: make venting a toggleable thing (why autodump while train has no coal??)
-        if (!this.boiler.isBurning()) {
-          this.ventSteam();
-        }
-      }
-
-      if (++this.fluidProcessingTimer >= FluidTools.BUCKET_FILL_TIME) {
-        this.fluidProcessingTimer = 0;
-        this.processState = FluidTools.processContainer(this.invWaterContainers,
-            this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
-      }
+    if (++this.fluidProcessingTimer >= FluidTools.BUCKET_FILL_TIME) {
+      this.fluidProcessingTimer = 0;
+      this.processState = FluidTools.processContainer(this.invWaterContainers,
+          this.waterTank, ProcessType.DRAIN_ONLY, this.processState);
     }
   }
 
@@ -216,18 +222,18 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
     this.steamTank.internalDrain(4, FluidAction.EXECUTE);
   }
 
-  public SteamBoiler getBoiler() {
+  public SteamBoiler boiler() {
     return this.boiler;
   }
 
   @Override
   public int retrieveFuel() {
-    FluidStack steam = steamTank.getFluid();
+    var steam = this.steamTank.getFluid();
     if (steam == FluidStack.EMPTY) {
       return 0;
     }
-    if (steam.getAmount() >= steamTank.getCapacity() / 2) {
-      steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+    if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
+      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;
@@ -236,7 +242,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("tankManager", this.getTankManager().serializeNBT());
+    tag.put("tankManager", this.tankManager().serializeNBT());
     tag.put("boiler", this.boiler.serializeNBT());
     tag.putString("processState", this.processState.getSerializedName());
   }
@@ -244,7 +250,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
+    this.tankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(tag.getCompound("boiler"));
     this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
         .orElse(FluidTools.ProcessState.RESET);
@@ -260,12 +266,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidMin
   }
 
   @Override
-  public boolean canAcceptPushedFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canAcceptPushedFluid(RollingStock requester, FluidStack fluid) {
     return Fluids.WATER.isSame(fluid.getFluid());
   }
 
   @Override
-  public boolean canProvidePulledFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canProvidePulledFluid(RollingStock requester, FluidStack fluid) {
     return false;
   }
 

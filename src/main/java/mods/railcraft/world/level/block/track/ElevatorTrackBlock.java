@@ -250,8 +250,8 @@ public class ElevatorTrackBlock extends Block {
 
   private void holdPosition(BlockState state, AbstractMinecart cart, BlockPos pos) {
     cart.moveTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
-        getCartRotation(state, cart), 0F);
-    cart.setDeltaMovement(cart.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D));
+        getCartRotation(state, cart), 0);
+    cart.setDeltaMovement(cart.getDeltaMovement().multiply(1, 0, 1));
   }
 
   /**
@@ -287,12 +287,14 @@ public class ElevatorTrackBlock extends Block {
     return state.getValue(FACING).getStepY();
   }
 
+  @SuppressWarnings("deprecation")
   private boolean isPathEmpty(BlockState state, AbstractMinecart cart, BlockPos pos,
       boolean up) {
-    if (cart.level().getBlockState(pos).isSolid())
+    if (cart.level().getBlockState(pos).isSolid()) {
       return false;
-    Direction.Axis axis = state.getValue(FACING).getAxis();
-    BoxBuilder factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
+    }
+    var axis = state.getValue(FACING).getAxis();
+    var factory = BoxBuilder.create().at(pos).expandAxis(axis, 1.0);
     if (up) {
       factory.raiseCeiling(0.5);
       factory.raiseFloor(0.2);

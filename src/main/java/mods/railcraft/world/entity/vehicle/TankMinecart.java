@@ -3,14 +3,15 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidMinecart;
+import mods.railcraft.api.carts.FluidTransferHandler;
+import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.world.level.material.FluidTools;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,6 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +37,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TankMinecart extends FilteredMinecart implements WorldlyContainer, FluidMinecart {
+public class TankMinecart extends FilteredMinecart
+    implements WorldlyContainer, FluidTransferHandler {
 
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never
   // sync if the amount is changed.
@@ -207,12 +208,12 @@ public class TankMinecart extends FilteredMinecart implements WorldlyContainer, 
   }
 
   @Override
-  public boolean canAcceptPushedFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canAcceptPushedFluid(RollingStock requester, FluidStack fluid) {
     return this.canPassFluidRequests(fluid);
   }
 
   @Override
-  public boolean canProvidePulledFluid(AbstractMinecart requester, FluidStack fluid) {
+  public boolean canProvidePulledFluid(RollingStock requester, FluidStack fluid) {
     return this.canPassFluidRequests(fluid);
   }
 

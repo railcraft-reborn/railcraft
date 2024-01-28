@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.Optional;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
@@ -105,7 +106,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
         x + 0.9, y, z + 0.9, 1, 0, 0, 0, 0);
 
     serverLevel.playSound(
-        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1.0F);
+        null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.BLOCKS, 0.25F, 1);
   }
 
   boolean placeTrack(BlockPos blockPos, BlockState existingBlockState, RailShape railShape) {
@@ -227,8 +228,8 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     ForceTrackEmitterState.getByName(tag.getString("state")).ifPresent(this::loadState);
   }
 
-  private ChargeStorage storage() {
-    return this.access().storage().get();
+  private Optional<? extends ChargeStorage> storage() {
+    return this.level().isClientSide() ? Optional.empty() : this.access().storage();
   }
 
   private Charge.Access access() {

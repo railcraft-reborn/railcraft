@@ -7,7 +7,6 @@ import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraHandlerImpl implements TuningAuraHandler {
 
@@ -40,7 +39,7 @@ public class TuningAuraHandlerImpl implements TuningAuraHandler {
     int color = colorProfile.getColor(start, start.getBlockPos(), dest.getBlockPos());
 
     level.addParticle(
-        new TuningAuraParticleOptions(Vec3.atCenterOf(dest.getBlockPos()), color),
+        new TuningAuraParticleOptions(dest.getBlockPos().getCenter(), color),
         px, py, pz, 0.0D, 0.0D, 0.0D);
   }
 

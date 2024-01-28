@@ -1,7 +1,11 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import mods.railcraft.Translations;
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
@@ -10,6 +14,7 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
@@ -32,7 +36,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
-  public static final EntityDataAccessor<Byte> MODE =
+  private static final EntityDataAccessor<Byte> MODE =
       SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
 
   protected MaintenanceMinecart(EntityType<?> type, Level level) {
@@ -47,15 +51,15 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected void defineSynchedData() {
     super.defineSynchedData();
     this.entityData.define(BLINK, (byte) 0);
-    this.entityData.define(MODE, (byte) Mode.SERVICE.ordinal());
+    this.entityData.define(MODE, (byte) Mode.ON.ordinal());
   }
 
   @Override
   public float getMaxCartSpeedOnRail() {
-    return this.getMode().getSpeed();
+    return this.mode().speed();
   }
 
-  public Mode getMode() {
+  public Mode mode() {
     return RailcraftDataSerializers.getEnum(this.entityData, MODE, Mode.values());
   }
 
@@ -107,6 +111,18 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
   }
 
+  @Override
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putString("mode", this.mode().getSerializedName());
+  }
+
+  @Override
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.ON));
+  }
+
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
     ItemStack trackStack = getItem(slotStock);
     if (!trackStack.isEmpty()) {
@@ -122,11 +138,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
     var drops = state.getDrops(new LootParams.Builder((ServerLevel) this.level())
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
+        .withParameter(LootContextParams.ORIGIN, pos.getCenter()));
 
-    var extension = RollingStock.getOrThrow(this);
+    var rollingStock = RollingStock.getOrThrow(this);
     for (var stack : drops) {
-      CartUtil.transferService().offerOrDropItem(extension, stack);
+      rollingStock.offerOrDropItem(stack);
     }
     var trackShape = TrackUtil.getRailShapeRaw(state);
     this.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -135,8 +151,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
   public enum Mode implements ButtonState<Mode>, StringRepresentable {
 
-    SERVICE("service", 0.1F),
-    TRANSPORT("transport", 0.4F);
+    ON("on", 0.1F),
+    OFF("off", 0.4F);
+
+    private static final Map<String, Mode> byName = Arrays.stream(values())
+        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
 
     private final String name;
     private final float speed;
@@ -146,32 +165,40 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
       this.speed = speed;
     }
 
-    public float getSpeed() {
+    public float speed() {
       return this.speed;
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.translatable(this.getTranslationKey());
     }
 
     public String getTranslationKey() {
+      return Translations.makeKey("screen", "cart.maintenance.mode." + this.name);
+    }
+
+    public String getTipsKey() {
       return Translations.makeKey("tips", "cart.maintenance.mode." + this.name);
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
 
     @Override
-    public Mode getNext() {
+    public Mode next() {
       return EnumUtil.next(this, values());
     }
 
     @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public static Optional<Mode> getByName(String name) {
+      return Optional.ofNullable(byName.get(name));
     }
   }
 }

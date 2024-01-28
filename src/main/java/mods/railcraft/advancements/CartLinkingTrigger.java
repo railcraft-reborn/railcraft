@@ -14,7 +14,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "cart_linking");
+  private static final ResourceLocation ID = Railcraft.rl("cart_linking");
 
   @Override
   public ResourceLocation getId() {

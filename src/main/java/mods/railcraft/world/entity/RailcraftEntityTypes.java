@@ -1,14 +1,16 @@
 package mods.railcraft.world.entity;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
+import mods.railcraft.world.entity.vehicle.TrackRelayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
+import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -20,7 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftEntityTypes {
 
   private static final DeferredRegister<EntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -49,6 +51,24 @@ public class RailcraftEntityTypes {
           () -> create("track_layer",
               EntityType.Builder
                   .<TrackLayer>of(TrackLayer::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final RegistryObject<EntityType<TrackRelayer>> TRACK_RELAYER =
+      deferredRegister.register("track_relayer",
+          () -> create("track_relayer",
+              EntityType.Builder
+                  .<TrackRelayer>of(TrackRelayer::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final RegistryObject<EntityType<TrackUndercutter>> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> create("track_undercutter",
+              EntityType.Builder
+                  .<TrackUndercutter>of(TrackUndercutter::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));
@@ -99,6 +119,6 @@ public class RailcraftEntityTypes {
 
   private static <T extends Entity> EntityType<T> create(String registryName,
       EntityType.Builder<T> builder) {
-    return builder.build(new ResourceLocation(Railcraft.ID, registryName).toString());
+    return builder.build(Railcraft.rl(registryName).toString());
   }
 }

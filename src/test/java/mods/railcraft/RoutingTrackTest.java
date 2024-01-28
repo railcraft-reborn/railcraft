@@ -1,7 +1,6 @@
 package mods.railcraft;
 
-import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.RailcraftItems;
@@ -14,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-@GameTestHolder(Railcraft.ID)
+@GameTestHolder(RailcraftConstants.ID)
 @PrefixGameTestTemplate(false)
 public class RoutingTrackTest {
 
@@ -30,8 +29,7 @@ public class RoutingTrackTest {
     final var dest = "HOME";
     if (helper.getBlockEntity(ROUTING_TRACK_POS) instanceof RoutingTrackBlockEntity routingTrack) {
       var goldenTicket = new ItemStack(RailcraftItems.GOLDEN_TICKET.get());
-      TicketItem.setTicketData(goldenTicket, dest,
-          new GameProfile(null, RailcraftConstantsAPI.RAILCRAFT_PLAYER));
+      TicketItem.setTicketData(goldenTicket, dest, RailcraftConstants.FAKE_GAMEPROFILE);
       routingTrack.setItem(0, goldenTicket);
     }
     var train = helper.spawn(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), SPAWN_POINT);
@@ -53,8 +51,7 @@ public class RoutingTrackTest {
     final var dest = "HOME";
     if (helper.getBlockEntity(ROUTING_TRACK_POS) instanceof RoutingTrackBlockEntity routingTrack) {
       var goldenTicket = new ItemStack(RailcraftItems.GOLDEN_TICKET.get());
-      TicketItem.setTicketData(goldenTicket, dest,
-          new GameProfile(null, RailcraftConstantsAPI.RAILCRAFT_PLAYER));
+      TicketItem.setTicketData(goldenTicket, dest, RailcraftConstants.FAKE_GAMEPROFILE);
       routingTrack.setItem(0, goldenTicket);
     }
     var train = helper.spawn(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), SPAWN_POINT);
@@ -63,7 +60,7 @@ public class RoutingTrackTest {
     train.setMode(Locomotive.Mode.RUNNING);
     helper.succeedWhen(() -> {
       helper.assertEntityInstancePresent(train, DEST);
-      if (train.getDestination().equals("")) {
+      if (train.getDestination().isEmpty()) {
         helper.succeed();
       } else {
         helper.fail("Expected empty destination");

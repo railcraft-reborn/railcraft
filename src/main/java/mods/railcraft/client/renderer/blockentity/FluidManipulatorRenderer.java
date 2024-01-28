@@ -18,7 +18,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
 
   public static final ResourceLocation INTERIOR_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "entity/fluid_manipulator/interior");
+      Railcraft.rl("entity/fluid_manipulator/interior");
 
   private static final CuboidModel interiorModel =
       new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
@@ -42,25 +42,23 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     if (fluidStack != null && fluidStack.getAmount() > 0) {
 
       float capacity = tank.getCapacity();
-      var level = Math.min(fluidStack.getAmount() / capacity , 1.0F);
+      var level = Math.min(fluidStack.getAmount() / capacity , 1);
       var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
-          ? 1.0F
+          ? 1
           : level;
 
-      var model = FluidRenderer.getFluidModel(fluidStack, 1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
-          fluidMaxY - (RenderUtil.SCALED_PIXEL * 2.0F), 1.0F - (RenderUtil.SCALED_PIXEL * 2.0F),
+      var model = FluidRenderer.getFluidModel(fluidStack, 1 - (RenderUtil.SCALED_PIXEL * 2),
+          fluidMaxY - (RenderUtil.SCALED_PIXEL * 2), 1 - (RenderUtil.SCALED_PIXEL * 2),
           FluidRenderer.FluidType.STILL);
       if (model != null) {
         poseStack.pushPose();
-        {
-          poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
-              RenderUtil.SCALED_PIXEL);
-          model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
-          model.setPackedOverlay(packedOverlay);
-          CuboidModelRenderer.render(model, poseStack, consumer,
-              RenderUtil.getColorARGB(fluidStack, 1.0F),
-              CuboidModelRenderer.FaceDisplay.FRONT, true);
-        }
+        poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
+            RenderUtil.SCALED_PIXEL);
+        model.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+        model.setPackedOverlay(packedOverlay);
+        CuboidModelRenderer.render(model, poseStack, consumer,
+            RenderUtil.getColorARGB(fluidStack, 1),
+            CuboidModelRenderer.FaceDisplay.FRONT, true);
         poseStack.popPose();
       }
     }

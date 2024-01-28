@@ -7,7 +7,6 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.PowerUtil;
 import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -34,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Redstone;
 
 public class DetectorTrackBlock extends OutfittedTrackBlock {
 
@@ -91,7 +91,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   @Override
   public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos,
       Direction direction) {
-    return blockState.getValue(POWERED) ? PowerUtil.FULL_POWER : PowerUtil.NO_POWER;
+    return blockState.getValue(POWERED) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 
   @Override
@@ -214,7 +214,6 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
       return values()[(this.ordinal() + values().length - 1) % values().length];
     }
 
-    protected void updatePowerState(BlockState blockState, Level level, BlockPos blockPos) {
-    }
+    protected void updatePowerState(BlockState blockState, Level level, BlockPos blockPos) {}
   }
 }

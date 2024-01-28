@@ -4,7 +4,6 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-
 package mods.railcraft.api.track;
 
 import java.util.Arrays;
@@ -83,7 +82,7 @@ public final class TrackUtil {
         var soundType = railBlock.getSoundType(blockState, level, pos, null);
         level.playSound(null, pos,
             soundType.getPlaceSound(),
-            SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F,
+            SoundSource.BLOCKS, (soundType.getVolume() + 1) / 2,
             soundType.getPitch() * 0.8F);
       }
       return success;
@@ -146,7 +145,7 @@ public final class TrackUtil {
 
   public static boolean isStraightTrackAt(BlockGetter level, BlockPos pos) {
     return BaseRailBlock.isRail(level.getBlockState(pos))
-        && RailShapeUtil.isStraight(getTrackDirection(level, pos));
+        && !RailShapeUtil.isTurn(getTrackDirection(level, pos));
   }
 
   public static boolean isRail(ItemStack stack) {

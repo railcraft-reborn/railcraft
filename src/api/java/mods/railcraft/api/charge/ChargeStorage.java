@@ -4,7 +4,6 @@
  This work (the API) is licensed under the "MIT" License,
  see LICENSE.md for details.
  -----------------------------------------------------------------------------*/
-
 package mods.railcraft.api.charge;
 
 import net.minecraft.core.BlockPos;
@@ -89,7 +88,7 @@ public interface ChargeStorage extends IEnergyStorage {
   }
 
   default float getEfficiency() {
-    return 1.0F;
+    return 1;
   }
 
   /**

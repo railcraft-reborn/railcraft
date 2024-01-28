@@ -43,11 +43,11 @@ public class FluidFueledSteamBoilerMenu extends RailcraftMenu {
     this.addInventorySlots(inventory, 166);
 
     this.addDataSlot(new SimpleDataSlot(
-        () -> (int) Math.round(this.module.getBoiler().getBurnTime()),
+        () -> Math.round(this.module.getBoiler().getBurnTime()),
         this.module.getBoiler()::setBurnTime));
 
     this.addDataSlot(new SimpleDataSlot(
-        () -> (int) Math.round(this.module.getBoiler().getCurrentItemBurnTime()),
+        () -> Math.round(this.module.getBoiler().getCurrentItemBurnTime()),
         this.module.getBoiler()::setCurrentItemBurnTime));
   }
 

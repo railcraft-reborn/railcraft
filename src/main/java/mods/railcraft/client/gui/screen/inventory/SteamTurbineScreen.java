@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/steam_turbine.png");
+      Railcraft.rl("textures/gui/container/steam_turbine.png");
 
   public SteamTurbineScreen(SteamTurbineMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

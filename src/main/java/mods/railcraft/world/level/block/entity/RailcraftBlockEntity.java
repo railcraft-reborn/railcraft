@@ -8,7 +8,7 @@ import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.network.NetworkUtil;
+import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.world.module.BlockModuleProvider;
 import mods.railcraft.world.module.Module;
 import mods.railcraft.world.module.ModuleDispatcher;
@@ -41,7 +41,6 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public RailcraftBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
   }
-
 
   @Override
   public final ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -98,7 +97,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   public void syncToClient() {
     if (this.level instanceof ServerLevel serverLevel) {
       var packet = this.getUpdatePacket();
-      NetworkUtil.sendToTrackingChunk(packet, serverLevel, this.getBlockPos());
+      NetworkChannel.sendToTrackingChunk(packet, serverLevel, this.getBlockPos());
     }
   }
 
@@ -114,7 +113,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
 
   @Override
   public boolean isStillValid(Player player) {
-    return isStillValid(this, player);
+    return isStillValid(this, player, 64);
   }
 
   public final void setOwner(@Nullable GameProfile profile) {
@@ -207,10 +206,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this;
   }
 
-  public static boolean isStillValid(BlockEntity blockEntity, Player player) {
+  public static boolean isStillValid(BlockEntity blockEntity, Player player, int maxDistance) {
     var pos = blockEntity.getBlockPos();
+    var distance = player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
     return !blockEntity.isRemoved()
         && blockEntity.getLevel().getBlockEntity(pos).equals(blockEntity)
-        && player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 64;
+        && distance <= maxDistance;
   }
 }

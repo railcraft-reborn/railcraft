@@ -1,0 +1,16 @@
+{
+  "name": "Water Tank",
+  "icon": "railcraft:water_tank_siding",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Water Tank is a source of water for your railway. It is a passive system that collects water from the environment to keep the tank filled. The tank itself can hold 400 buckets of water and can be used to refill your Steam Locomotives (or other water consuming devices). The rate at which the tank refills is determined by biome, weather, and if the tank is outdoors (it can see the sky). It is generally recommended that you don't try running your railway through the desert.$(br2)To construct a water tank, build a 3x3x3 hollow structure out of Water Tank Siding similar to how you would build a Coke Oven."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Water Tank",
+      "multiblock_id": "railcraft:water_tank"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 3840,
+  "cookingTime": 1200,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:bucket"

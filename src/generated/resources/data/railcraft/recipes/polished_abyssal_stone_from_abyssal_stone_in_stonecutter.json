@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "railcraft:abyssal_stone"
+  },
+  "result": "railcraft:polished_abyssal_stone"
+}

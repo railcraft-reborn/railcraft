@@ -1,0 +1,16 @@
+{
+  "name": "Blast Furnace",
+  "icon": "railcraft:blast_furnace_bricks",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Blast Furnace is a 3x3x4 brick structure, hollow in the middle, for converting Iron Ingots into Steel Ingots.$(br2)The Oven is built out of 34 special bricks made from Nether Brick, Soul Sand, and Magma Cream. If broken down, it takes 36 Nether Bricks, 36 Soul Sand, and 9 Magma Creams to build one Blast Furnace. Blast Furnaces cannot be built adjacent to each other – there must be at least one tile in between Furnaces."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Blast Furnace",
+      "multiblock_id": "railcraft:blast_furnace"
+    }
+  ]
+}

@@ -1,12 +1,10 @@
 package mods.railcraft.particle;
 
-import java.util.List;
 import java.util.Locale;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,20 +13,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
-  public static final Codec<TuningAuraParticleOptions> CODEC =
-      RecordCodecBuilder.create(instance -> instance
-          .group(
-              Codec.DOUBLE
-                  .listOf()
-                  .comapFlatMap(
-                      list -> Util.fixedSize(list, 3).map(fixedList -> new Vec3(
-                          fixedList.get(0), fixedList.get(1), fixedList.get(2))),
-                      vec -> List.of(vec.x(), vec.y(), vec.z()))
-                  .fieldOf("destination")
-                  .forGetter(TuningAuraParticleOptions::destination),
-              Codec.INT
-                  .fieldOf("color")
-                  .forGetter(TuningAuraParticleOptions::color))
+  public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder.create(
+      instance -> instance.group(
+              Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
+              Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color))
           .apply(instance, TuningAuraParticleOptions::new));
 
   @SuppressWarnings("deprecation")

@@ -1,0 +1,11 @@
+{
+  "name": "Control Track",
+  "icon": "railcraft:iron_control_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "These rails act like weak boosters that only boost carts in one direction. Any carts travelling in the opposite direction will be gradually slowed. Powering them will reverse the direction of the rail. They are cheap to make and will propagate power for up to sixteen blocks in either direction. Default direction can be change with the Crowbar."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Signal Tuner",
+  "icon": "railcraft:signal_tuner",
+  "category": "railcraft:tools",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This electronic frequency scanner is used to pair a Controller with a Receiver. To initiate pairing, simply right-click on a Controller. Once you have done that, move to the Receiver you wish to pair the Controller to and right-click on it as well. If the pairing was successful you will receive a message to that effect on the screen. It can also be used to clear an existing pairing by right-clicking on either the controller or the receiver."
+    }
+  ]
+}

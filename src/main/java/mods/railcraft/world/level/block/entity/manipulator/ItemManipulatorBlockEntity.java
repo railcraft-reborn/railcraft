@@ -6,14 +6,14 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
-import mods.railcraft.util.container.manipulator.SlotAccessor;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -84,7 +84,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
       ContainerManifest remainingManifest = ContainerManifest.create(tile.getSource());
       remainingManifest.keySet()
-          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.stack()));
+          .removeIf(stackKey -> StackFilter.anyMatch(tile.getItemFilters()).test(stackKey.itemStack()));
 
       return remainingManifest.streamValueStacks().anyMatch(dest::willAccept);
     });

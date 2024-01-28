@@ -10,7 +10,6 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -134,7 +133,7 @@ public class RailcraftOrePlacements {
 
   @NotNull
   private static ResourceKey<PlacedFeature> createKey(String name) {
-    return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Railcraft.ID, name));
+    return ResourceKey.create(Registries.PLACED_FEATURE, Railcraft.rl(name));
   }
 
   @NotNull

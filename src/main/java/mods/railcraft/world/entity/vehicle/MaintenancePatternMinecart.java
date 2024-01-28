@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
@@ -52,21 +51,22 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
 
     ItemStack stackStock = getItem(slotStock);
 
-    var extension = RollingStock.getOrThrow(this);
+    var rollingStock = RollingStock.getOrThrow(this);
 
-    if (!stackStock.isEmpty() && !ContainerTools.isItemEqual(stackReplace, stackStock)) {
-      CartUtil.transferService().offerOrDropItem(extension, stackStock);
+    if (!stackStock.isEmpty() && !ItemStack.isSameItem(stackReplace, stackStock)) {
+      rollingStock.offerOrDropItem(stackStock);
       this.setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
     }
 
-    if (stackReplace.isEmpty())
+    if (stackReplace.isEmpty()) {
       return;
+    }
 
-    if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < getMaxStackSize())
+    if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < this.getMaxStackSize())
       this.setItem(slotStock,
-          ContainerTools.copy(stackReplace, stackStock.getCount() + CartUtil.transferService()
-              .pullStack(extension, x -> ItemStack.isSameItem(stackReplace, x)).getCount()));
+          stackReplace.copyWithCount(stackStock.getCount() + rollingStock
+              .pullItem(x -> ItemStack.isSameItem(stackReplace, x)).getCount()));
   }
 
   @Override

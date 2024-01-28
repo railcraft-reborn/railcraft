@@ -1,0 +1,5 @@
+{
+  "name": "Signal Boxes",
+  "description": "Boxes are part of Signalling module. They can be used to operate signals.",
+  "icon": "railcraft:signal_controller_box"
+}

@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 public class RailcraftButton extends Button {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/widgets.png");
+      Railcraft.rl("textures/gui/widgets.png");
 
   private TexturePosition texturePosition;
 
@@ -40,16 +40,16 @@ public class RailcraftButton extends Button {
   public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+    RenderSystem.setShaderColor(1, 1, 1, this.alpha);
     int i = this.getYImage(this.isHoveredOrFocused());
     RenderSystem.enableBlend();
     RenderSystem.defaultBlendFunc();
     RenderSystem.enableDepthTest();
 
-    int xOffset = this.texturePosition.getX();
-    int yOffset = this.texturePosition.getY();
-    int h = this.texturePosition.getHeight();
-    int w = this.texturePosition.getWidth();
+    int xOffset = this.texturePosition.x();
+    int yOffset = this.texturePosition.y();
+    int h = this.texturePosition.height();
+    int w = this.texturePosition.width();
 
     guiGraphics.blit(WIDGETS_LOCATION, this.getX(), this.getY(), xOffset, yOffset + i * h, this.width / 2, h);
     guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, this.getY(),

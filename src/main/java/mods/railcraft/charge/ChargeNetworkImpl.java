@@ -297,7 +297,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     protected void destroy(boolean touchNodes) {
       logger.debug("Destroying grid: {}", this);
       invalid = true;
-      totalLosses = 0.0F;
+      totalLosses = 0;
       if (touchNodes) {
         forEach(n -> n.chargeGrid = NULL_GRID);
       }
@@ -401,13 +401,13 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     public float getUtilization() {
       if (this.isInfinite()) {
-        return 0.0F;
+        return 0;
       }
       var potentialDraw = this.getPotentialDraw();
-      if (potentialDraw <= 0.0F) {
-        return 1.0F;
+      if (potentialDraw <= 0) {
+        return 1;
       }
-      return Math.min(this.averageUsagePerTick / potentialDraw, 1.0F);
+      return Math.min(this.averageUsagePerTick / potentialDraw, 1);
     }
 
     public boolean isInfinite() {
@@ -508,7 +508,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
   }
 
-  private class UsageRecorder {
+  private static class UsageRecorder {
     private final int ticksToRecord;
     private final Consumer<Double> usageConsumer;
 
@@ -595,7 +595,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     public boolean checkUsageRecordingCompletion() {
       usageRecorder = usageRecorder.filter(UsageRecorder::run);
-      return !usageRecorder.isPresent();
+      return usageRecorder.isEmpty();
     }
 
     @Override

@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 200; // 10 sec
+  public static final int DEFAULT_PROCESSING_TIME = 10 * 20; // 10 sec
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;
@@ -67,7 +67,7 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "crusher/crushing_" + path);
+    var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.processTime));

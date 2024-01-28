@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
-  private static final ResourceLocation ID = new ResourceLocation(Railcraft.ID, "use_track_kit");
+  private static final ResourceLocation ID = Railcraft.rl("use_track_kit");
 
   @Override
   public ResourceLocation getId() {
@@ -43,7 +43,7 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   public void trigger(ServerPlayer playerEntity, ServerLevel serverLevel,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity.serverLevel(), blockPos, stack));
+        (criterionInstance) -> criterionInstance.matches(serverLevel, blockPos, stack));
   }
 
   public static class Instance extends AbstractCriterionTriggerInstance {

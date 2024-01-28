@@ -1,0 +1,15 @@
+{
+  "name": "Signal Block Relay Box",
+  "icon": "railcraft:signal_block_relay_box",
+  "category": "railcraft:signal_boxes",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Signal Block Relay Box can be paired with up to two other Block Signals or Relays. It can used as either an end cap to a Signal Block or an extender. When being used as an extender it is possible to use it to wrap Signal Blocks around corners and have it function as a single Signal Block."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Additionally, the Relay can be configured to emit Redstone and acts as a Controller. It can also be placed adjacent to Signal Controller Boxes and Signal Capacitor Boxes in the same manner as a Signal Receiver Box."
+    }
+  ]
+}

@@ -34,7 +34,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/root"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/root"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -46,7 +46,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.Instance.hasLinked())
         .parent(root)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/link_carts"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/link_carts"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -58,7 +58,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.Instance.onSeasonSet())
         .parent(root)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/seasons"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/seasons"), fileHelper);
 
     Advancement rcLocomotive = Advancement.Builder.advancement()
         .display(
@@ -71,7 +71,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(root)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/locomotive"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/locomotive"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -83,7 +83,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.Instance.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/bed_cart"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/bed_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -95,7 +95,7 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.Instance.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/jukebox_cart"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/jukebox_cart"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -107,6 +107,6 @@ class RailcraftCartAdvancements implements ForgeAdvancementProvider.AdvancementG
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.Instance.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, new ResourceLocation(Railcraft.ID, "carts/surprise"), fileHelper);
+        .save(consumer, Railcraft.rl("carts/surprise"), fileHelper);
   }
 }

@@ -18,8 +18,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 public class KilledByLocomotiveTrigger
     extends SimpleCriterionTrigger<KilledByLocomotiveTrigger.Instance> {
 
-  private static final ResourceLocation ID =
-      new ResourceLocation(Railcraft.ID, "killed_by_locomotive");
+  private static final ResourceLocation ID = Railcraft.rl("killed_by_locomotive");
 
   @Override
   public ResourceLocation getId() {

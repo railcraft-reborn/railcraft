@@ -91,8 +91,7 @@ public class SteamFluid extends Fluid {
       @Override
       public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
-          private static final ResourceLocation STILL_TEXTURE =
-              new ResourceLocation(Railcraft.ID, "block/steam_still");
+          private static final ResourceLocation STILL_TEXTURE = Railcraft.rl("block/steam_still");
 
           @Override
           public int getTintColor() {

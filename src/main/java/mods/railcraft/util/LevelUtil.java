@@ -1,8 +1,6 @@
 package mods.railcraft.util;
 
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import net.minecraft.core.BlockPos;
@@ -59,11 +57,6 @@ public class LevelUtil {
     return level.setBlock(pos, blockState, Block.UPDATE_ALL);
   }
 
-  public static boolean setBlockState(Level level, BlockPos pos, BlockState blockState,
-      int update) {
-    return level.setBlock(pos, blockState, update);
-  }
-
   public static boolean setAir(Level level, BlockPos pos) {
     return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
   }
@@ -117,71 +110,18 @@ public class LevelUtil {
     return true;
   }
 
-  public static void neighborAction(BlockPos pos, Direction[] sides, Consumer<BlockPos> action) {
-    for (var side : sides) {
-      action.accept(pos.relative(side));
-    }
-  }
-
-  public static void sendBlockUpdated(Level level, BlockPos pos) {
-    sendBlockUpdated(level, pos, level.getBlockState(pos));
-  }
-
-  public static void sendBlockUpdated(Level level, BlockPos pos, BlockState state) {
-    sendBlockUpdated(level, pos, state, state);
-  }
-
-  public static void sendBlockUpdated(Level level, BlockPos pos, BlockState oldState,
-      BlockState newState) {
-    level.sendBlockUpdated(pos, oldState, newState, Block.UPDATE_LIMIT);
-  }
-
-  public static @Nullable BlockPos findBlock(Level level, BlockPos pos, int distance,
-      Predicate<BlockState> matcher) {
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    for (int yy = y - distance; yy < y + distance; yy++) {
-      for (int xx = x - distance; xx < x + distance; xx++) {
-        for (int zz = z - distance; zz < z + distance; zz++) {
-          var test = new BlockPos(xx, yy, zz);
-          if (matcher.test(level.getBlockState(test)))
-            return test;
-        }
-      }
-    }
-    return null;
-  }
-
   public static void spewItem(ItemStack stack, Level level, double x, double y, double z) {
-    if (!stack.isEmpty()) {
-      float xOffset = level.random.nextFloat() * 0.8F + 0.1F;
-      float yOffset = level.random.nextFloat() * 0.8F + 0.1F;
-      float zOffset = level.random.nextFloat() * 0.8F + 0.1F;
-      while (!stack.isEmpty()) {
-        int numToDrop = level.random.nextInt(21) + 10;
-        if (numToDrop > stack.getCount())
-          numToDrop = stack.getCount();
-        ItemStack newStack = stack.copy();
-        setSize(newStack, numToDrop);
-        decSize(stack, numToDrop);
-        var itemEntity = new ItemEntity(level, x + xOffset, y + yOffset, z + zOffset, newStack);
-        level.addFreshEntity(itemEntity);
-      }
+    if (stack.isEmpty()) {
+      return;
     }
-  }
-
-  private static ItemStack setSize(ItemStack stack, int size) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.setCount(size);
-    return stack;
-  }
-
-  private static ItemStack decSize(ItemStack stack, int size) {
-    if (stack.isEmpty())
-      return ItemStack.EMPTY;
-    stack.shrink(size);
-    return stack;
+    float xOffset = level.random.nextFloat() * 0.8F + 0.1F;
+    float yOffset = level.random.nextFloat() * 0.8F + 0.1F;
+    float zOffset = level.random.nextFloat() * 0.8F + 0.1F;
+    while (!stack.isEmpty()) {
+      int numToDrop = Math.min(level.random.nextInt(21) + 10, stack.getCount());
+      var newStack = stack.split(numToDrop);
+      var itemEntity = new ItemEntity(level, x + xOffset, y + yOffset, z + zOffset, newStack);
+      level.addFreshEntity(itemEntity);
+    }
   }
 }

@@ -1,6 +1,6 @@
 package mods.railcraft.data.loot;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.loot.packs.RailcraftChestLoot;
 import mods.railcraft.loot.DungeonLootModifier;
 import net.minecraft.data.PackOutput;
@@ -13,7 +13,7 @@ import net.minecraftforge.common.loot.LootTableIdCondition;
 public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
 
   public RailcraftLootModifierProvider(PackOutput output) {
-    super(output, Railcraft.ID);
+    super(output, RailcraftConstants.ID);
   }
 
   private void add(ResourceLocation targetLootTable, ResourceLocation customLootTable) {

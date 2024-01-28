@@ -18,7 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/item_manipulator.png");
+      Railcraft.rl("textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);

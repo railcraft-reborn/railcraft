@@ -1,0 +1,15 @@
+{
+  "name": "Launch Track",
+  "icon": "railcraft:iron_launcher_track",
+  "category": "railcraft:tracks",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This track will launch any cart that passes over it into the air. Launch force can be adjusted by right-clicking on the rail with a Crowbar.$(br2)The track must be powered with Redstone to launch carts."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Maybe not very realistic, but a ton of fun anyway!This track will launch any cart that passes over it into the air. Launch force can be adjusted by right-clicking on the rail with a Crowbar.$(br2)The track must be powered with Redstone to launch carts.$(br2)Maybe not very realistic, but a ton of fun anyway!"
+    }
+  ]
+}

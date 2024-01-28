@@ -4,6 +4,7 @@ import java.util.function.Function;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
@@ -45,6 +46,7 @@ import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock.Mode;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
@@ -113,6 +115,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet activeBoosterTrackModels;
   private StraightTrackModelSet embarkingTrack;
   private StraightTrackModelSet activeEmbarkingTrack;
+  private StraightTrackModelSet dumpingTrack;
+  private StraightTrackModelSet activeDumpingTrack;
   private StraightTrackModelSet launcherTrackModels;
   private StraightTrackModelSet activeLauncherTrackModels;
   private StraightTrackModelSet oneWayTrackModels;
@@ -146,7 +150,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet activeDisembarkingTrackRight;
 
   public RailcraftBlockModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, Railcraft.ID, fileHelper);
+    super(packOutput, RailcraftConstants.ID, fileHelper);
   }
 
   private ResourceLocation key(Block block) {
@@ -279,6 +283,22 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.simpleSlabBlock(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(),
         RailcraftBlocks.QUARRIED_PAVER.get());
 
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_COBBLESTONE.get());
+    this.simpleBlock(RailcraftBlocks.POLISHED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.CHISELED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ETCHED_ABYSSAL_STONE.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleBlock(RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.simpleStairsBlock(RailcraftBlocks.ABYSSAL_BRICK_STAIRS.get(),
+        RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleStairsBlock(RailcraftBlocks.ABYSSAL_PAVER_STAIRS.get(),
+        RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.simpleSlabBlock(RailcraftBlocks.ABYSSAL_BRICK_SLAB.get(),
+        RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.simpleSlabBlock(RailcraftBlocks.ABYSSAL_PAVER_SLAB.get(),
+        RailcraftBlocks.ABYSSAL_PAVER.get());
+
     this.fluidBlock(RailcraftBlocks.CREOSOTE.get());
 
     this.createSteelAnvil(RailcraftBlocks.STEEL_ANVIL.get());
@@ -347,6 +367,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.activeBoosterTrackModels = this.createActiveTrackModelSet("booster_track");
     this.embarkingTrack = this.createTrackModelSet("embarking_track");
     this.activeEmbarkingTrack = this.createActiveTrackModelSet("embarking_track");
+    this.dumpingTrack = this.createTrackModelSet("dumping_track");
+    this.activeDumpingTrack = this.createActiveTrackModelSet("dumping_track");
     this.launcherTrackModels = this.createTrackModelSet("launcher_track");
     this.activeLauncherTrackModels = this.createActiveTrackModelSet("launcher_track");
     this.oneWayTrackModels = this.createTrackModelSet("one_way_track");
@@ -393,6 +415,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ABANDONED_COUPLER_TRACK.get(),
         RailcraftBlocks.ABANDONED_EMBARKING_TRACK.get(),
         RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK.get(),
+        RailcraftBlocks.ABANDONED_DUMPING_TRACK.get(),
         RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
         RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
         RailcraftBlocks.ABANDONED_JUNCTION_TRACK.get(),
@@ -414,6 +437,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.IRON_COUPLER_TRACK.get(),
         RailcraftBlocks.IRON_EMBARKING_TRACK.get(),
         RailcraftBlocks.IRON_DISEMBARKING_TRACK.get(),
+        RailcraftBlocks.IRON_DUMPING_TRACK.get(),
         RailcraftBlocks.IRON_TURNOUT_TRACK.get(),
         RailcraftBlocks.IRON_WYE_TRACK.get(),
         RailcraftBlocks.IRON_JUNCTION_TRACK.get(),
@@ -435,6 +459,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
+        RailcraftBlocks.STRAP_IRON_DUMPING_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_JUNCTION_TRACK.get(),
@@ -456,6 +481,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.REINFORCED_COUPLER_TRACK.get(),
         RailcraftBlocks.REINFORCED_EMBARKING_TRACK.get(),
         RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK.get(),
+        RailcraftBlocks.REINFORCED_DUMPING_TRACK.get(),
         RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
         RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
         RailcraftBlocks.REINFORCED_JUNCTION_TRACK.get(),
@@ -477,6 +503,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.ELECTRIC_COUPLER_TRACK.get(),
         RailcraftBlocks.ELECTRIC_EMBARKING_TRACK.get(),
         RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK.get(),
+        RailcraftBlocks.ELECTRIC_DUMPING_TRACK.get(),
         RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
         RailcraftBlocks.ELECTRIC_JUNCTION_TRACK.get(),
@@ -550,7 +577,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.simpleBlock(block, model);
 
-    var side = new ResourceLocation(Railcraft.ID, "block/fluid_manipulator_side_inventory");
+    var side = Railcraft.rl("block/fluid_manipulator_side_inventory");
     var bottom = TextureMapping.getBlockTexture(block, "_bottom");
     var top = TextureMapping.getBlockTexture(block, "_top");
     this.models().cubeBottomTop(this.name(block, "_inventory"), side, bottom, top);
@@ -575,16 +602,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         horizontalTexture.get(TextureSlot.SIDE), horizontalTexture.get(TextureSlot.FRONT),
         horizontalTexture.get(TextureSlot.TOP));
 
-    var side = TextureMapping.getBlockTexture(block, "_side");
-    var front = TextureMapping.getBlockTexture(block, "_front");
-    var top = TextureMapping.getBlockTexture(block, "_top");
-    var upModel = this.models().cubeBottomTop(this.name(block, "_up"), side, top, front);
-    var downModel = this.models().cubeBottomTop(this.name(block, "_down"), side, front, top);
-
     this.getVariantBuilder(block)
         .forAllStatesExcept(blockState -> {
           Direction facing = blockState.getValue(BlockStateProperties.FACING);
           int yRot = 0;
+          int xRot = 0;
 
           switch (facing) {
             case SOUTH:
@@ -597,16 +619,18 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
               yRot = 270;
               break;
             case UP:
-              return ConfiguredModel.builder().modelFile(upModel).build();
+              xRot = 270;
+              break;
             case DOWN:
-              return ConfiguredModel.builder().modelFile(downModel).build();
+              xRot = 90;
+              break;
             default:
               break;
           }
 
           return ConfiguredModel.builder()
               .modelFile(horizontalModel)
-              .rotationX(0)
+              .rotationX(xRot)
               .rotationY(yRot)
               .build();
         }, AdvancedItemLoaderBlock.POWERED);
@@ -1505,16 +1529,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
       GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
       CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-      DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-      WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-      LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
-      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      DisembarkingTrackBlock disembarkingTrackBlock, DumpingTrackBlock dumpingTrackBlock,
+      TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+      JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+      OneWayTrackBlock oneWayTrackBlock, WhistleTrackBlock whistleTrackBlock,
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     this.createAbandonedFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
-        couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
-        wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
+        couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, dumpingTrackBlock,
+        turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
         whistleTrackBlock, locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
@@ -1523,16 +1548,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
       GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
       CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-      DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-      WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-      LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
-      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      DisembarkingTrackBlock disembarkingTrackBlock, DumpingTrackBlock dumpingTrackBlock,
+      TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+      JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+      OneWayTrackBlock oneWayTrackBlock, WhistleTrackBlock whistleTrackBlock,
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     this.createFlexTrack(block);
     this.createOutfittedTracks(block, lockingTrackBlock, bufferStopTrackBlock, activatorTrackBlock,
         boosterTrackBlock, controlTrackBlock, gatedTrackBlock, detectorTrackBlock,
-        couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, turnoutTrackBlock,
-        wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
+        couplerTrackBlock, embarkingTrackBlock, disembarkingTrackBlock, dumpingTrackBlock,
+        turnoutTrackBlock, wyeTrackBlock, junctionTrackBlock, launcherTrackBlock, oneWayTrackBlock,
         whistleTrackBlock, locomotiveTrackBlock, throttleTrackBlock, routingTrackBlock);
   }
 
@@ -1541,11 +1567,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       BoosterTrackBlock boosterTrackBlock, ControlTrackBlock controlTrackBlock,
       GatedTrackBlock gatedTrackBlock, DetectorTrackBlock detectorTrackBlock,
       CouplerTrackBlock couplerTrackBlock, EmbarkingTrackBlock embarkingTrackBlock,
-      DisembarkingTrackBlock disembarkingTrackBlock, TurnoutTrackBlock turnoutTrackBlock,
-      WyeTrackBlock wyeTrackBlock, JunctionTrackBlock junctionTrackBlock,
-      LauncherTrackBlock launcherTrackBlock, OneWayTrackBlock oneWayTrackBlock,
-      WhistleTrackBlock whistleTrackBlock, LocomotiveTrackBlock locomotiveTrackBlock,
-      ThrottleTrackBlock throttleTrackBlock, RoutingTrackBlock routingTrackBlock) {
+      DisembarkingTrackBlock disembarkingTrackBlock, DumpingTrackBlock dumpingTrackBlock,
+      TurnoutTrackBlock turnoutTrackBlock, WyeTrackBlock wyeTrackBlock,
+      JunctionTrackBlock junctionTrackBlock, LauncherTrackBlock launcherTrackBlock,
+      OneWayTrackBlock oneWayTrackBlock, WhistleTrackBlock whistleTrackBlock,
+      LocomotiveTrackBlock locomotiveTrackBlock, ThrottleTrackBlock throttleTrackBlock,
+      RoutingTrackBlock routingTrackBlock) {
     var outfittedTrackModels = this.createOutfittedTrackModelSet(block);
 
     this.createActiveOutfittedTrack(activatorTrackBlock, true, false, outfittedTrackModels,
@@ -1554,6 +1581,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         this.boosterTrackModels, this.activeBoosterTrackModels);
     this.createActiveOutfittedTrack(embarkingTrackBlock, true, false, outfittedTrackModels,
         this.embarkingTrack, this.activeEmbarkingTrack);
+    this.createActiveOutfittedTrack(dumpingTrackBlock, true, false, outfittedTrackModels,
+        this.dumpingTrack, this.activeDumpingTrack);
     this.createActiveOutfittedTrack(launcherTrackBlock, false, false, outfittedTrackModels,
         this.launcherTrackModels, this.activeLauncherTrackModels);
     this.createActiveOutfittedTrack(oneWayTrackBlock, false, true, outfittedTrackModels,

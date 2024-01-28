@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
@@ -48,16 +49,16 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   @Override
   protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
       float partialTicks) {
-    this.drawCenteredString(guiGraphics,
+    GuiUtil.drawCenteredString(guiGraphics, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT),
-        this.windowWidth / 2, 25);
-    this.drawCenteredString(guiGraphics, this.defaultAspect.getDisplayName(),
-        this.windowWidth / 2, 35);
-    this.drawCenteredString(guiGraphics,
+        this.windowWidth, 25);
+    GuiUtil.drawCenteredString(guiGraphics, this.font,
+        this.defaultAspect.getDisplayName(), this.windowWidth, 35);
+    GuiUtil.drawCenteredString(guiGraphics, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED),
-        this.windowWidth / 2, 60);
-    this.drawCenteredString(guiGraphics, this.poweredAspect.getDisplayName(),
-        this.windowWidth / 2, 70);
+        this.windowWidth, 60);
+    GuiUtil.drawCenteredString(guiGraphics, this.font,
+        this.poweredAspect.getDisplayName(), this.windowWidth, 70);
   }
 
   @Override

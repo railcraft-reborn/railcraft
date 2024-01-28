@@ -20,22 +20,22 @@ public enum ButtonTexture implements TexturePosition {
   }
 
   @Override
-  public int getX() {
+  public int x() {
     return x;
   }
 
   @Override
-  public int getY() {
+  public int y() {
     return y;
   }
 
   @Override
-  public int getHeight() {
+  public int height() {
     return height;
   }
 
   @Override
-  public int getWidth() {
+  public int width() {
     return width;
   }
 }

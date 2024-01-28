@@ -81,6 +81,7 @@ public class RailcraftTags {
     public static final TagKey<Item> SILVER_GEAR = forgeTag("gears/silver");
 
 
+    public static final TagKey<Item> SLAG = forgeTag("slag");
     public static final TagKey<Item> COAL_COKE = forgeTag("coal_coke");
     public static final TagKey<Item> SALTPETER_DUST = forgeTag("dusts/salt");
     public static final TagKey<Item> COAL_DUST = forgeTag("dusts/coal");
@@ -101,6 +102,7 @@ public class RailcraftTags {
     public static final TagKey<Item> INGOT_CHEST_LOOT = tag("ingot_chest_loot");
 
     public static final TagKey<Item> QUARRIED = tag("quarried");
+    public static final TagKey<Item> ABYSSAL = tag("abyssal");
 
     public static final TagKey<Item> POST = tag("post");
     public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
@@ -142,7 +144,7 @@ public class RailcraftTags {
 
 
     private static TagKey<Item> tag(String name) {
-      return ItemTags.create(new ResourceLocation(Railcraft.ID, name));
+      return ItemTags.create(Railcraft.rl(name));
     }
 
     private static TagKey<Item> forgeTag(String name) {
@@ -177,6 +179,7 @@ public class RailcraftTags {
     public static final TagKey<Block> STEEL_TANK_WALL = tag("steel_tank_wall");
 
     public static final TagKey<Block> QUARRIED = tag("quarried");
+    public static final TagKey<Block> ABYSSAL = tag("abyssal");
 
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
 
@@ -189,7 +192,7 @@ public class RailcraftTags {
     public static final TagKey<Block> SALTPETER_ORE = forgeTag("ores/salt");
 
     private static TagKey<Block> tag(String name) {
-      return BlockTags.create(new ResourceLocation(Railcraft.ID, name));
+      return BlockTags.create(Railcraft.rl(name));
     }
 
     private static TagKey<Block> forgeTag(String name) {
@@ -201,7 +204,6 @@ public class RailcraftTags {
 
     public static final TagKey<Fluid> STEAM = forgeTag("steam");
     public static final TagKey<Fluid> CREOSOTE = forgeTag("creosote");
-    public static final TagKey<Fluid> GASEOUS = forgeTag("gaseous");
 
     private static TagKey<Fluid> forgeTag(String name) {
       return FluidTags.create(new ResourceLocation("forge", name));

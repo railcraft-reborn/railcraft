@@ -30,6 +30,7 @@ public record SetItemManipulatorAttributesMessage(BlockPos blockPos,
         .ifPresent(manipulator -> {
           manipulator.setRedstoneMode(this.redstoneMode);
           manipulator.setTransferMode(this.transferMode);
+          manipulator.setChanged();
         });
     return true;
   }

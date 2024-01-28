@@ -14,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 1280; // 64 sec
+  public static final int DEFAULT_COOKING_TIME = 20 * 20; // 20 sec
 
   private final int slagOutput;
 
@@ -26,29 +26,28 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   public static BlastFurnaceRecipeBuilder smelting(ItemLike result, int count,
       Ingredient ingredient, int multiplier, int slagOutput) {
-    return new BlastFurnaceRecipeBuilder(result, count, ingredient, 0.0F,
+    return new BlastFurnaceRecipeBuilder(result, count, ingredient, 0,
         DEFAULT_COOKING_TIME * multiplier, slagOutput);
   }
 
   public static BlastFurnaceRecipeBuilder smelting(ItemLike result, Ingredient ingredient,
       int multiplier, int slagOutput) {
     return new BlastFurnaceRecipeBuilder(result.asItem(), multiplier, ingredient,
-        0.0F, DEFAULT_COOKING_TIME * multiplier, slagOutput);
+        0, DEFAULT_COOKING_TIME * multiplier, slagOutput);
   }
 
   public static BlastFurnaceRecipeBuilder recycling(ItemLike result, Ingredient ingredient,
       int multiplier) {
     return new BlastFurnaceRecipeBuilder(result.asItem(),
-        multiplier, ingredient, 0.0F, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
+        multiplier, ingredient, 0, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
   }
 
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = new ResourceLocation(Railcraft.ID, "blast_furnace/" + path);
+    var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
 
-    var advancementId = new ResourceLocation(Railcraft.ID,
-        String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
 
     finishedRecipe.accept(new Result(customResourceLocation,
         this.group == null ? "" : this.group, this.result, this.count, this.ingredient,

@@ -26,7 +26,7 @@ public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & Dual
       var signalAspect = blockEntity.getPrimarySignalAspect().getDisplayAspect();
       poseStack.pushPose();
       {
-        poseStack.translate(0.0D, 0.19D, 0.0D);
+        poseStack.translate(0, 0.19F, 0);
         this.renderSignalAspect(
             poseStack, bufferSource, packedLight, packedOverlay, signalAspect, direction);
       }
@@ -34,7 +34,7 @@ public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & Dual
 
       poseStack.pushPose();
       {
-        poseStack.translate(0.0D, -0.19D, 0.0D);
+        poseStack.translate(0, -0.19F, 0);
         signalAspect = blockEntity.getSecondarySignalAspect().getDisplayAspect();
         this.renderSignalAspect(
             poseStack, bufferSource, packedLight, packedOverlay, signalAspect, direction);

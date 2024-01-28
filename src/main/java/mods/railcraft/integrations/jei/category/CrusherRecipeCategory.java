@@ -26,7 +26,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation CRUSHER_BACKGROUND =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/crusher.png");
+      Railcraft.rl("textures/gui/container/crusher.png");
 
   private final IDrawable background, icon, arrow;
 

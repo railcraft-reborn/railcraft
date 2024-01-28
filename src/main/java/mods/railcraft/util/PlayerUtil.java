@@ -1,11 +1,9 @@
 package mods.railcraft.util;
 
-import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
-import mods.railcraft.api.core.RailcraftConstantsAPI;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.item.ActivationBlockingItem;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.network.chat.Component;
@@ -14,15 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public final class PlayerUtil {
-
-  @Nullable
-  public static Player getPlayer(Level level, GameProfile gameProfile) {
-    var playerId = gameProfile.getId();
-    if (playerId != null) {
-      return level.getPlayerByUUID(playerId);
-    }
-    return null;
-  }
 
   public static Component getUsername(Level level, @NotNull GameProfile gameProfile) {
     var playerId = gameProfile.getId();
@@ -33,16 +22,7 @@ public final class PlayerUtil {
     }
     String username = gameProfile.getName();
     return Component.literal(
-        StringUtils.isEmpty(username) ? RailcraftConstantsAPI.UNKNOWN_PLAYER : username);
-  }
-
-  public static Component getUsername(Level level, @Nullable UUID playerId) {
-    if (playerId != null) {
-      var player = level.getPlayerByUUID(playerId);
-      if (player != null)
-        return player.getDisplayName();
-    }
-    return Component.literal(RailcraftConstantsAPI.UNKNOWN_PLAYER);
+        StringUtils.isEmpty(username) ? RailcraftConstants.UNKNOWN_PLAYER : username);
   }
 
   public static boolean isOwnerOrOp(GameProfile owner, Player player) {
@@ -55,10 +35,6 @@ public final class PlayerUtil {
     if (a.getId() != null && b.getId() != null)
       return a.getId().equals(b.getId());
     return a.getName() != null && a.getName().equals(b.getName());
-  }
-
-  public static void swingArm(Player player, InteractionHand hand) {
-    player.swing(hand);
   }
 
   public static boolean doesItemBlockActivation(Player player, InteractionHand hand) {

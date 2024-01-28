@@ -12,7 +12,7 @@ public class SparkParticle extends DimmableParticle {
   private SparkParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
       double dz, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz);
-    this.gravity = 1.0F;
+    this.gravity = 1;
     this.setLifetime(random.nextInt(10) + 10); // 10-20, 0.5sec to 1 sec
     this.setSize(0.15F, 0.15F); // AABB bounding cube so we can bounce
     this.pickSprite(sprites);

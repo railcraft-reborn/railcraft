@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import org.jetbrains.annotations.NotNull;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -52,10 +53,11 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
 
   @Override
   public void deserializeNBT(ListTag tanksTag) {
-    for (var tankTag : tanksTag) {
-      int index = ((CompoundTag) tankTag).getByte("index");
+    for (int i = 0; i < tanksTag.size(); i++) {
+      var tag = tanksTag.getCompound(i);
+      int index = tag.getByte("index");
       if (index >= 0 && index < this.tanks.size()) {
-        this.tanks.get(index).readFromNBT(((CompoundTag) tankTag));
+        this.tanks.get(index).readFromNBT(tag);
       }
     }
   }
@@ -94,6 +96,7 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
         .orElse(FluidStack.EMPTY);
   }
 
+  @NotNull
   @Override
   public FluidStack drain(int maxDrain, FluidAction doDrain) {
     return this.tanks.stream()
@@ -116,10 +119,10 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   }
 
   public void setCapacity(int tankIndex, int capacity) {
-    StandardTank tank = this.get(tankIndex);
+    var tank = this.get(tankIndex);
     tank.setCapacity(capacity);
-    FluidStack fluidStack = tank.getFluid();
-    if (fluidStack != null && fluidStack.getAmount() > capacity) {
+    var fluidStack = tank.getFluid();
+    if (fluidStack.getAmount() > capacity) {
       fluidStack.setAmount(capacity);
     }
   }

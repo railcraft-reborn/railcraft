@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -20,9 +20,9 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftCreativeModeTabs {
 
   public static final DeferredRegister<CreativeModeTab> deferredRegister =
-      DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Railcraft.ID);
+      DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RailcraftConstants.ID);
   private static final TabVisibility DEFAULT_VISIBILITY = TabVisibility.PARENT_AND_SEARCH_TABS;
-  private static final RegistryObject<CreativeModeTab> MAIN_TAB =
+  public static final RegistryObject<CreativeModeTab> MAIN_TAB =
       deferredRegister.register("main_tab", () -> CreativeModeTab.builder()
           .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
           .title(Component.translatable(Translations.Tab.RAILCRAFT))
@@ -233,37 +233,22 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CREOSOTE_BOTTLE.get());
             output.accept(RailcraftItems.CREOSOTE_BUCKET.get());
 
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(color).get());
-            }
+            output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(DyeColor.WHITE).get());
           })
           .build());
-  private static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
+  public static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
       deferredRegister.register("outfitted_tracks", () -> CreativeModeTab.builder()
           .withTabsBefore(MAIN_TAB.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS))
           .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
           .displayItems((params, output) -> {
-            /* TODO:
-              - Dumping track
-              - Messenger track
-              - Delayed locking track
-              - Priming track
+            /*
+             * TODO: - Messenger track - Delayed locking track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
@@ -271,8 +256,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ABANDONED_COUPLER_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_CONTROL_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ABANDONED_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ABANDONED_DUMPING_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_GATED_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_LOCKING_TRACK.get());
@@ -291,8 +277,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.IRON_COUPLER_TRACK.get());
             output.accept(RailcraftItems.IRON_CONTROL_TRACK.get());
             output.accept(RailcraftItems.IRON_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.IRON_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.IRON_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.IRON_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.IRON_DUMPING_TRACK.get());
             output.accept(RailcraftItems.IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.IRON_LOCKING_TRACK.get());
@@ -311,8 +298,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.STRAP_IRON_COUPLER_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_CONTROL_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.STRAP_IRON_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.STRAP_IRON_DUMPING_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_GATED_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.STRAP_IRON_LOCKING_TRACK.get());
@@ -331,8 +319,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.REINFORCED_COUPLER_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_CONTROL_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.REINFORCED_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.REINFORCED_DUMPING_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_GATED_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.REINFORCED_LOCKING_TRACK.get());
@@ -351,8 +340,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ELECTRIC_COUPLER_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_CONTROL_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_DETECTOR_TRACK.get());
-            output.accept(RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_EMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ELECTRIC_DISEMBARKING_TRACK.get());
+            output.accept(RailcraftItems.ELECTRIC_DUMPING_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_GATED_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LAUNCHER_TRACK.get());
             output.accept(RailcraftItems.ELECTRIC_LOCKING_TRACK.get());
@@ -389,7 +379,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
           }).build());
-  private static final RegistryObject<CreativeModeTab> DECORATIVE_BLOCKS =
+  public static final RegistryObject<CreativeModeTab> DECORATIVE_BLOCKS =
       deferredRegister.register("decorative_blocks", () -> CreativeModeTab.builder()
           .withTabsBefore(OUTFITTED_TRACKS.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))
@@ -407,12 +397,41 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.QUARRIED_PAVER.get());
             output.accept(RailcraftItems.QUARRIED_PAVER_STAIRS.get());
             output.accept(RailcraftItems.QUARRIED_PAVER_SLAB.get());
+            output.accept(RailcraftItems.ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ABYSSAL_COBBLESTONE.get());
+            output.accept(RailcraftItems.POLISHED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.CHISELED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ETCHED_ABYSSAL_STONE.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICKS.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICK_STAIRS.get());
+            output.accept(RailcraftItems.ABYSSAL_BRICK_SLAB.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER_STAIRS.get());
+            output.accept(RailcraftItems.ABYSSAL_PAVER_SLAB.get());
 
             for (var color : DyeColor.values()) {
               output.accept(RailcraftItems.STRENGTHENED_GLASS.variantFor(color).get());
             }
             for (var color : DyeColor.values()) {
               output.accept(RailcraftItems.POST.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(color).get());
+            }
+            for (var color : DyeColor.values()) {
+              output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(color).get());
             }
           }).build());
 
@@ -436,17 +455,18 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.STEEL_SHOVEL.get(),
         RailcraftItems.STEEL_PICKAXE.get(),
         RailcraftItems.STEEL_AXE.get(),
-        RailcraftItems.STEEL_HOE.get()
-    );
+        RailcraftItems.STEEL_HOE.get());
     var addAfterTNTMinecart = List.of(
         Items.TNT_MINECART,
-        RailcraftItems.TRACK_REMOVER.get(),
         RailcraftItems.TRACK_LAYER.get(),
+        RailcraftItems.TRACK_RELAYER.get(),
+        RailcraftItems.TRACK_REMOVER.get(),
+        RailcraftItems.TRACK_UNDERCUTTER.get(),
+
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),
         RailcraftItems.ELECTRIC_LOCOMOTIVE.get(),
-        RailcraftItems.CREATIVE_LOCOMOTIVE.get()
-    );
+        RailcraftItems.CREATIVE_LOCOMOTIVE.get());
     var addAfterActivatorRail = List.of(
         Items.ACTIVATOR_RAIL,
         RailcraftItems.ABANDONED_TRACK.get(),
@@ -467,6 +487,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.COUPLER_TRACK_KIT.get(),
         RailcraftItems.EMBARKING_TRACK_KIT.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get(),
         RailcraftItems.LAUNCHER_TRACK_KIT.get(),
         RailcraftItems.ONE_WAY_TRACK_KIT.get(),
         RailcraftItems.WHISTLE_TRACK_KIT.get(),
@@ -488,8 +509,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TOKEN_SIGNAL.get(),
         RailcraftItems.DUAL_BLOCK_SIGNAL.get(),
         RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
-        RailcraftItems.DUAL_TOKEN_SIGNAL.get()
-    );
+        RailcraftItems.DUAL_TOKEN_SIGNAL.get());
 
     addItemsToTab(addAfterIronHoe, entries);
     addItemsToTab(addAfterTNTMinecart, entries);
@@ -512,8 +532,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.STEEL_HELMET.get(),
         RailcraftItems.STEEL_CHESTPLATE.get(),
         RailcraftItems.STEEL_LEGGINGS.get(),
-        RailcraftItems.STEEL_BOOTS.get()
-    );
+        RailcraftItems.STEEL_BOOTS.get());
     addItemsToTab(addAfterIronBoots, entries);
   }
 

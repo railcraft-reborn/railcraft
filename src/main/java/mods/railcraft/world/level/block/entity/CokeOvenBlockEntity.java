@@ -59,9 +59,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       CokeOvenBlockEntity blockEntity) {
-
     blockEntity.serverTick();
-
     blockEntity.moduleDispatcher.serverTick();
 
     blockEntity.getMasterBlockEntity()
@@ -72,10 +70,6 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
                 blockState.setValue(CokeOvenBricksBlock.LIT, lit));
           }
         });
-
-    if (blockEntity.isMaster()) {
-      blockEntity.cokeOvenModule.serverTick();
-    }
   }
 
   public CokeOvenModule getCokeOvenModule() {

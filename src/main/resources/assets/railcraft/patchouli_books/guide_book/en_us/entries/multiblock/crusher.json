@@ -1,0 +1,16 @@
+{
+  "name": "Crusher",
+  "icon": "railcraft:crusher",
+  "category": "railcraft:multiblock",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Rock Crusher is a 3x2x2 structure for processing various materials. The Crusher is built out of 12 special blocks made from a Steel Block, Pistons, and Diamonds. If broken down, it takes 3 Blocks of Steel, 12 Pistons, and 12 Diamonds to build one Rock Crusher. Rock Crushers cannot be built adjacent to each other – there must be at least one tile in between Rock Crushers."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Crusher",
+      "multiblock_id": "railcraft:crusher"
+    }
+  ]
+}

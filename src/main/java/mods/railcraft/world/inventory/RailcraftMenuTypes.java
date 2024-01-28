@@ -1,8 +1,10 @@
 package mods.railcraft.world.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
+import mods.railcraft.world.entity.vehicle.TrackRelayer;
+import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -23,6 +25,7 @@ import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockE
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
+import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -40,7 +43,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftMenuTypes {
 
   private static final DeferredRegister<MenuType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.MENU_TYPES, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.MENU_TYPES, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -141,9 +144,21 @@ public class RailcraftMenuTypes {
       deferredRegister.register("track_layer",
           () -> entityMenu(TrackLayer.class, TrackLayerMenu::new));
 
+  public static final RegistryObject<MenuType<TrackRelayerMenu>> TRACK_RELAYER =
+      deferredRegister.register("track_relayer",
+          () -> entityMenu(TrackRelayer.class, TrackRelayerMenu::new));
+
+  public static final RegistryObject<MenuType<TrackUndercutterMenu>> TRACK_UNDERCUTTER =
+      deferredRegister.register("track_undercutter",
+          () -> entityMenu(TrackUndercutter.class, TrackUndercutterMenu::new));
+
   public static final RegistryObject<MenuType<RoutingTrackMenu>> ROUTING_TRACK =
       deferredRegister.register("routing_track",
           () -> blockEntityMenu(RoutingTrackBlockEntity.class, RoutingTrackMenu::new));
+
+  public static final RegistryObject<MenuType<DumpingTrackMenu>> DUMPING_TRACK =
+      deferredRegister.register("dumping_track",
+          () -> blockEntityMenu(DumpingTrackBlockEntity.class, DumpingTrackMenu::new));
 
   private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

@@ -44,6 +44,7 @@ public abstract class BatteryBlock extends ChargeBlock implements EntityBlock, J
     return SHAPE;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
     super.entityInside(state, level, pos, entity);
@@ -86,8 +87,8 @@ public abstract class BatteryBlock extends ChargeBlock implements EntityBlock, J
     var efficiency = (int) (spec.storageSpec().efficiency() * 100);
 
     tooltip.add(Component.translatable(isRechargeable
-            ? Translations.Tips.TYPE_RECHARGEABLE
-            : Translations.Tips.TYPE_DISPOSABLE)
+        ? Translations.Tips.TYPE_RECHARGEABLE
+        : Translations.Tips.TYPE_DISPOSABLE)
         .withStyle(ChatFormatting.BLUE));
     tooltip.add(Component.translatable(Translations.Tips.CAPACITY, capacity)
         .withStyle(ChatFormatting.GRAY));

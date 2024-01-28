@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.Slot;

@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.inventory.TankMenu;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
@@ -15,7 +16,6 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.level.block.tank.TankGaugeBlock;
 import mods.railcraft.world.level.block.tank.TankValveBlock;
-import mods.railcraft.world.level.material.FluidTools;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.module.TankModule;
 import net.minecraft.core.BlockPos;
@@ -142,6 +142,11 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   @Override
   protected boolean isBlockEntity(MultiblockPattern.Element element) {
     return element.marker() == 'W' || element.marker() == 'B';
+  }
+
+  @Override
+  public boolean isStillValid(Player player) {
+    return isStillValid(this, player, 256);
   }
 
   @Override

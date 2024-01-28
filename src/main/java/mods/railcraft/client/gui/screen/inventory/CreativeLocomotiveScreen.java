@@ -11,7 +11,7 @@ public class CreativeLocomotiveScreen
     extends LocomotiveScreen<LocomotiveMenu<CreativeLocomotive>> {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/creative_locomotive.png");
+      Railcraft.rl("textures/gui/container/creative_locomotive.png");
 
   public CreativeLocomotiveScreen(LocomotiveMenu<CreativeLocomotive> menu,
       Inventory inventory, Component title) {

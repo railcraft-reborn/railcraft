@@ -24,9 +24,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class SignalBoxBlock extends CrossCollisionBlock {
 
-  private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);
-
   public static final BooleanProperty CAP = BooleanProperty.create("cap");
+  private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 15, 14);
 
   public SignalBoxBlock(Properties properties) {
     super(2.0F, 2.0F, 16.0F, 16.0F, 24.0F, properties);
@@ -39,6 +38,19 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         .setValue(WATERLOGGED, false));
   }
 
+  public static boolean isConnected(BlockState state, Direction face) {
+    BooleanProperty property = PROPERTY_BY_DIRECTION.get(face);
+    return property != null && state.getValue(property);
+  }
+
+  public static boolean isAspectEmitter(BlockState blockState) {
+    return blockState.is(RailcraftTags.Blocks.ASPECT_EMITTER);
+  }
+
+  public static boolean isAspectReceiver(BlockState blockState) {
+    return blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER);
+  }
+
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(NORTH, EAST, WEST, SOUTH, CAP, WATERLOGGED);
@@ -47,11 +59,6 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   @Override
   public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
     return Shapes.block();
-  }
-
-  public static boolean isConnected(BlockState state, Direction face) {
-    BooleanProperty property = PROPERTY_BY_DIRECTION.get(face);
-    return property != null && state.getValue(property);
   }
 
   @Override
@@ -92,6 +99,12 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
+  public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+      CollisionContext context) {
+    return SHAPE;
+  }
+
+  @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockGetter level = context.getLevel();
     BlockPos pos = context.getClickedPos();
@@ -109,7 +122,7 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
     }
     return direction.getAxis().isHorizontal()
         ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
-            attachesTo(blockState, otherState))
+        attachesTo(blockState, otherState))
         : direction == Direction.UP
             ? blockState.setValue(CAP, !otherState.isAir())
             : blockState;
@@ -119,11 +132,8 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
     if (!isAspectEmitter(blockState) && !isAspectReceiver(blockState)) {
       return false;
     }
-    if (isAspectReceiver(blockState) && isAspectEmitter(otherBlockState)
-        || isAspectEmitter(blockState) && isAspectReceiver(otherBlockState)) {
-      return true;
-    }
-    return false;
+    return isAspectReceiver(blockState) && isAspectEmitter(otherBlockState)
+        || isAspectEmitter(blockState) && isAspectReceiver(otherBlockState);
   }
 
   @SuppressWarnings("deprecation")
@@ -134,13 +144,5 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         .filter(Lockable::isLocked)
         .map(__ -> 0.0F)
         .orElseGet(() -> super.getDestroyProgress(state, player, blockGetter, pos));
-  }
-
-  public static boolean isAspectEmitter(BlockState blockState) {
-    return blockState.is(RailcraftTags.Blocks.ASPECT_EMITTER);
-  }
-
-  public static boolean isAspectReceiver(BlockState blockState) {
-    return blockState.is(RailcraftTags.Blocks.ASPECT_RECEIVER);
   }
 }

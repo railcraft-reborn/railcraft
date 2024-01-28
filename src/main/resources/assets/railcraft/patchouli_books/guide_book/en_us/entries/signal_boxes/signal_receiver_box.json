@@ -1,0 +1,11 @@
+{
+  "name": "Signal Receiver Box",
+  "icon": "railcraft:signal_receiver_box",
+  "category": "railcraft:signal_boxes",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "This box can be paired with any Controller. When paired, you can open a GUI to pick which Signal Aspects should emit a Redstone current from the Box. If placed next to a Signal Controller Box it will transmit the Aspect to it as well."
+    }
+  ]
+}

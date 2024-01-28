@@ -27,7 +27,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   private static final int HEIGHT = 49;
 
   private static final ResourceLocation COKE_OVEN_BACKGROUND =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/coke_oven.png");
+      Railcraft.rl("textures/gui/container/coke_oven.png");
 
   private final IDrawable background, icon, flame, arrow;
 

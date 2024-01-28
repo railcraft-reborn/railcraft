@@ -99,6 +99,18 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get(), this::createSlabItemTable);
     this.add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get(), this::createSlabItemTable);
 
+    this.dropSelf(RailcraftBlocks.ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_COBBLESTONE.get());
+    this.dropSelf(RailcraftBlocks.POLISHED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.CHISELED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ETCHED_ABYSSAL_STONE.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_BRICK_STAIRS.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_PAVER.get());
+    this.dropSelf(RailcraftBlocks.ABYSSAL_PAVER_STAIRS.get());
+    this.add(RailcraftBlocks.ABYSSAL_BRICK_SLAB.get(), this::createSlabItemTable);
+    this.add(RailcraftBlocks.ABYSSAL_PAVER_SLAB.get(), this::createSlabItemTable);
+
     this.add(RailcraftBlocks.SULFUR_ORE.get(),
         block -> this.createOreDrop(block, RailcraftItems.SULFUR_DUST.get(), 2, 5));
     this.add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get(),
@@ -140,6 +152,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.EMBARKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_TURNOUT_TRACK.get(),
         RailcraftBlocks.ABANDONED_TRACK.get());
     this.dropOther(RailcraftBlocks.ABANDONED_WYE_TRACK.get(),
@@ -180,6 +194,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.EMBARKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK.get(),
         RailcraftBlocks.ELECTRIC_TRACK.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_WYE_TRACK.get(),
@@ -267,6 +283,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.EMBARKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_TURNOUT_TRACK.get(), Blocks.RAIL);
     this.dropOther(RailcraftBlocks.IRON_WYE_TRACK.get(), Blocks.RAIL);
     this.dropOther(RailcraftBlocks.IRON_JUNCTION_TRACK.get(), Blocks.RAIL);
@@ -304,6 +322,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.EMBARKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_TURNOUT_TRACK.get(),
         RailcraftBlocks.REINFORCED_TRACK.get());
     this.dropOther(RailcraftBlocks.REINFORCED_WYE_TRACK.get(),
@@ -344,6 +364,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.EMBARKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK.get(),
         RailcraftItems.DISEMBARKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_DUMPING_TRACK.get(),
+        RailcraftItems.DUMPING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get(),
         RailcraftBlocks.STRAP_IRON_TRACK.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_WYE_TRACK.get(),

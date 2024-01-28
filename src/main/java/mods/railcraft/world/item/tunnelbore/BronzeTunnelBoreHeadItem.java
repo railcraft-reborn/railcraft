@@ -6,8 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class BronzeTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
-  private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Railcraft.ID,
-      "textures/entity/tunnel_bore/bronze_tunnel_bore.png");
+  private static final ResourceLocation TEXTURE_LOCATION =
+      Railcraft.rl("textures/entity/tunnel_bore/bronze_tunnel_bore.png");
 
   public BronzeTunnelBoreHeadItem(Properties properties) {
     super(RailcraftItemTier.BRONZE, properties);

@@ -1,9 +1,9 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.util.FluidTools;
+import mods.railcraft.util.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
-import mods.railcraft.world.level.material.FluidTools;
-import mods.railcraft.world.level.material.FluidTools.ProcessType;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.steam.FluidFuelProvider;
 import net.minecraft.tags.FluidTags;
@@ -53,10 +53,8 @@ public class FluidFueledSteamBoilerModule
       if (fluid.isEmpty()) {
         return false;
       }
-      if (fluid.getFluid().is(FluidTags.WATER)
-          || FuelUtil.fuelManager().getFuelValue(fluid.getFluid()) > 0) {
-        return true;
-      }
+      return fluid.getFluid().is(FluidTags.WATER)
+          || FuelUtil.fuelManager().getFuelValue(fluid.getFluid()) > 0;
     }
 
     return false;

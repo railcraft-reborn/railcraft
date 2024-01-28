@@ -2,11 +2,11 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import mods.railcraft.world.level.material.FluidItemHelper;
-import mods.railcraft.world.level.material.FluidTools;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;

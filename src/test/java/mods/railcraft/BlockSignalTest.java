@@ -1,5 +1,6 @@
 package mods.railcraft;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.world.item.SignalBlockSurveyorItem;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
@@ -10,7 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-@GameTestHolder(Railcraft.ID)
+@GameTestHolder(RailcraftConstants.ID)
 @PrefixGameTestTemplate(false)
 public class BlockSignalTest {
 
@@ -27,9 +28,9 @@ public class BlockSignalTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.GREEN) &&
             right.getPrimarySignalAspect().equals(SignalAspect.GREEN)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Green on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Green on both Signal Block");
       }
     });
   }
@@ -44,9 +45,9 @@ public class BlockSignalTest {
         if (left.getPrimarySignalAspect().equals(SignalAspect.RED) &&
             right.getPrimarySignalAspect().equals(SignalAspect.RED)) {
           helper.succeed();
+        } else {
+          helper.fail("Expected Red on both Signal Block");
         }
-      } else {
-        helper.fail("Expected Red on both Signal Block");
       }
     });
   }

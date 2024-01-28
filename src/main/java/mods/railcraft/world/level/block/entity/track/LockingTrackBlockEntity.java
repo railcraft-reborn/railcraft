@@ -9,11 +9,10 @@ import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.world.entity.vehicle.CartTools;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackBlock;
-import mods.railcraft.world.level.block.track.behaivor.HighSpeedTools;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
@@ -70,8 +69,8 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   @Override
   public void onLoad() {
     super.onLoad();
-    this.prevCart = CartTools.getCartFromUUID(this.level, this.prevCartId);
-    this.currentCart = CartTools.getCartFromUUID(this.level, this.currentCartId);
+    this.prevCart = MinecartUtil.getCartFromUUID(this.level, this.prevCartId);
+    this.currentCart = MinecartUtil.getCartFromUUID(this.level, this.currentCartId);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
@@ -132,9 +131,9 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
 
   private void lockCurrentCart() {
     if (this.currentCart != null) {
-      var extension = RollingStock.getOrThrow(this.currentCart);
-      HighSpeedTools.performHighSpeedChecks(this.level, this.getBlockPos(), extension);
-      var train = extension.train();
+      var rollingStock = RollingStock.getOrThrow(this.currentCart);
+      rollingStock.checkHighSpeed(this.blockPos());
+      var train = rollingStock.train();
       if (this.currentTrain != train && this.currentTrain != null) {
         this.currentTrain.removeLock(this.lockId);
       }
@@ -196,23 +195,26 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   private boolean isSameTrainOrCart() {
     final LockingMode lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
     if (lockingMode.getLockType().isTrain()) {
-      if (this.currentCart != null && this.prevCart != null) {
-        var extension = RollingStock.getOrThrow(this.currentCart);
-        var prevExtension = RollingStock.getOrThrow(this.prevCart);
-        if (extension.isSameTrainAs(prevExtension)) {
+      if (this.currentCart != null
+          && this.currentCart.isAlive()
+          && this.prevCart != null
+          && this.prevCart.isAlive()) {
+        var rollingStock = RollingStock.getOrThrow(this.currentCart);
+        var prevRollingStock = RollingStock.getOrThrow(this.prevCart);
+        if (rollingStock.isSameTrainAs(prevRollingStock)) {
           // reset trainDelay
           this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         } else {
           // We've encountered a new train, force the delay to 0, so we return false
           this.trainDelay = 0;
         }
-      } else if (this.trainLeaving && this.prevCart != null) {
-        var prevExtension = RollingStock.getOrThrow(this.prevCart);
+      } else if (this.trainLeaving && this.prevCart != null && this.prevCart.isAlive()) {
+        var prevRollingStock = RollingStock.getOrThrow(this.prevCart);
         if (EntitySearcher.findMinecarts()
             .at(this.getBlockPos())
             .stream(this.level)
             .map(RollingStock::getOrThrow)
-            .anyMatch(cart -> cart.isSameTrainAs(prevExtension))) {
+            .anyMatch(cart -> cart.isSameTrainAs(prevRollingStock))) {
           this.trainDelay = TRAIN_LOCKDOWN_DELAY;
         }
       }

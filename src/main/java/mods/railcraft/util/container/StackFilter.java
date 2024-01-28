@@ -5,11 +5,10 @@ import java.util.Collection;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.Predicates;
-import mods.railcraft.util.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.material.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -29,7 +28,6 @@ import net.minecraftforge.registries.ForgeRegistries;
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
-  ALL(Predicates.alwaysTrue()),
   FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
@@ -45,7 +43,7 @@ public enum StackFilter implements Predicate<ItemStack> {
       .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
       .isPresent()),
   FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
-      || itemStack.getItem() == Items.WHEAT
+      || itemStack.is(Items.WHEAT)
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
@@ -111,27 +109,6 @@ public enum StackFilter implements Predicate<ItemStack> {
     return itemStack -> inv.streamItems().anyMatch(f -> ContainerTools.matchesFilter(f, itemStack));
   }
 
-  /**
-   * Matches against the provided ItemStacks.
-   *
-   * <p>
-   * If no ItemStacks are provided to match against, it returns true.
-   */
-  public static Predicate<ItemStack> anyOf(final ItemStack... stacks) {
-    return anyOf(Arrays.asList(stacks));
-  }
-
-  /**
-   * Matches against the provided ItemStacks.
-   *
-   * <p>
-   * If no ItemStacks are provided to match against, it returns true.
-   */
-  public static Predicate<ItemStack> anyOf(final Collection<ItemStack> stacks) {
-    return itemStack -> stacks.isEmpty() || stacks.stream().allMatch(ItemStack::isEmpty)
-        || ContainerTools.isItemEqual(itemStack, stacks);
-  }
-
   public static Predicate<ItemStack> none() {
     return itemStack -> false;
   }
@@ -160,7 +137,7 @@ public enum StackFilter implements Predicate<ItemStack> {
         return false;
       }
       return stacks.stream().filter(toTest -> !toTest.isEmpty())
-          .noneMatch(filter -> ContainerTools.isItemEqual(itemStack, filter));
+          .noneMatch(filter -> ItemStack.isSameItem(itemStack, filter));
     };
   }
 
@@ -188,12 +165,12 @@ public enum StackFilter implements Predicate<ItemStack> {
         return false;
       }
 
-      ItemStack cartItem = cart.getPickResult();
-      boolean matches = !itemStack.isEmpty() && ItemStack.isSameItem(cartItem, itemStack);
+      var cartItem = cart.getPickResult();
+      boolean matches = ItemStack.isSameItem(cartItem, itemStack);
 
       if (itemStack.hasCustomHoverName()) {
         return matches && itemStack.getDisplayName().getContents()
-            .equals(cart.getPickResult().getDisplayName().getContents());
+            .equals(cartItem.getDisplayName().getContents());
       }
 
       return matches;

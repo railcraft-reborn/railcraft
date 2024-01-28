@@ -17,8 +17,7 @@ public class GaugeWidget extends Widget {
     this(gauge, x, y, u, v, w, h, true);
   }
 
-  public GaugeWidget(Gauge gauge, int x, int y, int u, int v, int w, int h,
-      boolean vertical) {
+  public GaugeWidget(Gauge gauge, int x, int y, int u, int v, int w, int h, boolean vertical) {
     super(x, y, u, v, w, h);
     this.gauge = gauge;
     this.vertical = vertical;
@@ -45,7 +44,7 @@ public class GaugeWidget extends Widget {
 
   @Override
   public boolean requiresSync(ServerPlayer listener) {
-    float previousValue = this.previousValues.getOrDefault(listener, 0.0F);
+    float previousValue = this.previousValues.getOrDefault(listener, 0);
     return previousValue != this.gauge.getServerValue();
   }
 

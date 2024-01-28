@@ -59,9 +59,9 @@ public class TrackKitItem extends Item {
 
     var shape = TrackUtil.getRailShapeRaw(level, blockPos);
 
-    if (!RailShapeUtil.isStraight(shape)) {
+    if (RailShapeUtil.isTurn(shape)) {
       player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
-              .withStyle(ChatFormatting.RED), true);
+          .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;
     }
 

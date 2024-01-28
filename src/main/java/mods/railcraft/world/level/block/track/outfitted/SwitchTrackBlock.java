@@ -53,23 +53,36 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
-    // this.updateAdjacentBlocks(state, level, pos);
+    super.onPlace(state, level, pos, oldBlockState, moved);
+    this.updateAdjacentBlocks(state, level, pos);
   }
 
   protected void updateAdjacentBlocks(BlockState blockState, Level level, BlockPos pos) {
     var railShape = TrackUtil.getRailShapeRaw(blockState);
-    if (railShape != RailShape.NORTH_SOUTH) {
-      return;
-    }
+    boolean reversed = blockState.getValue(REVERSED);
 
-    var offset = BaseRailBlock.isRail(level, pos.west()) ? pos.west() : pos.east();
-    if (!BaseRailBlock.isRail(level, offset)) {
-      return;
-    }
-
-    var otherShape = TrackUtil.getTrackDirection(level, offset);
-    if (otherShape == RailShape.NORTH_SOUTH) {
-      TrackUtil.setRailShape(level, offset, RailShape.EAST_WEST);
+    switch (railShape) {
+      case EAST_WEST -> {
+        var offset = reversed ? pos.north() : pos.south();
+        if (!BaseRailBlock.isRail(level, offset)) {
+          return;
+        }
+        var otherShape = TrackUtil.getTrackDirection(level, offset);
+        if (otherShape != RailShape.NORTH_SOUTH) {
+          TrackUtil.setRailShape(level, offset, RailShape.NORTH_SOUTH);
+        }
+      }
+      case NORTH_SOUTH -> {
+        var offset = reversed ? pos.west() : pos.east();
+        if (!BaseRailBlock.isRail(level, offset)) {
+          return;
+        }
+        var otherShape = TrackUtil.getTrackDirection(level, offset);
+        if (otherShape != RailShape.EAST_WEST) {
+          TrackUtil.setRailShape(level, offset, RailShape.EAST_WEST);
+        }
+      }
+      default -> {}
     }
   }
 

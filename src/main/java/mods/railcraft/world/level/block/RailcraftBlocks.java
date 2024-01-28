@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.Collection;
 import java.util.function.ToIntFunction;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
@@ -63,6 +63,7 @@ import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
@@ -103,7 +104,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftBlocks {
 
   private static final DeferredRegister<Block> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.BLOCKS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.BLOCKS, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -743,6 +744,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> ABANDONED_DUMPING_TRACK =
+      deferredRegister.register("abandoned_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.register("abandoned_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ABANDONED,
@@ -844,6 +850,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<DisembarkingTrackBlock> ELECTRIC_DISEMBARKING_TRACK =
       deferredRegister.register("electric_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+
+  public static final RegistryObject<DumpingTrackBlock> ELECTRIC_DUMPING_TRACK =
+      deferredRegister.register("electric_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<WyeTrackBlock> ELECTRIC_WYE_TRACK =
@@ -1068,6 +1079,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.IRON,
               BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> IRON_DUMPING_TRACK =
+      deferredRegister.register("iron_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.register("iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
@@ -1170,6 +1186,11 @@ public class RailcraftBlocks {
           () -> new DisembarkingTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
 
+  public static final RegistryObject<DumpingTrackBlock> REINFORCED_DUMPING_TRACK =
+      deferredRegister.register("reinforced_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+
   public static final RegistryObject<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.register("reinforced_wye_track",
           () -> new WyeTrackBlock(TrackTypes.REINFORCED,
@@ -1270,6 +1291,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<DisembarkingTrackBlock> STRAP_IRON_DISEMBARKING_TRACK =
       deferredRegister.register("strap_iron_disembarking_track",
           () -> new DisembarkingTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+
+  public static final RegistryObject<DumpingTrackBlock> STRAP_IRON_DUMPING_TRACK =
+      deferredRegister.register("strap_iron_dumping_track",
+          () -> new DumpingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
 
   public static final RegistryObject<WyeTrackBlock> STRAP_IRON_WYE_TRACK =
@@ -1442,6 +1468,52 @@ public class RailcraftBlocks {
   public static final RegistryObject<SlabBlock> QUARRIED_PAVER_SLAB =
       deferredRegister.register("quarried_paver_slab",
           () -> new SlabBlock(BlockBehaviour.Properties.copy(QUARRIED_STONE.get())));
+
+  public static final RegistryObject<Block> ABYSSAL_STONE =
+      deferredRegister.register("abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)));
+
+  public static final RegistryObject<Block> ABYSSAL_COBBLESTONE =
+      deferredRegister.register("abyssal_cobblestone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBBLESTONE)));
+
+  public static final RegistryObject<Block> POLISHED_ABYSSAL_STONE =
+      deferredRegister.register("polished_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.POLISHED_ANDESITE)));
+
+  public static final RegistryObject<Block> CHISELED_ABYSSAL_STONE =
+      deferredRegister.register("chiseled_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(Blocks.CHISELED_STONE_BRICKS)));
+
+  public static final RegistryObject<Block> ETCHED_ABYSSAL_STONE =
+      deferredRegister.register("etched_abyssal_stone",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<Block> ABYSSAL_BRICKS =
+      deferredRegister.register("abyssal_bricks",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<StairBlock> ABYSSAL_BRICK_STAIRS =
+      deferredRegister.register("abyssal_brick_stairs",
+          () -> new StairBlock(() -> ABYSSAL_BRICKS.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> ABYSSAL_BRICK_SLAB =
+      deferredRegister.register("abyssal_brick_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<Block> ABYSSAL_PAVER =
+      deferredRegister.register("abyssal_paver",
+          () -> new Block(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<StairBlock> ABYSSAL_PAVER_STAIRS =
+      deferredRegister.register("abyssal_paver_stairs",
+          () -> new StairBlock(() -> ABYSSAL_PAVER.get().defaultBlockState(),
+              BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<SlabBlock> ABYSSAL_PAVER_SLAB =
+      deferredRegister.register("abyssal_paver_slab",
+          () -> new SlabBlock(BlockBehaviour.Properties.copy(ABYSSAL_STONE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

@@ -4,12 +4,12 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.api.carts.FluidMinecart;
+import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.Predicates;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.material.FluidTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -81,8 +81,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Override
   protected void reset() {
     super.reset();
-    if (this.currentCart instanceof FluidMinecart) {
-      ((FluidMinecart) this.currentCart).setFilling(false);
+    if (this.currentCart instanceof FluidTransferHandler) {
+      ((FluidTransferHandler) this.currentCart).setFilling(false);
     }
   }
 
@@ -154,8 +154,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       this.setPowered(false);
     }
 
-    if (cart instanceof FluidMinecart) {
-      ((FluidMinecart) cart).setFilling(this.isProcessing());
+    if (cart instanceof FluidTransferHandler) {
+      ((FluidTransferHandler) cart).setFilling(this.isProcessing());
     }
 
     if (!this.tank.getFluid().isEmpty()

@@ -54,6 +54,16 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   }
 
   @Override
+  public void receiveSignalAspect(SignalController signalController,
+      SignalAspect signalAspect) {
+    if (signalController == this.primarySignalClient.getSignalController()) {
+      super.receiveSignalAspect(signalController, signalAspect);
+    } else if (signalController == this.secondarySignalClient.getSignalController()) {
+      this.secondarySignalClient.setSignalAspect(signalAspect);
+    }
+  }
+
+  @Override
   public void refresh() {
     super.refresh();
     this.secondarySignalClient.refresh();

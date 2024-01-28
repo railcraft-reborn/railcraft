@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import mods.railcraft.api.carts.CartUtil;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
@@ -16,7 +15,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -36,20 +34,20 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   private static final int TICKET_SLOT = 7;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 7);
 
-  private final ContainerMapper fuelInventory = ContainerMapper.make(this, FUEL_SLOT, 1);
-  private final ContainerMapper extraFuelInventory =
+  private final ContainerMapper fuelContainer = ContainerMapper.make(this, FUEL_SLOT, 1);
+  private final ContainerMapper extraFuelContainer =
       ContainerMapper.make(this, EXTRA_FUEL_SLOT_A, 3);
-  private final ContainerMapper fuelContainer = ContainerMapper.make(this, FUEL_SLOT, 4);
-  private final ContainerMapper ticketInventory =
+  private final ContainerMapper allFuelContainer = ContainerMapper.make(this, FUEL_SLOT, 4);
+  private final ContainerMapper ticketContainer =
       new ContainerMapper(this, TICKET_SLOT, 2).ignoreItemChecks();
 
   public SteamLocomotive(EntityType<?> type, Level level) {
     super(type, level);
 
-    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+    this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0 : super.consumeFuel();
       }
     });
   }
@@ -58,10 +56,10 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
 
-    this.getBoiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
+    this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
-        return SteamLocomotive.this.isShutdown() ? 0.0F : super.consumeFuel();
+        return SteamLocomotive.this.isShutdown() ? 0 : super.consumeFuel();
       }
     });
   }
@@ -80,24 +78,22 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public void tick() {
     super.tick();
 
-    if (this.level().isClientSide()) {
+    if (this.level().isClientSide() || this.isRemoved()) {
       return;
     }
-    extraFuelInventory.moveOneItemTo(fuelInventory);
+    this.extraFuelContainer.moveOneItemTo(this.fuelContainer);
     // fuelInventory.moveOneItemTo(invWaterOutput,
     // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
 
-    var extension = RollingStock.getOrThrow(this);
-    ItemStack stack =
-        CartUtil.transferService().pullStack(extension, this.extraFuelInventory::canFit);
-    if (!stack.isEmpty()) {
-      extraFuelInventory.insert(stack);
+    var rollingStock = RollingStock.getOrThrow(this);
+    var pulledFuel = rollingStock.pullItem(this.extraFuelContainer::canFit);
+    if (!pulledFuel.isEmpty()) {
+      this.extraFuelContainer.insert(pulledFuel);
     }
-    if (isSafeToFill() && waterTank.getFluidAmount() < waterTank.getCapacity() / 2) {
-      var pulled =
-          CartUtil.transferService().pullFluid(extension, new FluidStack(Fluids.WATER, 1));
-      if (pulled != null) {
-        waterTank.fill(pulled, FluidAction.EXECUTE);
+    if (this.isSafeToFill() && this.waterTank.getFluidAmount() < this.waterTank.getCapacity() / 2) {
+      var pulledWater = rollingStock.pullFluid(new FluidStack(Fluids.WATER, 1));
+      if (pulledWater != null) {
+        this.waterTank.fill(pulledWater, FluidAction.EXECUTE);
       }
     }
   }
@@ -108,17 +104,17 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     if (water.isEmpty() || water.getAmount() < this.waterTank.getCapacity() / 3) {
       return true;
     }
-    int numItems = this.fuelContainer.countItems(item -> ForgeHooks.getBurnTime(item, null) > 0);
+    int numItems = this.allFuelContainer.countItems(item -> ForgeHooks.getBurnTime(item, null) > 0);
     if (numItems == 0) {
       return true;
     }
-    int maxItems = this.fuelContainer.countMaxItemStackSize();
+    int maxItems = this.allFuelContainer.countMaxItemStackSize();
     return (float) numItems / (float) maxItems < 0.25F;
   }
 
   @Override
-  protected Container getTicketInventory() {
-    return ticketInventory;
+  protected Container ticketContainer() {
+    return this.ticketContainer;
   }
 
   @Override
@@ -144,13 +140,13 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
-      case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C ->
-          ForgeHooks.getBurnTime(stack, null) > 0;
+      case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C -> ForgeHooks
+          .getBurnTime(stack, null) > 0;
       case SLOT_WATER_INPUT ->
-        // if (FluidItemHelper.getFluidStackInContainer(stack)
-        // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
-        // return false;
-        // } we allow tanks instafilling.
+          // if (FluidItemHelper.getFluidStackInContainer(stack)
+          // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
+          // return false;
+          // } we allow tanks instafilling.
           FluidItemHelper.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT -> TicketItem.FILTER.test(stack);
       default -> false;
@@ -158,12 +154,12 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public boolean canAcceptPushedItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canAcceptPushedItem(RollingStock requester, ItemStack stack) {
     return ForgeHooks.getBurnTime(stack, null) > 0;
   }
 
   @Override
-  public boolean canProvidePulledItem(AbstractMinecart requester, ItemStack stack) {
+  public boolean canProvidePulledItem(RollingStock requester, ItemStack stack) {
     return false;
   }
 
@@ -173,7 +169,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public Item getItem() {
+  public Item getDropItem() {
     return RailcraftItems.STEAM_LOCOMOTIVE.get();
   }
 }

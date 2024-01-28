@@ -1,33 +1,32 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.RouterBlockEntity;
+import java.util.Locale;
+import java.util.function.Predicate;
 import mods.railcraft.util.routing.RoutingLogicException;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class LocomotiveCondition extends ParsedCondition {
+public class LocomotiveCondition {
 
-  public LocomotiveCondition(String line) throws RoutingLogicException {
-    super("Loco", false, line);
-  }
+  public static final String KEYWORD = "Loco";
 
-  @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    if (cart instanceof Locomotive loco) {
-      if (value.equalsIgnoreCase("Electric")) {
-        return loco.getType() == RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get();
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, false, line);
+    Predicate<Locomotive> predicate = switch (statement.value().toLowerCase(Locale.ROOT)) {
+      case "electric" -> loco -> loco.getType() == RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get();
+      case "steam" -> loco -> loco.getType() == RailcraftEntityTypes.STEAM_LOCOMOTIVE.get();
+      case "creative" -> loco -> loco.getType() == RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get();
+      case "none" -> null;
+      default -> throw new IllegalArgumentException("Unexpected value: " + statement.value());
+    };
+    return (router, rollingStock) -> {
+      if (rollingStock.entity() instanceof Locomotive loco && predicate != null) {
+        return predicate.test(loco);
       }
-      if (value.equalsIgnoreCase("Steam")) {
-        return loco.getType() == RailcraftEntityTypes.STEAM_LOCOMOTIVE.get();
-      }
-      if (value.equalsIgnoreCase("Creative")) {
-        return loco.getType() == RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get();
-      }
-      if (value.equalsIgnoreCase("None")) {
-        return false;
-      }
-    }
-    return value.equalsIgnoreCase("None");
+      return true;
+
+    };
   }
 }

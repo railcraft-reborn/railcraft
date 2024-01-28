@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 public class GoldenTicketScreen extends IngameWindowScreen {
 
   private static final ResourceLocation TICKET_LOCATION =
-      new ResourceLocation(Railcraft.ID, "textures/gui/item/golden_ticket.png");
+      Railcraft.rl("textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
   private static final String PREFIX = "Dest=";
@@ -85,7 +85,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      drawCenteredString(guiGraphics, about, 15, false);
+      GuiUtil.drawCenteredString(guiGraphics, font, about, windowWidth, 15);
       guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, IngameWindowScreen.TEXT_COLOR);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
@@ -96,10 +96,10 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var poseStack = guiGraphics.pose();
       poseStack.pushPose();
       poseStack.scale(2, 2, 2);
-      drawCenteredString(guiGraphics, title, IMAGE_WIDTH / 2, 8, true);
+      GuiUtil.drawCenteredString(guiGraphics, font, title, IMAGE_WIDTH / 2, 8, true);
       poseStack.popPose();
-      drawCenteredString(guiGraphics, desc1, 45, false);
-      drawCenteredString(guiGraphics, desc2, 60, false);
+      GuiUtil.drawCenteredString(guiGraphics, font, desc1, windowWidth, 45);
+      GuiUtil.drawCenteredString(guiGraphics, font, desc2, windowWidth, 60);
       this.editBoxDest.setVisible(true);
       this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
     }

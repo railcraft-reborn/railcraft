@@ -6,20 +6,6 @@ import net.minecraft.core.Vec3i;
 
 public final class MathUtil {
 
-  public static float getDistanceBetweenAngles(float angle1, float angle2) {
-    angle1 = normalizeAngle(angle1);
-    angle2 = normalizeAngle(angle2);
-    return normalizeAngle(angle1 - angle2);
-  }
-
-  public static float normalizeAngle(float angle) {
-    while (angle < -180F)
-      angle += 360F;
-    while (angle > 180F)
-      angle -= 360F;
-    return angle;
-  }
-
   public static boolean nearZero(double f) {
     return Math.abs(f) < 0.001;
   }
@@ -28,7 +14,7 @@ public final class MathUtil {
     double x = 0;
     double y = 0;
     double z = 0;
-    for (Vec3i pos : points) {
+    for (var pos : points) {
       x += pos.getX();
       y += pos.getY();
       z += pos.getZ();

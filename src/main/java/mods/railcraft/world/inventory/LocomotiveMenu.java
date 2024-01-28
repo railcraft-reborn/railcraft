@@ -19,7 +19,6 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
   public static final int DEFAULT_HEIGHT = 161;
 
   private final T locomotive;
-  public String ownerName;
 
   public LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv,
       T locomotive) {

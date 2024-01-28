@@ -25,8 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
-  private static final int SLOT_RESULT = 0;
-  private AdvancedContainer container;
+  private final AdvancedContainer container;
   private final FakeRollingContainer matrixListener = new FakeRollingContainer();
   protected final RollingCraftingContainer craftMatrix =
       new RollingCraftingContainer(matrixListener, 3, 3);
@@ -40,8 +39,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       BlockState blockState) {
     super(blockEntityType, blockPos, blockState);
     this.container = new AdvancedContainer(10);
-    this.invResult = ContainerMapper.make(this.container, SLOT_RESULT, 1);
-    this.invMatrix = ContainerMapper.make(this.container, 1, 9);
+    this.invResult = ContainerMapper.make(this.container, 0, 9);
+    this.invMatrix = ContainerMapper.make(this.container, 9, 1);
   }
 
   public ManualRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -52,7 +51,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
     tag.put("container", this.container.createTag());
-    tag.put("craftMatrix", ContainerTools.writeInventory(craftMatrix));
+    tag.put("craftMatrix", ContainerTools.writeContainer(craftMatrix));
     tag.putInt("progress", this.progress);
   }
 
@@ -60,7 +59,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   public void load(CompoundTag tag) {
     super.load(tag);
     this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
-    ContainerTools.readInventory(this.craftMatrix, tag.getList("craftMatrix", Tag.TAG_COMPOUND));
+    ContainerTools.readContainer(this.craftMatrix, tag.getList("craftMatrix", Tag.TAG_COMPOUND));
     this.progress = tag.getInt("progress");
   }
 
@@ -139,7 +138,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   protected void progress() {
-      this.progress++;
+    this.progress++;
   }
 
   private void balanceSlots() {
@@ -171,7 +170,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   public boolean canMakeMore() {
-    if(this.getRecipe().isEmpty())
+    if (this.getRecipe().isEmpty())
       return false;
     if (this.useLast)
       return true;
@@ -187,7 +186,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return new ManualRollingMachineMenu(containerId, inventory, this);
   }
 
-  public class RollingCraftingContainer extends TransientCraftingContainer {
+  public static class RollingCraftingContainer extends TransientCraftingContainer {
 
     public RollingCraftingContainer(FakeRollingContainer menu, int width, int height) {
       super(menu, width, height);
@@ -203,7 +202,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     }
   }
 
-  private class FakeRollingContainer extends AbstractContainerMenu {
+  private static class FakeRollingContainer extends AbstractContainerMenu {
 
     @Nullable
     AbstractContainerMenu listener;

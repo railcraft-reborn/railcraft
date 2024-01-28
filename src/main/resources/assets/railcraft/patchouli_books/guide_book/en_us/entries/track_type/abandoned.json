@@ -1,0 +1,19 @@
+{
+  "name": "Abandoned",
+  "icon": "railcraft:abandoned_track",
+  "category": "railcraft:track_type",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The abandoned track type is featured with their ability to stay suspended, make carts derail, and grow grass. This type of tracks are made with normal rails and single wooden ties.$(br2)Abandoned tracks require less wood and creosote than iron tracks. In general, you'd better build this type of track when you are short on creosote or time. They may be useful if you desire to build a lot of tracks in a short time."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "However, carts can derail if they are too fast on abandoned tracks. When the speed of carts on abandoned tracks exceed 0.35 block per tick (7m/s, 87.5% of the speed limit of normal rails), the train starts to have a chance of derailing. Each tick after exceeding that speed limit, a cart has .2% chance to derail. The chance increases to 4% in one second, and to almost 1/3 in 10 seconds. For a train, when a cart in the train derails, the whole train derails."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When you need to build across a canyon, they might become helpful. Mobs and players cannot walk on suspended abandoned tracks.$(br2)An abandoned track will grow grass when it is next to a block of tall grass."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 package mods.railcraft.sounds;
 
 import mods.railcraft.Railcraft;
-import net.minecraft.resources.ResourceLocation;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftSoundEvents {
 
   private static final DeferredRegister<SoundEvent> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Railcraft.ID);
+      DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, RailcraftConstants.ID);
 
   public static final RegistryObject<SoundEvent> STEAM_WHISTLE =
       register("locomotive.steam.whistle");
@@ -30,8 +30,7 @@ public class RailcraftSoundEvents {
   }
 
   private static RegistryObject<SoundEvent> register(String name) {
-    var registryName = new ResourceLocation(Railcraft.ID, name);
     return deferredRegister.register(name,
-        () -> SoundEvent.createVariableRangeEvent(registryName));
+        () -> SoundEvent.createVariableRangeEvent(Railcraft.rl(name)));
   }
 }

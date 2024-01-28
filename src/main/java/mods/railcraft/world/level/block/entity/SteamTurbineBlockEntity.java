@@ -8,13 +8,13 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.EnergyUtil;
+import mods.railcraft.util.FluidTools;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
-import mods.railcraft.world.level.material.FluidTools;
 import mods.railcraft.world.module.SteamTurbineModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -165,7 +165,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   @Override
   protected void membershipChanged(@Nullable Membership<SteamTurbineBlockEntity> membership) {
     if (membership == null) {
-      this.module.storage().setState(ChargeStorage.State.DISABLED);
+      this.module.storage().ifPresent(storage -> storage.setState(ChargeStorage.State.DISABLED));
 
       this.level.setBlockAndUpdate(this.getBlockPos(),
           this.getBlockState().setValue(SteamTurbineBlock.TYPE, SteamTurbineBlock.Type.NONE));
@@ -174,7 +174,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     }
 
     if (membership.master() == this) {
-      this.module.storage().setState(ChargeStorage.State.SOURCE);
+      this.module.storage().ifPresent(storage -> storage.setState(ChargeStorage.State.SOURCE));
     }
 
     var type = switch (membership.patternElement().marker()) {

@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.charge;
 
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
@@ -25,12 +26,14 @@ public class BatteryBlockEntity extends RailcraftBlockEntity {
     this.energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
   }
 
-  private ChargeStorage storage() {
+  private Optional<? extends ChargeStorage> storage() {
+    if (this.level().isClientSide()) {
+      return Optional.empty();
+    }
     return Charge.distribution
         .network((ServerLevel) this.level)
         .access(this.blockPos())
-        .storage()
-        .get();
+        .storage();
   }
 
   @Override

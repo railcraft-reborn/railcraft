@@ -71,10 +71,10 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
       }
     }
 
-    var thisTick = addedEnergy ? 1.0F : 0.0F;
+    var thisTick = addedEnergy ? 1 : 0;
     this.operatingRatio = (thisTick - this.operatingRatio) * 0.05F + this.operatingRatio;
 
-    var chargeStorage = this.storage();
+    var chargeStorage = this.storage().get();
     if (!chargeStorage.isFull()) {
       chargeStorage.receiveEnergy(this.energy, false);
       this.energy = 0;

@@ -1,7 +1,6 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
@@ -29,10 +28,10 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         new ElectricLocomotiveLampModel(
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
-    this.lampTextureOn = new ResourceLocation(Railcraft.ID,
-        "textures/entity/locomotive/" + modelTag + "/lamp_on.png");
-    this.lampTextureOff = new ResourceLocation(Railcraft.ID,
-        "textures/entity/locomotive/" + modelTag + "/lamp_off.png");
+    this.lampTextureOn =
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
+    this.lampTextureOff =
+        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
   }
 
   @Override
@@ -42,11 +41,11 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
     super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue, alpha);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
-    poseStack.translate(0.05F, 0.0F, 0.0F);
+    poseStack.translate(0.05F, 0, 0);
 
     boolean bright = cart.getMode() == Locomotive.Mode.RUNNING;
 
-    VertexConsumer vertexBuilder = bright
+    var vertexBuilder = bright
         ? renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOn))
         : renderTypeBuffer.getBuffer(this.lampModel.renderType(this.lampTextureOff));
 

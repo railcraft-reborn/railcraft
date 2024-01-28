@@ -1,20 +1,16 @@
 package mods.railcraft.util.routing.expression.condition;
 
-import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogicException;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import mods.railcraft.util.routing.RoutingStatementParser;
+import mods.railcraft.util.routing.expression.Expression;
 
-public class RedstoneCondition extends ParsedCondition {
+public class RedstoneCondition {
 
-  private final boolean powered;
+  public static final String KEYWORD = "Redstone";;
 
-  public RedstoneCondition(String line) throws RoutingLogicException {
-    super("Redstone", false, line);
-    this.powered = Boolean.parseBoolean(value);
-  }
-
-  @Override
-  public boolean matches(RouterBlockEntity routerBlockEntity, AbstractMinecart cart) {
-    return powered == routerBlockEntity.isPowered();
+  public static Expression parse(String line) throws RoutingLogicException {
+    var statement = RoutingStatementParser.parse(KEYWORD, false, line);
+    var powered = Boolean.parseBoolean(statement.value());
+    return (router, rollingStock) -> router.isPowered() == powered;
   }
 }

@@ -1,7 +1,9 @@
 package mods.railcraft.client;
 
 import mods.railcraft.Railcraft;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
@@ -9,6 +11,7 @@ import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
+import mods.railcraft.client.gui.screen.inventory.DumpingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
@@ -25,6 +28,8 @@ import mods.railcraft.client.gui.screen.inventory.SwitchTrackRouterScreen;
 import mods.railcraft.client.gui.screen.inventory.TankMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.TankScreen;
 import mods.railcraft.client.gui.screen.inventory.TrackLayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrackRelayerScreen;
+import mods.railcraft.client.gui.screen.inventory.TrackUndercutterScreen;
 import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
@@ -38,9 +43,11 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
+import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
+import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -56,7 +63,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -68,6 +77,8 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
 
@@ -80,6 +91,7 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleParticleRegistration);
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
+    modEventBus.addListener(ClientManager::handleKeyRegister);
     MinecraftForge.EVENT_BUS.register(ClientManager.class);
 
     shuntingAuraRenderer = new ShuntingAuraRenderer();
@@ -105,6 +117,8 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
         WaterTankSidingScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
     MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
     MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
@@ -128,6 +142,11 @@ public class ClientManager {
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+
+    if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
+      Patchouli.setup();
+    }
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
@@ -178,6 +197,10 @@ public class ClientManager {
     RailcraftLayerDefinitions.createRoots(event::registerLayerDefinition);
   }
 
+  private static void handleKeyRegister(RegisterKeyMappingsEvent event) {
+    event.register(KeyBinding.CHANGE_AURA_KEY);
+  }
+
   // ================================================================================
   // Forge Events
   // ================================================================================
@@ -192,7 +215,7 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    shuntingAuraRenderer.render(event.getPartialTick(), event.getPoseStack());
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(), event.getPartialTick());
   }
 
   @SubscribeEvent
@@ -200,26 +223,32 @@ public class ClientManager {
     shuntingAuraRenderer.clearCarts();
   }
 
+  @SuppressWarnings("unused")
   @SubscribeEvent
   static void handleClientLoggedIn(ClientPlayerNetworkEvent.LoggingIn event) {
-    var modInfo = ModList.get().getModFileById(Railcraft.ID).getMods().get(0);
-    var versionStatus = VersionChecker.getResult(modInfo).status();
+    var modInfo = ModList.get().getModFileById(RailcraftConstants.ID).getMods().get(0);
+    var result = VersionChecker.getResult(modInfo);
+    var versionStatus = result.status();
 
     if (versionStatus.shouldDraw()) {
-      var message = Component.literal("Railcraft Reborn: ").withStyle(ChatFormatting.GREEN)
-          .append(Component.literal("A new version is available to download.")
+      var newVersion = result.target().toString();
+      var modUrl = modInfo.getModURL().get().toString();
+      var message = Component.literal(RailcraftConstants.NAME + ": ").withStyle(ChatFormatting.GREEN)
+          .append(Component.literal(
+              "A new version (%s) is available to download.".formatted(newVersion))
               .withStyle(style -> style
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                      "https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn"))));
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, modUrl))));
       event.getPlayer().displayClientMessage(message, false);
     }
 
-    if (Railcraft.BETA || !FMLLoader.isProduction()) {
+    if (!FMLLoader.isProduction()
+        || (Railcraft.BETA && RailcraftConfig.CLIENT.showMessageBeta.get())) {
       var type = FMLLoader.isProduction() ? "beta" : "development";
+      var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
-          Component.literal("You are using a " + type + " version of Railcraft Reborn.")
+          Component.literal("You are using a %s version of %s.".formatted(type, RailcraftConstants.NAME))
               .withStyle(ChatFormatting.RED),
         /*Component.literal("- World saves are not stable and may break between versions.")
             .withStyle(ChatFormatting.GRAY),*/
@@ -231,8 +260,7 @@ public class ClientManager {
               .withStyle(style -> style
                   .withColor(ChatFormatting.GREEN)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
-                      "https://github.com/railcraft-reborn/railcraft/issues"))),
+                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
       event.getPlayer().displayClientMessage(message, false);
@@ -240,7 +268,7 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  static void onItemTooltip(ItemTooltipEvent event) {
+  static void handleItemTooltip(ItemTooltipEvent event) {
     var itemStack = event.getItemStack();
     var tag = itemStack.getTag();
     if (tag == null) {
@@ -250,6 +278,13 @@ public class ClientManager {
         tag.getBoolean(ManualRollingMachineMenu.CLICK_TO_CRAFT_TAG)) {
       event.getToolTip().add(Component.translatable(Translations.Tips.CLICK_TO_CRAFT)
           .withStyle(ChatFormatting.YELLOW));
+    }
+  }
+
+  @SubscribeEvent
+  static void handleKeyInput(InputEvent.Key event) {
+    if (KeyBinding.CHANGE_AURA_KEY.consumeClick()) {
+      GogglesItem.changeAuraByKey(Minecraft.getInstance().player);
     }
   }
 }

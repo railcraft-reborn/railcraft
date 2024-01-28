@@ -7,8 +7,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.world.entity.vehicle.CartTools;
 import mods.railcraft.world.entity.vehicle.Directional;
+import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
@@ -34,7 +34,7 @@ public class CrowbarHandler {
 
   public InteractionResult handleInteract(AbstractMinecart cart, Player player,
       InteractionHand hand) {
-    ItemStack stack = player.getItemInHand(hand);
+    var stack = player.getItemInHand(hand);
     if (stack.isEmpty() || !(stack.getItem() instanceof Crowbar crowbar)) {
       return InteractionResult.PASS;
     }
@@ -103,25 +103,24 @@ public class CrowbarHandler {
       AbstractMinecart cart, Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
-    if (player.getVehicle() != null) {
-      // NOOP
-    } else if (cart instanceof TunnelBore) {
-      // NOOP
-    } else if (cart instanceof Directional directional) {
+    if (player.getVehicle() != null || cart instanceof TunnelBore) {
+      return;
+    }
+    if (cart instanceof Directional directional) {
       directional.reverse();
     } else if (cart instanceof TrackRemover trackRemover) {
-      trackRemover.setMode(trackRemover.getMode().getNext());
+      trackRemover.setMode(trackRemover.mode().next());
     } else {
       int lvl = stack.getEnchantmentLevel(RailcraftEnchantments.SMACK.get());
       if (lvl == 0) {
-        CartTools.smackCart(cart, player, SMACK_VELOCITY);
+        MinecartUtil.smackCart(cart, player, SMACK_VELOCITY);
       }
       var extension = RollingStock.getOrThrow(cart);
       var train = extension.train();
       var smackVelocity = (SMACK_VELOCITY * (float) Math.pow(1.7, lvl))
           / (float) Math.pow(train.size(), 1D / (1 + lvl));
-      train.stream().forEach(
-          each -> CartTools.smackCart(cart, each.entity(), player, smackVelocity));
+      train.entities().forEach(
+          each -> MinecartUtil.smackCart(cart, each, player, smackVelocity));
     }
     crowbar.onBoost(player, hand, stack, cart);
   }

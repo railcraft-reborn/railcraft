@@ -26,7 +26,7 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation BLAST_FURNACE_BACKGROUND =
-      new ResourceLocation(Railcraft.ID, "textures/gui/container/blast_furnace.png");
+      Railcraft.rl("textures/gui/container/blast_furnace.png");
 
   private final IDrawable background, icon, flame, arrow;
 

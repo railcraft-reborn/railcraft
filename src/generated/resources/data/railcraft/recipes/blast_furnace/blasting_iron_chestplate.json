@@ -1,6 +1,6 @@
 {
   "type": "railcraft:blasting",
-  "cookingTime": 10240,
+  "cookingTime": 3200,
   "experience": 0.0,
   "ingredient": {
     "item": "minecraft:iron_chestplate"

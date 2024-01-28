@@ -58,7 +58,6 @@ public class RitualBlock extends BaseEntityBlock {
     return SHAPE;
   }
 
-
   @Override
   public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter blockGetter,
       BlockPos pos, Player player) {
@@ -78,7 +77,7 @@ public class RitualBlock extends BaseEntityBlock {
       if (firestone.hasCustomName()) {
         drop.setHoverName(firestone.getCustomName());
       }
-      drop.setDamageValue(drop.getMaxDamage() - firestone.charge);
+      drop.setDamageValue(drop.getMaxDamage() - firestone.charge());
       drops.add(drop);
     } else {
       drops.add(RefinedFirestoneItem.getItemEmpty());

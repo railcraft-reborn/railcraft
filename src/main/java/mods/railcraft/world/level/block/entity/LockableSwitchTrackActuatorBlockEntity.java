@@ -89,17 +89,17 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     }
 
     @Override
-    public Component getLabel() {
+    public Component label() {
       return Component.empty();
     }
 
     @Override
-    public TexturePosition getTexturePosition() {
+    public TexturePosition texturePosition() {
       return this.texture;
     }
 
     @Override
-    public Lock getNext() {
+    public Lock next() {
       return EnumUtil.next(this, values());
     }
 
