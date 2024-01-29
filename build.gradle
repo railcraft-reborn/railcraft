@@ -13,7 +13,7 @@ plugins {
 
 def isRelease = System.getenv('CURSEFORGE_TOKEN')
 if (!isRelease) {
-    mod_version += "-snapshot"
+    mod_version += '-snapshot'
 }
 
 version = "$minecraft_version-$mod_version"
@@ -147,7 +147,7 @@ test {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    options.compilerArgs.addAll(["-Xmaxerrs", "100000"])
+    options.compilerArgs.addAll(['-Xmaxerrs', '100000'])
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.DumpingTrackMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/dumping_track.png");
+      RailcraftConstants.rl("textures/gui/container/dumping_track.png");
 
   private static final Component FILTERS =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);

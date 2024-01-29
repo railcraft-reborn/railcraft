@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:obsidian"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 public class IngameWindowScreen extends Screen {
 
   public static final ResourceLocation WIDGETS_TEXTURE =
-      Railcraft.rl("textures/gui/widgets.png");
+      RailcraftConstants.rl("textures/gui/widgets.png");
   public static final ResourceLocation LARGE_WINDOW_TEXTURE =
-      Railcraft.rl("textures/gui/large_window.png");
+      RailcraftConstants.rl("textures/gui/large_window.png");
 
   public static final int TEXT_COLOR = 0xFF404040;
   public static final int DEFAULT_WINDOW_WIDTH = 176;

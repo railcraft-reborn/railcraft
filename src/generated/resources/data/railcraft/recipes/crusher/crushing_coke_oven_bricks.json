@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "railcraft:coke_oven_bricks"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

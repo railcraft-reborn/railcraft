@@ -188,7 +188,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   @Override
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    InteractionResult result = super.use(blockState, level, pos, player, hand, rayTraceResult);
+    var result = super.use(blockState, level, pos, player, hand, rayTraceResult);
     if (result.consumesAction()) {
       return result;
     }

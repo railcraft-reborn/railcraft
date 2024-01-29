@@ -9,8 +9,10 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -22,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RollingRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 100;
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 5;
   private final Item result;
   private final int count;
   private final int processTime;
@@ -92,7 +94,7 @@ public class RollingRecipeBuilder {
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("rolling/" + path);
+    var customResourceLocation = RailcraftConstants.rl("rolling/" + path);
     finishedRecipe.accept(
         new Result(customResourceLocation, this.result, this.count,
             this.processTime, this.rows, this.key));
@@ -124,22 +126,22 @@ public class RollingRecipeBuilder {
         jsonarray.add(s);
       }
 
-      jsonOut.add("pattern", jsonarray);
+      jsonOut.add(RecipeJsonKeys.PATTERN, jsonarray);
       var jsonobject = new JsonObject();
 
       for (var entry : this.key.entrySet()) {
         jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
       }
 
-      jsonOut.add("key", jsonobject);
-      var jsonobject1 = new JsonObject();
-      jsonobject1.addProperty("item", ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
+      jsonOut.add(RecipeJsonKeys.KEY, jsonobject);
+      var result = new JsonObject();
+      result.addProperty(RecipeJsonKeys.ITEM, ForgeRegistries.ITEMS.getKey(this.resultItem).toString());
       if (this.count > 1) {
-        jsonobject1.addProperty("count", this.count);
+        result.addProperty(RecipeJsonKeys.COUNT, this.count);
       }
 
-      jsonOut.add("result", jsonobject1);
-      jsonOut.add("processTime", new JsonPrimitive(delay));
+      jsonOut.add(RecipeJsonKeys.RESULT, result);
+      jsonOut.add(RecipeJsonKeys.PROCESS_TIME, new JsonPrimitive(delay));
     }
 
     public RecipeSerializer<?> getType() {

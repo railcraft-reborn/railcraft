@@ -41,9 +41,8 @@ public class SwitchTrackMotorBlock extends SwitchTrackActuatorBlock implements E
     if (level.isClientSide()) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
           .ifPresent(ScreenFactories::openSwitchTrackMotorScreen);
-      return InteractionResult.SUCCESS;
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

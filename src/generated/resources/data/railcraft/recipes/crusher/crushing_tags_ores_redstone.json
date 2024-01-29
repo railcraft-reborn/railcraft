@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:ores/redstone"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

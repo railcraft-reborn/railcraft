@@ -2,7 +2,7 @@ package mods.railcraft.data.worldgen.placements;
 
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -133,7 +133,7 @@ public class RailcraftOrePlacements {
 
   @NotNull
   private static ResourceKey<PlacedFeature> createKey(String name) {
-    return ResourceKey.create(Registries.PLACED_FEATURE, Railcraft.rl(name));
+    return ResourceKey.create(Registries.PLACED_FEATURE, RailcraftConstants.rl(name));
   }
 
   @NotNull

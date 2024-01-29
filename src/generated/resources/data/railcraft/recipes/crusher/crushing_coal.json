@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:coal"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

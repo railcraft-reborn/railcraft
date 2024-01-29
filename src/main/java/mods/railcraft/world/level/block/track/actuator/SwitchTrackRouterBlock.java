@@ -33,12 +33,11 @@ public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements 
   @Override
   public InteractionResult use(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-    if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
+    if (player instanceof ServerPlayer serverPlayer) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
+          .ifPresent(blockEntity -> NetworkHooks.openScreen(serverPlayer, blockEntity, pos));
     }
-    level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
-        .ifPresent(blockEntity -> NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos));
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
   @Override

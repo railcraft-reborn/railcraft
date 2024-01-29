@@ -1,8 +1,8 @@
 package mods.railcraft.client.gui.screen;
 
 import java.util.List;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.util.GuiUtil;
@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 public class GoldenTicketScreen extends IngameWindowScreen {
 
   private static final ResourceLocation TICKET_LOCATION =
-      Railcraft.rl("textures/gui/item/golden_ticket.png");
+      RailcraftConstants.rl("textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
   private static final String PREFIX = "Dest=";

@@ -1,6 +1,6 @@
 package mods.railcraft.world.damagesource;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
@@ -27,6 +27,6 @@ public class RailcraftDamageType {
   }
 
   private static ResourceKey<DamageType> createKey(String name) {
-    return ResourceKey.create(Registries.DAMAGE_TYPE, Railcraft.rl(name));
+    return ResourceKey.create(Registries.DAMAGE_TYPE, RailcraftConstants.rl(name));
   }
 }

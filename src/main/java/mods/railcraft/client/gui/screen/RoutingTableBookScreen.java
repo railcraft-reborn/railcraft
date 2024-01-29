@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
@@ -46,7 +46,7 @@ import net.minecraft.world.item.ItemStack;
 public class RoutingTableBookScreen extends Screen {
 
   public static final ResourceLocation BOOK_LOCATION =
-      Railcraft.rl("textures/gui/item/routing_table_book.png");
+      RailcraftConstants.rl("textures/gui/item/routing_table_book.png");
   private static final int TEXT_WIDTH = 220;
   private static final int TEXT_HEIGHT = 128;
   private static final int IMAGE_WIDTH = 256;

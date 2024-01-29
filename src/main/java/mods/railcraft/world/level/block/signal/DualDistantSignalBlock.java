@@ -56,7 +56,7 @@ public class DualDistantSignalBlock extends DualSignalBlock implements JeiSearch
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.DUAL_DISTANT_SIGNAL);
   }
 }

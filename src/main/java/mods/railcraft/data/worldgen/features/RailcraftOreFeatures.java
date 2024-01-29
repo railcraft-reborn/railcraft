@@ -3,7 +3,7 @@ package mods.railcraft.data.worldgen.features;
 import java.util.List;
 import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -136,6 +136,6 @@ public class RailcraftOreFeatures {
   }
 
   private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-    return ResourceKey.create(Registries.CONFIGURED_FEATURE, Railcraft.rl(name));
+    return ResourceKey.create(Registries.CONFIGURED_FEATURE, RailcraftConstants.rl(name));
   }
 }

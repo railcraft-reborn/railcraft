@@ -8,7 +8,7 @@
       "item": "railcraft:zinc_carbon_battery_empty"
     }
   ],
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

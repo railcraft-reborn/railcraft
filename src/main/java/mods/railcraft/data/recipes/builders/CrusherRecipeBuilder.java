@@ -7,11 +7,13 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import com.mojang.datafixers.util.Pair;
+import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -21,11 +23,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 10 * 20; // 10 sec
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 10;
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;
-  private final List<Tuple<ItemStack, Double>> probabilityItems;
+  private final List<Pair<ItemStack, Double>> probabilityItems;
   private final int processTime;
 
   private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
@@ -53,7 +55,7 @@ public class CrusherRecipeBuilder {
     }
 
     var itemStack = new ItemStack(item, quantity);
-    probabilityItems.add(new Tuple<>(itemStack, probability));
+    probabilityItems.add(new Pair<>(itemStack, probability));
     return this;
   }
 
@@ -67,7 +69,7 @@ public class CrusherRecipeBuilder {
   }
 
   public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
-    var customResourceLocation = Railcraft.rl("crusher/crushing_" + path);
+    var customResourceLocation = RailcraftConstants.rl("crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient, this.probabilityItems,
         this.processTime));
@@ -77,11 +79,11 @@ public class CrusherRecipeBuilder {
 
     private final ResourceLocation id;
     private final Ingredient ingredient;
-    private final List<Tuple<ItemStack, Double>> probabilityItems;
+    private final List<Pair<ItemStack, Double>> probabilityItems;
     private final int processTime;
 
     public Result(ResourceLocation resourceLocation, Ingredient ingredient,
-        List<Tuple<ItemStack, Double>> probabilityItems,
+        List<Pair<ItemStack, Double>> probabilityItems,
         int processTime) {
       this.id = resourceLocation;
       this.ingredient = ingredient;
@@ -90,22 +92,22 @@ public class CrusherRecipeBuilder {
     }
 
     public void serializeRecipeData(JsonObject jsonOut) {
-      jsonOut.addProperty("processTime", processTime);
-      jsonOut.add("ingredient", ingredient.toJson());
+      jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, processTime);
+      jsonOut.add(RecipeJsonKeys.INGREDIENT, ingredient.toJson());
 
       var result = new JsonArray();
       for (var item : probabilityItems) {
         var pattern = new JsonObject();
 
         var itemStackObject = new JsonObject();
-        itemStackObject.addProperty("item",
-            ForgeRegistries.ITEMS.getKey(item.getA().getItem()).toString());
-        itemStackObject.addProperty("count", item.getA().getCount());
-        pattern.add("result", itemStackObject);
-        pattern.addProperty("probability", item.getB());
+        itemStackObject.addProperty(RecipeJsonKeys.ITEM,
+            ForgeRegistries.ITEMS.getKey(item.getFirst().getItem()).toString());
+        itemStackObject.addProperty(RecipeJsonKeys.COUNT, item.getFirst().getCount());
+        pattern.add(RecipeJsonKeys.RESULT, itemStackObject);
+        pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.getSecond());
         result.add(pattern);
       }
-      jsonOut.add("output", result);
+      jsonOut.add(RecipeJsonKeys.OUTPUTS, result);
     }
 
     public RecipeSerializer<?> getType() {

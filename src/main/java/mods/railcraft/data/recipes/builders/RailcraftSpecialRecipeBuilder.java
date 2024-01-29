@@ -3,7 +3,7 @@ package mods.railcraft.data.recipes.builders;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.data.recipes.CraftingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
@@ -33,7 +33,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
       }
 
       public ResourceLocation getId() {
-        return Railcraft.rl(id);
+        return RailcraftConstants.rl(id);
       }
 
       @Nullable
@@ -42,7 +42,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
       }
 
       public ResourceLocation getAdvancementId() {
-        return Railcraft.rl("");
+        return RailcraftConstants.rl("");
       }
     });
   }

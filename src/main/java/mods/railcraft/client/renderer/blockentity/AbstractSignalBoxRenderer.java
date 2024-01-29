@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
@@ -23,17 +23,17 @@ public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
 
   private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, Railcraft.rl("entity/signal_box_aspect/off"),
-      SignalAspect.RED, Railcraft.rl("entity/signal_box_aspect/red"),
-      SignalAspect.YELLOW, Railcraft.rl("entity/signal_box_aspect/yellow"),
-      SignalAspect.GREEN, Railcraft.rl("entity/signal_box_aspect/green"));
+      SignalAspect.OFF, RailcraftConstants.rl("entity/signal_box_aspect/off"),
+      SignalAspect.RED, RailcraftConstants.rl("entity/signal_box_aspect/red"),
+      SignalAspect.YELLOW, RailcraftConstants.rl("entity/signal_box_aspect/yellow"),
+      SignalAspect.GREEN, RailcraftConstants.rl("entity/signal_box_aspect/green"));
 
   private static final ResourceLocation SIDE_TEXTURE_LOCATION =
-      Railcraft.rl("entity/signal_box/side");
+      RailcraftConstants.rl("entity/signal_box/side");
   private static final ResourceLocation CONNECTED_SIDE_TEXTURE_LOCATION =
-      Railcraft.rl("entity/signal_box/connected_side");
+      RailcraftConstants.rl("entity/signal_box/connected_side");
   private static final ResourceLocation BOTTOM_TEXTURE_LOCATION =
-      Railcraft.rl("entity/signal_box/bottom");
+      RailcraftConstants.rl("entity/signal_box/bottom");
 
   private final CuboidModel model =
       new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);

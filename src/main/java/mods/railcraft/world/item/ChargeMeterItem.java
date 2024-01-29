@@ -7,6 +7,7 @@ import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.charge.ChargeNetworkImpl;
 import mods.railcraft.util.HumanReadableNumberFormatter;
+import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +38,7 @@ public class ChargeMeterItem extends Item {
           state, (ServerLevel) level, pos);
       if (node != null && node.isValid() && !node.isGridNull()) {
         sendChat(player, Translations.ChargeMeter.START, SECONDS_TO_RECORD);
-        node.startUsageRecording(SECONDS_TO_RECORD * 20, avg -> {
+        node.startUsageRecording(SECONDS_TO_RECORD * SharedConstants.TICKS_PER_SECOND, avg -> {
           var grid = node.getGrid();
           sendChat(player, Translations.ChargeMeter.NETWORK, grid.size(),
               grid.isInfinite() ? "INF" : grid.getCharge(), grid.getAverageUsagePerTick(),

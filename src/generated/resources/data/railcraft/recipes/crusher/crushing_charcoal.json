@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:charcoal"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

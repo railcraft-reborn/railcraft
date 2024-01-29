@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:brick_stairs"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

@@ -9,11 +9,12 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -26,7 +27,7 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   private static final int HEIGHT = 54;
 
   private static final ResourceLocation BLAST_FURNACE_BACKGROUND =
-      Railcraft.rl("textures/gui/container/blast_furnace.png");
+      RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
 
   private final IDrawable background, icon, flame, arrow;
 
@@ -71,7 +72,7 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
 
     int cookTime = recipe.getCookingTime();
     if (cookTime > 0) {
-      int cookTimeSeconds = cookTime / 20;
+      int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
       var timeString = Component.translatable("gui.jei.category.smelting.time.seconds",
           cookTimeSeconds);
       var minecraft = Minecraft.getInstance();

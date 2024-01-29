@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.material;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -91,7 +91,7 @@ public class SteamFluid extends Fluid {
       @Override
       public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
         consumer.accept(new IClientFluidTypeExtensions() {
-          private static final ResourceLocation STILL_TEXTURE = Railcraft.rl("block/steam_still");
+          private static final ResourceLocation STILL_TEXTURE = RailcraftConstants.rl("block/steam_still");
 
           @Override
           public int getTintColor() {

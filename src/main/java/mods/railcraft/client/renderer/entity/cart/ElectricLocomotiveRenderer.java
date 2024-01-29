@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
@@ -29,9 +29,9 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
     this.lampTextureOn =
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff =
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
   }
 
   @Override

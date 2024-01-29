@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:nether_wart_block"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

@@ -1,14 +1,18 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.loot.LootParams;
 
 public class JunctionTrackBlock extends OutfittedTrackBlock {
 
@@ -28,5 +32,10 @@ public class JunctionTrackBlock extends OutfittedTrackBlock {
     } else {
       return RailShape.NORTH_SOUTH;
     }
+  }
+
+  @Override
+  public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+    return Collections.emptyList();
   }
 }

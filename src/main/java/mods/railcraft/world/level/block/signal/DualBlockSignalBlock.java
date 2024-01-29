@@ -79,7 +79,7 @@ public class DualBlockSignalBlock extends DualSignalBlock implements JeiSearchab
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.DUAL_BLOCK_SIGNAL);
   }
 }

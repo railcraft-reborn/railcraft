@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:ores/sulfur"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {

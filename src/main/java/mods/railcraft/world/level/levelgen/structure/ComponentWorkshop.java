@@ -2,7 +2,7 @@ package mods.railcraft.world.level.levelgen.structure;
 
 import java.util.ArrayList;
 import com.mojang.datafixers.util.Pair;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -56,10 +56,10 @@ public class ComponentWorkshop {
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         new ResourceLocation("village/plains/houses"),
-        Railcraft.rl("component_workshop_cartman"), 3);
+        RailcraftConstants.rl("component_workshop_cartman"), 3);
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         new ResourceLocation("village/plains/houses"),
-        Railcraft.rl("component_workshop_trackman"), 5);
+        RailcraftConstants.rl("component_workshop_trackman"), 5);
   }
 }

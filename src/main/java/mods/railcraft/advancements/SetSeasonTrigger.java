@@ -2,7 +2,7 @@ package mods.railcraft.advancements;
 
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Season;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
@@ -16,7 +16,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("set_season");
+  private static final ResourceLocation ID = RailcraftConstants.rl("set_season");
 
   @Override
   public ResourceLocation getId() {

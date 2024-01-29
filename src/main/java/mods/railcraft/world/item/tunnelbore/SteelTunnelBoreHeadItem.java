@@ -1,13 +1,13 @@
 package mods.railcraft.world.item.tunnelbore;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItemTier;
 import net.minecraft.resources.ResourceLocation;
 
 public class SteelTunnelBoreHeadItem extends TunnelBoreHeadItem {
 
   private static final ResourceLocation TEXTURE_LOCATION =
-      Railcraft.rl("textures/entity/tunnel_bore/steel_tunnel_bore.png");
+      RailcraftConstants.rl("textures/entity/tunnel_bore/steel_tunnel_bore.png");
 
   public SteelTunnelBoreHeadItem(Properties properties) {
     super(RailcraftItemTier.STEEL, properties);

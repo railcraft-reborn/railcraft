@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SpikeMaulUseTrigger extends SimpleCriterionTrigger<SpikeMaulUseTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("spike_maul_use");
+  private static final ResourceLocation ID = RailcraftConstants.rl("spike_maul_use");
 
   @Override
   public ResourceLocation getId() {

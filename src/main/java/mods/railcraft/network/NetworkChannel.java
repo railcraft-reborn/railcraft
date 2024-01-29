@@ -1,6 +1,6 @@
 package mods.railcraft.network;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import mods.railcraft.network.play.EditTicketAttributeMessage;
 import mods.railcraft.network.play.LinkedCartsMessage;
@@ -179,7 +179,7 @@ public enum NetworkChannel {
   NetworkChannel(String name) {
     var networkVersion = "1";
     this.simpleChannel = NetworkRegistry.ChannelBuilder
-        .named(Railcraft.rl(name))
+        .named(RailcraftConstants.rl(name))
         .clientAcceptedVersions(networkVersion::equals)
         .serverAcceptedVersions(networkVersion::equals)
         .networkProtocolVersion(() -> networkVersion)

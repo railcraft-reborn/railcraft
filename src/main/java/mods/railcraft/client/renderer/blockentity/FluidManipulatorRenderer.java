@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
@@ -18,7 +18,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
 
   public static final ResourceLocation INTERIOR_TEXTURE_LOCATION =
-      Railcraft.rl("entity/fluid_manipulator/interior");
+      RailcraftConstants.rl("entity/fluid_manipulator/interior");
 
   private static final CuboidModel interiorModel =
       new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
