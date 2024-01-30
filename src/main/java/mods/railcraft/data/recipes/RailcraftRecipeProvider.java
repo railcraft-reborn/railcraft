@@ -450,7 +450,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     ShapedRecipeBuilder
         .shaped(RecipeCategory.MISC, RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get(), 16)
         .pattern("aba")
-        .pattern("aca")
+        .pattern("bcb")
         .pattern("aba")
         .define('a', RailcraftItems.HIGH_SPEED_RAIL.get())
         .define('b', RailcraftItems.ELECTRIC_RAIL.get())
