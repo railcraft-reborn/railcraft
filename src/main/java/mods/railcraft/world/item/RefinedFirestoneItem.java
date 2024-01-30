@@ -107,10 +107,10 @@ public class RefinedFirestoneItem extends FirestoneItem {
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
 
-    ServerPlayer serverPlayer = (ServerPlayer) player;
+    var serverPlayer = (ServerPlayer) player;
 
     if (player.mayUseItemAt(pos, side, stack)) {
-      if (blockState.getBlock() != Blocks.STONE) {
+      if (!blockState.is(Blocks.STONE)) {
         var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.get(0).isEmpty()
             && drops.get(0).getItem() instanceof BlockItem) {
@@ -152,14 +152,13 @@ public class RefinedFirestoneItem extends FirestoneItem {
   public InteractionResult interactLivingEntity(ItemStack itemStack, Player player,
       LivingEntity livingEntity, InteractionHand hand) {
     var level = player.level();
-    if (level instanceof ServerLevel && !livingEntity.fireImmune()) {
+    if (!level.isClientSide() && !livingEntity.fireImmune()) {
       livingEntity.setSecondsOnFire(5);
       itemStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));
       level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
           SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
-      return InteractionResult.SUCCESS;
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

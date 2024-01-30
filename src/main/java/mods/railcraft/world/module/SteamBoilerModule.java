@@ -2,8 +2,8 @@ package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.FluidTools;
-import mods.railcraft.util.FluidTools.ProcessType;
+import mods.railcraft.util.fluids.FluidTools;
+import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.steamboiler.FireboxBlock;

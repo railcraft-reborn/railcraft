@@ -50,7 +50,7 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
     var advancementId = customResourceLocation.withPrefix("recipes/");
 
     finishedRecipe.accept(new Result(customResourceLocation,
-        this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
+        this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.creosoteOutput, this.advancement, advancementId));
   }
 
@@ -58,11 +58,10 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     private final int creosoteOutput;
 
-    public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
+    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
         float experience, int cookingTime, int creosoteOutput, Advancement.Builder advancement,
         ResourceLocation advancementId) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement,
-          advancementId);
+      super(id, result, count, ingredient, experience, cookingTime, advancement, advancementId);
       this.creosoteOutput = creosoteOutput;
     }
 

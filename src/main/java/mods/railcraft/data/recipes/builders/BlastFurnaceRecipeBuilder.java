@@ -52,7 +52,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     var advancementId = customResourceLocation.withPrefix("recipes/");
 
     finishedRecipe.accept(new Result(customResourceLocation,
-        this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
+        this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
   }
 
@@ -60,10 +60,10 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     private final int slagOutput;
 
-    public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
+    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
         float experience, int cookingTime, int slagOutput, Advancement.Builder advancement,
         ResourceLocation advancementId) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement,
+      super(id, result, count, ingredient, experience, cookingTime, advancement,
           advancementId);
       this.slagOutput = slagOutput;
     }

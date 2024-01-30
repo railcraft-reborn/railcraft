@@ -3,7 +3,11 @@ package mods.railcraft.util;
 import java.util.Optional;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public final class JsonUtil {
@@ -33,5 +37,12 @@ public final class JsonUtil {
     return object.has(memberName)
         ? Optional.of(object.get(memberName))
         : Optional.empty();
+  }
+
+  public static ItemStack itemFromJson(JsonObject json) {
+    if (!json.has(RecipeJsonKeys.ITEM)) {
+      throw new JsonParseException("No item key found");
+    }
+    return CraftingHelper.getItemStack(json, true);
   }
 }

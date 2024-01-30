@@ -3,10 +3,10 @@ package mods.railcraft.world.item.crafting;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
+import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -22,7 +22,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class CrusherRecipe implements Recipe<Container> {
   private final ResourceLocation recipeId;
@@ -133,7 +132,7 @@ public class CrusherRecipe implements Recipe<Container> {
         var outputObj = output.getAsJsonObject();
         var probability = GsonHelper.getAsDouble(outputObj, RecipeJsonKeys.PROBABILITY, 1);
         probability = Mth.clamp(probability, 0, 1); //[0,1]
-        var result = itemFromJson(GsonHelper.getAsJsonObject(outputObj, RecipeJsonKeys.RESULT));
+        var result = JsonUtil.itemFromJson(GsonHelper.getAsJsonObject(outputObj, RecipeJsonKeys.RESULT));
         probabilityItems.add(new Pair<>(result, probability));
       }
       return new CrusherRecipe(recipeId, ingredient, probabilityItems, processTime);
@@ -159,13 +158,6 @@ public class CrusherRecipe implements Recipe<Container> {
         buf.writeItem(item.getFirst());
         buf.writeDouble(item.getSecond());
       });
-    }
-
-    private static ItemStack itemFromJson(JsonObject json) {
-      if (!json.has(RecipeJsonKeys.ITEM)) {
-        throw new JsonParseException("No item key found");
-      }
-      return CraftingHelper.getItemStack(json, true);
     }
   }
 }

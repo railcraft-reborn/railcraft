@@ -1,8 +1,8 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
-import mods.railcraft.util.FluidTools;
-import mods.railcraft.util.FluidTools.ProcessType;
+import mods.railcraft.util.fluids.FluidTools;
+import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;

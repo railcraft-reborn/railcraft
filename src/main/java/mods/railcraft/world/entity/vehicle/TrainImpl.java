@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
-import mods.railcraft.util.CompositeFluidHandler;
+import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;

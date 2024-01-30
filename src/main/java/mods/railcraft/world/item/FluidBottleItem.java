@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.util.capability.FluidBottleWrapper;
+import mods.railcraft.util.fluids.FluidBottleWrapper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
