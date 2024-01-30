@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mods.railcraft.world.item.crafting.RollingRecipe;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class RollingRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 100;
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 5;
   private final Item result;
   private final int count;
   private final int processTime;

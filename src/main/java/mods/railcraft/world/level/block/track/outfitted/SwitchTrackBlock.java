@@ -1,12 +1,9 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +13,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.level.storage.loot.LootParams;
 
 public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
 
@@ -43,11 +39,6 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(SWITCHED);
-  }
-
-  @Override
-  public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-    return Collections.emptyList();
   }
 
   @Override

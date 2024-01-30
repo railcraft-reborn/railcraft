@@ -7,6 +7,7 @@ import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +25,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
 
-  private static final int REFILL_INTERVAL = 20;
+  private static final int REFILL_INTERVAL = SharedConstants.TICKS_PER_SECOND;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
   private static final float REFILL_BOOST_RAIN = 3.0F;
 

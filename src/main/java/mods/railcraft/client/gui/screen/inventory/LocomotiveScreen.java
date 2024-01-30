@@ -16,6 +16,7 @@ import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -24,7 +25,7 @@ import net.minecraft.world.entity.player.Inventory;
 public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     extends RailcraftMenuScreen<T> {
 
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
 
   private final String typeTag;
   private final Map<Locomotive.Mode, Button> modeButtons =

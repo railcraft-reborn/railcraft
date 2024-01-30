@@ -11,6 +11,7 @@ import mods.railcraft.world.inventory.RoutingTrackMenu;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -19,7 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
 
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
       RailcraftConstants.rl("textures/gui/container/routing_track.png");
   private final RoutingTrackBlockEntity routingBlockEntity;

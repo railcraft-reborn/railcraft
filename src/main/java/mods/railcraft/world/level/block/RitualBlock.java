@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
@@ -73,9 +74,9 @@ public class RitualBlock extends BaseEntityBlock {
   @SuppressWarnings("deprecation")
   @Override
   public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-    var drops = super.getDrops(state, builder);
-    var tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-    if (tile instanceof RitualBlockEntity firestone) {
+    var drops = new ArrayList<ItemStack>();
+    var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+    if (blockEntity instanceof RitualBlockEntity firestone) {
       var item = state.getValue(CRACKED)
           ? RailcraftItems.CRACKED_FIRESTONE.get()
           : RailcraftItems.REFINED_FIRESTONE.get();

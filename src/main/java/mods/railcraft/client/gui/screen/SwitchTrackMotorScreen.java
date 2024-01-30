@@ -12,12 +12,13 @@ import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.to_server.SetSwitchTrackMotorMessage;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
 
   private final SwitchTrackMotorBlockEntity switchTrackMotor;
 

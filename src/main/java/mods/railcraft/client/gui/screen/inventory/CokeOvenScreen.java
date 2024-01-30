@@ -3,6 +3,7 @@ package mods.railcraft.client.gui.screen.inventory;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.CokeOvenMenu;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
       int burnProgress = (int) ((1.0 - progressPercent) * 12);
       guiGraphics.blit(WIDGETS_TEXTURE, x + 16, (y + 38) - burnProgress, 176, 59 - burnProgress, 14,
           burnProgress + 2);
-      int cookProgress = (int) (progressPercent * 20);
+      int cookProgress = (int) (progressPercent * SharedConstants.TICKS_PER_SECOND);
       guiGraphics.blit(WIDGETS_TEXTURE, x + 34, y + 43, 176, 61, cookProgress + 1, 16);
     }
   }

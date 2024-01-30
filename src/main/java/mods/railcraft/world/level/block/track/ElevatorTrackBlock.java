@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -39,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class ElevatorTrackBlock extends Block {
 
-  public static final byte ELEVATOR_TIMER = 20;
+  public static final byte ELEVATOR_TIMER = SharedConstants.TICKS_PER_SECOND;
 
   public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

@@ -55,7 +55,7 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
       float partialTicks) {
     var componentDuration =
         Component.translatable(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION,
-        this.signalBox.getTicksToPower() / 20);
+        this.signalBox.getTicksToPower() / SharedConstants.TICKS_PER_SECOND);
     GuiUtil.drawCenteredString(guiGraphics, this.font, componentDuration, this.windowWidth, 25);
   }
 

@@ -85,6 +85,7 @@ import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -355,7 +356,7 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayer player && player.tickCount % 20 == 0) {
+    if (event.player instanceof ServerPlayer player && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)

@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
+import net.minecraft.SharedConstants;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 20 * 20; // 20 sec
+  public static final int DEFAULT_COOKING_TIME = SharedConstants.TICKS_PER_SECOND * 20;
 
   private final int creosoteOutput;
 

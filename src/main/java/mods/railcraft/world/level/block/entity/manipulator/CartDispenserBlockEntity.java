@@ -8,6 +8,7 @@ import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -90,7 +91,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
             cart.kill();
           }
         }, () -> {
-          if (this.timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * 20) {
+          if (this.timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * SharedConstants.TICKS_PER_SECOND) {
             for (int i = 0; i < this.getContainerSize(); i++) {
               var cartStack = this.getItem(i);
               if (!cartStack.isEmpty()) {

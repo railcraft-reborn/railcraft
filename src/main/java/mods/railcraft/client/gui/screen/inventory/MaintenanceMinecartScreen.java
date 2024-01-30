@@ -10,6 +10,7 @@ import mods.railcraft.network.to_server.SetMaintenanceMinecartMessage;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.MaintenancePatternMinecart;
 import mods.railcraft.world.inventory.RailcraftMenu;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -19,7 +20,7 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
 
   protected static final Component PATTERN = Component.translatable(Translations.Screen.PATTERN);
   protected static final Component STOCK = Component.translatable(Translations.Screen.STOCK);
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
   private final MaintenancePatternMinecart cart;
   private MultiButton<MaintenanceMinecart.Mode> mode;
   private int refreshTimer;

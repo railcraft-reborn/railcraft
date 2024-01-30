@@ -6,6 +6,7 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class CrusherRecipeBuilder {
 
-  public static final int DEFAULT_PROCESSING_TIME = 10 * 20; // 10 sec
+  public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 10;
   private static final int MAX_SLOTS = 9;
 
   private final Ingredient ingredient;

@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public final class AdjacentBlockEntityCache {
 
-  private static final int DELAY_MIN = 20;
+  private static final int DELAY_MIN = SharedConstants.TICKS_PER_SECOND;
   private static final int DELAY_MAX = 2400;
   private static final int DELAY_STEP = 2;
   private final Timer[] timer = new Timer[6];

@@ -32,14 +32,18 @@ import net.minecraft.world.level.block.Blocks;
 public class RefinedFirestoneItem extends FirestoneItem {
 
   public static final int CHARGES = 5000;
-  public static final int HEAT = 250;
 
-  protected int heat = HEAT;
+  protected final int heat;
   protected final RandomSource random;
 
-  public RefinedFirestoneItem(boolean spawnsFire, Properties properties) {
+  protected RefinedFirestoneItem(int heat, boolean spawnsFire, Properties properties) {
     super(spawnsFire, properties);
+    this.heat = heat;
     this.random = RandomSource.create();
+  }
+
+  public RefinedFirestoneItem(boolean spawnsFire, Properties properties) {
+    this(250, spawnsFire, properties);
   }
 
   public static ItemStack getItemCharged() {
@@ -47,7 +51,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   public static ItemStack getItemEmpty() {
-    ItemStack itemStack = RailcraftItems.REFINED_FIRESTONE.get().getDefaultInstance();
+    var itemStack = RailcraftItems.REFINED_FIRESTONE.get().getDefaultInstance();
     itemStack.setDamageValue(CHARGES - 1);
     return itemStack;
   }

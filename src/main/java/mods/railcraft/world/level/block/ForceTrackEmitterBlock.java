@@ -17,7 +17,6 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -116,8 +115,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   private ItemStack getItem(BlockState blockState) {
-    ItemStack itemStack = this.asItem().getDefaultInstance();
-    CompoundTag tag = itemStack.getOrCreateTag();
+    var itemStack = this.asItem().getDefaultInstance();
+    var tag = itemStack.getOrCreateTag();
     tag.putString("color", blockState.getValue(COLOR).getName());
     return itemStack;
   }

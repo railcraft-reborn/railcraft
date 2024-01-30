@@ -10,6 +10,7 @@ import mods.railcraft.util.Predicates;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +25,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   private static final int RESET_WAIT = 200;
-  private static final int TRANSFER_RATE = 20;
+  private static final int TRANSFER_RATE = SharedConstants.TICKS_PER_SECOND;
   private static final float MAX_PIPE_LENGTH = 1.25F;
   private static final float PIPE_INCREMENT = 0.01f;
   private static final Direction[] PULL_FROM = Stream.of(Direction.values())
