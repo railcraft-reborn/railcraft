@@ -32,15 +32,13 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff =
         RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
-    this.setEmblemPosition(0.2F, -0.03F, -0.41F, -0.505F);
   }
 
   @Override
   public void renderBody(Locomotive cart, float time, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
-    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
-        alpha);
+    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue, alpha);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     poseStack.translate(0.05F, 0, 0);

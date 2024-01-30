@@ -1,11 +1,8 @@
 package mods.railcraft.client.renderer.entity.cart;
 
-import java.util.Optional;
-import mods.railcraft.client.emblem.EmblemClientUtil;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 
 public abstract class LocomotiveRenderer<T extends Locomotive>
@@ -25,10 +22,5 @@ public abstract class LocomotiveRenderer<T extends Locomotive>
     return Seasons.isGhostTrain(loco)
         ? DyeColor.LIGHT_GRAY.getTextureDiffuseColors()
         : loco.getSecondaryColor();
-  }
-
-  protected Optional<ResourceLocation> getEmblemTexture(T loco) {
-    return loco.getEmblem()
-        .map(EmblemClientUtil.packageManager()::getEmblemTextureLocation);
   }
 }

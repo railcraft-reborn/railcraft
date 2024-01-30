@@ -6,7 +6,6 @@ import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -18,10 +17,6 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
   private final EntityModel<? super Locomotive> snowLayer;
   private final ResourceLocation[] textures;
   private final float[][] color = new float[3][];
-  private float emblemSize = 0.15F;
-  private float emblemOffsetX = 0.47F;
-  private float emblemOffsetY = -0.17F;
-  private float emblemOffsetZ = -0.515F;
 
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<? super Locomotive> model,
@@ -43,13 +38,6 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
     this.snowLayer = snowLayer;
     this.textures = textures;
     this.color[2] = new float[] {1.0F, 1.0F, 1.0F};
-  }
-
-  public void setEmblemPosition(float size, float offsetX, float offsetY, float offsetZ) {
-    this.emblemSize = size;
-    this.emblemOffsetX = offsetX;
-    this.emblemOffsetY = offsetY;
-    this.emblemOffsetZ = offsetZ;
   }
 
   @Override
@@ -77,43 +65,11 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
       this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
           OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
     }
-
-    this.getEmblemTexture(cart).ifPresent(emblemTexture -> {
-
-      var vertexBuilder = renderTypeBuffer.getBuffer(RenderType.entityTranslucent(emblemTexture));
-
-      // float size = 0.22F;
-      // float offsetX = -0.25F;
-      // float offsetY = -0.25F;
-      // float offsetZ = -0.46F;
-      // TODO: Test this!
-
-
-      vertexBuilder.vertex(emblemOffsetX - emblemSize, emblemOffsetY - emblemSize, emblemOffsetZ)
-          .uv(0, 0).endVertex();
-      vertexBuilder.vertex(emblemOffsetX - emblemSize, emblemOffsetY + emblemSize, emblemOffsetZ)
-          .uv(0, 1).endVertex();
-      vertexBuilder.vertex(emblemOffsetX + emblemSize, emblemOffsetY + emblemSize, emblemOffsetZ)
-          .uv(1, 1).endVertex();
-      vertexBuilder.vertex(emblemOffsetX + emblemSize, emblemOffsetY + -emblemSize, emblemOffsetZ)
-          .uv(1, 0).endVertex();
-
-      vertexBuilder.vertex(emblemOffsetX + emblemSize, emblemOffsetY + -emblemSize, -emblemOffsetZ)
-          .uv(0, 0).endVertex();
-      vertexBuilder.vertex(emblemOffsetX + emblemSize, emblemOffsetY + emblemSize, -emblemOffsetZ)
-          .uv(0, 1).endVertex();
-      vertexBuilder.vertex(emblemOffsetX - emblemSize, emblemOffsetY + emblemSize, -emblemOffsetZ)
-          .uv(1, 1).endVertex();
-      vertexBuilder.vertex(emblemOffsetX - emblemSize, emblemOffsetY - emblemSize, -emblemOffsetZ)
-          .uv(1, 0).endVertex();
-
-    });
-    // OpenGL.glDisable(GL11.GL_BLEND);
     poseStack.popPose();
   }
 
   @Override
-  public ResourceLocation getTextureLocation(Locomotive loco) {
+  public ResourceLocation getTextureLocation(Locomotive locomotive) {
     throw new IllegalStateException();
   }
 }

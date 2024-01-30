@@ -6,8 +6,6 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
-import mods.railcraft.client.emblem.EmblemClientUtil;
-import mods.railcraft.client.emblem.EmblemPackageManagerImpl;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
@@ -99,7 +97,6 @@ public class ClientManager {
 
     shuntingAuraRenderer = new ShuntingAuraRenderer();
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
-    EmblemClientUtil._setPackageManager(new EmblemPackageManagerImpl());
   }
 
   public static ShuntingAuraRenderer getShuntingAuraRenderer() {
