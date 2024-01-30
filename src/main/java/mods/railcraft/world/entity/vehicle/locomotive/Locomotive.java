@@ -85,8 +85,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> SECONDARY_COLOR =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<String> EMBLEM =
-      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<String> DESTINATION =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
@@ -128,7 +126,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.entityData.define(SPEED, (byte) Speed.NORMAL.ordinal());
     this.entityData.define(LOCK, (byte) Lock.UNLOCKED.ordinal());
     this.entityData.define(REVERSE, false);
-    this.entityData.define(EMBLEM, "");
     this.entityData.define(DESTINATION, "");
     this.entityData.define(OWNER, Optional.empty());
   }
@@ -162,10 +159,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (tag.contains("lock", Tag.TAG_STRING)) {
       Lock.getByName(tag.getString("lock")).ifPresent(this::setLock);
-    }
-
-    if (tag.contains("emblem", Tag.TAG_STRING)) {
-      this.setEmblem(tag.getString("emblem"));
     }
   }
 
@@ -214,7 +207,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     LocomotiveItem.setItemColorData(itemStack,
         this.getPrimaryDyeColor(), this.getSecondaryDyeColor());
     LocomotiveItem.setItemWhistleData(itemStack, this.whistlePitch);
-    this.getEmblem().ifPresent(emblem -> LocomotiveItem.setEmblem(itemStack, emblem));
     if (this.hasCustomName()) {
       itemStack.setHoverName(this.getCustomName());
     }
@@ -289,19 +281,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public void setLock(Lock lock) {
     this.entityData.set(LOCK, (byte) lock.ordinal());
-  }
-
-  public Optional<String> getEmblem() {
-    var value = this.getEntityData().get(EMBLEM);
-    return value.isEmpty() ? Optional.empty() : Optional.of(value);
-  }
-
-  public void setEmblem(@Nullable String emblem) {
-    if (getEmblem().isEmpty()) {
-      this.getEntityData().set(EMBLEM, emblem);
-    } else if (!getEmblem().get().equals(emblem)) {
-      this.getEntityData().set(EMBLEM, emblem);
-    }
   }
 
   @Override
@@ -728,8 +707,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     tag.putBoolean("flipped", this.flipped);
 
-    this.getEmblem().ifPresent(emblem -> tag.putString("emblem", emblem));
-
     tag.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
 
     tag.putString("mode", this.getMode().getSerializedName());
@@ -755,8 +732,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     super.readAdditionalSaveData(tag);
 
     this.flipped = tag.getBoolean("flipped");
-
-    this.setEmblem(tag.getString("emblem"));
 
     this.setDestination(tag.getString("dest"));
 
