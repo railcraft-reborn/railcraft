@@ -109,7 +109,8 @@ public class TrackTypes {
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 
-  private record CompositeHandler(CollisionHandler collisionHandler,
+  private record CompositeHandler(
+      CollisionHandler collisionHandler,
       SpeedController speedController) implements TrackType.EventHandler {
 
     @Override

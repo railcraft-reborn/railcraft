@@ -38,7 +38,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.attachment.RailcraftAttachmentTypes;
-import mods.railcraft.util.fluids.capability.wrapper.FluidBottleWrapper;
+import mods.railcraft.util.fluids.FluidBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;

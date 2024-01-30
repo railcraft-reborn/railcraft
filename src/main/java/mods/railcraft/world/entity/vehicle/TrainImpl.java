@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import mods.railcraft.api.carts.Train;
-import mods.railcraft.util.CompositeFluidHandler;
+import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;
