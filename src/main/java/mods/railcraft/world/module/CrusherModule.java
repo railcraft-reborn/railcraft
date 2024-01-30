@@ -172,9 +172,4 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   public LazyOptional<IEnergyStorage> getEnergyHandler() {
     return energyHandler;
   }
-
-  public void invalidateCaps() {
-    itemHandler.invalidate();
-    energyHandler.invalidate();
-  }
 }

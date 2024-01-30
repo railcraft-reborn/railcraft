@@ -1,4 +1,4 @@
-package mods.railcraft.util;
+package mods.railcraft.util.fluids;
 
 import java.util.ArrayList;
 import java.util.Arrays;

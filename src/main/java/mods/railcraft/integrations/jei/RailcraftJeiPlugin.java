@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei;
 
+import java.util.function.Supplier;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
@@ -106,14 +107,14 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
     RailcraftBlocks.entries()
         .stream()
-        .filter(x -> x.get() instanceof JeiSearchable)
         .map(RegistryObject::get)
+        .filter(JeiSearchable.class::isInstance)
         .forEach(x ->
             registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));
     RailcraftItems.entries()
         .stream()
-        .filter(x -> x.get() instanceof JeiSearchable)
         .map(RegistryObject::get)
+        .filter(JeiSearchable.class::isInstance)
         .forEach(x ->
             registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));
   }

@@ -111,15 +111,9 @@ public class TrackTypes {
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 
-  private static class CompositeHandler implements TrackType.EventHandler {
-
-    private final CollisionHandler collisionHandler;
-    private final SpeedController speedController;
-
-    public CompositeHandler(CollisionHandler collisionHandler, SpeedController speedController) {
-      this.collisionHandler = collisionHandler;
-      this.speedController = speedController;
-    }
+  private record CompositeHandler(
+      CollisionHandler collisionHandler,
+      SpeedController speedController) implements TrackType.EventHandler {
 
     @Override
     public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {

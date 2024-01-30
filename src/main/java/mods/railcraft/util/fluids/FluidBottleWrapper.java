@@ -1,4 +1,4 @@
-package mods.railcraft.util.capability;
+package mods.railcraft.util.fluids;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
