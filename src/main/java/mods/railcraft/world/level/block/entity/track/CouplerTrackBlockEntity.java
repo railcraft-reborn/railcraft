@@ -41,9 +41,7 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     DECOUPLER("decoupler", 0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        if (CouplerTrackBlock.isPowered(track.getBlockState())){
-          RollingStock.getOrThrow(cart).unlinkAll();
-        }
+        RollingStock.getOrThrow(cart).unlinkAll();
       }
     },
     AUTO_COUPLER("auto_coupler", 0) {
