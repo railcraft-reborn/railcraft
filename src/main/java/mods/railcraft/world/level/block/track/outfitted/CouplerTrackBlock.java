@@ -68,8 +68,10 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, pos, cart);
-    level.getBlockEntity(pos, RailcraftBlockEntityTypes.COUPLER_TRACK.get())
-        .ifPresent(lockingTrack -> lockingTrack.minecartPassed(cart));
+    if (this.isPowered(blockState, level, pos)) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.COUPLER_TRACK.get())
+          .ifPresent(lockingTrack -> lockingTrack.minecartPassed(cart));
+    }
   }
 
   @Override
