@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
@@ -59,7 +60,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final ContainerMapper fluidContainer =
       ContainerMapper.make(this.container, SLOT_LIQUID_INPUT, 3).ignoreItemChecks();
 
-  private FluidTools.ProcessState waterProcessState = FluidTools.ProcessState.RESET;
+  private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;
 
   private boolean explode;
@@ -159,25 +160,24 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   }
 
   protected void processFluidContainers() {
-    this.waterProcessState = FluidTools.processContainer(this.fluidContainer, this.waterTank,
-        ProcessType.DRAIN_ONLY, this.waterProcessState);
+    this.processState = FluidTools.processContainer(this.fluidContainer, this.waterTank,
+        ProcessType.DRAIN_ONLY, this.processState);
   }
 
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.put("tankManager", this.tankManager.serializeNBT());
-    tag.put("boiler", this.boiler.serializeNBT());
-    tag.putString("processState", this.waterProcessState.getSerializedName());
+    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT());
+    tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT());
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(tag.getCompound("boiler"));
-    this.waterProcessState = FluidTools.ProcessState.getByName(tag.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
+    this.tankManager.deserializeNBT(tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
+    this.boiler.deserializeNBT(tag.getCompound(CompoundTagKeys.BOILER));
+    this.processState = FluidTools.ProcessState.fromTag(tag);
   }
 }

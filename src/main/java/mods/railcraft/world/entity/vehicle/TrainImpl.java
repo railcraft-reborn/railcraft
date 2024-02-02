@@ -162,7 +162,7 @@ final class TrainImpl implements Train {
   static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
     var id = tag.getUUID("id");
     var train = new TrainImpl(id, minecart);
-    State.getByName(tag.getString("state")).ifPresent(train::setState);
+    State.fromName(tag.getString("state")).ifPresent(train::setState);
     tag.getList("locks", Tag.TAG_INT_ARRAY).stream()
         .map(NbtUtils::loadUUID)
         .forEach(train::addLock);

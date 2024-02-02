@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
@@ -56,13 +57,13 @@ public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putByte("launchForce", this.launchForce);
+    tag.putByte(CompoundTagKeys.LAUNCH_FORCE, this.launchForce);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.launchForce = tag.getByte("launchForce");
+    this.launchForce = tag.getByte(CompoundTagKeys.LAUNCH_FORCE);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
@@ -44,13 +45,13 @@ public class DistantSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
+    this.signalReceiver.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
   }
 
   @Override

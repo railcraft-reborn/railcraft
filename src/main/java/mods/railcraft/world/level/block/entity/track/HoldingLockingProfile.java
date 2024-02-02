@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
@@ -68,12 +69,12 @@ public class HoldingLockingProfile implements LockingModeController {
   @Override
   public CompoundTag serializeNBT() {
     CompoundTag tag = new CompoundTag();
-    tag.putBoolean("launchForward", this.launchForward);
+    tag.putBoolean(CompoundTagKeys.LAUNCH_FORWARD, this.launchForward);
     return tag;
   }
 
   @Override
-  public void deserializeNBT(CompoundTag data) {
-    this.launchForward = data.getBoolean("launchForward");
+  public void deserializeNBT(CompoundTag tag) {
+    this.launchForward = tag.getBoolean(CompoundTagKeys.LAUNCH_FORWARD);
   }
 }

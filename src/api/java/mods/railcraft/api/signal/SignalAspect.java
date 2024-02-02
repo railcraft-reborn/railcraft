@@ -6,11 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.network.chat.Component;
@@ -47,10 +43,8 @@ public enum SignalAspect implements StringRepresentable {
    */
   OFF("off", 0);
 
-  private static final SignalAspect[] VALUES = values();
-
-  private static final Map<String, SignalAspect> byName = Arrays.stream(VALUES)
-      .collect(Collectors.toUnmodifiableMap(SignalAspect::getSerializedName, Function.identity()));
+  private static final StringRepresentable.EnumCodec<SignalAspect> CODEC =
+      StringRepresentable.fromEnum(SignalAspect::values);
 
   private final String name;
   private final int blockLight;
@@ -62,7 +56,7 @@ public enum SignalAspect implements StringRepresentable {
   private static boolean blinkState;
   private static int blinkTimer;
 
-  private SignalAspect(String name, int blockLight) {
+  SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
     this.displayName = Component.translatable("signal.railcraft.aspect." + name);
@@ -128,11 +122,11 @@ public enum SignalAspect implements StringRepresentable {
   }
 
   public SignalAspect next() {
-    return EnumUtil.next(this, VALUES);
+    return EnumUtil.next(this, values());
   }
 
   public SignalAspect previous() {
-    return EnumUtil.previous(this, VALUES);
+    return EnumUtil.previous(this, values());
   }
 
   /**
@@ -178,7 +172,7 @@ public enum SignalAspect implements StringRepresentable {
     return second;
   }
 
-  public static Optional<SignalAspect> getByName(String name) {
-    return Optional.ofNullable(byName.get(name));
+  public static Optional<SignalAspect> fromName(String name) {
+    return Optional.ofNullable(CODEC.byName(name));
   }
 }

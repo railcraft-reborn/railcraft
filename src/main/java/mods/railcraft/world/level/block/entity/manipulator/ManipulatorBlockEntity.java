@@ -277,6 +277,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   }
 
   public enum TransferMode implements ButtonState<TransferMode> {
+    // TODO: 1.20.4+ use CODECS
 
     ALL("all", "➧➧➧"),
     EXCESS("excess", "#➧➧"),

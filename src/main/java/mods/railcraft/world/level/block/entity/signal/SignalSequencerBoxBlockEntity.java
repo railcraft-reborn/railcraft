@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.HashSet;
 import java.util.Set;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.RedstoneUtil;
@@ -130,17 +131,17 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("outputDirection", this.outputDirection.getName());
-    tag.putBoolean("powered", this.powered);
-    tag.putBoolean("neighborSignal", this.neighborSignal);
+    tag.putString(CompoundTagKeys.OUTPUT_DIRECTION, this.outputDirection.getName());
+    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
+    tag.putBoolean(CompoundTagKeys.NEIGHBOR_SIGNAL, this.neighborSignal);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.outputDirection = Direction.byName(tag.getString("outputDirection"));
-    this.powered = tag.getBoolean("powered");
-    this.neighborSignal = tag.getBoolean("neighborSignal");
+    this.outputDirection = Direction.byName(tag.getString(CompoundTagKeys.OUTPUT_DIRECTION));
+    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
+    this.neighborSignal = tag.getBoolean(CompoundTagKeys.NEIGHBOR_SIGNAL);
   }
 
   @Override

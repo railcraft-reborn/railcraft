@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
@@ -897,24 +898,23 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag data) {
-    // fuel = getFuel();
-    super.addAdditionalSaveData(data);
-    data.putInt("facing", getFacing().get3DDataValue());
-    data.putInt("delay", getDelay());
-    data.putBoolean("active", isActive());
-    data.putInt("burnTime", getBurnTime());
-    data.putInt("fuel", fuel);
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putInt(CompoundTagKeys.FACING, getFacing().get3DDataValue());
+    tag.putInt(CompoundTagKeys.DELAY, getDelay());
+    tag.putBoolean(CompoundTagKeys.ACTIVE, isActive());
+    tag.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
+    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
-    setFacing(Direction.from3DDataValue(data.getInt("facing")));
-    setDelay(data.getInt("delay"));
-    setActive(data.getBoolean("active"));
-    setBurnTime(data.getInt("burnTime"));
-    setFuel(data.getInt("fuel"));
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    setFacing(Direction.from3DDataValue(tag.getInt(CompoundTagKeys.FACING)));
+    setDelay(tag.getInt(CompoundTagKeys.DELAY));
+    setActive(tag.getBoolean(CompoundTagKeys.ACTIVE));
+    setBurnTime(tag.getInt(CompoundTagKeys.BURN_TIME));
+    setFuel(tag.getInt(CompoundTagKeys.FUEL));
   }
 
   protected int getDelay() {

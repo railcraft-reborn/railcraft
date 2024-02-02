@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.BitSet;
 import java.util.EnumMap;
 import java.util.Map;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
@@ -122,34 +123,34 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("inputSignal", this.inputSignal);
+    tag.putInt(CompoundTagKeys.INPUT_SIGNAL, this.inputSignal);
 
     var aspectsTag = new ListTag();
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
       var nbt = new CompoundTag();
-      nbt.putString("name", entry.getKey().getSerializedName());
-      nbt.putByteArray("signals", entry.getValue().toByteArray());
+      nbt.putString(CompoundTagKeys.NAME, entry.getKey().getSerializedName());
+      nbt.putByteArray(CompoundTagKeys.SIGNALS, entry.getValue().toByteArray());
       aspectsTag.add(nbt);
     }
-    tag.put("signalAspectTriggerSignals", aspectsTag);
+    tag.put(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS, aspectsTag);
 
-    tag.put("signalController", this.signalController.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.inputSignal = tag.getInt("inputSignal");
+    this.inputSignal = tag.getInt(CompoundTagKeys.INPUT_SIGNAL);
 
-    var aspectsTag = tag.getList("signalAspectTriggerSignals", Tag.TAG_COMPOUND);
+    var aspectsTag = tag.getList(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS, Tag.TAG_COMPOUND);
     for (var nbt : aspectsTag) {
       var compoundNbt = (CompoundTag) nbt;
       this.signalAspectTriggerSignals.put(
-          SignalAspect.getByName(compoundNbt.getString("name")).get(),
-          BitSet.valueOf(compoundNbt.getByteArray("signals")));
+          SignalAspect.fromName(compoundNbt.getString(CompoundTagKeys.NAME)).get(),
+          BitSet.valueOf(compoundNbt.getByteArray(CompoundTagKeys.SIGNALS)));
     }
 
-    this.signalController.deserializeNBT(tag.getCompound("signalController"));
+    this.signalController.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
   }
 
   @Override

@@ -1,10 +1,10 @@
 package mods.railcraft.world.signal;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -25,50 +25,50 @@ public class TokenRingManager extends SavedData {
     this.level = level;
   }
 
-  private void load(CompoundTag data) {
-    var tokenRingList = data.getList("tokenRings", Tag.TAG_COMPOUND);
+  private void load(CompoundTag tag) {
+    var tokenRingList = tag.getList(CompoundTagKeys.TOKEN_RINGS, Tag.TAG_COMPOUND);
     for (int i = 0; i < tokenRingList.size(); i++) {
       var entry = tokenRingList.getCompound(i);
-      var id = entry.getUUID("id");
+      var id = entry.getUUID(CompoundTagKeys.ID);
       var tokenRing = new SimpleTokenRing(this.level, this, id);
       this.tokenRings.put(id, tokenRing);
-      var signalList = entry.getList("signals", Tag.TAG_COMPOUND);
+      var signalList = entry.getList(CompoundTagKeys.SIGNALS, Tag.TAG_COMPOUND);
       var signalPositions = signalList.stream()
           .map(CompoundTag.class::cast)
           .map(NbtUtils::readBlockPos)
           .collect(Collectors.toSet());
       tokenRing.loadSignals(signalPositions);
-      var cartList = entry.getList("carts", Tag.TAG_COMPOUND);
+      var cartList = entry.getList(CompoundTagKeys.CARTS, Tag.TAG_COMPOUND);
       var carts = cartList.stream()
           .map(CompoundTag.class::cast)
-          .map(signal -> signal.getUUID("cart"))
+          .map(signal -> signal.getUUID(CompoundTagKeys.CART))
           .collect(Collectors.toSet());
       tokenRing.loadCarts(carts);
     }
   }
 
   @Override
-  public CompoundTag save(CompoundTag data) {
+  public CompoundTag save(CompoundTag tag) {
     var tokenRingList = new ListTag();
     for (var tokenRing : tokenRings.values()) {
       var tokenData = new CompoundTag();
-      tokenData.putUUID("id", tokenRing.getId());
+      tokenData.putUUID(CompoundTagKeys.ID, tokenRing.getId());
       var signalList = new ListTag();
       for (var pos : tokenRing.peers()) {
         signalList.add(NbtUtils.writeBlockPos(pos));
       }
-      tokenData.put("signals", signalList);
+      tokenData.put(CompoundTagKeys.SIGNALS, signalList);
       var cartList = new ListTag();
       for (var uuid : tokenRing.getTrackedCarts()) {
         var cart = new CompoundTag();
-        cart.putUUID("cart", uuid);
+        cart.putUUID(CompoundTagKeys.CART, uuid);
         cartList.add(cart);
       }
-      tokenData.put("carts", cartList);
+      tokenData.put(CompoundTagKeys.CARTS, cartList);
       tokenRingList.add(tokenData);
     }
-    data.put("tokenRings", tokenRingList);
-    return data;
+    tag.put(CompoundTagKeys.TOKEN_RINGS, tokenRingList);
+    return tag;
   }
 
   public void tick(ServerLevel level) {
@@ -85,10 +85,6 @@ public class TokenRingManager extends SavedData {
   public SimpleTokenRing getTokenRingNetwork(UUID id, BlockPos origin) {
     return this.tokenRings.computeIfAbsent(id,
         __ -> new SimpleTokenRing(this.level, this, id, origin));
-  }
-
-  public Collection<SimpleTokenRing> getTokenRings() {
-    return this.tokenRings.values();
   }
 
   public static TokenRingManager get(ServerLevel level) {

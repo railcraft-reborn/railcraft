@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.EnumSet;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -44,16 +45,16 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
     var actionAspectsTag = new ListTag();
     this.actionSignalAspects
         .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
-    tag.put("actionSignalAspects", actionAspectsTag);
+    tag.put(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, actionAspectsTag);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    var actionAspectsTag = tag.getList("actionSignalAspects", Tag.TAG_STRING);
+    var actionAspectsTag = tag.getList(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, Tag.TAG_STRING);
     this.actionSignalAspects.clear();
     for (var aspectTag : actionAspectsTag) {
-      SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
+      SignalAspect.fromName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
   }
 

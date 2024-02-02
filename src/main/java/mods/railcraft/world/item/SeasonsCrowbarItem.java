@@ -25,7 +25,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     ItemStack itemStack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
       incrementSeason(itemStack);
-      Season season = getSeason(itemStack);
+      var season = getSeason(itemStack);
       player.displayClientMessage(getDescriptionText(season, false), true);
     }
     return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
@@ -39,23 +39,18 @@ public class SeasonsCrowbarItem extends CrowbarItem {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag adv) {
-    Season season = getSeason(stack);
+    var season = getSeason(stack);
     list.add(getDescriptionText(season, true));
   }
 
   public static Season getSeason(ItemStack itemStack) {
-    if (itemStack.hasTag()) {
-      var tag = itemStack.getTag();
-      if (tag.contains("season")) {
-        return Season.values()[tag.getInt("season")];
-      }
-    }
-    return Season.DEFAULT;
+    var tag = itemStack.getOrCreateTag();
+    return Season.fromName(tag.getString("season"));
   }
 
   private static void incrementSeason(ItemStack itemStack) {
-    Season season = getSeason(itemStack).getNext();
-    itemStack.getOrCreateTag().putInt("season", season.ordinal());
+    var season = getSeason(itemStack).getNext();
+    itemStack.getOrCreateTag().putString("season", season.getSerializedName());
   }
 
   private static Component getDescriptionText(Season value, boolean tooltip) {

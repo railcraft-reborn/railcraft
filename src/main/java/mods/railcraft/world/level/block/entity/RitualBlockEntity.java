@@ -5,6 +5,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.FireSparkParticleOptions;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
@@ -19,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
@@ -93,7 +93,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   }
 
   private boolean coolLava(ServerLevel level, BlockPos lavaPos) {
-    FluidState fluid = level.getBlockState(lavaPos).getFluidState();
+    var fluid = level.getBlockState(lavaPos).getFluidState();
     if (fluid.is(Fluids.LAVA)) {
       boolean placed = level.setBlockAndUpdate(lavaPos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
@@ -167,10 +167,6 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     }
   }
 
-  public Component getItemName() {
-    return this.itemName;
-  }
-
   public void setItemName(Component itemName) {
     this.itemName = itemName;
   }
@@ -194,20 +190,20 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putShort("charge", (short) this.charge);
-    tag.putByte("rebuildDelay", (byte) this.rebuildDelay);
+    tag.putShort(CompoundTagKeys.CHARGE, (short) this.charge);
+    tag.putByte(CompoundTagKeys.REBUILD_DELAY, (byte) this.rebuildDelay);
     if (this.itemName != null) {
-      tag.putString("itemName", Component.Serializer.toJson(this.itemName));
+      tag.putString(CompoundTagKeys.ITEM_NAME, Component.Serializer.toJson(this.itemName));
     }
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.charge = tag.getShort("charge");
-    this.rebuildDelay = tag.getByte("rebuildDelay");
-    if (tag.contains("itemName", Tag.TAG_STRING)) {
-      this.itemName = Component.Serializer.fromJson(tag.getString("itemName"));
+    this.charge = tag.getShort(CompoundTagKeys.CHARGE);
+    this.rebuildDelay = tag.getByte(CompoundTagKeys.REBUILD_DELAY);
+    if (tag.contains(CompoundTagKeys.ITEM_NAME, Tag.TAG_STRING)) {
+      this.itemName = Component.Serializer.fromJson(tag.getString(CompoundTagKeys.ITEM_NAME));
     }
   }
 }

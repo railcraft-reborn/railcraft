@@ -1,14 +1,10 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
@@ -158,7 +154,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     if (tag.contains("lock", Tag.TAG_STRING)) {
-      Lock.getByName(tag.getString("lock")).ifPresent(this::setLock);
+      Lock.fromNameOptional(tag.getString("lock")).ifPresent(this::setLock);
     }
   }
 
@@ -735,9 +731,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     this.setDestination(tag.getString("dest"));
 
-    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.IDLE));
-    this.setSpeed(Speed.getByName(tag.getString("speed")).orElse(Speed.NORMAL));
-    this.setLock(Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED));
+    this.setMode(Mode.fromName(tag.getString("mode")));
+    this.setSpeed(Speed.fromName(tag.getString("speed")));
+    this.setLock(Lock.fromName(tag.getString("lock")));
 
     this.setPrimaryColor(
         DyeColor.byName(tag.getString("primaryColor"), this.getDefaultPrimaryColor()));
@@ -827,12 +823,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
     IDLE("idle"),
     RUNNING("running");
 
-    private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Mode> CODEC =
+        StringRepresentable.fromEnum(Mode::values);
 
     private final String name;
 
-    private Mode(String name) {
+    Mode(String name) {
       this.name = name;
     }
 
@@ -841,8 +837,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return this.name;
     }
 
-    public static Optional<Mode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Mode fromName(String name) {
+      return CODEC.byName(name, IDLE);
     }
   }
 
@@ -856,15 +852,15 @@ public abstract class Locomotive extends RailcraftMinecart implements
     NORMAL("normal", 3, 1, -1),
     MAX("max", 4, 0, -1);
 
-    private static final Map<String, Speed> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Speed::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Speed> CODEC =
+        StringRepresentable.fromEnum(Speed::values);
 
     private final String name;
     private final int shiftUp;
     private final int shiftDown;
     private final int level;
 
-    private Speed(String name, int level, int shiftUp, int shiftDown) {
+    Speed(String name, int level, int shiftUp, int shiftDown) {
       this.name = name;
       this.level = level;
       this.shiftUp = shiftUp;
@@ -888,12 +884,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return values()[this.ordinal() + shiftDown];
     }
 
-    public static Optional<Speed> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
-    }
-
-    public static Speed fromLevel(int level) {
-      return values()[level - 1];
+    public static Speed fromName(String name) {
+      return CODEC.byName(name, NORMAL);
     }
   }
 
@@ -903,13 +895,13 @@ public abstract class Locomotive extends RailcraftMinecart implements
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON),
     PRIVATE("private", new SimpleTexturePosition(240, 48, 16, 16));
 
-    private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Lock> CODEC =
+        StringRepresentable.fromEnum(Lock::values);
 
     private final String name;
     private final TexturePosition texture;
 
-    private Lock(String name, TexturePosition texture) {
+    Lock(String name, TexturePosition texture) {
       this.name = name;
       this.texture = texture;
     }
@@ -934,8 +926,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return this.name;
     }
 
-    public static Optional<Lock> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Lock fromName(String name) {
+      return CODEC.byName(name, UNLOCKED);
+    }
+
+    public static Optional<Lock> fromNameOptional(String name) {
+      return Optional.ofNullable(CODEC.byName(name));
     }
   }
 }

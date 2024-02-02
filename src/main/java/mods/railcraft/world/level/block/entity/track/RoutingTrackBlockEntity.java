@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.Routable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.world.inventory.RoutingTrackMenu;
@@ -41,13 +42,13 @@ public class RoutingTrackBlockEntity extends LockableTrackBlockEntity implements
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("container", this.container.createTag());
+    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
+    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND));
   }
 
   @Override

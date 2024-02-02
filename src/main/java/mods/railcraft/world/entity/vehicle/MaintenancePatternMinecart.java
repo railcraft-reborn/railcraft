@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
@@ -70,14 +71,14 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
-    data.put("pattern", this.patternContainer.createTag());
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.put(CompoundTagKeys.PATTERN, this.patternContainer.createTag());
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
-    this.patternContainer.fromTag(data.getList("pattern", Tag.TAG_COMPOUND));
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.patternContainer.fromTag(tag.getList(CompoundTagKeys.PATTERN, Tag.TAG_COMPOUND));
   }
 }
