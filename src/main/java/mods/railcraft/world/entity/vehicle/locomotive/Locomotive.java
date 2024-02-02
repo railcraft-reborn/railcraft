@@ -15,6 +15,7 @@ import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
@@ -143,18 +144,18 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setPrimaryColor(LocomotiveItem.getPrimaryColor(itemStack));
     this.setSecondaryColor(LocomotiveItem.getSecondaryColor(itemStack));
 
-    if (tag.contains("whistlePitch")) {
-      this.whistlePitch = tag.getFloat("whistlePitch");
+    if (tag.contains(CompoundTagKeys.WHISTLE_PITCH)) {
+      this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
     }
 
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      GameProfile ownerProfile = NbtUtils.readGameProfile(tag.getCompound("owner"));
+    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
+      GameProfile ownerProfile = NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER));
       this.setOwner(ownerProfile);
       this.setLock(Lock.LOCKED);
     }
 
-    if (tag.contains("lock", Tag.TAG_STRING)) {
-      Lock.fromNameOptional(tag.getString("lock")).ifPresent(this::setLock);
+    if (tag.contains(CompoundTagKeys.LOCK, Tag.TAG_STRING)) {
+      Lock.fromNameOptional(tag.getString(CompoundTagKeys.LOCK)).ifPresent(this::setLock);
     }
   }
 

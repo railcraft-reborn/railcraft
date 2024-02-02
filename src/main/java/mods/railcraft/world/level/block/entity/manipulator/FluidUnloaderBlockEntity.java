@@ -2,8 +2,8 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.stream.Stream;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.Predicates;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
