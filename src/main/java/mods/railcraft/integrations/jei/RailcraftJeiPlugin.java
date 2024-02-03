@@ -41,6 +41,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
@@ -110,13 +111,13 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
     RailcraftBlocks.entries()
         .stream()
-        .map(Supplier::get)
+        .map(DeferredHolder::get)
         .filter(JeiSearchable.class::isInstance)
         .forEach(x ->
             registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));
     RailcraftItems.entries()
         .stream()
-        .map(Supplier::get)
+        .map(DeferredHolder::get)
         .filter(JeiSearchable.class::isInstance)
         .forEach(x ->
             registration.addItemStackInfo(new ItemStack(x), ((JeiSearchable)x).jeiDescription()));

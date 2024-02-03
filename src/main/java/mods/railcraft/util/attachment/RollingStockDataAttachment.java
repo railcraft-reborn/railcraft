@@ -263,8 +263,7 @@ public class RollingStockDataAttachment implements INBTSerializable<CompoundTag>
     this.backAutoLinkEnabled = tag.getBoolean("backAutoLinkEnabled");
     this.frontAutoLinkEnabled = tag.getBoolean("frontAutoLinkEnabled");
 
-    this.launchState = LaunchState.getByName(tag.getString("launchState"))
-        .orElse(LaunchState.LANDED);
+    this.launchState = LaunchState.fromName(tag.getString("launchState"));
     this.elevatorRemainingTicks = tag.getInt("elevatorRemainingTicks");
     this.preventMountRemainingTicks = tag.getInt("preventMountRemainingTicks");
     this.derailedRemainingTicks = tag.getInt("derailedRemainingTicks");
