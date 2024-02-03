@@ -32,17 +32,21 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     COUPLER("coupler", 8) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        var extension = RollingStock.getOrThrow(cart);
-        if (track.pendingCoupling != null) {
-          track.pendingCoupling.link(extension);
+        if (CouplerTrackBlock.isPowered(track.getBlockState())) {
+          var extension = RollingStock.getOrThrow(cart);
+          if (track.pendingCoupling != null) {
+            track.pendingCoupling.link(extension);
+          }
+          track.pendingCoupling = extension;
         }
-        track.pendingCoupling = extension;
       }
     },
     DECOUPLER("decoupler", 0) {
       @Override
       protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        RollingStock.getOrThrow(cart).unlinkAll();
+        if (CouplerTrackBlock.isPowered(track.getBlockState())) {
+          RollingStock.getOrThrow(cart).unlinkAll();
+        }
       }
     },
     AUTO_COUPLER("auto_coupler", 0) {
