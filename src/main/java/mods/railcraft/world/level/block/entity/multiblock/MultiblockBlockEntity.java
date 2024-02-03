@@ -87,10 +87,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Invoked from {@link MultiblockBlock} on master blocks.
-   * 
+   *
    * @param player - the player interacting with the block
    * @param hand - the hand used to interact
-   * 
+   *
    * @return the result
    */
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
@@ -165,7 +165,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Determine if the specified pattern element is expected to be a block entity.
-   * 
+   *
    * @param element - the pattern element
    * @return <code>true</code> if it is, <code>false</code> otherwise
    */
@@ -173,7 +173,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Evaluate the multiblock pattern and resolve the position of each block.
-   * 
+   *
    * @return an empty {@link Optional} if the pattern fails to resolve, otherwise an
    *         {@link Optional} containing a map of block positions to their associated pattern
    *         marker.
@@ -192,7 +192,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Set this block's {@link Membership}.
-   * 
+   *
    * @param membership - the {@link Membership} or <code>null</code> if it has none.
    */
   protected void setMembership(@Nullable Membership<T> membership) {
@@ -210,7 +210,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Determine if this block is a member of a formed multiblock.
-   * 
+   *
    * @return <code>true</code> if it is a memember, <code>false</code> otherwise
    */
   public boolean isFormed() {
@@ -219,7 +219,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Determine if this block is the master of a formed multiblock (if it is part of any).
-   * 
+   *
    * @return <code>false</code> if this block is not part of a formed multiblock or if it is not the
    *         master, <code>true</code> otherwise
    */
@@ -232,7 +232,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   /**
    * Retrieve this block's {@link Membership}.
-   * 
+   *
    * @return an optional {@link Membership}
    */
   public Optional<Membership<T>> getMembership() {
@@ -299,7 +299,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   /**
    * Contains information about a formed multiblock member such as its pattern marker and the master
    * of the multiblock.
-   * 
+   *
    * @author Sm0keySa1m0n
    *
    * @param <T> - the type of multiblock
@@ -310,7 +310,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   /**
    * An unresolved version of {@link Membership} which contains the position of the master instead
    * of its instance.
-   * 
+   *
    * @author Sm0keySa1m0n
    */
   public record UnresolvedMembership(MultiblockPattern.Element patternElement,

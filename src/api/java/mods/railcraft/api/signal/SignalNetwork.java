@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 
 /**
  * Provides access to a signal network.
- * 
+ *
  * @author Sm0keySa1m0n
  *
  * @param <T> - node type

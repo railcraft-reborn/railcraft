@@ -27,7 +27,7 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
     }
   }
 
-  public void blockRemoved() { 
+  public void blockRemoved() {
     this.signalReceiver.destroy();
   }
 

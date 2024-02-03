@@ -48,7 +48,7 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
         zz++;
         fx = 1;
         rz = -1;
-      } 
+      }
     } else {
       if (patternPos.getZ() == 0) {
         xx++;

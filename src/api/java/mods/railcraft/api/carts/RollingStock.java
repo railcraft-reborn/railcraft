@@ -31,7 +31,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 
 /**
  * Main capability for all things minecart/locomotive related.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 public interface RollingStock {
@@ -66,7 +66,7 @@ public interface RollingStock {
 
   /**
    * Called upon minecart tick.
-   * 
+   *
    * @apiNote Called by Railcraft.
    */
   @ApiStatus.Internal
@@ -74,7 +74,7 @@ public interface RollingStock {
 
   /**
    * Called upon minecart removal.
-   * 
+   *
    * @param reason - the reason
    * @apiNote Called by Railcraft.
    */
@@ -110,7 +110,7 @@ public interface RollingStock {
 
   /**
    * Retrieves the {@link RollingStock} linked to the specified {@link Side}.
-   * 
+   *
    * @param side - the {@link Side} to retrieve
    * @return the linked {@link RollingStock} or {@link Optional#empty()} if no link exists.
    */
@@ -126,7 +126,7 @@ public interface RollingStock {
 
   /**
    * Retrieves the {@link Side} on which the specified {@link RollingStock} is linked.
-   * 
+   *
    * @param rollingStock - the {@link RollingStock} to check for
    * @return the {@link Side} on which it's linked or {@link Optional#empty()} if no link exists.
    */
@@ -144,7 +144,7 @@ public interface RollingStock {
 
   /**
    * Link with the specified {@link RollingStock}.
-   * 
+   *
    * @param rollingStock - the {@code RollingStock} to link
    * @return {@code true} if linking was successful, {@code false} otherwise
    */
@@ -152,7 +152,7 @@ public interface RollingStock {
 
   /**
    * Called when a link is completed.
-   * 
+   *
    * @param rollingStock - the {@code RollingStock} to link
    * @apiNote To be called by implementations of {@link RollingStock}
    */
@@ -161,7 +161,7 @@ public interface RollingStock {
 
   /**
    * Determine whether the specified {@link RollingStock} can be linked with.
-   * 
+   *
    * @param rollingStock - the {@link RollingStock} being linked
    * @return {@code true} if it can, {@code false} otherwise
    * @apiNote To be called by implementations of {@link RollingStock}
@@ -180,7 +180,7 @@ public interface RollingStock {
 
   /**
    * Called when a link is removed.
-   * 
+   *
    * @param side - the link side to be removed
    * @apiNote To be called by implementations of {@link RollingStock}
    */
@@ -200,7 +200,7 @@ public interface RollingStock {
   /**
    * Traverses all {@link RollingStock} on the specified {@link Side} and swaps their front and back
    * links.
-   * 
+   *
    * @apiNote To be called by implementations of {@link RollingStock}.
    */
   @ApiStatus.Internal
