@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * An extension of {@link SimpleContainer} with callback support, implementation of
  * {@link ContainerManipulator} and maintains item indices when persisting.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 public class AdvancedContainer extends SimpleContainer

@@ -9,6 +9,7 @@ plugins {
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '1.81.4'
     id 'me.modmuss50.mod-publish-plugin' version '0.4.5'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 def isRelease = System.getenv('CURSEFORGE_TOKEN')
@@ -127,7 +128,7 @@ dependencies {
 
     annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
-    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation platform("org.junit:junit-bom:$jupiter_version")
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
@@ -143,6 +144,18 @@ test {
     testLogging {
         events 'passed', 'skipped', 'failed'
     }
+}
+
+spotless {
+  java {
+    target 'src/*/java/**/*.java'
+    importOrder('\\#', 'java|javax|org|com|')
+
+    endWithNewline()
+    trimTrailingWhitespace()
+    removeUnusedImports()
+    indentWithSpaces(2)
+  }
 }
 
 tasks.withType(JavaCompile).configureEach {

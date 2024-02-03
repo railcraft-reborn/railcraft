@@ -579,7 +579,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   /**
    * This is where the physics magic actually gets performed. It uses Spring Forces and Damping
    * Forces to maintain a fixed distance between carts.
-   * 
+   *
    * @return {@code true} if linked, {@code false} otherwise
    */
   public boolean maintainLink(Side linkSide) {

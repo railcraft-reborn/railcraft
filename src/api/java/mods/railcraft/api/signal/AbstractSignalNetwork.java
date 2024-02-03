@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 
 /**
- * 
+ *
  * @author Sm0keySa1m0n
  *
  * @param <T>

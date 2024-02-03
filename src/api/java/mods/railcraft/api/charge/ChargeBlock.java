@@ -88,7 +88,7 @@ public interface ChargeBlock {
 
   /**
    * A ChargeSpec defines the electrical properties of the block.
-   * 
+   *
    * @param connectType - this controls how our block will connect to other blocks. Many blocks can
    *        only connect in specific ways due to block shape.
    * @param losses - the cost of connecting this block to the charge network due to resistance

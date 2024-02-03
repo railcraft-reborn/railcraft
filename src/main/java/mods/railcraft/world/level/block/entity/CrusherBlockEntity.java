@@ -33,7 +33,7 @@ import net.minecraftforge.common.util.LazyOptional;
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
   private static final MultiblockPattern<Void> pattern = Util.make(() -> {
-    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);  
+    final var bricks = BlockPredicate.of(RailcraftBlocks.CRUSHER);
 
     return MultiblockPattern.<Void>builder(BlockPos.ZERO)
         .layer(List.of(
