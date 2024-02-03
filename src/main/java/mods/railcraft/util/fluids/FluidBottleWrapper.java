@@ -132,4 +132,3 @@ public class FluidBottleWrapper implements IFluidHandlerItem, ICapabilityProvide
     return ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(capability, this.holder);
   }
 }
-

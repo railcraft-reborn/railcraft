@@ -5,7 +5,7 @@ import mods.railcraft.api.signal.TrackLocator;
 
 /**
  * A signal which monitors a section of track.
- * 
+ *
  * @author Sm0keySa1m0n
  *
  * @param <T>

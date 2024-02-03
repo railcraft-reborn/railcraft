@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a module is used by multiple module implementations.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 @Retention(RetentionPolicy.RUNTIME)

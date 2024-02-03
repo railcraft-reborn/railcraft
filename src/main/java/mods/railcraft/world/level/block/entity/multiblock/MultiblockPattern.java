@@ -95,7 +95,7 @@ public class MultiblockPattern<T> {
         && relativePos.getY() >= 0 && relativePos.getY() < this.ySize
         && relativePos.getZ() >= 0 && relativePos.getZ() < this.zSize;
   }
-  
+
   public char getMarkerOrDefault(BlockPos relativePos, char defaultMarker) {
     return this.isValidPosition(relativePos) ? this.getMarker(relativePos) : defaultMarker;
   }
@@ -202,7 +202,7 @@ public class MultiblockPattern<T> {
 
     /**
      * Appends a horizontal cross-sectional layer of the structure.
-     * 
+     *
      * @param layer - a {@link List} of horizontal rows of blocks.
      * @return the builder
      */
@@ -213,7 +213,7 @@ public class MultiblockPattern<T> {
 
     /**
      * Resets the pattern to the specified one.
-     * 
+     *
      * @param pattern - the pattern to set
      * @return the builder
      */
@@ -224,7 +224,7 @@ public class MultiblockPattern<T> {
 
     /**
      * Defines a {@link BlockPredicate} for the specified pattern marker.
-     * 
+     *
      * @param marker - the marker to define the predicate for
      * @param predicate - the predicate
      * @return the builder
@@ -237,7 +237,7 @@ public class MultiblockPattern<T> {
     /**
      * Defines a bounding box which will be checked for living entities upon pattern resolution, if
      * entities are detected within the specified bounds the pattern will fail to resolve.
-     * 
+     *
      * @param entityCheckBounds - the bounds to check for entities in
      * @return the builder
      */
@@ -253,7 +253,7 @@ public class MultiblockPattern<T> {
 
     /**
      * Creates a new {@link MultiblockPattern} using the attributes defined by this builder.
-     * 
+     *
      * @return the created {@link MultiblockPattern}
      */
     public MultiblockPattern<T> build() {

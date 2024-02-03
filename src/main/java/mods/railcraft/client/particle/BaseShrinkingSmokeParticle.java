@@ -16,4 +16,3 @@ public abstract class BaseShrinkingSmokeParticle extends BaseSmokeParticle {
         (this.age + partialTicks) / this.lifetime * 32.0F, 0, 1.0F);
   }
 }
-

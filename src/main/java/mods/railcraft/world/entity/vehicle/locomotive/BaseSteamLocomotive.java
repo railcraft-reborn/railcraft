@@ -18,6 +18,7 @@ import mods.railcraft.world.level.material.steam.SteamBoiler;
 import mods.railcraft.world.level.material.steam.SteamConstants;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -173,12 +174,14 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       var y = this.getY() + 1.5;
       var z = this.getZ() - Math.sin(rads) * offset;
 
-      if (Seasons.HALLOWEEN && this.random.nextInt(4) == 0) { // 20%?
-        this.level().addParticle(RailcraftParticleTypes.PUMPKIN.get(), x, y, z, 0, 0.02, 0);
+      SimpleParticleType particle;
+      if (Seasons.isHalloween() && this.random.nextInt(4) == 0) { // 20%?
+        particle = RailcraftParticleTypes.PUMPKIN.get();
       } else {
         // smog obviously.
-        this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 0, 0.02, 0);
+        particle = ParticleTypes.CAMPFIRE_COSY_SMOKE;
       }
+      this.level().addParticle(particle, x, y, z, 0, 0.02, 0);
     }
     // steam spawns ON the engine itself, spreading left or right
     // as the pistons are on the train's sides
@@ -282,4 +285,3 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
     return this.boiler.checkFill(resource, this::explode);
   }
 }
-

@@ -6,7 +6,7 @@ import net.minecraft.world.Nameable;
 
 /**
  * A signal or a signal box.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 public interface SignalEntity extends BlockEntityLike, Nameable {

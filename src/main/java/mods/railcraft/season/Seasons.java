@@ -8,9 +8,9 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class Seasons {
 
-  public static final boolean HARVEST;
-  public static final boolean HALLOWEEN;
-  public static final boolean CHRISTMAS;
+  private static final boolean HARVEST;
+  private static final boolean HALLOWEEN;
+  private static final boolean CHRISTMAS;
   public static final String GHOST_TRAIN = "Ghost Train";
   public static final String POLAR_EXPRESS = "Polar Express";
 
@@ -47,7 +47,7 @@ public final class Seasons {
 
   /**
    * Clientside only.
-   * 
+   *
    * @param cart The cart.
    */
   public static boolean isGhostTrain(AbstractMinecart cart) {
@@ -61,7 +61,7 @@ public final class Seasons {
 
   /**
    * Clientside only.
-   * 
+   *
    * @param cart The cart.
    */
   public static boolean isPolarExpress(AbstractMinecart cart) {
@@ -72,5 +72,12 @@ public final class Seasons {
             || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getString())
             || level.getBiome(cart.blockPosition()).value().shouldSnow(level, cart.blockPosition())
         : season == Season.CHRISTMAS;
+  }
+
+  /**
+   * Clientside only.
+   */
+  public static boolean isHalloween() {
+    return HALLOWEEN;
   }
 }

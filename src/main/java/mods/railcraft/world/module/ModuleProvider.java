@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
  * An abstracted level entity. This could represent an {@link Entity} or a {@link BlockEntity}.
- * 
+ *
  * @author Sm0keySa1m0n
  */
 public interface ModuleProvider {

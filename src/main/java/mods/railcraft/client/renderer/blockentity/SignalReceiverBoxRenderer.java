@@ -7,7 +7,7 @@ public class SignalReceiverBoxRenderer extends AbstractSignalBoxRenderer {
 
   public static final ResourceLocation TEXTURE_LOCATION =
       RailcraftConstants.rl("entity/signal_box/signal_receiver_box");
-  
+
   @Override
   protected ResourceLocation getTopTextureLocation() {
     return TEXTURE_LOCATION;

@@ -30,7 +30,7 @@ import net.minecraftforge.energy.IEnergyStorage;
  *
  * <p>
  * Such that sometimes:
- * 
+ *
  * <pre>
  * {@code
  * ChargeStorage bat1 = Charge.distribution.network(level).access(pos).storage().get();
@@ -122,7 +122,7 @@ public interface ChargeStorage extends IEnergyStorage {
 
   /**
    * Storage spec.
-   * 
+   *
    * @param initialState The initial state of the battery.
    * @param capacity The capacity of the battery.
    * @param maxDraw How much charge can be drawn from this battery per tick.
