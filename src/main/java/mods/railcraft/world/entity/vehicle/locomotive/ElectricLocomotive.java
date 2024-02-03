@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
@@ -160,13 +161,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
+    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putInt("energy", this.cartStorage.getEnergyStored());
+    tag.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
   }
 
   @Override
@@ -176,13 +177,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     if (this.cartStorage == null) {
       this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
     }
-    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
+    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
   }
 
   @Override
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
-    itemStack.getOrCreateTag().putInt("energy", this.cartStorage.getEnergyStored());
+    itemStack.getOrCreateTag().putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
     return itemStack;
   }
 

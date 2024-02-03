@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
@@ -230,18 +231,17 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.put("tankManager", this.getTankManager().serializeNBT());
-    tag.put("boiler", this.boiler.serializeNBT());
-    tag.putString("processState", this.processState.getSerializedName());
+    tag.put(CompoundTagKeys.TANK_MANAGER, this.getTankManager().serializeNBT());
+    tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT());
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.getTankManager().deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(tag.getCompound("boiler"));
-    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
+    this.getTankManager().deserializeNBT(tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
+    this.boiler.deserializeNBT(tag.getCompound(CompoundTagKeys.BOILER));
+    this.processState = FluidTools.ProcessState.fromTag(tag);
   }
 
   public boolean isSafeToFill() {

@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -52,11 +53,15 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("emitterPos", NbtUtils.writeBlockPos(this.emitterPos));
+    if (this.emitterPos != null) {
+      tag.put(CompoundTagKeys.EMITTER_POS, NbtUtils.writeBlockPos(this.emitterPos));
+    }
   }
 
   @Override
   public void load(CompoundTag tag) {
-    this.emitterPos = NbtUtils.readBlockPos(tag.getCompound("emitterPos"));
+    if (tag.contains(CompoundTagKeys.EMITTER_POS)) {
+      this.emitterPos = NbtUtils.readBlockPos(tag.getCompound(CompoundTagKeys.EMITTER_POS));
+    }
   }
 }

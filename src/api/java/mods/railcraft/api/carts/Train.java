@@ -1,11 +1,7 @@
 package mods.railcraft.api.carts;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
@@ -80,12 +76,12 @@ public interface Train {
 
     STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
 
-    private static final Map<String, State> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(State::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<State> CODEC =
+        StringRepresentable.fromEnum(State::values);
 
     private final String name;
 
-    private State(String name) {
+    State(String name) {
       this.name = name;
     }
 
@@ -98,8 +94,8 @@ public interface Train {
       return this.name;
     }
 
-    public static Optional<State> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Optional<State> fromName(String name) {
+      return Optional.ofNullable(CODEC.byName(name));
     }
   }
 }

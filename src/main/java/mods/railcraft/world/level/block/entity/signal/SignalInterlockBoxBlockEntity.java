@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SimpleSignalController;
@@ -126,15 +127,15 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("signalController", this.signalController.serializeNBT());
-    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.signalController.deserializeNBT(tag.getCompound("signalController"));
-    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
+    this.signalController.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+    this.signalReceiver.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
   }
 
   @Override

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.MultiblockBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -266,7 +267,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    if (tag.getBoolean("master")) {
+    if (tag.getBoolean(CompoundTagKeys.MASTER)) {
       this.enqueueEvaluation();
     }
   }
@@ -274,7 +275,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putBoolean("master", this.membership != null && this.membership.master() == this);
+    tag.putBoolean(CompoundTagKeys.MASTER, this.membership != null && this.membership.master() == this);
   }
 
   @Override

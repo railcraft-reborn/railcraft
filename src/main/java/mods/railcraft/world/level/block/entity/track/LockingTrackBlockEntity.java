@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.event.CartLockdownEvent;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.RailShapeUtil;
@@ -267,17 +268,17 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("lockingModeController", this.lockingModeController.serializeNBT());
-    tag.putBoolean("locked", this.locked);
-    tag.putBoolean("trainLeaving", this.trainLeaving);
-    tag.putInt("trainDelay", this.trainDelay);
+    tag.put(CompoundTagKeys.LOCKING_MODE_CONTROLLER, this.lockingModeController.serializeNBT());
+    tag.putBoolean(CompoundTagKeys.LOCKED, this.locked);
+    tag.putBoolean(CompoundTagKeys.TRAIN_LEAVING, this.trainLeaving);
+    tag.putInt(CompoundTagKeys.TRAIN_DELAY, this.trainDelay);
     if (this.prevCart != null) {
-      tag.putUUID("prevCartId", this.prevCart.getUUID());
+      tag.putUUID(CompoundTagKeys.PREV_CART_ID, this.prevCart.getUUID());
     }
     if (this.currentCart != null) {
-      tag.putUUID("currentCartId", this.currentCart.getUUID());
+      tag.putUUID(CompoundTagKeys.CURRENT_CART_ID, this.currentCart.getUUID());
     }
-    tag.putUUID("lockId", this.lockId);
+    tag.putUUID(CompoundTagKeys.LOCK_ID, this.lockId);
   }
 
   @Override
@@ -285,17 +286,17 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     super.load(tag);
     this.lockingModeController =
         LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
-    this.lockingModeController.deserializeNBT(tag.getCompound("lockingModeController"));
-    this.locked = tag.getBoolean("locked");
-    this.trainLeaving = tag.getBoolean("trainLeaving");
-    this.trainDelay = tag.getInt("trainDelay");
-    if (tag.hasUUID("prevCartId")) {
-      this.prevCartId = tag.getUUID("prevCartId");
+    this.lockingModeController.deserializeNBT(tag.getCompound(CompoundTagKeys.LOCKING_MODE_CONTROLLER));
+    this.locked = tag.getBoolean(CompoundTagKeys.LOCKED);
+    this.trainLeaving = tag.getBoolean(CompoundTagKeys.TRAIN_LEAVING);
+    this.trainDelay = tag.getInt(CompoundTagKeys.TRAIN_DELAY);
+    if (tag.hasUUID(CompoundTagKeys.PREV_CART_ID)) {
+      this.prevCartId = tag.getUUID(CompoundTagKeys.PREV_CART_ID);
     }
-    if (tag.hasUUID("currentCartId")) {
-      this.currentCartId = tag.getUUID("currentCartId");
+    if (tag.hasUUID(CompoundTagKeys.CURRENT_CART_ID)) {
+      this.currentCartId = tag.getUUID(CompoundTagKeys.CURRENT_CART_ID);
     }
-    this.lockId = tag.getUUID("lockId");
+    this.lockId = tag.getUUID(CompoundTagKeys.LOCK_ID);
   }
 
   @Override

@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.Objects;
 import java.util.UUID;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.TokenSignalEntity;
@@ -94,15 +95,15 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("network", this.signalController.serializeNBT());
-    tag.putUUID("tokenRingId", this.ringId);
+    tag.put(CompoundTagKeys.NETWORK, this.signalController.serializeNBT());
+    tag.putUUID(CompoundTagKeys.TOKEN_RING_ID, this.ringId);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.signalController.deserializeNBT(tag.getCompound("network"));
-    this.ringId = tag.getUUID("tokenRingId");
+    this.signalController.deserializeNBT(tag.getCompound(CompoundTagKeys.NETWORK));
+    this.ringId = tag.getUUID(CompoundTagKeys.TOKEN_RING_ID);
   }
 
   @Override

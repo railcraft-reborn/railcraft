@@ -15,6 +15,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.to_client.OpenLogBookScreen;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -73,11 +74,11 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
         var playerTag = NbtUtils.writeGameProfile(new CompoundTag(), player);
         players.add(playerTag);
       }
-      dateEntry.putString("date", entry.getKey().toString());
-      dateEntry.put("players", players);
+      dateEntry.putString(CompoundTagKeys.DATE, entry.getKey().toString());
+      dateEntry.put(CompoundTagKeys.PLAYERS, players);
       logList.add(dateEntry);
     }
-    tag.put("entries", logList);
+    tag.put(CompoundTagKeys.ENTRIES, logList);
     return tag;
   }
 
@@ -86,15 +87,15 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
 
     var monthAgo = LocalDate.now().minusMonths(1);
 
-    ListTag logList = tag.getList("entries", Tag.TAG_COMPOUND);
+    ListTag logList = tag.getList(CompoundTagKeys.ENTRIES, Tag.TAG_COMPOUND);
     for (int i = 0; i < logList.size(); i++) {
       var compound = logList.getCompound(i);
-      var date = LocalDate.parse(compound.getString("date"));
+      var date = LocalDate.parse(compound.getString(CompoundTagKeys.DATE));
       try {
         if (date.isBefore(monthAgo)) {
           continue;
         }
-        var playerList = compound.getList("players", Tag.TAG_COMPOUND);
+        var playerList = compound.getList(CompoundTagKeys.PLAYERS, Tag.TAG_COMPOUND);
         var players = new HashSet<GameProfile>();
         for (int j = 0; j < playerList.size(); j++) {
           var playerCompound = playerList.getCompound(i);
@@ -137,13 +138,13 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("log", convertLogToTag(log));
+    tag.put(CompoundTagKeys.LOG, convertLogToTag(log));
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
     log.clear();
-    log.putAll(convertLogFromTag(tag.getCompound("log")));
+    log.putAll(convertLogFromTag(tag.getCompound(CompoundTagKeys.LOG)));
   }
 }

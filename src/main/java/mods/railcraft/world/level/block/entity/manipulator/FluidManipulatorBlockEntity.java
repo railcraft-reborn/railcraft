@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
@@ -151,18 +152,17 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("processState", this.processState.getSerializedName());
-    tag.put("tankManager", this.tankManager.serializeNBT());
-    tag.put("invFilter", this.getFluidFilter().createTag());
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
+    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT());
+    tag.put(CompoundTagKeys.INV_FILTER, this.getFluidFilter().createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
-    this.tankManager.deserializeNBT(tag.getList("tankManager", Tag.TAG_COMPOUND));
-    this.getFluidFilter().fromTag(tag.getList("invFilter", Tag.TAG_COMPOUND));
+    this.processState = FluidTools.ProcessState.fromTag(tag);
+    this.tankManager.deserializeNBT(tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
+    this.getFluidFilter().fromTag(tag.getList(CompoundTagKeys.INV_FILTER, Tag.TAG_COMPOUND));
   }
 
   @Override

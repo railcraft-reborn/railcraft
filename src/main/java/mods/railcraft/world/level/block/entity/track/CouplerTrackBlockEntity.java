@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.track;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -61,11 +62,11 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     }
 
     public Mode next() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     public Mode previous() {
-      return values()[(this.ordinal() + values().length - 1) % values().length];
+      return EnumUtil.previous(this, values());
     }
 
     public Component getDisplayName() {

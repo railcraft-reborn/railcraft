@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
@@ -137,17 +138,17 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("cartFilter", this.cartFilter.createTag());
-    tag.put("itemFilter", this.itemFilter.createTag());
-    tag.putInt("ticksSinceLastDrop", this.ticksSinceLastDrop);
+    tag.put(CompoundTagKeys.CART_FILTER, this.cartFilter.createTag());
+    tag.put(CompoundTagKeys.ITEM_FILTER, this.itemFilter.createTag());
+    tag.putInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP, this.ticksSinceLastDrop);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.cartFilter.fromTag(tag.getList("cartFilter", Tag.TAG_COMPOUND));
-    this.itemFilter.fromTag(tag.getList("itemFilter", Tag.TAG_COMPOUND));
-    this.ticksSinceLastDrop = tag.getInt("ticksSinceLastDrop");
+    this.cartFilter.fromTag(tag.getList(CompoundTagKeys.CART_FILTER, Tag.TAG_COMPOUND));
+    this.itemFilter.fromTag(tag.getList(CompoundTagKeys.ITEM_FILTER, Tag.TAG_COMPOUND));
+    this.ticksSinceLastDrop = tag.getInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP);
   }
 
   @Nullable

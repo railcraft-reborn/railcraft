@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -121,15 +122,15 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putBoolean("powered", this.powered);
-    tag.putInt("timeSinceLastSpawn", this.timeSinceLastSpawn);
+    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
+    tag.putInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, this.timeSinceLastSpawn);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.powered = tag.getBoolean("powered");
-    this.timeSinceLastSpawn = tag.getInt("timeSinceLastSpawn");
+    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
+    this.timeSinceLastSpawn = tag.getInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN);
   }
 
   @Override

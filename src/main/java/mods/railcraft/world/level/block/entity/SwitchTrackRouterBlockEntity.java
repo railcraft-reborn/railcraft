@@ -3,15 +3,13 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -75,17 +73,17 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("container", this.container.createTag());
-    tag.putString("railway", this.railway.getSerializedName());
-    tag.putBoolean("powered", this.powered);
+    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag());
+    tag.putString(CompoundTagKeys.RAILWAY, this.railway.getSerializedName());
+    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
-    this.railway = Railway.getByName(tag.getString("railway")).orElse(Railway.PUBLIC);
-    this.powered = tag.getBoolean("powered");
+    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND));
+    this.railway = Railway.fromName(tag.getString(CompoundTagKeys.RAILWAY));
+    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
   }
 
   @Override
@@ -183,12 +181,12 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     PUBLIC("public"),
     PRIVATE("private");
 
-    private static final Map<String, Railway> BY_NAME = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Railway::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Railway> CODEC =
+        StringRepresentable.fromEnum(Railway::values);
 
     private final String name;
 
-    private Railway(String name) {
+    Railway(String name) {
       this.name = name;
     }
 
@@ -213,8 +211,8 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
       return this.name;
     }
 
-    public static Optional<Railway> getByName(String name) {
-      return Optional.ofNullable(BY_NAME.get(name));
+    public static Railway fromName(String name) {
+      return CODEC.byName(name, PUBLIC);
     }
   }
 }

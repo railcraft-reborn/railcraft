@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -26,8 +27,8 @@ public class RenderUtil {
     int color = getColorARGB(fluidStack);
     if (fluidStack.getFluidType().isLighterThanAir()) {
       // TODO: We probably want to factor in the fluid's alpha value somehow
-      return getColorARGB(getRed(color), getGreen(color), getBlue(color),
-          Math.min(1, fluidScale + 0.2F));
+      var alpha = Math.min(1, fluidScale + 0.2F);
+      return getColorARGB(alpha, getRed(color), getGreen(color), getBlue(color));
     }
     return color;
   }
@@ -36,21 +37,12 @@ public class RenderUtil {
     return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
   }
 
-  public static int getColorARGB(float red, float green, float blue, float alpha) {
-    return getColorARGB((int) (255 * red), (int) (255 * green), (int) (255 * blue), alpha);
+  public static int getColorARGB(float alpha, float red, float green, float blue) {
+    return getColorARGB((int) (255 * alpha), (int) (255 * red), (int) (255 * green), (int) (255 * blue));
   }
 
-  public static int getColorARGB(int red, int green, int blue, float alpha) {
-    if (alpha < 0) {
-      alpha = 0;
-    } else if (alpha > 1) {
-      alpha = 1;
-    }
-    int argb = (int) (255 * alpha) << 24;
-    argb |= red << 16;
-    argb |= green << 8;
-    argb |= blue;
-    return argb;
+  public static int getColorARGB(int alpha, int red, int green, int blue) {
+    return FastColor.ARGB32.color(alpha, red, green, blue);
   }
 
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {
@@ -65,19 +57,19 @@ public class RenderUtil {
 
 
   public static float getRed(int color) {
-    return (color >> 16 & 0xFF) / 255.0F;
+    return FastColor.ARGB32.red(color) / 255.0F;
   }
 
   public static float getGreen(int color) {
-    return (color >> 8 & 0xFF) / 255.0F;
+    return FastColor.ARGB32.green(color) / 255.0F;
   }
 
   public static float getBlue(int color) {
-    return (color & 0xFF) / 255.0F;
+    return FastColor.ARGB32.blue(color) / 255.0F;
   }
 
   public static float getAlpha(int color) {
-    return (color >> 24 & 0xFF) / 255.0F;
+    return FastColor.ARGB32.alpha(color) / 255.0F;
   }
 
   public static void renderBlockHoverText(BlockPos blockPos, Component text, PoseStack poseStack,

@@ -3,6 +3,7 @@ package mods.railcraft.charge;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,20 +35,20 @@ public final class ChargeSavedData extends SavedData {
     var batteriesTag = new ListTag();
     for (var entry : this.chargeLevels.object2IntEntrySet()) {
       var entryTag = new CompoundTag();
-      entryTag.put("pos", NbtUtils.writeBlockPos(entry.getKey()));
-      entryTag.putInt("value", entry.getIntValue());
+      entryTag.put(CompoundTagKeys.POS, NbtUtils.writeBlockPos(entry.getKey()));
+      entryTag.putInt(CompoundTagKeys.VALUE, entry.getIntValue());
       batteriesTag.add(entryTag);
     }
-    tag.put("batteries", batteriesTag);
+    tag.put(CompoundTagKeys.BATTERIES, batteriesTag);
     return tag;
   }
 
   private void load(CompoundTag tag) {
-    var batteriesTag = tag.getList("batteries", Tag.TAG_COMPOUND);
+    var batteriesTag = tag.getList(CompoundTagKeys.BATTERIES, Tag.TAG_COMPOUND);
     for (int i = 0; i < batteriesTag.size(); i++) {
       var entryTag = batteriesTag.getCompound(i);
-      var pos = NbtUtils.readBlockPos(entryTag.getCompound("pos"));
-      this.chargeLevels.put(pos, entryTag.getInt("value"));
+      var pos = NbtUtils.readBlockPos(entryTag.getCompound(CompoundTagKeys.POS));
+      this.chargeLevels.put(pos, entryTag.getInt(CompoundTagKeys.VALUE));
     }
   }
 

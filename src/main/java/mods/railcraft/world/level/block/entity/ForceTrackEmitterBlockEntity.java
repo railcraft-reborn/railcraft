@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Optional;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
 import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.FunctionalUtil;
@@ -215,14 +216,14 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("trackCount", this.getTrackCount());
-    tag.putString("state", this.stateInstance.state().getSerializedName());
+    tag.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
+    tag.putString(CompoundTagKeys.STATE, this.stateInstance.state().getSerializedName());
   }
 
   @Override
   public void load(CompoundTag tag) {
-    this.trackCount = tag.getInt("trackCount");
-    ForceTrackEmitterState.getByName(tag.getString("state")).ifPresent(this::loadState);
+    this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT);
+    ForceTrackEmitterState.fromName(tag.getString(CompoundTagKeys.STATE)).ifPresent(this::loadState);
   }
 
   private Optional<? extends ChargeStorage> storage() {

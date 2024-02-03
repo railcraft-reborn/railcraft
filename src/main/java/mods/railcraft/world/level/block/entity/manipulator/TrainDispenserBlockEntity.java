@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -121,13 +122,13 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("trainDispenserFilters", this.invPattern.createTag());
+    tag.put(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern.createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.invPattern.fromTag(tag.getList("trainDispenserFilters", Tag.TAG_COMPOUND));
+    this.invPattern.fromTag(tag.getList(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, Tag.TAG_COMPOUND));
   }
 
   @Nullable

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.network.PacketHandler;
@@ -141,26 +142,26 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     if (this.owner != null) {
       var ownerTag = new CompoundTag();
       NbtUtils.writeGameProfile(ownerTag, this.owner);
-      tag.put("owner", ownerTag);
+      tag.put(CompoundTagKeys.OWNER, ownerTag);
     }
     if (this.customName != null) {
-      tag.putString("customName", Component.Serializer.toJson(this.customName));
+      tag.putString(CompoundTagKeys.CUSTOM_NAME, Component.Serializer.toJson(this.customName));
     }
 
-    tag.put("modules", this.moduleDispatcher.serializeNBT());
+    tag.put(CompoundTagKeys.MODULES, this.moduleDispatcher.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      this.owner = NbtUtils.readGameProfile(tag.getCompound("owner"));
+    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
+      this.owner = NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER));
     }
-    if (tag.contains("customName", Tag.TAG_STRING)) {
-      this.customName = Component.Serializer.fromJson(tag.getString("customName"));
+    if (tag.contains(CompoundTagKeys.CUSTOM_NAME, Tag.TAG_STRING)) {
+      this.customName = Component.Serializer.fromJson(tag.getString(CompoundTagKeys.CUSTOM_NAME));
     }
 
-    this.moduleDispatcher.deserializeNBT(tag.getCompound("modules"));
+    this.moduleDispatcher.deserializeNBT(tag.getCompound(CompoundTagKeys.MODULES));
   }
 
   public final int getX() {

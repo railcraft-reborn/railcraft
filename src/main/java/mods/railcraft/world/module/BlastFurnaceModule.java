@@ -2,6 +2,7 @@ package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
@@ -181,16 +182,16 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.putInt("burnTime", this.burnTime);
-    tag.putInt("currentItemBurnTime", this.currentItemBurnTime);
+    tag.putInt(CompoundTagKeys.BURN_TIME, this.burnTime);
+    tag.putInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.burnTime = tag.getInt("burnTime");
-    this.currentItemBurnTime = tag.getInt("currentItemBurnTime");
+    this.burnTime = tag.getInt(CompoundTagKeys.BURN_TIME);
+    this.currentItemBurnTime = tag.getInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME);
   }
 
   @Override

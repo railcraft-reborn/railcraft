@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.PrototypedItem;
 import mods.railcraft.util.container.AdvancedContainer;
 import net.minecraft.nbt.CompoundTag;
@@ -7,7 +8,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   private static final EntityDataAccessor<ItemStack> FILTER =
       SynchedEntityData.defineId(FilteredMinecart.class, EntityDataSerializers.ITEM_STACK);
   private final AdvancedContainer filterContainer =
-      new AdvancedContainer(1).listener((Container) this).phantom();
+      new AdvancedContainer(1).listener(this).phantom();
 
   protected FilteredMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -68,16 +68,16 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
-    this.filterContainer.fromTag(data.getList("filter", Tag.TAG_COMPOUND));
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.filterContainer.fromTag(tag.getList(CompoundTagKeys.FILTER, Tag.TAG_COMPOUND));
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
-    data.put("filter", this.filterContainer.createTag());
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.put(CompoundTagKeys.FILTER, this.filterContainer.createTag());
   }
 
   public boolean hasFilter() {

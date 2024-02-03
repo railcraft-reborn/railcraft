@@ -1,12 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -51,13 +47,13 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("lock", this.lock.getSerializedName());
+    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.lock = Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED);
+    this.lock = Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
   }
 
   @Override
@@ -77,13 +73,13 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
 
-    private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Lock> CODEC =
+        StringRepresentable.fromEnum(Lock::values);
 
     private final String name;
     private final TexturePosition texture;
 
-    private Lock(String name, TexturePosition texture) {
+    Lock(String name, TexturePosition texture) {
       this.name = name;
       this.texture = texture;
     }
@@ -108,8 +104,8 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
       return this.name;
     }
 
-    public static Optional<Lock> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Lock fromName(String name) {
+      return CODEC.byName(name, UNLOCKED);
     }
   }
 }

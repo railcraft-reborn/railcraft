@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
 import org.apache.commons.lang3.NotImplementedException;
+import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,13 +33,13 @@ public class EnergyMinecart extends RailcraftMinecart {
   @Override
   public void readAdditionalSaveData(CompoundTag data) {
     super.readAdditionalSaveData(data);
-    this.cartBattery.deserializeNBT(data.getCompound("battery"));
+    this.cartBattery.deserializeNBT(data.getCompound(CompoundTagKeys.BATTERY));
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag data) {
     super.addAdditionalSaveData(data);
-    data.put("battery", this.cartBattery.serializeNBT());
+    data.put(CompoundTagKeys.BATTERY, this.cartBattery.serializeNBT());
   }
 
   // @Override

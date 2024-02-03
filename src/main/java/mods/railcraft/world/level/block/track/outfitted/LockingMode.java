@@ -26,11 +26,11 @@ public enum LockingMode implements StringRepresentable {
   private final LockType lockType;
   private final Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory;
 
-  private LockingMode(String name, LockType lockType) {
+  LockingMode(String name, LockType lockType) {
     this(name, lockType, __ -> EmptyLockingProfile.INSTANCE);
   }
 
-  private LockingMode(String name, LockType lockType,
+  LockingMode(String name, LockType lockType,
       Function<? super LockingTrackBlockEntity, ? extends LockingModeController> factory) {
     this.name = name;
     this.lockType = lockType;

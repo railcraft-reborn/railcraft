@@ -1,5 +1,6 @@
 package mods.railcraft.world.module;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import net.minecraft.nbt.CompoundTag;
@@ -30,13 +31,13 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.put("container", this.container.createTag());
+    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag());
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
+    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND));
   }
 }

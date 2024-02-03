@@ -1,10 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
@@ -120,7 +115,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.ON));
+    this.setMode(Mode.fromName(tag.getString("mode")));
   }
 
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
@@ -154,13 +149,13 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     ON("on", 0.1F),
     OFF("off", 0.4F);
 
-    private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Mode> CODEC =
+        StringRepresentable.fromEnum(Mode::values);
 
     private final String name;
     private final float speed;
 
-    private Mode(String name, float speed) {
+    Mode(String name, float speed) {
       this.name = name;
       this.speed = speed;
     }
@@ -197,8 +192,8 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
       return this.name;
     }
 
-    public static Optional<Mode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Mode fromName(String name) {
+      return CODEC.byName(name, ON);
     }
   }
 }
