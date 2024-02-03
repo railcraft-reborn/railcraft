@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -49,7 +50,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   protected final StandardTank waterTank =
       StandardTank.ofBuckets(6)
           .fillProcessor(this::checkFill)
-          .filter(() -> Fluids.WATER);
+          .filter(FluidTags.WATER);
 
   protected final StandardTank steamTank =
       StandardTank.ofBuckets(16)
@@ -249,12 +250,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public boolean canPassFluidRequests(FluidStack fluid) {
-    return Fluids.WATER.isSame(fluid.getFluid());
+    return fluid.is(FluidTags.WATER);
   }
 
   @Override
   public boolean canAcceptPushedFluid(RollingStock requester, FluidStack fluid) {
-    return Fluids.WATER.isSame(fluid.getFluid());
+    return fluid.is(FluidTags.WATER);
   }
 
   @Override

@@ -63,7 +63,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
       if (capacity > 0 && fluidStack != null && fluidStack.getAmount() > 0) {
         poseStack.pushPose();
         var level = fluidStack.getAmount() / capacity;
-        var fluidMaxY = fluidStack.getFluid().getFluidType().isLighterThanAir()
+        var fluidMaxY = fluidStack.getFluidType().isLighterThanAir()
             ? 1
             : Math.min(1, level);
 

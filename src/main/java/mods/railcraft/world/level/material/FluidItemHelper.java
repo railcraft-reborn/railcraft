@@ -58,7 +58,7 @@ public final class FluidItemHelper {
     return FluidUtil.getFluidHandler(stack)
         .filter(item -> {
           for (int i = 0; i < item.getTanks(); i++) {
-            if (!item.getFluidInTank(i).getFluid().isSame(fluid)) {
+            if (!item.getFluidInTank(i).is(fluid)) {
               return false;
             }
           }

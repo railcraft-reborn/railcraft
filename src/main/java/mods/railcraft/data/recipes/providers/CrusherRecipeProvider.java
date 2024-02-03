@@ -1,10 +1,8 @@
 package mods.railcraft.data.recipes.providers;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -15,9 +13,8 @@ import net.neoforged.neoforge.common.Tags;
 
 public class CrusherRecipeProvider extends RecipeProvider {
 
-  private CrusherRecipeProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider) {
-    super(packOutput, lookupProvider);
+  private CrusherRecipeProvider(PackOutput packOutput) {
+    super(packOutput);
   }
 
   @Override

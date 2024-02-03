@@ -24,7 +24,7 @@ public class RenderUtil {
       return -1;
     }
     int color = getColorARGB(fluidStack);
-    if (fluidStack.getFluid().getFluidType().isLighterThanAir()) {
+    if (fluidStack.getFluidType().isLighterThanAir()) {
       // TODO: We probably want to factor in the fluid's alpha value somehow
       return getColorARGB(getRed(color), getGreen(color), getBlue(color),
           Math.min(1, fluidScale + 0.2F));
@@ -55,7 +55,7 @@ public class RenderUtil {
 
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {
     return fluid.isEmpty() ? combinedLight
-        : calculateGlowLight(combinedLight, fluid.getFluid().getFluidType().getLightLevel(fluid));
+        : calculateGlowLight(combinedLight, fluid.getFluidType().getLightLevel(fluid));
   }
 
   public static int calculateGlowLight(int combinedLight, int glow) {

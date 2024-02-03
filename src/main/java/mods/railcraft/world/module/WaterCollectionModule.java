@@ -75,7 +75,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
+          && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluid().getFluid()))
           || FluidUtil.getFluidContained(stack).isPresent();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;

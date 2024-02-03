@@ -57,7 +57,7 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
       return isFuel(itemStack);
     } else if (slot == SLOT_LIQUID_INPUT) {
       return FluidUtil.getFluidContained(itemStack)
-          .map(fluid -> fluid.getFluid().is(FluidTags.WATER)).orElse(false);
+          .map(fluid -> fluid.is(FluidTags.WATER)).orElse(false);
     }
     return false;
   }

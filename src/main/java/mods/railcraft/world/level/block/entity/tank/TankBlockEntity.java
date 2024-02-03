@@ -92,7 +92,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.syncToClient();
 
     var fluidStack = this.module.getTank().getFluid();
-    var fluidType = this.module.getTank().getFluidType().getFluidType();
+    var fluidType = this.module.getTank().getFluidType();
     var light = fluidType.getLightLevel(fluidStack);
     if (light != this.lastLight) {
       this.lastLight = light;

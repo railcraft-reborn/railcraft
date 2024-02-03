@@ -1,8 +1,8 @@
 package mods.railcraft.world.inventory.slot;
 
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
 
@@ -16,7 +16,7 @@ public class LimitedWaterSlot extends WaterSlot {
   @Override
   public boolean mayPlace(ItemStack stack) {
     return FluidUtil.getFluidContained(stack)
-        .filter(fluid -> fluid.getFluid() == Fluids.WATER)
+        .filter(fluid -> fluid.is(FluidTags.WATER))
         .filter(fluid -> fluid.getAmount() <= FluidType.BUCKET_VOLUME)
         .isPresent();
   }

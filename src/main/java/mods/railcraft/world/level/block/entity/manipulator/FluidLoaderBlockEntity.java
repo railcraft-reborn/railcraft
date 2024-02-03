@@ -147,8 +147,8 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       this.setPowered(false);
     }
 
-    if (cart instanceof FluidTransferHandler) {
-      ((FluidTransferHandler) cart).setFilling(this.isProcessing());
+    if (cart instanceof FluidTransferHandler fluidTransferHandler) {
+      fluidTransferHandler.setFilling(this.isProcessing());
     }
 
     if (!this.tank.getFluid().isEmpty()
@@ -176,15 +176,11 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (fluid.isEmpty()) {
       return false;
     }
-    switch (this.getRedstoneMode()) {
-      case COMPLETE:
-        return cartFluidHandler.fill(fluid, IFluidHandler.FluidAction.SIMULATE) > 0;
-      case PARTIAL:
-        return !cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty();
-      default:
-        break;
-    }
-    return false;
+    return switch (this.getRedstoneMode()) {
+      case COMPLETE -> cartFluidHandler.fill(fluid, IFluidHandler.FluidAction.SIMULATE) > 0;
+      case PARTIAL -> !cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty();
+      default -> false;
+    };
   }
 
   @Override

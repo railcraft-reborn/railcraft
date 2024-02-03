@@ -1,11 +1,9 @@
 package mods.railcraft.data.recipes.providers;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -18,9 +16,8 @@ import net.neoforged.neoforge.common.Tags;
 
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
-  private BlastFurnaceRecipeProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider) {
-    super(packOutput, lookupProvider);
+  private BlastFurnaceRecipeProvider(PackOutput packOutput) {
+    super(packOutput);
   }
 
   @Override

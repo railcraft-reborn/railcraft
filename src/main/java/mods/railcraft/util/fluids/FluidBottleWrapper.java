@@ -25,7 +25,7 @@ public class FluidBottleWrapper implements IFluidHandlerItem {
   }
 
   public boolean canFillFluidType(FluidStack fluid) {
-    return fluid.getFluid().isSame(RailcraftFluids.CREOSOTE.get());
+    return fluid.is(RailcraftFluids.CREOSOTE.get());
   }
 
   @NotNull

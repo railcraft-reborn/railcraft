@@ -2,7 +2,6 @@ package mods.railcraft.data.recipes;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
@@ -17,7 +16,6 @@ import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -45,9 +43,8 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
-  public RailcraftRecipeProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider) {
-    super(packOutput, lookupProvider);
+  public RailcraftRecipeProvider(PackOutput packOutput) {
+    super(packOutput);
   }
 
   @Override

@@ -53,7 +53,7 @@ public class FluidFueledSteamBoilerModule
       if (fluid.isEmpty()) {
         return false;
       }
-      return fluid.getFluid().is(FluidTags.WATER)
+      return fluid.is(FluidTags.WATER)
           || FuelUtil.fuelManager().getFuelValue(fluid.getFluid()) > 0;
     }
 

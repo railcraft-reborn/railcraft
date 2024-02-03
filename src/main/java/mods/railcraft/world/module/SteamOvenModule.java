@@ -32,7 +32,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   public SteamOvenModule(SteamOvenBlockEntity provider) {
     super(provider, 18);
     this.steamTank = StandardTank.ofBuckets(8)
-        .setValidator(fluidStack -> RailcraftFluids.STEAM.get().isSame(fluidStack.getFluid()));
+        .setValidator(fluidStack -> fluidStack.is(RailcraftFluids.STEAM.get()));
     this.inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     this.itemHandler = new InvWrapper(this) {
