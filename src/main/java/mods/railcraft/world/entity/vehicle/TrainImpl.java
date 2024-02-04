@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -158,11 +159,11 @@ public final class TrainImpl implements Train {
   }
 
   public static TrainImpl fromTag(CompoundTag tag) {
-    var trainUUID = tag.getUUID("trainUUID");
-    var idMinecartFront = tag.getUUID("idMinecartFront");
+    var trainUUID = tag.getUUID(CompoundTagKeys.TRAIN_UUID);
+    var idMinecartFront = tag.getUUID(CompoundTagKeys.ID_MINECART_FRONT);
     var train = new TrainImpl(trainUUID, idMinecartFront);
-    State.fromName(tag.getString("state")).ifPresent(train::setState);
-    tag.getList("locks", Tag.TAG_INT_ARRAY).stream()
+    State.fromName(tag.getString(CompoundTagKeys.STATE)).ifPresent(train::setState);
+    tag.getList(CompoundTagKeys.LOCKS, Tag.TAG_INT_ARRAY).stream()
         .map(NbtUtils::loadUUID)
         .forEach(train::addLock);
     return train;
@@ -170,14 +171,14 @@ public final class TrainImpl implements Train {
 
   public CompoundTag toTag() {
     var tag = new CompoundTag();
-    tag.putUUID("trainUUID", this.trainUUID);
-    tag.putUUID("idMinecartFront", this.minecartFrontUUID);
-    tag.putString("state", this.state.getSerializedName());
+    tag.putUUID(CompoundTagKeys.TRAIN_UUID, this.trainUUID);
+    tag.putUUID(CompoundTagKeys.ID_MINECART_FRONT, this.minecartFrontUUID);
+    tag.putString(CompoundTagKeys.STATE, this.state.getSerializedName());
     var locksTag = new ListTag();
     for (var uuid : this.locks) {
       locksTag.add(NbtUtils.createUUID(uuid));
     }
-    tag.put("locks", locksTag);
+    tag.put(CompoundTagKeys.LOCKS, locksTag);
     return tag;
   }
 }

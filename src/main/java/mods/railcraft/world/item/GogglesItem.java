@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -27,10 +28,7 @@ public class GogglesItem extends ArmorItem {
 
   public static Aura getAura(ItemStack itemStack) {
     if (itemStack.hasTag()) {
-      var tag = itemStack.getTag();
-      if (tag.contains("aura")) {
-        return Aura.values()[tag.getInt("aura")];
-      }
+      return Aura.fromName(itemStack.getTag().getString("aura"));
     }
     return Aura.NONE;
   }
@@ -40,7 +38,7 @@ public class GogglesItem extends ArmorItem {
     if (aura == Aura.TRACKING) {
       aura.getNext();
     }
-    itemStack.getOrCreateTag().putInt("aura", aura.ordinal());
+    itemStack.getOrCreateTag().putString("aura", aura.getSerializedName());
     return aura;
   }
 
@@ -85,29 +83,44 @@ public class GogglesItem extends ArmorItem {
         .withStyle(ChatFormatting.GRAY));
   }
 
-  public enum Aura {
-    // TODO: 1.20.4+ use CODECS
+  public enum Aura implements StringRepresentable {
 
-    NONE(Translations.Tips.GOOGLES_AURA_NONE),
-    TRACKING(Translations.Tips.GOOGLES_AURA_TRACKING),
-    TUNING(Translations.Tips.GOOGLES_AURA_TUNING),
-    SHUNTING(Translations.Tips.GOOGLES_AURA_SHUNTING),
-    SIGNALLING(Translations.Tips.GOOGLES_AURA_SIGNALLING),
-    SURVEYING(Translations.Tips.GOOGLES_AURA_SURVEYING),
-    WORLDSPIKE(Translations.Tips.GOOGLES_AURA_WORLDSPIKE);
+    NONE("none"),
+    TRACKING("tracking"),
+    TUNING("tuning"),
+    SHUNTING("shunting"),
+    SIGNALLING("signalling"),
+    SURVEYING("surveying"),
+    WORLDSPIKE("worldspike");
 
-    private final String translationKey;
+    private static final StringRepresentable.EnumCodec<Aura> CODEC =
+        StringRepresentable.fromEnum(Aura::values);
 
-    Aura(String translationKey) {
-      this.translationKey = translationKey;
+    private final String name;
+
+    Aura(String name) {
+      this.name = name;
     }
 
     public MutableComponent getDisplayName() {
-      return Component.translatable(this.translationKey);
+      return Component.translatable(this.getTranslationKey());
+    }
+
+    private String getTranslationKey() {
+      return Translations.makeKey("tips", "googles.aura." + this.name);
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
     }
 
     public Aura getNext() {
       return EnumUtil.next(this, values());
+    }
+
+    public static Aura fromName(String name) {
+      return CODEC.byName(name, NONE);
     }
   }
 }

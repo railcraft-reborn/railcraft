@@ -83,8 +83,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   public static final int FUEL_CONSUMPTION = 12;
   public static final float HARDNESS_MULTIPLIER = 8;
 
-  public static final Set<BlockState> MINEABLE_STATES = new HashSet<>();
-  public static final Set<Block> MINEABLE_BLOCKS = Set.of(
+  private static final Set<BlockState> MINEABLE_STATES = new HashSet<>();
+  private static final Set<Block> MINEABLE_BLOCKS = Set.of(
       Blocks.CLAY,
       Blocks.SNOW,
       Blocks.CACTUS,
@@ -117,7 +117,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       Blocks.COBWEB,
       Blocks.END_STONE);
 
-  public static final Set<TagKey<Block>> MINEABLE_TAGS = Set.of(
+  private static final Set<TagKey<Block>> MINEABLE_TAGS = Set.of(
       Tags.Blocks.ORES,
       Tags.Blocks.NETHERRACK,
       Tags.Blocks.COBBLESTONE,

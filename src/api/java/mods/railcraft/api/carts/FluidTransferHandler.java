@@ -6,7 +6,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-
 import net.neoforged.neoforge.fluids.FluidStack;
 
 /**

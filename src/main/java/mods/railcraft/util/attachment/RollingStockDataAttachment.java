@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.entity.vehicle.LaunchState;
 import mods.railcraft.world.entity.vehicle.TrainImpl;
 import net.minecraft.nbt.CompoundTag;
@@ -220,54 +221,54 @@ public class RollingStockDataAttachment implements INBTSerializable<CompoundTag>
     var tag = new CompoundTag();
 
     if (this.train != null) {
-      tag.put("train", this.train.toTag());
+      tag.put(CompoundTagKeys.TRAIN, this.train.toTag());
     }
 
     if (this.unresolvedBackLink != null) {
-      tag.putUUID("backLink", this.unresolvedBackLink);
+      tag.putUUID(CompoundTagKeys.BACK_LINK, this.unresolvedBackLink);
     } else if (this.backLink != null) {
-      tag.putUUID("backLink", this.backLink.entity().getUUID());
+      tag.putUUID(CompoundTagKeys.BACK_LINK, this.backLink.entity().getUUID());
     }
 
     if (this.unresolvedFrontLink != null) {
-      tag.putUUID("frontLink", this.unresolvedFrontLink);
+      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.unresolvedFrontLink);
     } else if (this.frontLink != null) {
-      tag.putUUID("frontLink", this.frontLink.entity().getUUID());
+      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.frontLink.entity().getUUID());
     }
 
-    tag.putBoolean("backAutoLinkEnabled", this.backAutoLinkEnabled);
-    tag.putBoolean("frontAutoLinkEnabled", this.frontAutoLinkEnabled);
+    tag.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
+    tag.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
 
-    tag.putString("launchState", this.launchState.getName());
-    tag.putInt("elevatorRemainingTicks", this.elevatorRemainingTicks);
-    tag.putInt("preventMountRemainingTicks", this.preventMountRemainingTicks);
-    tag.putInt("derailedRemainingTicks", this.derailedRemainingTicks);
-    tag.putBoolean("explosionPending", this.explosionPending);
-    tag.putBoolean("highSpeed", this.highSpeed);
+    tag.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
+    tag.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
+    tag.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
+    tag.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
+    tag.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
+    tag.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
-    this.train = tag.contains("train", Tag.TAG_COMPOUND)
-        ? TrainImpl.fromTag(tag.getCompound("train"))
+    this.train = tag.contains(CompoundTagKeys.TRAIN, Tag.TAG_COMPOUND)
+        ? TrainImpl.fromTag(tag.getCompound(CompoundTagKeys.TRAIN))
         : null;
 
-    this.unresolvedBackLink = tag.hasUUID("backLink")
-        ? tag.getUUID("backLink")
+    this.unresolvedBackLink = tag.hasUUID(CompoundTagKeys.BACK_LINK)
+        ? tag.getUUID(CompoundTagKeys.BACK_LINK)
         : null;
-    this.unresolvedFrontLink = tag.hasUUID("frontLink")
-        ? tag.getUUID("frontLink")
+    this.unresolvedFrontLink = tag.hasUUID(CompoundTagKeys.FRONT_LINK)
+        ? tag.getUUID(CompoundTagKeys.FRONT_LINK)
         : null;
 
-    this.backAutoLinkEnabled = tag.getBoolean("backAutoLinkEnabled");
-    this.frontAutoLinkEnabled = tag.getBoolean("frontAutoLinkEnabled");
+    this.backAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED);
+    this.frontAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED);
 
-    this.launchState = LaunchState.fromName(tag.getString("launchState"));
-    this.elevatorRemainingTicks = tag.getInt("elevatorRemainingTicks");
-    this.preventMountRemainingTicks = tag.getInt("preventMountRemainingTicks");
-    this.derailedRemainingTicks = tag.getInt("derailedRemainingTicks");
-    this.explosionPending = tag.getBoolean("explosionPending");
-    this.highSpeed = tag.getBoolean("highSpeed");
+    this.launchState = LaunchState.fromName(tag.getString(CompoundTagKeys.LAUNCH_STATE));
+    this.elevatorRemainingTicks = tag.getInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS);
+    this.preventMountRemainingTicks = tag.getInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS);
+    this.derailedRemainingTicks = tag.getInt(CompoundTagKeys.DERAILED_REMAINING_TICKS);
+    this.explosionPending = tag.getBoolean(CompoundTagKeys.EXPLOSION_PENDING);
+    this.highSpeed = tag.getBoolean(CompoundTagKeys.HIGH_SPEED);
   }
 }

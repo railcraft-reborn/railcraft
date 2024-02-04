@@ -129,7 +129,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     tag.putShort(CompoundTagKeys.TICKS_POWERED, this.ticksPowered);
     tag.putShort(CompoundTagKeys.TICKS_TO_POWER, this.ticksToPower);
     tag.putString(CompoundTagKeys.SIGNAL_ASPECT, this.signalAspect.getSerializedName());
-    tag.putInt(CompoundTagKeys.MODE, this.mode.ordinal());
+    tag.putString(CompoundTagKeys.MODE, this.mode.getSerializedName());
   }
 
   @Override
@@ -139,8 +139,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     this.ticksToPower = tag.getShort(CompoundTagKeys.TICKS_TO_POWER);
     this.signalAspect =
         SignalAspect.fromName(tag.getString(CompoundTagKeys.SIGNAL_ASPECT)).orElse(SignalAspect.OFF);
-    // TODO: 1.20.4+ use Mode.fromName(tag.getString("CompoundTagKeys.MODE"));
-    this.mode = Mode.values()[tag.getInt(CompoundTagKeys.MODE)];
+    this.mode = Mode.fromName(tag.getString(CompoundTagKeys.MODE));
   }
 
   @Override

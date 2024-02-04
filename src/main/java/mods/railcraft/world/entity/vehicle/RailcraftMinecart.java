@@ -31,8 +31,8 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, ItemTransferHandler {
 
-  private static final EntityDataAccessor<Byte> SEASON =
-      SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<String> SEASON =
+      SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.STRING);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   @Nullable
@@ -59,18 +59,17 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(SEASON, (byte) Season.DEFAULT.ordinal());
+    this.entityData.define(SEASON, Season.DEFAULT.getSerializedName());
   }
 
   @Override
   public Season getSeason() {
-    // TODO: 1.20.4+ use Season.fromName(this.entityData.get(SEASON));
-    return Season.values()[this.entityData.get(SEASON)];
+    return Season.fromName(this.entityData.get(SEASON));
   }
 
   @Override
   public void setSeason(Season season) {
-    this.entityData.set(SEASON, (byte) season.ordinal());
+    this.entityData.set(SEASON, season.getSerializedName());
   }
 
   @Override
