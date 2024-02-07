@@ -158,87 +158,49 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     slot.set(phantomStack);
   }
 
-  @Override
-  protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex,
-      boolean reverseDirection) {
+  protected boolean tryMoveItemStackTo(ItemStack stack, int endIndex) {
     boolean flag = false;
-    int i = startIndex;
-    if (reverseDirection) {
-      i = endIndex - 1;
-    }
+    int x = 0;
 
-    Slot slot1;
+    Slot slot;
     ItemStack itemstack;
     if (stack.isStackable()) {
-      while(!stack.isEmpty()) {
-        if (reverseDirection) {
-          if (i < startIndex) {
-            break;
-          }
-        } else if (i >= endIndex) {
-          break;
-        }
-
-        slot1 = this.slots.get(i);
-        itemstack = slot1.getItem();
+      while(!stack.isEmpty() && x < endIndex) {
+        slot = this.slots.get(x);
+        itemstack = slot.getItem();
         if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack)) {
           int j = itemstack.getCount() + stack.getCount();
-          int maxSize = Math.min(slot1.getMaxStackSize(), stack.getMaxStackSize());
+          int maxSize = Math.min(slot.getMaxStackSize(), stack.getMaxStackSize());
           if (j <= maxSize) {
             stack.setCount(0);
             itemstack.setCount(j);
-            slot1.setChanged();
+            slot.setChanged();
             flag = true;
           } else if (itemstack.getCount() < maxSize) {
             stack.shrink(maxSize - itemstack.getCount());
             itemstack.setCount(maxSize);
-            slot1.setChanged();
+            slot.setChanged();
             flag = true;
           }
         }
-
-        if (reverseDirection) {
-          --i;
-        } else {
-          ++i;
-        }
+        ++x;
       }
     }
 
     if (!stack.isEmpty()) {
-      if (reverseDirection) {
-        i = endIndex - 1;
-      } else {
-        i = startIndex;
-      }
-
-      while(true) {
-        if (reverseDirection) {
-          if (i < startIndex) {
-            break;
-          }
-        } else if (i >= endIndex) {
-          break;
-        }
-
-        slot1 = this.slots.get(i);
-        itemstack = slot1.getItem();
-        if (itemstack.isEmpty() && mayPlace(slot1, stack)) {
-          if (stack.getCount() > slot1.getMaxStackSize()) {
-            slot1.setByPlayer(stack.split(slot1.getMaxStackSize()));
+      for (int i = 0; i < endIndex; i++) {
+        slot = this.slots.get(i);
+        itemstack = slot.getItem();
+        if (itemstack.isEmpty() && mayPlace(slot, stack)) {
+          if (stack.getCount() > slot.getMaxStackSize()) {
+            slot.setByPlayer(stack.split(slot.getMaxStackSize()));
           } else {
-            slot1.setByPlayer(stack.split(stack.getCount()));
+            slot.setByPlayer(stack.split(stack.getCount()));
           }
 
-          slot1.setChanged();
+          slot.setChanged();
           flag = true;
           break;
-        }
-
-        if (reverseDirection) {
-          --i;
-        } else {
-          ++i;
         }
       }
     }
@@ -272,7 +234,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
           return ItemStack.EMPTY;
         }
       } else { // Vanilla inventory slots to custom slots
-        if (!this.moveItemStackTo(stackInSlot, 0, slotsAdded, false)) {
+        if (!this.tryMoveItemStackTo(stackInSlot, slotsAdded)) {
           return ItemStack.EMPTY;
         }
       }
