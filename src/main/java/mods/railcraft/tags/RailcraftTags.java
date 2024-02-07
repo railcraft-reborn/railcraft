@@ -155,7 +155,6 @@ public class RailcraftTags {
   public static class Blocks {
 
     public static final TagKey<Block> BALLAST = tag("ballast");
-    public static final TagKey<Block> MAGIC_ORE = tag("magic_ore");
     public static final TagKey<Block> SWITCH_TRACK_ACTUATOR = tag("switch_track_actuator");
     public static final TagKey<Block> ASPECT_RECEIVER = tag("aspect_receiver");
     public static final TagKey<Block> ASPECT_EMITTER = tag("aspect_emitter");
@@ -182,6 +181,10 @@ public class RailcraftTags {
     public static final TagKey<Block> ABYSSAL = tag("abyssal");
 
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
+    public static final TagKey<Block> TUNNEL_BORE_MINEABLE_BLOCKS =
+        tag("tunnel_bore_mineable_blocks");
+    public static final TagKey<Block> TUNNEL_BORE_REPLACEABLE_BLOCKS =
+        tag("tunnel_bore_replaceable_blocks");
 
     public static final TagKey<Block> LEAD_ORE = forgeTag("ores/lead");
     public static final TagKey<Block> NICKEL_ORE = forgeTag("ores/nickel");

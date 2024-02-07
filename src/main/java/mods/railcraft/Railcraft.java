@@ -35,7 +35,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.capability.CapabilityUtil;
-import mods.railcraft.util.fluids.FluidBottleWrapper;
+import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -234,7 +234,7 @@ public class Railcraft {
   public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
     var stack = event.getObject();
     if (stack.is(Items.GLASS_BOTTLE)) {
-      event.addCapability(RailcraftConstants.rl("bottle_container"), new FluidBottleWrapper(stack));
+      event.addCapability(RailcraftConstants.rl("bottle_container"), new CreosoteBottleWrapper(stack));
     }
   }
 

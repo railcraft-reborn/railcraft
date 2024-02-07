@@ -22,16 +22,11 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     super(RailcraftBlockEntityTypes.COUPLER_TRACK.get(), blockPos, blockState);
   }
 
-  // Called by block
-  public void minecartPassed(AbstractMinecart cart) {
-    CouplerTrackBlock.getMode(this.getBlockState()).minecartPassed(this, cart);
-  }
-
   public enum Mode implements StringRepresentable {
 
     COUPLER("coupler", 8) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         if (CouplerTrackBlock.isPowered(track.getBlockState())) {
           var extension = RollingStock.getOrThrow(cart);
           if (track.pendingCoupling != null) {
@@ -43,7 +38,7 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     },
     DECOUPLER("decoupler", 0) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
         if (CouplerTrackBlock.isPowered(track.getBlockState())) {
           RollingStock.getOrThrow(cart).unlinkAll();
         }
@@ -51,9 +46,9 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     },
     AUTO_COUPLER("auto_coupler", 0) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        RollingStock.getOrThrow(cart).setAutoLinkEnabled(
-            CouplerTrackBlock.isPowered(track.getBlockState()));
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+        RollingStock.getOrThrow(cart)
+            .setAutoLinkEnabled(CouplerTrackBlock.isPowered(track.getBlockState()));
       }
     };
 
@@ -90,6 +85,6 @@ public class CouplerTrackBlockEntity extends BlockEntity {
       return this.powerPropagation;
     }
 
-    protected abstract void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart);
+    public abstract void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart);
   }
 }

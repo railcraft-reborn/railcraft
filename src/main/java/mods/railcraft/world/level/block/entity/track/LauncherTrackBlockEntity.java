@@ -24,7 +24,6 @@ public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
     super(RailcraftBlockEntityTypes.LAUNCHER_TRACK.get(), blockPos, blockState);
   }
 
-  // Called by block
   public void minecartPassed(AbstractMinecart cart) {
     if (PoweredOutfittedTrackBlock.isPowered(this.getBlockState())) {
       var motion = cart.getDeltaMovement();

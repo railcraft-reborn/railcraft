@@ -588,6 +588,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.DISTANT_SIGNAL, "Displays aspect of linked controller");
     this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
     this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
+    this.add(Translations.Tips.EMPTY, "Empty");
   }
 
   private void screenTranslations() {

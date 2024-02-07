@@ -51,7 +51,8 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.lock = LockableSwitchTrackActuatorBlockEntity.Lock.fromName(tag.getString("lock"));
+    this.lock =
+        LockableSwitchTrackActuatorBlockEntity.Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
   }
 
   @Override

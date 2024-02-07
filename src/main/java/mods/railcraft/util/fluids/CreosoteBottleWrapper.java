@@ -2,9 +2,9 @@ package mods.railcraft.util.fluids;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.FluidBottleItem;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -15,14 +15,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-public class FluidBottleWrapper implements IFluidHandlerItem, ICapabilityProvider {
+public class CreosoteBottleWrapper implements IFluidHandlerItem, ICapabilityProvider {
 
   private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
 
   @NotNull
   protected ItemStack container;
 
-  public FluidBottleWrapper(@NotNull ItemStack container) {
+  public CreosoteBottleWrapper(@NotNull ItemStack container) {
     this.container = container;
   }
 
@@ -32,8 +32,9 @@ public class FluidBottleWrapper implements IFluidHandlerItem, ICapabilityProvide
     return this.container;
   }
 
+  @SuppressWarnings("deprecation")
   public boolean canFillFluidType(FluidStack fluid) {
-    return fluid.getFluid().isSame(RailcraftFluids.CREOSOTE.get());
+    return fluid.getFluid().is(RailcraftTags.Fluids.CREOSOTE);
   }
 
   @NotNull

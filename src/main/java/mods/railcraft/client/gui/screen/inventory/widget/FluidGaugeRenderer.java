@@ -29,7 +29,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
     }
 
     var fluidStack = this.widget.tank.getFluid();
-    if (fluidStack == null || fluidStack.getAmount() <= 0) {
+    if (fluidStack.getAmount() <= 0) {
       return;
     }
 

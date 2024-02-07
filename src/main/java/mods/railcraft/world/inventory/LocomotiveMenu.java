@@ -3,10 +3,8 @@ package mods.railcraft.world.inventory;
 import java.util.Collections;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
-import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
-import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import mods.railcraft.world.inventory.slot.UnmodifiableSlot;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.network.chat.Component;
@@ -14,14 +12,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 
-public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
+public abstract class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
 
   public static final int DEFAULT_HEIGHT = 161;
 
   private final T locomotive;
 
-  public LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv,
-      T locomotive) {
+  public LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv, T locomotive) {
     this(type, id, playerInv, locomotive, DEFAULT_HEIGHT);
   }
 
@@ -29,10 +26,9 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
       T locomotive, int guiHeight) {
     super(type, id, inventory.player, locomotive::stillValid);
     this.locomotive = locomotive;
-    RailcraftSlot slotTicket = new ItemFilterSlot(TicketItem.FILTER, locomotive,
+    var slotTicket = new ItemFilterSlot(TicketItem.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
-    slotTicket.setTooltip(
-        Collections.singletonList(
+    slotTicket.setTooltip(Collections.singletonList(
             Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET)));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
@@ -40,12 +36,6 @@ public class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu {
         new UnmodifiableSlot(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
 
     this.addInventorySlots(inventory, guiHeight);
-  }
-
-  public static LocomotiveMenu<CreativeLocomotive> creative(int id,
-      Inventory inventory, CreativeLocomotive entity) {
-    return new LocomotiveMenu<>(
-        RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id, inventory, entity);
   }
 
   public T getLocomotive() {

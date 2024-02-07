@@ -8,10 +8,10 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
@@ -60,7 +60,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   protected final StandardTank steamTank =
       StandardTank.ofBuckets(16)
-          .filter(RailcraftFluids.STEAM)
+          .filter(RailcraftTags.Fluids.STEAM)
           .disableDrain()
           .disableFill();
 

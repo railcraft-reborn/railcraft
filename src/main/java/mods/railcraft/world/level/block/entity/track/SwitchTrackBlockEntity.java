@@ -80,7 +80,7 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     List<AbstractMinecart> cartsOnTrack = EntitySearcher.findMinecarts()
         .at(blockPos)
         .inflate(-0.3f)
-        .list(blockEntity.getLevel());
+        .list(level);
     Set<UUID> uuidOnTrack = cartsOnTrack.stream()
         .map(Entity::getUUID)
         .collect(Collectors.toSet());
@@ -88,8 +88,8 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     AbstractMinecart bestCart = blockEntity.getBestCartForVisualState(cartsOnTrack);
 
     boolean wasSwitched = SwitchTrackBlock.isSwitched(blockState);
-    BlockPos actuatorBlockPos = blockEntity.getActuatorBlockPos();
-    BlockState actuatorBlockState = blockEntity.level.getBlockState(actuatorBlockPos);
+    var actuatorBlockPos = blockEntity.getActuatorBlockPos();
+    var actuatorBlockState = level.getBlockState(actuatorBlockPos);
     boolean actuatorPresent = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR);
     boolean actuatorSwitched = actuatorPresent
         && SwitchTrackActuatorBlock.isSwitched(actuatorBlockState);
@@ -106,13 +106,12 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     }
 
     if (switched != wasSwitched) {
-      blockEntity.level.setBlockAndUpdate(blockEntity.getBlockPos(),
+      level.setBlockAndUpdate(blockEntity.getBlockPos(),
           blockState.setValue(SwitchTrackBlock.SWITCHED, switched));
       if (actuatorPresent) {
         if (actuatorSwitched != switched) {
           SwitchTrackActuatorBlock.setSwitched(
               actuatorBlockState, blockEntity.level, actuatorBlockPos, switched);
-
         }
         SwitchTrackActuatorBlock.updateArrowDirections(actuatorBlockState, blockEntity.level,
             actuatorBlockPos, blockEntity.getRedArrowDirection(),

@@ -60,8 +60,8 @@ public abstract class CreosoteFluid extends FlowingFluid {
 
   @Override
   public boolean isSame(Fluid fluid) {
-    return fluid == RailcraftFluids.FLOWING_CREOSOTE.get()
-        || fluid == RailcraftFluids.CREOSOTE.get();
+    return fluid.isSame(RailcraftFluids.FLOWING_CREOSOTE.get())
+        || fluid.isSame(RailcraftFluids.CREOSOTE.get());
   }
 
   @Override
