@@ -1,4 +1,4 @@
-// 1.20.4	2024-01-28T10:48:10.099513	Tags for minecraft:block mod id railcraft
+// 1.20.4	2024-02-07T16:52:33.8858	Tags for minecraft:block mod id railcraft
 9732f1964281f5d5e6f3d067e648bb4bfc5cbafb data/forge/tags/blocks/enderman_place_on_blacklist.json
 e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/blocks/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/blocks/ore_rates/singular.json
@@ -44,3 +44,5 @@ cef2fe722cdf4386365bd961d925fa5aeb2e244e data/railcraft/tags/blocks/signal.json
 4f443f634d9e8f3e783a576b578de32d8d9b802c data/railcraft/tags/blocks/strap_iron_track.json
 3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/blocks/strengthened_glass.json
 aef9e91cc72b4b67ad79db18ed826e6241996595 data/railcraft/tags/blocks/switch_track_actuator.json
+9f117aa7ef45206fa45743cadd173969d541e3a8 data/railcraft/tags/blocks/tunnel_bore_mineable_blocks.json
+95e99dc7b62d8ff0bfb141e709584ea0c7dc59f0 data/railcraft/tags/blocks/tunnel_bore_replaceable_blocks.json

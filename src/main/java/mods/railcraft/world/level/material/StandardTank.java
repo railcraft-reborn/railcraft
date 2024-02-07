@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -40,6 +41,7 @@ public class StandardTank extends FluidTank {
 
   private StandardTank(int capacity) {
     super(capacity);
+    this.refreshTooltip();
   }
 
   public StandardTank fillProcessor(Function<FluidStack, FluidStack> fillProcessor) {
@@ -195,19 +197,22 @@ public class StandardTank extends FluidTank {
   }
 
   protected void refreshTooltip() {
-    List<Component> tooltip = new ArrayList<>();
-    int amount = getFluidAmount();
-    FluidStack fluidStack = getFluid();
+    var tooltip = new ArrayList<Component>();
+    int amount = this.getFluidAmount();
+    FluidStack fluidStack = this.getFluid();
 
     if (fluidStack.isEmpty() && this.filter != null) {
       fluidStack = this.filter.get();
     }
 
-    if (!fluidStack.isEmpty()) {
+    if (fluidStack.isEmpty()) {
+      tooltip.add(Component.translatable(Translations.Tips.EMPTY));
+    } else {
       tooltip.add(this.getFluidNameToolTip(fluidStack));
     }
 
-    tooltip.add(Component.literal(String.format(Locale.ENGLISH, "%,d / %,d", amount, getCapacity()))
+    tooltip.add(Component.literal(
+        String.format(Locale.ENGLISH, "%,d / %,d", amount, this.getCapacity()))
         .withStyle(ChatFormatting.GRAY));
 
     this.tooltip = Collections.unmodifiableList(tooltip);

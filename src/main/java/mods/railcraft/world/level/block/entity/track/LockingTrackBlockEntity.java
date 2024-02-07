@@ -111,7 +111,6 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     }
   }
 
-  // Called by block
   public boolean crowbarWhack(Player player) {
     final var lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
     var newLockingMode = player.isCrouching() ? lockingMode.previous() : lockingMode.next();
@@ -156,7 +155,6 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     }
   }
 
-  // Called by block
   public void minecartPassed(AbstractMinecart cart) {
     this.currentCart = cart;
     this.lockingModeController.passed(this.currentCart);

@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.sounds.RailcraftSoundEvents;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.SimpleContainer;
@@ -32,7 +32,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   public SteamOvenModule(SteamOvenBlockEntity provider) {
     super(provider, 18);
     this.steamTank = StandardTank.ofBuckets(8)
-        .setValidator(fluidStack -> fluidStack.is(RailcraftFluids.STEAM.get()));
+        .filter(RailcraftTags.Fluids.STEAM);
     this.inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     this.itemHandler = new InvWrapper(this) {

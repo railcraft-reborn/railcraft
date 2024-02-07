@@ -252,7 +252,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
     waterCost = Math.min(waterCost, water.getAmount());
 
-    FluidStack steam = new FluidStack(RailcraftFluids.STEAM.get(),
+    var steam = new FluidStack(RailcraftFluids.STEAM.get(),
         SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
 
     this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.EXECUTE);

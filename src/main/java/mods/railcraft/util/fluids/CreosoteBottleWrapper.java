@@ -1,20 +1,20 @@
 package mods.railcraft.util.fluids;
 
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.FluidBottleItem;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public class FluidBottleWrapper implements IFluidHandlerItem {
+public class CreosoteBottleWrapper implements IFluidHandlerItem {
 
   @NotNull
   protected ItemStack container;
 
-  public FluidBottleWrapper(@NotNull ItemStack container) {
+  public CreosoteBottleWrapper(@NotNull ItemStack container) {
     this.container = container;
   }
 
@@ -25,7 +25,7 @@ public class FluidBottleWrapper implements IFluidHandlerItem {
   }
 
   public boolean canFillFluidType(FluidStack fluid) {
-    return fluid.is(RailcraftFluids.CREOSOTE.get());
+    return fluid.is(RailcraftTags.Fluids.CREOSOTE);
   }
 
   @NotNull

@@ -288,6 +288,7 @@ public class Translations {
     public static final String EFFICIENCY = makeKey("tips", "efficiency");
     public static final String TYPE_RECHARGEABLE = makeKey("tips", "type_rechargeable");
     public static final String TYPE_DISPOSABLE = makeKey("tips", "type_disposable");
+    public static final String EMPTY = makeKey("tips", "empty");
   }
 
   public static class Container {

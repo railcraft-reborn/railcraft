@@ -84,7 +84,7 @@ public class RailcraftMenuTypes {
 
   public static final DeferredHolder<MenuType<?>, MenuType<LocomotiveMenu<CreativeLocomotive>>> CREATIVE_LOCOMOTIVE =
       deferredRegister.register("creative_locomotive",
-          () -> entityMenu(CreativeLocomotive.class, LocomotiveMenu::creative));
+          () -> entityMenu(CreativeLocomotive.class, CreativeLocomotiveMenu::new));
 
   public static final DeferredHolder<MenuType<?>, MenuType<ElectricLocomotiveMenu>> ELECTRIC_LOCOMOTIVE =
       deferredRegister.register("electric_locomotive",

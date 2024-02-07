@@ -4,6 +4,7 @@ import java.util.Set;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TrackUndercutterMenu;
@@ -171,7 +172,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     if (blockState.getDestroySpeed(this.level(), pos) < 0) {
       return false;
     }
-    return !TunnelBore.REPLACEABLE_BLOCKS.contains(blockState.getBlock());
+    return !blockState.is(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS);
   }
 
   @Override
