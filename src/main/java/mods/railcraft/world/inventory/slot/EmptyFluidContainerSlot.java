@@ -13,8 +13,6 @@ public class EmptyFluidContainerSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack item) {
-    return !item.isEmpty()
-        && item.getCount() == 1
-        && FluidItemHelper.isEmptyContainer(item);
+    return !item.isEmpty() && FluidItemHelper.isEmptyContainer(item);
   }
 }

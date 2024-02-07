@@ -34,8 +34,6 @@ public abstract class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu
     // TODO: make some way to clear this?
     this.addSlot(
         new UnmodifiableSlot(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
-
-    this.addInventorySlots(inventory, guiHeight);
   }
 
   public T getLocomotive() {

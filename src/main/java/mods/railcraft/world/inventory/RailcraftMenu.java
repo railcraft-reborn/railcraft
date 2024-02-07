@@ -3,7 +3,6 @@ package mods.railcraft.world.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.NetworkChannel;
@@ -26,8 +25,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
-      Predicate<Player> validator) {
+  protected RailcraftMenu(MenuType<?> type, int id, Player player, Predicate<Player> validator) {
     super(type, id);
     this.player = player;
     this.validator = validator;
@@ -89,12 +87,12 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   @Override
   public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
-    if (slotId < 0) {
-      return;
-    }
-    var slot = this.slots.get(slotId);
-    if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
-      this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
+    System.out.println(slotId);
+    if (slotId >= 0) {
+      var slot = this.slots.get(slotId);
+      if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
+        this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
+      }
     }
     super.clicked(slotId, mouseButton, clickType, player);
   }
@@ -160,100 +158,130 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     slot.set(phantomStack);
   }
 
-  protected boolean shiftItemStack(ItemStack stackToShift, int start, int end) {
-    boolean changed = false;
-    if (stackToShift.isStackable()) {
-      for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
-        Slot slot = this.slots.get(slotIndex);
-        ItemStack stackInSlot = slot.getItem();
-        if (!stackInSlot.isEmpty() && ItemStack.isSameItem(stackInSlot, stackToShift)) {
-          int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
-          int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
-          if (resultingStackSize <= max) {
-            stackToShift.setCount(0);
-            stackInSlot.setCount(resultingStackSize);
-            slot.setChanged();
-            changed = true;
-          } else if (stackInSlot.getCount() < max) {
-            stackToShift.shrink(max - stackInSlot.getCount());
-            stackInSlot.setCount(max);
-            slot.setChanged();
-            changed = true;
+  @Override
+  protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex,
+      boolean reverseDirection) {
+    boolean flag = false;
+    int i = startIndex;
+    if (reverseDirection) {
+      i = endIndex - 1;
+    }
+
+    Slot slot1;
+    ItemStack itemstack;
+    if (stack.isStackable()) {
+      while(!stack.isEmpty()) {
+        if (reverseDirection) {
+          if (i < startIndex) {
+            break;
+          }
+        } else if (i >= endIndex) {
+          break;
+        }
+
+        slot1 = this.slots.get(i);
+        itemstack = slot1.getItem();
+        if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack)) {
+          int j = itemstack.getCount() + stack.getCount();
+          int maxSize = Math.min(slot1.getMaxStackSize(), stack.getMaxStackSize());
+          if (j <= maxSize) {
+            stack.setCount(0);
+            itemstack.setCount(j);
+            slot1.setChanged();
+            flag = true;
+          } else if (itemstack.getCount() < maxSize) {
+            stack.shrink(maxSize - itemstack.getCount());
+            itemstack.setCount(maxSize);
+            slot1.setChanged();
+            flag = true;
           }
         }
-      }
-    }
-    if (!stackToShift.isEmpty()) {
-      for (int slotIndex = start; !stackToShift.isEmpty() && slotIndex < end; slotIndex++) {
-        Slot slot = this.slots.get(slotIndex);
-        ItemStack stackInSlot = slot.getItem();
-        if (stackInSlot.isEmpty()) {
-          int max = Math.min(stackToShift.getMaxStackSize(), slot.getMaxStackSize());
-          stackInSlot = stackToShift.copy();
-          stackInSlot.setCount(Math.min(stackToShift.getCount(), max));
-          stackToShift.shrink(stackInSlot.getCount());
-          slot.set(stackInSlot);
-          slot.setChanged();
-          changed = true;
+
+        if (reverseDirection) {
+          --i;
+        } else {
+          ++i;
         }
       }
     }
-    return changed;
+
+    if (!stack.isEmpty()) {
+      if (reverseDirection) {
+        i = endIndex - 1;
+      } else {
+        i = startIndex;
+      }
+
+      while(true) {
+        if (reverseDirection) {
+          if (i < startIndex) {
+            break;
+          }
+        } else if (i >= endIndex) {
+          break;
+        }
+
+        slot1 = this.slots.get(i);
+        itemstack = slot1.getItem();
+        if (itemstack.isEmpty() && mayPlace(slot1, stack)) {
+          if (stack.getCount() > slot1.getMaxStackSize()) {
+            slot1.setByPlayer(stack.split(slot1.getMaxStackSize()));
+          } else {
+            slot1.setByPlayer(stack.split(stack.getCount()));
+          }
+
+          slot1.setChanged();
+          flag = true;
+          break;
+        }
+
+        if (reverseDirection) {
+          --i;
+        } else {
+          ++i;
+        }
+      }
+    }
+
+    return flag;
   }
 
-  protected boolean tryShiftItem(ItemStack stackToShift, int numSlots) {
-    for (int machineIndex = 0; machineIndex < numSlots - 9 * 4; machineIndex++) {
-      Slot slot = this.slots.get(machineIndex);
-      if (slot instanceof RailcraftSlot slotRailcraft) {
-        if (slotRailcraft.isPhantom()) {
-          continue;
-        }
-        if (!slotRailcraft.canShift()) {
-          continue;
-        }
+  private static boolean mayPlace(Slot slot, ItemStack itemStack) {
+    if (slot instanceof RailcraftSlot slotRailcraft) {
+      if (slotRailcraft.isPhantom()) {
+        return false;
       }
-      if (!slot.mayPlace(stackToShift)) {
-        continue;
-      }
-      if (shiftItemStack(stackToShift, machineIndex, machineIndex + 1)) {
-        return true;
+      if (!slotRailcraft.canShift()) {
+        return false;
       }
     }
-    return false;
+    return slot.mayPlace(itemStack);
   }
 
   @Override
   public ItemStack quickMoveStack(Player player, int slotIndex) {
     ItemStack originalStack = ItemStack.EMPTY;
     Slot slot = this.slots.get(slotIndex);
-    int numSlots = this.slots.size();
+    final int numSlots = this.slots.size();//47
+    final int slotsAdded = numSlots - 9 * 4;
     if (slot.hasItem()) {
       ItemStack stackInSlot = slot.getItem();
-      assert !stackInSlot.isEmpty();
       originalStack = stackInSlot.copy();
-      if (!(slotIndex >= numSlots - 9 * 4 && tryShiftItem(stackInSlot, numSlots))) {
-        if (slotIndex >= numSlots - 9 * 4 && slotIndex < numSlots - 9) {
-          if (!shiftItemStack(stackInSlot, numSlots - 9, numSlots)) {
-            return ItemStack.EMPTY;
-          }
-        } else if (slotIndex >= numSlots - 9) {
-          if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots - 9)) {
-            return ItemStack.EMPTY;
-          }
-        } else if (!shiftItemStack(stackInSlot, numSlots - 9 * 4, numSlots)) {
+      if (slotIndex < slotsAdded) { // Custom slots to vanilla inventory slots
+        if (!this.moveItemStackTo(stackInSlot, slotsAdded, numSlots, false)) {
+          return ItemStack.EMPTY;
+        }
+      } else { // Vanilla inventory slots to custom slots
+        if (!this.moveItemStackTo(stackInSlot, 0, slotsAdded, false)) {
           return ItemStack.EMPTY;
         }
       }
-      slot.onQuickCraft(stackInSlot, originalStack); // we should not call this?
+
       if (stackInSlot.isEmpty()) {
         slot.set(ItemStack.EMPTY);
       } else {
         slot.setChanged();
       }
-      if (stackInSlot.getCount() == originalStack.getCount()) {
-        return ItemStack.EMPTY;
-      }
-      slot.onTake(player, stackInSlot);
     }
     return originalStack;
   }

@@ -38,5 +38,6 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     this.addDataSlot(new SimpleDataSlot(
         () -> Math.round(locomotive.boiler().getCurrentItemBurnTime()),
         locomotive.boiler()::setCurrentItemBurnTime));
+    this.addInventorySlots(inventory, HEIGHT);
   }
 }
