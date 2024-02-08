@@ -7,6 +7,5 @@ public class CreativeLocomotiveMenu extends LocomotiveMenu<CreativeLocomotive> {
 
   public CreativeLocomotiveMenu(int id, Inventory playerInv, CreativeLocomotive loco) {
     super(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), id, playerInv, loco);
-    this.addInventorySlots(playerInv);
   }
 }

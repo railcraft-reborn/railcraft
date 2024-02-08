@@ -14,7 +14,6 @@ public class ElectricLocomotiveMenu extends LocomotiveMenu<ElectricLocomotive> {
     var chargeIndicator = new EnergyStorageBatteryIndicator(loco.getBatteryCart());
     this.addWidget(
         this.energyGauge = new GaugeWidget(chargeIndicator, 57, 20, 176, 0, 62, 8, false));
-    this.addInventorySlots(playerInv);
   }
 
   public GaugeWidget getEnergyGauge() {

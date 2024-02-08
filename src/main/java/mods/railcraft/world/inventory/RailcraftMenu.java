@@ -96,7 +96,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     super.clicked(slotId, mouseButton, clickType, player);
   }
 
-  protected void slotClickPhantom(RailcraftSlot slot, int mouseButton,
+  private void slotClickPhantom(RailcraftSlot slot, int mouseButton,
       ClickType clickType, Player player) {
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom()) {
@@ -117,7 +117,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     }
   }
 
-  protected void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ClickType clickType) {
+  private void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ClickType clickType) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -143,7 +143,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     }
   }
 
-  protected void fillPhantomSlot(RailcraftSlot slot, ItemStack stackHeld, int mouseButton) {
+  private void fillPhantomSlot(RailcraftSlot slot, ItemStack stackHeld, int mouseButton) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -157,7 +157,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     slot.set(phantomStack);
   }
 
-  protected boolean tryMoveItemStackTo(ItemStack itemStack, int endIndex) {
+  private boolean tryMoveItemStackTo(ItemStack itemStack, int endIndex) {
     boolean changed = false;
     if (itemStack.isStackable()) {
       for (int i = 0; !itemStack.isEmpty() && i < endIndex; i++) {
@@ -203,11 +203,11 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   }
 
   private static boolean mayPlace(Slot slot, ItemStack itemStack) {
-    if (slot instanceof RailcraftSlot slotRailcraft) {
-      if (slotRailcraft.isPhantom()) {
+    if (slot instanceof RailcraftSlot railcraftSlot) {
+      if (railcraftSlot.isPhantom()) {
         return false;
       }
-      if (!slotRailcraft.canShift()) {
+      if (!railcraftSlot.canShift()) {
         return false;
       }
     }
@@ -216,12 +216,12 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   @Override
   public ItemStack quickMoveStack(Player player, int slotIndex) {
-    ItemStack originalStack = ItemStack.EMPTY;
-    Slot slot = this.slots.get(slotIndex);
+    var originalStack = ItemStack.EMPTY;
+    var slot = this.slots.get(slotIndex);
     final int numSlots = this.slots.size();
     final int slotsAdded = numSlots - 9 * 4;
     if (slot.hasItem()) {
-      ItemStack stackInSlot = slot.getItem();
+      var stackInSlot = slot.getItem();
       originalStack = stackInSlot.copy();
       if (slotIndex < slotsAdded) { // Custom slots to vanilla inventory slots
         if (!this.moveItemStackTo(stackInSlot, slotsAdded, numSlots, false)) {
