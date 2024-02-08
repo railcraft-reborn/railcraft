@@ -3,8 +3,7 @@ package mods.railcraft.client.gui.screen.inventory;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -83,22 +82,15 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
     // Reverse button
     this.reverseButton = this.addRenderableWidget(ToggleButton
-        .toggleBuilder(
-            Component.literal("R"),
-            __ -> this.toggleReverse(),
-            ButtonTexture.SMALL_BUTTON)
+        .toggleBuilder(Component.literal("R"), __ -> this.toggleReverse(), ButtonTexture.SMALL_BUTTON)
         .bounds(centreX + 4, centreY + this.getYSize() - 112, 12, 16)
         .toggled(this.locomotive.isReverse())
         .build());
 
     // Speed buttons
     for (var speed : Speed.values()) {
-      var label =
-          IntStream.range(0, speed.getLevel()).mapToObj(i -> ">").collect(Collectors.joining());
-
       var button = RailcraftButton
-          .builder(
-              Component.literal(label),
+          .builder(Component.literal(StringUtils.repeat('>', speed.getLevel())),
               __ -> this.setSpeed(speed),
               ButtonTexture.SMALL_BUTTON)
           .pos(0, centreY + this.getYSize() - 112)

@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.network.NetworkHooks;
 
 /**
- * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
+ * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
  */
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, ItemTransferHandler {

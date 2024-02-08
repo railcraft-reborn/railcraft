@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.NbtUtils;
@@ -85,7 +86,7 @@ public class TicketItem extends Item {
     if (owner == null)
       return false;
     var tag = ticket.getOrCreateTag();
-    tag.putString("dest", dest);
+    tag.putString(CompoundTagKeys.DEST, dest);
     NbtUtils.writeGameProfile(tag, owner);
     return true;
   }
@@ -96,7 +97,7 @@ public class TicketItem extends Item {
     var tag = ticket.getTag();
     if (tag == null)
       return "";
-    return tag.getString("dest");
+    return tag.getString(CompoundTagKeys.DEST);
   }
 
   @Nullable

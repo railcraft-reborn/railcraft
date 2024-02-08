@@ -136,7 +136,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   protected void loadFromItemStack(ItemStack itemStack) {
-    CompoundTag tag = itemStack.getTag();
+    var tag = itemStack.getTag();
     if (tag == null || !(itemStack.getItem() instanceof LocomotiveItem)) {
       return;
     }
@@ -149,7 +149,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
-      GameProfile ownerProfile = NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER));
+      var ownerProfile = NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER));
       this.setOwner(ownerProfile);
       this.setLock(Lock.LOCKED);
     }
@@ -213,10 +213,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
     if (this.level().isClientSide()) {
-      return InteractionResult.CONSUME;
+      return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
 
-    ItemStack itemStack = player.getItemInHand(hand);
+    var itemStack = player.getItemInHand(hand);
     if (!itemStack.isEmpty() && itemStack.is(RailcraftItems.WHISTLE_TUNER.get())) {
       if (this.whistleDelay <= 0) {
         this.whistlePitch = this.getNewWhistlePitch();
@@ -224,12 +224,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
         itemStack.hurtAndBreak(1, (ServerPlayer) player,
             serverPlayerEntity -> player.broadcastBreakEvent(hand));
       }
-      return InteractionResult.CONSUME;
+      return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
     if (this.canControl(player)) {
-      super.interact(player, hand);
+      return super.interact(player, hand);
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(this.level().isClientSide());
   }
 
   /**
@@ -607,10 +607,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   protected abstract int retrieveFuel();
 
-  public int getDamageToRoadKill(LivingEntity entity) {
+  private int getDamageToRoadKill(LivingEntity entity) {
     if (entity instanceof Player) {
-      ItemStack pants = entity.getItemBySlot(EquipmentSlot.LEGS);
-      if (RailcraftItems.OVERALLS.get() == pants.getItem()) {
+      var pants = entity.getItemBySlot(EquipmentSlot.LEGS);
+      if (pants.is(RailcraftItems.OVERALLS.get())) {
         pants.hurtAndBreak(5, entity,
             unusedThing -> entity.broadcastBreakEvent(EquipmentSlot.LEGS));
         return 4;
@@ -702,54 +702,56 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
 
-    tag.putBoolean("flipped", this.flipped);
+    tag.putBoolean(CompoundTagKeys.FLIPPED, this.flipped);
 
-    tag.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
+    tag.putString(CompoundTagKeys.DEST, StringUtils.defaultIfBlank(getDestination(), ""));
 
-    tag.putString("mode", this.getMode().getSerializedName());
-    tag.putString("speed", this.getSpeed().getSerializedName());
-    tag.putString("lock", this.getLock().getSerializedName());
+    tag.putString(CompoundTagKeys.MODE, this.getMode().getSerializedName());
+    tag.putString(CompoundTagKeys.SPEED, this.getSpeed().getSerializedName());
+    tag.putString(CompoundTagKeys.LOCK, this.getLock().getSerializedName());
 
-    tag.putString("primaryColor",
+    tag.putString(CompoundTagKeys.PRIMARY_COLOR,
         DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getSerializedName());
-    tag.putString("secondaryColor",
+    tag.putString(CompoundTagKeys.SECONDARY_COLOR,
         DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getSerializedName());
 
-    tag.putFloat("whistlePitch", this.whistlePitch);
+    tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, this.whistlePitch);
 
-    tag.putInt("fuel", this.fuel);
+    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
 
-    tag.putBoolean("reverse", this.isReverse());
-    this.getOwner()
-        .ifPresent(owner -> tag.put("owner", NbtUtils.writeGameProfile(new CompoundTag(), owner)));
+    tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
+    this.getOwner().ifPresent(owner ->
+        tag.put(CompoundTagKeys.OWNER, NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
 
-    this.flipped = tag.getBoolean("flipped");
+    this.flipped = tag.getBoolean(CompoundTagKeys.FLIPPED);
 
-    this.setDestination(tag.getString("dest"));
+    this.setDestination(tag.getString(CompoundTagKeys.DEST));
 
-    this.setMode(Mode.fromName(tag.getString("mode")));
-    this.setSpeed(Speed.fromName(tag.getString("speed")));
-    this.setLock(Lock.fromName(tag.getString("lock")));
+    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
+    this.setSpeed(Speed.fromName(tag.getString(CompoundTagKeys.SPEED)));
+    this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
 
     this.setPrimaryColor(
-        DyeColor.byName(tag.getString("primaryColor"), this.getDefaultPrimaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR), this.getDefaultPrimaryColor()));
     this.setSecondaryColor(
-        DyeColor.byName(tag.getString("secondaryColor"), this.getDefaultSecondaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR), this.getDefaultSecondaryColor()));
 
-    this.whistlePitch = tag.getFloat("whistlePitch");
+    this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
 
-    this.fuel = tag.getInt("fuel");
+    this.fuel = tag.getInt(CompoundTagKeys.FUEL);
 
-    if (tag.contains("reverse", Tag.TAG_BYTE)) {
-      this.getEntityData().set(REVERSE, tag.getBoolean("reverse"));
+    if (tag.contains(CompoundTagKeys.REVERSE, Tag.TAG_BYTE)) {
+      this.getEntityData().set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
     }
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
+    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
+      this.setOwner(NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER)));;
+    } else {
+      this.setOwner(null);
     }
   }
 

@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -115,7 +116,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setMode(Mode.fromName(tag.getString("mode")));
+    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
   }
 
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {

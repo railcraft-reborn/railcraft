@@ -36,10 +36,10 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
     if (this.state != state && this.stateCallback != null) {
       this.state = state;
       this.stateCallback.accept(this.state);
-      this.setTexturePosition(this.state.texturePosition());
-      this.setMessage(this.state.label());
-      this.setTooltip(this.tooltipFactory.createTooltip(this.state).orElse(null));
     }
+    this.setMessage(this.state.label());
+    this.setTooltip(this.tooltipFactory.createTooltip(this.state).orElse(null));
+    this.setTexturePosition(this.state.texturePosition());
   }
 
   public static <T extends ButtonState<T>> Builder<T> builder(
