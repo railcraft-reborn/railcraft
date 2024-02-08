@@ -87,7 +87,6 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
 
   @Override
   public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
-    System.out.println(slotId);
     if (slotId >= 0) {
       var slot = this.slots.get(slotId);
       if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
@@ -158,54 +157,49 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     slot.set(phantomStack);
   }
 
-  protected boolean tryMoveItemStackTo(ItemStack stack, int endIndex) {
-    boolean flag = false;
-    int x = 0;
-
-    Slot slot;
-    ItemStack itemstack;
-    if (stack.isStackable()) {
-      while(!stack.isEmpty() && x < endIndex) {
-        slot = this.slots.get(x);
-        itemstack = slot.getItem();
-        if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(stack, itemstack)) {
-          int j = itemstack.getCount() + stack.getCount();
-          int maxSize = Math.min(slot.getMaxStackSize(), stack.getMaxStackSize());
+  protected boolean tryMoveItemStackTo(ItemStack itemStack, int endIndex) {
+    boolean changed = false;
+    if (itemStack.isStackable()) {
+      for (int i = 0; !itemStack.isEmpty() && i < endIndex; i++) {
+        var slot = this.slots.get(i);
+        var stackInSlot = slot.getItem();
+        if (!stackInSlot.isEmpty() && ItemStack.isSameItemSameTags(itemStack, stackInSlot)) {
+          int j = stackInSlot.getCount() + itemStack.getCount();
+          int maxSize = Math.min(slot.getMaxStackSize(), itemStack.getMaxStackSize());
           if (j <= maxSize) {
-            stack.setCount(0);
-            itemstack.setCount(j);
+            itemStack.setCount(0);
+            stackInSlot.setCount(j);
             slot.setChanged();
-            flag = true;
-          } else if (itemstack.getCount() < maxSize) {
-            stack.shrink(maxSize - itemstack.getCount());
-            itemstack.setCount(maxSize);
+            changed = true;
+          } else if (stackInSlot.getCount() < maxSize) {
+            itemStack.shrink(maxSize - stackInSlot.getCount());
+            stackInSlot.setCount(maxSize);
             slot.setChanged();
-            flag = true;
+            changed = true;
           }
         }
-        ++x;
       }
     }
 
-    if (!stack.isEmpty()) {
+    if (!itemStack.isEmpty()) {
       for (int i = 0; i < endIndex; i++) {
-        slot = this.slots.get(i);
-        itemstack = slot.getItem();
-        if (itemstack.isEmpty() && mayPlace(slot, stack)) {
-          if (stack.getCount() > slot.getMaxStackSize()) {
-            slot.setByPlayer(stack.split(slot.getMaxStackSize()));
+        var slot = this.slots.get(i);
+        var itemstack = slot.getItem();
+        if (itemstack.isEmpty() && mayPlace(slot, itemStack)) {
+          if (itemStack.getCount() > slot.getMaxStackSize()) {
+            slot.setByPlayer(itemStack.split(slot.getMaxStackSize()));
           } else {
-            slot.setByPlayer(stack.split(stack.getCount()));
+            slot.setByPlayer(itemStack.split(itemStack.getCount()));
           }
 
           slot.setChanged();
-          flag = true;
+          changed = true;
           break;
         }
       }
     }
 
-    return flag;
+    return changed;
   }
 
   private static boolean mayPlace(Slot slot, ItemStack itemStack) {
@@ -224,7 +218,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   public ItemStack quickMoveStack(Player player, int slotIndex) {
     ItemStack originalStack = ItemStack.EMPTY;
     Slot slot = this.slots.get(slotIndex);
-    final int numSlots = this.slots.size();//47
+    final int numSlots = this.slots.size();
     final int slotsAdded = numSlots - 9 * 4;
     if (slot.hasItem()) {
       ItemStack stackInSlot = slot.getItem();
