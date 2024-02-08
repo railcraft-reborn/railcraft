@@ -42,7 +42,7 @@ public enum StackFilter implements Predicate<ItemStack> {
   FLUID_CONTAINER(itemStack -> itemStack
       .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
       .isPresent()),
-  FEED(itemStack -> itemStack.getItem().getFoodProperties(itemStack, null) != null
+  FEED(itemStack -> itemStack.getItem().isEdible()
       || itemStack.is(Items.WHEAT)
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
@@ -54,7 +54,7 @@ public enum StackFilter implements Predicate<ItemStack> {
 
   private final Predicate<ItemStack> predicate;
 
-  private StackFilter(Predicate<ItemStack> predicate) {
+  StackFilter(Predicate<ItemStack> predicate) {
     this.predicate = predicate;
   }
 
