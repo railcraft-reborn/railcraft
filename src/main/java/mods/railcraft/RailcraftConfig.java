@@ -2,6 +2,8 @@ package mods.railcraft;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.google.common.collect.ImmutableList;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -63,13 +65,11 @@ public class RailcraftConfig {
     public final IntValue waterCollectionRate;
     public final IntValue maxLauncherTrackForce;
     public final DoubleValue lossMultiplier;
-
     public final DoubleValue fuelMultiplier;
     public final DoubleValue fuelPerSteamMultiplier;
-
     public final IntValue cartDispenserDelay;
-
     public final BooleanValue changeDungeonLoot;
+    public final ConfigValue<List<? extends String>> preferredOres;
 
     private Server(Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -210,6 +210,9 @@ public class RailcraftConfig {
       this.changeDungeonLoot = builder
           .comment("change the vanilla dungeon loot")
           .define("changeDungeonLoot", true);
+      this.preferredOres = builder
+          .comment("An ordered list of mod ids from which the items will be chosen, which Railcraft does not add, and which are necessary for recipes based on tags to work.")
+          .defineList("preferredOres", ImmutableList.of(RailcraftConstants.ID, "minecraft"), __ -> true);
     }
   }
 

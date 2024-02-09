@@ -111,7 +111,6 @@ public class Railcraft {
     }
   }
 
-  private final CrowbarHandler crowbarHandler = new CrowbarHandler();
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
   public Railcraft() {
@@ -284,7 +283,7 @@ public class Railcraft {
         }
       } else {
         event.setCanceled(this.minecartHandler.handleInteract(cart, player));
-        var crowbarActionResult = this.crowbarHandler.handleInteract(cart, player, hand);
+        var crowbarActionResult = CrowbarHandler.handleInteract(cart, player, hand);
         if (crowbarActionResult.consumesAction()) {
           event.setCanceled(true);
           event.setCancellationResult(crowbarActionResult);

@@ -142,7 +142,7 @@ public enum Charge implements StringRepresentable {
 
   private Provider provider;
 
-  private Charge(String name) {
+  Charge(String name) {
     this.name = name;
   }
 

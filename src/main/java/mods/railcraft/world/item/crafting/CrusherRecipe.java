@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
+import mods.railcraft.util.RecipeUtil;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -99,7 +100,7 @@ public class CrusherRecipe implements Recipe<Container> {
 
   public record CrusherOutput(Ingredient output, int quantity, double probability) {
     public ItemStack getOutput() {
-      return output.getItems()[0].copyWithCount(quantity);
+      return RecipeUtil.getPreferredStackbyMod(output.getItems()).copyWithCount(quantity);
     }
   }
 
