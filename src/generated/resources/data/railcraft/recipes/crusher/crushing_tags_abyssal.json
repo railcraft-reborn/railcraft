@@ -9,11 +9,21 @@
     }
   ],
   "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "railcraft:abyssal"
+      }
+    }
+  ],
   "ingredient": {
     "tag": "railcraft:abyssal"
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "railcraft:abyssal_cobblestone"

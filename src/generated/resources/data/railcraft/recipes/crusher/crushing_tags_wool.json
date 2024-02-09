@@ -9,6 +9,15 @@
     }
   ],
   "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "minecraft:wool"
+      }
+    }
+  ],
   "ingredient": {
     "tag": "minecraft:wool"
   },

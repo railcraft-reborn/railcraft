@@ -88,7 +88,7 @@ public class CrusherRecipe implements Recipe<Container> {
     return new ItemStack(RailcraftBlocks.CRUSHER.get());
   }
 
-  public record CrusherOutput(Ingredient output, int quantity, Double probability) {
+  public record CrusherOutput(Ingredient output, int quantity, double probability) {
 
     private static final Codec<CrusherOutput> CODEC = RecordCodecBuilder
         .create(instance -> instance.group(

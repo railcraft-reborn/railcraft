@@ -12,24 +12,28 @@
       }
     },
     {
+      "count": 1,
       "probability": 0.65,
       "result": {
         "item": "minecraft:blaze_powder"
       }
     },
     {
+      "count": 1,
       "probability": 0.5,
       "result": {
         "item": "railcraft:sulfur_dust"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:blaze_powder"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:blaze_powder"

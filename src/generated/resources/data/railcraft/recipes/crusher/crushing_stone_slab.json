@@ -10,6 +10,7 @@
   ],
   "outputs": [
     {
+      "count": 1,
       "probability": 0.45,
       "result": {
         "item": "minecraft:cobblestone"

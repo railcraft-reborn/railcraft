@@ -10,6 +10,7 @@
   ],
   "outputs": [
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
         "item": "railcraft:abyssal_cobblestone"

@@ -5,6 +5,7 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:nether_brick"

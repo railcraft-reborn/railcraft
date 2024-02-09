@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
 import net.minecraft.ChatFormatting;
@@ -62,20 +63,20 @@ public class LocomotiveItem extends CartItem implements Filter {
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
       DyeColor secondaryColor) {
     var tag = stack.getOrCreateTag();
-    tag.putInt("primaryColor", primaryColor.getId());
-    tag.putInt("secondaryColor", secondaryColor.getId());
+    tag.putInt(CompoundTagKeys.PRIMARY_COLOR, primaryColor.getId());
+    tag.putInt(CompoundTagKeys.SECONDARY_COLOR, secondaryColor.getId());
   }
 
   public static void setItemWhistleData(ItemStack stack, float whistlePitch) {
     var tag = stack.getOrCreateTag();
-    tag.putFloat("whistlePitch", whistlePitch);
+    tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, whistlePitch);
   }
 
   public static float getWhistlePitch(ItemStack stack) {
     var tag = stack.getTag();
-    if (tag == null || !tag.contains("whistlePitch", Tag.TAG_FLOAT))
+    if (tag == null || !tag.contains(CompoundTagKeys.WHISTLE_PITCH, Tag.TAG_FLOAT))
       return -1;
-    return tag.getFloat("whistlePitch");
+    return tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
   }
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
@@ -91,8 +92,8 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static DyeColor getPrimaryColor(ItemStack stack) {
     var tag = stack.getOrCreateTag();
-    if (tag.contains("primaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(tag.getInt("primaryColor"));
+    if (tag.contains(CompoundTagKeys.PRIMARY_COLOR, Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt(CompoundTagKeys.PRIMARY_COLOR));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultPrimary;
     }
@@ -100,8 +101,8 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static DyeColor getSecondaryColor(ItemStack stack) {
     var tag = stack.getOrCreateTag();
-    if (tag.contains("secondaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(tag.getInt("secondaryColor"));
+    if (tag.contains(CompoundTagKeys.SECONDARY_COLOR, Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt(CompoundTagKeys.SECONDARY_COLOR));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultSecondary;
     }

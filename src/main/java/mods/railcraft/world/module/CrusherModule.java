@@ -41,7 +41,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
     super(provider, 18);
-    this.random = provider.getLevel().getRandom();
+    this.random = RandomSource.create();
     this.network = network;
 
     inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);

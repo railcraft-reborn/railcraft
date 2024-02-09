@@ -12,30 +12,35 @@
       }
     },
     {
+      "count": 1,
       "probability": 0.5,
       "result": {
         "item": "minecraft:brick"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:sand"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:sand"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:sand"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:sand"

@@ -12,6 +12,7 @@
       }
     },
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
         "item": "minecraft:glowstone_dust"
@@ -25,6 +26,7 @@
       }
     },
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
         "item": "minecraft:redstone"
