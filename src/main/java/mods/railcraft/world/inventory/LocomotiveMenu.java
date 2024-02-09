@@ -22,9 +22,9 @@ public abstract class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu
     this(type, id, playerInv, locomotive, DEFAULT_HEIGHT);
   }
 
-  protected LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory inventory,
+  protected LocomotiveMenu(@Nullable MenuType<?> type, int id, Inventory playerInv,
       T locomotive, int guiHeight) {
-    super(type, id, inventory.player, locomotive::stillValid);
+    super(type, id, playerInv.player, locomotive::stillValid);
     this.locomotive = locomotive;
     var slotTicket = new ItemFilterSlot(TicketItem.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
@@ -34,9 +34,11 @@ public abstract class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu
     // TODO: make some way to clear this?
     this.addSlot(
         new UnmodifiableSlot(locomotive, locomotive.getContainerSize() - 1, 134, guiHeight - 111));
-
-    this.addInventorySlots(inventory, guiHeight);
+    this.addSlots(locomotive);
+    this.addInventorySlots(playerInv, guiHeight);
   }
+
+  protected void addSlots(T locomotive) {}
 
   public T getLocomotive() {
     return this.locomotive;

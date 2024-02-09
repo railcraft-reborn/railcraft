@@ -19,10 +19,19 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
         new FluidGaugeWidget(locomotive.getTankManager().get(0), 53, 23, 176, 0, 16, 47));
     this.addWidget(
         new FluidGaugeWidget(locomotive.getTankManager().get(1), 17, 23, 176, 0, 16, 47));
-
     this.addWidget(new GaugeWidget(
         locomotive.boiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
 
+    this.addDataSlot(new SimpleDataSlot(
+        () -> Math.round(locomotive.boiler().getBurnTime()),
+        locomotive.boiler()::setBurnTime));
+    this.addDataSlot(new SimpleDataSlot(
+        () -> Math.round(locomotive.boiler().getCurrentItemBurnTime()),
+        locomotive.boiler()::setCurrentItemBurnTime));
+  }
+
+  @Override
+  protected void addSlots(SteamLocomotive locomotive) {
     this.addSlot(new LimitedWaterSlot(locomotive, 0, 152, 20));
     this.addSlot(new OutputSlot(locomotive, 1, 152, 56));
     this.addSlot(new OutputSlot(locomotive, 2, 116, 56));
@@ -30,13 +39,5 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     this.addSlot(new RailcraftSlot(locomotive, 4, 80, 20)); // Fuel
     this.addSlot(new RailcraftSlot(locomotive, 5, 80, 38)); // Fuel
     this.addSlot(new RailcraftSlot(locomotive, 6, 80, 56)); // Fuel
-
-    this.addDataSlot(new SimpleDataSlot(
-        () -> Math.round(locomotive.boiler().getBurnTime()),
-        locomotive.boiler()::setBurnTime));
-
-    this.addDataSlot(new SimpleDataSlot(
-        () -> Math.round(locomotive.boiler().getCurrentItemBurnTime()),
-        locomotive.boiler()::setCurrentItemBurnTime));
   }
 }
