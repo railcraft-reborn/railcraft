@@ -130,7 +130,7 @@ public class CrusherRecipe implements Recipe<Container> {
       var tickCost = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
       var probabilityOutputs = buffer.readList(buf ->
-          new CrusherOutput(Ingredient.fromNetwork(buffer), buf.readVarInt(), buf.readDouble()));
+          new CrusherOutput(Ingredient.fromNetwork(buf), buf.readVarInt(), buf.readDouble()));
       return new CrusherRecipe(ingredient, probabilityOutputs, tickCost);
     }
 
