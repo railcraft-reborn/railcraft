@@ -9,21 +9,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:stone"
-      }
-    }
-  ],
   "ingredient": {
     "tag": "forge:stone"
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:cobblestone"

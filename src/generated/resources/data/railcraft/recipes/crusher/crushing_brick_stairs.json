@@ -12,14 +12,12 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.5,
       "result": {
         "item": "minecraft:brick"
       }
     },
     {
-      "count": 1,
       "probability": 0.5,
       "result": {
         "item": "minecraft:brick"

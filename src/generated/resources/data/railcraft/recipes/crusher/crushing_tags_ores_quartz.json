@@ -9,15 +9,6 @@
     }
   ],
   "type": "railcraft:crusher",
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ores/quartz"
-      }
-    }
-  ],
   "ingredient": {
     "tag": "forge:ores/quartz"
   },
@@ -30,7 +21,6 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "railcraft:sulfur_dust"

@@ -5,14 +5,12 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 0.85,
       "result": {
         "item": "minecraft:snow_block"
       }
     },
     {
-      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:snowball"

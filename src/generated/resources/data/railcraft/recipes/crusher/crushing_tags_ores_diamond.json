@@ -9,42 +9,29 @@
     }
   ],
   "type": "railcraft:crusher",
-  "conditions": [
-    {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "forge:ores/diamond"
-      }
-    }
-  ],
   "ingredient": {
     "tag": "forge:ores/diamond"
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:diamond"
       }
     },
     {
-      "count": 1,
       "probability": 0.85,
       "result": {
         "item": "minecraft:diamond"
       }
     },
     {
-      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:diamond"
       }
     },
     {
-      "count": 1,
       "probability": 0.1,
       "result": {
         "item": "minecraft:coal"
