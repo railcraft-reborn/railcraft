@@ -11,25 +11,20 @@ public class TankMenu extends RailcraftMenu {
 
   private final FluidGaugeWidget fluidGauge;
 
-  public TankMenu(int id, Inventory inventory, TankBlockEntity tank) {
-    super(RailcraftMenuTypes.TANK.get(), id, inventory.player, tank::isStillValid);
+  public TankMenu(int id, Inventory inventory, TankBlockEntity tankBlockEntity) {
+    super(RailcraftMenuTypes.TANK.get(), id, inventory.player, tankBlockEntity::isStillValid);
 
-    this.addWidget(this.fluidGauge = this.createGauge(tank, 35, 20, 176, 0, 48, 47));
+    var tank = tankBlockEntity.getModule().getTank();
+    this.addWidget(this.fluidGauge = new FluidGaugeWidget(tank, 35, 20, 176, 0, 48, 47));
 
-    this.addSlot(new RailcraftSlot(tank.getModule(), TankModule.SLOT_INPUT, 116, 18));
-    this.addSlot(new OutputSlot(tank.getModule(), TankModule.SLOT_PROCESS, 140, 36));
-    this.addSlot(new OutputSlot(tank.getModule(), TankModule.SLOT_OUTPUT, 116, 54));
+    this.addSlot(new RailcraftSlot(tankBlockEntity.getModule(), TankModule.SLOT_INPUT, 116, 18));
+    this.addSlot(new OutputSlot(tankBlockEntity.getModule(), TankModule.SLOT_PROCESS, 140, 36));
+    this.addSlot(new OutputSlot(tankBlockEntity.getModule(), TankModule.SLOT_OUTPUT, 116, 54));
 
     this.addInventorySlots(inventory);
   }
 
   public FluidGaugeWidget getFluidGauge() {
     return this.fluidGauge;
-  }
-
-  private FluidGaugeWidget createGauge(TankBlockEntity blockEntity, int x, int y, int u, int v,
-      int w, int h) {
-    var tank = blockEntity.getModule().getTank();
-    return new FluidGaugeWidget(tank, x, y, u, v, w, h);
   }
 }
