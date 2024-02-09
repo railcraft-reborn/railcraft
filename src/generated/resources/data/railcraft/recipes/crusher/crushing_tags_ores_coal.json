@@ -1,13 +1,22 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:ores/coal"
+      }
+    }
+  ],
   "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:ores/coal"
   },
   "outputs": [
     {
+      "count": 2,
       "probability": 1.0,
       "result": {
-        "count": 2,
         "item": "railcraft:coal_dust"
       }
     },
@@ -15,6 +24,12 @@
       "probability": 0.65,
       "result": {
         "item": "railcraft:coal_dust"
+      }
+    },
+    {
+      "probability": 0.15,
+      "result": {
+        "item": "railcraft:sulfur_dust"
       }
     },
     {

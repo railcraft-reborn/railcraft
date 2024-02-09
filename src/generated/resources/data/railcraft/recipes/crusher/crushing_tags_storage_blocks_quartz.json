@@ -1,13 +1,22 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:storage_blocks/quartz"
+      }
+    }
+  ],
   "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:storage_blocks/quartz"
   },
   "outputs": [
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "minecraft:quartz"
       }
     }

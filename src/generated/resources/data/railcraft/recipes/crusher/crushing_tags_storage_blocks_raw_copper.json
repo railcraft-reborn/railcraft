@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:storage_blocks/raw_copper"
+      }
+    }
+  ],
+  "type": "railcraft:crusher",
+  "ingredient": {
+    "tag": "forge:storage_blocks/raw_copper"
+  },
+  "outputs": [
+    {
+      "count": 9,
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:raw_copper"
+      }
+    }
+  ]
+}

@@ -1,13 +1,22 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:ores/lapis"
+      }
+    }
+  ],
   "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:ores/lapis"
   },
   "outputs": [
     {
+      "count": 8,
       "probability": 1.0,
       "result": {
-        "count": 8,
         "item": "minecraft:lapis_lazuli"
       }
     },
@@ -21,6 +30,12 @@
       "probability": 0.35,
       "result": {
         "item": "minecraft:lapis_lazuli"
+      }
+    },
+    {
+      "probability": 0.2,
+      "result": {
+        "item": "railcraft:sulfur_dust"
       }
     }
   ]

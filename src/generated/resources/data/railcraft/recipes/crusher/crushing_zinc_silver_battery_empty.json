@@ -10,9 +10,9 @@
   ],
   "outputs": [
     {
+      "count": 2,
       "probability": 1.0,
       "result": {
-        "count": 2,
         "item": "railcraft:charge_terminal"
       }
     },
@@ -23,16 +23,16 @@
       }
     },
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "railcraft:slag"
       }
     },
     {
+      "count": 2,
       "probability": 0.5,
       "result": {
-        "count": 2,
         "item": "railcraft:slag"
       }
     }

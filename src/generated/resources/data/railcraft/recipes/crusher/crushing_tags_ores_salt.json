@@ -1,13 +1,22 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:ores/salt"
+      }
+    }
+  ],
   "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:ores/salt"
   },
   "outputs": [
     {
+      "count": 3,
       "probability": 1.0,
       "result": {
-        "count": 3,
         "item": "railcraft:saltpeter_dust"
       }
     },

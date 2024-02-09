@@ -1,20 +1,29 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "forge:ores/redstone"
+      }
+    }
+  ],
   "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:ores/redstone"
   },
   "outputs": [
     {
+      "count": 6,
       "probability": 1.0,
       "result": {
-        "count": 6,
         "item": "minecraft:redstone"
       }
     },
     {
+      "count": 2,
       "probability": 0.85,
       "result": {
-        "count": 2,
         "item": "minecraft:redstone"
       }
     },

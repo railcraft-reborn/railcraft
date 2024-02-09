@@ -74,20 +74,20 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
         .addSlot(RecipeIngredientRole.INPUT, 19, 19)
         .addIngredients(ingredients.get(0));
 
-    var outputs = recipe.getProbabilityItems();
+    var outputs = recipe.getProbabilityOutputs();
     for (int y = 0; y < 3; y++) {
       for (int x = 0; x < 3; x++) {
         int index = 1 + x + (y * 3);
-        ItemStack itemStack = ItemStack.EMPTY;
+        var itemStack = ItemStack.EMPTY;
         if (outputs.size() > index - 1) {
-          itemStack = outputs.get(index - 1).getFirst();
+          itemStack = outputs.get(index - 1).getOutput();
         }
         var recipeLayout = builder
             .addSlot(RecipeIngredientRole.OUTPUT, 91 + x * 18, y * 18 + 1)
             .addItemStack(itemStack);
         if (!itemStack.isEmpty()) {
           recipeLayout.addTooltipCallback((recipeSlotView, tooltip) -> {
-            double probability = outputs.get(index - 1).getSecond() * 100;
+            double probability = outputs.get(index - 1).probability() * 100;
             var probText = Component.translatable(Translations.Jei.CRUSHER_TIP, probability)
                 .withStyle(ChatFormatting.GRAY);
             tooltip.add(probText);

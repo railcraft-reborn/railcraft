@@ -51,7 +51,7 @@ public class TrackKitItem extends Item {
     TrackType trackType;
     if (oldState.getBlock() instanceof TrackBlock trackBlock) {
       trackType = trackBlock.getTrackType();
-    } else if (oldState.getBlock() == Blocks.RAIL) {
+    } else if (oldState.is(Blocks.RAIL)) {
       trackType = TrackTypes.IRON.get();
     } else {
       return InteractionResult.PASS;

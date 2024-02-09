@@ -5,9 +5,9 @@
   },
   "outputs": [
     {
+      "count": 9,
       "probability": 1.0,
       "result": {
-        "count": 9,
         "item": "minecraft:raw_gold"
       }
     }
