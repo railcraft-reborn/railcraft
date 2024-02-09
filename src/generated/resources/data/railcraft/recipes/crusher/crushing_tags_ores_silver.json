@@ -1,0 +1,46 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/silver"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/silver"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/lead"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ores/silver"
+  },
+  "outputs": [
+    {
+      "count": 2,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/silver"
+      }
+    },
+    {
+      "count": 1,
+      "probability": 0.1,
+      "result": {
+        "tag": "forge:dusts/lead"
+      }
+    }
+  ],
+  "processTime": 200
+}

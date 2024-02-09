@@ -1,5 +1,7 @@
 package mods.railcraft.world.module;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.charge.Charge;
@@ -14,6 +16,7 @@ import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
@@ -29,6 +32,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private static final int COST_PER_STEP = COST_PER_TICK * PROGRESS_STEP;
   private final ContainerMapper inputContainer;
   private final ContainerMapper outputContainer;
+  private final RandomSource random;
   private final Charge network;
   private Optional<CrusherRecipe> currentRecipe;
   private int currentSlot;
@@ -37,6 +41,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
     super(provider, 18);
+    this.random = RandomSource.create();
     this.network = network;
 
     inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
@@ -127,11 +132,21 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     }
   }
 
+  private List<ItemStack> pollOutputs(CrusherRecipe recipe) {
+    var result = new ArrayList<ItemStack>();
+    for(var item : recipe.getProbabilityOutputs()) {
+      if(random.nextDouble() < item.probability()) {
+        result.add(item.getOutput());
+      }
+    }
+    return result;
+  }
+
   @Override
   protected boolean craftAndPush() {
     final var recipe = currentRecipe.orElseThrow(NullPointerException::new);
     var tempInv = AdvancedContainer.copyOf(outputContainer);
-    var outputs = recipe.pollOutputs(provider.getLevel().getRandom());
+    var outputs = pollOutputs(recipe);
     var hasSpace = outputs.stream()
         .map(tempInv::insert)
         .allMatch(ItemStack::isEmpty);

@@ -1,34 +1,43 @@
 {
   "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/redstone"
+      }
+    }
+  ],
   "ingredient": {
     "tag": "forge:ores/redstone"
   },
   "outputs": [
     {
+      "count": 6,
       "probability": 1.0,
       "result": {
-        "count": 6,
         "item": "minecraft:redstone"
       }
     },
     {
+      "count": 2,
       "probability": 0.85,
       "result": {
-        "count": 2,
         "item": "minecraft:redstone"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:redstone"
       }
     },
     {
+      "count": 1,
       "probability": 0.1,
       "result": {
-        "count": 1,
         "item": "minecraft:glowstone_dust"
       }
     }

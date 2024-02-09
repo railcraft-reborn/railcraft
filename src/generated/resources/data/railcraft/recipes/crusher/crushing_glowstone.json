@@ -5,16 +5,16 @@
   },
   "outputs": [
     {
+      "count": 3,
       "probability": 1.0,
       "result": {
-        "count": 3,
         "item": "minecraft:glowstone_dust"
       }
     },
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:glowstone_dust"
       }
     }

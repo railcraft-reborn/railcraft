@@ -5,16 +5,16 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:gravel"
       }
     },
     {
+      "count": 1,
       "probability": 0.1,
       "result": {
-        "count": 1,
         "item": "minecraft:flint"
       }
     }

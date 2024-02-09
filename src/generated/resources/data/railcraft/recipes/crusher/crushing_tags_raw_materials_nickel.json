@@ -1,0 +1,46 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:raw_materials/nickel"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/nickel"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/nickel"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:raw_materials/nickel"
+  },
+  "outputs": [
+    {
+      "count": 1,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/nickel"
+      }
+    },
+    {
+      "count": 1,
+      "probability": 0.35,
+      "result": {
+        "tag": "forge:dusts/nickel"
+      }
+    }
+  ],
+  "processTime": 200
+}

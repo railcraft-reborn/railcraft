@@ -21,6 +21,7 @@ public final class RecipeJsonKeys {
   public static final String COUNT = "count";
   public static final String PATTERN = "pattern";
   public static final String KEY = "key";
+  public static final String CONDITIONS = "conditions";
 
   private RecipeJsonKeys() {
   }

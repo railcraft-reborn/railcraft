@@ -5,23 +5,23 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     },
     {
+      "count": 1,
       "probability": 0.001,
       "result": {
-        "count": 1,
         "item": "minecraft:gold_nugget"
       }
     },
     {
+      "count": 1,
       "probability": 5.0E-5,
       "result": {
-        "count": 1,
         "item": "minecraft:diamond"
       }
     }

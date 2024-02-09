@@ -5,9 +5,9 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "railcraft:raw_firestone"
       }
     }

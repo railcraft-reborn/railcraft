@@ -5,9 +5,9 @@
   },
   "outputs": [
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "minecraft:clay_ball"
       }
     }

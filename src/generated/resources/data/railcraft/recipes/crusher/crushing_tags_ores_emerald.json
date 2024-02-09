@@ -1,27 +1,36 @@
 {
   "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/emerald"
+      }
+    }
+  ],
   "ingredient": {
     "tag": "forge:ores/emerald"
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     },
     {
+      "count": 1,
       "probability": 0.85,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     },
     {
+      "count": 1,
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:emerald"
       }
     }

@@ -1,0 +1,32 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/nickel"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/nickel"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ingots/nickel"
+  },
+  "outputs": [
+    {
+      "count": 1,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/nickel"
+      }
+    }
+  ],
+  "processTime": 200
+}

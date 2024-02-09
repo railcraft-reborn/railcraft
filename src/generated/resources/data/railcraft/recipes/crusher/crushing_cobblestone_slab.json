@@ -5,9 +5,9 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 0.45,
       "result": {
-        "count": 1,
         "item": "minecraft:gravel"
       }
     }

@@ -1,0 +1,32 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/iron"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/iron"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ingots/iron"
+  },
+  "outputs": [
+    {
+      "count": 1,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/iron"
+      }
+    }
+  ],
+  "processTime": 200
+}

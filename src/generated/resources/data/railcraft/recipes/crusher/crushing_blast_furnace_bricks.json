@@ -5,23 +5,23 @@
   },
   "outputs": [
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:nether_brick"
       }
     },
     {
+      "count": 1,
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:soul_sand"
       }
     },
     {
+      "count": 1,
       "probability": 0.05,
       "result": {
-        "count": 1,
         "item": "minecraft:blaze_powder"
       }
     }

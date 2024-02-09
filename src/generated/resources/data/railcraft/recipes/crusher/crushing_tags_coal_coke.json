@@ -1,0 +1,32 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:coal_coke"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/coal_coke"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:coal_coke"
+  },
+  "outputs": [
+    {
+      "count": 1,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/coal_coke"
+      }
+    }
+  ],
+  "processTime": 200
+}
