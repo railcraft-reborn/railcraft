@@ -3,7 +3,6 @@ package mods.railcraft.data.recipes.builders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.SharedConstants;
