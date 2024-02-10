@@ -61,6 +61,7 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
                 .strictOptionalField(ExtraCodecs.NON_NEGATIVE_INT, RecipeJsonKeys.SLAG_OUTPUT, 0)
                 .forGetter(recipe -> recipe.slagOutput))
             .apply(instance, BlastFurnaceRecipe::new));
+
     @Override
     public Codec<BlastFurnaceRecipe> codec() {
       return CODEC;

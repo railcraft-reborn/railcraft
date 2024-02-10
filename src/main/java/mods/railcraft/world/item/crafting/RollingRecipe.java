@@ -103,8 +103,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
                 .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.PROCESS_TIME,
                     RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
                 .forGetter(recipe -> recipe.processTime))
-        .apply(instance, RollingRecipe::new)
-    );
+        .apply(instance, RollingRecipe::new));
 
     @Override
     public Codec<RollingRecipe> codec() {
