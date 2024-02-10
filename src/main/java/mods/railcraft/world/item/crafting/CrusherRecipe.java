@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
+import mods.railcraft.util.RecipeUtil;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -101,7 +102,7 @@ public class CrusherRecipe implements Recipe<Container> {
         ).apply(instance, CrusherOutput::new));
 
     public ItemStack getOutput() {
-      return output.getItems()[0].copyWithCount(quantity);
+      return RecipeUtil.getPreferredStackbyMod(output.getItems()).copyWithCount(quantity);
     }
   }
 

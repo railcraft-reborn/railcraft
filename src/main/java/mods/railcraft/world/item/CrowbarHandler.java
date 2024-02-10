@@ -24,23 +24,27 @@ import net.minecraft.world.item.ItemStack;
 
 public class CrowbarHandler {
 
-  public static final float SMACK_VELOCITY = 0.07f;
+  private static final float SMACK_VELOCITY = 0.07f;
 
-  private static final Map<Player, RollingStock> linkMap =
+  private static final Map<ServerPlayer, RollingStock> linkMap =
       new MapMaker()
           .weakKeys()
           .weakValues()
           .makeMap();
 
-  public InteractionResult handleInteract(AbstractMinecart cart, Player player,
+  private CrowbarHandler() {
+  }
+
+  public static InteractionResult handleInteract(AbstractMinecart cart, Player player,
       InteractionHand hand) {
     var stack = player.getItemInHand(hand);
     if (stack.isEmpty() || !(stack.getItem() instanceof Crowbar crowbar)) {
       return InteractionResult.PASS;
     }
 
-    if (player.level().isClientSide()) {
-      return InteractionResult.SUCCESS;
+    var level = player.level();
+    if (!(player instanceof ServerPlayer serverPlayer)) {
+      return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     if ((stack.getItem() instanceof SeasonsCrowbarItem)
@@ -48,22 +52,22 @@ public class CrowbarHandler {
         && RailcraftConfig.COMMON.seasonsEnabled.get()) {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
-      RailcraftCriteriaTriggers.SEASON_SET.value().trigger((ServerPlayer) player, cart, season);
-      return InteractionResult.CONSUME;
+      RailcraftCriteriaTriggers.SEASON_SET.value().trigger(serverPlayer, cart, season);
+      return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     if (crowbar.canLink(player, hand, stack, cart)) {
-      this.linkCart(player, hand, stack, cart, crowbar);
-      return InteractionResult.CONSUME;
+      linkCart(serverPlayer, hand, stack, cart, crowbar);
+      return InteractionResult.sidedSuccess(level.isClientSide());
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
-      this.boostCart(player, hand, stack, cart, crowbar);
-      return InteractionResult.CONSUME;
+      boostCart(serverPlayer, hand, stack, cart, crowbar);
+      return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     return InteractionResult.PASS;
   }
 
-  private void linkCart(Player player, InteractionHand hand, ItemStack stack,
+  private static void linkCart(ServerPlayer player, InteractionHand hand, ItemStack stack,
       AbstractMinecart cart, Crowbar crowbar) {
     var extension = RollingStock.getOrThrow(cart);
     var last = linkMap.remove(player);
@@ -87,11 +91,7 @@ public class CrowbarHandler {
         return;
       }
 
-      if (!player.level().isClientSide()) {
-        RailcraftCriteriaTriggers.CART_LINK.value()
-            .trigger((ServerPlayer) player, last.entity(), cart);
-      }
-
+      RailcraftCriteriaTriggers.CART_LINK.value().trigger(player, last.entity(), cart);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
           .withStyle(ChatFormatting.GREEN);
       player.displayClientMessage(message, true);
@@ -100,7 +100,7 @@ public class CrowbarHandler {
     crowbar.onLink(player, hand, stack, cart);
   }
 
-  private void boostCart(Player player, InteractionHand hand, ItemStack stack,
+  private static void boostCart(Player player, InteractionHand hand, ItemStack stack,
       AbstractMinecart cart, Crowbar crowbar) {
     player.causeFoodExhaustion(.25F);
 
