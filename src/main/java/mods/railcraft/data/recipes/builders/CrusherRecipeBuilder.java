@@ -25,7 +25,6 @@ public class CrusherRecipeBuilder {
   private final Ingredient ingredient;
   private final List<CrusherRecipe.CrusherOutput> probabilityOutputs;
   private final int processTime;
-
   private final List<ICondition> conditions;
 
   private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
