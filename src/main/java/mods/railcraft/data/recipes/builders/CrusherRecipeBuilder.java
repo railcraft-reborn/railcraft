@@ -132,7 +132,9 @@ public class CrusherRecipeBuilder {
         }
         jsonOut.add(RecipeJsonKeys.CONDITIONS, conditionArray);
       }
-      jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, processTime);
+      if (processTime != DEFAULT_PROCESSING_TIME) {
+        jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, processTime);
+      }
       jsonOut.add(RecipeJsonKeys.INGREDIENT, ingredient.toJson());
 
       var result = new JsonArray();

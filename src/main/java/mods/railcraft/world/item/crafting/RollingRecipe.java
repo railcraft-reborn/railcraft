@@ -147,10 +147,10 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
       int width = patterns[0].length();
       int height = patterns.length;
 
-      int tickCost = GsonHelper.getAsInt(json, RecipeJsonKeys.PROCESS_TIME, RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
+      int processTime = GsonHelper.getAsInt(json, RecipeJsonKeys.PROCESS_TIME, RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
       var ingredients = ShapedRecipe.dissolvePattern(patterns, map, width, height);
       var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
-      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, tickCost);
+      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, processTime);
     }
 
     @Override

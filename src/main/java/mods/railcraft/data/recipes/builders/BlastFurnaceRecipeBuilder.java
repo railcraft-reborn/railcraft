@@ -70,7 +70,9 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     @Override
     protected void addJsonProperty(JsonObject json) {
-      json.addProperty(RecipeJsonKeys.SLAG_OUTPUT, this.slagOutput);
+      if (this.slagOutput != 0) {
+        json.addProperty(RecipeJsonKeys.SLAG_OUTPUT, this.slagOutput);
+      }
     }
 
     @Override

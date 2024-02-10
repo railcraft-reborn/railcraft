@@ -10,7 +10,6 @@
     "aaa",
     "a a"
   ],
-  "processTime": 100,
   "result": {
     "count": 16,
     "item": "railcraft:black_post"

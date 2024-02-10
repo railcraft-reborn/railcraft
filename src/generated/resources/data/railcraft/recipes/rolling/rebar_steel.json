@@ -10,7 +10,6 @@
     " a ",
     "a  "
   ],
-  "processTime": 100,
   "result": {
     "count": 8,
     "item": "railcraft:rebar"

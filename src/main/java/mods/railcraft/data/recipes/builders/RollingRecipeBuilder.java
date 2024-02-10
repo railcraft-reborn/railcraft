@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
@@ -105,16 +104,16 @@ public class RollingRecipeBuilder {
     private final ResourceLocation id;
     private final Item resultItem;
     private final int count;
-    private final int delay;
+    private final int processTime;
     private final List<String> pattern;
     private final Map<Character, Ingredient> key;
 
     public Result(ResourceLocation resourceLocation, Item resultItem, int resultCount,
-        int recipeDelay, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
+        int processTime, List<String> recipePattern, Map<Character, Ingredient> ingredientMap) {
       this.id = resourceLocation;
       this.resultItem = resultItem;
       this.count = resultCount;
-      this.delay = recipeDelay;
+      this.processTime = processTime;
       this.pattern = recipePattern;
       this.key = ingredientMap;
     }
@@ -141,7 +140,9 @@ public class RollingRecipeBuilder {
       }
 
       jsonOut.add(RecipeJsonKeys.RESULT, result);
-      jsonOut.add(RecipeJsonKeys.PROCESS_TIME, new JsonPrimitive(delay));
+      if (processTime != DEFAULT_PROCESSING_TIME) {
+        jsonOut.addProperty(RecipeJsonKeys.PROCESS_TIME, processTime);
+      }
     }
 
     public RecipeSerializer<?> getType() {
