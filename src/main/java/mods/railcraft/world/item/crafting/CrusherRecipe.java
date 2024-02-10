@@ -118,9 +118,9 @@ public class CrusherRecipe implements Recipe<Container> {
         var outputObj = output.getAsJsonObject();
         var probability = GsonHelper.getAsDouble(outputObj, RecipeJsonKeys.PROBABILITY, 1);
         probability = Mth.clamp(probability, 0, 1); //[0,1]
-        var count = GsonHelper.getAsInt(outputObj, RecipeJsonKeys.COUNT);
+        var quantity = GsonHelper.getAsInt(outputObj, RecipeJsonKeys.COUNT, 1);
         var outputIngredient = Ingredient.fromJson(outputObj.get(RecipeJsonKeys.RESULT));
-        probabilityItems.add(new CrusherOutput(outputIngredient, count, probability));
+        probabilityItems.add(new CrusherOutput(outputIngredient, quantity, probability));
       }
       return new CrusherRecipe(recipeId, ingredient, probabilityItems, processTime);
     }

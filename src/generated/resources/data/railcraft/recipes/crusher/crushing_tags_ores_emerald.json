@@ -14,21 +14,18 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:emerald"
       }
     },
     {
-      "count": 1,
       "probability": 0.85,
       "result": {
         "item": "minecraft:emerald"
       }
     },
     {
-      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "minecraft:emerald"

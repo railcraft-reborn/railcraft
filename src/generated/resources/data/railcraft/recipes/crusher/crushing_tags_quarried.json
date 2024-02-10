@@ -14,7 +14,6 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "railcraft:quarried_cobblestone"

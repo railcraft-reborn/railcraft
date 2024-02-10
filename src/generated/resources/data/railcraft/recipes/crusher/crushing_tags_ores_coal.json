@@ -21,28 +21,24 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.65,
       "result": {
         "item": "railcraft:coal_dust"
       }
     },
     {
-      "count": 1,
       "probability": 0.15,
       "result": {
         "item": "railcraft:sulfur_dust"
       }
     },
     {
-      "count": 1,
       "probability": 0.15,
       "result": {
         "item": "minecraft:coal"
       }
     },
     {
-      "count": 1,
       "probability": 0.001,
       "result": {
         "item": "minecraft:diamond"

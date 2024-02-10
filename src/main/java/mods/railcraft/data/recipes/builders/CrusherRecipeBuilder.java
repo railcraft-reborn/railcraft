@@ -12,8 +12,10 @@ import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -25,6 +27,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
 import net.minecraftforge.common.crafting.conditions.TagEmptyCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class CrusherRecipeBuilder {
 
@@ -34,7 +37,6 @@ public class CrusherRecipeBuilder {
   private final Ingredient ingredient;
   private final List<CrusherRecipe.CrusherOutput> probabilityOutputs;
   private final int processTime;
-
   private final List<ICondition> conditions;
 
   private CrusherRecipeBuilder(Ingredient ingredient, int processTime) {
@@ -94,13 +96,13 @@ public class CrusherRecipeBuilder {
       itemPath = Arrays.stream(this.ingredient.getItems())
           .filter(x -> !x.is(Items.BARRIER))
           .findFirst()
-          .map(x -> BuiltInRegistries.ITEM.getKey(x.getItem()).getPath())
+          .map(x -> ForgeRegistries.ITEMS.getKey(x.getItem()).getPath())
           .orElseThrow();
     }
     this.save(finishedRecipe, itemPath);
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
+  private void save(Consumer<FinishedRecipe> finishedRecipe, String path) {
     var customResourceLocation = RailcraftConstants.rl("crusher/crushing_" + path);
 
     finishedRecipe.accept(new Result(customResourceLocation, this.ingredient,
@@ -141,7 +143,9 @@ public class CrusherRecipeBuilder {
         var pattern = new JsonObject();
 
         pattern.add(RecipeJsonKeys.RESULT, item.output().toJson());
-        pattern.addProperty(RecipeJsonKeys.COUNT, item.quantity());
+        if (item.quantity() != 1) {
+          pattern.addProperty(RecipeJsonKeys.COUNT, item.quantity());
+        }
         pattern.addProperty(RecipeJsonKeys.PROBABILITY, item.probability());
         result.add(pattern);
       }
@@ -167,6 +171,5 @@ public class CrusherRecipeBuilder {
     public ResourceLocation getAdvancementId() {
       return null;
     }
-
   }
 }

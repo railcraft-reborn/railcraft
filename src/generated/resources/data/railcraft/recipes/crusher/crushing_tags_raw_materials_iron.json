@@ -28,14 +28,12 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "tag": "forge:dusts/iron"
       }
     },
     {
-      "count": 1,
       "probability": 0.35,
       "result": {
         "tag": "forge:dusts/iron"

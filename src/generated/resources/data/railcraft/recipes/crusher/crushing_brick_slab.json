@@ -5,14 +5,12 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:brick"
       }
     },
     {
-      "count": 1,
       "probability": 0.75,
       "result": {
         "item": "minecraft:brick"

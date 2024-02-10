@@ -5,14 +5,12 @@
   },
   "outputs": [
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "minecraft:gravel"
       }
     },
     {
-      "count": 1,
       "probability": 0.8,
       "result": {
         "item": "minecraft:vine"

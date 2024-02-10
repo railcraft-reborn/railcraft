@@ -21,14 +21,12 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.85,
       "result": {
         "item": "railcraft:saltpeter_dust"
       }
     },
     {
-      "count": 1,
       "probability": 0.35,
       "result": {
         "item": "railcraft:saltpeter_dust"

@@ -21,7 +21,6 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.25,
       "result": {
         "item": "railcraft:sulfur_dust"

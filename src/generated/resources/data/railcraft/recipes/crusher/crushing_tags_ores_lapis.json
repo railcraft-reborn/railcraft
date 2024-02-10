@@ -21,21 +21,18 @@
       }
     },
     {
-      "count": 1,
       "probability": 0.85,
       "result": {
         "item": "minecraft:lapis_lazuli"
       }
     },
     {
-      "count": 1,
       "probability": 0.35,
       "result": {
         "item": "minecraft:lapis_lazuli"
       }
     },
     {
-      "count": 1,
       "probability": 0.2,
       "result": {
         "item": "railcraft:sulfur_dust"

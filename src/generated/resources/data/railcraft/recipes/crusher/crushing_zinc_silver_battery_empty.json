@@ -17,7 +17,6 @@
       }
     },
     {
-      "count": 1,
       "probability": 1.0,
       "result": {
         "item": "railcraft:charge_spool_medium"
