@@ -44,8 +44,8 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
   public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
 
-    private static final Codec<BlastFurnaceRecipe> CODEC =
-        RecordCodecBuilder.create(instance -> instance.group(
+    private static final Codec<BlastFurnaceRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
             Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
             ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
@@ -59,8 +59,8 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
                 .forGetter(recipe -> recipe.cookingTime),
             ExtraCodecs
                 .strictOptionalField(ExtraCodecs.NON_NEGATIVE_INT, RecipeJsonKeys.SLAG_OUTPUT, 0)
-                .forGetter(recipe -> recipe.slagOutput))
-            .apply(instance, BlastFurnaceRecipe::new));
+                .forGetter(recipe -> recipe.slagOutput)
+        ).apply(instance, BlastFurnaceRecipe::new));
 
     @Override
     public Codec<BlastFurnaceRecipe> codec() {

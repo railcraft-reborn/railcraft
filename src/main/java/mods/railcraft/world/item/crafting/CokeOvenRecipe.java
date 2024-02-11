@@ -47,8 +47,8 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
-    private static final Codec<CokeOvenRecipe> CODEC =
-        RecordCodecBuilder.create(instance -> instance.group(
+    private static final Codec<CokeOvenRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
             Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
             ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
@@ -62,7 +62,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
                 .forGetter(recipe -> recipe.cookingTime),
             ExtraCodecs.POSITIVE_INT.fieldOf(RecipeJsonKeys.CREOSOTE_OUTPUT)
                 .forGetter(recipe -> recipe.creosote.getAmount())
-            ).apply(instance, CokeOvenRecipe::new));
+        ).apply(instance, CokeOvenRecipe::new));
 
     @Override
     public Codec<CokeOvenRecipe> codec() {

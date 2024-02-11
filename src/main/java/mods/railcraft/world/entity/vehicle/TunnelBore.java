@@ -20,6 +20,7 @@ import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.container.StackFilter;
+import mods.railcraft.util.datamaps.RailcraftDataMaps;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
@@ -767,11 +768,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     hardness *= HARDNESS_MULTIPLIER;
 
     var boreSlot = this.getItem(0);
-    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof TunnelBoreHead head) {
-      double dig = head.getDigModifier();
-      hardness /= dig;
-      int e = boreSlot.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-      hardness /= (e * e * 0.2d + 1);
+    if (!boreSlot.isEmpty()) {
+      var tunnelBoreHead = boreSlot.getItemHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
+      if (tunnelBoreHead != null) {
+        double dig = tunnelBoreHead.digModifier();
+        hardness /= dig;
+        int e = boreSlot.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+        hardness /= (e * e * 0.2d + 1);
+      }
     }
 
     hardness /= RailcraftConfig.SERVER.boreMiningSpeedMultiplier.get();

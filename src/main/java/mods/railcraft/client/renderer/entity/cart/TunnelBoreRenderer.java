@@ -1,9 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.model.TunnelBoreModel;
@@ -61,23 +59,16 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
     boolean ghostTrain = Seasons.isGhostTrain(bore);
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    TunnelBoreHead head = bore.getBoreHead();
-    ResourceLocation textureLocation;
-    if (head != null) {
-      textureLocation = head.getTextureLocation();
-      modelTunnelBore.setRenderBoreHead(true);
-    } else {
-      textureLocation = TEXTURE;
-      modelTunnelBore.setRenderBoreHead(false);
-    }
+    var head = bore.getBoreHead();
+    modelTunnelBore.setRenderBoreHead(head != null);
 
     matrixStack.scale(-1, -1, 1);
 
     this.modelTunnelBore.setBoreHeadRotation(bore.getBoreRotationAngle());
     this.modelTunnelBore.setBoreActive(bore.isMinecartPowered());
     this.modelTunnelBore.setupAnim(bore, 0, 0, -0.1F, 0, 0);
-    VertexConsumer vertexBuilder = renderTypeBuffer.getBuffer(
-        this.modelTunnelBore.renderType(textureLocation));
+    var textureLocation = getTextureLocation(bore);
+    var vertexBuilder = renderTypeBuffer.getBuffer(this.modelTunnelBore.renderType(textureLocation));
     this.modelTunnelBore.renderToBuffer(matrixStack, vertexBuilder, packedLight,
         OverlayTexture.NO_OVERLAY, colorIntensity, colorIntensity, colorIntensity,
         ghostTrain ? 0.8F : 1);
@@ -86,7 +77,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
   @Override
   public ResourceLocation getTextureLocation(TunnelBore entity) {
-    TunnelBoreHead head = entity.getBoreHead();
-    return head == null ? TEXTURE : head.getTextureLocation();
+    var head = entity.getBoreHead();
+    return head != null ? head.getTextureLocation() : TEXTURE;
   }
 }

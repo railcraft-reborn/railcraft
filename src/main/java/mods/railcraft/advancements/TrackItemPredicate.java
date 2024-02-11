@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
-import mods.railcraft.util.Conditions;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +34,7 @@ public record TrackItemPredicate(
     if (this.electric.isPresent() && type.isElectric() != this.electric.get()) {
       return false;
     }
-    if (!Conditions.check(this.type, type)) {
+    if (!(this.type.isEmpty() || this.type.get().equals(type))) {
       return false;
     }
     return TrackUtil.isRail(stack);

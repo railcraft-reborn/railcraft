@@ -29,6 +29,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IDirectionAwarePayloadHandlerBuilder;
@@ -39,12 +40,14 @@ public final class PacketHandler {
   private PacketHandler() {
   }
 
-  public static void registerPayloadHandler(RegisterPayloadHandlerEvent event) {
-    var registrar = event.registrar(RailcraftConstants.ID).versioned("1");
-    registerClientToServer(
-        new PacketRegistrar(registrar, IDirectionAwarePayloadHandlerBuilder::server));
-    registerServerToClient(
-        new PacketRegistrar(registrar, IDirectionAwarePayloadHandlerBuilder::client));
+  public static void register(IEventBus modEventBus) {
+    modEventBus.addListener(RegisterPayloadHandlerEvent.class, event -> {
+      var registrar = event.registrar(RailcraftConstants.ID).versioned("1");
+      registerClientToServer(
+          new PacketRegistrar(registrar, IDirectionAwarePayloadHandlerBuilder::server));
+      registerServerToClient(
+          new PacketRegistrar(registrar, IDirectionAwarePayloadHandlerBuilder::client));
+    });
   }
 
   @FunctionalInterface

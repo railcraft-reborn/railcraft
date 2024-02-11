@@ -1,0 +1,16 @@
+{
+  "values": {
+    "railcraft:bronze_tunnel_bore_head": {
+      "digModifier": 1.25
+    },
+    "railcraft:diamond_tunnel_bore_head": {
+      "digModifier": 1.6666666
+    },
+    "railcraft:iron_tunnel_bore_head": {
+      "digModifier": 1.0
+    },
+    "railcraft:steel_tunnel_bore_head": {
+      "digModifier": 1.25
+    }
+  }
+}

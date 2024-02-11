@@ -1,0 +1,16 @@
+{
+  "values": {
+    "railcraft:coal_coke": {
+      "burn_time": 3200
+    },
+    "railcraft:coal_coke_block": {
+      "burn_time": 32000
+    },
+    "railcraft:creosote_bottle": {
+      "burn_time": 266
+    },
+    "railcraft:creosote_bucket": {
+      "burn_time": 800
+    }
+  }
+}

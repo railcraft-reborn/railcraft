@@ -2,17 +2,13 @@ package mods.railcraft.world.item;
 
 import java.util.Collection;
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
-import mods.railcraft.world.item.tunnelbore.BronzeTunnelBoreHeadItem;
-import mods.railcraft.world.item.tunnelbore.DiamondTunnelBoreHeadItem;
-import mods.railcraft.world.item.tunnelbore.IronTunnelBoreHeadItem;
-import mods.railcraft.world.item.tunnelbore.SteelTunnelBoreHeadItem;
+import mods.railcraft.world.item.tunnelbore.TunnelBoreHeadItem;
 import mods.railcraft.world.item.tunnelbore.TunnelBoreItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackTypes;
@@ -24,8 +20,6 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
@@ -33,13 +27,11 @@ import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 
 public class RailcraftItems {
 
@@ -255,8 +247,7 @@ public class RailcraftItems {
       deferredRegister.registerSimpleBlockItem(RailcraftBlocks.SALTPETER_ORE);
 
   public static final DeferredItem<BlockItem> COKE_BLOCK =
-      deferredRegister.register("coal_coke_block",
-          () -> new CoalCokeBlockItem(new Properties()));
+      deferredRegister.registerSimpleBlockItem(RailcraftBlocks.COKE_BLOCK);
 
   public static final DeferredItem<Item> STEEL_SHEARS =
       deferredRegister.register("steel_shears",
@@ -310,23 +301,22 @@ public class RailcraftItems {
 
   public static final DeferredItem<Item> IRON_TUNNEL_BORE_HEAD =
       deferredRegister.register("iron_tunnel_bore_head",
-          () -> new IronTunnelBoreHeadItem(new Item.Properties()
+          () -> new TunnelBoreHeadItem(Tiers.IRON, "iron", new Item.Properties()
               .durability(1500)));
 
   public static final DeferredItem<Item> BRONZE_TUNNEL_BORE_HEAD =
       deferredRegister.register("bronze_tunnel_bore_head",
-          () -> new BronzeTunnelBoreHeadItem(new Item.Properties()
+          () -> new TunnelBoreHeadItem(RailcraftItemTier.BRONZE, "bronze", new Item.Properties()
               .durability(1200)));
 
   public static final DeferredItem<Item> STEEL_TUNNEL_BORE_HEAD =
       deferredRegister.register("steel_tunnel_bore_head",
-          () -> new SteelTunnelBoreHeadItem(
-              new Item.Properties()
+          () -> new TunnelBoreHeadItem(RailcraftItemTier.STEEL, "steel", new Item.Properties()
                   .durability(3000)));
 
   public static final DeferredItem<Item> DIAMOND_TUNNEL_BORE_HEAD =
       deferredRegister.register("diamond_tunnel_bore_head",
-          () -> new DiamondTunnelBoreHeadItem(new Item.Properties()
+          () -> new TunnelBoreHeadItem(Tiers.DIAMOND, "diamond", new Item.Properties()
               .durability(6000)));
 
   public static final DeferredItem<Item> TANK_MINECART =
@@ -1179,8 +1169,7 @@ public class RailcraftItems {
   // ================================================================================
 
   public static final DeferredItem<Item> COAL_COKE =
-      deferredRegister.register("coal_coke", () -> new CoalCokeItem(new Item.Properties()));
-
+      deferredRegister.registerSimpleItem("coal_coke");
   public static final DeferredItem<Item> STEEL_PLATE =
       deferredRegister.registerSimpleItem("steel_plate");
   public static final DeferredItem<Item> IRON_PLATE =
@@ -1455,20 +1444,13 @@ public class RailcraftItems {
 
   public static final DeferredItem<Item> CREOSOTE_BUCKET =
       deferredRegister.register("creosote_bucket",
-          () -> new BucketItem(RailcraftFluids.CREOSOTE,
-              new Item.Properties()
-                  .stacksTo(1)
-                  .craftRemainder(Items.BUCKET)) {
-            @Override
-            public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-              return 800;
-            }
-          });
+          () -> new BucketItem(RailcraftFluids.CREOSOTE, new Item.Properties()
+              .stacksTo(1)
+              .craftRemainder(Items.BUCKET)));
 
   public static final DeferredItem<Item> CREOSOTE_BOTTLE =
       deferredRegister.register("creosote_bottle",
-          () -> new FluidBottleItem(RailcraftFluids.CREOSOTE,
-              new Item.Properties()
-                  .stacksTo(16)
-                  .craftRemainder(Items.GLASS_BOTTLE)));
+          () -> new FluidBottleItem(RailcraftFluids.CREOSOTE, new Item.Properties()
+              .stacksTo(16)
+              .craftRemainder(Items.GLASS_BOTTLE)));
 }

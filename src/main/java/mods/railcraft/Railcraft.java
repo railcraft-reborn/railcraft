@@ -14,6 +14,7 @@ import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
+import mods.railcraft.data.RailcraftDataMapProvider;
 import mods.railcraft.data.RailcraftDatapackProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
@@ -38,6 +39,7 @@ import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.attachment.RailcraftAttachmentTypes;
+import mods.railcraft.util.datamaps.RailcraftDataMaps;
 import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
@@ -158,12 +160,12 @@ public class Railcraft {
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
     modEventBus.addListener(this::registerChunkControllers);
-    modEventBus.addListener(PacketHandler::registerPayloadHandler);
 
     if (dist.isClient()) {
       ClientManager.init(modEventBus);
     }
 
+    PacketHandler.register(modEventBus);
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
@@ -189,6 +191,7 @@ public class Railcraft {
     RailcraftStructurePieces.register(modEventBus);
     RailcraftCriteriaTriggers.register(modEventBus);
     RailcraftAttachmentTypes.register(modEventBus);
+    RailcraftDataMaps.register(modEventBus);
   }
 
   // Mod Events
@@ -314,6 +317,8 @@ public class Railcraft {
         new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(),
         new RailcraftDatapackProvider(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new RailcraftDataMapProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),

@@ -507,7 +507,7 @@ public class RailcraftBlocks {
               .strength(0.8F)
               .sound(SoundType.SAND)));
 
-  public static final DeferredBlock<Block> COKE_BLOCK =
+  public static final DeferredBlock<CoalCokeBlock> COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
           () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
               .mapColor(MapColor.COLOR_BLACK)

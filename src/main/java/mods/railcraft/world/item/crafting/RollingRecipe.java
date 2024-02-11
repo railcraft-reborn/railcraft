@@ -94,16 +94,16 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   public static class Serializer implements RecipeSerializer<RollingRecipe> {
 
-    private static final Codec<RollingRecipe> CODEC =
-        RecordCodecBuilder.create(instance -> instance.group(
+    private static final Codec<RollingRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
             ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
             ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
                 .forGetter(recipe -> recipe.result),
             ExtraCodecs
                 .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.PROCESS_TIME,
                     RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
-                .forGetter(recipe -> recipe.processTime))
-        .apply(instance, RollingRecipe::new));
+                .forGetter(recipe -> recipe.processTime)
+        ).apply(instance, RollingRecipe::new));
 
     @Override
     public Codec<RollingRecipe> codec() {
