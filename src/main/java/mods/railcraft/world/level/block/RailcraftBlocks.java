@@ -374,66 +374,38 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> BRASS_BLOCK =
       deferredRegister.register("brass_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(3.0F, 6.0F)));
 
   public static final RegistryObject<Block> BRONZE_BLOCK =
       deferredRegister.register("bronze_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> INVAR_BLOCK =
       deferredRegister.register("invar_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> LEAD_BLOCK =
       deferredRegister.register("lead_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(5.0F, 6.0F)));
 
   public static final RegistryObject<Block> NICKEL_BLOCK =
       deferredRegister.register("nickel_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> SILVER_BLOCK =
       deferredRegister.register("silver_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> TIN_BLOCK =
       deferredRegister.register("tin_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> ZINC_BLOCK =
       deferredRegister.register("zinc_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 15.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(5.0F, 15.0F)));
 
   public static final RegistryObject<Block> LEAD_ORE =
       deferredRegister.register("lead_ore",
@@ -452,86 +424,45 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> NICKEL_ORE =
       deferredRegister.register("nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_NICKEL_ORE =
       deferredRegister.register("deepslate_nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(NICKEL_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> SILVER_ORE =
       deferredRegister.register("silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_SILVER_ORE =
       deferredRegister.register("deepslate_silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
-
-  public static final RegistryObject<Block> SULFUR_ORE =
-      deferredRegister.register("sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops(), UniformInt.of(2, 5)));
-
-  public static final RegistryObject<Block> DEEPSLATE_SULFUR_ORE =
-      deferredRegister.register("deepslate_sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFUR_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE), UniformInt.of(2, 5)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> TIN_ORE =
       deferredRegister.register("tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_TIN_ORE =
       deferredRegister.register("deepslate_tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(TIN_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> ZINC_ORE =
       deferredRegister.register("zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_ZINC_ORE =
       deferredRegister.register("deepslate_zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(ZINC_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
-  public static final RegistryObject<Block> COKE_BLOCK =
-      deferredRegister.register("coal_coke_block",
-          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_BLACK)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(5.0F, 10.0F)
-              .sound(SoundType.STONE)));
+  public static final RegistryObject<Block> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
+          () -> new DropExperienceBlock(
+              BlockBehaviour.Properties.copy(LEAD_ORE.get()), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new DropExperienceBlock(
+              BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get()), UniformInt.of(2, 5)));
 
   public static final RegistryObject<Block> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",
@@ -541,6 +472,14 @@ public class RailcraftBlocks {
               .requiresCorrectToolForDrops()
               .strength(0.8F)
               .sound(SoundType.SAND), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> COKE_BLOCK =
+      deferredRegister.register("coal_coke_block",
+          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_BLACK)
+              .instrument(NoteBlockInstrument.BASEDRUM)
+              .strength(5.0F, 10.0F)
+              .sound(SoundType.STONE)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
@@ -570,13 +509,11 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ItemLoaderBlock> ITEM_LOADER =
       deferredRegister.register("item_loader",
-          () -> new ItemLoaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+          () -> new ItemLoaderBlock(BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<ItemUnloaderBlock> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
-          () -> new ItemUnloaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+          () -> new ItemUnloaderBlock(BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<CartDispenserBlock> CART_DISPENSER =
       deferredRegister.register("cart_dispenser",

@@ -18,7 +18,7 @@ public enum RailcraftItemTier implements Tier {
   private final int enchantmentValue;
   private final Supplier<Ingredient> repairIngredient;
 
-  private RailcraftItemTier(int level, int uses, float speed, float damage, int enchantmentValue,
+  RailcraftItemTier(int level, int uses, float speed, float damage, int enchantmentValue,
       Supplier<Ingredient> repairIngredient) {
     this.level = level;
     this.uses = uses;
