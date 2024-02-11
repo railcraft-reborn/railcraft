@@ -1,6 +1,5 @@
 package mods.railcraft.util;
 
-import java.util.function.BiPredicate;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,10 +13,6 @@ public final class Conditions {
 
   public static <T> boolean check(@Nullable T goal, T test) {
     return goal == null || goal.equals(test);
-  }
-
-  public static <T> boolean check(@Nullable T goal, T test, BiPredicate<T, T> equality) {
-    return goal == null || equality.test(goal, test);
   }
 
   private Conditions() {}

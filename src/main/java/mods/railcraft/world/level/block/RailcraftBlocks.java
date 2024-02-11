@@ -399,66 +399,38 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> BRASS_BLOCK =
       deferredRegister.register("brass_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(STEEL_BLOCK.get())
+              .strength(3.0F, 6.0F)));
 
   public static final DeferredBlock<Block> BRONZE_BLOCK =
       deferredRegister.register("bronze_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(BRASS_BLOCK.get())));
 
   public static final DeferredBlock<Block> INVAR_BLOCK =
       deferredRegister.register("invar_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(BRASS_BLOCK.get())));
 
   public static final DeferredBlock<Block> LEAD_BLOCK =
       deferredRegister.register("lead_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(STEEL_BLOCK.get())
+              .strength(5.0F, 6.0F)));
 
   public static final DeferredBlock<Block> NICKEL_BLOCK =
       deferredRegister.register("nickel_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(LEAD_BLOCK.get())));
 
   public static final DeferredBlock<Block> SILVER_BLOCK =
       deferredRegister.register("silver_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(BRASS_BLOCK.get())));
 
   public static final DeferredBlock<Block> TIN_BLOCK =
       deferredRegister.register("tin_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(BRASS_BLOCK.get())));
 
   public static final DeferredBlock<Block> ZINC_BLOCK =
       deferredRegister.register("zinc_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 15.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.ofFullCopy(STEEL_BLOCK.get())
+              .strength(5.0F, 15.0F)));
 
   public static final DeferredBlock<Block> LEAD_ORE =
       deferredRegister.register("lead_ore",
@@ -478,91 +450,53 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<Block> NICKEL_ORE =
       deferredRegister.register("nickel_ore",
-          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_BLOCK.get())));
 
   public static final DeferredBlock<Block> DEEPSLATE_NICKEL_ORE =
       deferredRegister.register("deepslate_nickel_ore",
           () -> new DropExperienceBlock(ConstantInt.of(0),
-              BlockBehaviour.Properties.ofFullCopy(NICKEL_ORE.get())
-                  .mapColor(MapColor.DEEPSLATE)
-                  .strength(4.5F, 3.0F)
-                  .sound(SoundType.DEEPSLATE)));
+              BlockBehaviour.Properties.ofFullCopy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> SILVER_ORE =
       deferredRegister.register("silver_ore",
-          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_BLOCK.get())));
 
   public static final DeferredBlock<Block> DEEPSLATE_SILVER_ORE =
       deferredRegister.register("deepslate_silver_ore",
           () -> new DropExperienceBlock(ConstantInt.of(0),
-              BlockBehaviour.Properties.ofFullCopy(SILVER_ORE.get())
-                  .mapColor(MapColor.DEEPSLATE)
-                  .strength(4.5F, 3.0F)
-                  .sound(SoundType.DEEPSLATE)));
-
-  public static final DeferredBlock<Block> SULFUR_ORE =
-      deferredRegister.register("sulfur_ore",
-          () -> new DropExperienceBlock(UniformInt.of(2, 5), BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
-
-  public static final DeferredBlock<Block> DEEPSLATE_SULFUR_ORE =
-      deferredRegister.register("deepslate_sulfur_ore",
-          () -> new DropExperienceBlock(UniformInt.of(2, 5),
-              BlockBehaviour.Properties.ofFullCopy(SULFUR_ORE.get())
-                  .mapColor(MapColor.DEEPSLATE)
-                  .strength(4.5F, 3.0F)
-                  .sound(SoundType.DEEPSLATE)));
+              BlockBehaviour.Properties.ofFullCopy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> TIN_ORE =
       deferredRegister.register("tin_ore",
-          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE =
       deferredRegister.register("deepslate_tin_ore",
           () -> new DropExperienceBlock(ConstantInt.of(0),
-              BlockBehaviour.Properties.ofFullCopy(TIN_ORE.get())
-                  .mapColor(MapColor.DEEPSLATE)
-                  .strength(4.5F, 3.0F)
-                  .sound(SoundType.DEEPSLATE)));
+              BlockBehaviour.Properties.ofFullCopy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> ZINC_ORE =
       deferredRegister.register("zinc_ore",
-          () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(ConstantInt.of(0),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> DEEPSLATE_ZINC_ORE =
       deferredRegister.register("deepslate_zinc_ore",
           () -> new DropExperienceBlock(ConstantInt.of(0),
-              BlockBehaviour.Properties.ofFullCopy(ZINC_ORE.get())
-                  .mapColor(MapColor.DEEPSLATE)
-                  .strength(4.5F, 3.0F)
-                  .sound(SoundType.DEEPSLATE)));
+              BlockBehaviour.Properties.ofFullCopy(DEEPSLATE_LEAD_ORE.get())));
 
-  public static final DeferredBlock<Block> COKE_BLOCK =
-      deferredRegister.register("coal_coke_block",
-          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_BLACK)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(5.0F, 10.0F)
-              .sound(SoundType.STONE)));
+  public static final DeferredBlock<Block> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
+          () -> new DropExperienceBlock(UniformInt.of(2, 5),
+              BlockBehaviour.Properties.ofFullCopy(LEAD_ORE.get())));
+
+  public static final DeferredBlock<Block> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new DropExperienceBlock(UniformInt.of(2, 5),
+              BlockBehaviour.Properties.ofFullCopy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final DeferredBlock<Block> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",
@@ -572,6 +506,14 @@ public class RailcraftBlocks {
               .requiresCorrectToolForDrops()
               .strength(0.8F)
               .sound(SoundType.SAND)));
+
+  public static final DeferredBlock<Block> COKE_BLOCK =
+      deferredRegister.register("coal_coke_block",
+          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_BLACK)
+              .instrument(NoteBlockInstrument.BASEDRUM)
+              .strength(5.0F, 10.0F)
+              .sound(SoundType.STONE)));
 
   public static final DeferredBlock<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",

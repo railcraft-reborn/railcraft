@@ -36,7 +36,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 public class RitualBlock extends BaseEntityBlock {
 
   public static final BooleanProperty CRACKED = BooleanProperty.create("cracked");
-  public static final VoxelShape SHAPE = Shapes.create(
+  private static final VoxelShape SHAPE = Shapes.create(
       BoxBuilder.create()
           .box()
           .inflateHorizontally(-0.3)
