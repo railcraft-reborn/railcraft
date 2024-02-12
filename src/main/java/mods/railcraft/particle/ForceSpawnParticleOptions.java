@@ -12,8 +12,8 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public record ForceSpawnParticleOptions(int color) implements ParticleOptions {
 
-  public static final Codec<ForceSpawnParticleOptions> CODEC = RecordCodecBuilder.create(
-      instance -> instance.group(
+  public static final Codec<ForceSpawnParticleOptions> CODEC = RecordCodecBuilder
+      .create(instance -> instance.group(
           Codec.INT.fieldOf("color").forGetter(ForceSpawnParticleOptions::color)
       ).apply(instance, ForceSpawnParticleOptions::new));
 

@@ -13,8 +13,8 @@ import net.minecraft.world.phys.Vec3;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
-  public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder.create(
-      instance -> instance.group(
+  public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder
+      .create(instance -> instance.group(
           Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
           Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color)
       ).apply(instance, TuningAuraParticleOptions::new));
