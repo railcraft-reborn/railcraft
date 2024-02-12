@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.material.steam;
 
-import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.world.level.material.FuelProvider;
 import mods.railcraft.world.level.material.StandardTank;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -26,7 +26,7 @@ public class FluidFuelProvider implements FuelProvider {
       return 0;
     }
 
-    var heatValue = FuelUtil.fuelManager().getFuelValueForSize(fuel);
+    var heatValue = FuelUtil.getFuelValueForSize(fuel);
     if (heatValue > 0) {
       this.fuelTank.internalDrain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
     }

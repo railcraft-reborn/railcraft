@@ -7,7 +7,6 @@ import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.api.fuel.FuelUtil;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
@@ -29,14 +28,12 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
-import mods.railcraft.fuel.FuelManagerImpl;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.datamaps.RailcraftDataMaps;
@@ -131,7 +128,6 @@ public class Railcraft {
   private static final Logger LOGGER = LogUtils.getLogger();
 
   static {
-    FuelUtil._setFuelManager(new FuelManagerImpl());
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
@@ -200,7 +196,6 @@ public class Railcraft {
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
     });
-    FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
   }
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {

@@ -1,7 +1,9 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.datamaps.RailcraftDataMaps;
+import mods.railcraft.util.datamaps.builtin.FluidHeat;
 import mods.railcraft.util.datamaps.builtin.TunnelBoreHead;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -34,5 +36,8 @@ public class RailcraftDataMapProvider extends DataMapProvider {
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)
         .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, new TunnelBoreHead(1 / 0.6F), false)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD, new TunnelBoreHead(1), false);
+
+    this.builder(RailcraftDataMaps.FLUID_HEAT)
+        .add(RailcraftTags.Fluids.CREOSOTE, new FluidHeat(4800), false);
   }
 }

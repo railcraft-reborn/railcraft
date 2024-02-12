@@ -1,0 +1,7 @@
+{
+  "values": {
+    "#forge:creosote": {
+      "heat_value_per_bucket": 4800
+    }
+  }
+}
