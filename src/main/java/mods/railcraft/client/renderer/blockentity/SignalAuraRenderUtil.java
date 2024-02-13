@@ -133,6 +133,6 @@ public class SignalAuraRenderUtil {
         }
         return CONSTANT_BLUE.getColor(blockEntity, source, target);
       }
-    };
+    }
   }
 }

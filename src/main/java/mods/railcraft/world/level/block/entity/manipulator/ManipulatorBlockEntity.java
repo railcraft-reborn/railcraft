@@ -348,7 +348,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     private final String name;
     private final Component label;
 
-    private RedstoneMode(String name, char icon) {
+    RedstoneMode(String name, char icon) {
       this.name = name;
       this.label = Component.literal(String.valueOf(icon));
     }

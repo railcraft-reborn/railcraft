@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public interface Filter {
 
-    default boolean matches(ItemStack matcher, ItemStack target) {
-        return false;
-    }
+  default boolean matches(ItemStack matcher, ItemStack target) {
+    return false;
+  }
 }

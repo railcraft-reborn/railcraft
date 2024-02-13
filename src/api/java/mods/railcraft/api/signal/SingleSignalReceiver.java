@@ -17,7 +17,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 public class SingleSignalReceiver
     implements SignalReceiver, INBTSerializable<CompoundTag>, NetworkSerializable {
 
-  private static final Logger logger = LogUtils.getLogger();
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   protected final BlockEntity blockEntity;
   private final Runnable syncListener;
@@ -105,7 +105,7 @@ public class SingleSignalReceiver
     protected void linked(SignalController signalController) {
       var lastSignalController = this.getSignalController();
       if (lastSignalController == signalController) {
-        logger.warn("Signal receiver @ [{}] is already linked to signal controller @ [{}]",
+        LOGGER.warn("Signal receiver @ [{}] is already linked to signal controller @ [{}]",
             SingleSignalReceiver.this.blockEntity.getBlockPos(), signalController.blockPos());
         return;
       }

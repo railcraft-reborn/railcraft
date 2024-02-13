@@ -27,7 +27,7 @@ import net.minecraft.world.phys.AABB;
 public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSignalEntity>
     implements BlockSignal {
 
-  private static final Logger logger = LogUtils.getLogger();
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   public static final int SIGNAL_VALIDATION_INTERVAL = 4 * SharedConstants.TICKS_PER_MINUTE;
   private final Set<BlockPos> signalsToRevalidate = new HashSet<>();
@@ -263,7 +263,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
       switch (this.trackLocator.trackStatus()) {
         case INVALID -> {
           this.peers.clear();
-          logger.debug("Block signal dropped because no track was found near signal @ [{}]",
+          LOGGER.debug("Block signal dropped because no track was found near signal @ [{}]",
               this.blockPos());
         }
         case VALID -> {
@@ -273,7 +273,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
               var result = this.validateSignal(peer.signalNetwork());
               if (!result.valid) {
                 this.removePeer(peerPos);
-                logger.debug(
+                LOGGER.debug(
                     "Block signal dropped because track between signals was invalid. source:[{}] target:[{}] reason:{}",
                     this.blockPos(), peerPos, result.message);
               }

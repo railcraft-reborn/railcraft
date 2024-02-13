@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.NetworkSerializable;
@@ -23,6 +22,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
@@ -35,7 +35,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
     implements SignalNetwork<T>, INBTSerializable<CompoundTag>, NetworkSerializable {
 
-  protected static final Random random = new Random();
+  protected static final RandomSource RANDOM = RandomSource.create();
 
   private final Class<T> peerType;
   private final int maxPeers;

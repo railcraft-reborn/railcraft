@@ -1,16 +1,19 @@
 package mods.railcraft.api.carts;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 
 public enum Side implements StringRepresentable {
 
-  FRONT("front"), BACK("back");
+  FRONT("front"),
+  BACK("back");
+
+  private static final StringRepresentable.EnumCodec<Side> CODEC =
+      StringRepresentable.fromEnum(Side::values);
 
   private final String name;
 
-  private Side(String name) {
+  Side(String name) {
     this.name = name;
   }
 
@@ -29,18 +32,12 @@ public enum Side implements StringRepresentable {
     return this == BACK;
   }
 
-  public String getName() {
+  @Override
+  public String getSerializedName() {
     return this.name;
   }
 
-  @Override
-  public String getSerializedName() {
-    return this.getName();
-  }
-
-  public static Optional<Side> getByName(String name) {
-    return Stream.of(values())
-        .filter(link -> link.name.equals(name))
-        .findFirst();
+  public static Optional<Side> fromName(String name) {
+    return Optional.ofNullable(CODEC.byName(name));
   }
 }

@@ -30,7 +30,7 @@ public abstract class AbstractStrengthenedGlassBlock extends TransparentBlock {
 
     private final String name;
 
-    private Type(String name) {
+    Type(String name) {
       this.name = name;
     }
 

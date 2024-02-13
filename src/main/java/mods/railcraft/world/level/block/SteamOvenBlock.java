@@ -103,7 +103,7 @@ public class SteamOvenBlock extends MultiblockBlock {
 
     private final String name;
 
-    private Type(String name) {
+    Type(String name) {
       this.name = name;
     }
 

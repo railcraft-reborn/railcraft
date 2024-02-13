@@ -13,7 +13,7 @@ public enum ChargeProviderImpl implements Charge.Provider {
 
   private final Map<ServerLevel, ChargeNetworkImpl> networks = new MapMaker().weakKeys().makeMap();
 
-  private ChargeProviderImpl(Charge charge) {
+  ChargeProviderImpl(Charge charge) {
     this.charge = charge;
   }
 
