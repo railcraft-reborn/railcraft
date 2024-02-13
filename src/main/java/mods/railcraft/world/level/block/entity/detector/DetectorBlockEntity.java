@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.detector;
 
 import java.util.List;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
@@ -66,15 +67,15 @@ public class DetectorBlockEntity extends RailcraftBlockEntity {
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.powerState = tag.getInt("powerState");
-    this.powerDelay = tag.getInt("powerDelay");
+    this.powerState = tag.getInt(CompoundTagKeys.POWER_STATE);
+    this.powerDelay = tag.getInt(CompoundTagKeys.POWER_DELAY);
   }
 
   @Override
   public void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("powerState", this.powerState);
-    tag.putInt("powerDelay", this.powerDelay);
+    tag.putInt(CompoundTagKeys.POWER_STATE, this.powerState);
+    tag.putInt(CompoundTagKeys.POWER_DELAY, this.powerDelay);
   }
 
   @Override

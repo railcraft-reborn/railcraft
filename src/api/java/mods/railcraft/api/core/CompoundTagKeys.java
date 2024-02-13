@@ -68,6 +68,8 @@ public final class CompoundTagKeys {
   public static final String POS = "pos";
   public static final String POWERED = "powered";
   public static final String POWERED_ASPECT = "poweredAspect";
+  public static final String POWER_DELAY = "powerDelay";
+  public static final String POWER_STATE = "powerState";
   public static final String PREV_CART_ID = "prevCartId";
   public static final String PRIMARY_COLOR = "primaryColor";
   public static final String PROCESSING = "processing";
