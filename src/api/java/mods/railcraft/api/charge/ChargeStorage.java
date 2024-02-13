@@ -72,7 +72,7 @@ public interface ChargeStorage extends IEnergyStorage {
      */
     DISABLED;
 
-    private State() {}
+    State() {}
   }
 
   BlockPos getBlockPos();

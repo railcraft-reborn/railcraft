@@ -71,7 +71,9 @@ public interface Train extends Iterable<RollingStock> {
 
   enum State implements StringRepresentable {
 
-    STOPPED("stopped"), IDLE("idle"), NORMAL("normal");
+    STOPPED("stopped"),
+    IDLE("idle"),
+    NORMAL("normal");
 
     private static final StringRepresentable.EnumCodec<State> CODEC =
         StringRepresentable.fromEnum(State::values);

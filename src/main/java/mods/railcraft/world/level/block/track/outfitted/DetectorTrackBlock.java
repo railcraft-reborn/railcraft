@@ -165,7 +165,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
 
     private final String name;
 
-    private Mode(String name) {
+    Mode(String name) {
       this.name = name;
     }
 
