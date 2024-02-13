@@ -29,7 +29,7 @@ public enum RailcraftArmorMaterial implements ArmorMaterial {
   private final float knockbackResistance;
   private final Supplier<Ingredient> repairIngredient;
 
-  private RailcraftArmorMaterial(String name, int durabilityMultiplier, int[] slotProtections,
+  RailcraftArmorMaterial(String name, int durabilityMultiplier, int[] slotProtections,
       int enchantmentValue, SoundEvent sound, float toughness, float knockbackResistance,
       Supplier<Ingredient> repairIngredient) {
     this.name = name;

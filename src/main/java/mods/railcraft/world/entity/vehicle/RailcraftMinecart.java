@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraftforge.network.NetworkHooks;
 
 /**
- * Basetype of RC minecarts. It also contains some generic code that most carts will find useful.
+ * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
  */
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, ItemTransferHandler {
@@ -65,6 +65,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Override
   public Season getSeason() {
+    // TODO: 1.20.4+ use Season.fromName(this.entityData.get(SEASON));
     return Season.values()[this.entityData.get(SEASON)];
   }
 
@@ -76,16 +77,13 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putInt("season", this.getSeason().ordinal());
+    tag.putString("season", this.getSeason().getSerializedName());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    var season = Season.DEFAULT;
-    if (tag.contains("season"))
-      season = Season.values()[tag.getInt("season")];
-    this.setSeason(season);
+    this.setSeason(Season.fromName(tag.getString("season")));
   }
 
   @Override

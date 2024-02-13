@@ -14,7 +14,7 @@ public enum ArrowDirection implements StringRepresentable {
 
   private final String name;
 
-  private ArrowDirection(String name) {
+  ArrowDirection(String name) {
     this.name = name;
   }
 

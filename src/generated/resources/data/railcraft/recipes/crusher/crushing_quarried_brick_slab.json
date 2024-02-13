@@ -8,14 +8,12 @@
       "item": "railcraft:quarried_paver_slab"
     }
   ],
-  "output": [
+  "outputs": [
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "railcraft:quarried_cobblestone"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

@@ -1,0 +1,30 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/copper"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/copper"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ingots/copper"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/copper"
+      }
+    }
+  ]
+}

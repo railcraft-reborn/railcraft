@@ -2,22 +2,10 @@ package mods.railcraft.world.inventory.slot;
 
 import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.Container;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 
-public class FeedSlot extends Slot {
+public class FeedSlot extends ItemFilterSlot {
 
   public FeedSlot(Container container, int slot, int x, int y) {
-    super(container, slot, x, y);
-  }
-
-  @Override
-  public int getMaxStackSize() {
-    return 64;
-  }
-
-  @Override
-  public boolean mayPlace(ItemStack stack) {
-    return StackFilter.FEED.test(stack);
+    super(StackFilter.FEED, container, slot, x, y);
   }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/netherite"
+      }
+    }
+  ],
+  "ingredient": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/netherite"
+      }
+    }
+  ]
+}

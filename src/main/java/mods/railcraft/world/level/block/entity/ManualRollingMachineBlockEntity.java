@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
@@ -50,17 +51,18 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("container", this.container.createTag());
-    tag.put("craftMatrix", ContainerTools.writeContainer(craftMatrix));
-    tag.putInt("progress", this.progress);
+    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag());
+    tag.put(CompoundTagKeys.CRAFT_MATRIX, ContainerTools.writeContainer(craftMatrix));
+    tag.putInt(CompoundTagKeys.PROGRESS, this.progress);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
-    ContainerTools.readContainer(this.craftMatrix, tag.getList("craftMatrix", Tag.TAG_COMPOUND));
-    this.progress = tag.getInt("progress");
+    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND));
+    ContainerTools.readContainer(this.craftMatrix,
+        tag.getList(CompoundTagKeys.CRAFT_MATRIX, Tag.TAG_COMPOUND));
+    this.progress = tag.getInt(CompoundTagKeys.PROGRESS);
   }
 
   @Override

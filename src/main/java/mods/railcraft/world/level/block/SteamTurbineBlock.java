@@ -145,7 +145,7 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
     private final String name;
 
-    private Type(String name) {
+    Type(String name) {
       this.name = name;
     }
 

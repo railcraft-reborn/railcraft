@@ -115,21 +115,21 @@ public abstract class PairingToolItem<T, P> extends Item {
 
   /**
    * {@return the message for the specified {@link State}}
-   * 
+   *
    * @param state - the state to retrieve the message for
    */
   protected abstract Component getMessageForState(State state);
 
   /**
    * Abandons pairing with the specified {@link BlockEntity}.
-   * 
+   *
    * @param target - the {@link BlockEntity} to cancel pairing for
    */
   protected abstract void abandon(@Nullable T target);
 
   /**
    * Begins pairing with the specified {@link BlockEntity}.
-   * 
+   *
    * @param target - the {@link BlockEntity} to begin pairing with
    * @return the result of the operation
    */
@@ -137,7 +137,7 @@ public abstract class PairingToolItem<T, P> extends Item {
 
   /**
    * Completes pairing.
-   * 
+   *
    * @param target - the target {@link BlockEntity}
    * @param peer - the peer {@link BlockEntity}
    * @return the result of the operation

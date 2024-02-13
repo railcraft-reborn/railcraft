@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -20,8 +21,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   protected final float experience;
   protected final int cookingTime;
   protected final Advancement.Builder advancement = Advancement.Builder.advancement();
-  @Nullable
-  protected String group;
 
   public AbstractCookingRecipeBuilder(ItemLike result, int count, Ingredient ingredient,
       float experience, int cookingTime) {
@@ -40,8 +39,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
   @Override
   public RecipeBuilder group(String group) {
-    this.group = group;
-    return this;
+    throw new IllegalStateException("Group not allow");
   }
 
   @Override
@@ -52,7 +50,6 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   public static abstract class AbstractResult implements FinishedRecipe {
 
     private final ResourceLocation id;
-    private final String group;
     private final Item result;
     private final int count;
     private final Ingredient ingredient;
@@ -61,11 +58,10 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
     private final Advancement.Builder advancement;
     private final ResourceLocation advancementId;
 
-    public AbstractResult(ResourceLocation id, String group, Item result, int count,
+    public AbstractResult(ResourceLocation id, Item result, int count,
         Ingredient ingredient, float experience, int cookingTime, Advancement.Builder advancement,
         ResourceLocation advancementId) {
       this.id = id;
-      this.group = group;
       this.result = result;
       this.count = count;
       this.ingredient = ingredient;
@@ -77,19 +73,15 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public final void serializeRecipeData(JsonObject json) {
-      if (!group.isEmpty()) {
-        json.addProperty("group", group);
-      }
-
-      json.add("ingredient", ingredient.toJson());
+      json.add(RecipeJsonKeys.INGREDIENT, ingredient.toJson());
       var resultJson = new JsonObject();
-      resultJson.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+      resultJson.addProperty(RecipeJsonKeys.ITEM, ForgeRegistries.ITEMS.getKey(result).toString());
       if (count > 1) {
-        resultJson.addProperty("count", count);
+        resultJson.addProperty(RecipeJsonKeys.COUNT, count);
       }
-      json.add("result", resultJson);
-      json.addProperty("experience", experience);
-      json.addProperty("cookingTime", cookingTime);
+      json.add(RecipeJsonKeys.RESULT, resultJson);
+      json.addProperty(RecipeJsonKeys.EXPERIENCE, experience);
+      json.addProperty(RecipeJsonKeys.COOKING_TIME, cookingTime);
       addJsonProperty(json);
     }
 

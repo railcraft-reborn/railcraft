@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class BedCartSleepTrigger extends SimpleCriterionTrigger<BedCartSleepTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("bed_cart_sleep");
+  private static final ResourceLocation ID = RailcraftConstants.rl("bed_cart_sleep");
 
   @Override
   public ResourceLocation getId() {

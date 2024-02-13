@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.track.RailShapeUtil;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TrackLayerMenu;
@@ -104,8 +105,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
     return (state.isAir() ||
         block instanceof IPlantable ||
         block instanceof IForgeShearable ||
-        TunnelBore.REPLACEABLE_TAGS.stream().anyMatch(state::is) ||
-        TunnelBore.REPLACEABLE_BLOCKS.contains(block));
+        state.is(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS));
   }
 
   @Override

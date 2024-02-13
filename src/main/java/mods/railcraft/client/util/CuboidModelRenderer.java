@@ -306,7 +306,7 @@ public class CuboidModelRenderer {
     private final boolean front;
     private final boolean back;
 
-    private FaceDisplay(boolean front, boolean back) {
+    FaceDisplay(boolean front, boolean back) {
       this.front = front;
       this.back = back;
     }

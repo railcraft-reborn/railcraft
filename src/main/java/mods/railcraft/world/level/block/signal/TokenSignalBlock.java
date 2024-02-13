@@ -71,7 +71,7 @@ public class TokenSignalBlock extends SingleSignalBlock implements JeiSearchable
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.TOKEN_SIGNAL);
   }
 }

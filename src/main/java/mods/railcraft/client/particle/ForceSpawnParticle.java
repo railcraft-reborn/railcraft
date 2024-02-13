@@ -1,5 +1,6 @@
 package mods.railcraft.client.particle;
 
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -17,9 +18,9 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
       double dz, int color, float scale, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz, scale);
     this.gravity = -0.1F;
-    this.rCol = ((color >> 16) & 0xFF) / 255F;
-    this.gCol = ((color >> 8) & 0xFF) / 255F;
-    this.bCol = ((color) & 0xFF) / 255F;
+    this.rCol = RenderUtil.getRed(color);
+    this.gCol = RenderUtil.getGreen(color);
+    this.bCol = RenderUtil.getBlue(color);
     this.lifetime = (int) (8.0F / (this.random.nextFloat() * 0.8F + 0.2F));
     this.lifetime = (int) ((float) this.lifetime * scale);
     this.hasPhysics = false;

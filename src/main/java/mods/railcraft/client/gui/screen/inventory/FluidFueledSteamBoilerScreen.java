@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.FluidFueledSteamBoilerMenu;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFueledSteamBoilerMenu> {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      Railcraft.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
+      RailcraftConstants.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
 
   public FluidFueledSteamBoilerScreen(FluidFueledSteamBoilerMenu menu, Inventory inventory,
       Component title) {

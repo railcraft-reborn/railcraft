@@ -1,16 +1,24 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "minecraft:wool"
-  },
-  "output": [
+  "conditions": [
     {
-      "probability": 1.0,
-      "result": {
-        "count": 4,
-        "item": "minecraft:string"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "minecraft:wool"
       }
     }
   ],
-  "processTime": 200
+  "ingredient": {
+    "tag": "minecraft:wool"
+  },
+  "outputs": [
+    {
+      "count": 4,
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:string"
+      }
+    }
+  ]
 }

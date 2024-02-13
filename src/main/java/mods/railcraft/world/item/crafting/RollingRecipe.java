@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import com.google.gson.JsonObject;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
@@ -140,15 +141,16 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
     @Override
     public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      var map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, "key"));
-      var patterns = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(GsonHelper.getAsJsonArray(json,"pattern")));
+      var map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.KEY));
+      var patterns = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(
+          GsonHelper.getAsJsonArray(json, RecipeJsonKeys.PATTERN)));
       int width = patterns[0].length();
       int height = patterns.length;
 
-      int tickCost = GsonHelper.getAsInt(json, "processTime", RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
+      int processTime = GsonHelper.getAsInt(json, RecipeJsonKeys.PROCESS_TIME, RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
       var ingredients = ShapedRecipe.dissolvePattern(patterns, map, width, height);
-      var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json,"result"));
-      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, tickCost);
+      var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
+      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, processTime);
     }
 
     @Override

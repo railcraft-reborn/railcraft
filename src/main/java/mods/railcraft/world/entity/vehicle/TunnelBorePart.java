@@ -14,8 +14,7 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
 
   private final EntityDimensions size;
 
-  public TunnelBorePart(TunnelBore parent, float width, float height,
-      float forwardOffset) {
+  public TunnelBorePart(TunnelBore parent, float width, float height, float forwardOffset) {
     this(parent, width, height, forwardOffset, 0);
   }
 
@@ -50,10 +49,10 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   protected void defineSynchedData() {}
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag compound) {}
+  protected void readAdditionalSaveData(CompoundTag tag) {}
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag compound) {}
+  protected void addAdditionalSaveData(CompoundTag tag) {}
 
   @Override
   public boolean canBeCollidedWith() {

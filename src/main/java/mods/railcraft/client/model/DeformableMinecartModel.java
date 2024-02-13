@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 
 /**
  * Copy of {@link MinecartModel} that accepts a {@link CubeDeformation}.
- * 
+ *
  * @author Sm0keySa1m0n
  *
  * @param <T> - entity type

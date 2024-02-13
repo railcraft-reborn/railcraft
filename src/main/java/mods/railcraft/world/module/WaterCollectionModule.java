@@ -2,11 +2,13 @@ package mods.railcraft.world.module;
 
 import java.util.Collection;
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.util.FluidTools;
-import mods.railcraft.util.FluidTools.ProcessType;
+import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.util.fluids.FluidTools;
+import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,7 +27,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public static final int SLOT_PROCESS = 1;
   public static final int SLOT_OUTPUT = 2;
 
-  private static final int REFILL_INTERVAL = 20;
+  private static final int REFILL_INTERVAL = SharedConstants.TICKS_PER_SECOND;
   private static final float REFILL_PENALTY_FROZEN = 0.5F;
   private static final float REFILL_BOOST_RAIN = 3.0F;
 
@@ -107,17 +109,16 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.put("tank", this.tank.writeToNBT(new CompoundTag()));
-    tag.putString("processState", this.processState.getSerializedName());
+    tag.put(CompoundTagKeys.TANK, this.tank.writeToNBT(new CompoundTag()));
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.tank.readFromNBT(tag.getCompound("tank"));
-    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
+    this.tank.readFromNBT(tag.getCompound(CompoundTagKeys.TANK));
+    this.processState = FluidTools.ProcessState.fromTag(tag);
   }
 
   @Override

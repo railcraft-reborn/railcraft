@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
@@ -11,6 +12,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,7 +36,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   // as of 2021 all the numbers have been increased due to RF/FE usage
-  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = 20; // the original value
+  private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = SharedConstants.TICKS_PER_SECOND; // the original value
   private static final int FUEL_PER_REQUEST = 1;
   // multiplied by 4 because rf
   private static final int CHARGE_USE_PER_REQUEST =
@@ -165,13 +167,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
+    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
   }
 
   @Override
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putInt("energy", this.cartStorage.getEnergyStored());
+    tag.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
   }
 
   @Override
@@ -181,13 +183,13 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     if (this.cartStorage == null) {
       this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
     }
-    this.cartStorage.receiveEnergy(tag.getInt("energy"), false);
+    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
   }
 
   @Override
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
-    itemStack.getOrCreateTag().putInt("energy", this.cartStorage.getEnergyStored());
+    itemStack.getOrCreateTag().putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
     return itemStack;
   }
 

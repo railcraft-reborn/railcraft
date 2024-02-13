@@ -5,9 +5,9 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
@@ -147,20 +147,19 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag data) {
-    super.readAdditionalSaveData(data);
-    this.processState = FluidTools.ProcessState.getByName(data.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
-    this.tank.readFromNBT(data.getCompound("tank"));
+  protected void readAdditionalSaveData(CompoundTag tag) {
+    super.readAdditionalSaveData(tag);
+    this.processState = FluidTools.ProcessState.fromTag(tag);
+    this.tank.readFromNBT(tag.getCompound("tank"));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag data) {
-    super.addAdditionalSaveData(data);
-    data.putString("processState", this.processState.getSerializedName());
+  protected void addAdditionalSaveData(CompoundTag tag) {
+    super.addAdditionalSaveData(tag);
+    tag.putString("processState", this.processState.getSerializedName());
     var tankTag = new CompoundTag();
     this.tank.writeToNBT(tankTag);
-    data.put("tank", tankTag);
+    tag.put("tank", tankTag);
   }
 
   public boolean isFilling() {

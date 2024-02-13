@@ -1,7 +1,7 @@
 package mods.railcraft.data.recipes.patterns;
 
 import java.util.function.Consumer;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -28,7 +28,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern(" a ")
         .define('a', ingredient)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(finishedRecipe, RailcraftConstants.rl(customName));
   }
 
   public static void parallelLines(Consumer<FinishedRecipe> finishedRecipe,
@@ -51,7 +51,7 @@ public class RollingRecipePattern {
         .pattern("a b")
         .define('a', ingred1)
         .define('b', ingred2)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(finishedRecipe, RailcraftConstants.rl(customName));
   }
 
 
@@ -79,7 +79,7 @@ public class RollingRecipePattern {
         .define('a', ingred1)
         .define('b', ingred2)
         .define('c', ingred3)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(finishedRecipe, RailcraftConstants.rl(customName));
   }
 
   public static void diagonalLine(Consumer<FinishedRecipe> finishedRecipe,
@@ -92,7 +92,7 @@ public class RollingRecipePattern {
         .pattern(" a ")
         .pattern("a  ")
         .define('a', materialTag)
-        .save(finishedRecipe, Railcraft.rl(customName));
+        .save(finishedRecipe, RailcraftConstants.rl(customName));
   }
 
   public static void square2x2(Consumer<FinishedRecipe> finishedRecipe,
@@ -112,7 +112,7 @@ public class RollingRecipePattern {
         .pattern("aa")
         .pattern("aa")
         .define('a', materialTag)
-        .save(finishedRecipe, Railcraft.rl(name + postfix));
+        .save(finishedRecipe, RailcraftConstants.rl(name + postfix));
   }
 
   public static void hForm(Consumer<FinishedRecipe> finishedRecipe,

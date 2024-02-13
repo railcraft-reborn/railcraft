@@ -1,16 +1,23 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "railcraft:quarried"
-  },
-  "output": [
+  "conditions": [
     {
-      "probability": 1.0,
-      "result": {
-        "count": 1,
-        "item": "railcraft:quarried_cobblestone"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "railcraft:quarried"
       }
     }
   ],
-  "processTime": 200
+  "ingredient": {
+    "tag": "railcraft:quarried"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "item": "railcraft:quarried_cobblestone"
+      }
+    }
+  ]
 }

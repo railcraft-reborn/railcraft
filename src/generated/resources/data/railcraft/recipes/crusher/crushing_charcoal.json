@@ -3,14 +3,12 @@
   "ingredient": {
     "item": "minecraft:charcoal"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "railcraft:charcoal_dust"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

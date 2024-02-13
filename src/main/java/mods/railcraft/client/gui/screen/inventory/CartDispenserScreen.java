@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.CartDispenserMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CartDispenserScreen extends RailcraftMenuScreen<CartDispenserMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      Railcraft.rl("textures/gui/container/cart_slots.png");
+      RailcraftConstants.rl("textures/gui/container/cart_slots.png");
 
   public CartDispenserScreen(CartDispenserMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

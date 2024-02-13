@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:nether_wart_block"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 9,
       "probability": 1.0,
       "result": {
-        "count": 9,
         "item": "minecraft:nether_wart"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

@@ -380,66 +380,38 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> BRASS_BLOCK =
       deferredRegister.register("brass_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(3.0F, 6.0F)));
 
   public static final RegistryObject<Block> BRONZE_BLOCK =
       deferredRegister.register("bronze_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> INVAR_BLOCK =
       deferredRegister.register("invar_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> LEAD_BLOCK =
       deferredRegister.register("lead_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(5.0F, 6.0F)));
 
   public static final RegistryObject<Block> NICKEL_BLOCK =
       deferredRegister.register("nickel_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> SILVER_BLOCK =
       deferredRegister.register("silver_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> TIN_BLOCK =
       deferredRegister.register("tin_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(3.0F, 6.0F)
-              .sound(SoundType.METAL)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(BRASS_BLOCK.get())));
 
   public static final RegistryObject<Block> ZINC_BLOCK =
       deferredRegister.register("zinc_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
-              .strength(5.0F, 15.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new Block(BlockBehaviour.Properties.copy(STEEL_BLOCK.get())
+              .strength(5.0F, 15.0F)));
 
   public static final RegistryObject<Block> LEAD_ORE =
       deferredRegister.register("lead_ore",
@@ -458,86 +430,45 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> NICKEL_ORE =
       deferredRegister.register("nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_NICKEL_ORE =
       deferredRegister.register("deepslate_nickel_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(NICKEL_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> SILVER_ORE =
       deferredRegister.register("silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_BLOCK.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_SILVER_ORE =
       deferredRegister.register("deepslate_silver_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SILVER_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
-
-  public static final RegistryObject<Block> SULFUR_ORE =
-      deferredRegister.register("sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops(), UniformInt.of(2, 5)));
-
-  public static final RegistryObject<Block> DEEPSLATE_SULFUR_ORE =
-      deferredRegister.register("deepslate_sulfur_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(SULFUR_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE), UniformInt.of(2, 5)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> TIN_ORE =
       deferredRegister.register("tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_TIN_ORE =
       deferredRegister.register("deepslate_tin_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(TIN_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
   public static final RegistryObject<Block> ZINC_ORE =
       deferredRegister.register("zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(3.0F, 3.0F)
-              .requiresCorrectToolForDrops()));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())));
 
   public static final RegistryObject<Block> DEEPSLATE_ZINC_ORE =
       deferredRegister.register("deepslate_zinc_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(ZINC_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
-              .strength(4.5F, 3.0F)
-              .sound(SoundType.DEEPSLATE)));
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get())));
 
-  public static final RegistryObject<Block> COKE_BLOCK =
-      deferredRegister.register("coal_coke_block",
-          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_BLACK)
-              .instrument(NoteBlockInstrument.BASEDRUM)
-              .strength(5.0F, 10.0F)
-              .sound(SoundType.STONE)));
+  public static final RegistryObject<Block> SULFUR_ORE =
+      deferredRegister.register("sulfur_ore",
+          () -> new DropExperienceBlock(
+              BlockBehaviour.Properties.copy(LEAD_ORE.get()), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> DEEPSLATE_SULFUR_ORE =
+      deferredRegister.register("deepslate_sulfur_ore",
+          () -> new DropExperienceBlock(
+              BlockBehaviour.Properties.copy(DEEPSLATE_LEAD_ORE.get()), UniformInt.of(2, 5)));
 
   public static final RegistryObject<Block> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",
@@ -547,6 +478,14 @@ public class RailcraftBlocks {
               .requiresCorrectToolForDrops()
               .strength(0.8F)
               .sound(SoundType.SAND), UniformInt.of(2, 5)));
+
+  public static final RegistryObject<Block> COKE_BLOCK =
+      deferredRegister.register("coal_coke_block",
+          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_BLACK)
+              .instrument(NoteBlockInstrument.BASEDRUM)
+              .strength(5.0F, 10.0F)
+              .sound(SoundType.STONE)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
@@ -576,13 +515,11 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ItemLoaderBlock> ITEM_LOADER =
       deferredRegister.register("item_loader",
-          () -> new ItemLoaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+          () -> new ItemLoaderBlock(BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<ItemUnloaderBlock> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
-          () -> new ItemUnloaderBlock(
-              BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
+          () -> new ItemUnloaderBlock(BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
 
   public static final RegistryObject<CartDispenserBlock> CART_DISPENSER =
       deferredRegister.register("cart_dispenser",
@@ -742,7 +679,8 @@ public class RailcraftBlocks {
               .sound(SoundType.GLASS)
               .instabreak()
               .noCollission()
-              .randomTicks()));
+              .randomTicks()
+              .noLootTable()));
 
   public static final RegistryObject<ForceTrackEmitterBlock> FORCE_TRACK_EMITTER =
       deferredRegister.register("force_track_emitter",
@@ -818,17 +756,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.register("abandoned_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> ABANDONED_TURNOUT_TRACK =
       deferredRegister.register("abandoned_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> ABANDONED_JUNCTION_TRACK =
       deferredRegister.register("abandoned_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<LauncherTrackBlock> ABANDONED_LAUNCHER_TRACK =
       deferredRegister.register("abandoned_launcher_track",
@@ -926,17 +864,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> ELECTRIC_WYE_TRACK =
       deferredRegister.register("electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("electric_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<LauncherTrackBlock> ELECTRIC_LAUNCHER_TRACK =
       deferredRegister.register("electric_launcher_track",
@@ -1002,17 +940,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.register("high_speed_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> HIGH_SPEED_TURNOUT_TRACK =
       deferredRegister.register("high_speed_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> HIGH_SPEED_JUNCTION_TRACK =
       deferredRegister.register("high_speed_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<WhistleTrackBlock> HIGH_SPEED_WHISTLE_TRACK =
       deferredRegister.register("high_speed_whistle_track",
@@ -1065,17 +1003,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
       deferredRegister.register("high_speed_electric_wye_track",
           () -> new WyeTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
       deferredRegister.register("high_speed_electric_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       deferredRegister.register("high_speed_electric_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<WhistleTrackBlock> HIGH_SPEED_ELECTRIC_WHISTLE_TRACK =
       deferredRegister.register("high_speed_electric_whistle_track",
@@ -1153,17 +1091,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.register("iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> IRON_TURNOUT_TRACK =
       deferredRegister.register("iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> IRON_JUNCTION_TRACK =
       deferredRegister.register("iron_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<LauncherTrackBlock> IRON_LAUNCHER_TRACK =
       deferredRegister.register("iron_launcher_track",
@@ -1260,17 +1198,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.register("reinforced_wye_track",
           () -> new WyeTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> REINFORCED_TURNOUT_TRACK =
       deferredRegister.register("reinforced_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> REINFORCED_JUNCTION_TRACK =
       deferredRegister.register("reinforced_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<LauncherTrackBlock> REINFORCED_LAUNCHER_TRACK =
       deferredRegister.register("reinforced_launcher_track",
@@ -1367,17 +1305,17 @@ public class RailcraftBlocks {
   public static final RegistryObject<WyeTrackBlock> STRAP_IRON_WYE_TRACK =
       deferredRegister.register("strap_iron_wye_track",
           () -> new WyeTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<TurnoutTrackBlock> STRAP_IRON_TURNOUT_TRACK =
       deferredRegister.register("strap_iron_turnout_track",
           () -> new TurnoutTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<JunctionTrackBlock> STRAP_IRON_JUNCTION_TRACK =
       deferredRegister.register("strap_iron_junction_track",
           () -> new JunctionTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get()).noLootTable()));
 
   public static final RegistryObject<LauncherTrackBlock> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.register("strap_iron_launcher_track",
@@ -1428,7 +1366,8 @@ public class RailcraftBlocks {
           () -> new RitualBlock(BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .lightLevel(__ -> 1)
-              .noOcclusion()));
+              .noOcclusion()
+              .noLootTable()));
 
   public static final RegistryObject<ManualRollingMachineBlock> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",

@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.charge.Charge;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.item.RailcraftItems;
@@ -99,22 +100,22 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.put("steamTank", this.steamTank.writeToNBT(new CompoundTag()));
-    tag.put("waterTank", this.waterTank.writeToNBT(new CompoundTag()));
-    tag.put("rotorContainer", this.rotorContainer.createTag());
-    tag.putInt("energy", this.energy);
-    tag.putFloat("operatingRatio", this.operatingRatio);
+    tag.put(CompoundTagKeys.STEAM_TANK, this.steamTank.writeToNBT(new CompoundTag()));
+    tag.put(CompoundTagKeys.WATER_TANK, this.waterTank.writeToNBT(new CompoundTag()));
+    tag.put(CompoundTagKeys.ROTOR_CONTAINER, this.rotorContainer.createTag());
+    tag.putInt(CompoundTagKeys.ENERGY, this.energy);
+    tag.putFloat(CompoundTagKeys.OPERATING_RATIO, this.operatingRatio);
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.steamTank.readFromNBT(tag.getCompound("steamTank"));
-    this.waterTank.readFromNBT(tag.getCompound("waterTank"));
-    this.rotorContainer.fromTag(tag.getList("rotorContainer", Tag.TAG_COMPOUND));
-    this.energy = tag.getInt("energy");
-    this.operatingRatio = tag.getFloat("operatingRatio");
+    this.steamTank.readFromNBT(tag.getCompound(CompoundTagKeys.STEAM_TANK));
+    this.waterTank.readFromNBT(tag.getCompound(CompoundTagKeys.WATER_TANK));
+    this.rotorContainer.fromTag(tag.getList(CompoundTagKeys.ROTOR_CONTAINER, Tag.TAG_COMPOUND));
+    this.energy = tag.getInt(CompoundTagKeys.ENERGY);
+    this.operatingRatio = tag.getFloat(CompoundTagKeys.OPERATING_RATIO);
   }
 
   public ItemStack useRotor(ItemStack stack) {

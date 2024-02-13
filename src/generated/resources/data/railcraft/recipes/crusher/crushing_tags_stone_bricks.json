@@ -1,16 +1,23 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "minecraft:stone_bricks"
-  },
-  "output": [
+  "conditions": [
     {
-      "probability": 1.0,
-      "result": {
-        "count": 1,
-        "item": "minecraft:cobblestone"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "minecraft:stone_bricks"
       }
     }
   ],
-  "processTime": 200
+  "ingredient": {
+    "tag": "minecraft:stone_bricks"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:cobblestone"
+      }
+    }
+  ]
 }

@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:raw_iron_block"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 9,
       "probability": 1.0,
       "result": {
-        "count": 9,
         "item": "minecraft:raw_iron"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

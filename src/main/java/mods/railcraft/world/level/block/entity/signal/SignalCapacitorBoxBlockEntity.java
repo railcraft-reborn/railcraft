@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.Optional;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -14,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
@@ -124,20 +126,21 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putShort("ticksPowered", this.ticksPowered);
-    tag.putShort("ticksToPower", this.ticksToPower);
-    tag.putString("signalAspect", this.signalAspect.getSerializedName());
-    tag.putInt("mode", this.mode.ordinal());
+    tag.putShort(CompoundTagKeys.TICKS_POWERED, this.ticksPowered);
+    tag.putShort(CompoundTagKeys.TICKS_TO_POWER, this.ticksToPower);
+    tag.putString(CompoundTagKeys.SIGNAL_ASPECT, this.signalAspect.getSerializedName());
+    tag.putInt(CompoundTagKeys.MODE, this.mode.ordinal());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.ticksPowered = tag.getShort("ticksPowered");
-    this.ticksToPower = tag.getShort("ticksToPower");
+    this.ticksPowered = tag.getShort(CompoundTagKeys.TICKS_POWERED);
+    this.ticksToPower = tag.getShort(CompoundTagKeys.TICKS_TO_POWER);
     this.signalAspect =
-        SignalAspect.getByName(tag.getString("signalAspect")).orElse(SignalAspect.OFF);
-    this.mode = Mode.values()[tag.getInt("mode")];
+        SignalAspect.fromName(tag.getString(CompoundTagKeys.SIGNAL_ASPECT)).orElse(SignalAspect.OFF);
+    // TODO: 1.20.4+ use Mode.fromName(tag.getString("CompoundTagKeys.MODE"));
+    this.mode = Mode.values()[tag.getInt(CompoundTagKeys.MODE)];
   }
 
   @Override
@@ -163,14 +166,17 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     return this.ticksPowered > 0 ? this.signalAspect : SignalAspect.RED;
   }
 
-  public enum Mode implements ButtonState<Mode> {
+  public enum Mode implements ButtonState<Mode>, StringRepresentable {
 
     RISING_EDGE("rising_edge"),
     FALLING_EDGE("falling_edge");
 
+    private static final StringRepresentable.EnumCodec<Mode> CODEC =
+        StringRepresentable.fromEnum(Mode::values);
+
     private final String name;
 
-    private Mode(String name) {
+    Mode(String name) {
       this.name = name;
     }
 
@@ -193,6 +199,11 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     @Override
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    @Override
     public TexturePosition texturePosition() {
       return ButtonTexture.SMALL_BUTTON;
     }
@@ -200,6 +211,10 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     @Override
     public Mode next() {
       return EnumUtil.next(this, values());
+    }
+
+    public static Mode fromName(String name) {
+      return CODEC.byName(name, RISING_EDGE);
     }
   }
 }

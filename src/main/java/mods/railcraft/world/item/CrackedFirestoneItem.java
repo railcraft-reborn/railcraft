@@ -4,15 +4,12 @@ import net.minecraft.world.item.ItemStack;
 
 public class CrackedFirestoneItem extends RefinedFirestoneItem {
 
-  public static final int HEAT = 100;
-
   public CrackedFirestoneItem(Properties properties) {
-    super(true, properties);
-    this.heat = HEAT;
+    super(100, true, properties);
   }
 
   public static ItemStack getItemEmpty() {
-    ItemStack itemStack = RailcraftItems.CRACKED_FIRESTONE.get().getDefaultInstance();
+    var itemStack = RailcraftItems.CRACKED_FIRESTONE.get().getDefaultInstance();
     itemStack.setDamageValue(CHARGES - 1);
     return itemStack;
   }
@@ -23,7 +20,7 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
     if (random.nextDouble() < damageLevel * 0.0001) {
       return RailcraftItems.RAW_FIRESTONE.get().getDefaultInstance();
     }
-    ItemStack newStack = itemStack.copyWithCount(1);
+    var newStack = itemStack.copyWithCount(1);
     return newStack.hurt(1, random, null) ? ItemStack.EMPTY : newStack;
   }
 }

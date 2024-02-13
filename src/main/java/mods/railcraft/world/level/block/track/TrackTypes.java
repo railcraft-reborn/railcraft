@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block.track;
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -30,7 +29,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class TrackTypes {
 
   private static final ResourceKey<Registry<TrackType>> REGISTRY_KEY =
-      ResourceKey.createRegistryKey(Railcraft.rl("track_type"));
+      ResourceKey.createRegistryKey(RailcraftConstants.rl("track_type"));
 
   private static final DeferredRegister<TrackType> deferredRegister =
       DeferredRegister.create(REGISTRY_KEY, RailcraftConstants.ID);
@@ -112,15 +111,9 @@ public class TrackTypes {
               .setEventHandler(SpeedController.STRAP_IRON)
               .build());
 
-  private static class CompositeHandler implements TrackType.EventHandler {
-
-    private final CollisionHandler collisionHandler;
-    private final SpeedController speedController;
-
-    public CompositeHandler(CollisionHandler collisionHandler, SpeedController speedController) {
-      this.collisionHandler = collisionHandler;
-      this.speedController = speedController;
-    }
+  private record CompositeHandler(
+      CollisionHandler collisionHandler,
+      SpeedController speedController) implements TrackType.EventHandler {
 
     @Override
     public void minecartPass(Level level, AbstractMinecart cart, BlockPos pos) {

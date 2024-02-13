@@ -3,49 +3,43 @@
   "ingredient": {
     "item": "railcraft:coke_oven_bricks"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 3,
       "probability": 1.0,
       "result": {
-        "count": 3,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

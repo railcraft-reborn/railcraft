@@ -3,21 +3,18 @@
   "ingredient": {
     "item": "railcraft:crushed_obsidian"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "railcraft:obsidian_dust"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "railcraft:obsidian_dust"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

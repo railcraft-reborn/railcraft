@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.DeformableMinecartModel;
 import mods.railcraft.client.model.MaintenanceLampModel;
 import mods.railcraft.client.model.MaintenanceModel;
@@ -21,11 +21,11 @@ public abstract class MaintenanceMinecartRenderer
     extends ContentsMinecartRenderer<MaintenanceMinecart> {
 
   private static final ResourceLocation LAMP_ON_TEX =
-      Railcraft.rl("textures/entity/minecart/maintenance_lamp_on.png");
+      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_on.png");
   private static final ResourceLocation LAMP_OFF_TEX =
-      Railcraft.rl("textures/entity/minecart/maintenance_lamp_off.png");
+      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_off.png");
   private static final ResourceLocation LAMP_DISABLED_TEX =
-      Railcraft.rl("textures/entity/minecart/maintenance_lamp_disabled.png");
+      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_disabled.png");
 
   private final ResourceLocation maintenanceTextureLocation;
 

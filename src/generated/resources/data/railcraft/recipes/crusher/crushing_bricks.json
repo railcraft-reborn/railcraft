@@ -3,21 +3,19 @@
   "ingredient": {
     "item": "minecraft:bricks"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 3,
       "probability": 1.0,
       "result": {
-        "count": 3,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

@@ -3,28 +3,25 @@
   "ingredient": {
     "item": "minecraft:brick_stairs"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

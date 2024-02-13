@@ -52,26 +52,8 @@ public class RailcraftDataSerializers {
       };
 
   public static final EntityDataSerializer<Optional<GameProfile>> OPTIONAL_GAME_PROFILE =
-      new EntityDataSerializer<>() {
-        @Override
-        public void write(FriendlyByteBuf packetBuffer, Optional<GameProfile> gameProfile) {
-          packetBuffer.writeOptional(gameProfile, FriendlyByteBuf::writeGameProfile);
-        }
-
-        @Override
-        public Optional<GameProfile> read(FriendlyByteBuf packetBuffer) {
-          return packetBuffer.readOptional(FriendlyByteBuf::readGameProfile);
-        }
-
-        @Override
-        public Optional<GameProfile> copy(Optional<GameProfile> gameProfile) {
-          if (gameProfile.isEmpty()) {
-            return Optional.empty();
-          }
-          var profile = gameProfile.get();
-          return Optional.of(new GameProfile(profile.getId(), profile.getName()));
-        }
-      };
+      EntityDataSerializer
+          .optional(FriendlyByteBuf::writeGameProfile, FriendlyByteBuf::readGameProfile);
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
       DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);

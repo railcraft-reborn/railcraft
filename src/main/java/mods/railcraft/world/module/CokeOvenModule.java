@@ -1,8 +1,9 @@
 package mods.railcraft.world.module;
 
 import org.jetbrains.annotations.NotNull;
-import mods.railcraft.util.FluidTools;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
@@ -147,24 +148,18 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     return fluidHandler;
   }
 
-  public void invalidateCaps() {
-    itemHandler.invalidate();
-    fluidHandler.invalidate();
-  }
-
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.put("tank", this.tank.writeToNBT(new CompoundTag()));
-    tag.putString("processState", this.processState.getSerializedName());
+    tag.put(CompoundTagKeys.TANK, this.tank.writeToNBT(new CompoundTag()));
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.tank.readFromNBT(tag.getCompound("tank"));
-    this.processState = FluidTools.ProcessState.getByName(tag.getString("processState"))
-        .orElse(FluidTools.ProcessState.RESET);
+    this.tank.readFromNBT(tag.getCompound(CompoundTagKeys.TANK));
+    this.processState = FluidTools.ProcessState.fromTag(tag);
   }
 }

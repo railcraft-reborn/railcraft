@@ -1,14 +1,13 @@
 package mods.railcraft.world.item;
 
 import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
-import mods.railcraft.client.emblem.EmblemClientUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -59,31 +58,25 @@ public class LocomotiveItem extends CartItem implements Filter {
     var whistleText = whistle < 0 ? "???" : String.format("%.2f", whistle);
     tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whistleText)
         .withStyle(ChatFormatting.GRAY));
-
-    getEmblem(stack)
-        .flatMap(EmblemClientUtil.packageManager()::getEmblem)
-        .ifPresent(emblem -> tooltip.add(
-            Component.translatable("gui.railcraft.locomotive.tips.item.emblem",
-                emblem.displayName())));
   }
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,
       DyeColor secondaryColor) {
     var tag = stack.getOrCreateTag();
-    tag.putInt("primaryColor", primaryColor.getId());
-    tag.putInt("secondaryColor", secondaryColor.getId());
+    tag.putInt(CompoundTagKeys.PRIMARY_COLOR, primaryColor.getId());
+    tag.putInt(CompoundTagKeys.SECONDARY_COLOR, secondaryColor.getId());
   }
 
   public static void setItemWhistleData(ItemStack stack, float whistlePitch) {
     var tag = stack.getOrCreateTag();
-    tag.putFloat("whistlePitch", whistlePitch);
+    tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, whistlePitch);
   }
 
   public static float getWhistlePitch(ItemStack stack) {
     var tag = stack.getTag();
-    if (tag == null || !tag.contains("whistlePitch", Tag.TAG_FLOAT))
+    if (tag == null || !tag.contains(CompoundTagKeys.WHISTLE_PITCH, Tag.TAG_FLOAT))
       return -1;
-    return tag.getFloat("whistlePitch");
+    return tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
   }
 
   public static void setOwnerData(ItemStack stack, GameProfile owner) {
@@ -97,34 +90,10 @@ public class LocomotiveItem extends CartItem implements Filter {
     return NbtUtils.readGameProfile(tag);
   }
 
-  public static void setEmblem(ItemStack stack, String emblemIdentifier) {
-    var tag = stack.getOrCreateTag();
-    tag.putString("emblem", emblemIdentifier);
-  }
-
-  public static Optional<String> getEmblem(ItemStack stack) {
-    var tag = stack.getOrCreateTag();
-    return !tag.contains("emblem", Tag.TAG_STRING)
-        ? Optional.empty()
-        : Optional.of(tag.getString("emblem"));
-  }
-
-  public static void setModel(ItemStack stack, String modelTag) {
-    var tag = stack.getOrCreateTag();
-    tag.putString("model", modelTag);
-  }
-
-  public static String getModel(ItemStack stack) {
-    var tag = stack.getOrCreateTag();
-    if (!tag.contains("model", Tag.TAG_STRING))
-      return "default";
-    return tag.getString("model");
-  }
-
   public static DyeColor getPrimaryColor(ItemStack stack) {
     var tag = stack.getOrCreateTag();
-    if (tag.contains("primaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(tag.getInt("primaryColor"));
+    if (tag.contains(CompoundTagKeys.PRIMARY_COLOR, Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt(CompoundTagKeys.PRIMARY_COLOR));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultPrimary;
     }
@@ -132,8 +101,8 @@ public class LocomotiveItem extends CartItem implements Filter {
 
   public static DyeColor getSecondaryColor(ItemStack stack) {
     var tag = stack.getOrCreateTag();
-    if (tag.contains("secondaryColor", Tag.TAG_INT)) {
-      return DyeColor.byId(tag.getInt("secondaryColor"));
+    if (tag.contains(CompoundTagKeys.SECONDARY_COLOR, Tag.TAG_INT)) {
+      return DyeColor.byId(tag.getInt(CompoundTagKeys.SECONDARY_COLOR));
     } else {
       return ((LocomotiveItem) stack.getItem()).defaultSecondary;
     }

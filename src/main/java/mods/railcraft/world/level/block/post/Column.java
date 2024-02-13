@@ -11,7 +11,7 @@ public enum Column implements StringRepresentable {
 
   private final String name;
 
-  private Column(String name) {
+  Column(String name) {
     this.name = name;
   }
 

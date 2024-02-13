@@ -5,22 +5,22 @@ import net.minecraft.world.item.ItemStack;
 
 public class TurbineRotorItem extends Item {
 
-    public TurbineRotorItem(Properties properties) {
-        super(properties);
-    }
+  public TurbineRotorItem(Properties properties) {
+    super(properties);
+  }
 
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return 30_000;
-    }
+  @Override
+  public int getMaxDamage(ItemStack stack) {
+    return 30_000;
+  }
 
-    @Override
-    public boolean isDamageable(ItemStack stack) {
-        return true;
-    }
+  @Override
+  public boolean isDamageable(ItemStack stack) {
+    return true;
+  }
 
-    @Override
-    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-        return false;
-    }
+  @Override
+  public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+    return false;
+  }
 }

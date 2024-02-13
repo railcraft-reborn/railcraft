@@ -4,6 +4,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.material.FuelProvider;
 import mods.railcraft.world.level.material.RailcraftFluids;
@@ -251,7 +252,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
     waterCost = Math.min(waterCost, water.getAmount());
 
-    FluidStack steam = new FluidStack(RailcraftFluids.STEAM.get(),
+    var steam = new FluidStack(RailcraftFluids.STEAM.get(),
         SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
 
     this.waterTank.internalDrain(waterCost, FluidAction.EXECUTE);
@@ -262,20 +263,20 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   @Override
   public CompoundTag serializeNBT() {
-    CompoundTag tag = new CompoundTag();
-    tag.putFloat("temperature", this.temperature);
-    tag.putFloat("maxTemperature", this.maxTemperature);
-    tag.putFloat("burnTime", this.burnTime);
-    tag.putFloat("currentItemBurnTime", this.currentItemBurnTime);
+    var tag = new CompoundTag();
+    tag.putFloat(CompoundTagKeys.TEMPERATURE, this.temperature);
+    tag.putFloat(CompoundTagKeys.MAX_TEMPERATURE, this.maxTemperature);
+    tag.putFloat(CompoundTagKeys.BURN_TIME, this.burnTime);
+    tag.putFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
-    this.setTemperature(tag.getFloat("temperature"));
-    this.setMaxTemperature(tag.getFloat("maxTemperature"));
-    this.setBurnTime(tag.getFloat("burnTime"));
-    this.setCurrentItemBurnTime(tag.getFloat("currentItemBurnTime"));
+    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE));
+    this.setMaxTemperature(tag.getFloat(CompoundTagKeys.MAX_TEMPERATURE));
+    this.setBurnTime(tag.getFloat(CompoundTagKeys.BURN_TIME));
+    this.setCurrentItemBurnTime(tag.getFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME));
   }
 
   public Gauge getTemperatureGauge() {

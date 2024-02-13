@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
   private static final ResourceLocation WIDGETS_LOCATION =
-      Railcraft.rl("textures/gui/container/tunnel_bore.png");
+      RailcraftConstants.rl("textures/gui/container/tunnel_bore.png");
 
   private static final Component HEAD =
       Component.translatable(Translations.Screen.TUNNEL_BORE_HEAD);

@@ -3,14 +3,12 @@
   "ingredient": {
     "item": "railcraft:firestone_ore"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "railcraft:raw_firestone"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

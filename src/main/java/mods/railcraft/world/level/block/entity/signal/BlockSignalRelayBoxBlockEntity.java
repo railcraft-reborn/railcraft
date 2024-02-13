@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalController;
@@ -57,15 +58,15 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("blockSignal", this.blockSignal.serializeNBT());
-    tag.put("signalController", this.signalController.serializeNBT());
+    tag.put(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.blockSignal.deserializeNBT(tag.getCompound("blockSignal"));
-    this.signalController.deserializeNBT(tag.getCompound("signalController"));
+    this.blockSignal.deserializeNBT(tag.getCompound(CompoundTagKeys.BLOCK_SIGNAL));
+    this.signalController.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
   }
 
   @Override

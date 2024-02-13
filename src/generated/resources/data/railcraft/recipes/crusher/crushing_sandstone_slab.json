@@ -3,14 +3,12 @@
   "ingredient": {
     "item": "minecraft:sandstone_slab"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.45,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

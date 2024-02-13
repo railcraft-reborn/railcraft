@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:dark_prismarine"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 8,
       "probability": 1.0,
       "result": {
-        "count": 8,
         "item": "minecraft:prismarine_shard"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

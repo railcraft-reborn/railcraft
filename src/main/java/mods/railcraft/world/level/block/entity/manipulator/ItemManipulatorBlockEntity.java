@@ -8,6 +8,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.ItemStackKey;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerManifest;
@@ -257,14 +258,14 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("transferMode", this.transferMode.ordinal());
-    tag.put("itemFilters", this.getItemFilters().createTag());
+    tag.putInt(CompoundTagKeys.TRANSFER_MODE, this.transferMode.ordinal());
+    tag.put(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters().createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.transferMode = TransferMode.values()[tag.getInt("transferMode")];
-    this.getItemFilters().fromTag(tag.getList("itemFilters", Tag.TAG_COMPOUND));
+    this.transferMode = TransferMode.values()[tag.getInt(CompoundTagKeys.TRANSFER_MODE)];
+    this.getItemFilters().fromTag(tag.getList(CompoundTagKeys.ITEM_FILTERS, Tag.TAG_COMPOUND));
   }
 }

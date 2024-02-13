@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.track;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import net.minecraft.core.BlockPos;
@@ -21,51 +22,50 @@ public class CouplerTrackBlockEntity extends BlockEntity {
     super(RailcraftBlockEntityTypes.COUPLER_TRACK.get(), blockPos, blockState);
   }
 
-  // Called by block
-  public void minecartPassed(AbstractMinecart cart) {
-    CouplerTrackBlock.getMode(this.getBlockState()).minecartPassed(this, cart);
-  }
-
   public enum Mode implements StringRepresentable {
 
     COUPLER("coupler", 8) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        var extension = RollingStock.getOrThrow(cart);
-        if (track.pendingCoupling != null) {
-          track.pendingCoupling.link(extension);
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+        if (CouplerTrackBlock.isPowered(track.getBlockState())) {
+          var extension = RollingStock.getOrThrow(cart);
+          if (track.pendingCoupling != null) {
+            track.pendingCoupling.link(extension);
+          }
+          track.pendingCoupling = extension;
         }
-        track.pendingCoupling = extension;
       }
     },
     DECOUPLER("decoupler", 0) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        RollingStock.getOrThrow(cart).unlinkAll();
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+        if (CouplerTrackBlock.isPowered(track.getBlockState())) {
+          RollingStock.getOrThrow(cart).unlinkAll();
+        }
       }
     },
     AUTO_COUPLER("auto_coupler", 0) {
       @Override
-      protected void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
-        RollingStock.getOrThrow(cart).setAutoLinkEnabled(
-            CouplerTrackBlock.isPowered(track.getBlockState()));
+      public void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart) {
+        RollingStock.getOrThrow(cart)
+            .setAutoLinkEnabled(CouplerTrackBlock.isPowered(track.getBlockState()));
       }
     };
 
     private final String name;
     private final int powerPropagation;
 
-    private Mode(String name, int powerPropagation) {
+    Mode(String name, int powerPropagation) {
       this.name = name;
       this.powerPropagation = powerPropagation;
     }
 
     public Mode next() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     public Mode previous() {
-      return values()[(this.ordinal() + values().length - 1) % values().length];
+      return EnumUtil.previous(this, values());
     }
 
     public Component getDisplayName() {
@@ -85,6 +85,6 @@ public class CouplerTrackBlockEntity extends BlockEntity {
       return this.powerPropagation;
     }
 
-    protected abstract void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart);
+    public abstract void minecartPassed(CouplerTrackBlockEntity track, AbstractMinecart cart);
   }
 }

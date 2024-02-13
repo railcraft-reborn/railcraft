@@ -1,6 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.CrusherMenu;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
 
   private static final ResourceLocation WIDGETS_TEXTURE =
-      Railcraft.rl("textures/gui/container/crusher.png");
+      RailcraftConstants.rl("textures/gui/container/crusher.png");
 
   public CrusherScreen(CrusherMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
+import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.vehicle.CartConstants;
 import net.minecraft.ChatFormatting;
@@ -164,7 +165,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
 
     private final String name;
 
-    private Mode(String name) {
+    Mode(String name) {
       this.name = name;
     }
 
@@ -207,11 +208,11 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
     }
 
     private Mode next() {
-      return values()[(this.ordinal() + 1) % values().length];
+      return EnumUtil.next(this, values());
     }
 
     private Mode previous() {
-      return values()[(this.ordinal() + values().length - 1) % values().length];
+      return EnumUtil.previous(this, values());
     }
 
     protected void updatePowerState(BlockState blockState, Level level, BlockPos blockPos) {}

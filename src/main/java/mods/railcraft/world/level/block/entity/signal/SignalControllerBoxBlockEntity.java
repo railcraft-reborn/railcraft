@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.EnumSet;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
@@ -111,17 +112,19 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("defaultAspect", this.defaultAspect.getSerializedName());
-    tag.putString("poweredAspect", this.poweredAspect.getSerializedName());
-    tag.put("signalController", this.signalController.serializeNBT());
+    tag.putString(CompoundTagKeys.DEFAULT_ASPECT, this.defaultAspect.getSerializedName());
+    tag.putString(CompoundTagKeys.POWERED_ASPECT, this.poweredAspect.getSerializedName());
+    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.defaultAspect = SignalAspect.getByName(tag.getString("defaultAspect")).get();
-    this.poweredAspect = SignalAspect.getByName(tag.getString("poweredAspect")).get();
-    this.signalController.deserializeNBT(tag.getCompound("signalController"));
+    this.defaultAspect =
+        SignalAspect.fromName(tag.getString(CompoundTagKeys.DEFAULT_ASPECT)).orElse(SignalAspect.GREEN);
+    this.poweredAspect =
+        SignalAspect.fromName(tag.getString(CompoundTagKeys.POWERED_ASPECT)).orElse(SignalAspect.RED);
+    this.signalController.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
   }
 
   @Override

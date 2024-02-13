@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.tags.RailcraftTags;
@@ -79,7 +80,7 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     List<AbstractMinecart> cartsOnTrack = EntitySearcher.findMinecarts()
         .at(blockPos)
         .inflate(-0.3f)
-        .list(blockEntity.getLevel());
+        .list(level);
     Set<UUID> uuidOnTrack = cartsOnTrack.stream()
         .map(Entity::getUUID)
         .collect(Collectors.toSet());
@@ -87,8 +88,8 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     AbstractMinecart bestCart = blockEntity.getBestCartForVisualState(cartsOnTrack);
 
     boolean wasSwitched = SwitchTrackBlock.isSwitched(blockState);
-    BlockPos actuatorBlockPos = blockEntity.getActuatorBlockPos();
-    BlockState actuatorBlockState = blockEntity.level.getBlockState(actuatorBlockPos);
+    var actuatorBlockPos = blockEntity.getActuatorBlockPos();
+    var actuatorBlockState = level.getBlockState(actuatorBlockPos);
     boolean actuatorPresent = actuatorBlockState.is(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR);
     boolean actuatorSwitched = actuatorPresent
         && SwitchTrackActuatorBlock.isSwitched(actuatorBlockState);
@@ -105,13 +106,12 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
     }
 
     if (switched != wasSwitched) {
-      blockEntity.level.setBlockAndUpdate(blockEntity.getBlockPos(),
+      level.setBlockAndUpdate(blockEntity.getBlockPos(),
           blockState.setValue(SwitchTrackBlock.SWITCHED, switched));
       if (actuatorPresent) {
         if (actuatorSwitched != switched) {
           SwitchTrackActuatorBlock.setSwitched(
               actuatorBlockState, blockEntity.level, actuatorBlockPos, switched);
-
         }
         SwitchTrackActuatorBlock.updateArrowDirections(actuatorBlockState, blockEntity.level,
             actuatorBlockPos, blockEntity.getRedArrowDirection(),
@@ -243,45 +243,47 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putByte("sprung", this.sprung);
-    tag.putByte("locked", this.locked);
-    tag.put("springingCarts", this.springingCarts.stream()
+    tag.putByte(CompoundTagKeys.SPRUNG, this.sprung);
+    tag.putByte(CompoundTagKeys.LOCKED, this.locked);
+    tag.put(CompoundTagKeys.SPRINGING_CARTS, this.springingCarts.stream()
         .map(NbtUtils::createUUID)
         .collect(Collectors.toCollection(ListTag::new)));
-    tag.put("lockingCarts", this.lockingCarts.stream()
+    tag.put(CompoundTagKeys.LOCKING_CARTS, this.lockingCarts.stream()
         .map(NbtUtils::createUUID)
         .collect(Collectors.toCollection(ListTag::new)));
-    tag.put("decidingCarts", this.decidingCarts.stream()
+    tag.put(CompoundTagKeys.DECIDING_CARTS, this.decidingCarts.stream()
         .map(NbtUtils::createUUID)
         .collect(Collectors.toCollection(ListTag::new)));
     if (this.currentCart != null) {
-      tag.putUUID("currentCart", this.currentCart.entity().getUUID());
+      tag.putUUID(CompoundTagKeys.CURRENT_CART, this.currentCart.entity().getUUID());
     }
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.sprung = tag.getByte("sprung");
-    this.locked = tag.getByte("locked");
-    this.springingCarts = tag.getList("springingCarts", Tag.TAG_INT_ARRAY)
+    this.sprung = tag.getByte(CompoundTagKeys.SPRUNG);
+    this.locked = tag.getByte(CompoundTagKeys.LOCKED);
+    this.springingCarts = tag.getList(CompoundTagKeys.SPRINGING_CARTS, Tag.TAG_INT_ARRAY)
         .stream()
         .map(NbtUtils::loadUUID)
         .collect(Collectors.toCollection(HashSet::new));
-    this.lockingCarts = tag.getList("lockingCarts", Tag.TAG_INT_ARRAY)
+    this.lockingCarts = tag.getList(CompoundTagKeys.LOCKING_CARTS, Tag.TAG_INT_ARRAY)
         .stream()
         .map(NbtUtils::loadUUID)
         .collect(Collectors.toCollection(HashSet::new));
-    this.decidingCarts = tag.getList("decidingCarts", Tag.TAG_INT_ARRAY)
+    this.decidingCarts = tag.getList(CompoundTagKeys.DECIDING_CARTS, Tag.TAG_INT_ARRAY)
         .stream()
         .map(NbtUtils::loadUUID)
         .collect(Collectors.toCollection(HashSet::new));
-    this.unresolvedCurrentCart = tag.hasUUID("currentCart") ? tag.getUUID("currentCart") : null;
+    this.unresolvedCurrentCart = tag.hasUUID(CompoundTagKeys.CURRENT_CART)
+        ? tag.getUUID(CompoundTagKeys.CURRENT_CART)
+        : null;
   }
 
   private void updateSet(Set<UUID> setToUpdate, List<UUID> potentialUpdates, Set<UUID> reject1,
       Set<UUID> reject2) {
-    for (UUID cartUUID : potentialUpdates) {
+    for (var cartUUID : potentialUpdates) {
       reject1.remove(cartUUID);
       reject2.remove(cartUUID);
       setToUpdate.add(cartUUID);
@@ -291,8 +293,7 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
   private static double crudeDistance(BlockPos pos, AbstractMinecart cart) {
     double cx = pos.getX() + .5; // Why not calc this outside and cache it?
     double cz = pos.getZ() + .5; // b/c this is a rare occurrence that we need to calc this
-    return Math.abs(cart.getX() - cx) + Math.abs(cart.getZ() - cz); // not the real distance
-                                                                    // function
-    // but enough for us
+    // not the real distance function but enough for us
+    return Math.abs(cart.getX() - cx) + Math.abs(cart.getZ() - cz);
   }
 }

@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
@@ -29,18 +29,16 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
     this.lampTextureOn =
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff =
-        Railcraft.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
-    this.setEmblemPosition(0.2F, -0.03F, -0.41F, -0.505F);
+        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
   }
 
   @Override
   public void renderBody(Locomotive cart, float time, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight, float red, float green, float blue,
       float alpha) {
-    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue,
-        alpha);
+    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, red, green, blue, alpha);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     poseStack.translate(0.05F, 0, 0);

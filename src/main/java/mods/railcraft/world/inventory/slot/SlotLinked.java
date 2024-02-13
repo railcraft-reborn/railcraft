@@ -4,7 +4,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class SlotLinked extends Slot {
+public class SlotLinked extends RailcraftSlot {
 
   private final Slot masterSlot;
   private boolean allowNull;
@@ -13,16 +13,12 @@ public class SlotLinked extends Slot {
     super(container, slot, x, y);
     this.masterSlot = masterSlot;
     this.allowNull = false;
+    this.setStackLimit(64);
   }
 
   public SlotLinked setAllowNull() {
     allowNull = true;
     return this;
-  }
-
-  @Override
-  public int getMaxStackSize() {
-    return 64;
   }
 
   @Override

@@ -1,16 +1,24 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "forge:sandstone"
-  },
-  "output": [
+  "conditions": [
     {
-      "probability": 1.0,
-      "result": {
-        "count": 4,
-        "item": "minecraft:sand"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:sandstone"
       }
     }
   ],
-  "processTime": 200
+  "ingredient": {
+    "tag": "forge:sandstone"
+  },
+  "outputs": [
+    {
+      "count": 4,
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:sand"
+      }
+    }
+  ]
 }

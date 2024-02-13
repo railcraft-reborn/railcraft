@@ -1,10 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.track.LockingTrack;
 import mods.railcraft.api.track.TrackUtil;
@@ -137,15 +134,14 @@ public enum ForceTrackEmitterState implements StringRepresentable {
   private static final int TICKS_PER_REFRESH = 64;
   private static final int MAX_TRACKS = 64;
 
-  private static final Map<String, ForceTrackEmitterState> byName = Arrays.stream(values())
-      .collect(Collectors.toUnmodifiableMap(
-          ForceTrackEmitterState::getSerializedName, Function.identity()));
+  private static final StringRepresentable.EnumCodec<ForceTrackEmitterState> CODEC =
+      StringRepresentable.fromEnum(ForceTrackEmitterState::values);
 
   private final String name;
   private final boolean visuallyPowered;
   private final Function<ForceTrackEmitterBlockEntity, Instance> factory;
 
-  private ForceTrackEmitterState(String name, boolean visuallyPowered,
+  ForceTrackEmitterState(String name, boolean visuallyPowered,
       Function<ForceTrackEmitterBlockEntity, Instance> factory) {
     this.name = name;
     this.visuallyPowered = visuallyPowered;
@@ -165,8 +161,8 @@ public enum ForceTrackEmitterState implements StringRepresentable {
     return this.name;
   }
 
-  public static Optional<ForceTrackEmitterState> getByName(String name) {
-    return Optional.ofNullable(byName.get(name));
+  public static Optional<ForceTrackEmitterState> fromName(String name) {
+    return Optional.ofNullable(CODEC.byName(name));
   }
 
   public interface Instance {

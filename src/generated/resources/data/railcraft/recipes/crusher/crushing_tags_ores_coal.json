@@ -1,37 +1,48 @@
 {
   "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/coal"
+      }
+    }
+  ],
   "ingredient": {
     "tag": "forge:ores/coal"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 2,
       "probability": 1.0,
       "result": {
-        "count": 2,
         "item": "railcraft:coal_dust"
       }
     },
     {
       "probability": 0.65,
       "result": {
-        "count": 1,
         "item": "railcraft:coal_dust"
       }
     },
     {
       "probability": 0.15,
       "result": {
-        "count": 1,
+        "item": "railcraft:sulfur_dust"
+      }
+    },
+    {
+      "probability": 0.15,
+      "result": {
         "item": "minecraft:coal"
       }
     },
     {
       "probability": 0.001,
       "result": {
-        "count": 1,
         "item": "minecraft:diamond"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

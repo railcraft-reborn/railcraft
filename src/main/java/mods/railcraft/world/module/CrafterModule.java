@@ -1,5 +1,6 @@
 package mods.railcraft.world.module;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -125,16 +126,16 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
   @Override
   public CompoundTag serializeNBT() {
     var tag = super.serializeNBT();
-    tag.putInt("progress", this.progress);
-    tag.putBoolean("processing", this.processing);
+    tag.putInt(CompoundTagKeys.PROGRESS, this.progress);
+    tag.putBoolean(CompoundTagKeys.PROCESSING, this.processing);
     return tag;
   }
 
   @Override
   public void deserializeNBT(CompoundTag tag) {
     super.deserializeNBT(tag);
-    this.progress = tag.getInt("progress");
-    this.processing = tag.getBoolean("processing");
+    this.progress = tag.getInt(CompoundTagKeys.PROGRESS);
+    this.processing = tag.getBoolean(CompoundTagKeys.PROCESSING);
   }
 
   @Override

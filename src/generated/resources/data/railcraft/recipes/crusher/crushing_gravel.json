@@ -3,28 +3,24 @@
   "ingredient": {
     "item": "minecraft:gravel"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:sand"
       }
     },
     {
       "probability": 0.001,
       "result": {
-        "count": 1,
         "item": "minecraft:gold_nugget"
       }
     },
     {
       "probability": 5.0E-5,
       "result": {
-        "count": 1,
         "item": "minecraft:diamond"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

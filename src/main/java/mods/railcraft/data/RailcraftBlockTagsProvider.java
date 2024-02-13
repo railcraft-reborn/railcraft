@@ -7,6 +7,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -441,5 +442,52 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(RailcraftTags.Blocks.STEEL_TANK_GAUGE)
         .addTag(RailcraftTags.Blocks.STEEL_TANK_VALVE)
         .addTag(RailcraftTags.Blocks.STEEL_TANK_WALL);
+    this.tag(RailcraftTags.Blocks.TUNNEL_BORE_MINEABLE_BLOCKS)
+        .add(Blocks.CLAY,
+            Blocks.SNOW,
+            Blocks.CACTUS,
+            Blocks.CARROTS,
+            Blocks.MOSSY_COBBLESTONE,
+            Blocks.COCOA,
+            Blocks.WHEAT,
+            Blocks.DEAD_BUSH,
+            Blocks.FIRE,
+            Blocks.GLOWSTONE,
+            Blocks.ICE,
+            Blocks.MELON,
+            Blocks.MELON_STEM,
+            Blocks.BROWN_MUSHROOM,
+            Blocks.BROWN_MUSHROOM_BLOCK,
+            Blocks.RED_MUSHROOM,
+            Blocks.RED_MUSHROOM_BLOCK,
+            Blocks.MYCELIUM,
+            Blocks.NETHER_WART,
+            Blocks.POTATOES,
+            Blocks.PUMPKIN,
+            Blocks.PUMPKIN_STEM,
+            Blocks.SAND,
+            Blocks.SANDSTONE,
+            Blocks.SOUL_SAND,
+            Blocks.STONE,
+            Blocks.FARMLAND,
+            Blocks.TORCH,
+            Blocks.VINE,
+            Blocks.COBWEB,
+            Blocks.END_STONE)
+        .addTags(Tags.Blocks.ORES,
+            Tags.Blocks.NETHERRACK,
+            Tags.Blocks.COBBLESTONE,
+            Tags.Blocks.OBSIDIAN,
+            Tags.Blocks.GRAVEL,
+            BlockTags.DIRT,
+            BlockTags.LEAVES,
+            BlockTags.SAPLINGS,
+            BlockTags.LOGS,
+            BlockTags.FLOWERS,
+            BlockTags.REPLACEABLE);
+    this.tag(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS)
+        .add(Blocks.TORCH)
+        .addTags(BlockTags.FLOWERS,
+            BlockTags.REPLACEABLE);
   }
 }

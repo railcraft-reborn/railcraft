@@ -1,0 +1,36 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/salt"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ores/salt"
+  },
+  "outputs": [
+    {
+      "count": 3,
+      "probability": 1.0,
+      "result": {
+        "item": "railcraft:saltpeter_dust"
+      }
+    },
+    {
+      "probability": 0.85,
+      "result": {
+        "item": "railcraft:saltpeter_dust"
+      }
+    },
+    {
+      "probability": 0.35,
+      "result": {
+        "item": "railcraft:saltpeter_dust"
+      }
+    }
+  ]
+}

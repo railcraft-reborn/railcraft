@@ -1,0 +1,30 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:gems/diamond"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/diamond"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:gems/diamond"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/diamond"
+      }
+    }
+  ]
+}

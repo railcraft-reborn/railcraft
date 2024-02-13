@@ -2,7 +2,7 @@ package mods.railcraft.advancements;
 
 import org.jetbrains.annotations.Nullable;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.Conditions;
 import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class MultiBlockFormedTrigger extends
     SimpleCriterionTrigger<MultiBlockFormedTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("multiblock_formed");
+  private static final ResourceLocation ID = RailcraftConstants.rl("multiblock_formed");
 
   @Override
   public ResourceLocation getId() {

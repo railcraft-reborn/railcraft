@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
@@ -44,14 +45,14 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putString("lock", this.lock.getSerializedName());
+    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.lock = LockableSwitchTrackActuatorBlockEntity.Lock.getByName(tag.getString("lock"))
-        .orElse(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED);
+    this.lock =
+        LockableSwitchTrackActuatorBlockEntity.Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
   }
 
   @Override

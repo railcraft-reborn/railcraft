@@ -12,12 +12,13 @@ import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {
 
-  private static final int REFRESH_INTERVAL_TICKS = 20;
+  private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
 
   private final ActionSignalBoxBlockEntity signalBox;
 

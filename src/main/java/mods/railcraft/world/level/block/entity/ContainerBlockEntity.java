@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.container.ItemHandlerFactory;
@@ -75,12 +76,12 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.container.fromTag(tag.getList("container", Tag.TAG_COMPOUND));
+    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND));
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("container", this.container.createTag());
+    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag());
   }
 }

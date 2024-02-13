@@ -56,7 +56,7 @@ public class DistantSignalBlock extends SingleSignalBlock implements JeiSearchab
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.DISTANT_SIGNAL);
   }
 }

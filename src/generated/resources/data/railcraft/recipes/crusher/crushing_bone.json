@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:bone"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "minecraft:bone_meal"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

@@ -3,14 +3,12 @@
   "ingredient": {
     "item": "minecraft:cobblestone_stairs"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:gravel"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

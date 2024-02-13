@@ -3,21 +3,18 @@
   "ingredient": {
     "item": "minecraft:brick_slab"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 1.0,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     },
     {
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:brick"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

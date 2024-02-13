@@ -7,8 +7,8 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
-import mods.railcraft.util.CompositeFluidHandler;
 import mods.railcraft.util.FunctionalUtil;
+import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -162,7 +162,7 @@ final class TrainImpl implements Train {
   static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
     var id = tag.getUUID("id");
     var train = new TrainImpl(id, minecart);
-    State.getByName(tag.getString("state")).ifPresent(train::setState);
+    State.fromName(tag.getString("state")).ifPresent(train::setState);
     tag.getList("locks", Tag.TAG_INT_ARRAY).stream()
         .map(NbtUtils::loadUUID)
         .forEach(train::addLock);

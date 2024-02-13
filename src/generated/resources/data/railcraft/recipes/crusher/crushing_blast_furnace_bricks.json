@@ -3,28 +3,24 @@
   "ingredient": {
     "item": "railcraft:blast_furnace_bricks"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:nether_brick"
       }
     },
     {
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "minecraft:soul_sand"
       }
     },
     {
       "probability": 0.05,
       "result": {
-        "count": 1,
         "item": "minecraft:blaze_powder"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +35,7 @@ import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 public class RitualBlock extends BaseEntityBlock {
 
   public static final BooleanProperty CRACKED = BooleanProperty.create("cracked");
-  public static final VoxelShape SHAPE = Shapes.create(
+  private static final VoxelShape SHAPE = Shapes.create(
       BoxBuilder.create()
           .box()
           .inflateHorizontally(-0.3)
@@ -67,9 +68,9 @@ public class RitualBlock extends BaseEntityBlock {
   @SuppressWarnings("deprecation")
   @Override
   public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-    var drops = super.getDrops(state, builder);
-    var tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-    if (tile instanceof RitualBlockEntity firestone) {
+    var drops = new ArrayList<ItemStack>();
+    var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+    if (blockEntity instanceof RitualBlockEntity firestone) {
       var item = state.getValue(CRACKED)
           ? RailcraftItems.CRACKED_FIRESTONE.get()
           : RailcraftItems.REFINED_FIRESTONE.get();

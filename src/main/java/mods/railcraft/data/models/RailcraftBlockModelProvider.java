@@ -3,7 +3,6 @@ package mods.railcraft.data.models;
 import java.util.function.Function;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
@@ -593,7 +592,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.simpleBlock(block, model);
 
-    var side = Railcraft.rl("block/fluid_manipulator_side_inventory");
+    var side = RailcraftConstants.rl("block/fluid_manipulator_side_inventory");
     var bottom = TextureMapping.getBlockTexture(block, "_bottom");
     var top = TextureMapping.getBlockTexture(block, "_top");
     this.models().cubeBottomTop(this.name(block, "_inventory"), side, bottom, top);

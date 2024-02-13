@@ -3,42 +3,37 @@
   "ingredient": {
     "item": "minecraft:blaze_rod"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 2,
       "probability": 1.0,
       "result": {
-        "count": 2,
         "item": "minecraft:blaze_powder"
       }
     },
     {
       "probability": 0.65,
       "result": {
-        "count": 1,
         "item": "minecraft:blaze_powder"
       }
     },
     {
       "probability": 0.5,
       "result": {
-        "count": 1,
         "item": "railcraft:sulfur_dust"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:blaze_powder"
       }
     },
     {
       "probability": 0.25,
       "result": {
-        "count": 1,
         "item": "minecraft:blaze_powder"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

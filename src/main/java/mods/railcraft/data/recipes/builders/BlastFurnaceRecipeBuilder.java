@@ -2,8 +2,10 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.function.Consumer;
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import net.minecraft.SharedConstants;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +16,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
-  public static final int DEFAULT_COOKING_TIME = 20 * 20; // 20 sec
+  public static final int DEFAULT_COOKING_TIME = SharedConstants.TICKS_PER_SECOND * 20;
 
   private final int slagOutput;
 
@@ -45,12 +47,12 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
   @Override
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
-    var customResourceLocation = Railcraft.rl("blast_furnace/" + path);
+    var customResourceLocation = RailcraftConstants.rl("blast_furnace/" + path);
 
-    var advancementId = Railcraft.rl(String.format("recipes/%s", customResourceLocation.getPath()));
+    var advancementId = customResourceLocation.withPrefix("recipes/");
 
     finishedRecipe.accept(new Result(customResourceLocation,
-        this.group == null ? "" : this.group, this.result, this.count, this.ingredient,
+        this.result, this.count, this.ingredient,
         this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
   }
 
@@ -58,17 +60,19 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
     private final int slagOutput;
 
-    public Result(ResourceLocation id, String group, Item result, int count, Ingredient ingredient,
+    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
         float experience, int cookingTime, int slagOutput, Advancement.Builder advancement,
         ResourceLocation advancementId) {
-      super(id, group, result, count, ingredient, experience, cookingTime, advancement,
+      super(id, result, count, ingredient, experience, cookingTime, advancement,
           advancementId);
       this.slagOutput = slagOutput;
     }
 
     @Override
     protected void addJsonProperty(JsonObject json) {
-      json.addProperty("slagOutput", this.slagOutput);
+      if (this.slagOutput != 0) {
+        json.addProperty(RecipeJsonKeys.SLAG_OUTPUT, this.slagOutput);
+      }
     }
 
     @Override

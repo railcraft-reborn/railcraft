@@ -7,7 +7,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
@@ -26,7 +26,7 @@ public class LogBookScreen extends Screen {
 
   private static final int TEXT_WIDTH = 220;
   private static final ResourceLocation BOOK_LOCATION =
-      Railcraft.rl("textures/gui/block/logbook.png");
+      RailcraftConstants.rl("textures/gui/block/logbook.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 181;
   private final List<String> pages = Lists.newArrayList();

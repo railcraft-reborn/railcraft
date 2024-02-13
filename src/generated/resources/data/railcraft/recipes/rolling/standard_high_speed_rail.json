@@ -16,7 +16,6 @@
     "abc",
     "abc"
   ],
-  "processTime": 100,
   "result": {
     "count": 8,
     "item": "railcraft:high_speed_rail"

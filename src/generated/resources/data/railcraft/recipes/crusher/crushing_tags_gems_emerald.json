@@ -1,0 +1,30 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:gems/emerald"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/emerald"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:gems/emerald"
+  },
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/emerald"
+      }
+    }
+  ]
+}

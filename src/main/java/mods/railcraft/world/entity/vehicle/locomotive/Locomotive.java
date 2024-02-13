@@ -1,14 +1,10 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
@@ -19,6 +15,7 @@ import mods.railcraft.api.carts.NeedsFuel;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
@@ -85,8 +82,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> SECONDARY_COLOR =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<String> EMBLEM =
-      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<String> DESTINATION =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
   private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
@@ -128,7 +123,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.entityData.define(SPEED, (byte) Speed.NORMAL.ordinal());
     this.entityData.define(LOCK, (byte) Lock.UNLOCKED.ordinal());
     this.entityData.define(REVERSE, false);
-    this.entityData.define(EMBLEM, "");
     this.entityData.define(DESTINATION, "");
     this.entityData.define(OWNER, Optional.empty());
   }
@@ -142,7 +136,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   protected void loadFromItemStack(ItemStack itemStack) {
-    CompoundTag tag = itemStack.getTag();
+    var tag = itemStack.getTag();
     if (tag == null || !(itemStack.getItem() instanceof LocomotiveItem)) {
       return;
     }
@@ -150,22 +144,18 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setPrimaryColor(LocomotiveItem.getPrimaryColor(itemStack));
     this.setSecondaryColor(LocomotiveItem.getSecondaryColor(itemStack));
 
-    if (tag.contains("whistlePitch")) {
-      this.whistlePitch = tag.getFloat("whistlePitch");
+    if (tag.contains(CompoundTagKeys.WHISTLE_PITCH)) {
+      this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
     }
 
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      GameProfile ownerProfile = NbtUtils.readGameProfile(tag.getCompound("owner"));
+    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
+      var ownerProfile = NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER));
       this.setOwner(ownerProfile);
       this.setLock(Lock.LOCKED);
     }
 
-    if (tag.contains("lock", Tag.TAG_STRING)) {
-      Lock.getByName(tag.getString("lock")).ifPresent(this::setLock);
-    }
-
-    if (tag.contains("emblem", Tag.TAG_STRING)) {
-      this.setEmblem(tag.getString("emblem"));
+    if (tag.contains(CompoundTagKeys.LOCK, Tag.TAG_STRING)) {
+      Lock.fromNameOptional(tag.getString(CompoundTagKeys.LOCK)).ifPresent(this::setLock);
     }
   }
 
@@ -214,7 +204,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     LocomotiveItem.setItemColorData(itemStack,
         this.getPrimaryDyeColor(), this.getSecondaryDyeColor());
     LocomotiveItem.setItemWhistleData(itemStack, this.whistlePitch);
-    this.getEmblem().ifPresent(emblem -> LocomotiveItem.setEmblem(itemStack, emblem));
     if (this.hasCustomName()) {
       itemStack.setHoverName(this.getCustomName());
     }
@@ -224,10 +213,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
     if (this.level().isClientSide()) {
-      return InteractionResult.CONSUME;
+      return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
 
-    ItemStack itemStack = player.getItemInHand(hand);
+    var itemStack = player.getItemInHand(hand);
     if (!itemStack.isEmpty() && itemStack.is(RailcraftItems.WHISTLE_TUNER.get())) {
       if (this.whistleDelay <= 0) {
         this.whistlePitch = this.getNewWhistlePitch();
@@ -235,12 +224,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
         itemStack.hurtAndBreak(1, (ServerPlayer) player,
             serverPlayerEntity -> player.broadcastBreakEvent(hand));
       }
-      return InteractionResult.CONSUME;
+      return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
     if (this.canControl(player)) {
-      super.interact(player, hand);
+      return super.interact(player, hand);
     }
-    return InteractionResult.CONSUME;
+    return InteractionResult.sidedSuccess(this.level().isClientSide());
   }
 
   /**
@@ -289,19 +278,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public void setLock(Lock lock) {
     this.entityData.set(LOCK, (byte) lock.ordinal());
-  }
-
-  public Optional<String> getEmblem() {
-    var value = this.getEntityData().get(EMBLEM);
-    return value.isEmpty() ? Optional.empty() : Optional.of(value);
-  }
-
-  public void setEmblem(@Nullable String emblem) {
-    if (getEmblem().isEmpty()) {
-      this.getEntityData().set(EMBLEM, emblem);
-    } else if (!getEmblem().get().equals(emblem)) {
-      this.getEntityData().set(EMBLEM, emblem);
-    }
   }
 
   @Override
@@ -631,10 +607,10 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   protected abstract int retrieveFuel();
 
-  public int getDamageToRoadKill(LivingEntity entity) {
+  private int getDamageToRoadKill(LivingEntity entity) {
     if (entity instanceof Player) {
-      ItemStack pants = entity.getItemBySlot(EquipmentSlot.LEGS);
-      if (RailcraftItems.OVERALLS.get() == pants.getItem()) {
+      var pants = entity.getItemBySlot(EquipmentSlot.LEGS);
+      if (pants.is(RailcraftItems.OVERALLS.get())) {
         pants.hurtAndBreak(5, entity,
             unusedThing -> entity.broadcastBreakEvent(EquipmentSlot.LEGS));
         return 4;
@@ -726,58 +702,56 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
 
-    tag.putBoolean("flipped", this.flipped);
+    tag.putBoolean(CompoundTagKeys.FLIPPED, this.flipped);
 
-    this.getEmblem().ifPresent(emblem -> tag.putString("emblem", emblem));
+    tag.putString(CompoundTagKeys.DEST, StringUtils.defaultIfBlank(getDestination(), ""));
 
-    tag.putString("dest", StringUtils.defaultIfBlank(getDestination(), ""));
+    tag.putString(CompoundTagKeys.MODE, this.getMode().getSerializedName());
+    tag.putString(CompoundTagKeys.SPEED, this.getSpeed().getSerializedName());
+    tag.putString(CompoundTagKeys.LOCK, this.getLock().getSerializedName());
 
-    tag.putString("mode", this.getMode().getSerializedName());
-    tag.putString("speed", this.getSpeed().getSerializedName());
-    tag.putString("lock", this.getLock().getSerializedName());
-
-    tag.putString("primaryColor",
+    tag.putString(CompoundTagKeys.PRIMARY_COLOR,
         DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getSerializedName());
-    tag.putString("secondaryColor",
+    tag.putString(CompoundTagKeys.SECONDARY_COLOR,
         DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getSerializedName());
 
-    tag.putFloat("whistlePitch", this.whistlePitch);
+    tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, this.whistlePitch);
 
-    tag.putInt("fuel", this.fuel);
+    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
 
-    tag.putBoolean("reverse", this.isReverse());
-    this.getOwner()
-        .ifPresent(owner -> tag.put("owner", NbtUtils.writeGameProfile(new CompoundTag(), owner)));
+    tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
+    this.getOwner().ifPresent(owner ->
+        tag.put(CompoundTagKeys.OWNER, NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
 
-    this.flipped = tag.getBoolean("flipped");
+    this.flipped = tag.getBoolean(CompoundTagKeys.FLIPPED);
 
-    this.setEmblem(tag.getString("emblem"));
+    this.setDestination(tag.getString(CompoundTagKeys.DEST));
 
-    this.setDestination(tag.getString("dest"));
-
-    this.setMode(Mode.getByName(tag.getString("mode")).orElse(Mode.IDLE));
-    this.setSpeed(Speed.getByName(tag.getString("speed")).orElse(Speed.NORMAL));
-    this.setLock(Lock.getByName(tag.getString("lock")).orElse(Lock.UNLOCKED));
+    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
+    this.setSpeed(Speed.fromName(tag.getString(CompoundTagKeys.SPEED)));
+    this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
 
     this.setPrimaryColor(
-        DyeColor.byName(tag.getString("primaryColor"), this.getDefaultPrimaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR), this.getDefaultPrimaryColor()));
     this.setSecondaryColor(
-        DyeColor.byName(tag.getString("secondaryColor"), this.getDefaultSecondaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR), this.getDefaultSecondaryColor()));
 
-    this.whistlePitch = tag.getFloat("whistlePitch");
+    this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
 
-    this.fuel = tag.getInt("fuel");
+    this.fuel = tag.getInt(CompoundTagKeys.FUEL);
 
-    if (tag.contains("reverse", Tag.TAG_BYTE)) {
-      this.getEntityData().set(REVERSE, tag.getBoolean("reverse"));
+    if (tag.contains(CompoundTagKeys.REVERSE, Tag.TAG_BYTE)) {
+      this.getEntityData().set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
     }
-    if (tag.contains("owner", Tag.TAG_COMPOUND)) {
-      this.setOwner(NbtUtils.readGameProfile(tag.getCompound("owner")));;
+    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
+      this.setOwner(NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER)));;
+    } else {
+      this.setOwner(null);
     }
   }
 
@@ -852,12 +826,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
     IDLE("idle"),
     RUNNING("running");
 
-    private static final Map<String, Mode> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Mode::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Mode> CODEC =
+        StringRepresentable.fromEnum(Mode::values);
 
     private final String name;
 
-    private Mode(String name) {
+    Mode(String name) {
       this.name = name;
     }
 
@@ -866,8 +840,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return this.name;
     }
 
-    public static Optional<Mode> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Mode fromName(String name) {
+      return CODEC.byName(name, IDLE);
     }
   }
 
@@ -881,15 +855,15 @@ public abstract class Locomotive extends RailcraftMinecart implements
     NORMAL("normal", 3, 1, -1),
     MAX("max", 4, 0, -1);
 
-    private static final Map<String, Speed> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Speed::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Speed> CODEC =
+        StringRepresentable.fromEnum(Speed::values);
 
     private final String name;
     private final int shiftUp;
     private final int shiftDown;
     private final int level;
 
-    private Speed(String name, int level, int shiftUp, int shiftDown) {
+    Speed(String name, int level, int shiftUp, int shiftDown) {
       this.name = name;
       this.level = level;
       this.shiftUp = shiftUp;
@@ -913,12 +887,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return values()[this.ordinal() + shiftDown];
     }
 
-    public static Optional<Speed> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
-    }
-
-    public static Speed fromLevel(int level) {
-      return values()[level - 1];
+    public static Speed fromName(String name) {
+      return CODEC.byName(name, NORMAL);
     }
   }
 
@@ -928,13 +898,13 @@ public abstract class Locomotive extends RailcraftMinecart implements
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON),
     PRIVATE("private", new SimpleTexturePosition(240, 48, 16, 16));
 
-    private static final Map<String, Lock> byName = Arrays.stream(values())
-        .collect(Collectors.toUnmodifiableMap(Lock::getSerializedName, Function.identity()));
+    private static final StringRepresentable.EnumCodec<Lock> CODEC =
+        StringRepresentable.fromEnum(Lock::values);
 
     private final String name;
     private final TexturePosition texture;
 
-    private Lock(String name, TexturePosition texture) {
+    Lock(String name, TexturePosition texture) {
       this.name = name;
       this.texture = texture;
     }
@@ -959,8 +929,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return this.name;
     }
 
-    public static Optional<Lock> getByName(String name) {
-      return Optional.ofNullable(byName.get(name));
+    public static Lock fromName(String name) {
+      return CODEC.byName(name, UNLOCKED);
+    }
+
+    public static Optional<Lock> fromNameOptional(String name) {
+      return Optional.ofNullable(CODEC.byName(name));
     }
   }
 }

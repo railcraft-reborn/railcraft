@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:amethyst_block"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 4,
       "probability": 1.0,
       "result": {
-        "count": 4,
         "item": "minecraft:amethyst_shard"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

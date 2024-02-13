@@ -8,14 +8,12 @@
       "item": "railcraft:abyssal_paver_stairs"
     }
   ],
-  "output": [
+  "outputs": [
     {
       "probability": 0.75,
       "result": {
-        "count": 1,
         "item": "railcraft:abyssal_cobblestone"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

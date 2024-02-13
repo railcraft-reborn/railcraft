@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.EnumSet;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;
@@ -79,24 +80,24 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.put("signalReceiver", this.signalReceiver.serializeNBT());
+    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT());
     var actionAspectsTag = new ListTag();
     this.actionSignalAspects
         .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
-    tag.put("actionSignalAspects", actionAspectsTag);
-    tag.putBoolean("redstoneTriggered", this.redstoneTriggered);
+    tag.put(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, actionAspectsTag);
+    tag.putBoolean(CompoundTagKeys.REDSTONE_TRIGGERED, this.redstoneTriggered);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.signalReceiver.deserializeNBT(tag.getCompound("signalReceiver"));
-    var actionAspectsTag = tag.getList("actionSignalAspects", Tag.TAG_STRING);
+    this.signalReceiver.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+    var actionAspectsTag = tag.getList(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, Tag.TAG_STRING);
     this.actionSignalAspects.clear();
     for (var aspectTag : actionAspectsTag) {
-      SignalAspect.getByName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
+      SignalAspect.fromName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
     }
-    this.redstoneTriggered = tag.getBoolean("redstoneTriggered");
+    this.redstoneTriggered = tag.getBoolean(CompoundTagKeys.REDSTONE_TRIGGERED);
   }
 
   @Override

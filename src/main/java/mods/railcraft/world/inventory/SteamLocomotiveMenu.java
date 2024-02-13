@@ -16,27 +16,28 @@ public class SteamLocomotiveMenu extends LocomotiveMenu<SteamLocomotive> {
     super(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), id, inventory, locomotive, HEIGHT);
 
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().tankManager().get(0), 53, 23, 176, 0, 16, 47));
+        new FluidGaugeWidget(locomotive.getTankManager().get(0), 53, 23, 176, 0, 16, 47));
     this.addWidget(
-        new FluidGaugeWidget(this.getLocomotive().tankManager().get(1), 17, 23, 176, 0, 16, 47));
-
+        new FluidGaugeWidget(locomotive.getTankManager().get(1), 17, 23, 176, 0, 16, 47));
     this.addWidget(new GaugeWidget(
-        this.getLocomotive().boiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
-
-    this.addSlot(new LimitedWaterSlot(this.getLocomotive(), 0, 152, 20));
-    this.addSlot(new OutputSlot(this.getLocomotive(), 1, 152, 56));
-    this.addSlot(new OutputSlot(this.getLocomotive(), 2, 116, 56));
-    this.addSlot(new RailcraftSlot(this.getLocomotive(), 3, 116, 20)); // Burn
-    this.addSlot(new RailcraftSlot(this.getLocomotive(), 4, 80, 20)); // Fuel
-    this.addSlot(new RailcraftSlot(this.getLocomotive(), 5, 80, 38)); // Fuel
-    this.addSlot(new RailcraftSlot(this.getLocomotive(), 6, 80, 56)); // Fuel
+        locomotive.boiler().getTemperatureGauge(), 40, 25, 176, 61, 6, 43));
 
     this.addDataSlot(new SimpleDataSlot(
         () -> Math.round(locomotive.boiler().getBurnTime()),
-        this.getLocomotive().boiler()::setBurnTime));
-
+        locomotive.boiler()::setBurnTime));
     this.addDataSlot(new SimpleDataSlot(
         () -> Math.round(locomotive.boiler().getCurrentItemBurnTime()),
-        this.getLocomotive().boiler()::setCurrentItemBurnTime));
+        locomotive.boiler()::setCurrentItemBurnTime));
+  }
+
+  @Override
+  protected void addSlots(SteamLocomotive locomotive) {
+    this.addSlot(new LimitedWaterSlot(locomotive, 0, 152, 20));
+    this.addSlot(new OutputSlot(locomotive, 1, 152, 56));
+    this.addSlot(new OutputSlot(locomotive, 2, 116, 56));
+    this.addSlot(new RailcraftSlot(locomotive, 3, 116, 20)); // Burn
+    this.addSlot(new RailcraftSlot(locomotive, 4, 80, 20)); // Fuel
+    this.addSlot(new RailcraftSlot(locomotive, 5, 80, 38)); // Fuel
+    this.addSlot(new RailcraftSlot(locomotive, 6, 80, 56)); // Fuel
   }
 }

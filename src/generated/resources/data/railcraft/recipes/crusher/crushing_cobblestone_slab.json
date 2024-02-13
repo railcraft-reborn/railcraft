@@ -3,14 +3,12 @@
   "ingredient": {
     "item": "minecraft:cobblestone_slab"
   },
-  "output": [
+  "outputs": [
     {
       "probability": 0.45,
       "result": {
-        "count": 1,
         "item": "minecraft:gravel"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

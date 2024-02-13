@@ -1,0 +1,44 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ores/copper"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/copper"
+      }
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:dusts/gold"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:ores/copper"
+  },
+  "outputs": [
+    {
+      "count": 2,
+      "probability": 1.0,
+      "result": {
+        "tag": "forge:dusts/copper"
+      }
+    },
+    {
+      "probability": 0.1,
+      "result": {
+        "tag": "forge:dusts/gold"
+      }
+    }
+  ]
+}

@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
-import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
@@ -45,13 +44,13 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
     var rollingStock = RollingStock.getOrThrow(cart);
 
-    var link = rollingStock.linkAt(Side.BACK)
+    var link = rollingStock.backLink()
         .map(RollingStock::entity)
         .orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {
       return;
     }
-    link = rollingStock.linkAt(Side.FRONT)
+    link = rollingStock.frontLink()
         .map(RollingStock::entity)
         .orElse(null);
     if (link != null && (link == other || link.hasPassenger(other))) {

@@ -8,7 +8,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * 
+ *
  * @author Sm0keySa1m0n
  *
  */

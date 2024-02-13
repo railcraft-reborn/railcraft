@@ -5,11 +5,13 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.FluidTools;
 import mods.railcraft.util.Predicates;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +28,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   private static final int RESET_WAIT = 200;
-  private static final int TRANSFER_RATE = 20;
+  private static final int TRANSFER_RATE = SharedConstants.TICKS_PER_SECOND;
   private static final float MAX_PIPE_LENGTH = 1.25F;
   private static final float PIPE_INCREMENT = 0.01f;
   private static final Direction[] PULL_FROM = Stream.of(Direction.values())
@@ -229,13 +231,13 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putFloat("pipeLength", this.pipeLength);
+    tag.putFloat(CompoundTagKeys.PIPE_LENGTH, this.pipeLength);
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.pipeLength = tag.getFloat("pipeLength");
+    this.pipeLength = tag.getFloat(CompoundTagKeys.PIPE_LENGTH);
   }
 
   @Override

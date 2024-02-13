@@ -3,14 +3,13 @@
   "ingredient": {
     "item": "minecraft:prismarine_bricks"
   },
-  "output": [
+  "outputs": [
     {
+      "count": 9,
       "probability": 1.0,
       "result": {
-        "count": 9,
         "item": "minecraft:prismarine_shard"
       }
     }
-  ],
-  "processTime": 200
+  ]
 }

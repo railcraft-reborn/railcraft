@@ -28,7 +28,7 @@ public abstract class DisposableBatteryBlock extends BatteryBlock implements Jei
   }
 
   @Override
-  public Component addJeiInfo() {
+  public Component jeiDescription() {
     return Component.translatable(Translations.Jei.DISPOSABLE_BATTERY);
   }
 }

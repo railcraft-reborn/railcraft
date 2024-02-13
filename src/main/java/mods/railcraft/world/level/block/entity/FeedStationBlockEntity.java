@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.FeedStationMenu;
@@ -95,13 +96,13 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.feedCounter = tag.getByte("feedCounter");
+    this.feedCounter = tag.getByte(CompoundTagKeys.FEED_COUNTER);
   }
 
   @Override
   public void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putByte("feedCounter", this.feedCounter);
+    tag.putByte(CompoundTagKeys.FEED_COUNTER, this.feedCounter);
   }
 
   @Override

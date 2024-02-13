@@ -1,0 +1,24 @@
+{
+  "type": "railcraft:crusher",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:storage_blocks/quartz"
+      }
+    }
+  ],
+  "ingredient": {
+    "tag": "forge:storage_blocks/quartz"
+  },
+  "outputs": [
+    {
+      "count": 4,
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:quartz"
+      }
+    }
+  ]
+}

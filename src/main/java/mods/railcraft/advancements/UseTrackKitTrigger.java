@@ -1,7 +1,7 @@
 package mods.railcraft.advancements;
 
 import com.google.gson.JsonObject;
-import mods.railcraft.Railcraft;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
 
-  private static final ResourceLocation ID = Railcraft.rl("use_track_kit");
+  private static final ResourceLocation ID = RailcraftConstants.rl("use_track_kit");
 
   @Override
   public ResourceLocation getId() {
