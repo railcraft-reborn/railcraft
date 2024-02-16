@@ -215,7 +215,9 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(), event.getPartialTick());
+    if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+      shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(), event.getPartialTick());
+    }
   }
 
   @SubscribeEvent
