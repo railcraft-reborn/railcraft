@@ -245,9 +245,11 @@ public class ClientManager {
       event.getPlayer().displayClientMessage(message, false);
     }
 
-    if (!FMLLoader.isProduction()
-        || (Railcraft.BETA && RailcraftConfig.CLIENT.showMessageBeta.get())) {
-      var type = FMLLoader.isProduction() ? "beta" : "development";
+    var qualifier = modInfo.getVersion().getQualifier();
+    boolean isSnapshot = qualifier != null && qualifier.equals("snapshot");
+    boolean showMessageBeta = Railcraft.BETA && RailcraftConfig.CLIENT.showMessageBeta.get();
+    if (!FMLLoader.isProduction() || isSnapshot || showMessageBeta) {
+      var type = isSnapshot ? "development" : "beta";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
           Component.literal("You are using a %s version of %s.".formatted(type, RailcraftConstants.NAME))
