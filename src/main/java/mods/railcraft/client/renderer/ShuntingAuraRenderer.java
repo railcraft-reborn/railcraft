@@ -40,14 +40,15 @@ public class ShuntingAuraRenderer {
         var projectedView = mainCamera.getPosition();
         poseStack.translate(-projectedView.x, -projectedView.y, -projectedView.z);
 
+        var level = player.level();
+        var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         for (var linkedCart : this.linkedCarts) {
-          var entity = player.level().getEntity(linkedCart.entityId());
+          var entity = level.getEntity(linkedCart.entityId());
           if (!(entity instanceof AbstractMinecart cart) || linkedCart.trainId() == null) {
             continue;
           }
 
-          var consumer =
-              Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.lines());
+          var consumer = bufferSource.getBuffer(RenderType.lines());
           var pose = poseStack.last();
 
           final int color = linkedCart.trainId().hashCode();
@@ -60,24 +61,25 @@ public class ShuntingAuraRenderer {
           final float cartY = (float) cartPosition.y();
           final float cartZ = (float) cartPosition.z();
 
+          var matrix4f = pose.pose();
+          var matrix3f = pose.normal();
           consumer
-              .vertex(pose.pose(), cartX, cartY, cartZ)
+              .vertex(matrix4f, cartX, cartY, cartZ)
               .color(red, green, blue, 1)
-              .normal(pose.normal(), 0, 0, 0)
+              .normal(matrix3f, 0, 0, 0)
+              .endVertex();
+          consumer
+              .vertex(matrix4f, cartX, cartY + 2, cartZ)
+              .color(red, green, blue, 1)
+              .normal(matrix3f, 0, 0, 0)
               .endVertex();
 
-          consumer
-              .vertex(pose.pose(), cartX, cartY + 2, cartZ)
-              .color(red, green, blue, 1)
-              .normal(pose.normal(), 0, 0, 0)
-              .endVertex();
-
-          this.renderLink(player.level(), cartX, cartY, cartZ, linkedCart.linkAId(), red,
+          this.renderLink(level, cartX, cartY, cartZ, linkedCart.linkAId(), red,
               green, blue, partialTick, consumer, pose);
-          this.renderLink(player.level(), cartX, cartY, cartZ, linkedCart.linkBId(), red,
+          this.renderLink(level, cartX, cartY, cartZ, linkedCart.linkBId(), red,
               green, blue, partialTick, consumer, pose);
 
-          Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+          bufferSource.endBatch();
         }
         poseStack.popPose();
       }

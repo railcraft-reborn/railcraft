@@ -76,16 +76,6 @@ public class RollingRecipeBuilder {
     this.save(recipeOutput, BuiltInRegistries.ITEM.getKey(this.result));
   }
 
-  public void save(RecipeOutput recipeOutput, String key) {
-    var resourcelocation = BuiltInRegistries.ITEM.getKey(this.result);
-    if (new ResourceLocation(key).equals(resourcelocation)) {
-      throw new IllegalStateException(
-          "Shaped Recipe %s should remove its 'save' argument".formatted(key));
-    } else {
-      this.save(recipeOutput, new ResourceLocation(key));
-    }
-  }
-
   public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var customResourceLocation = resourceLocation.withPrefix("rolling/");
     var pattern = ShapedRecipePattern.of(this.key, this.rows);
