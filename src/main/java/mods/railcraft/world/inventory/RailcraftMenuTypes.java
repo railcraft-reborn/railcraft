@@ -9,6 +9,7 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import mods.railcraft.world.inventory.detector.SheepDetectorMenu;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -19,6 +20,7 @@ import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
@@ -56,7 +58,6 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<FluidFueledSteamBoilerMenu>> FLUID_FUELED_STEAM_BOILER =
       deferredRegister.register("fluid_fueled_steam_boiler",
           () -> blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new));
-
 
   public static final RegistryObject<MenuType<SteamTurbineMenu>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -159,6 +160,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<DumpingTrackMenu>> DUMPING_TRACK =
       deferredRegister.register("dumping_track",
           () -> blockEntityMenu(DumpingTrackBlockEntity.class, DumpingTrackMenu::new));
+
+  public static final RegistryObject<MenuType<SheepDetectorMenu>> SHEEP_DETECTOR =
+      deferredRegister.register("sheep_detector",
+          () -> blockEntityMenu(SheepDetectorBlockEntity.class, SheepDetectorMenu::new));
 
   private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

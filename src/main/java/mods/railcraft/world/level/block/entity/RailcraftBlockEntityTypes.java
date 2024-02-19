@@ -10,6 +10,7 @@ import mods.railcraft.world.level.block.entity.detector.AnyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.EmptyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.MobDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.PlayerDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -190,6 +191,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("player_detector",
           () -> BlockEntityType.Builder
               .of(PlayerDetectorBlockEntity::new, RailcraftBlocks.PLAYER_DETECTOR.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<SheepDetectorBlockEntity>> SHEEP_DETECTOR =
+      deferredRegister.register("sheep_detector",
+          () -> BlockEntityType.Builder
+              .of(SheepDetectorBlockEntity::new, RailcraftBlocks.SHEEP_DETECTOR.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =

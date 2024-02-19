@@ -20,6 +20,7 @@ import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -50,6 +51,7 @@ public enum StackFilter implements Predicate<ItemStack> {
       || !FluidItemHelper.isContainer(itemStack))
       && !RailcraftConfig.SERVER.cargoBlacklist.get()
           .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
+  DYES(itemStack -> itemStack.is(Tags.Items.DYES)),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 
   private final Predicate<ItemStack> predicate;
