@@ -98,6 +98,10 @@ public class Translations {
         makeKey("screen", "switch_track_router.private_railway");
     public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC =
         makeKey("screen", "switch_track_router.private_railway.desc");
+    public static final String LOCOMOTIVE_DETECTOR_PRIMARY =
+        makeKey("screen", "locomotive_detector.primary_dye_color");
+    public static final String LOCOMOTIVE_DETECTOR_SECONDARY =
+        makeKey("screen", "locomotive_detector.secondary_dye_color");
   }
 
   public static class Tips {

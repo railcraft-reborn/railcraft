@@ -675,6 +675,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY, "Private Railway");
     this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
         "Will only route locomotive that belong to %s");
+    this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_PRIMARY, "Primary Color");
+    this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_SECONDARY, "Secondary Color");
   }
 
   private void trackTranslations() {

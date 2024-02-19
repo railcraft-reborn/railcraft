@@ -8,6 +8,7 @@ import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AgeDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AnyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.EmptyDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.LocomotiveDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.MobDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.PlayerDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
@@ -179,6 +180,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("empty_detector",
           () -> BlockEntityType.Builder
               .of(EmptyDetectorBlockEntity::new, RailcraftBlocks.EMPTY_DETECTOR.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<LocomotiveDetectorBlockEntity>> LOCOMOTIVE_DETECTOR =
+      deferredRegister.register("locomotive_detector",
+          () -> BlockEntityType.Builder
+              .of(LocomotiveDetectorBlockEntity::new, RailcraftBlocks.LOCOMOTIVE_DETECTOR.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<MobDetectorBlockEntity>> MOB_DETECTOR =

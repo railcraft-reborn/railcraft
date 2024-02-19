@@ -717,6 +717,8 @@
   "screen.railcraft.locomotive.steam.mode.description.idle": "Locomotive reduces fuel usage, but retains its heat. If the train is held by a track, it behaves as if idle.",
   "screen.railcraft.locomotive.steam.mode.description.running": "Makes the locomotive move.",
   "screen.railcraft.locomotive.steam.mode.description.shutdown": "Shuts off the locomotive. Halts all movement and begins the cool-down process.",
+  "screen.railcraft.locomotive_detector.primary_dye_color": "Primary Color",
+  "screen.railcraft.locomotive_detector.secondary_dye_color": "Secondary Color",
   "screen.railcraft.manipulator.cart_filters": "Carts",
   "screen.railcraft.multiblock.assembly_failed": "Multiblock Assembly Failed",
   "screen.railcraft.name": "Name",
