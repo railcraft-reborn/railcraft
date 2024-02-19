@@ -81,16 +81,6 @@ public class RollingRecipeBuilder {
     this.save(finishedRecipe, ForgeRegistries.ITEMS.getKey(this.result));
   }
 
-  public void save(Consumer<FinishedRecipe> finishedRecipe, String key) {
-    var resourcelocation = ForgeRegistries.ITEMS.getKey(this.result);
-    if ((new ResourceLocation(key)).equals(resourcelocation)) {
-      throw new IllegalStateException(
-          "Shaped Recipe %s should remove its 'save' argument".formatted(key));
-    } else {
-      this.save(finishedRecipe, new ResourceLocation(key));
-    }
-  }
-
   public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = RailcraftConstants.rl("rolling/" + path);
@@ -164,6 +154,5 @@ public class RollingRecipeBuilder {
     public ResourceLocation getAdvancementId() {
       return null;
     }
-
   }
 }

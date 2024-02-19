@@ -28,11 +28,13 @@ public class SlotMixin {
   @Inject(method = "<init>(Lnet/minecraft/world/Container;III)V", at = @At("RETURN"))
   private void railcraft$init(Container container, int slot, int x, int y,
       CallbackInfo callbackInfo) {
-    this.validateSlots = container.getClass().isAnnotationPresent(ValidateSlots.class);
+    this.validateSlots =
+        container != null && container.getClass().isAnnotationPresent(ValidateSlots.class);
   }
 
   @Overwrite
   public boolean mayPlace(ItemStack itemStack) {
-    return !this.validateSlots || this.container.canPlaceItem(this.slot, itemStack);
+    return !this.validateSlots ||
+        (this.container != null && this.container.canPlaceItem(this.slot, itemStack));
   }
 }

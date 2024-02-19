@@ -10,6 +10,8 @@ public final class CompoundTagKeys {
 
   public static final String ACTION_SIGNAL_ASPECTS = "actionSignalAspects";
   public static final String ACTIVE = "active";
+  public static final String BACK_AUTO_LINK_ENABLED = "backAutoLinkEnabled";
+  public static final String BACK_LINK = "backLink";
   public static final String BATTERIES = "batteries";
   public static final String BATTERY = "battery";
   public static final String BLOCK_SIGNAL = "blockSignal";
@@ -29,15 +31,21 @@ public final class CompoundTagKeys {
   public static final String DECIDING_CARTS = "decidingCarts";
   public static final String DEFAULT_ASPECT = "defaultAspect";
   public static final String DELAY = "delay";
+  public static final String DERAILED_REMAINING_TICKS = "derailedRemainingTicks";
   public static final String DEST = "dest";
+  public static final String ELEVATOR_REMAINING_TICKS = "elevatorRemainingTicks";
   public static final String EMITTER_POS = "emitterPos";
   public static final String ENERGY = "energy";
   public static final String ENTRIES = "entries";
+  public static final String EXPLOSION_PENDING = "explosionPending";
   public static final String FACING = "facing";
   public static final String FEED_COUNTER = "feedCounter";
   public static final String FILTER = "filter";
   public static final String FLIPPED = "flipped";
+  public static final String FRONT_AUTO_LINK_ENABLED = "frontAutoLinkEnabled";
+  public static final String FRONT_LINK = "frontLink";
   public static final String FUEL = "fuel";
+  public static final String HIGH_SPEED = "highSpeed";
   public static final String ID = "id";
   public static final String INPUT_SIGNAL = "inputSignal";
   public static final String INV_FILTER = "invFilter";
@@ -46,6 +54,7 @@ public final class CompoundTagKeys {
   public static final String ITEM_NAME = "itemName";
   public static final String LAUNCH_FORCE = "launchForce";
   public static final String LAUNCH_FORWARD = "launchForward";
+  public static final String LAUNCH_STATE = "launchState";
   public static final String LOCK = "lock";
   public static final String LOCKED = "locked";
   public static final String LOCKING_CARTS = "lockingCarts";
@@ -70,6 +79,7 @@ public final class CompoundTagKeys {
   public static final String POWERED_ASPECT = "poweredAspect";
   public static final String POWER_DELAY = "powerDelay";
   public static final String POWER_STATE = "powerState";
+  public static final String PREVENT_MOUNT_REMAINING_TICKS = "preventMountRemainingTicks";
   public static final String PREV_CART_ID = "prevCartId";
   public static final String PRIMARY_COLOR = "primaryColor";
   public static final String PROCESSING = "processing";
@@ -101,6 +111,7 @@ public final class CompoundTagKeys {
   public static final String TOKEN_RINGS = "tokenRings";
   public static final String TOKEN_RING_ID = "tokenRingId";
   public static final String TRACK_COUNT = "trackCount";
+  public static final String TRAIN = "train";
   public static final String TRAIN_DELAY = "trainDelay";
   public static final String TRAIN_DISPENSER_FILTERS = "trainDispenserFilters";
   public static final String TRAIN_LEAVING = "trainLeaving";
