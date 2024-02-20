@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
@@ -149,16 +150,16 @@ public class TankMinecart extends FilteredMinecart
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     this.processState = FluidTools.ProcessState.fromTag(tag);
-    this.tank.readFromNBT(tag.getCompound("tank"));
+    this.tank.readFromNBT(tag.getCompound(CompoundTagKeys.TANK));
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("processState", this.processState.getSerializedName());
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
     var tankTag = new CompoundTag();
     this.tank.writeToNBT(tankTag);
-    tag.put("tank", tankTag);
+    tag.put(CompoundTagKeys.TANK, tankTag);
   }
 
   public boolean isFilling() {
