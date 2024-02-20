@@ -33,6 +33,7 @@ import mods.railcraft.client.gui.screen.inventory.TrackUndercutterScreen;
 import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.AdvancedDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.LocomotiveDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.SheepDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.TankDetectorScreen;
@@ -149,6 +150,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
 
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();

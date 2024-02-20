@@ -15,12 +15,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
 
-public class DetectorBlockEntity extends RailcraftBlockEntity {
+public abstract class DetectorBlockEntity extends RailcraftBlockEntity {
 
   private static final float SENSITIVITY = 0.2f;
   private int powerState, powerDelay, tick;
 
-  public DetectorBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
+  protected DetectorBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
   }
 

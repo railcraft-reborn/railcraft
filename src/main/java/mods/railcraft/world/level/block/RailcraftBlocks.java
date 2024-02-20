@@ -10,6 +10,7 @@ import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
 import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
+import mods.railcraft.world.level.block.detector.AdvancedDetectorBlock;
 import mods.railcraft.world.level.block.detector.AgeDetectorBlock;
 import mods.railcraft.world.level.block.detector.AnyDetectorBlock;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
@@ -535,9 +536,9 @@ public class RailcraftBlocks {
           () -> new TrainDispenserBlock(
               BlockBehaviour.Properties.copy(ADVANCED_ITEM_LOADER.get())));
 
-  public static final RegistryObject<DetectorBlock> ADVANCED_DETECTOR =
+  public static final RegistryObject<AdvancedDetectorBlock> ADVANCED_DETECTOR =
       deferredRegister.register("advanced_detector",
-          () -> new DetectorBlock(BlockBehaviour.Properties.of()
+          () -> new AdvancedDetectorBlock(BlockBehaviour.Properties.of()
               .mapColor(MapColor.STONE)
               .strength(2.0F, 4.5F)
               .requiresCorrectToolForDrops()

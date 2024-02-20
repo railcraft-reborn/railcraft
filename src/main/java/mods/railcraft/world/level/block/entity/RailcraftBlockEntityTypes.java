@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AgeDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AnyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.EmptyDetectorBlockEntity;
@@ -164,6 +165,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("train_dispenser",
           () -> BlockEntityType.Builder
               .of(TrainDispenserBlockEntity::new, RailcraftBlocks.TRAIN_DISPENSER.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<AdvancedDetectorBlockEntity>> ADVANCED_DETECTOR =
+      deferredRegister.register("advanced_detector",
+          () -> BlockEntityType.Builder
+              .of(AdvancedDetectorBlockEntity::new, RailcraftBlocks.ADVANCED_DETECTOR.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<AgeDetectorBlockEntity>> AGE_DETECTOR =

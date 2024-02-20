@@ -9,6 +9,7 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import mods.railcraft.world.inventory.detector.AdvancedDetectorMenu;
 import mods.railcraft.world.inventory.detector.LocomotiveDetectorMenu;
 import mods.railcraft.world.inventory.detector.SheepDetectorMenu;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
@@ -22,6 +23,7 @@ import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.LocomotiveDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
@@ -176,6 +178,10 @@ public class RailcraftMenuTypes {
   public static final RegistryObject<MenuType<TankDetectorMenu>> TANK_DETECTOR =
       deferredRegister.register("tank_detector",
           () -> blockEntityMenu(TankDetectorBlockEntity.class, TankDetectorMenu::new));
+
+  public static final RegistryObject<MenuType<AdvancedDetectorMenu>> ADVANCED_DETECTOR =
+      deferredRegister.register("advanced_detector",
+          () -> blockEntityMenu(AdvancedDetectorBlockEntity.class, AdvancedDetectorMenu::new));
 
   private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {
