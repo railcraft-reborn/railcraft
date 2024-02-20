@@ -19,6 +19,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RoutingDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
@@ -33,6 +34,11 @@ import mods.railcraft.client.gui.screen.inventory.TrackUndercutterScreen;
 import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.AdvancedDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.ItemDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.LocomotiveDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.SheepDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.TankDetectorScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.ForceSpawnParticle;
@@ -143,6 +149,12 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
     MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ITEM_DETECTOR.get(), ItemDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ROUTING_DETECTOR.get(), RoutingDetectorScreen::new);
 
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();

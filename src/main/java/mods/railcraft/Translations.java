@@ -91,13 +91,60 @@ public class Translations {
     public static final String GOLDEN_TICKET_HELP = makeKey("screen", "golden_ticket.help");
     public static final String ROUTING_TABLE_BOOK = makeKey("screen", "routing_table_book");
     public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY =
-        makeKey("screen", "switch_track_router.public_railway");
+        makeKey("screen", "router_block_entity.public_railway");
     public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC =
-        makeKey("screen", "switch_track_router.public_railway.desc");
+        makeKey("screen", "router_block_entity.public_railway.desc");
     public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY =
-        makeKey("screen", "switch_track_router.private_railway");
+        makeKey("screen", "router_block_entity.private_railway");
     public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC =
-        makeKey("screen", "switch_track_router.private_railway.desc");
+        makeKey("screen", "router_block_entity.private_railway.desc");
+    public static final String LOCOMOTIVE_DETECTOR_PRIMARY =
+        makeKey("screen", "locomotive_detector.primary_dye_color");
+    public static final String LOCOMOTIVE_DETECTOR_SECONDARY =
+        makeKey("screen", "locomotive_detector.secondary_dye_color");
+    public static final String FILTER =
+        makeKey("screen", "filter");
+    public static final String TANK_DETECTOR_VOID = makeKey("screen", "tank_detector.void");
+    public static final String TANK_DETECTOR_EMPTY = makeKey("screen", "tank_detector.empty");
+    public static final String TANK_DETECTOR_NOT_EMPTY =
+        makeKey("screen", "tank_detector.not_empty");
+    public static final String TANK_DETECTOR_FULL = makeKey("screen", "tank_detector.full");
+    public static final String TANK_DETECTOR_QUARTER = makeKey("screen", "tank_detector.quarter");
+    public static final String TANK_DETECTOR_HALF = makeKey("screen", "tank_detector.half");
+    public static final String TANK_DETECTOR_MOST = makeKey("screen", "tank_detector.most");
+    public static final String TANK_DETECTOR_LESS_THAN_QUARTER =
+        makeKey("screen", "tank_detector.less_than_quarter");
+    public static final String TANK_DETECTOR_LESS_THAN_HALF =
+        makeKey("screen", "tank_detector.less_than_half");
+    public static final String TANK_DETECTOR_LESS_THAN_MOST =
+        makeKey("screen", "tank_detector.less_than_most");
+    public static final String TANK_DETECTOR_LESS_THAN_FULL =
+        makeKey("screen", "tank_detector.less_than_full");
+    public static final String TANK_DETECTOR_ANALOG = makeKey("screen", "tank_detector.analog");
+    public static final String TRAIN_DETECTOR_SIZE =
+        makeKey("screen", "train_detector.size");
+    public static final String ITEM_DETECTOR_EMPTY =
+        makeKey("screen", "item_detector.primary_mode.empty");
+    public static final String ITEM_DETECTOR_FULL =
+        makeKey("screen", "item_detector.primary_mode.full");
+    public static final String ITEM_DETECTOR_ANYTHING =
+        makeKey("screen", "item_detector.primary_mode.anything");
+    public static final String ITEM_DETECTOR_FILTERED =
+        makeKey("screen", "item_detector.primary_mode.filtered");
+    public static final String ITEM_DETECTOR_NOT_EMPTY =
+        makeKey("screen", "item_detector.primary_mode.not_empty");
+    public static final String ITEM_DETECTOR_ANALOG =
+        makeKey("screen", "item_detector.primary_mode.analog");
+    public static final String ITEM_DETECTOR_AT_LEAST =
+        makeKey("screen", "item_detector.filter_mode.at_least");
+    public static final String ITEM_DETECTOR_AT_MOST =
+        makeKey("screen", "item_detector.filter_mode.at_most");
+    public static final String ITEM_DETECTOR_EXACTLY =
+        makeKey("screen", "item_detector.filter_mode.exactly");
+    public static final String ITEM_DETECTOR_LESS_THAN =
+        makeKey("screen", "item_detector.filter_mode.less_than");
+    public static final String ITEM_DETECTOR_GREATER_THAN =
+        makeKey("screen", "item_detector.filter_mode.greater_than");
   }
 
   public static class Tips {

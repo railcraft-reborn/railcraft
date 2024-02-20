@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-04T14:36:52.050399	Tags for minecraft:block mod id railcraft
+// 1.20.1	2024-02-13T10:12:57.847187	Tags for minecraft:block mod id railcraft
 9732f1964281f5d5e6f3d067e648bb4bfc5cbafb data/forge/tags/blocks/enderman_place_on_blacklist.json
 e36857f35c1bac4bde5a8450008b92cf82656216 data/forge/tags/blocks/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/forge/tags/blocks/ore_rates/singular.json
@@ -26,6 +26,7 @@ e1d606686d8d1ae939af83da8c931c49c2e9df5e data/minecraft/tags/blocks/rails.json
 fab1e9f7ff52840990cfd768fadbfae51350d821 data/railcraft/tags/blocks/aspect_emitter.json
 192386fbb9d76dd115cb27c418ef2656209a93c4 data/railcraft/tags/blocks/aspect_receiver.json
 7e5c073993b497f00165a2cd8588c86b92c42e32 data/railcraft/tags/blocks/ballast.json
+ce3776760cd245b3be24a2863b4f4ab016e5b8ff data/railcraft/tags/blocks/detector.json
 592e64113a8afc0a5dafcdbf62ae4c012d67b168 data/railcraft/tags/blocks/electric_track.json
 6f70aa0939666b437b1f94030c02681a1a80eedf data/railcraft/tags/blocks/high_speed_electric_track.json
 6dc9632ad2d582c36b7dec9f486517003fb2b44e data/railcraft/tags/blocks/high_speed_track.json
@@ -33,7 +34,7 @@ e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/blocks/iron_tank_ga
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/blocks/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/blocks/iron_tank_wall.json
 3b9872bd73d41ad2a348f2e5ab20cefddfba67b6 data/railcraft/tags/blocks/iron_track.json
-ade41e4c94eb039300a4fc36c651994214ba4c51 data/railcraft/tags/blocks/mineable/crowbar.json
+77690ba158209beb37aa5436c376485258f75111 data/railcraft/tags/blocks/mineable/crowbar.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/blocks/post.json
 1ecaf64f7b17425064c50cdd01fd826d38f37db5 data/railcraft/tags/blocks/quarried.json
 8464d70cee360a2e5808a1d1d1c5b90d0230a38e data/railcraft/tags/blocks/reinforced_track.json
