@@ -1,23 +1,14 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
-import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.SwitchActuator;
-import mods.railcraft.api.util.EnumUtil;
-import mods.railcraft.client.gui.widget.button.ButtonTexture;
-import mods.railcraft.client.gui.widget.button.TexturePosition;
-import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
@@ -27,17 +18,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlockEntity
-    implements ForwardingContainer, MenuProvider, RouterBlockEntity, SwitchActuator {
+    implements RouterBlockEntity, SwitchActuator {
 
   private final AdvancedContainer container;
   @Nullable
@@ -50,25 +38,23 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     this.container = new AdvancedContainer(1).listener((Container) this);
   }
 
+  @Override
   public void neighborChanged() {
     this.powered = this.level.hasNeighborSignal(this.getBlockPos());
     this.setChanged();
   }
 
+  @Override
   public Railway getRailway() {
     return this.railway;
   }
 
+  @Override
   public void setRailway(@Nullable GameProfile gameProfile) {
     this.railway = gameProfile == null ? Railway.PUBLIC : Railway.PRIVATE;
     if (!this.isLocked()) {
       this.setOwner(gameProfile);
     }
-  }
-
-  @Override
-  public void setCustomName(@Nullable Component name) {
-    super.setCustomName(name);
   }
 
   @Override
@@ -101,23 +87,18 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     this.powered = data.readBoolean();
   }
 
+  @Override
   public boolean isPowered() {
     return this.powered;
   }
 
+  @Override
   public Optional<Either<RoutingLogic, RoutingLogicException>> logicResult() {
     this.refreshLogic();
     return Optional.ofNullable(this.logic);
   }
 
-  public Optional<RoutingLogic> logic() {
-    return this.logicResult().flatMap(x -> x.left());
-  }
-
-  public Optional<RoutingLogicException> logicError() {
-    return this.logicResult().flatMap(x -> x.right());
-  }
-
+  @Override
   public void resetLogic() {
     this.logic = null;
   }
@@ -126,7 +107,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     if (this.logic == null && !this.container.getItem(0).isEmpty()) {
       var item = this.container.getItem(0);
       if (item.getTag() != null && item.getTag().contains("pages")) {
-        var content = loadPages(item.getTag());
+        var content = this.loadPages(item.getTag());
         try {
           this.logic = Either.left(RoutingLogic.parseTable(content));
         } catch (RoutingLogicException e) {
@@ -151,16 +132,6 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     return shouldSwitch;
   }
 
-  public static Deque<String> loadPages(CompoundTag tag) {
-    Deque<String> contents = new LinkedList<>();
-    var pages = tag.getList("pages", Tag.TAG_STRING).copy();
-    for (int i = 0; i < pages.size(); i++) {
-      var page = pages.getString(i).split("\n");
-      contents.addAll(Arrays.asList(page));
-    }
-    return contents;
-  }
-
   @Override
   public Container container() {
     return this.container;
@@ -175,45 +146,5 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   @Override
   public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
     return new SwitchTrackRouterMenu(id, inventory, this);
-  }
-
-  public enum Railway implements ButtonState<Railway>, StringRepresentable {
-
-    PUBLIC("public"),
-    PRIVATE("private");
-
-    private static final StringRepresentable.EnumCodec<Railway> CODEC =
-        StringRepresentable.fromEnum(Railway::values);
-
-    private final String name;
-
-    Railway(String name) {
-      this.name = name;
-    }
-
-    @Override
-    public Component label() {
-      return Component.translatable(Translations.makeKey("screen",
-          String.format("switch_track_router.%s_railway", this.name)));
-    }
-
-    @Override
-    public TexturePosition texturePosition() {
-      return ButtonTexture.SMALL_BUTTON;
-    }
-
-    @Override
-    public Railway next() {
-      return EnumUtil.next(this, values());
-    }
-
-    @Override
-    public String getSerializedName() {
-      return this.name;
-    }
-
-    public static Railway fromName(String name) {
-      return CODEC.byName(name, PUBLIC);
-    }
   }
 }

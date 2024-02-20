@@ -13,20 +13,16 @@ import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
-import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity.Railway;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -35,8 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
 
 public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implements
-    RouterBlockEntity, MenuProvider, ForwardingContainer,
-    ContainerManipulator<ModifiableSlotAccessor> {
+    ContainerManipulator<ModifiableSlotAccessor>, RouterBlockEntity {
 
   private final AdvancedContainer container;
   @Nullable
@@ -72,15 +67,18 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
     return Redstone.SIGNAL_NONE;
   }
 
+  @Override
   public void neighborChanged() {
     this.powered = this.level.hasNeighborSignal(this.getBlockPos());
     this.setChanged();
   }
 
+  @Override
   public Railway getRailway() {
     return this.railway;
   }
 
+  @Override
   public void setRailway(@Nullable GameProfile gameProfile) {
     this.railway = gameProfile == null ? Railway.PUBLIC : Railway.PRIVATE;
     if (!this.isLocked()) {
@@ -133,6 +131,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
     this.powered = data.readBoolean();
   }
 
+  @Override
   public Optional<Either<RoutingLogic, RoutingLogicException>> logicResult() {
     this.refreshLogic();
     return Optional.ofNullable(this.logic);
@@ -143,14 +142,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
     return this.powered;
   }
 
-  public Optional<RoutingLogic> logic() {
-    return this.logicResult().flatMap(x -> x.left());
-  }
-
-  public Optional<RoutingLogicException> logicError() {
-    return this.logicResult().flatMap(x -> x.right());
-  }
-
+  @Override
   public void resetLogic() {
     this.logic = null;
   }
@@ -159,7 +151,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
     if (this.logic == null && !this.container.getItem(0).isEmpty()) {
       var item = this.container.getItem(0);
       if (item.getTag() != null && item.getTag().contains("pages")) {
-        var content = SwitchTrackRouterBlockEntity.loadPages(item.getTag());
+        var content = this.loadPages(item.getTag());
         try {
           this.logic = Either.left(RoutingLogic.parseTable(content));
         } catch (RoutingLogicException e) {

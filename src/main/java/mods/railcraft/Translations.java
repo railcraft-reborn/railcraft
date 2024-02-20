@@ -91,13 +91,13 @@ public class Translations {
     public static final String GOLDEN_TICKET_HELP = makeKey("screen", "golden_ticket.help");
     public static final String ROUTING_TABLE_BOOK = makeKey("screen", "routing_table_book");
     public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY =
-        makeKey("screen", "switch_track_router.public_railway");
+        makeKey("screen", "router_block_entity.public_railway");
     public static final String SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC =
-        makeKey("screen", "switch_track_router.public_railway.desc");
+        makeKey("screen", "router_block_entity.public_railway.desc");
     public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY =
-        makeKey("screen", "switch_track_router.private_railway");
+        makeKey("screen", "router_block_entity.private_railway");
     public static final String SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC =
-        makeKey("screen", "switch_track_router.private_railway.desc");
+        makeKey("screen", "router_block_entity.private_railway.desc");
     public static final String LOCOMOTIVE_DETECTOR_PRIMARY =
         makeKey("screen", "locomotive_detector.primary_dye_color");
     public static final String LOCOMOTIVE_DETECTOR_SECONDARY =

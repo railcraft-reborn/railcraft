@@ -1,6 +1,7 @@
 package mods.railcraft.network.play;
 
 import java.util.function.Supplier;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -9,12 +10,12 @@ import net.minecraftforge.network.NetworkEvent;
 
 public record SetRoutingDetectorAttributesMessage(
     BlockPos blockPos,
-    SwitchTrackRouterBlockEntity.Railway railway,
+    RouterBlockEntity.Railway railway,
     SwitchTrackRouterBlockEntity.Lock lock) {
 
   public static SetRoutingDetectorAttributesMessage decode(FriendlyByteBuf in) {
     var blockPos = in.readBlockPos();
-    var railway = in.readEnum(SwitchTrackRouterBlockEntity.Railway.class);
+    var railway = in.readEnum(RouterBlockEntity.Railway.class);
     var lock = in.readEnum(SwitchTrackRouterBlockEntity.Lock.class);
     return new SetRoutingDetectorAttributesMessage(blockPos, railway, lock);
   }
@@ -37,7 +38,7 @@ public record SetRoutingDetectorAttributesMessage(
                   ? null
                   : senderProfile);
           routingDetector.setRailway(
-              this.railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
+              this.railway.equals(RouterBlockEntity.Railway.PUBLIC)
                   ? null
                   : senderProfile);
           routingDetector.syncToClient();
