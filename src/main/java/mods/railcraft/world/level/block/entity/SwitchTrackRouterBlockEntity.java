@@ -151,7 +151,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
     return shouldSwitch;
   }
 
-  private static Deque<String> loadPages(CompoundTag tag) {
+  public static Deque<String> loadPages(CompoundTag tag) {
     Deque<String> contents = new LinkedList<>();
     var pages = tag.getList("pages", Tag.TAG_STRING).copy();
     for (int i = 0; i < pages.size(); i++) {

@@ -14,6 +14,7 @@ import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMaintenanceMinecartAttributesMessage;
+import mods.railcraft.network.play.SetRoutingDetectorAttributesMessage;
 import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
@@ -190,6 +191,13 @@ public enum NetworkChannel {
           .encoder(SetItemDetectorAttributesMessage::encode)
           .decoder(SetItemDetectorAttributesMessage::decode)
           .consumerMainThread(SetItemDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetRoutingDetectorAttributesMessage.class, 0x16,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetRoutingDetectorAttributesMessage::encode)
+          .decoder(SetRoutingDetectorAttributesMessage::decode)
+          .consumerMainThread(SetRoutingDetectorAttributesMessage::handle)
           .add();
     }
   };

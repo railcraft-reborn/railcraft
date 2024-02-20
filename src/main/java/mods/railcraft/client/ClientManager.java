@@ -19,6 +19,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RoutingDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
@@ -153,6 +154,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.ITEM_DETECTOR.get(), ItemDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ROUTING_DETECTOR.get(), RoutingDetectorScreen::new);
 
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();

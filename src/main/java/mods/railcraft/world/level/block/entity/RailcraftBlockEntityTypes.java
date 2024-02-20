@@ -13,6 +13,7 @@ import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.LocomotiveDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.MobDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.PlayerDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.TrainDetectorBlockEntity;
@@ -214,6 +215,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("player_detector",
           () -> BlockEntityType.Builder
               .of(PlayerDetectorBlockEntity::new, RailcraftBlocks.PLAYER_DETECTOR.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<RoutingDetectorBlockEntity>> ROUTING_DETECTOR =
+      deferredRegister.register("routing_detector",
+          () -> BlockEntityType.Builder
+              .of(RoutingDetectorBlockEntity::new, RailcraftBlocks.ROUTING_DETECTOR.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<SheepDetectorBlockEntity>> SHEEP_DETECTOR =

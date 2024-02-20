@@ -6,7 +6,7 @@ import mods.railcraft.util.routing.expression.Expression;
 
 public class RedstoneCondition {
 
-  public static final String KEYWORD = "Redstone";;
+  public static final String KEYWORD = "Redstone";
 
   public static Expression parse(String line) throws RoutingLogicException {
     var statement = RoutingStatementParser.parse(KEYWORD, false, line);
