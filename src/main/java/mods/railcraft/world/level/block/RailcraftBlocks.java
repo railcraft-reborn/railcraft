@@ -12,8 +12,8 @@ import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
 import mods.railcraft.world.level.block.detector.AdvancedDetectorBlock;
 import mods.railcraft.world.level.block.detector.AgeDetectorBlock;
+import mods.railcraft.world.level.block.detector.AnimalDetectorBlock;
 import mods.railcraft.world.level.block.detector.AnyDetectorBlock;
-import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.detector.EmptyDetectorBlock;
 import mods.railcraft.world.level.block.detector.ItemDetectorBlock;
 import mods.railcraft.world.level.block.detector.LocomotiveDetectorBlock;
@@ -23,6 +23,7 @@ import mods.railcraft.world.level.block.detector.RoutingDetectorBlock;
 import mods.railcraft.world.level.block.detector.SheepDetectorBlock;
 import mods.railcraft.world.level.block.detector.TankDetectorBlock;
 import mods.railcraft.world.level.block.detector.TrainDetectorBlock;
+import mods.railcraft.world.level.block.detector.VillagerDetectorBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
@@ -550,9 +551,9 @@ public class RailcraftBlocks {
       deferredRegister.register("age_detector",
           () -> new AgeDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
-  public static final RegistryObject<DetectorBlock> ANIMAL_DETECTOR =
+  public static final RegistryObject<AnimalDetectorBlock> ANIMAL_DETECTOR =
       deferredRegister.register("animal_detector",
-          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+          () -> new AnimalDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
   public static final RegistryObject<AnyDetectorBlock> ANY_DETECTOR =
       deferredRegister.register("any_detector",
@@ -594,9 +595,9 @@ public class RailcraftBlocks {
       deferredRegister.register("train_detector",
           () -> new TrainDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
-  public static final RegistryObject<DetectorBlock> VILLAGER_DETECTOR =
+  public static final RegistryObject<VillagerDetectorBlock> VILLAGER_DETECTOR =
       deferredRegister.register("villager_detector",
-          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+          () -> new VillagerDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
   public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",

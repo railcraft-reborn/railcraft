@@ -21,7 +21,7 @@ public class DetectorBlock extends BaseEntityBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-  public DetectorBlock(BlockBehaviour.Properties properties) {
+  protected DetectorBlock(BlockBehaviour.Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(POWERED, false)

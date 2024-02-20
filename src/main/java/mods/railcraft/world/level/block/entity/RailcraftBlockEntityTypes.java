@@ -7,6 +7,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AgeDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.AnimalDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AnyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.EmptyDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
@@ -17,6 +18,7 @@ import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEnti
 import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.TrainDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.VillagerDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -181,6 +183,12 @@ public class RailcraftBlockEntityTypes {
               .of(AgeDetectorBlockEntity::new, RailcraftBlocks.AGE_DETECTOR.get())
               .build(null));
 
+  public static final RegistryObject<BlockEntityType<AnimalDetectorBlockEntity>> ANIMAL_DETECTOR =
+      deferredRegister.register("animal_detector",
+          () -> BlockEntityType.Builder
+              .of(AnimalDetectorBlockEntity::new, RailcraftBlocks.ANIMAL_DETECTOR.get())
+              .build(null));
+
   public static final RegistryObject<BlockEntityType<AnyDetectorBlockEntity>> ANY_DETECTOR =
       deferredRegister.register("any_detector",
           () -> BlockEntityType.Builder
@@ -239,6 +247,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("train_detector",
           () -> BlockEntityType.Builder
               .of(TrainDetectorBlockEntity::new, RailcraftBlocks.TRAIN_DETECTOR.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<VillagerDetectorBlockEntity>> VILLAGER_DETECTOR =
+      deferredRegister.register("villager_detector",
+          () -> BlockEntityType.Builder
+              .of(VillagerDetectorBlockEntity::new, RailcraftBlocks.VILLAGER_DETECTOR.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =

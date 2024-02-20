@@ -12,7 +12,7 @@ public abstract class EntityDetectorBlockEntity<T extends Entity> extends Detect
 
   private final Class<T> entityClass;
 
-  public EntityDetectorBlockEntity(BlockEntityType<?> type,
+  protected EntityDetectorBlockEntity(BlockEntityType<?> type,
       BlockPos blockPos, BlockState blockState, Class<T> entityClass) {
     super(type, blockPos, blockState);
     this.entityClass = entityClass;
