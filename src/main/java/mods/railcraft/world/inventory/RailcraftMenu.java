@@ -220,7 +220,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
     var slot = this.slots.get(slotIndex);
     final int numSlots = this.slots.size();
     final int slotsAdded = numSlots - 9 * 4;
-    if (slot.hasItem()) {
+    if (slot.hasItem() && slotsAdded > 0) {
       var stackInSlot = slot.getItem();
       originalStack = stackInSlot.copy();
       if (slotIndex < slotsAdded) { // Custom slots to vanilla inventory slots
