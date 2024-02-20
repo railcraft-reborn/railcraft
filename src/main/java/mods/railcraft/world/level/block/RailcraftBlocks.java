@@ -15,6 +15,7 @@ import mods.railcraft.world.level.block.detector.AgeDetectorBlock;
 import mods.railcraft.world.level.block.detector.AnyDetectorBlock;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.detector.EmptyDetectorBlock;
+import mods.railcraft.world.level.block.detector.ItemDetectorBlock;
 import mods.railcraft.world.level.block.detector.LocomotiveDetectorBlock;
 import mods.railcraft.world.level.block.detector.MobDetectorBlock;
 import mods.railcraft.world.level.block.detector.PlayerDetectorBlock;
@@ -560,9 +561,9 @@ public class RailcraftBlocks {
       deferredRegister.register("empty_detector",
           () -> new EmptyDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
-  public static final RegistryObject<DetectorBlock> ITEM_DETECTOR =
+  public static final RegistryObject<ItemDetectorBlock> ITEM_DETECTOR =
       deferredRegister.register("item_detector",
-          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+          () -> new ItemDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
   public static final RegistryObject<LocomotiveDetectorBlock> LOCOMOTIVE_DETECTOR =
       deferredRegister.register("locomotive_detector",

@@ -123,6 +123,28 @@ public class Translations {
     public static final String TANK_DETECTOR_ANALOG = makeKey("screen", "tank_detector.analog");
     public static final String TRAIN_DETECTOR_SIZE =
         makeKey("screen", "train_detector.size");
+    public static final String ITEM_DETECTOR_EMPTY =
+        makeKey("screen", "item_detector.primary_mode.empty");
+    public static final String ITEM_DETECTOR_FULL =
+        makeKey("screen", "item_detector.primary_mode.full");
+    public static final String ITEM_DETECTOR_ANYTHING =
+        makeKey("screen", "item_detector.primary_mode.anything");
+    public static final String ITEM_DETECTOR_FILTERED =
+        makeKey("screen", "item_detector.primary_mode.filtered");
+    public static final String ITEM_DETECTOR_NOT_EMPTY =
+        makeKey("screen", "item_detector.primary_mode.not_empty");
+    public static final String ITEM_DETECTOR_ANALOG =
+        makeKey("screen", "item_detector.primary_mode.analog");
+    public static final String ITEM_DETECTOR_AT_LEAST =
+        makeKey("screen", "item_detector.filter_mode.at_least");
+    public static final String ITEM_DETECTOR_AT_MOST =
+        makeKey("screen", "item_detector.filter_mode.at_most");
+    public static final String ITEM_DETECTOR_EXACTLY =
+        makeKey("screen", "item_detector.filter_mode.exactly");
+    public static final String ITEM_DETECTOR_LESS_THAN =
+        makeKey("screen", "item_detector.filter_mode.less_than");
+    public static final String ITEM_DETECTOR_GREATER_THAN =
+        makeKey("screen", "item_detector.filter_mode.greater_than");
   }
 
   public static class Tips {

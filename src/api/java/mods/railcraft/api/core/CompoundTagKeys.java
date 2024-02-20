@@ -41,6 +41,7 @@ public final class CompoundTagKeys {
   public static final String FACING = "facing";
   public static final String FEED_COUNTER = "feedCounter";
   public static final String FILTER = "filter";
+  public static final String FILTER_MODE = "filterMode";
   public static final String FLIPPED = "flipped";
   public static final String FRONT_AUTO_LINK_ENABLED = "frontAutoLinkEnabled";
   public static final String FRONT_LINK = "frontLink";
@@ -82,6 +83,7 @@ public final class CompoundTagKeys {
   public static final String PREVENT_MOUNT_REMAINING_TICKS = "preventMountRemainingTicks";
   public static final String PREV_CART_ID = "prevCartId";
   public static final String PRIMARY_COLOR = "primaryColor";
+  public static final String PRIMARY_MODE = "primaryMode";
   public static final String PROCESSING = "processing";
   public static final String PROCESS_STATE = "processState";
   public static final String PROGRESS = "progress";
