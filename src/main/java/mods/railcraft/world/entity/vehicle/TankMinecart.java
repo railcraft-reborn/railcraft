@@ -11,7 +11,6 @@ import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -121,9 +120,9 @@ public class TankMinecart extends FilteredMinecart
 
     ContainerTools.dropIfInvalid(this.level(), this.blockPosition(), this, SLOT_INPUT);
     ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_PROCESSING,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
     ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_OUTPUT,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
@@ -181,7 +180,7 @@ public class TankMinecart extends FilteredMinecart
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    return slot == SLOT_INPUT && FluidItemHelper.isContainer(stack);
+    return slot == SLOT_INPUT && FluidTools.isFluidHandler(stack);
   }
 
   @Override

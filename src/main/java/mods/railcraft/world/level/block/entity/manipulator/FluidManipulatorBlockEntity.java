@@ -7,7 +7,6 @@ import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
@@ -104,9 +103,9 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
     ContainerTools.dropIfInvalid(this.level, this.getBlockPos(), this, SLOT_INPUT);
     ContainerTools.drop(this.level, this.getBlockPos(), this, SLOT_PROCESSING,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
     ContainerTools.drop(this.level, this.getBlockPos(), this, SLOT_OUTPUT,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
@@ -120,14 +119,14 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
     if (slot == SLOT_INPUT) {
-      if (!FluidItemHelper.isContainer(stack)) {
+      if (!FluidTools.isFluidHandler(stack)) {
         return false;
       }
-      if (FluidItemHelper.isEmptyContainer(stack)) {
+      if (FluidTools.isEmptyContainer(stack)) {
         return true;
       }
       return this.getFilterFluid().map(FluidStack::getFluid)
-          .map(fluid -> FluidItemHelper.containsFluid(stack, fluid))
+          .map(fluid -> FluidTools.containsFluid(stack, fluid))
           .orElse(true);
     }
     return false;

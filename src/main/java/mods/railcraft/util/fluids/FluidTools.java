@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
@@ -57,8 +56,51 @@ public final class FluidTools {
   public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
       IFluidHandler fluidHandler) {
     return player.level().isClientSide()
-        ? FluidItemHelper.isContainer(player.getItemInHand(hand))
+        ? isFluidHandler(player.getItemInHand(hand))
         : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
+  }
+
+  public static boolean isFluidHandler(ItemStack stack) {
+    return FluidUtil.getFluidHandler(stack).isPresent();
+  }
+
+  public static boolean isFluidInContainer(ItemStack stack) {
+    return FluidUtil.getFluidHandler(stack)
+        .filter(item -> !item.drain(1, IFluidHandler.FluidAction.SIMULATE).isEmpty())
+        .isPresent();
+  }
+
+  public static boolean isEmptyContainer(ItemStack stack) {
+    return FluidUtil.getFluidHandler(stack)
+        .filter(item -> {
+          for (int i = 0; i < item.getTanks(); i++) {
+            if (!item.getFluidInTank(i).isEmpty()) {
+              return false;
+            }
+          }
+          return true;
+        })
+        .isPresent();
+  }
+
+  public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
+    return FluidUtil.getFluidHandler(stack)
+        .filter(item -> item.fill(new FluidStack(fluid, Integer.MAX_VALUE),
+            IFluidHandler.FluidAction.SIMULATE) > 0)
+        .isPresent();
+  }
+
+  public static boolean containsFluid(ItemStack stack, Fluid fluid) {
+    return FluidUtil.getFluidHandler(stack)
+        .filter(item -> {
+          for (int i = 0; i < item.getTanks(); i++) {
+            if (!item.getFluidInTank(i).getFluid().isSame(fluid)) {
+              return false;
+            }
+          }
+          return true;
+        })
+        .isPresent();
   }
 
   public enum ProcessType {
@@ -135,7 +177,7 @@ public final class FluidTools {
   public static ProcessState processContainer(Container container, StandardTank tank,
       ProcessType type, ProcessState state) {
     var itemStack = container.getItem(1);
-    if (itemStack.isEmpty() || !FluidUtil.getFluidHandler(itemStack).isPresent()) {
+    if (itemStack.isEmpty() || !isFluidHandler(itemStack)) {
       sendToProcessing(container);
       return ProcessState.RESET;
     }
