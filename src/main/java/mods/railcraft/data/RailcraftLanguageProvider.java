@@ -677,6 +677,21 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         "Will only route locomotive that belong to %s");
     this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_PRIMARY, "Primary Color");
     this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_SECONDARY, "Secondary Color");
+    this.add(Translations.Screen.FILTER, "Filter");
+    this.add(Translations.Screen.TANK_DETECTOR_VOID, "Match any amount");
+    this.add(Translations.Screen.TANK_DETECTOR_EMPTY, "Match empty tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_NOT_EMPTY, "Match non-empty tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_FULL, "Match full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_QUARTER, "Match more than quarter full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_HALF, "Match more than half full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_MOST, "Match more than 3/4th full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_QUARTER,
+        "Match less than quarter full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_HALF, "Match less than half full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_MOST, "Match less than 3/4th full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_FULL, "Match less than full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_ANALOG,
+        "Emit Analog Redstone based on amount in tank");
   }
 
   private void trackTranslations() {

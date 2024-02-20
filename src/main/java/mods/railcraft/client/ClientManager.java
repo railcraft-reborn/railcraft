@@ -35,6 +35,7 @@ import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.LocomotiveDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.SheepDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.TankDetectorScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.ForceSpawnParticle;
@@ -147,6 +148,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
     MenuScreens.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
     MenuScreens.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
 
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();

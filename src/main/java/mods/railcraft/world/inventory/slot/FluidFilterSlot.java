@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory.slot;
 
-import mods.railcraft.world.level.material.FluidItemHelper;
+import mods.railcraft.util.fluids.FluidTools;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +14,6 @@ public class FluidFilterSlot extends RailcraftSlot {
 
   @Override
   public boolean mayPlace(ItemStack itemstack) {
-    return FluidItemHelper.isFluidInContainer(itemstack);
+    return FluidTools.isFluidHandler(itemstack);
   }
 }

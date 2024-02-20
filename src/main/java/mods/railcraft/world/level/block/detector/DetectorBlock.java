@@ -57,6 +57,12 @@ public class DetectorBlock extends BaseEntityBlock {
     return state.getValue(POWERED) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 
+  @Override
+  public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos,
+      Direction direction) {
+    return getSignal(state, level, pos, direction);
+  }
+
   @Nullable
   @Override
   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -64,6 +64,10 @@ public class DetectorBlockEntity extends RailcraftBlockEntity {
     }
   }
 
+  public int getPowerState() {
+    return this.powerState;
+  }
+
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);

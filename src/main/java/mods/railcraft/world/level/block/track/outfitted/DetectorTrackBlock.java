@@ -103,7 +103,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
 
   @Override
   public boolean hasAnalogOutputSignal(BlockState blockState) {
-    return blockState.getValue(POWERED).booleanValue();
+    return blockState.getValue(POWERED);
   }
 
   @Override

@@ -264,7 +264,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("redstoneMode", this.redstoneMode.ordinal());
+    tag.putInt("mode", this.redstoneMode.ordinal());
     tag.put("cartFilters", this.getCartFilters().createTag());
   }
 
@@ -272,7 +272,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   public void load(CompoundTag tag) {
     super.load(tag);
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
-    this.redstoneMode = RedstoneMode.values()[tag.getInt("redstoneMode")];
+    this.redstoneMode = RedstoneMode.values()[tag.getInt("mode")];
     this.getCartFilters().fromTag(tag.getList("cartFilters", Tag.TAG_COMPOUND));
   }
 

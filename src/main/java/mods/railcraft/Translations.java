@@ -102,6 +102,25 @@ public class Translations {
         makeKey("screen", "locomotive_detector.primary_dye_color");
     public static final String LOCOMOTIVE_DETECTOR_SECONDARY =
         makeKey("screen", "locomotive_detector.secondary_dye_color");
+    public static final String FILTER =
+        makeKey("screen", "filter");
+    public static final String TANK_DETECTOR_VOID = makeKey("screen", "tank_detector.void");
+    public static final String TANK_DETECTOR_EMPTY = makeKey("screen", "tank_detector.empty");
+    public static final String TANK_DETECTOR_NOT_EMPTY =
+        makeKey("screen", "tank_detector.not_empty");
+    public static final String TANK_DETECTOR_FULL = makeKey("screen", "tank_detector.full");
+    public static final String TANK_DETECTOR_QUARTER = makeKey("screen", "tank_detector.quarter");
+    public static final String TANK_DETECTOR_HALF = makeKey("screen", "tank_detector.half");
+    public static final String TANK_DETECTOR_MOST = makeKey("screen", "tank_detector.most");
+    public static final String TANK_DETECTOR_LESS_THAN_QUARTER =
+        makeKey("screen", "tank_detector.less_than_quarter");
+    public static final String TANK_DETECTOR_LESS_THAN_HALF =
+        makeKey("screen", "tank_detector.less_than_half");
+    public static final String TANK_DETECTOR_LESS_THAN_MOST =
+        makeKey("screen", "tank_detector.less_than_most");
+    public static final String TANK_DETECTOR_LESS_THAN_FULL =
+        makeKey("screen", "tank_detector.less_than_full");
+    public static final String TANK_DETECTOR_ANALOG = makeKey("screen", "tank_detector.analog");
   }
 
   public static class Tips {
