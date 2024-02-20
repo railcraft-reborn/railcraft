@@ -4,13 +4,13 @@ import java.util.Optional;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -107,9 +107,9 @@ public class TankMinecart extends FilteredMinecart
 
     ContainerTools.dropIfInvalid(this.level(), this.blockPosition(), this, SLOT_INPUT);
     ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_PROCESSING,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
     ContainerTools.drop(this.level(), this.blockPosition(), this, SLOT_OUTPUT,
-        FluidItemHelper::isContainer);
+        FluidTools::isFluidHandler);
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
@@ -136,16 +136,16 @@ public class TankMinecart extends FilteredMinecart
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
     this.processState = FluidTools.ProcessState.fromTag(tag);
-    this.tank.readFromNBT(tag.getCompound("tank"));
+    this.tank.readFromNBT(tag.getCompound(CompoundTagKeys.TANK));
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("processState", this.processState.getSerializedName());
+    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
     var tankTag = new CompoundTag();
     this.tank.writeToNBT(tankTag);
-    tag.put("tank", tankTag);
+    tag.put(CompoundTagKeys.TANK, tankTag);
   }
 
   public boolean isFilling() {
@@ -167,7 +167,7 @@ public class TankMinecart extends FilteredMinecart
 
   @Override
   public boolean canPlaceItem(int slot, ItemStack stack) {
-    return slot == SLOT_INPUT && FluidItemHelper.isContainer(stack);
+    return slot == SLOT_INPUT && FluidTools.isFluidHandler(stack);
   }
 
   @Override

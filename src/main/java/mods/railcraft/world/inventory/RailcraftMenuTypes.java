@@ -9,6 +9,12 @@ import mods.railcraft.world.entity.vehicle.TunnelBore;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
+import mods.railcraft.world.inventory.detector.AdvancedDetectorMenu;
+import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
+import mods.railcraft.world.inventory.detector.LocomotiveDetectorMenu;
+import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
+import mods.railcraft.world.inventory.detector.SheepDetectorMenu;
+import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -19,6 +25,12 @@ import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.LocomotiveDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.SheepDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
@@ -56,7 +68,6 @@ public class RailcraftMenuTypes {
   public static final DeferredHolder<MenuType<?>, MenuType<FluidFueledSteamBoilerMenu>> FLUID_FUELED_STEAM_BOILER =
       deferredRegister.register("fluid_fueled_steam_boiler",
           () -> blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new));
-
 
   public static final DeferredHolder<MenuType<?>, MenuType<SteamTurbineMenu>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
@@ -159,6 +170,30 @@ public class RailcraftMenuTypes {
   public static final DeferredHolder<MenuType<?>, MenuType<DumpingTrackMenu>> DUMPING_TRACK =
       deferredRegister.register("dumping_track",
           () -> blockEntityMenu(DumpingTrackBlockEntity.class, DumpingTrackMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<SheepDetectorMenu>> SHEEP_DETECTOR =
+      deferredRegister.register("sheep_detector",
+          () -> blockEntityMenu(SheepDetectorBlockEntity.class, SheepDetectorMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<LocomotiveDetectorMenu>> LOCOMOTIVE_DETECTOR =
+      deferredRegister.register("locomotive_detector",
+          () -> blockEntityMenu(LocomotiveDetectorBlockEntity.class, LocomotiveDetectorMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<TankDetectorMenu>> TANK_DETECTOR =
+      deferredRegister.register("tank_detector",
+          () -> blockEntityMenu(TankDetectorBlockEntity.class, TankDetectorMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<AdvancedDetectorMenu>> ADVANCED_DETECTOR =
+      deferredRegister.register("advanced_detector",
+          () -> blockEntityMenu(AdvancedDetectorBlockEntity.class, AdvancedDetectorMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<ItemDetectorMenu>> ITEM_DETECTOR =
+      deferredRegister.register("item_detector",
+          () -> blockEntityMenu(ItemDetectorBlockEntity.class, ItemDetectorMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<RoutingDetectorMenu>> ROUTING_DETECTOR =
+      deferredRegister.register("routing_detector",
+          () -> blockEntityMenu(RoutingDetectorBlockEntity.class, RoutingDetectorMenu::new));
 
   private static <T extends AbstractContainerMenu, E extends Entity> MenuType<T> entityMenu(
       Class<E> entityType, CustomMenuFactory<T, E> factory) {

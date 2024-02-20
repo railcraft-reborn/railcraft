@@ -6,7 +6,7 @@
       "item": "railcraft:switch_track_motor"
     },
     {
-      "item": "minecraft:comparator"
+      "item": "railcraft:routing_detector"
     }
   ],
   "result": {

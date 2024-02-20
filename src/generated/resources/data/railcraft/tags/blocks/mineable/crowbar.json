@@ -6,6 +6,7 @@
     "#railcraft:aspect_receiver",
     "#railcraft:signal",
     "#railcraft:switch_track_actuator",
-    "#minecraft:rails"
+    "#minecraft:rails",
+    "#railcraft:detector"
   ]
 }

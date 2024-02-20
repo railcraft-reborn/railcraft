@@ -85,6 +85,7 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
     buildAbyssalStone(recipeOutput);
     buildBattery(recipeOutput);
     buildFrame(recipeOutput);
+    buildDetectors(recipeOutput);
   }
 
   private void conversion(RecipeOutput recipeOutput, ItemLike from, ItemLike to,
@@ -870,7 +871,7 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
     ShapelessRecipeBuilder
         .shapeless(RecipeCategory.MISC, RailcraftItems.SWITCH_TRACK_ROUTER.get())
         .requires(RailcraftItems.SWITCH_TRACK_MOTOR.get())
-        .requires(Items.COMPARATOR)
+        .requires(RailcraftItems.ROUTING_DETECTOR.get())
         .unlockedBy(getHasName(RailcraftItems.SWITCH_TRACK_MOTOR.get()),
             has(RailcraftItems.SWITCH_TRACK_MOTOR.get()))
         .save(recipeOutput);
@@ -891,16 +892,15 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
   }
 
   private void buildLoaders(RecipeOutput recipeOutput) {
-    // TODO: Fix when we implement detector blocks
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ITEM_LOADER.get())
         .pattern("aaa")
         .pattern("aba")
         .pattern("aca")
         .define('a', Items.COBBLESTONE)
         .define('b', Items.HOPPER)
-        .define('c', RailcraftItems.DETECTOR_TRACK_KIT.get())
-        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
-            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .define('c', RailcraftItems.ITEM_DETECTOR.get())
+        .unlockedBy(getHasName(RailcraftItems.ITEM_DETECTOR.get()),
+            has(RailcraftItems.ITEM_DETECTOR.get()))
         .save(recipeOutput);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ADVANCED_ITEM_LOADER.get())
         .pattern("aba")
@@ -918,10 +918,10 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .pattern("aba")
         .pattern("aca")
         .define('a', Items.COBBLESTONE)
-        .define('b', RailcraftItems.DETECTOR_TRACK_KIT.get())
+        .define('b', RailcraftItems.ITEM_DETECTOR.get())
         .define('c', Items.HOPPER)
-        .unlockedBy(getHasName(RailcraftItems.DETECTOR_TRACK_KIT.get()),
-            has(RailcraftItems.DETECTOR_TRACK_KIT.get()))
+        .unlockedBy(getHasName(RailcraftItems.ITEM_DETECTOR.get()),
+            has(RailcraftItems.ITEM_DETECTOR.get()))
         .save(recipeOutput);
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ADVANCED_ITEM_UNLOADER.get())
         .pattern("aba")
@@ -1960,6 +1960,123 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .define('b', RailcraftItems.REBAR.get())
         .unlockedBy(getHasName(RailcraftItems.REBAR.get()), has(RailcraftItems.REBAR.get()))
         .save(recipeOutput, RailcraftConstants.rl(name + suffix));
+  }
+
+  private void buildDetectors(RecipeOutput recipeOutput) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ADVANCED_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftTags.Items.STEEL_INGOT)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.STEEL_INGOT.get()),
+            has(RailcraftItems.STEEL_INGOT.get()))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.AGE_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.DARK_OAK_LOG)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.SPRUCE_LOG), has(Items.SPRUCE_LOG))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ANIMAL_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.OAK_LOG)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.SPRUCE_LOG), has(Items.SPRUCE_LOG))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ANY_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.STONE)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.STONE), has(Items.STONE))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.EMPTY_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.STONE_BRICKS)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.STONE_BRICKS), has(Items.STONE_BRICKS))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ITEM_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.STRIPPED_ACACIA_WOOD)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.STRIPPED_ACACIA_WOOD), has(Items.STRIPPED_ACACIA_WOOD))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.LOCOMOTIVE_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', RailcraftItems.BLAST_FURNACE_BRICKS.get())
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(RailcraftItems.BLAST_FURNACE_BRICKS.get()),
+            has(RailcraftItems.BLAST_FURNACE_BRICKS.get()))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.MOB_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.MOSSY_COBBLESTONE)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.MOSSY_COBBLESTONE), has(Items.MOSSY_COBBLESTONE))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.PLAYER_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.STONE_SLAB)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.STONE_SLAB), has(Items.STONE_SLAB))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ROUTING_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.CHISELED_QUARTZ_BLOCK)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.CHISELED_QUARTZ_BLOCK), has(Items.CHISELED_QUARTZ_BLOCK))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.SHEEP_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', ItemTags.WOOL)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.WHITE_WOOL), has(Items.WHITE_WOOL))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TANK_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.BRICK)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.BRICK), has(Items.BRICK))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRAIN_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.NETHER_BRICK)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.NETHER_BRICK), has(Items.NETHER_BRICK))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.VILLAGER_DETECTOR.get())
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.LEATHER)
+        .define('b', Items.STONE_PRESSURE_PLATE)
+        .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
+        .save(recipeOutput);
   }
 
   private static void square2x2(RecipeOutput recipeOutput,

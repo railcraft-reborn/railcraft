@@ -106,6 +106,20 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ITEM_UNLOADER, "Item Unloader");
     this.addBlock(RailcraftBlocks.CART_DISPENSER, "Cart Dispenser");
     this.addBlock(RailcraftBlocks.TRAIN_DISPENSER, "Train Dispenser");
+    this.addBlock(RailcraftBlocks.ADVANCED_DETECTOR, "Advanced Cart Detector");
+    this.addBlock(RailcraftBlocks.AGE_DETECTOR, "Age Cart Detector");
+    this.addBlock(RailcraftBlocks.ANIMAL_DETECTOR, "Animal Cart Detector");
+    this.addBlock(RailcraftBlocks.ANY_DETECTOR, "Any Cart Detector");
+    this.addBlock(RailcraftBlocks.EMPTY_DETECTOR, "Empty Cart Detector");
+    this.addBlock(RailcraftBlocks.ITEM_DETECTOR, "Item Cart Detector");
+    this.addBlock(RailcraftBlocks.LOCOMOTIVE_DETECTOR, "Locomotive Cart Detector");
+    this.addBlock(RailcraftBlocks.MOB_DETECTOR, "Mob Cart Detector");
+    this.addBlock(RailcraftBlocks.PLAYER_DETECTOR, "Player Cart Detector");
+    this.addBlock(RailcraftBlocks.ROUTING_DETECTOR, "Routing Cart Detector");
+    this.addBlock(RailcraftBlocks.SHEEP_DETECTOR, "Sheep Cart Detector");
+    this.addBlock(RailcraftBlocks.TANK_DETECTOR, "Tank Cart Detector");
+    this.addBlock(RailcraftBlocks.TRAIN_DETECTOR, "Train Cart Detector");
+    this.addBlock(RailcraftBlocks.VILLAGER_DETECTOR, "Villager Cart Detector");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_LEVER, "Switch Track Lever");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_MOTOR, "Switch Track Motor");
     this.addBlock(RailcraftBlocks.SWITCH_TRACK_ROUTER, "Switch Track Router");
@@ -661,6 +675,35 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY, "Private Railway");
     this.add(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
         "Will only route locomotive that belong to %s");
+    this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_PRIMARY, "Primary Color");
+    this.add(Translations.Screen.LOCOMOTIVE_DETECTOR_SECONDARY, "Secondary Color");
+    this.add(Translations.Screen.FILTER, "Filter");
+    this.add(Translations.Screen.TANK_DETECTOR_VOID, "Match any amount");
+    this.add(Translations.Screen.TANK_DETECTOR_EMPTY, "Match empty tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_NOT_EMPTY, "Match non-empty tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_FULL, "Match full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_QUARTER, "Match more than quarter full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_HALF, "Match more than half full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_MOST, "Match more than 3/4th full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_QUARTER,
+        "Match less than quarter full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_HALF, "Match less than half full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_MOST, "Match less than 3/4th full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_FULL, "Match less than full tanks");
+    this.add(Translations.Screen.TANK_DETECTOR_ANALOG,
+        "Emit Analog Redstone based on amount in tank");
+    this.add(Translations.Screen.TRAIN_DETECTOR_SIZE, "Train Size: %s");
+    this.add(Translations.Screen.ITEM_DETECTOR_EMPTY, "Empty");
+    this.add(Translations.Screen.ITEM_DETECTOR_FULL, "Full");
+    this.add(Translations.Screen.ITEM_DETECTOR_ANYTHING, "Anything");
+    this.add(Translations.Screen.ITEM_DETECTOR_FILTERED, "Filtered");
+    this.add(Translations.Screen.ITEM_DETECTOR_NOT_EMPTY, "Not empty");
+    this.add(Translations.Screen.ITEM_DETECTOR_ANALOG, "Analog");
+    this.add(Translations.Screen.ITEM_DETECTOR_AT_LEAST, "At least");
+    this.add(Translations.Screen.ITEM_DETECTOR_AT_MOST, "At most");
+    this.add(Translations.Screen.ITEM_DETECTOR_EXACTLY, "Exactly");
+    this.add(Translations.Screen.ITEM_DETECTOR_LESS_THAN, "Less than");
+    this.add(Translations.Screen.ITEM_DETECTOR_GREATER_THAN, "Greater than");
   }
 
   private void trackTranslations() {

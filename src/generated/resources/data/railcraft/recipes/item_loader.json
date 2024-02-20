@@ -9,7 +9,7 @@
       "item": "minecraft:hopper"
     },
     "c": {
-      "item": "railcraft:detector_track_kit"
+      "item": "railcraft:item_detector"
     }
   },
   "pattern": [

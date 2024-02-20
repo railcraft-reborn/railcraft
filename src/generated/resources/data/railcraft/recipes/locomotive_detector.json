@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "railcraft:blast_furnace_bricks"
+    },
+    "b": {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "result": {
+    "item": "railcraft:locomotive_detector"
+  },
+  "show_notification": true
+}

@@ -19,6 +19,7 @@ import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RoutingDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
@@ -33,6 +34,11 @@ import mods.railcraft.client.gui.screen.inventory.TrackUndercutterScreen;
 import mods.railcraft.client.gui.screen.inventory.TrainDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.TunnelBoreScreen;
 import mods.railcraft.client.gui.screen.inventory.WaterTankSidingScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.AdvancedDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.ItemDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.LocomotiveDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.SheepDetectorScreen;
+import mods.railcraft.client.gui.screen.inventory.detector.TankDetectorScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
 import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.ForceSpawnParticle;
@@ -139,6 +145,12 @@ public class ClientManager {
     event.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
     event.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
     event.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+    event.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
+    event.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
+    event.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ITEM_DETECTOR.get(), ItemDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ROUTING_DETECTOR.get(), RoutingDetectorScreen::new);
   }
 
   private static void handleClientSetup(FMLClientSetupEvent event) {

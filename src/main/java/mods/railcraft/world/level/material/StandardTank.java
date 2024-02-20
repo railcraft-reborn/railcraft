@@ -176,12 +176,11 @@ public class StandardTank extends FluidTank {
   }
 
   @Override
-  public void setFluid(@Nullable FluidStack resource) {
-    if (!this.isFluidValid(resource)) {
-      return;
+  public void setFluid(FluidStack resource) {
+    if (resource.isEmpty() || this.isFluidValid(resource)) {
+      super.setFluid(resource);
+      this.onContentsChanged();
     }
-    super.setFluid(resource);
-    this.onContentsChanged();
   }
 
   @Override

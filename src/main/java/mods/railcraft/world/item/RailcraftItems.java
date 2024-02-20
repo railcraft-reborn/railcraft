@@ -327,6 +327,48 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> TRAIN_DISPENSER =
       blockItem(RailcraftBlocks.TRAIN_DISPENSER);
 
+  public static final DeferredItem<BlockItem> ADVANCED_DETECTOR =
+      blockItem(RailcraftBlocks.ADVANCED_DETECTOR);
+
+  public static final DeferredItem<BlockItem> AGE_DETECTOR =
+      blockItem(RailcraftBlocks.AGE_DETECTOR);
+
+  public static final DeferredItem<BlockItem> ANIMAL_DETECTOR =
+      blockItem(RailcraftBlocks.ANIMAL_DETECTOR);
+
+  public static final DeferredItem<BlockItem> ANY_DETECTOR =
+      blockItem(RailcraftBlocks.ANY_DETECTOR);
+
+  public static final DeferredItem<BlockItem> EMPTY_DETECTOR =
+      blockItem(RailcraftBlocks.EMPTY_DETECTOR);
+
+  public static final DeferredItem<BlockItem> ITEM_DETECTOR =
+      blockItem(RailcraftBlocks.ITEM_DETECTOR);
+
+  public static final DeferredItem<BlockItem> LOCOMOTIVE_DETECTOR =
+      blockItem(RailcraftBlocks.LOCOMOTIVE_DETECTOR);
+
+  public static final DeferredItem<BlockItem> MOB_DETECTOR =
+      blockItem(RailcraftBlocks.MOB_DETECTOR);
+
+  public static final DeferredItem<BlockItem> PLAYER_DETECTOR =
+      blockItem(RailcraftBlocks.PLAYER_DETECTOR);
+
+  public static final DeferredItem<BlockItem> ROUTING_DETECTOR =
+      blockItem(RailcraftBlocks.ROUTING_DETECTOR);
+
+  public static final DeferredItem<BlockItem> SHEEP_DETECTOR =
+      blockItem(RailcraftBlocks.SHEEP_DETECTOR);
+
+  public static final DeferredItem<BlockItem> TANK_DETECTOR =
+      blockItem(RailcraftBlocks.TANK_DETECTOR);
+
+  public static final DeferredItem<BlockItem> TRAIN_DETECTOR =
+      blockItem(RailcraftBlocks.TRAIN_DETECTOR);
+
+  public static final DeferredItem<BlockItem> VILLAGER_DETECTOR =
+      blockItem(RailcraftBlocks.VILLAGER_DETECTOR);
+
   public static final DeferredItem<SpikeMaulItem> IRON_SPIKE_MAUL =
       deferredRegister.registerItem("iron_spike_maul", properties ->
           new SpikeMaulItem(11.0F, -3.5F, Tiers.IRON, properties));

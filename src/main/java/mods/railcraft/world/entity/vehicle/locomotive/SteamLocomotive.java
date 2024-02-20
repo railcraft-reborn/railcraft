@@ -3,11 +3,11 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.steam.SolidFuelProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -147,7 +147,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
           // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
           // return false;
           // } we allow tanks instafilling.
-          FluidItemHelper.containsFluid(stack, Fluids.WATER);
+          FluidTools.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT -> TicketItem.FILTER.test(stack);
       default -> false;
     };
