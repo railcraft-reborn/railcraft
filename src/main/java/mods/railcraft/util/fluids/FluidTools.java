@@ -64,12 +64,6 @@ public final class FluidTools {
     return FluidUtil.getFluidHandler(stack).isPresent();
   }
 
-  public static boolean isFluidInContainer(ItemStack stack) {
-    return FluidUtil.getFluidHandler(stack)
-        .filter(item -> !item.drain(1, IFluidHandler.FluidAction.SIMULATE).isEmpty())
-        .isPresent();
-  }
-
   public static boolean isEmptyContainer(ItemStack stack) {
     return FluidUtil.getFluidHandler(stack)
         .filter(item -> {
