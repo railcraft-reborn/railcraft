@@ -3,8 +3,8 @@ package mods.railcraft.client.gui.screen.inventory.detector;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetItemDetectorMessage;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.client.gui.ScreenUtils;
+import net.neoforged.neoforge.client.gui.ScreenUtils;
 
 public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu> {
 
@@ -67,14 +67,14 @@ public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.sendToServer(
-        new SetItemDetectorAttributesMessage(this.itemDetector.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetItemDetectorMessage(this.itemDetector.getBlockPos(),
             this.itemDetector.getPrimaryMode(), this.itemDetector.getFilterMode()));
   }
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     final int x = this.leftPos;
     final int y = this.topPos;
     guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);

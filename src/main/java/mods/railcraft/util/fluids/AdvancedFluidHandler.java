@@ -2,8 +2,8 @@ package mods.railcraft.util.fluids;
 
 import java.util.stream.IntStream;
 import org.jetbrains.annotations.NotNull;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class AdvancedFluidHandler implements IFluidHandler {
 

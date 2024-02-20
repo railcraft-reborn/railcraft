@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class SheepDetectorBlock extends DetectorBlock {
 
@@ -43,7 +42,7 @@ public class SheepDetectorBlock extends DetectorBlock {
       Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (player instanceof ServerPlayer serverPlayer) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SHEEP_DETECTOR.get())
-          .ifPresent(blockEntity -> NetworkHooks.openScreen(serverPlayer, blockEntity, pos));
+          .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

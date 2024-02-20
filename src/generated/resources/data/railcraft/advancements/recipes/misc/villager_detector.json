@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_leather",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_leather"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:villager_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_spruce_log",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_spruce_log"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:animal_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

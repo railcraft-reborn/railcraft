@@ -67,6 +67,7 @@ import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.FilterDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -271,6 +272,16 @@ public class Railcraft {
         RailcraftBlockEntityTypes.ITEM_LOADER.get(), ItemLoaderBlockEntity::getItemCap);
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ADVANCED_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.LOCOMOTIVE_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.SHEEP_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.TANK_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.FluidHandler.ITEM,
         (stack, ctx) -> new CreosoteBottleWrapper(stack), Items.GLASS_BOTTLE);

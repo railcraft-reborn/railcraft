@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_steel_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_steel_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:advanced_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

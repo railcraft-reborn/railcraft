@@ -2,6 +2,7 @@ package mods.railcraft.network.to_server;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.network.RailcraftCustomPacketPayload;
+import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -11,14 +12,14 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record SetSwitchTrackRouterMessage(
     BlockPos blockPos,
-    SwitchTrackRouterBlockEntity.Railway railway,
+    RouterBlockEntity.Railway railway,
     SwitchTrackRouterBlockEntity.Lock lock) implements RailcraftCustomPacketPayload {
 
   public static final ResourceLocation ID = RailcraftConstants.rl("set_switch_track_router");
 
   public static SetSwitchTrackRouterMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();
-    var railway = buf.readEnum(SwitchTrackRouterBlockEntity.Railway.class);
+    var railway = buf.readEnum(RouterBlockEntity.Railway.class);
     var lock = buf.readEnum(SwitchTrackRouterBlockEntity.Lock.class);
     return new SetSwitchTrackRouterMessage(blockPos, railway, lock);
   }
@@ -48,7 +49,7 @@ public record SetSwitchTrackRouterMessage(
                     ? null
                     : senderProfile);
             switchTrackRouter.setRailway(
-                this.railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
+                this.railway.equals(RouterBlockEntity.Railway.PUBLIC)
                     ? null
                     : senderProfile);
             switchTrackRouter.syncToClient();

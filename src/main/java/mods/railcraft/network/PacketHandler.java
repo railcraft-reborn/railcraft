@@ -10,15 +10,19 @@ import mods.railcraft.network.to_server.SetActionSignalBoxMessage;
 import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.network.to_server.SetEmbarkingTrackMessage;
 import mods.railcraft.network.to_server.SetFluidManipulatorMessage;
+import mods.railcraft.network.to_server.SetItemDetectorMessage;
 import mods.railcraft.network.to_server.SetItemManipulatorMessage;
 import mods.railcraft.network.to_server.SetLauncherTrackMessage;
 import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.network.to_server.SetMaintenanceMinecartMessage;
+import mods.railcraft.network.to_server.SetRoutingDetectorMessage;
 import mods.railcraft.network.to_server.SetRoutingTrackMessage;
 import mods.railcraft.network.to_server.SetSignalCapacitorBoxMessage;
 import mods.railcraft.network.to_server.SetSignalControllerBoxMessage;
 import mods.railcraft.network.to_server.SetSwitchTrackMotorMessage;
 import mods.railcraft.network.to_server.SetSwitchTrackRouterMessage;
+import mods.railcraft.network.to_server.SetTankDetectorMessage;
+import mods.railcraft.network.to_server.SetTrainDetectorMessage;
 import mods.railcraft.network.to_server.UpdateAuraByKeyMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -80,6 +84,10 @@ public final class PacketHandler {
     registrar.play(SetSwitchTrackMotorMessage.ID, SetSwitchTrackMotorMessage::read);
     registrar.play(SetSwitchTrackRouterMessage.ID, SetSwitchTrackRouterMessage::read);
     registrar.play(UpdateAuraByKeyMessage.ID, UpdateAuraByKeyMessage::read);
+    registrar.play(SetTrainDetectorMessage.ID, SetTrainDetectorMessage::read);
+    registrar.play(SetItemDetectorMessage.ID, SetItemDetectorMessage::read);
+    registrar.play(SetRoutingDetectorMessage.ID, SetRoutingDetectorMessage::read);
+    registrar.play(SetTankDetectorMessage.ID, SetTankDetectorMessage::read);
   }
 
   private static void registerServerToClient(PacketRegistrar registrar) {

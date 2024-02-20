@@ -22,7 +22,7 @@ public class LocomotiveDetectorScreen extends AbstractContainerScreen<Locomotive
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     final int x = this.leftPos;
     final int y = this.topPos;
     guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);

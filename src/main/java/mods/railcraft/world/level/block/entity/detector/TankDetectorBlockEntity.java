@@ -23,10 +23,10 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
 
@@ -43,9 +43,9 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER);
-      if (fluidHandler.resolve().isPresent()) {
-        var tank = new AdvancedFluidHandler(fluidHandler.resolve().get());
+      var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
+      if (fluidHandler != null) {
+        var tank = new AdvancedFluidHandler(fluidHandler);
         boolean liquidMatches = false;
         var filterFluid = this.getFilterFluid();
         var tankLiquid = tank.drain(1, IFluidHandler.FluidAction.SIMULATE);

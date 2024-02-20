@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_chiseled_quartz_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_chiseled_quartz_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:routing_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -4,8 +4,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetTankDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetTankDetectorMessage;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
@@ -48,8 +48,8 @@ public class TankDetectorScreen extends AbstractContainerScreen<TankDetectorMenu
   private void setMode(TankDetectorBlockEntity.Mode mode) {
     if (mode != this.tankDetectorBlockEntity.getMode()) {
       this.tankDetectorBlockEntity.setMode(mode);
-      NetworkChannel.GAME.sendToServer(
-          new SetTankDetectorAttributesMessage(this.tankDetectorBlockEntity.getBlockPos(), mode));
+      PacketHandler.sendToServer(
+          new SetTankDetectorMessage(this.tankDetectorBlockEntity.getBlockPos(), mode));
     }
   }
 
@@ -63,7 +63,7 @@ public class TankDetectorScreen extends AbstractContainerScreen<TankDetectorMenu
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     final int x = this.leftPos;
     final int y = this.topPos;
     guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);

@@ -21,7 +21,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
 
@@ -35,9 +35,8 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      var cap = cart.getCapability(ForgeCapabilities.ITEM_HANDLER);
-      if (cap.resolve().isPresent()) {
-        var itemHandler = cap.resolve().get();
+      var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+      if (itemHandler != null) {
         var containerManipulator = ContainerManipulator.of(itemHandler);
         if (itemHandler.getSlots() > 0) {
           switch (primaryMode) {

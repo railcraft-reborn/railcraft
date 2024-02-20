@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_nether_brick",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_nether_brick"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:train_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
