@@ -19,6 +19,7 @@ import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
 import mods.railcraft.network.play.SetTankDetectorAttributesMessage;
+import mods.railcraft.network.play.SetTrainDetectorAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.network.play.UpdateAuraByKeyMessage;
 import net.minecraft.core.BlockPos;
@@ -174,6 +175,13 @@ public enum NetworkChannel {
           .encoder(SetTankDetectorAttributesMessage::encode)
           .decoder(SetTankDetectorAttributesMessage::decode)
           .consumerMainThread(SetTankDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetTrainDetectorAttributesMessage.class, 0x14,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetTrainDetectorAttributesMessage::encode)
+          .decoder(SetTrainDetectorAttributesMessage::decode)
+          .consumerMainThread(SetTrainDetectorAttributesMessage::handle)
           .add();
     }
   };

@@ -19,6 +19,7 @@ import mods.railcraft.world.level.block.detector.MobDetectorBlock;
 import mods.railcraft.world.level.block.detector.PlayerDetectorBlock;
 import mods.railcraft.world.level.block.detector.SheepDetectorBlock;
 import mods.railcraft.world.level.block.detector.TankDetectorBlock;
+import mods.railcraft.world.level.block.detector.TrainDetectorBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.CartDispenserBlock;
@@ -586,9 +587,9 @@ public class RailcraftBlocks {
       deferredRegister.register("tank_detector",
           () -> new TankDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
-  public static final RegistryObject<DetectorBlock> TRAIN_DETECTOR =
+  public static final RegistryObject<TrainDetectorBlock> TRAIN_DETECTOR =
       deferredRegister.register("train_detector",
-          () -> new DetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
+          () -> new TrainDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
   public static final RegistryObject<DetectorBlock> VILLAGER_DETECTOR =
       deferredRegister.register("villager_detector",

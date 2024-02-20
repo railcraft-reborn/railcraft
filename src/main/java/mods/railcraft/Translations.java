@@ -121,6 +121,8 @@ public class Translations {
     public static final String TANK_DETECTOR_LESS_THAN_FULL =
         makeKey("screen", "tank_detector.less_than_full");
     public static final String TANK_DETECTOR_ANALOG = makeKey("screen", "tank_detector.analog");
+    public static final String TRAIN_DETECTOR_SIZE =
+        makeKey("screen", "train_detector.size");
   }
 
   public static class Tips {

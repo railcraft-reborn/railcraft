@@ -115,6 +115,7 @@ public final class CompoundTagKeys {
   public static final String TRAIN_DELAY = "trainDelay";
   public static final String TRAIN_DISPENSER_FILTERS = "trainDispenserFilters";
   public static final String TRAIN_LEAVING = "trainLeaving";
+  public static final String TRAIN_SIZE = "trainSize";
   public static final String TRANSFER_MODE = "transferMode";
   public static final String VALUE = "value";
   public static final String WATER_TANK = "waterTank";

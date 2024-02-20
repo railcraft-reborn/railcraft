@@ -751,6 +751,7 @@
   "screen.railcraft.track_layer.stock": "Stock",
   "screen.railcraft.track_undercutter.sides": "Sides",
   "screen.railcraft.track_undercutter.under": "Under",
+  "screen.railcraft.train_detector.size": "Train Size: %s",
   "screen.railcraft.tunnel_bore.ballast": "Ballast",
   "screen.railcraft.tunnel_bore.fuel": "Fuel",
   "screen.railcraft.tunnel_bore.head": "Head",

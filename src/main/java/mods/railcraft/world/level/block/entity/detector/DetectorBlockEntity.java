@@ -25,7 +25,7 @@ public class DetectorBlockEntity extends RailcraftBlockEntity {
   }
 
   protected int updateInterval() {
-    return 0; // TrainDetector = 4
+    return 0;
   }
 
   protected boolean shouldTest() {
@@ -61,6 +61,7 @@ public class DetectorBlockEntity extends RailcraftBlockEntity {
         level.setBlockAndUpdate(blockPos, blockState.setValue(DetectorBlock.POWERED, powered));
         level.updateNeighborsAt(blockPos, blockState.getBlock());
       }
+      blockEntity.tick = 0;
     }
   }
 

@@ -692,6 +692,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.TANK_DETECTOR_LESS_THAN_FULL, "Match less than full tanks");
     this.add(Translations.Screen.TANK_DETECTOR_ANALOG,
         "Emit Analog Redstone based on amount in tank");
+    this.add(Translations.Screen.TRAIN_DETECTOR_SIZE, "Train Size: %s");
   }
 
   private void trackTranslations() {
