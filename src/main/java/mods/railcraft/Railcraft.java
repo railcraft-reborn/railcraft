@@ -57,8 +57,8 @@ import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
@@ -171,8 +171,8 @@ public class Railcraft {
           var value = entry.getValue();
           int ticketCount = value.getFirst().size();
           int tickingTicketCount = value.getSecond().size();
-          var blockState = level.getBlockState(key);
-          if (blockState.getBlock() instanceof WorldSpikeBlock) {
+          var be = level.getBlockEntity(key);
+          if (be instanceof WorldSpikeBlockEntity) {
             LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for position: {}.", ticketCount, tickingTicketCount, key);
           } else {
             ticketHelper.removeAllTickets(key);

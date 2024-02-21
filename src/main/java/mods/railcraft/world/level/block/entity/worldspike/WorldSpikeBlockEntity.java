@@ -24,23 +24,29 @@ public class WorldSpikeBlockEntity extends RailcraftBlockEntity {
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       WorldSpikeBlockEntity blockEntity) {
-    var serverLevel = (ServerLevel) level;
+    spawnParticle((ServerLevel) level, blockPos, blockEntity);
+  }
 
+  private static void spawnParticle(ServerLevel level, BlockPos blockPos,
+      WorldSpikeBlockEntity blockEntity) {
     var random = level.random;
     var chunkPos = new ChunkPos(blockPos);
+    for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
+      for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
+        int xCorner = x * 16;
+        int zCorner = z * 16;
+        double yCorner = blockPos.getY() - 8;
 
-    int xCorner = chunkPos.x * 16;
-    int zCorner = chunkPos.z * 16;
-    double yCorner = blockPos.getY() - 8;
+        if (random.nextBoolean()) {
+          double xParticle = xCorner + random.nextFloat() * 16;
+          double yParticle = yCorner + random.nextFloat() * 16;
+          double zParticle = zCorner + random.nextFloat() * 16;
 
-    if (random.nextBoolean()) {
-      double xParticle = xCorner + random.nextFloat() * 16;
-      double yParticle = yCorner + random.nextFloat() * 16;
-      double zParticle = zCorner + random.nextFloat() * 16;
-
-      var dest = new Vec3(blockPos.getX() + 0.1, blockPos.getY(), blockPos.getZ() + 0.1);
-      serverLevel.sendParticles(new ChunkLoaderParticleOptions(dest),
-          xParticle, yParticle, zParticle, 1, 0, 0, 0, 0);
+          var dest = new Vec3(blockPos.getX() + 0.1, blockPos.getY(), blockPos.getZ() + 0.1);
+          level.sendParticles(new ChunkLoaderParticleOptions(dest),
+              xParticle, yParticle, zParticle, 1, 0, 0, 0, 0);
+        }
+      }
     }
   }
 }

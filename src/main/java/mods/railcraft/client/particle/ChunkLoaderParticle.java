@@ -1,7 +1,9 @@
 package mods.railcraft.client.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.particle.ChunkLoaderParticleOptions;
 import mods.railcraft.world.item.GogglesItem;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -45,21 +47,33 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
   }
 
   @Override
+  public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+    if (Minecraft.getInstance().player.distanceToSqr(dest) > 25600)
+      return;
+    if(GogglesItem.isGoggleAuraActive(GogglesItem.Aura.WORLDSPIKE)) {
+      super.render(buffer, renderInfo, partialTicks);
+    }
+  }
+
+  @Override
   public void tick() {
     this.xo = this.x;
     this.yo = this.y;
     this.zo = this.z;
 
-    if(!GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.WORLDSPIKE)) {
+    if(!GogglesItem.isGoggleAuraActive(GogglesItem.Aura.WORLDSPIKE)) {
       this.remove();
+      return;
     }
 
     if (!level.isLoaded(BlockPos.containing(dest))) {
       this.remove();
+      return;
     }
 
     if (this.age++ >= this.lifetime) {
       this.remove();
+      return;
     }
 
     if (this.getPos().distanceToSqr(this.dest) <= 0.5) {

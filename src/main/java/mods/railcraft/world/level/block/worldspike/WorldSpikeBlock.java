@@ -35,10 +35,7 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
       boolean movedByPiston) {
     super.onPlace(state, level, pos, oldState, movedByPiston);
     if (level instanceof ServerLevel serverLevel) {
-       var chunkPos = new ChunkPos(pos);
-       // 3x3
-      ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
-          pos, chunkPos.x, chunkPos.z, true, false);
+      this.forceChunk(serverLevel, pos, true);
     }
   }
 
@@ -47,9 +44,17 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
       boolean movedByPiston) {
     super.onRemove(state, level, pos, oldState, movedByPiston);
     if (level instanceof ServerLevel serverLevel && !state.is(oldState.getBlock())) {
-      var chunkPos = new ChunkPos(pos);
-      ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID, pos, chunkPos.x, chunkPos.z,
-          false, false);
+      this.forceChunk(serverLevel, pos, false);
+    }
+  }
+
+  private void forceChunk(ServerLevel serverLevel, BlockPos pos, boolean add) {
+    var chunkPos = new ChunkPos(pos);
+    for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
+      for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
+        ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
+            pos, x, z, add, false);
+      }
     }
   }
 
