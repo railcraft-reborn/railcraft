@@ -1363,6 +1363,12 @@ public class RailcraftItems {
   public static final RegistryObject<BlockItem> ABYSSAL_PAVER_SLAB =
       blockItem(RailcraftBlocks.ABYSSAL_PAVER_SLAB);
 
+  public static final RegistryObject<BlockItem> WORLD_SPIKE =
+      blockItem(RailcraftBlocks.WORLD_SPIKE);
+
+  public static final RegistryObject<BlockItem> PERSONAL_WORLD_SPIKE =
+      blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
+
   // ================================================================================
   // Buckets
   // ================================================================================

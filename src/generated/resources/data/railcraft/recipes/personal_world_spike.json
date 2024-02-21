@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "d": {
+      "tag": "forge:gems/emerald"
+    },
+    "g": {
+      "tag": "forge:ingots/gold"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "p": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+    "gog",
+    "dpd",
+    "gog"
+  ],
+  "result": {
+    "item": "railcraft:personal_world_spike"
+  },
+  "show_notification": true
+}

@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-13T10:12:57.844978	Loot Tables
+// 1.20.1	2024-02-21T12:32:59.513375	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -223,6 +223,7 @@ c765246a9e5a5684db6ae8544d220a0eb534cf18 data/railcraft/loot_tables/blocks/nicke
 41e2b5538cce081fcb568257aaa8ab1fc6de8052 data/railcraft/loot_tables/blocks/orange_steel_tank_valve.json
 d218d8933a2befa838b96335894db48c6808d8fc data/railcraft/loot_tables/blocks/orange_steel_tank_wall.json
 3b08c0cf397f26268ca4a8c254adf6e130c1141b data/railcraft/loot_tables/blocks/orange_strengthened_glass.json
+91d72cbe10ad0d286c97372aceb7e17cddb204ed data/railcraft/loot_tables/blocks/personal_world_spike.json
 76003d47ea5dd43e1773b2e58e32e5713bf95c5f data/railcraft/loot_tables/blocks/pink_iron_tank_gauge.json
 46332a632faef6e462bc4ab707399ce53bf8c70a data/railcraft/loot_tables/blocks/pink_iron_tank_valve.json
 f502c2168e9d64c22a1ad37e3ee438669c8506a5 data/railcraft/loot_tables/blocks/pink_iron_tank_wall.json
@@ -331,6 +332,7 @@ e661d72fd5d983acf687ec8f913058433412852d data/railcraft/loot_tables/blocks/tin_o
 7eab57432688860e28e6b16db8ac811763368840 data/railcraft/loot_tables/blocks/white_steel_tank_valve.json
 078f0b6c1a44135218094c73830166812586e2c7 data/railcraft/loot_tables/blocks/white_steel_tank_wall.json
 d5f322981cb54c3fbffde496820e8ad44a9aa393 data/railcraft/loot_tables/blocks/white_strengthened_glass.json
+8d2e7c77b88eb17b08c83299a60394e4b0c12175 data/railcraft/loot_tables/blocks/world_spike.json
 cff74e0a67bd351657568b2f99d268678793fc2d data/railcraft/loot_tables/blocks/yellow_iron_tank_gauge.json
 383eebdd51d731955231794ee82a4cdcf869e56d data/railcraft/loot_tables/blocks/yellow_iron_tank_valve.json
 57f13f86be9d022870e24bb1704190ef4e3e4880 data/railcraft/loot_tables/blocks/yellow_iron_tank_wall.json

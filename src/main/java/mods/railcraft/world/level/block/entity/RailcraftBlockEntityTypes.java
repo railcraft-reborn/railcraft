@@ -51,6 +51,7 @@ import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.worldspike.PersonalWorldSpikeBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -443,6 +444,12 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("switch_track_router",
           () -> BlockEntityType.Builder
               .of(SwitchTrackRouterBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_ROUTER.get())
+              .build(null));
+
+  public static final RegistryObject<BlockEntityType<PersonalWorldSpikeBlockEntity>> PERSONAL_WORLD_SPIKE =
+      deferredRegister.register("personal_world_spike",
+          () -> BlockEntityType.Builder
+              .of(PersonalWorldSpikeBlockEntity::new, RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =

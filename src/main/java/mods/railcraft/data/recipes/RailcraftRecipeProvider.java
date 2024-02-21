@@ -85,6 +85,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildBattery(consumer);
     buildFrame(consumer);
     buildDetectors(consumer);
+    buildWorldSpike(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -2088,6 +2089,29 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', Items.LEATHER)
         .define('b', Items.STONE_PRESSURE_PLATE)
         .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
+        .save(consumer);
+  }
+
+  private static void buildWorldSpike(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE.get())
+        .pattern("gog")
+        .pattern("dpd")
+        .pattern("gog")
+        .define('d', Tags.Items.GEMS_DIAMOND)
+        .define('g', Tags.Items.INGOTS_GOLD)
+        .define('p', Items.ENDER_PEARL)
+        .define('o', Items.OBSIDIAN)
+        .unlockedBy("has_material", has(Items.ENDER_PEARL))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.PERSONAL_WORLD_SPIKE.get())
+        .pattern("gog")
+        .pattern("dpd")
+        .pattern("gog")
+        .define('d', Tags.Items.GEMS_EMERALD)
+        .define('g', Tags.Items.INGOTS_GOLD)
+        .define('p', Items.ENDER_PEARL)
+        .define('o', Items.OBSIDIAN)
+        .unlockedBy("has_material", has(Items.ENDER_PEARL))
         .save(consumer);
   }
 

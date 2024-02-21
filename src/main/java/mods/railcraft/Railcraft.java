@@ -1,5 +1,7 @@
 package mods.railcraft;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
@@ -56,6 +58,7 @@ import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
@@ -80,6 +83,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -102,6 +106,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 public class Railcraft {
 
   public static final boolean BETA = true;
+  private static final Logger LOGGER = LogUtils.getLogger();
 
   static {
     FuelUtil._setFuelManager(new FuelManagerImpl());
@@ -160,6 +165,28 @@ public class Railcraft {
       RailcraftCriteriaTriggers.register();
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
+      ForgeChunkManager.setForcedChunkLoadingCallback(RailcraftConstants.ID, (level, ticketHelper) -> {
+        for (var entry : ticketHelper.getBlockTickets().entrySet()) {
+          var key = entry.getKey();
+          var value = entry.getValue();
+          int ticketCount = value.getFirst().size();
+          int tickingTicketCount = value.getSecond().size();
+          var blockState = level.getBlockState(key);
+          if (blockState.getBlock() instanceof WorldSpikeBlock) {
+            LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for position: {}.", ticketCount, tickingTicketCount, key);
+          } else {
+            ticketHelper.removeAllTickets(key);
+            LOGGER.info("Removing {} chunk tickets and {} ticking chunk tickets for no longer valid position: {}.", ticketCount, tickingTicketCount, key);
+          }
+        }
+        for (var entry : ticketHelper.getEntityTickets().entrySet()) {
+          var key = entry.getKey();
+          var value = entry.getValue();
+          int ticketCount = value.getFirst().size();
+          int tickingTicketCount = value.getSecond().size();
+          LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for entity: {}.", ticketCount, tickingTicketCount, key);
+        }
+      });
     });
     FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
   }

@@ -472,7 +472,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   private void forceChunk(boolean add) {
     if (this.level() instanceof ServerLevel level) {
       var chunk = this.minecart.chunkPosition();
-      ForgeChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
+      ForgeChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart,
           chunk.x, chunk.z, add, false);
     }
   }
