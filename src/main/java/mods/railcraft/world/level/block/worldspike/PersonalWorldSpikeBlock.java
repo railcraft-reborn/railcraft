@@ -2,19 +2,22 @@ package mods.railcraft.world.level.block.worldspike;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.worldspike.PersonalWorldSpikeBlockEntity;
+import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 
-public class PersonalWorldSpikeBlock extends WorldSpikeBlock implements EntityBlock {
+public class PersonalWorldSpikeBlock extends WorldSpikeBlock {
 
   public PersonalWorldSpikeBlock(Properties properties) {
     super(properties);
@@ -46,6 +49,15 @@ public class PersonalWorldSpikeBlock extends WorldSpikeBlock implements EntityBl
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
     return new PersonalWorldSpikeBlockEntity(blockPos, blockState);
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState,
+      BlockEntityType<T> type) {
+    return level.isClientSide() ? null
+        : createTickerHelper(type, RailcraftBlockEntityTypes.PERSONAL_WORLD_SPIKE.get(),
+        WorldSpikeBlockEntity::serverTick);
   }
 
   @Override
