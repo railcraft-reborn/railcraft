@@ -49,14 +49,13 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
 
     if (this.level() instanceof ServerLevel serverLevel) {
       WorldSpikeBlockEntity.spawnParticle(serverLevel, getOnPos());
-      var currentChunk = new ChunkPos(getOnPos());
-      if (!currentChunk.equals(this.lastChunk)) {
+      if (!this.chunkPosition().equals(this.lastChunk)) {
         var newChunkSet = new LongOpenHashSet();
         for (int x = - 1; x <= 1; x++) {
           for (int z = - 1; z <= 1; z++) {
             // Load chunk with X shape
             if (x * z == 0) {
-              var loadChunk = new ChunkPos(currentChunk.x + x, currentChunk.z + z);
+              var loadChunk = new ChunkPos(this.chunkPosition().x + x, this.chunkPosition().z + z);
               newChunkSet.add(loadChunk.toLong());
               ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
                   this.uuid, loadChunk.x, loadChunk.z, true, false);
@@ -75,7 +74,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
         }
         this.chunkSet.clear();
         this.chunkSet.addAll(newChunkSet);
-        this.lastChunk = currentChunk;
+        this.lastChunk = this.chunkPosition();
         this.setChanged();
       }
     }
