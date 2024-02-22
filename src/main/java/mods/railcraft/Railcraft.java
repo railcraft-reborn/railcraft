@@ -1,8 +1,6 @@
 package mods.railcraft;
 
 import java.util.Optional;
-import org.slf4j.Logger;
-import com.mojang.logging.LogUtils;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
@@ -127,7 +125,9 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 public class Railcraft {
 
   public static final boolean BETA = true;
-  private static final Logger LOGGER = LogUtils.getLogger();
+  public static final TicketController CHUNK_CONTROLLER =
+      new TicketController(RailcraftConstants.rl("ticket_controller"),
+          new WorldSpikeBlockEntity.RailcraftValidationTicket());
 
   static {
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
@@ -137,30 +137,6 @@ public class Railcraft {
   }
 
   private final MinecartHandler minecartHandler = new MinecartHandler();
-
-  public static final TicketController CHUNK_CONTROLLER =
-      new TicketController(RailcraftConstants.rl("default"), (level, ticketHelper) -> {
-        for (var entry : ticketHelper.getBlockTickets().entrySet()) {
-          var key = entry.getKey();
-          var value = entry.getValue();
-          int ticketCount = value.nonTicking().size();
-          int tickingTicketCount = value.ticking().size();
-          var be = level.getBlockEntity(key);
-          if (be instanceof WorldSpikeBlockEntity) {
-            LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for position: {}.", ticketCount, tickingTicketCount, key);
-          } else {
-            ticketHelper.removeAllTickets(key);
-            LOGGER.info("Removing {} chunk tickets and {} ticking chunk tickets for no longer valid position: {}.", ticketCount, tickingTicketCount, key);
-          }
-        }
-        for (var entry : ticketHelper.getEntityTickets().entrySet()) {
-          var key = entry.getKey();
-          var value = entry.getValue();
-          int ticketCount = value.nonTicking().size();
-          int tickingTicketCount = value.ticking().size();
-          LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for entity: {}.", ticketCount, tickingTicketCount, key);
-        }
-      });
 
   public Railcraft(IEventBus modEventBus, Dist dist) {
     NeoForge.EVENT_BUS.register(this);
