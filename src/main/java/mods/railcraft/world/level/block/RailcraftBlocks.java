@@ -1578,14 +1578,14 @@ public class RailcraftBlocks {
       deferredRegister.register("abyssal_paver_slab",
           () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
 
-  public static final RegistryObject<WorldSpikeBlock> WORLD_SPIKE =
+  public static final DeferredBlock<WorldSpikeBlock> WORLD_SPIKE =
       deferredRegister.register("world_spike",
-          () -> new WorldSpikeBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)
+          () -> new WorldSpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
               .sound(SoundType.STONE)));
 
-  public static final RegistryObject<PersonalWorldSpikeBlock> PERSONAL_WORLD_SPIKE =
+  public static final DeferredBlock<PersonalWorldSpikeBlock> PERSONAL_WORLD_SPIKE =
       deferredRegister.register("personal_world_spike",
-          () -> new PersonalWorldSpikeBlock(BlockBehaviour.Properties.copy(WORLD_SPIKE.get())));
+          () -> new PersonalWorldSpikeBlock(BlockBehaviour.Properties.ofFullCopy(WORLD_SPIKE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

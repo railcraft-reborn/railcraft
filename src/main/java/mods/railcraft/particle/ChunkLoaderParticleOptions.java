@@ -7,9 +7,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public record ChunkLoaderParticleOptions(Vec3 dest) implements ParticleOptions {
 
@@ -51,7 +51,7 @@ public record ChunkLoaderParticleOptions(Vec3 dest) implements ParticleOptions {
   @Override
   public String writeToString() {
     return String.format(Locale.ROOT, "%s %.2f %.2f %.2f",
-        ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
+        BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
         this.dest.x(),
         this.dest.y(),
         this.dest.z());

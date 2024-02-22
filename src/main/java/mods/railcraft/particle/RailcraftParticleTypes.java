@@ -36,10 +36,9 @@ public class RailcraftParticleTypes {
       deferredRegister.register("force_spawn",
           () -> create(ForceSpawnParticleOptions.DESERIALIZER, ForceSpawnParticleOptions.CODEC));
 
-  public static final RegistryObject<ParticleType<ChunkLoaderParticleOptions>> CHUNK_LOADER =
+  public static final DeferredHolder<ParticleType<?>, ParticleType<ChunkLoaderParticleOptions>> CHUNK_LOADER =
       deferredRegister.register("chunk_loader",
-          () -> create(ChunkLoaderParticleOptions.DESERIALIZER,
-              __ -> ChunkLoaderParticleOptions.CODEC));
+          () -> create(ChunkLoaderParticleOptions.DESERIALIZER, ChunkLoaderParticleOptions.CODEC));
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

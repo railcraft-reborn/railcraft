@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.vehicle;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.Railcraft;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class WorldSpikeMinecart extends RailcraftMinecart {
 
@@ -57,8 +56,8 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
             if (x * z == 0) {
               var loadChunk = new ChunkPos(this.chunkPosition().x + x, this.chunkPosition().z + z);
               newChunkSet.add(loadChunk.toLong());
-              ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
-                  this.uuid, loadChunk.x, loadChunk.z, true, false);
+              Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid,
+                  loadChunk.x, loadChunk.z, true, false);
             }
           }
         }
@@ -68,8 +67,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
             int x = (int) chunkPos;
             int z = (int) (chunkPos >> 32);
             LOGGER.info("Unload chunk [X: {}, Z: {}]", x, z);
-            ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
-                this.uuid, x, z, false, false);
+            Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid, x, z, false, false);
           }
         }
         this.chunkSet.clear();
@@ -89,8 +87,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
         int x = (int) chunkPos;
         int z = (int) (chunkPos >> 32);
         LOGGER.info("Unload chunk [X: {}, Z: {}]", x, z);
-        ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
-            this.uuid, x, z, false, false);
+        Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid, x, z, false, false);
       }
     }
   }
