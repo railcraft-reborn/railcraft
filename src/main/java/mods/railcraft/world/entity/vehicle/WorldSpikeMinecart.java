@@ -1,20 +1,29 @@
 package mods.railcraft.world.entity.vehicle;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class WorldSpikeMinecart extends RailcraftMinecart {
+
+  private static final Logger LOGGER = LogUtils.getLogger();
+  private ChunkPos lastChunk;
+  private final LongOpenHashSet chunkSet = new LongOpenHashSet();
 
   public WorldSpikeMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -38,11 +47,53 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   public void tick() {
     super.tick();
 
-    if (this.level().isClientSide()) {
-      return;
+    if (this.level() instanceof ServerLevel serverLevel) {
+      WorldSpikeBlockEntity.spawnParticle(serverLevel, getOnPos());
+      var currentChunk = new ChunkPos(getOnPos());
+      if (!currentChunk.equals(this.lastChunk)) {
+        var newChunkSet = new LongOpenHashSet();
+        for (int x = - 1; x <= 1; x++) {
+          for (int z = - 1; z <= 1; z++) {
+            // Load chunk with X shape
+            if (x * z == 0) {
+              var loadChunk = new ChunkPos(currentChunk.x + x, currentChunk.z + z);
+              newChunkSet.add(loadChunk.toLong());
+              ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
+                  this.uuid, loadChunk.x, loadChunk.z, true, false);
+            }
+          }
+        }
+        var modified = this.chunkSet.removeAll(newChunkSet);
+        if (modified) {
+          for (long chunkPos : chunkSet) {
+            int x = (int) chunkPos;
+            int z = (int) (chunkPos >> 32);
+            LOGGER.info("Unload chunk [X: {}, Z: {}]", x, z);
+            ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
+                this.uuid, x, z, false, false);
+          }
+        }
+        this.chunkSet.clear();
+        this.chunkSet.addAll(newChunkSet);
+        this.lastChunk = currentChunk;
+        this.setChanged();
+      }
     }
-    WorldSpikeBlockEntity.spawnParticle((ServerLevel) this.level(),
-        BlockPos.containing(this.getX(), this.getY(), this.getZ()));
+  }
+
+  @Override
+  public void remove(RemovalReason reason) {
+    super.remove(reason);
+    if (this.level() instanceof ServerLevel serverLevel) {
+      LOGGER.info("Minecart removed");
+      for (long chunkPos : this.chunkSet) {
+        int x = (int) chunkPos;
+        int z = (int) (chunkPos >> 32);
+        LOGGER.info("Unload chunk [X: {}, Z: {}]", x, z);
+        ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
+            this.uuid, x, z, false, false);
+      }
+    }
   }
 
   @Override
