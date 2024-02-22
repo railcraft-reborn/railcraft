@@ -26,10 +26,18 @@ public class LocomotiveDetectorBlockEntity extends FilterDetectorBlockEntity {
     var secondary = getItem(1);
     for (var cart : minecarts) {
       if (cart instanceof Locomotive locomotive) {
-        var matches = DyeColor.getColor(primary) == locomotive.getPrimaryDyeColor() &&
-            DyeColor.getColor(secondary) == locomotive.getSecondaryDyeColor();
-        if (matches) {
+        if (primary.isEmpty() && secondary.isEmpty()) {
           return Redstone.SIGNAL_MAX;
+        } else if (DyeColor.getColor(primary) == locomotive.getPrimaryDyeColor() && secondary.isEmpty()) {
+          return Redstone.SIGNAL_MAX;
+        } else if (DyeColor.getColor(secondary) == locomotive.getSecondaryDyeColor() && primary.isEmpty()) {
+          return Redstone.SIGNAL_MAX;
+        } else {
+          var matches = DyeColor.getColor(primary) == locomotive.getPrimaryDyeColor() &&
+              DyeColor.getColor(secondary) == locomotive.getSecondaryDyeColor();
+          if (matches) {
+            return Redstone.SIGNAL_MAX;
+          }
         }
       }
     }
