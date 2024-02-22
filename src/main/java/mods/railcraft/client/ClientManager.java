@@ -40,6 +40,7 @@ import mods.railcraft.client.gui.screen.inventory.detector.LocomotiveDetectorScr
 import mods.railcraft.client.gui.screen.inventory.detector.SheepDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.detector.TankDetectorScreen;
 import mods.railcraft.client.model.RailcraftLayerDefinitions;
+import mods.railcraft.client.particle.ChunkLoaderParticle;
 import mods.railcraft.client.particle.FireSparkParticle;
 import mods.railcraft.client.particle.ForceSpawnParticle;
 import mods.railcraft.client.particle.PumpkinParticle;
@@ -197,6 +198,8 @@ public class ClientManager {
         FireSparkParticle.Provider::new);
     event.registerSpriteSet(RailcraftParticleTypes.FORCE_SPAWN.get(),
         ForceSpawnParticle.Provider::new);
+    event.registerSpriteSet(RailcraftParticleTypes.CHUNK_LOADER.get(),
+        ChunkLoaderParticle.Provider::new);
   }
 
   private static void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {

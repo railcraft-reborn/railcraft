@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -303,10 +304,6 @@ public class RailcraftItems {
       deferredRegister.register("diamond_tunnel_bore_head",
           () -> new DiamondTunnelBoreHeadItem(new Item.Properties().durability(6000)));
 
-  public static final RegistryObject<CartItem> TANK_MINECART =
-      deferredRegister.register("tank_minecart",
-          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
-
   public static final RegistryObject<BlockItem> FLUID_LOADER =
       blockItem(RailcraftBlocks.FLUID_LOADER);
 
@@ -467,6 +464,16 @@ public class RailcraftItems {
           () -> new TrackUndercutterCartItem(new Item.Properties()
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
+
+  public static final RegistryObject<CartItem> TANK_MINECART =
+      deferredRegister.register("tank_minecart",
+          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final RegistryObject<CartItem> WORLD_SPIKE_MINECART =
+      deferredRegister.register("world_spike_minecart",
+          () -> new CartItem(WorldSpikeMinecart::new, new Item.Properties()
+              .stacksTo(1)
+              .rarity(Rarity.UNCOMMON)));
 
   public static final RegistryObject<TunnelBoreItem> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
@@ -1362,6 +1369,12 @@ public class RailcraftItems {
 
   public static final RegistryObject<BlockItem> ABYSSAL_PAVER_SLAB =
       blockItem(RailcraftBlocks.ABYSSAL_PAVER_SLAB);
+
+  public static final RegistryObject<BlockItem> WORLD_SPIKE =
+      blockItem(RailcraftBlocks.WORLD_SPIKE);
+
+  public static final RegistryObject<BlockItem> PERSONAL_WORLD_SPIKE =
+      blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
 
   // ================================================================================
   // Buckets

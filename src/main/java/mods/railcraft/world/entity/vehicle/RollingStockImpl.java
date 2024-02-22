@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
 
@@ -462,18 +461,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   @Override
   public void removed(Entity.RemovalReason reason) {
     if (reason.shouldDestroy()) {
-      this.forceChunk(false);
       this.unlinkAll();
-    } else {
-      this.forceChunk(this.train().size() > 1);
-    }
-  }
-
-  private void forceChunk(boolean add) {
-    if (this.level() instanceof ServerLevel level) {
-      var chunk = this.minecart.chunkPosition();
-      ForgeChunkManager.forceChunk(level, RailcraftConstants.ID, this.minecart.getUUID(),
-          chunk.x, chunk.z, add, false);
     }
   }
 

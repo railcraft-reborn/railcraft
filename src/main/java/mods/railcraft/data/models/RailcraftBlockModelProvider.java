@@ -65,6 +65,7 @@ import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
@@ -313,6 +314,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.createFrameBlock(RailcraftBlocks.FRAME.get());
     this.createLogBookBlock(RailcraftBlocks.LOGBOOK.get());
+
+    this.createWorldSpikeBlock(RailcraftBlocks.WORLD_SPIKE.get());
+    this.createWorldSpikeBlock(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
 
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
@@ -905,6 +909,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var topTexture = TextureMapping.getBlockTexture(block, "_top");
     var model =
         this.models().cubeBottomTop(this.name(block), sideTexture, bottomTexture, topTexture);
+    this.simpleBlock(block, model);
+    this.simpleBlockItem(block, model);
+  }
+
+  private void createWorldSpikeBlock(WorldSpikeBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+
+    var model = this.models().cubeBottomTop(name(block), sideTexture, topTexture, topTexture);
     this.simpleBlock(block, model);
     this.simpleBlockItem(block, model);
   }

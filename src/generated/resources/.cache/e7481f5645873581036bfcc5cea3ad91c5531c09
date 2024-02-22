@@ -1,4 +1,4 @@
-// 1.20.1	2023-08-24T18:14:37.106579	Item Models: railcraft
+// 1.20.1	2024-02-21T21:12:25.894738	Item Models: railcraft
 dbbe28cea0e96f0929204fe4efd5f4923d9f3d43 assets/railcraft/models/item/activator_track_kit.json
 e0d7f6014a1a00e1f619d687db8dd4e18748da57 assets/railcraft/models/item/advanced_rail.json
 c13cd9f012c8ef8f084877066381fd641ce1ba81 assets/railcraft/models/item/bag_of_cement.json
@@ -146,6 +146,7 @@ f149bdfae1a9848b1a630636285872e23dddab3b assets/railcraft/models/item/whistle_tr
 a23458d7b292eebb148578f4372e3980f19f31ee assets/railcraft/models/item/wooden_rail.json
 54f23932c8d03f68259e3528c58ab2479a0a1a61 assets/railcraft/models/item/wooden_railbed.json
 6de32dbee6f65f6721f561a622026904e9401a0c assets/railcraft/models/item/wooden_tie.json
+7e038ae485d3f9b8206d2db4ec56cfe4b89b26df assets/railcraft/models/item/world_spike_minecart.json
 bad3a7b2eb461b7f51ff73f0346cfea8f9c3130f assets/railcraft/models/item/zinc_electrode.json
 3ca0b9e47ae31a236053d6c505eb9670aba2fa20 assets/railcraft/models/item/zinc_gear.json
 80bbd1095ede4ea0d4047e33969f08b78c7d89ef assets/railcraft/models/item/zinc_ingot.json

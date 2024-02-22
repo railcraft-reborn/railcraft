@@ -9,7 +9,6 @@ import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.item.GogglesItem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -18,35 +17,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SignalAuraRenderUtil {
 
-  private static final Minecraft minecraft = Minecraft.getInstance();
-
   public static void tryRenderSignalAura(BlockEntity blockEntity,
       PoseStack poseStack, MultiBufferSource bufferSource) {
     if (blockEntity instanceof SignalControllerEntity provider) {
       var peers = provider.getSignalController().peers();
-      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.TUNING)) {
+      if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.TUNING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
-      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+      } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.CONTROLLER_ASPECT);
       }
     }
     if (blockEntity instanceof BlockSignalEntity blockSignal) {
       var peers = blockSignal.signalNetwork().peers();
-      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
+      if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.COORD_RAINBOW);
-      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+      } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, peers,
             ColorProfile.CONSTANT_BLUE);
       }
     } else if (blockEntity instanceof TokenSignalEntity tokenSignal) {
       var centroid = Collections.singletonList(tokenSignal.ringCentroidPos());
-      if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SURVEYING)) {
+      if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
             (t, s, d) -> tokenSignal.ringId().hashCode());
-      } else if (GogglesItem.isGoggleAuraActive(minecraft.player, GogglesItem.Aura.SIGNALLING)) {
+      } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
         renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
             ColorProfile.CONSTANT_BLUE);
       }
@@ -66,7 +63,7 @@ public class SignalAuraRenderUtil {
     var normal = poseStack.last().normal();
 
     for (BlockPos target : endPoints) {
-      var be = minecraft.level.getBlockEntity(target);
+      var be = blockEntity.getLevel().getBlockEntity(target);
       if (be == null || be.isRemoved()) {
         continue;
       }

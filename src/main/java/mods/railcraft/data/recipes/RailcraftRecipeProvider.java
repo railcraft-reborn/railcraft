@@ -85,6 +85,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildBattery(consumer);
     buildFrame(consumer);
     buildDetectors(consumer);
+    buildWorldSpike(consumer);
   }
 
   private void conversion(Consumer<FinishedRecipe> finishedRecipe, ItemLike from, ItemLike to,
@@ -1204,6 +1205,15 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
         .save(consumer);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART.get())
+        .pattern("a")
+        .pattern("b")
+        .define('a', RailcraftItems.WORLD_SPIKE.get())
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.WORLD_SPIKE.get()),
+            has(RailcraftItems.WORLD_SPIKE.get()))
+        .save(consumer);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TUNNEL_BORE.get())
         .pattern("aba")
         .pattern("cbc")
@@ -2088,6 +2098,29 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', Items.LEATHER)
         .define('b', Items.STONE_PRESSURE_PLATE)
         .unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER))
+        .save(consumer);
+  }
+
+  private static void buildWorldSpike(Consumer<FinishedRecipe> consumer) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE.get())
+        .pattern("gog")
+        .pattern("dpd")
+        .pattern("gog")
+        .define('d', Tags.Items.GEMS_DIAMOND)
+        .define('g', Tags.Items.INGOTS_GOLD)
+        .define('p', Items.ENDER_PEARL)
+        .define('o', Items.OBSIDIAN)
+        .unlockedBy(getHasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL))
+        .save(consumer);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.PERSONAL_WORLD_SPIKE.get())
+        .pattern("gog")
+        .pattern("dpd")
+        .pattern("gog")
+        .define('d', Tags.Items.GEMS_EMERALD)
+        .define('g', Tags.Items.INGOTS_GOLD)
+        .define('p', Items.ENDER_PEARL)
+        .define('o', Items.OBSIDIAN)
+        .unlockedBy(getHasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL))
         .save(consumer);
   }
 
