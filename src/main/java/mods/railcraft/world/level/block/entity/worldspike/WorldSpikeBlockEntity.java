@@ -24,11 +24,10 @@ public class WorldSpikeBlockEntity extends RailcraftBlockEntity {
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       WorldSpikeBlockEntity blockEntity) {
-    spawnParticle((ServerLevel) level, blockPos, blockEntity);
+    spawnParticle((ServerLevel) level, blockPos);
   }
 
-  private static void spawnParticle(ServerLevel level, BlockPos blockPos,
-      WorldSpikeBlockEntity blockEntity) {
+  public static void spawnParticle(ServerLevel level, BlockPos blockPos) {
     var random = level.random;
     var chunkPos = new ChunkPos(blockPos);
     for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {

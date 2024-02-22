@@ -265,8 +265,7 @@ public class RailcraftVillagerTrades {
       //CHEAP.add(RailcraftCarts.WORK);
       EXPENSIVE.add(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get());
       EXPENSIVE.add(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get());
-      //EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_PERSONAL);
-      //EXPENSIVE.add(RailcraftCarts.WORLDSPIKE_STANDARD);
+      EXPENSIVE.add(RailcraftEntityTypes.WORLD_SPIKE.get());
       //EXPENSIVE.add(RailcraftCarts.CHEST_METALS);
       //EXPENSIVE.add(RailcraftCarts.CHEST_VOID);
       EXPENSIVE.add(RailcraftEntityTypes.TRACK_LAYER.get());

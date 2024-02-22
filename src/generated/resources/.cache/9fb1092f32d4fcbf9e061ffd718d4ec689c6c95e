@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-21T12:53:50.512185	Recipes
+// 1.20.1	2024-02-22T11:57:16.361669	Recipes
 4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -391,7 +391,7 @@ d54de22f1c91c8c3c4c881c9493d0bfa2f652e80 data/railcraft/advancements/recipes/mis
 65fa15bd4cb47f7a963cc4ac930c7eefab32f828 data/railcraft/advancements/recipes/misc/orange_steel_tank_wall.json
 58522e79b4b14aa5fab09595516c583e85a18cb0 data/railcraft/advancements/recipes/misc/orange_strengthened_glass.json
 a5e827e99738468f673d38215c49b5015e5cc477 data/railcraft/advancements/recipes/misc/overalls.json
-04a3ead29eb43bcd8596d22d20c4b2c4cc2e7cdc data/railcraft/advancements/recipes/misc/personal_world_spike.json
+6534e2ce5d93fad36b04f932864000bc5ccfa7e6 data/railcraft/advancements/recipes/misc/personal_world_spike.json
 4941ac45e08b8c868dcb9552ac42acf6bcebac3b data/railcraft/advancements/recipes/misc/pink_iron_tank_gauge.json
 f8e599a37fff493efe4f623498fddfbe1a0bdbe4 data/railcraft/advancements/recipes/misc/pink_iron_tank_valve.json
 64ab938d7f8338e5ddc4d074ef6fabcd8a959a50 data/railcraft/advancements/recipes/misc/pink_iron_tank_wall.json
@@ -567,7 +567,8 @@ e9d13f00ac99c89eee44898c0a47ba530d2b9563 data/railcraft/advancements/recipes/mis
 234c342ac43001e36719ba74eb300e13283b54ab data/railcraft/advancements/recipes/misc/wooden_railbed.json
 9d7ac487a2b294c9f1a1a2f8706522b3c085a72e data/railcraft/advancements/recipes/misc/wooden_tie.json
 6bb281c307e4204b16f90fba312e6e4823b74dbd data/railcraft/advancements/recipes/misc/wooden_tie_bottle.json
-c271609fce8e4f90cca1b51f3b97588527831909 data/railcraft/advancements/recipes/misc/world_spike.json
+7104c64812a7a2a26ecadb59c58bf3a3e84a9a1c data/railcraft/advancements/recipes/misc/world_spike.json
+fc01a731c9257c0ed5e9fb4a4b4a791302598eec data/railcraft/advancements/recipes/misc/world_spike_minecart.json
 124d7e27d3915848347fb431b9538a8e9fe60e64 data/railcraft/advancements/recipes/misc/yellow_iron_tank_gauge.json
 3cc6ee0855098e2056970372471202e9855ae039 data/railcraft/advancements/recipes/misc/yellow_iron_tank_valve.json
 b814ed7fa2a108966b9b3365d61119fa9f4d090a data/railcraft/advancements/recipes/misc/yellow_iron_tank_wall.json
@@ -1229,6 +1230,7 @@ c4892bc9f4bbb9339cec8b77c2e803e2d4293776 data/railcraft/recipes/wooden_rail.json
 f37cdfbcc3f96d6284a385d44a2c348369a91330 data/railcraft/recipes/wooden_tie.json
 f7011a8a90b40317aba1b7f8c6db273039ab42fd data/railcraft/recipes/wooden_tie_bottle.json
 409f20cfcc310a5141f95caffcbe13ab506c17e5 data/railcraft/recipes/world_spike.json
+8bd8dd80a0f1c207f9a4e5f08d06822d0c0886fc data/railcraft/recipes/world_spike_minecart.json
 0f5ab3cd0d388d936201b5dc47d1122107be1fd4 data/railcraft/recipes/yellow_iron_tank_gauge.json
 26c3310fcde77abb4ee6565eb9b64129c605129b data/railcraft/recipes/yellow_iron_tank_valve.json
 e02c7f80b6037e309bd9d2140818acaf6460db62 data/railcraft/recipes/yellow_iron_tank_wall.json

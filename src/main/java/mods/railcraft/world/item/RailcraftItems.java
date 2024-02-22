@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -306,6 +307,10 @@ public class RailcraftItems {
   public static final RegistryObject<CartItem> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final RegistryObject<CartItem> WORLD_SPIKE_MINECART =
+      deferredRegister.register("world_spike_minecart",
+          () -> new CartItem(WorldSpikeMinecart::new, new Item.Properties().stacksTo(1)));
 
   public static final RegistryObject<BlockItem> FLUID_LOADER =
       blockItem(RailcraftBlocks.FLUID_LOADER);
