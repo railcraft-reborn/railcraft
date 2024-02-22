@@ -388,6 +388,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.dropSelf(RailcraftBlocks.STEAM_OVEN.get());
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.WORLD_SPIKE.get());
+    this.dropSelf(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
   }
 
   protected LootTable.Builder createOreDrop(Block block, Item item, int min, int max) {

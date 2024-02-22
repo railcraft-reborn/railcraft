@@ -7,6 +7,7 @@ import mods.railcraft.world.entity.vehicle.TrackRelayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
+import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -68,6 +69,15 @@ public class RailcraftEntityTypes {
           () -> create("track_undercutter",
               EntityType.Builder
                   .<TrackUndercutter>of(TrackUndercutter::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final DeferredHolder<EntityType<?>, EntityType<WorldSpikeMinecart>> WORLD_SPIKE =
+      deferredRegister.register("world_spike_minecart",
+          () -> create("world_spike_minecart",
+              EntityType.Builder
+                  .<WorldSpikeMinecart>of(WorldSpikeMinecart::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));

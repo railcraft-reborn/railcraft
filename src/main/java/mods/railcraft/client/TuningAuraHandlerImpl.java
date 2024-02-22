@@ -4,7 +4,6 @@ import mods.railcraft.api.signal.TuningAuraHandler;
 import mods.railcraft.client.renderer.blockentity.SignalAuraRenderUtil;
 import mods.railcraft.particle.TuningAuraParticleOptions;
 import mods.railcraft.world.item.GogglesItem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -12,8 +11,8 @@ public class TuningAuraHandlerImpl implements TuningAuraHandler {
 
   @Override
   public boolean isTuningAuraActive() {
-    return GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.TUNING)
-        || GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.SIGNALLING);
+    return GogglesItem.isGoggleAuraActive(GogglesItem.Aura.TUNING)
+        || GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING);
   }
 
   @Override
@@ -30,7 +29,7 @@ public class TuningAuraHandlerImpl implements TuningAuraHandler {
     var pz = pos.getZ() + getRandomParticleOffset(random);
 
     var colorProfile =
-        GogglesItem.isGoggleAuraActive(Minecraft.getInstance().player, GogglesItem.Aura.SIGNALLING)
+        GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)
             ? SignalAuraRenderUtil.ColorProfile.CONTROLLER_ASPECT
             : SignalAuraRenderUtil.ColorProfile.COORD_RAINBOW;
 

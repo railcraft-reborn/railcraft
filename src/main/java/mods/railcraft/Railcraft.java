@@ -77,6 +77,7 @@ import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEn
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
+import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
@@ -139,10 +140,24 @@ public class Railcraft {
 
   public static final TicketController CHUNK_CONTROLLER =
       new TicketController(RailcraftConstants.rl("default"), (level, ticketHelper) -> {
+        for (var entry : ticketHelper.getBlockTickets().entrySet()) {
+          var key = entry.getKey();
+          var value = entry.getValue();
+          int ticketCount = value.nonTicking().size();
+          int tickingTicketCount = value.ticking().size();
+          var be = level.getBlockEntity(key);
+          if (be instanceof WorldSpikeBlockEntity) {
+            LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for position: {}.", ticketCount, tickingTicketCount, key);
+          } else {
+            ticketHelper.removeAllTickets(key);
+            LOGGER.info("Removing {} chunk tickets and {} ticking chunk tickets for no longer valid position: {}.", ticketCount, tickingTicketCount, key);
+          }
+        }
         for (var entry : ticketHelper.getEntityTickets().entrySet()) {
           var key = entry.getKey();
-          int ticketCount = entry.getValue().nonTicking().size();
-          int tickingTicketCount = entry.getValue().ticking().size();
+          var value = entry.getValue();
+          int ticketCount = value.nonTicking().size();
+          int tickingTicketCount = value.ticking().size();
           LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for entity: {}.", ticketCount, tickingTicketCount, key);
         }
       });

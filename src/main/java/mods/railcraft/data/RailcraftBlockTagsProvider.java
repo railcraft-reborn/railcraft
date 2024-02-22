@@ -249,6 +249,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
         .add(RailcraftBlocks.FRAME.get())
+        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
+        .add(RailcraftBlocks.WORLD_SPIKE.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,
@@ -269,7 +271,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
-        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
+        .add(RailcraftBlocks.WORLD_SPIKE.get())
+        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
 
     this.tag(BlockTags.NEEDS_IRON_TOOL)
         .add(RailcraftBlocks.STEEL_BLOCK.get())

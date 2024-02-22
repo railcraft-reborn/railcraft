@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 
 /**
@@ -29,7 +30,11 @@ public abstract class ContentsMinecartRenderer<T extends AbstractMinecart>
     var displayOffset = cart.getDisplayOffset();
     var scale = 0.75F;
     poseStack.scale(scale, scale, scale);
-    poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, -0.5F);
+    if (!cart.getDefaultDisplayBlockState().is(Blocks.AIR)) {
+      poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, 0.5F);
+    } else {
+      poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, -0.5F);
+    }
 
     this.renderContents(cart, partialTicks, poseStack, renderTypeBuffer, packedLight, red, green,
         blue, alpha);

@@ -7,6 +7,7 @@ import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.to_server.UpdateAuraByKeyMessage;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -52,7 +53,8 @@ public class GogglesItem extends ArmorItem {
     PacketHandler.sendToServer(new UpdateAuraByKeyMessage(itemStack.getTag()));
   }
 
-  public static boolean isGoggleAuraActive(Player player, Aura aura) {
+  public static boolean isGoggleAuraActive(Aura aura) {
+    var player = Minecraft.getInstance().player;
     var itemStack = player.getItemBySlot(EquipmentSlot.HEAD);
     return itemStack.getItem() instanceof GogglesItem && getAura(itemStack) == aura;
   }

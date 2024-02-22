@@ -8,7 +8,6 @@ import org.joml.Vector2d;
 import org.slf4j.Logger;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
-import mods.railcraft.Railcraft;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
@@ -317,18 +316,7 @@ public class RollingStockImpl implements RollingStock {
   @Override
   public void removed(Entity.RemovalReason reason) {
     if (reason.shouldDestroy()) {
-      this.forceChunk(false);
       this.unlinkAll();
-    } else {
-      this.forceChunk(this.train().size(this.level()) > 1);
-    }
-  }
-
-  private void forceChunk(boolean add) {
-    if (this.level() instanceof ServerLevel level) {
-      var chunk = this.minecart.chunkPosition();
-      Railcraft.CHUNK_CONTROLLER
-          .forceChunk(level, this.minecart.getUUID(), chunk.x, chunk.z, add, true);
     }
   }
 

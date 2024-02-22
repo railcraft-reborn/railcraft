@@ -91,6 +91,8 @@ import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import mods.railcraft.world.level.block.worldspike.PersonalWorldSpikeBlock;
+import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -1575,6 +1577,15 @@ public class RailcraftBlocks {
   public static final DeferredBlock<SlabBlock> ABYSSAL_PAVER_SLAB =
       deferredRegister.register("abyssal_paver_slab",
           () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(ABYSSAL_STONE.get())));
+
+  public static final RegistryObject<WorldSpikeBlock> WORLD_SPIKE =
+      deferredRegister.register("world_spike",
+          () -> new WorldSpikeBlock(BlockBehaviour.Properties.copy(Blocks.OBSIDIAN)
+              .sound(SoundType.STONE)));
+
+  public static final RegistryObject<PersonalWorldSpikeBlock> PERSONAL_WORLD_SPIKE =
+      deferredRegister.register("personal_world_spike",
+          () -> new PersonalWorldSpikeBlock(BlockBehaviour.Properties.copy(WORLD_SPIKE.get())));
 
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;

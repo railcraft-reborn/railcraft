@@ -1,0 +1,71 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": [
+    {
+      "item": "railcraft:personal_world_spike"
+    },
+    {
+      "item": "railcraft:world_spike"
+    }
+  ],
+  "outputs": [
+    {
+      "probability": 1.0,
+      "result": {
+        "item": "railcraft:crushed_obsidian"
+      }
+    },
+    {
+      "probability": 0.5,
+      "result": {
+        "item": "railcraft:crushed_obsidian"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "item": "minecraft:obsidian"
+      }
+    },
+    {
+      "probability": 0.25,
+      "result": {
+        "item": "railcraft:obsidian_dust"
+      }
+    },
+    {
+      "count": 16,
+      "probability": 1.0,
+      "result": {
+        "item": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "count": 8,
+      "probability": 0.5,
+      "result": {
+        "item": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "count": 8,
+      "probability": 0.5,
+      "result": {
+        "item": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "count": 4,
+      "probability": 0.5,
+      "result": {
+        "item": "minecraft:gold_nugget"
+      }
+    },
+    {
+      "probability": 0.5,
+      "result": {
+        "item": "minecraft:emerald"
+      }
+    }
+  ]
+}

@@ -170,6 +170,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.ABYSSAL_PAVER_STAIRS, "Abyssal Paver Stairs");
     this.addBlock(RailcraftBlocks.ABYSSAL_PAVER_SLAB, "Abyssal Paver Slab");
 
+    this.addBlock(RailcraftBlocks.WORLD_SPIKE, "Worldspike");
+    this.addBlock(RailcraftBlocks.PERSONAL_WORLD_SPIKE, "Personal Worldspike");
+
     this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
@@ -212,6 +215,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, "Steel Tunnel Bore Head");
     this.addItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, "Diamond Tunnel Bore Head");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
+    this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Worldspike Minecart");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
     this.addItem(RailcraftItems.CUT_FIRESTONE, "Cut Firestone");
@@ -355,6 +359,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void entityTranslations() {
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
+    this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Worldspike Minecart");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
     this.addEntityType(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE, "Electric Locomotive");
@@ -910,6 +915,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         A battery designed to work with the charge network. \
         Good for cheap, single use storage. \
         This one is empty and can be recycled in the Crusher.""");
+    this.add(Translations.Jei.WORLD_SPIKE, """
+        Loads a 3x3 area of chunks at world load and keeps them loaded.""");
+    this.add(Translations.Jei.PERSONAL_WORLD_SPIKE, """
+       Loads a 3x3 area of chunks at world load and keeps them loaded. \
+       It can only be broken by the owner.""");
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");

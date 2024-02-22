@@ -1,6 +1,8 @@
 {
   "values": [
     "railcraft:firestone_ore",
-    "railcraft:crushed_obsidian"
+    "railcraft:crushed_obsidian",
+    "railcraft:world_spike",
+    "railcraft:personal_world_spike"
   ]
 }

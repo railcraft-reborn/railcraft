@@ -5,6 +5,7 @@ import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -299,10 +300,6 @@ public class RailcraftItems {
       deferredRegister.registerItem("diamond_tunnel_bore_head", properties ->
           new TunnelBoreHeadItem(Tiers.DIAMOND, "diamond", properties.durability(6000)));
 
-  public static final DeferredItem<CartItem> TANK_MINECART =
-      deferredRegister.registerItem("tank_minecart", properties ->
-          new CartItem(TankMinecart::new, properties.stacksTo(1)));
-
   public static final DeferredItem<BlockItem> FLUID_LOADER =
       blockItem(RailcraftBlocks.FLUID_LOADER);
 
@@ -460,6 +457,16 @@ public class RailcraftItems {
           new TrackUndercutterCartItem(properties
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
+
+  public static final DeferredItem<CartItem> TANK_MINECART =
+      deferredRegister.register("tank_minecart",
+          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final DeferredItem<CartItem> WORLD_SPIKE_MINECART =
+      deferredRegister.register("world_spike_minecart",
+          () -> new CartItem(WorldSpikeMinecart::new, new Item.Properties()
+              .stacksTo(1)
+              .rarity(Rarity.UNCOMMON)));
 
   public static final DeferredItem<TunnelBoreItem> TUNNEL_BORE =
       deferredRegister.registerItem("tunnel_bore", properties ->
@@ -1346,6 +1353,12 @@ public class RailcraftItems {
           new BucketItem(RailcraftFluids.CREOSOTE, properties
               .stacksTo(1)
               .craftRemainder(Items.BUCKET)));
+
+  public static final DeferredItem<BlockItem> WORLD_SPIKE =
+      blockItem(RailcraftBlocks.WORLD_SPIKE);
+
+  public static final DeferredItem<BlockItem> PERSONAL_WORLD_SPIKE =
+      blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
 
   public static final DeferredItem<FluidBottleItem> CREOSOTE_BOTTLE =
       deferredRegister.registerItem("creosote_bottle", properties ->

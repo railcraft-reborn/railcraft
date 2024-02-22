@@ -56,6 +56,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CHIPPED_STEEL_ANVIL.get());
             output.accept(RailcraftItems.DAMAGED_STEEL_ANVIL.get());
 
+            output.accept(RailcraftItems.WORLD_SPIKE.get());
+            output.accept(RailcraftItems.PERSONAL_WORLD_SPIKE.get());
+
             output.accept(RailcraftItems.CRUSHED_OBSIDIAN.get());
             output.accept(RailcraftItems.COAL_COKE.get());
             output.accept(RailcraftItems.COKE_BLOCK.get());
@@ -479,6 +482,8 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TRACK_RELAYER.get(),
         RailcraftItems.TRACK_REMOVER.get(),
         RailcraftItems.TRACK_UNDERCUTTER.get(),
+
+        RailcraftItems.WORLD_SPIKE_MINECART.get(),
 
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),

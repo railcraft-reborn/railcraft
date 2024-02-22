@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:world_spike_minecart"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_world_spike": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "railcraft:world_spike"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_world_spike",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:world_spike_minecart"
+    ]
+  },
+  "sends_telemetry_event": false
+}

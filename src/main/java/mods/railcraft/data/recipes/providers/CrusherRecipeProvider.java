@@ -253,6 +253,18 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.SLAG, 4, 1)
         .addResult(RailcraftItems.SLAG, 2, 0.5)
         .save(recipeOutput);
+    CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.PERSONAL_WORLD_SPIKE,
+        RailcraftItems.WORLD_SPIKE))
+        .addResult(RailcraftItems.CRUSHED_OBSIDIAN.get(), 1, 1)
+        .addResult(RailcraftItems.CRUSHED_OBSIDIAN.get(), 1, 0.5)
+        .addResult(Items.OBSIDIAN, 1, 0.25)
+        .addResult(RailcraftItems.OBSIDIAN_DUST.get(), 1, 0.25)
+        .addResult(Items.GOLD_NUGGET, 16, 1)
+        .addResult(Items.GOLD_NUGGET, 8, 0.5)
+        .addResult(Items.GOLD_NUGGET, 8, 0.5)
+        .addResult(Items.GOLD_NUGGET, 4, 0.5)
+        .addResult(Items.EMERALD, 1, 0.5)
+        .save(recipeOutput);
   }
 
   private static void buildConditionalRecipe(RecipeOutput recipeOutput) {
