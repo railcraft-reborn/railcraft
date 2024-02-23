@@ -33,7 +33,21 @@ import mods.railcraft.world.level.block.manipulator.ItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.ItemUnloaderBlock;
 import mods.railcraft.world.level.block.manipulator.TrainDispenserBlock;
 import mods.railcraft.world.level.block.post.PostBlock;
-import mods.railcraft.world.level.block.signal.*;
+import mods.railcraft.world.level.block.signal.AnalogSignalControllerBoxBlock;
+import mods.railcraft.world.level.block.signal.BlockSignalBlock;
+import mods.railcraft.world.level.block.signal.DistantSignalBlock;
+import mods.railcraft.world.level.block.signal.DualBlockSignalBlock;
+import mods.railcraft.world.level.block.signal.DualDistantSignalBlock;
+import mods.railcraft.world.level.block.signal.DualTokenSignalBlock;
+import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalCapacitorBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
+import mods.railcraft.world.level.block.signal.SignalSequencerBoxBlock;
+import mods.railcraft.world.level.block.signal.TokenSignalBlock;
+import mods.railcraft.world.level.block.signal.TokenSignalBoxBlock;
 import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SolidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
@@ -639,7 +653,7 @@ public class RailcraftBlocks {
       deferredRegister.register("signal_controller_box",
           () -> new SignalControllerBoxBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
-    
+
   public static final RegistryObject<SignalBoxBlock> TOKEN_SIGNAL_BOX =
       deferredRegister.register("token_signal_box",
           () -> new TokenSignalBoxBlock(

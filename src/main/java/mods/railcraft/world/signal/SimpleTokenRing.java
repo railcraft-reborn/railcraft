@@ -13,7 +13,6 @@ import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathUtil;
-import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

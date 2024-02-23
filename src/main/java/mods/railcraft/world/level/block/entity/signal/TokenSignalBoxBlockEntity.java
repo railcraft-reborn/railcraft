@@ -1,7 +1,13 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.Objects;
+import java.util.UUID;
 import mods.railcraft.api.core.CompoundTagKeys;
-import mods.railcraft.api.signal.*;
+import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.api.signal.SignalController;
+import mods.railcraft.api.signal.SimpleSignalController;
+import mods.railcraft.api.signal.TokenSignalEntity;
+import mods.railcraft.api.signal.TrackLocator;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.TimerBag;
@@ -17,9 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
 
-import java.util.Objects;
-import java.util.UUID;
-
 public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements TokenSignalEntity, SignalControllerEntity {
 
@@ -27,7 +30,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
       new SimpleSignalController(1, this::syncToClient, this, false);
   private UUID ringId = UUID.randomUUID();
   private BlockPos ringCentroidPos;
-  
+
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
   private final TrackLocator trackLocator;
 
@@ -108,13 +111,13 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       TokenSignalBoxBlockEntity blockEntity) {
-  
+
     var tokenRing = blockEntity.signalNetwork();
     if (!Objects.equals(blockEntity.ringCentroidPos, tokenRing.getCentroid())) {
       blockEntity.ringCentroidPos = tokenRing.getCentroid();
       blockEntity.syncToClient();
     }
-  
+
     blockEntity.cartTimers.tick();
     if (blockEntity.trackLocator.trackStatus() == TrackLocator.Status.VALID) {
       var trackPos = blockEntity.trackLocator.trackPos();
@@ -126,29 +129,29 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
             .forEach(tokenRing::markCart);
       }
     }
-  
+
     if (blockEntity.signalController.aspect() != tokenRing.aspect()) {
       blockEntity.signalController.setSignalAspect(tokenRing.aspect());
       blockEntity.updateNeighborSignalBoxes(false);
     }
   }
-  
+
   @Override
   public UUID ringId() {
     return this.ringId;
   }
-  
+
   public void setRingId(UUID tokenRingId) {
     this.ringId = tokenRingId;
   }
-  
+
   @Override
   public BlockPos ringCentroidPos() {
     if (this.ringCentroidPos == null)
       return this.getBlockPos();
     return this.ringCentroidPos;
   }
-  
+
   @Override
   public SimpleTokenRing signalNetwork() {
     if (this.level.isClientSide()) {
@@ -157,7 +160,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
     return TokenRingManager.get((ServerLevel) this.level)
         .getTokenRingNetwork(this.ringId, this.getBlockPos());
   }
-  
+
   @Override
   public TrackLocator trackLocator() {
     return this.trackLocator;
