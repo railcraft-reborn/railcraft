@@ -583,6 +583,6 @@ public class Translations {
   }
 
   public static String makeKey(String type, String name) {
-    return type + "." + RailcraftConstants.ID + "." + name;
+    return RailcraftConstants.makeTranslationKey(type, name);
   }
 }
