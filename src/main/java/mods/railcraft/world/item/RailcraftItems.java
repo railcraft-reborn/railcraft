@@ -303,10 +303,6 @@ public class RailcraftItems {
       deferredRegister.register("diamond_tunnel_bore_head",
           () -> new DiamondTunnelBoreHeadItem(new Item.Properties().durability(6000)));
 
-  public static final RegistryObject<CartItem> TANK_MINECART =
-      deferredRegister.register("tank_minecart",
-          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
-
   public static final RegistryObject<BlockItem> FLUID_LOADER =
       blockItem(RailcraftBlocks.FLUID_LOADER);
 
@@ -330,6 +326,48 @@ public class RailcraftItems {
 
   public static final RegistryObject<BlockItem> TRAIN_DISPENSER =
       blockItem(RailcraftBlocks.TRAIN_DISPENSER);
+
+  public static final RegistryObject<BlockItem> ADVANCED_DETECTOR =
+      blockItem(RailcraftBlocks.ADVANCED_DETECTOR);
+
+  public static final RegistryObject<BlockItem> AGE_DETECTOR =
+      blockItem(RailcraftBlocks.AGE_DETECTOR);
+
+  public static final RegistryObject<BlockItem> ANIMAL_DETECTOR =
+      blockItem(RailcraftBlocks.ANIMAL_DETECTOR);
+
+  public static final RegistryObject<BlockItem> ANY_DETECTOR =
+      blockItem(RailcraftBlocks.ANY_DETECTOR);
+
+  public static final RegistryObject<BlockItem> EMPTY_DETECTOR =
+      blockItem(RailcraftBlocks.EMPTY_DETECTOR);
+
+  public static final RegistryObject<BlockItem> ITEM_DETECTOR =
+      blockItem(RailcraftBlocks.ITEM_DETECTOR);
+
+  public static final RegistryObject<BlockItem> LOCOMOTIVE_DETECTOR =
+      blockItem(RailcraftBlocks.LOCOMOTIVE_DETECTOR);
+
+  public static final RegistryObject<BlockItem> MOB_DETECTOR =
+      blockItem(RailcraftBlocks.MOB_DETECTOR);
+
+  public static final RegistryObject<BlockItem> PLAYER_DETECTOR =
+      blockItem(RailcraftBlocks.PLAYER_DETECTOR);
+
+  public static final RegistryObject<BlockItem> ROUTING_DETECTOR =
+      blockItem(RailcraftBlocks.ROUTING_DETECTOR);
+
+  public static final RegistryObject<BlockItem> SHEEP_DETECTOR =
+      blockItem(RailcraftBlocks.SHEEP_DETECTOR);
+
+  public static final RegistryObject<BlockItem> TANK_DETECTOR =
+      blockItem(RailcraftBlocks.TANK_DETECTOR);
+
+  public static final RegistryObject<BlockItem> TRAIN_DETECTOR =
+      blockItem(RailcraftBlocks.TRAIN_DETECTOR);
+
+  public static final RegistryObject<BlockItem> VILLAGER_DETECTOR =
+      blockItem(RailcraftBlocks.VILLAGER_DETECTOR);
 
   public static final RegistryObject<SpikeMaulItem> IRON_SPIKE_MAUL =
       deferredRegister.register("iron_spike_maul",
@@ -425,6 +463,16 @@ public class RailcraftItems {
           () -> new TrackUndercutterCartItem(new Item.Properties()
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
+
+  public static final RegistryObject<CartItem> TANK_MINECART =
+      deferredRegister.register("tank_minecart",
+          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final RegistryObject<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
+      deferredRegister.register("world_spike_minecart",
+          () -> new WorldSpikeMinecartItem(new Item.Properties()
+              .stacksTo(1)
+              .rarity(Rarity.UNCOMMON)));
 
   public static final RegistryObject<TunnelBoreItem> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",
@@ -1320,6 +1368,12 @@ public class RailcraftItems {
 
   public static final RegistryObject<BlockItem> ABYSSAL_PAVER_SLAB =
       blockItem(RailcraftBlocks.ABYSSAL_PAVER_SLAB);
+
+  public static final RegistryObject<BlockItem> WORLD_SPIKE =
+      blockItem(RailcraftBlocks.WORLD_SPIKE);
+
+  public static final RegistryObject<BlockItem> PERSONAL_WORLD_SPIKE =
+      blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
 
   // ================================================================================
   // Buckets

@@ -6,7 +6,7 @@
       "item": "minecraft:cobblestone"
     },
     "b": {
-      "item": "railcraft:detector_track_kit"
+      "item": "railcraft:item_detector"
     },
     "c": {
       "item": "minecraft:hopper"

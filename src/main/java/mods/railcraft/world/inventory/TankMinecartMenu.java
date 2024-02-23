@@ -6,7 +6,6 @@ import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.inventory.slot.FluidFilterSlot;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.inventory.slot.OutputSlot;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TankMinecartMenu extends RailcraftMenu {
@@ -33,14 +32,5 @@ public class TankMinecartMenu extends RailcraftMenu {
 
   public FluidGaugeWidget getFluidGauge() {
     return this.fluidGauge;
-  }
-
-  public static TankMinecartMenu create(int id, Inventory playerInventory, FriendlyByteBuf data) {
-    int entityId = data.readVarInt();
-    var entity = playerInventory.player.level().getEntity(entityId);
-    if (entity instanceof TankMinecart tankMinecart) {
-      return new TankMinecartMenu(id, playerInventory, tankMinecart);
-    }
-    throw new IllegalStateException("Cannot find tank minecart with ID: " + entityId);
   }
 }

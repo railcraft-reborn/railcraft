@@ -9,15 +9,19 @@ import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
+import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.network.play.SetMaintenanceMinecartAttributesMessage;
+import mods.railcraft.network.play.SetRoutingDetectorAttributesMessage;
 import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
 import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
 import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
+import mods.railcraft.network.play.SetTankDetectorAttributesMessage;
+import mods.railcraft.network.play.SetTrainDetectorAttributesMessage;
 import mods.railcraft.network.play.SyncWidgetMessage;
 import mods.railcraft.network.play.UpdateAuraByKeyMessage;
 import net.minecraft.core.BlockPos;
@@ -166,6 +170,34 @@ public enum NetworkChannel {
           .encoder(UpdateAuraByKeyMessage::encode)
           .decoder(UpdateAuraByKeyMessage::decode)
           .consumerMainThread(UpdateAuraByKeyMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetTankDetectorAttributesMessage.class, 0x13,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetTankDetectorAttributesMessage::encode)
+          .decoder(SetTankDetectorAttributesMessage::decode)
+          .consumerMainThread(SetTankDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetTrainDetectorAttributesMessage.class, 0x14,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetTrainDetectorAttributesMessage::encode)
+          .decoder(SetTrainDetectorAttributesMessage::decode)
+          .consumerMainThread(SetTrainDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetItemDetectorAttributesMessage.class, 0x15,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetItemDetectorAttributesMessage::encode)
+          .decoder(SetItemDetectorAttributesMessage::decode)
+          .consumerMainThread(SetItemDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetRoutingDetectorAttributesMessage.class, 0x16,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetRoutingDetectorAttributesMessage::encode)
+          .decoder(SetRoutingDetectorAttributesMessage::decode)
+          .consumerMainThread(SetRoutingDetectorAttributesMessage::handle)
           .add();
     }
   };

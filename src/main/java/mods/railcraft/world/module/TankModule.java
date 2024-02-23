@@ -5,7 +5,6 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -59,7 +58,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidItemHelper.isRoomInContainer(stack, this.tank.getFluidType()))
+          && FluidTools.isRoomInContainer(stack, this.tank.getFluidType()))
           || FluidUtil.getFluidContained(stack).isPresent();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;

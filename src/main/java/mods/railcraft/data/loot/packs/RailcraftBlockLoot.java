@@ -38,6 +38,20 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.CART_DISPENSER.get());
     this.dropSelf(RailcraftBlocks.TRAIN_DISPENSER.get());
+    this.dropSelf(RailcraftBlocks.ADVANCED_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.AGE_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.ANIMAL_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.ANY_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.EMPTY_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.ITEM_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.LOCOMOTIVE_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.MOB_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.PLAYER_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.ROUTING_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.SHEEP_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.TANK_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.TRAIN_DETECTOR.get());
+    this.dropSelf(RailcraftBlocks.VILLAGER_DETECTOR.get());
     this.dropSelf(RailcraftBlocks.STEEL_BLOCK.get());
     this.dropSelf(RailcraftBlocks.BRASS_BLOCK.get());
     this.dropSelf(RailcraftBlocks.BRONZE_BLOCK.get());
@@ -374,6 +388,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.COKE_OVEN_BRICKS.get());
     this.dropSelf(RailcraftBlocks.STEAM_OVEN.get());
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+    this.dropSelf(RailcraftBlocks.WORLD_SPIKE.get());
+    this.dropSelf(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
   }
 
   protected LootTable.Builder createOreDrop(Block block, Item item, int min, int max) {

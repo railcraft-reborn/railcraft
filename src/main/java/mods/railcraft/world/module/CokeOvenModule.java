@@ -7,7 +7,6 @@ import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
@@ -102,13 +101,13 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     super.serverTick();
 
     var topSlot = this.getItem(SLOT_LIQUID_INPUT);
-    if (!topSlot.isEmpty() && !FluidItemHelper.isContainer(topSlot)) {
+    if (!topSlot.isEmpty() && !FluidTools.isFluidHandler(topSlot)) {
       this.setItem(SLOT_LIQUID_INPUT, ItemStack.EMPTY);
       this.provider.dropItem(topSlot);
     }
 
     var bottomSlot = this.getItem(SLOT_LIQUID_OUTPUT);
-    if (!bottomSlot.isEmpty() && !FluidItemHelper.isContainer(bottomSlot)) {
+    if (!bottomSlot.isEmpty() && !FluidTools.isFluidHandler(bottomSlot)) {
       this.setItem(SLOT_LIQUID_OUTPUT, ItemStack.EMPTY);
       this.provider.dropItem(bottomSlot);
     }
@@ -134,7 +133,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     return switch (slot) {
       case SLOT_INPUT -> this.getRecipeFor(itemStack).isPresent();
       case SLOT_LIQUID_INPUT ->
-          FluidItemHelper.isRoomInContainer(itemStack, RailcraftFluids.CREOSOTE.get());
+          FluidTools.isRoomInContainer(itemStack, RailcraftFluids.CREOSOTE.get());
       case SLOT_OUTPUT, SLOT_LIQUID_PROCESSING, SLOT_LIQUID_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, itemStack);

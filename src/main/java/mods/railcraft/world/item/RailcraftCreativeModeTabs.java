@@ -56,6 +56,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CHIPPED_STEEL_ANVIL.get());
             output.accept(RailcraftItems.DAMAGED_STEEL_ANVIL.get());
 
+            output.accept(RailcraftItems.WORLD_SPIKE.get());
+            output.accept(RailcraftItems.PERSONAL_WORLD_SPIKE.get());
+
             output.accept(RailcraftItems.CRUSHED_OBSIDIAN.get());
             output.accept(RailcraftItems.COAL_COKE.get());
             output.accept(RailcraftItems.COKE_BLOCK.get());
@@ -175,6 +178,21 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CART_DISPENSER.get());
             output.accept(RailcraftItems.TRAIN_DISPENSER.get());
 
+            output.accept(RailcraftItems.ADVANCED_DETECTOR.get());
+            output.accept(RailcraftItems.AGE_DETECTOR.get());
+            output.accept(RailcraftItems.ANIMAL_DETECTOR.get());
+            output.accept(RailcraftItems.ANY_DETECTOR.get());
+            output.accept(RailcraftItems.EMPTY_DETECTOR.get());
+            output.accept(RailcraftItems.ITEM_DETECTOR.get());
+            output.accept(RailcraftItems.LOCOMOTIVE_DETECTOR.get());
+            output.accept(RailcraftItems.MOB_DETECTOR.get());
+            output.accept(RailcraftItems.PLAYER_DETECTOR.get());
+            output.accept(RailcraftItems.ROUTING_DETECTOR.get());
+            output.accept(RailcraftItems.SHEEP_DETECTOR.get());
+            output.accept(RailcraftItems.TANK_DETECTOR.get());
+            output.accept(RailcraftItems.TRAIN_DETECTOR.get());
+            output.accept(RailcraftItems.VILLAGER_DETECTOR.get());
+
             output.accept(RailcraftItems.IRON_SPIKE_MAUL.get());
             output.accept(RailcraftItems.STEEL_SPIKE_MAUL.get());
             output.accept(RailcraftItems.DIAMOND_SPIKE_MAUL.get());
@@ -248,7 +266,9 @@ public class RailcraftCreativeModeTabs {
           .icon(() -> new ItemStack(RailcraftItems.IRON_DETECTOR_TRACK.get()))
           .displayItems((params, output) -> {
             /*
-             * TODO: - Messenger track - Delayed locking track
+             * TODO:
+             *  - Messenger track
+             *  - Delayed locking track
              */
             output.accept(RailcraftItems.ABANDONED_ACTIVATOR_TRACK.get());
             output.accept(RailcraftItems.ABANDONED_BOOSTER_TRACK.get());
@@ -462,6 +482,8 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.TRACK_RELAYER.get(),
         RailcraftItems.TRACK_REMOVER.get(),
         RailcraftItems.TRACK_UNDERCUTTER.get(),
+
+        RailcraftItems.WORLD_SPIKE_MINECART.get(),
 
         RailcraftItems.TUNNEL_BORE.get(),
         RailcraftItems.STEAM_LOCOMOTIVE.get(),

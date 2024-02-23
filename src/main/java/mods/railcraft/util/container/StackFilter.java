@@ -9,8 +9,8 @@ import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
-import mods.railcraft.world.level.material.FluidItemHelper;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -20,6 +20,7 @@ import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -47,9 +48,10 @@ public enum StackFilter implements Predicate<ItemStack> {
       || itemStack.getItem() instanceof BlockItem blockItem
           && blockItem.getBlock() instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
-      || !FluidItemHelper.isContainer(itemStack))
+      || !FluidTools.isFluidHandler(itemStack))
       && !RailcraftConfig.SERVER.cargoBlacklist.get()
           .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
+  DYES(itemStack -> itemStack.is(Tags.Items.DYES)),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 
   private final Predicate<ItemStack> predicate;

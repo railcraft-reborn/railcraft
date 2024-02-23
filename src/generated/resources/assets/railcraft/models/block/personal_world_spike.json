@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "railcraft:block/personal_world_spike_top",
+    "side": "railcraft:block/personal_world_spike_side",
+    "top": "railcraft:block/personal_world_spike_top"
+  }
+}

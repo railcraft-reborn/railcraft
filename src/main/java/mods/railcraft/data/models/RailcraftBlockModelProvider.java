@@ -18,6 +18,7 @@ import mods.railcraft.world.level.block.charge.BatteryBlock;
 import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
+import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
@@ -64,6 +65,7 @@ import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
@@ -313,6 +315,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createFrameBlock(RailcraftBlocks.FRAME.get());
     this.createLogBookBlock(RailcraftBlocks.LOGBOOK.get());
 
+    this.createWorldSpikeBlock(RailcraftBlocks.WORLD_SPIKE.get());
+    this.createWorldSpikeBlock(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
+
     this.createFluidManipulator(RailcraftBlocks.FLUID_LOADER.get());
     this.createFluidManipulator(RailcraftBlocks.FLUID_UNLOADER.get());
     this.createManipulator(RailcraftBlocks.ITEM_LOADER.get());
@@ -321,6 +326,21 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createDirectionalManipulator(RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get());
     this.createDirectionalManipulator(RailcraftBlocks.CART_DISPENSER.get());
     this.createDirectionalManipulator(RailcraftBlocks.TRAIN_DISPENSER.get());
+
+    this.createDirectionalDetector(RailcraftBlocks.ADVANCED_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.AGE_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.ANIMAL_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.ANY_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.EMPTY_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.ITEM_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.LOCOMOTIVE_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.MOB_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.PLAYER_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.ROUTING_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.SHEEP_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.TANK_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.TRAIN_DETECTOR.get());
+    this.createDirectionalDetector(RailcraftBlocks.VILLAGER_DETECTOR.get());
 
     this.createFirebox(RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
     this.createFirebox(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
@@ -637,6 +657,53 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     simpleBlockItem(block, horizontalModel);
   }
 
+  private void createDirectionalDetector(DetectorBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var frontTexture = TextureMapping.getBlockTexture(block, "_front");
+    var frontPoweredTexture = TextureMapping.getBlockTexture(block, "_front_powered");
+
+    var model = this.models()
+        .orientable(name(block), sideTexture, frontTexture, sideTexture);
+    var poweredModel = this.models()
+        .orientable(name(block, "_powered"), sideTexture, frontPoweredTexture, sideTexture);
+
+    this.getVariantBuilder(block)
+        .forAllStates(blockState -> {
+          Direction facing = blockState.getValue(BlockStateProperties.FACING);
+          boolean powered = blockState.getValue(BlockStateProperties.POWERED);
+          int yRot = 0;
+          int xRot = 0;
+
+          switch (facing) {
+            case SOUTH:
+              yRot = 180;
+              break;
+            case EAST:
+              yRot = 90;
+              break;
+            case WEST:
+              yRot = 270;
+              break;
+            case UP:
+              xRot = 270;
+              break;
+            case DOWN:
+              xRot = 90;
+              break;
+            default:
+              break;
+          }
+
+          return ConfiguredModel.builder()
+              .modelFile(powered ? poweredModel : model)
+              .rotationX(xRot)
+              .rotationY(yRot)
+              .build();
+        });
+
+    simpleBlockItem(block, model);
+  }
+
   private void createSteamOven(SteamOvenBlock block) {
     var sideTexture = TextureMapping.getBlockTexture(block, "_side");
     var frontTexture = TextureMapping.getBlockTexture(block, "_front");
@@ -842,6 +909,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var topTexture = TextureMapping.getBlockTexture(block, "_top");
     var model =
         this.models().cubeBottomTop(this.name(block), sideTexture, bottomTexture, topTexture);
+    this.simpleBlock(block, model);
+    this.simpleBlockItem(block, model);
+  }
+
+  private void createWorldSpikeBlock(WorldSpikeBlock block) {
+    var sideTexture = TextureMapping.getBlockTexture(block, "_side");
+    var topTexture = TextureMapping.getBlockTexture(block, "_top");
+
+    var model = this.models().cubeBottomTop(name(block), sideTexture, topTexture, topTexture);
     this.simpleBlock(block, model);
     this.simpleBlockItem(block, model);
   }

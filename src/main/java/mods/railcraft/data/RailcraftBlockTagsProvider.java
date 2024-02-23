@@ -192,7 +192,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .addTag(RailcraftTags.Blocks.ASPECT_RECEIVER)
         .addTag(RailcraftTags.Blocks.SIGNAL)
         .addTag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
-        .addTag(BlockTags.RAILS);
+        .addTag(BlockTags.RAILS)
+        .addTag(RailcraftTags.Blocks.DETECTOR);
 
     this.tag(BlockTags.ANVIL)
         .add(RailcraftBlocks.STEEL_ANVIL.get(),
@@ -248,6 +249,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
         .add(RailcraftBlocks.FRAME.get())
+        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
+        .add(RailcraftBlocks.WORLD_SPIKE.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
             RailcraftTags.Blocks.SILVER_ORE,
@@ -268,7 +271,9 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
-        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+        .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
+        .add(RailcraftBlocks.WORLD_SPIKE.get())
+        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
 
     this.tag(BlockTags.NEEDS_IRON_TOOL)
         .add(RailcraftBlocks.STEEL_BLOCK.get())
@@ -345,6 +350,21 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ABYSSAL_BRICKS.get(),
             RailcraftBlocks.ABYSSAL_PAVER.get());
 
+    this.tag(RailcraftTags.Blocks.DETECTOR)
+        .add(RailcraftBlocks.ADVANCED_DETECTOR.get(),
+            RailcraftBlocks.AGE_DETECTOR.get(),
+            RailcraftBlocks.ANIMAL_DETECTOR.get(),
+            RailcraftBlocks.ANY_DETECTOR.get(),
+            RailcraftBlocks.EMPTY_DETECTOR.get(),
+            RailcraftBlocks.ITEM_DETECTOR.get(),
+            RailcraftBlocks.LOCOMOTIVE_DETECTOR.get(),
+            RailcraftBlocks.MOB_DETECTOR.get(),
+            RailcraftBlocks.PLAYER_DETECTOR.get(),
+            RailcraftBlocks.ROUTING_DETECTOR.get(),
+            RailcraftBlocks.SHEEP_DETECTOR.get(),
+            RailcraftBlocks.TANK_DETECTOR.get(),
+            RailcraftBlocks.TRAIN_DETECTOR.get(),
+            RailcraftBlocks.VILLAGER_DETECTOR.get());
 
     this.tag(Tags.Blocks.ORE_RATES_SINGULAR)
         .add(RailcraftBlocks.LEAD_ORE.get())

@@ -25,4 +25,8 @@ public final class RailcraftConstants {
   public static ResourceLocation rl(String path) {
     return new ResourceLocation(ID, path);
   }
+
+  public static String makeTranslationKey(String type, String name) {
+    return type + "." + ID + "." + name;
+  }
 }
