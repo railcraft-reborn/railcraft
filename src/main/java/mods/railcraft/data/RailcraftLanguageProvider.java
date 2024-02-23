@@ -359,7 +359,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void entityTranslations() {
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
-    this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Worldspike Minecart");
+    this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
     this.addEntityType(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE, "Electric Locomotive");

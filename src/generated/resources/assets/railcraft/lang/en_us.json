@@ -477,7 +477,7 @@
   "entity.railcraft.track_remover": "Track Remover Cart",
   "entity.railcraft.track_undercutter": "Track Undercutter Cart",
   "entity.railcraft.tunnel_bore": "Tunnel Bore",
-  "entity.railcraft.world_spike_minecart": "Worldspike Minecart",
+  "entity.railcraft.world_spike_minecart": "Minecart with Worldspike",
   "error.routing.railcraft.blank": "Blank Table",
   "error.routing.railcraft.insufficient_operand": "Insufficient Operands",
   "error.routing.railcraft.invalid_constant": "Invalid Constant",
