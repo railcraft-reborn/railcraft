@@ -386,6 +386,7 @@ public class Translations {
         makeKey("jei", "desc.disposable_battery_empty");
     public static final String WORLD_SPIKE = makeKey("jei", "desc.world_spike");
     public static final String PERSONAL_WORLD_SPIKE = makeKey("jei", "desc.personal_world_spike");
+    public static final String WORLD_SPIKE_MINECART = makeKey("jei", "desc.world_spike_minecart");
 
     public static final String PAINT = makeKey("jei.gui", "paint");
     public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");

@@ -1,6 +1,5 @@
 package mods.railcraft.particle;
 
-import java.util.function.Function;
 import com.mojang.serialization.Codec;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.particles.ParticleOptions;
@@ -24,26 +23,22 @@ public class RailcraftParticleTypes {
 
   public static final RegistryObject<ParticleType<FireSparkParticleOptions>> FIRE_SPARK =
       deferredRegister.register("fire_spark",
-          () -> create(FireSparkParticleOptions.DESERIALIZER,
-              __ -> FireSparkParticleOptions.CODEC));
+          () -> create(FireSparkParticleOptions.DESERIALIZER, FireSparkParticleOptions.CODEC));
 
   public static final RegistryObject<SimpleParticleType> PUMPKIN =
       deferredRegister.register("pumpkin", () -> new SimpleParticleType(false));
 
   public static final RegistryObject<ParticleType<TuningAuraParticleOptions>> TUNING_AURA =
       deferredRegister.register("tuning_aura",
-          () -> create(TuningAuraParticleOptions.DESERIALIZER,
-              __ -> TuningAuraParticleOptions.CODEC));
+          () -> create(TuningAuraParticleOptions.DESERIALIZER, TuningAuraParticleOptions.CODEC));
 
   public static final RegistryObject<ParticleType<ForceSpawnParticleOptions>> FORCE_SPAWN =
       deferredRegister.register("force_spawn",
-          () -> create(ForceSpawnParticleOptions.DESERIALIZER,
-              __ -> ForceSpawnParticleOptions.CODEC));
+          () -> create(ForceSpawnParticleOptions.DESERIALIZER, ForceSpawnParticleOptions.CODEC));
 
   public static final RegistryObject<ParticleType<ChunkLoaderParticleOptions>> CHUNK_LOADER =
       deferredRegister.register("chunk_loader",
-          () -> create(ChunkLoaderParticleOptions.DESERIALIZER,
-              __ -> ChunkLoaderParticleOptions.CODEC));
+          () -> create(ChunkLoaderParticleOptions.DESERIALIZER, ChunkLoaderParticleOptions.CODEC));
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -51,10 +46,10 @@ public class RailcraftParticleTypes {
 
   private static <T extends ParticleOptions> ParticleType<T> create(
       @SuppressWarnings("deprecation") ParticleOptions.Deserializer<T> deserializer,
-      Function<ParticleType<T>, Codec<T>> factory) {
-    return new ParticleType<T>(false, deserializer) {
+      Codec<T> codec) {
+    return new ParticleType<>(false, deserializer) {
       public Codec<T> codec() {
-        return factory.apply(this);
+        return codec;
       }
     };
   }

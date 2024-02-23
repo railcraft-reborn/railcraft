@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-22T11:57:16.361669	Recipes
+// 1.20.1	2024-02-23T14:58:29.706348	Recipes
 4dcec5127078324130ee2a0784057108c8aadc01 data/minecraft/advancements/recipes/misc/gunpowder.json
 4a6e67942b0734508f9373351ab324c6cdd81244 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 33c838f63222211d4d44845f4f963dfe2cec8fc9 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -690,7 +690,6 @@ f5891a9e5be986da88df8bc38efd22c96b8d94fa data/railcraft/recipes/brown_strengthen
 04d789c4febc7a810bf7d3187ed3dd7cd1d22fee data/railcraft/recipes/buffer_stop_track_kit.json
 025a4743266970f17ef2334bb81122e8d5d27703 data/railcraft/recipes/bushing_gear_brass.json
 4155a726cf6fdf48c896f0f13a46392199a455e2 data/railcraft/recipes/bushing_gear_bronze.json
-0b1dc4b353502890c85854284eb583363cbac6a6 data/railcraft/recipes/cart_disassembly.json
 12950433ff4099542ce9910669679ea24bab628c data/railcraft/recipes/cart_dispenser.json
 3b7860ac675f913c591bbd7cf72b6f3dd6cdbd1e data/railcraft/recipes/charge_coil.json
 fbbf9cd636919bc0256914078feeec32d9877d42 data/railcraft/recipes/charge_meter.json
@@ -698,6 +697,7 @@ a553dbfae5f17c774bfad15126426a86f3ed1bfd data/railcraft/recipes/charge_motor.jso
 0c7fe03cdfbfe3dab1dc5130b70b56277615d16b data/railcraft/recipes/charge_spool_medium_from_large.json
 2350956a71ea929f2bd5698dfd7461eaf2ba2113 data/railcraft/recipes/charge_spool_small_from_medium.json
 352abb708c30fff261b4e5b029f0b68fcc0c9460 data/railcraft/recipes/charge_terminal.json
+d0a914347403c0010f14c584ec3679d413ebdb32 data/railcraft/recipes/chest_minecart_disassembly.json
 8ed0e135b26ea5e24cc273553e2400f1419b6f17 data/railcraft/recipes/chiseled_abyssal_stone.json
 33c81e7f5da96e4c8660dffdd5eaff643f218f2a data/railcraft/recipes/chiseled_quarried_stone.json
 5f140838fe6791326bb9dd094860759023192256 data/railcraft/recipes/coal_coke.json
@@ -1231,6 +1231,7 @@ f37cdfbcc3f96d6284a385d44a2c348369a91330 data/railcraft/recipes/wooden_tie.json
 f7011a8a90b40317aba1b7f8c6db273039ab42fd data/railcraft/recipes/wooden_tie_bottle.json
 409f20cfcc310a5141f95caffcbe13ab506c17e5 data/railcraft/recipes/world_spike.json
 8bd8dd80a0f1c207f9a4e5f08d06822d0c0886fc data/railcraft/recipes/world_spike_minecart.json
+3e715fbc430b6b9a817b82bdc9290f5835b0d898 data/railcraft/recipes/worldspike_minecart_disassembly.json
 0f5ab3cd0d388d936201b5dc47d1122107be1fd4 data/railcraft/recipes/yellow_iron_tank_gauge.json
 26c3310fcde77abb4ee6565eb9b64129c605129b data/railcraft/recipes/yellow_iron_tank_valve.json
 e02c7f80b6037e309bd9d2140818acaf6460db62 data/railcraft/recipes/yellow_iron_tank_wall.json
