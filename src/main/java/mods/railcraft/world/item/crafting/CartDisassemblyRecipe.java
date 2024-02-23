@@ -4,18 +4,23 @@ import java.util.stream.IntStream;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-public class CartDisassemblyRecipe extends CustomRecipe {
+public abstract class CartDisassemblyRecipe extends CustomRecipe {
 
-  public CartDisassemblyRecipe(CraftingBookCategory category) {
+  private final Item ingredient;
+  private final Item result;
+
+  public CartDisassemblyRecipe(Item ingredient, Item result, CraftingBookCategory category) {
     super(category);
+    this.ingredient = ingredient;
+    this.result = result;
   }
 
   @Override
@@ -24,7 +29,7 @@ public class CartDisassemblyRecipe extends CustomRecipe {
         .mapToObj(container::getItem)
         .filter(x -> !x.isEmpty())
         .count();
-    return items == 1 && container.hasAnyMatching(x -> x.is(Items.CHEST_MINECART));
+    return items == 1 && container.hasAnyMatching(x -> x.is(this.ingredient));
   }
 
   @Override
@@ -39,13 +44,13 @@ public class CartDisassemblyRecipe extends CustomRecipe {
 
   @Override
   public ItemStack getResultItem(RegistryAccess registryAccess) {
-    return new ItemStack(Items.CHEST);
+    return new ItemStack(this.result);
   }
 
   @Override
   public NonNullList<Ingredient> getIngredients() {
     NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(Ingredient.of(Items.CHEST_MINECART));
+    ingredients.add(Ingredient.of(this.ingredient));
     return ingredients;
   }
 
@@ -54,15 +59,10 @@ public class CartDisassemblyRecipe extends CustomRecipe {
     var grid = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
     for (int i = 0; i < container.getContainerSize(); i++) {
       var itemStack = container.getItem(i);
-      if (itemStack.is(Items.CHEST_MINECART)) {
+      if (itemStack.is(this.ingredient)) {
         grid.set(i, new ItemStack(Items.MINECART));
       }
     }
     return grid;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
-    return RailcraftRecipeSerializers.CART_DISASSEMBLY.get();
   }
 }

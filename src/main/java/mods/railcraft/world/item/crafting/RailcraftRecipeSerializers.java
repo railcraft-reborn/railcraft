@@ -37,9 +37,13 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("rotor_repair",
           () -> new SimpleCraftingRecipeSerializer<>(RotorRepairRecipe::new));
 
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> CART_DISASSEMBLY =
-      deferredRegister.register("cart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>(CartDisassemblyRecipe::new));
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> CHEST_MINECART_DISASSEMBLY =
+      deferredRegister.register("chest_minecart_disassembly",
+          () -> new SimpleCraftingRecipeSerializer<>(ChestMinecartDisassemblyRecipe::new));
+
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> WORLDSPIKE_MINECART_DISASSEMBLY =
+      deferredRegister.register("worldspike_minecart_disassembly",
+          () -> new SimpleCraftingRecipeSerializer<>(WorldSpikeMinecartDisassemblyRecipe::new));
 
   public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<PatchouliBookCrafting>> PATCHOULI_BOOK_CRAFTING =
       deferredRegister.register("patchouli_book_crafting",

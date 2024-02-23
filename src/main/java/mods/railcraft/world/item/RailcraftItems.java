@@ -5,7 +5,6 @@ import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
-import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -462,9 +461,9 @@ public class RailcraftItems {
       deferredRegister.register("tank_minecart",
           () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
 
-  public static final DeferredItem<CartItem> WORLD_SPIKE_MINECART =
+  public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
       deferredRegister.register("world_spike_minecart",
-          () -> new CartItem(WorldSpikeMinecart::new, new Item.Properties()
+          () -> new WorldSpikeMinecartItem(new Item.Properties()
               .stacksTo(1)
               .rarity(Rarity.UNCOMMON)));
 

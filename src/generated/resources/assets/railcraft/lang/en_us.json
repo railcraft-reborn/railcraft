@@ -681,6 +681,7 @@
   "jei.railcraft.desc.token_signal": "This signal can be used to define an area to monitor for carts entering and leaving. It pairs into a net of signals, with no particular limit to the number of signals defining the area. Recommended for junctions and diagonals. It will send the resulting aspect to a paired Receiver.",
   "jei.railcraft.desc.tunnel_bore": "Machine designed for digging tunnels and laying track.",
   "jei.railcraft.desc.world_spike": "Loads a 3x3 area of chunks at world load and keeps them loaded.",
+  "jei.railcraft.desc.world_spike_minecart": "Load the current chunk and the north, east, south and west chunks, and keeps them loaded.",
   "jei.railcraft.tips.crusher": "(%s%% chance)",
   "key.railcraft.category": "Railcraft Reborn",
   "key.railcraft.change_aura": "Change Aura",

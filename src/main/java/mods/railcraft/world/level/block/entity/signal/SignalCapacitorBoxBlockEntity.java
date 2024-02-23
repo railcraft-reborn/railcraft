@@ -107,10 +107,14 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
       Direction direction, boolean removed) {
     if (neighbor.getRedstoneSignal(direction) > 0) {
       this.ticksPowered = this.ticksToPower;
+      var newSignalAspect = this.signalAspect;
       if (this.mode == Mode.RISING_EDGE) {
-        this.signalAspect = neighbor.getSignalAspect(direction);
+        newSignalAspect = neighbor.getSignalAspect(direction);
       }
-      this.setChanged();
+      if (newSignalAspect != this.signalAspect) {
+        this.signalAspect = newSignalAspect;
+        this.setChanged();
+      }
     }
   }
 

@@ -11,11 +11,12 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
+import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -1242,8 +1243,10 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
 
     RailcraftSpecialRecipeBuilder.special(LocomotivePaintingRecipe::new)
         .save(recipeOutput, "locomotive_color_variant");
-    RailcraftSpecialRecipeBuilder.special(CartDisassemblyRecipe::new)
-        .save(recipeOutput, "cart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(ChestMinecartDisassemblyRecipe::new)
+        .save(recipeOutput, "chest_minecart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(WorldSpikeMinecartDisassemblyRecipe::new)
+        .save(recipeOutput, "worldspike_minecart_disassembly");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")
