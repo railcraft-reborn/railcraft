@@ -27,8 +27,8 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, true);
 
-  private final SingleSignalReceiver signalReceiver = new SingleSignalReceiver(this,
-      this::syncToClient, this::signalAspectChanged);
+  private final SingleSignalReceiver signalReceiver =
+      new SingleSignalReceiver(this, this::syncToClient, this::signalAspectChanged);
 
   private InterlockController interlockController;
 
@@ -63,13 +63,16 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
       Direction neighborDirection, boolean removed) {
     this.findOrCreateInterlockController();
     this.neighborSignalAspect = SignalAspect.GREEN;
-    for (var direction : Direction.values()) {
+    for (var direction : Direction.Plane.HORIZONTAL) {
       var blockEntity = this.level.getBlockEntity(this.getBlockPos().relative(direction));
       if (blockEntity instanceof AbstractSignalBoxBlockEntity signalBox
           && SignalBoxBlock.isAspectEmitter(signalBox.getBlockState())) {
         this.neighborSignalAspect = SignalAspect.mostRestrictive(this.neighborSignalAspect,
             signalBox.getSignalAspect(direction.getOpposite()));
       }
+    }
+    if (!this.level.isClientSide()) {
+      this.interlockController.peersUpdateSignalAspect();
     }
   }
 
@@ -208,6 +211,10 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
         this.activeSignalBox = this.lockRequests.poll();
       } while (this.activeSignalBox != null
           && !isLockableSignalAspect(this.activeSignalBox.getRequestedSignalAspect()));
+      this.peersUpdateSignalAspect();
+    }
+
+    private void peersUpdateSignalAspect() {
       this.peers.forEach(this::updateSignalAspect);
     }
 
@@ -218,9 +225,9 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
           signalAspect = SignalAspect.mostRestrictive(signalAspect, box.neighborSignalAspect);
         }
         signalBox.signalController.setSignalAspect(signalAspect);
-        return;
+      } else {
+        signalBox.signalController.setSignalAspect(SignalAspect.RED);
       }
-      signalBox.signalController.setSignalAspect(SignalAspect.RED);
     }
 
     private boolean isActive(SignalInterlockBoxBlockEntity signalBox) {

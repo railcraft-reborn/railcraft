@@ -8,6 +8,7 @@ package mods.railcraft.api.signal;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
@@ -59,7 +60,8 @@ public enum SignalAspect implements StringRepresentable {
   SignalAspect(String name, int blockLight) {
     this.name = name;
     this.blockLight = blockLight;
-    this.displayName = Component.translatable("signal.railcraft.aspect." + name);
+    this.displayName = Component.translatable(
+        RailcraftConstants.makeTranslationKey("signal", "aspect." + name));
   }
 
   /**
