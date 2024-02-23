@@ -196,14 +196,24 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
         continue;
       }
 
-      if (this.hasLink(side) && rollingStock.hasLink(side)) {
-        // Reverse our train if both carts are facing each other
-        if (!this.swapLinks(side) && !rollingStock.swapLinks(side)) {
-          return false;
-        }
+      if (!this.hasLink(side) && !rollingStock.hasLink(side.opposite())) {
+        linkSide = side;
+        break;
       }
 
-      linkSide = side;
+      if (!this.hasLink(side.opposite())
+          && !rollingStock.hasLink(side.opposite())
+          && this.swapLinks(side)) {
+        linkSide = side;
+        break;
+      }
+
+      if (!this.hasLink(side)
+          && !rollingStock.hasLink(side)
+          && rollingStock.swapLinks(side.opposite())) {
+        linkSide = side;
+        break;
+      }
     }
     if (linkSide == null) {
       return false;
