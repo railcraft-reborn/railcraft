@@ -922,6 +922,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.PERSONAL_WORLD_SPIKE, """
        Loads a 3x3 area of chunks at world load and keeps them loaded. \
        It can only be broken by the owner.""");
+    this.add(Translations.Jei.WORLD_SPIKE_MINECART, """
+       Load the current chunk and the north, east, south and west chunks, and keeps them loaded.""");
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
