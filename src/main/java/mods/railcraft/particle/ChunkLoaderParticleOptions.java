@@ -36,16 +36,13 @@ public record ChunkLoaderParticleOptions(Vec3 dest) implements ParticleOptions {
         @Override
         public ChunkLoaderParticleOptions fromNetwork(ParticleType<ChunkLoaderParticleOptions> type,
             FriendlyByteBuf buf) {
-          return new ChunkLoaderParticleOptions(
-              new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
+          return new ChunkLoaderParticleOptions(buf.readVec3());
         }
       };
 
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
-    buf.writeDouble(this.dest.x());
-    buf.writeDouble(this.dest.y());
-    buf.writeDouble(this.dest.z());
+    buf.writeVec3(this.dest);
   }
 
   @Override
