@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "railcraft:radio_circuit"
+    },
+    "c": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " c ",
+    "aba",
+    "aca"
+  ],
+  "result": {
+    "item": "railcraft:token_signal_box"
+  },
+  "show_notification": true
+}

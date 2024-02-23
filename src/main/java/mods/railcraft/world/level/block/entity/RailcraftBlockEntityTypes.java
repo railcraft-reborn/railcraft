@@ -25,19 +25,7 @@ import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEnt
 import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.BlockSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualBlockSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.DualTokenSignalBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalInterlockBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.SignalSequencerBoxBlockEntity;
-import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
+import mods.railcraft.world.level.block.entity.signal.*;
 import mods.railcraft.world.level.block.entity.steamboiler.FluidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
@@ -293,11 +281,17 @@ public class RailcraftBlockEntityTypes {
           () -> BlockEntityType.Builder
               .of(SignalReceiverBoxBlockEntity::new, RailcraftBlocks.SIGNAL_RECEIVER_BOX.get())
               .build(null));
-
+  
   public static final RegistryObject<BlockEntityType<SignalControllerBoxBlockEntity>> SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("signal_controller_box",
           () -> BlockEntityType.Builder
               .of(SignalControllerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get())
+              .build(null));
+  
+  public static final RegistryObject<BlockEntityType<TokenSignalBoxBlockEntity>> TOKEN_SIGNAL_BOX =
+      deferredRegister.register("token_signal_box",
+          () -> BlockEntityType.Builder
+              .of(TokenSignalBoxBlockEntity::new, RailcraftBlocks.TOKEN_SIGNAL_BOX.get())
               .build(null));
 
   public static final RegistryObject<BlockEntityType<DualBlockSignalBlockEntity>> DUAL_BLOCK_SIGNAL =

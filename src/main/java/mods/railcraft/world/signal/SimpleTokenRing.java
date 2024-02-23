@@ -165,7 +165,7 @@ public class SimpleTokenRing implements TokenRing {
       return Optional.empty();
     }
     var blockEntity = this.level.getBlockEntity(blockPos);
-    return blockEntity instanceof TokenSignalBlockEntity tokenSignal && !blockEntity.isRemoved()
+    return blockEntity instanceof TokenSignalEntity tokenSignal && !blockEntity.isRemoved()
         ? Optional.of(tokenSignal)
         : Optional.empty();
   }

@@ -419,9 +419,12 @@ public class RailcraftItems {
 
   public static final RegistryObject<BlockItem> SIGNAL_RECEIVER_BOX =
       blockItem(RailcraftBlocks.SIGNAL_RECEIVER_BOX);
-
+  
   public static final RegistryObject<BlockItem> SIGNAL_CONTROLLER_BOX =
       blockItem(RailcraftBlocks.SIGNAL_CONTROLLER_BOX);
+  
+  public static final RegistryObject<BlockItem> TOKEN_SIGNAL_BOX =
+      blockItem(RailcraftBlocks.TOKEN_SIGNAL_BOX);
 
   public static final RegistryObject<BlockItem> DUAL_BLOCK_SIGNAL =
       blockItem(RailcraftBlocks.DUAL_BLOCK_SIGNAL);

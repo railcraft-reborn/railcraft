@@ -774,6 +774,16 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.REDSTONE)
         .unlockedBy(getHasName(circuit), has(circuit))
         .save(consumer);
+    circuit = RailcraftItems.RADIO_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TOKEN_SIGNAL_BOX.get())
+        .pattern(" c ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(consumer);
   }
 
   private static void signalBox(Consumer<FinishedRecipe> finishedRecipe,

@@ -129,6 +129,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.DUAL_BLOCK_SIGNAL, "Dual-Head Block Signal");
     this.addBlock(RailcraftBlocks.DUAL_DISTANT_SIGNAL, "Dual-Head Distant Signal");
     this.addBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL, "Dual-Head Token Signal");
+    this.addBlock(RailcraftBlocks.TOKEN_SIGNAL_BOX, "Token Signal Box");
     this.addBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX, "Signal Controller Box");
     this.addBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX, "Signal Receiver Box");
     this.addBlock(RailcraftBlocks.SIGNAL_CAPACITOR_BOX, "Signal Capacitor Box");
@@ -447,6 +448,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.SIGNAL_INTERLOCK_BOX, "Permits only one aspect signal to pass");
     this.add(Translations.Tips.SIGNAL_SEQUENCER_BOX, "Loops through adjacent blocks");
     this.add(Translations.Tips.SIGNAL_BLOCK_RELAY_BOX, "Creates chains of Signal Blocks");
+    this.add(Translations.Tips.TOKEN_SIGNAL_BOX, "Detects carts entering/leaving Token Area");
     this.add(Translations.Tips.FIRESTONE_EMPTY,
         "Its energies controlled, it could be useful if you could recharge it...");
     this.add(Translations.Tips.FIRESTONE_CHARGED,
