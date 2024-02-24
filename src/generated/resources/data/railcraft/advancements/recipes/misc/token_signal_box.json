@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_radio_circuit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_radio_circuit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:token_signal_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
