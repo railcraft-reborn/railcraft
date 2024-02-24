@@ -364,6 +364,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     /* === signals === */
     this.dropSelf(RailcraftBlocks.BLOCK_SIGNAL.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
+    this.dropSelf(RailcraftBlocks.TOKEN_SIGNAL_BOX.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
     this.dropSelf(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());

@@ -44,7 +44,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_RECEIVER_BOX.get(),
             RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get(),
-            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());
+            RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get(),
+            RailcraftBlocks.TOKEN_SIGNAL_BOX.get());
     this.tag(RailcraftTags.Blocks.ASPECT_RECEIVER)
         .add(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get(),
             RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get(),

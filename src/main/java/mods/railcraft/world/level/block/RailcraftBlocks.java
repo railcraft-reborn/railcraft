@@ -47,6 +47,7 @@ import mods.railcraft.world.level.block.signal.SignalInterlockBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalSequencerBoxBlock;
 import mods.railcraft.world.level.block.signal.TokenSignalBlock;
+import mods.railcraft.world.level.block.signal.TokenSignalBoxBlock;
 import mods.railcraft.world.level.block.steamboiler.FluidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SolidFueledFireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
@@ -651,6 +652,11 @@ public class RailcraftBlocks {
   public static final RegistryObject<SignalBoxBlock> SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("signal_controller_box",
           () -> new SignalControllerBoxBlock(
+              BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
+
+  public static final RegistryObject<SignalBoxBlock> TOKEN_SIGNAL_BOX =
+      deferredRegister.register("token_signal_box",
+          () -> new TokenSignalBoxBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
 
   public static final RegistryObject<DualBlockSignalBlock> DUAL_BLOCK_SIGNAL =

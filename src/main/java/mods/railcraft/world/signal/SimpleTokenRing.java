@@ -13,7 +13,6 @@ import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.MathUtil;
-import mods.railcraft.world.level.block.entity.signal.TokenSignalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -165,7 +164,7 @@ public class SimpleTokenRing implements TokenRing {
       return Optional.empty();
     }
     var blockEntity = this.level.getBlockEntity(blockPos);
-    return blockEntity instanceof TokenSignalBlockEntity tokenSignal && !blockEntity.isRemoved()
+    return blockEntity instanceof TokenSignalEntity tokenSignal && !blockEntity.isRemoved()
         ? Optional.of(tokenSignal)
         : Optional.empty();
   }
