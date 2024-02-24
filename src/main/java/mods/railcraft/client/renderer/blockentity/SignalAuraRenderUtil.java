@@ -11,7 +11,6 @@ import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.client.util.SimpleLineRenderer;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;

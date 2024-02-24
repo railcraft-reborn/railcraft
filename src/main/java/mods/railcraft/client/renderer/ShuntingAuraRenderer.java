@@ -2,17 +2,12 @@ package mods.railcraft.client.renderer;
 
 import java.util.Collection;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.LineRenderer;
-import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.client.util.SimpleLineRenderer;
-import mods.railcraft.client.util.VolumetricLineRenderer;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;

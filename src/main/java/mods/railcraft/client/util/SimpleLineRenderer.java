@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import org.joml.Matrix3f;
-import org.joml.Vector3f;
 
 public class SimpleLineRenderer implements LineRenderer {
   private final VertexConsumer consumer;

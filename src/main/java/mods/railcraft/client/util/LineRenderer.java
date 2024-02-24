@@ -1,9 +1,9 @@
 package mods.railcraft.client.util;
 
+import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 public interface LineRenderer {
   static LineRenderer create(MultiBufferSource bufferSource) {
