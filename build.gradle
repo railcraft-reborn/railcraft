@@ -155,6 +155,12 @@ spotless {
     trimTrailingWhitespace()
     removeUnusedImports()
     indentWithSpaces(2)
+    custom 'noWildcardImports', { String fileContents ->
+        if (fileContents.contains('*;\n')) {
+            throw new GradleException('No wildcard imports are allowed!')
+        }
+    }
+    bumpThisNumberIfACustomStepChanges(1)
   }
 }
 
