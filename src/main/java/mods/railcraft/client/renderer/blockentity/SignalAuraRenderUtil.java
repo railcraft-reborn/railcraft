@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class SignalAuraRenderUtil {
 
@@ -41,13 +43,50 @@ public class SignalAuraRenderUtil {
     } else if (blockEntity instanceof TokenSignalEntity tokenSignal) {
       var centroid = Collections.singletonList(tokenSignal.ringCentroidPos());
       if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
-        renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
+        renderSignalAuraf(blockEntity, poseStack, bufferSource, centroid,
             (t, s, d) -> tokenSignal.ringId().hashCode());
       } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-        renderSignalAura(blockEntity, poseStack, bufferSource, centroid,
+        renderSignalAuraf(blockEntity, poseStack, bufferSource, centroid,
             ColorProfile.CONSTANT_BLUE);
       }
     }
+  }
+
+  private static void renderSignalAuraf(
+      BlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource,
+      Collection<Vec3> endPoints, ColorSupplier colorProfile) {
+    if (endPoints.isEmpty()) {
+      return;
+    }
+
+    poseStack.pushPose();
+    var consumer = bufferSource.getBuffer(RenderType.lines());
+    var matrix = poseStack.last().pose();
+    var normal = poseStack.last().normal();
+
+    for (Vec3 target : endPoints) {
+      int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), BlockPos.containing(target));
+      float red = RenderUtil.getRed(color);
+      float green = RenderUtil.getGreen(color);
+      float blue = RenderUtil.getBlue(color);
+
+      consumer
+          .vertex(matrix, 0.5F, 0.5F, 0.5F)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
+          .endVertex();
+
+      float endX = (float) target.x() - blockEntity.getBlockPos().getX();
+      float endY = (float) target.y() - blockEntity.getBlockPos().getY();
+      float endZ = (float) target.z() - blockEntity.getBlockPos().getZ();
+
+      consumer
+          .vertex(matrix, endX, endY, endZ)
+          .color(red, green, blue, 1)
+          .normal(normal, 1, 0, 0)
+          .endVertex();
+    }
+    poseStack.popPose();
   }
 
   private static void renderSignalAura(

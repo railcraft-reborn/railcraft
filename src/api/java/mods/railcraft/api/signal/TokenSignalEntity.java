@@ -8,11 +8,11 @@ package mods.railcraft.api.signal;
 
 import java.util.UUID;
 import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public interface TokenSignalEntity extends MonitoringSignalEntity<TokenSignalEntity> {
 
-  BlockPos ringCentroidPos();
+  Vec3 ringCentroidPos();
 
   UUID ringId();
 

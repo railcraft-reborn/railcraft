@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * <b> This network is only available on the server! </b>
@@ -29,7 +30,7 @@ public class SimpleTokenRing implements TokenRing {
   private final UUID id;
   private final Set<BlockPos> peers = new HashSet<>();
   private final Set<UUID> trackedCarts = new HashSet<>();
-  private BlockPos centroid = BlockPos.ZERO;
+  private Vec3 centroid = Vec3.ZERO;
   private boolean linking;
 
   public SimpleTokenRing(ServerLevel level, TokenRingManager manager, UUID id) {
@@ -154,7 +155,7 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   @Override
-  public BlockPos getCentroid() {
+  public Vec3 getCentroid() {
     return this.centroid;
   }
 

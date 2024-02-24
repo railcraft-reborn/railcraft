@@ -8,7 +8,7 @@ package mods.railcraft.api.signal;
 
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public interface TokenRing extends SignalNetwork<TokenSignalEntity> {
 
@@ -16,5 +16,5 @@ public interface TokenRing extends SignalNetwork<TokenSignalEntity> {
 
   UUID getId();
 
-  BlockPos getCentroid();
+  Vec3 getCentroid();
 }
