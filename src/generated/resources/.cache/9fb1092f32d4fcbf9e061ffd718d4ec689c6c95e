@@ -1,4 +1,4 @@
-// 1.20.4	2024-02-23T15:32:01.776898	Recipes
+// 1.20.4	2024-02-24T17:49:27.711363	Recipes
 e5eea85f717041af4946ce58e2d6232c3465a0e5 data/minecraft/advancements/recipes/misc/gunpowder.json
 011a9cc786ff54ea803474ac272fce81d4fa3a32 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3ee54895662683658430d64e469613e26f9136f6 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -540,6 +540,7 @@ d640200380d30f14a11763e4cafe81a2c057ea2b data/railcraft/advancements/recipes/mis
 cb2ae47c4e1955b0b6d0c1f37cbee07bea755c61 data/railcraft/advancements/recipes/misc/tin_ingot_from_tin_nugget.json
 ee3ca669609a81d9a414cd9e91be5b4e3d5ac151 data/railcraft/advancements/recipes/misc/tin_nugget.json
 90c1ca9ce347246aca80b008ffe4ca13254ba443 data/railcraft/advancements/recipes/misc/token_signal.json
+20888e2316ac92cf14a3e8fa22a6033a76aa25bf data/railcraft/advancements/recipes/misc/token_signal_box.json
 417f56b0197a05dd5bf500a18c5fa67fa9d5bf08 data/railcraft/advancements/recipes/misc/torch_creosote.json
 f37cd8e6ed633c89c1d096e7adec5978f539d6b1 data/railcraft/advancements/recipes/misc/track_layer.json
 f10ea7552676b648a9fc9a73d42ae7874ab7e213 data/railcraft/advancements/recipes/misc/track_relayer.json
@@ -1202,6 +1203,7 @@ b73689779c93dd658c851d01b3e180ff02b00138 data/railcraft/recipes/tin_ingot.json
 62c297931c47402cf54905215a4b108f114d95c3 data/railcraft/recipes/tin_ingot_from_tin_nugget.json
 2b036b44816ebb1b10bafff713ebe93d3eba57ab data/railcraft/recipes/tin_nugget.json
 e47727727d7275276506d618ed5dddf133afd450 data/railcraft/recipes/token_signal.json
+c87a39e337e12259ef139d976ffb808b58e1134c data/railcraft/recipes/token_signal_box.json
 c38b5ef9b4766731fae58a17459a115cfc91ebdb data/railcraft/recipes/torch_creosote.json
 1ee9b25e8c316f6647728e01436051ddbe740010 data/railcraft/recipes/track_layer.json
 77772260614205ae83c9c78c57c495f120a6b473 data/railcraft/recipes/track_relayer.json

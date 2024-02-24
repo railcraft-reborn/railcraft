@@ -11,6 +11,9 @@ public final class MathUtil {
   }
 
   public static BlockPos centroid(Collection<? extends Vec3i> points) {
+    if (points.isEmpty()) {
+      return BlockPos.ZERO;
+    }
     double x = 0;
     double y = 0;
     double z = 0;

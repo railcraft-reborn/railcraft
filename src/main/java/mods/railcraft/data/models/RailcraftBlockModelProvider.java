@@ -367,6 +367,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get());
+    this.createSignalBoxBlock(RailcraftBlocks.TOKEN_SIGNAL_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_RECEIVER_BOX.get());
     this.createSignalBoxBlock(RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get());

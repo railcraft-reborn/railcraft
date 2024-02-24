@@ -415,6 +415,9 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> SIGNAL_CONTROLLER_BOX =
       blockItem(RailcraftBlocks.SIGNAL_CONTROLLER_BOX);
 
+  public static final DeferredItem<BlockItem> TOKEN_SIGNAL_BOX =
+      blockItem(RailcraftBlocks.TOKEN_SIGNAL_BOX);
+
   public static final DeferredItem<BlockItem> DUAL_BLOCK_SIGNAL =
       blockItem(RailcraftBlocks.DUAL_BLOCK_SIGNAL);
 

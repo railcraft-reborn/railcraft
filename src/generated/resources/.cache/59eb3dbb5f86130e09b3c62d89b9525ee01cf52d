@@ -1,4 +1,4 @@
-// 1.20.4	2024-02-22T21:20:47.197973	Loot Tables
+// 1.20.4	2024-02-24T17:49:27.709024	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_tables/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_tables/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_tables/blocks/abandoned_buffer_stop_track.json
@@ -320,6 +320,7 @@ adabde849dbbeb12645595cdef21cce58e054f84 data/railcraft/loot_tables/blocks/switc
 68084815ab0fd585a33c5792a8dc92e3a5cb37e3 data/railcraft/loot_tables/blocks/tin_block.json
 e661d72fd5d983acf687ec8f913058433412852d data/railcraft/loot_tables/blocks/tin_ore.json
 2789cfbab7be984376e2a1010296b951ee5484fe data/railcraft/loot_tables/blocks/token_signal.json
+a639d4ae402239e032b0a88fa5f6af423e74126a data/railcraft/loot_tables/blocks/token_signal_box.json
 2adf1cbb7e19024acc14d175adf0840cd3568b5d data/railcraft/loot_tables/blocks/train_detector.json
 347796f5cc6052c63015bed05a51d6e53e15be72 data/railcraft/loot_tables/blocks/train_dispenser.json
 92c234b45ca75a24f9c056fbbd724b78d202a87e data/railcraft/loot_tables/blocks/villager_detector.json

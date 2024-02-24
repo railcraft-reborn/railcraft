@@ -774,6 +774,16 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .define('c', Items.REDSTONE)
         .unlockedBy(getHasName(circuit), has(circuit))
         .save(recipeOutput);
+    circuit = RailcraftItems.RADIO_CIRCUIT.get();
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TOKEN_SIGNAL_BOX.get())
+        .pattern(" c ")
+        .pattern("aba")
+        .pattern("aca")
+        .define('a', Items.IRON_INGOT)
+        .define('b', circuit)
+        .define('c', Items.REDSTONE)
+        .unlockedBy(getHasName(circuit), has(circuit))
+        .save(recipeOutput);
   }
 
   private static void signalBox(RecipeOutput recipeOutput,Item result,

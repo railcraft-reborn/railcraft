@@ -204,6 +204,7 @@ public class Translations {
     public static final String SIGNAL_SEQUENCER_BOX = makeKey("tips", "signal_sequencer_box");
     public static final String SIGNAL_INTERLOCK_BOX = makeKey("tips", "signal_interlock_box");
     public static final String SIGNAL_BLOCK_RELAY_BOX = makeKey("tips", "signal_block_relay_box");
+    public static final String TOKEN_SIGNAL_BOX = makeKey("tips", "token_signal_box");
     public static final String FIRESTONE_EMPTY = makeKey("tips", "firestone.empty");
     public static final String FIRESTONE_CHARGED = makeKey("tips", "firestone.charged");
     public static final String RAW_FIRESTONE = makeKey("tips", "firestone.raw");

@@ -63,7 +63,8 @@ public class DetectorBlock extends BaseEntityBlock {
   @Override
   public int getSignal(BlockState state, BlockGetter level, BlockPos pos,
       Direction direction) {
-    return state.getValue(POWERED) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
+    return state.getValue(POWERED) && state.getValue(FACING) == direction.getOpposite()
+        ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 
   @Override

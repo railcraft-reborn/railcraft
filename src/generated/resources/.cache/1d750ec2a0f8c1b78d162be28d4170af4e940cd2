@@ -1,4 +1,4 @@
-// 1.20.4	2024-02-22T21:20:47.202787	Block States: railcraft
+// 1.20.4	2024-02-24T17:49:27.714728	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -340,6 +340,7 @@ d49aeab726943273abb9b16fe2d6fa808dbe4942 assets/railcraft/blockstates/tank_detec
 1a29ee18d1ccf3d43ec5db84e9978e309729a3c9 assets/railcraft/blockstates/tin_block.json
 d144ae7674b5d4aa4204310db11cd6e0db0fc8a7 assets/railcraft/blockstates/tin_ore.json
 ee2ff4d0b75d7082106e68fd3209393c895c985a assets/railcraft/blockstates/token_signal.json
+16de95e1e70abc0ad372f19c17021be5bebcebd5 assets/railcraft/blockstates/token_signal_box.json
 0b8565f2ab97b6076d1b6234b054f69351bd3b1f assets/railcraft/blockstates/train_detector.json
 8d13abe1a4ad112f7ee0941c24b0dbfa573c63b8 assets/railcraft/blockstates/train_dispenser.json
 1d4543b16d54b9317dfaf5248db4f3ff36dd2756 assets/railcraft/blockstates/villager_detector.json
@@ -1131,6 +1132,7 @@ ddea650e79afd92647831c32c2318fd59f75b722 assets/railcraft/models/block/throttle_
 080dc14e9982d9a69e388d269e84f8e074a172b2 assets/railcraft/models/block/throttle_track_4_reverse_on.json
 5545c7514eb85fa47b803f646bb37723b7d12d86 assets/railcraft/models/block/tin_block.json
 483136df2abb895741fcf30e5af971c0db6930a4 assets/railcraft/models/block/tin_ore.json
+912caa5c1eed9df40534d878069ebb6b1f9fcabb assets/railcraft/models/block/token_signal_box.json
 b78ce1f19d3abb96849a6fdfeeb28704e3db9133 assets/railcraft/models/block/train_detector.json
 1609ba3b79805518b686c5e494b120a3d93e9099 assets/railcraft/models/block/train_detector_powered.json
 f1c073e28513202bc01623d0bcae2ee6168021d6 assets/railcraft/models/block/train_dispenser.json
@@ -1541,6 +1543,7 @@ d04bf021062dd67e7df4d9816d531ff5f152b3b1 assets/railcraft/models/item/strap_iron
 bcb3651db945cb583d7ef6f3b1ddcea9adf7f674 assets/railcraft/models/item/tank_detector.json
 9f73b1ad0c9541152704d4d216be211b40006708 assets/railcraft/models/item/tin_block.json
 da38e71f181d9a9f9795a2798d5f0236f572d6cd assets/railcraft/models/item/tin_ore.json
+6a27d74a0ba40bf1b055abc87d2e644f3712a8ad assets/railcraft/models/item/token_signal_box.json
 d63458d9ad9557ac1e8e57f33269f9be524653fc assets/railcraft/models/item/train_detector.json
 8afd353c47f744529aaf138abda3838e916c7880 assets/railcraft/models/item/train_dispenser.json
 b567677dd2dba2f6b83418f99850f4b368d56d5d assets/railcraft/models/item/villager_detector.json

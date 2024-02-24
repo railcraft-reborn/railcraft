@@ -28,6 +28,8 @@ public class RailcraftBlockEntityRenderers {
         supply(DualSignalRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get(),
         supply(SignalControllerBoxRenderer::new));
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.TOKEN_SIGNAL_BOX.get(),
+        supply(TokenSignalBoxRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get(),
         supply(SignalCapacitorBoxRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.SIGNAL_RECEIVER_BOX.get(),

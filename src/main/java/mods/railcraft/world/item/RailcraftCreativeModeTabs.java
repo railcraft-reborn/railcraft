@@ -526,6 +526,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get(),
         RailcraftItems.SIGNAL_RECEIVER_BOX.get(),
         RailcraftItems.SIGNAL_CONTROLLER_BOX.get(),
+        RailcraftItems.TOKEN_SIGNAL_BOX.get(),
         RailcraftItems.BLOCK_SIGNAL.get(),
         RailcraftItems.DISTANT_SIGNAL.get(),
         RailcraftItems.TOKEN_SIGNAL.get(),

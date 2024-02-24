@@ -63,11 +63,6 @@ public class SignalAuraRenderUtil {
     var normal = poseStack.last().normal();
 
     for (BlockPos target : endPoints) {
-      var be = blockEntity.getLevel().getBlockEntity(target);
-      if (be == null || be.isRemoved()) {
-        continue;
-      }
-
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
       float red = RenderUtil.getRed(color);
       float green = RenderUtil.getGreen(color);
