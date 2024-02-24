@@ -28,6 +28,9 @@ public abstract class BlockEntitySignalNetwork<T extends BlockEntityLike>
   @Override
   public boolean removePeer(BlockPos peerPos) {
     if (this.peers.remove(peerPos)) {
+      if (!this.blockEntity.getLevel().isClientSide()) {
+        this.syncToClient();
+      }
       this.blockEntity.setChanged();
       return true;
     }
