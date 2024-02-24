@@ -59,7 +59,8 @@ public abstract class DetectorBlockEntity extends RailcraftBlockEntity {
           blockEntity.powerDelay = CartConstants.DETECTED_POWER_OUTPUT_FADE;
         }
         level.setBlockAndUpdate(blockPos, blockState.setValue(DetectorBlock.POWERED, powered));
-        level.updateNeighborsAt(blockPos, blockState.getBlock());
+        var offsetPos = blockPos.offset(blockState.getValue(DetectorBlock.FACING).getNormal());
+        level.updateNeighborsAt(offsetPos, blockState.getBlock());
       }
       blockEntity.tick = 0;
     }
