@@ -71,7 +71,7 @@ public class SignalAuraRenderUtil {
       float endZ = (float) target.z() - blockEntity.getBlockPos().getZ();
 
       renderer.renderLine(poseStack,
-          red ,green, blue, 1,
+          red ,green, blue,
           0.5F, 0.5F, 0.5F,
           endX, endY, endZ
       );
@@ -97,9 +97,9 @@ public class SignalAuraRenderUtil {
       float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
 
       renderer.renderLine(poseStack,
-          red ,green, blue, 1,
-          0.5F, 0.5F, 0.5F,
-          endX, endY, endZ
+          red,  green, blue,
+          0.5F, 0.5F,  0.5F,
+          endX, endY,  endZ
       );
     }
   }
