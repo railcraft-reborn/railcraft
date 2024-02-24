@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.client.util.RenderUtil;
+import mods.railcraft.client.util.SimpleLineRenderer;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -59,34 +59,23 @@ public class SignalAuraRenderUtil {
       return;
     }
 
-    poseStack.pushPose();
-    var consumer = bufferSource.getBuffer(RenderType.lines());
-    var matrix = poseStack.last().pose();
-    var normal = poseStack.last().normal();
-
+    var renderer = new SimpleLineRenderer(bufferSource);
     for (Vec3 target : endPoints) {
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), BlockPos.containing(target));
       float red = RenderUtil.getRed(color);
       float green = RenderUtil.getGreen(color);
       float blue = RenderUtil.getBlue(color);
 
-      consumer
-          .vertex(matrix, 0.5F, 0.5F, 0.5F)
-          .color(red, green, blue, 1)
-          .normal(normal, 1, 0, 0)
-          .endVertex();
-
       float endX = (float) target.x() - blockEntity.getBlockPos().getX();
       float endY = (float) target.y() - blockEntity.getBlockPos().getY();
       float endZ = (float) target.z() - blockEntity.getBlockPos().getZ();
 
-      consumer
-          .vertex(matrix, endX, endY, endZ)
-          .color(red, green, blue, 1)
-          .normal(normal, 1, 0, 0)
-          .endVertex();
+      renderer.renderLine(poseStack,
+          red ,green, blue, 1,
+          0.5F, 0.5F, 0.5F,
+          endX, endY, endZ
+      );
     }
-    poseStack.popPose();
   }
 
   private static void renderSignalAura(
@@ -96,34 +85,23 @@ public class SignalAuraRenderUtil {
       return;
     }
 
-    poseStack.pushPose();
-    var consumer = bufferSource.getBuffer(RenderType.lines());
-    var matrix = poseStack.last().pose();
-    var normal = poseStack.last().normal();
-
+    var renderer = new SimpleLineRenderer(bufferSource);
     for (BlockPos target : endPoints) {
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
       float red = RenderUtil.getRed(color);
       float green = RenderUtil.getGreen(color);
       float blue = RenderUtil.getBlue(color);
 
-      consumer
-          .vertex(matrix, 0.5F, 0.5F, 0.5F)
-          .color(red, green, blue, 1)
-          .normal(normal, 1, 0, 0)
-          .endVertex();
-
       float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
       float endY = 0.5F + target.getY() - blockEntity.getBlockPos().getY();
       float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
 
-      consumer
-          .vertex(matrix, endX, endY, endZ)
-          .color(red, green, blue, 1)
-          .normal(normal, 1, 0, 0)
-          .endVertex();
+      renderer.renderLine(poseStack,
+          red ,green, blue, 1,
+          0.5F, 0.5F, 0.5F,
+          endX, endY, endZ
+      );
     }
-    poseStack.popPose();
   }
 
   @FunctionalInterface

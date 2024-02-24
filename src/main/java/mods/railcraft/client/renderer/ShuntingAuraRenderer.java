@@ -3,7 +3,9 @@ package mods.railcraft.client.renderer;
 import java.util.Collection;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.client.util.RenderUtil;
+import mods.railcraft.client.util.SimpleLineRenderer;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -13,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class ShuntingAuraRenderer {
 
@@ -48,36 +51,13 @@ public class ShuntingAuraRenderer {
             continue;
           }
 
-          var consumer = bufferSource.getBuffer(RenderType.lines());
-          var pose = poseStack.last();
-
+          var renderer = new SimpleLineRenderer(bufferSource);
           final int color = linkedCart.trainId().hashCode();
-          float red = RenderUtil.getRed(color);
-          float green = RenderUtil.getGreen(color);
-          float blue = RenderUtil.getBlue(color);
-
           final var cartPosition = cart.getPosition(partialTick);
-          final float cartX = (float) cartPosition.x();
-          final float cartY = (float) cartPosition.y();
-          final float cartZ = (float) cartPosition.z();
 
-          var matrix4f = pose.pose();
-          var matrix3f = pose.normal();
-          consumer
-              .vertex(matrix4f, cartX, cartY, cartZ)
-              .color(red, green, blue, 1)
-              .normal(matrix3f, 0, 0, 0)
-              .endVertex();
-          consumer
-              .vertex(matrix4f, cartX, cartY + 2, cartZ)
-              .color(red, green, blue, 1)
-              .normal(matrix3f, 0, 0, 0)
-              .endVertex();
-
-          this.renderLink(level, cartX, cartY, cartZ, linkedCart.linkAId(), red,
-              green, blue, partialTick, consumer, pose);
-          this.renderLink(level, cartX, cartY, cartZ, linkedCart.linkBId(), red,
-              green, blue, partialTick, consumer, pose);
+          renderer.renderLine(poseStack, color, cartPosition, cartPosition.add(0, 2, 0));
+          this.renderLink(level, cartPosition, linkedCart.linkAId(), color, partialTick, renderer, poseStack);
+          this.renderLink(level, cartPosition, linkedCart.linkBId(), color, partialTick, renderer, poseStack);
 
           bufferSource.endBatch();
         }
@@ -86,9 +66,7 @@ public class ShuntingAuraRenderer {
     }
   }
 
-  private void renderLink(Level level, float cartX, float cartY, float cartZ, int cartId,
-      float red, float green, float blue, float partialTick, VertexConsumer consumer,
-      PoseStack.Pose pose) {
+  private void renderLink(Level level, Vec3 cartPosition, int cartId, int color, float partialTick, LineRenderer renderer, PoseStack poseStack) {
     if (cartId == -1) {
       return;
     }
@@ -99,16 +77,6 @@ public class ShuntingAuraRenderer {
     }
 
     var cartAPosition = cartA.getPosition(partialTick);
-    consumer
-        .vertex(pose.pose(), cartX, cartY + 2, cartZ)
-        .color(red, green, blue, 1)
-        .normal(pose.normal(), 0, 0, 0)
-        .endVertex();
-    consumer
-        .vertex(pose.pose(), (float) cartAPosition.x(), (float) cartAPosition.y() + 1.5F,
-            (float) cartAPosition.z())
-        .color(red, green, blue, 1)
-        .normal(pose.normal(), 0, 0, 0)
-        .endVertex();
+    renderer.renderLine(poseStack, color, cartAPosition.add(0, 1.5f, 0), cartPosition.add(0, 2, 0));
   }
 }
