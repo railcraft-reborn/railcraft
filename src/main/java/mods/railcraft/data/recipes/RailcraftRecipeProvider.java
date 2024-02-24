@@ -1251,8 +1251,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
     RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get())
         .save(consumer, "locomotive_color_variant");
-    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.CART_DISASSEMBLY.get())
-        .save(consumer, "cart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.CHEST_MINECART_DISASSEMBLY.get())
+        .save(consumer, "chest_minecart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(RailcraftRecipeSerializers.WORLDSPIKE_MINECART_DISASSEMBLY.get())
+        .save(consumer, "worldspike_minecart_disassembly");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")
