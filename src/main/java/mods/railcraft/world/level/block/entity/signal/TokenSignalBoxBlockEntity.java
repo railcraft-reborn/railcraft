@@ -83,9 +83,11 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeDouble(this.ringCentroidPos().x());
-    data.writeDouble(this.ringCentroidPos().y());
-    data.writeDouble(this.ringCentroidPos().z());
+    data.writeNullable(this.ringCentroidPos, (buf, vec3) -> {
+      buf.writeDouble(vec3.x());
+      buf.writeDouble(vec3.y());
+      buf.writeDouble(vec3.z());
+    });
     data.writeUUID(this.ringId);
   }
 
@@ -93,7 +95,8 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
+    this.ringCentroidPos = data.readNullable(buf ->
+        new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
     this.ringId = data.readUUID();
   }
 
