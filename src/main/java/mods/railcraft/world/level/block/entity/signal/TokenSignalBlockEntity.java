@@ -20,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     implements SignalControllerEntity, TokenSignalEntity {
@@ -29,7 +30,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
           __ -> this.level.getLightEngine().checkBlock(this.getBlockPos()));
 
   private UUID ringId = UUID.randomUUID();
-  private BlockPos ringCentroidPos;
+  private Vec3 ringCentroidPos;
 
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
   private final TrackLocator trackLocator;
@@ -110,7 +111,9 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeBlockPos(this.signalNetwork().getCentroid());
+    data.writeDouble(this.ringCentroidPos.x());
+    data.writeDouble(this.ringCentroidPos.y());
+    data.writeDouble(this.ringCentroidPos.z());
     data.writeUUID(this.ringId);
   }
 
@@ -118,7 +121,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = data.readBlockPos();
+    this.ringCentroidPos = new Vec3(data.readDouble(), data.readDouble(), data.readDouble());
     this.ringId = data.readUUID();
   }
 
@@ -132,9 +135,9 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  public BlockPos ringCentroidPos() {
+  public Vec3 ringCentroidPos() {
     if (this.ringCentroidPos == null)
-      return this.getBlockPos();
+      return this.getBlockPos().getCenter();
     return this.ringCentroidPos;
   }
 
