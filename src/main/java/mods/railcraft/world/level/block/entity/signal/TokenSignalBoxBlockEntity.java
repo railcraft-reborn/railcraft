@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.phys.Vec3;
 
 public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements TokenSignalEntity, SignalControllerEntity {
@@ -29,7 +30,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   private final SimpleSignalController signalController =
       new SimpleSignalController(1, this::syncToClient, this, false);
   private UUID ringId = UUID.randomUUID();
-  private BlockPos ringCentroidPos;
+  private Vec3 ringCentroidPos;
 
   private final TimerBag<UUID> cartTimers = new TimerBag<>(8);
   private final TrackLocator trackLocator;
@@ -82,7 +83,9 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeBlockPos(this.signalNetwork().getCentroid());
+    data.writeFloat((float) this.ringCentroidPos().x());
+    data.writeFloat((float) this.ringCentroidPos().y());
+    data.writeFloat((float) this.ringCentroidPos().z());
     data.writeUUID(this.ringId);
   }
 
@@ -90,7 +93,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = data.readBlockPos();
+    this.ringCentroidPos = new Vec3(data.readFloat(), data.readFloat(), data.readFloat());
     this.ringId = data.readUUID();
   }
 
@@ -146,9 +149,9 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public BlockPos ringCentroidPos() {
+  public Vec3 ringCentroidPos() {
     if (this.ringCentroidPos == null)
-      return this.getBlockPos();
+      return this.getBlockPos().getCenter();
     return this.ringCentroidPos;
   }
 
