@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
+import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.client.util.SimpleLineRenderer;
 import mods.railcraft.world.item.GogglesItem;
@@ -59,7 +60,7 @@ public class SignalAuraRenderUtil {
     }
 
     var renderer = new SimpleLineRenderer(bufferSource);
-    for (Vec3 target : endPoints) {
+    for (var target : endPoints) {
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), BlockPos.containing(target));
       float red = RenderUtil.getRed(color);
       float green = RenderUtil.getGreen(color);
@@ -84,8 +85,8 @@ public class SignalAuraRenderUtil {
       return;
     }
 
-    var renderer = new SimpleLineRenderer(bufferSource);
-    for (BlockPos target : endPoints) {
+    var renderer = LineRenderer.create(bufferSource);
+    for (var target : endPoints) {
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
       float red = RenderUtil.getRed(color);
       float green = RenderUtil.getGreen(color);

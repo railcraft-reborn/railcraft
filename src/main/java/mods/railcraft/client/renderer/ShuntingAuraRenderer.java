@@ -3,11 +3,13 @@ package mods.railcraft.client.renderer;
 import java.util.Collection;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.util.LineRenderer;
+import mods.railcraft.client.util.SimpleLineRenderer;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
@@ -47,7 +49,7 @@ public class ShuntingAuraRenderer {
             continue;
           }
 
-          var renderer = LineRenderer.create(bufferSource);
+          var renderer = new SimpleLineRenderer(bufferSource);
           final int color = linkedCart.trainId().hashCode();
           final var cartPosition = cart.getPosition(partialTick);
 
@@ -55,7 +57,7 @@ public class ShuntingAuraRenderer {
           this.renderLink(level, cartPosition, linkedCart.linkAId(), color, partialTick, renderer, poseStack);
           this.renderLink(level, cartPosition, linkedCart.linkBId(), color, partialTick, renderer, poseStack);
 
-          bufferSource.endBatch();
+          bufferSource.endBatch(RenderType.lines());
         }
         poseStack.popPose();
       }
