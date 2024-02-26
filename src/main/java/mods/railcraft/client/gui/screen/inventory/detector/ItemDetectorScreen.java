@@ -1,8 +1,7 @@
 package mods.railcraft.client.gui.screen.inventory.detector;
 
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.client.util.RenderUtil;
+import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
@@ -12,8 +11,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.client.gui.ScreenUtils;
 
 public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu> {
 
@@ -86,29 +85,30 @@ public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     super.render(guiGraphics, mouseX, mouseY, partialTick);
-    if (itemDetector.getPrimaryMode() != ItemDetectorBlockEntity.PrimaryMode.FILTERED) {
 
-    }
   }
 
   @Override
   protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
-        this.itemDetector.getPrimaryMode().getName(), this.imageWidth, 21);
-    if (itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED) {
-      GuiUtil.drawCenteredString(guiGraphics, this.font,
-          this.itemDetector.getFilterMode().getName(), this.imageWidth, 43);
-    } else {
-      var color = RenderUtil.getColorARGB(80, 0, 0, 0);
-      for (int slotNum = 0; slotNum < 9; slotNum++) {
-        var slot = this.menu.slots.get(slotNum);
-        int displayX = slot.x;
-        int displayY = slot.y;
-        var matrix4f = guiGraphics.pose().last().pose();
-        ScreenUtils.drawGradientRect(matrix4f, 0, displayX, displayY,
-            displayX + 16, displayY + 16, color, color);
-      }
+    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+        IngameWindowScreen.TEXT_COLOR, false);
+    var primaryModeName = this.itemDetector.getPrimaryMode().getName();
+    guiGraphics.drawString(this.font, primaryModeName,
+        this.imageWidth / 2 - this.font.width(primaryModeName) / 2, 21,
+        IngameWindowScreen.TEXT_COLOR, false);
+    if (this.itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED) {
+      var filterModeName = this.itemDetector.getFilterMode().getName();
+      guiGraphics.drawString(this.font, filterModeName,
+          this.imageWidth / 2 - this.font.width(filterModeName) / 2, 43,
+          IngameWindowScreen.TEXT_COLOR, false);
+      return;
+    }
+    var color = FastColor.ARGB32.color(80, 0, 0, 0);
+    for (int slotNum = 0; slotNum < 9; slotNum++) {
+      var slot = this.menu.slots.get(slotNum);
+      int displayX = slot.x;
+      int displayY = slot.y;
+      guiGraphics.fill(displayX, displayY, displayX + 16, displayY + 16, color);
     }
   }
 }

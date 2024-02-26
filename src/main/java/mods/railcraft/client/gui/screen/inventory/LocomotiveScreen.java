@@ -9,7 +9,6 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
-import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -18,6 +17,7 @@ import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -60,6 +60,10 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     var centreX = (this.width - this.getXSize()) / 2;
     var centreY = (this.height - this.getYSize()) / 2;
 
+    var modeLayout =
+        new LinearLayout(centreX + 4, centreY + this.getYSize() - 129, this.imageWidth - 10, 16,
+            LinearLayout.Orientation.HORIZONTAL);
+
     // Mode buttons
     for (var mode : this.locomotive.getSupportedModes()) {
       var translationKey = switch (mode) {
@@ -69,43 +73,46 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       };
       var tooltip = Component.translatable(Translations.makeKey("screen",
           String.format("locomotive.%s.mode.description.%s", type, mode.getSerializedName())));
-      var button = RailcraftButton
+      var button = this.addRenderableWidget(RailcraftButton
           .builder(translationKey, __ -> this.setMode(mode), ButtonTexture.SMALL_BUTTON)
-          .pos(0, centreY + this.getYSize() - 129)
-          .size(55, 16)
+          .size(54, 16)
           .tooltip(Tooltip.create(tooltip))
-          .build();
+          .build());
+      modeLayout.addChild(button);
       this.modeButtons.put(mode, button);
     }
-    GuiUtil.newButtonRowAuto(this::addRenderableWidget, centreX + 3, 171,
-        this.modeButtons.values());
+    modeLayout.arrangeElements();
+
+    var speedLayout = new LinearLayout(centreX + 4, centreY + this.getYSize() - 112, 105, 16,
+        LinearLayout.Orientation.HORIZONTAL);
 
     // Reverse button
     this.reverseButton = this.addRenderableWidget(ToggleButton
-        .toggleBuilder(Component.literal("R"), __ -> this.toggleReverse(), ButtonTexture.SMALL_BUTTON)
-        .bounds(centreX + 4, centreY + this.getYSize() - 112, 12, 16)
+        .toggleBuilder(Component.literal("R"), __ -> this.toggleReverse(),
+            ButtonTexture.SMALL_BUTTON)
+        .size(12, 16)
         .toggled(this.locomotive.isReverse())
         .build());
+    speedLayout.addChild(this.reverseButton);
 
     // Speed buttons
     for (var speed : Speed.values()) {
-      var button = RailcraftButton
+      var button = this.addRenderableWidget(RailcraftButton
           .builder(Component.literal(StringUtils.repeat('>', speed.getLevel())),
               __ -> this.setSpeed(speed),
               ButtonTexture.SMALL_BUTTON)
-          .pos(0, centreY + this.getYSize() - 112)
-          .size(7 + speed.getLevel() * 5, 16)
-          .build();
+          .size(4 + speed.getLevel() * 6, 16)
+          .build());
       button.active = this.locomotive.getSpeed() == speed;
-
+      speedLayout.addChild(button);
       this.speedButtons.put(speed, button);
     }
-    GuiUtil.newButtonRow(this::addRenderableWidget, centreX + 21, 5, this.speedButtons.values());
+    speedLayout.arrangeElements();
 
     // Lock button
     this.lockButton = this.addRenderableWidget(
         MultiButton.builder(ButtonTexture.SMALL_BUTTON, this.locomotive.getLock())
-            .bounds(centreX + 152, centreY + this.getYSize() - 111, 16, 16)
+            .bounds(centreX + 154, centreY + this.getYSize() - 111, 16, 16)
             .tooltipFactory(this::createLockTooltip)
             .stateCallback(this::setLock)
             .build());

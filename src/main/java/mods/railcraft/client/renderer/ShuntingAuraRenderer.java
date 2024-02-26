@@ -3,7 +3,7 @@ package mods.railcraft.client.renderer;
 import java.util.Collection;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.util.LineRenderer;
-import mods.railcraft.client.util.SimpleLineRenderer;
+import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.network.play.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
@@ -49,8 +49,8 @@ public class ShuntingAuraRenderer {
             continue;
           }
 
-          var renderer = new SimpleLineRenderer(bufferSource);
-          final int color = linkedCart.trainId().hashCode();
+          var renderer = LineRenderer.simple(bufferSource);
+          final int color = RenderUtil.replaceAlpha(linkedCart.trainId().hashCode(), 255);
           final var cartPosition = cart.getPosition(partialTick);
 
           renderer.renderLine(poseStack, color, cartPosition, cartPosition.add(0, 2, 0));

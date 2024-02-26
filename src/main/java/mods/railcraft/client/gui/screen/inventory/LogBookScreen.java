@@ -11,7 +11,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
-import mods.railcraft.client.util.GuiUtil;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.GuiGraphics;
@@ -62,28 +61,24 @@ public class LogBookScreen extends Screen {
   protected void init() {
     super.init();
     this.clearDisplayCache();
-    var buttons = List.of(
-        RailcraftButton
-            .builder(CommonComponents.GUI_DONE, button -> {
-              this.minecraft.setScreen(null);
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 90)
-            .size(65, 20)
-            .build());
-    GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
+    var buttonWidth = 65;
+    this.addRenderableWidget(RailcraftButton
+        .builder(
+            CommonComponents.GUI_DONE,
+            button -> this.minecraft.setScreen(null),
+            ButtonTexture.LARGE_BUTTON)
+        .pos(this.width / 2 - buttonWidth / 2, this.height / 2 + 90)
+        .size(buttonWidth, 20)
+        .build());
 
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    forwardButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, BOOK_LOCATION, button -> {
-          this.pageForward();
-        })
-    );
-    backButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, BOOK_LOCATION, button -> {
-          this.pageBack();
-        })
-    );
+    this.forwardButton = this.addRenderableWidget(
+        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, BOOK_LOCATION,
+            button -> this.pageForward()));
+    this.backButton = this.addRenderableWidget(
+        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, BOOK_LOCATION,
+            button -> this.pageBack()));
   }
 
   private void pageForward() {
@@ -179,7 +174,7 @@ public class LogBookScreen extends Screen {
   record DisplayCache(LineInfo[] lines) {
 
     static final DisplayCache EMPTY =
-        new DisplayCache(new LineInfo[]{new LineInfo(Style.EMPTY, "", 0, 0)});
+        new DisplayCache(new LineInfo[] {new LineInfo(Style.EMPTY, "", 0, 0)});
   }
 
   static class LineInfo {

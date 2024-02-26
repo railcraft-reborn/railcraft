@@ -16,7 +16,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
-import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import net.minecraft.ChatFormatting;
@@ -27,6 +26,7 @@ import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
@@ -75,8 +75,8 @@ public class RoutingTableBookScreen extends Screen {
   private String title = "";
 
   private final TextFieldHelper pageEdit = new TextFieldHelper(this::getCurrentPageText,
-      this::setCurrentPageText, this::getClipboard, this::setClipboard, s ->
-      s.length() < 1024 && this.font.wordWrapHeight(s, TEXT_WIDTH) <= TEXT_HEIGHT);
+      this::setCurrentPageText, this::getClipboard, this::setClipboard,
+      s -> s.length() < 1024 && this.font.wordWrapHeight(s, TEXT_WIDTH) <= TEXT_HEIGHT);
 
   private final TextFieldHelper titleEdit = new TextFieldHelper(() -> this.title,
       s -> this.title = s, this::getClipboard, this::setClipboard, s -> s.length() < 16);
@@ -143,49 +143,48 @@ public class RoutingTableBookScreen extends Screen {
   @Override
   protected void init() {
     this.clearDisplayCache();
-    var buttons = List.of(
-        this.titleButton = RailcraftButton
-            .builder(Translations.Screen.NAME, button -> {
-              this.editingTitle = !this.editingTitle;
-              this.readingManual = false;
-              currentPage = 0;
-              this.updateButtonVisibility();
-              this.clearDisplayCacheAfterPageChange();
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 90)
-            .size(65, 20)
-            .build(),
-        this.helpButton = RailcraftButton
-            .builder(Translations.Screen.HELP, button -> {
-              readingManual = !readingManual;
-              editingTitle = false;
-              currentPage = 0;
-              this.clearDisplayCacheAfterPageChange();
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 90)
-            .size(65, 20)
-            .build(),
-        RailcraftButton
-            .builder(CommonComponents.GUI_DONE, button -> {
-              this.saveChanges();
-              this.minecraft.setScreen(null);
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 90)
-            .size(65, 20)
-            .build());
-    GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
+
+    this.titleButton = this.addRenderableWidget(RailcraftButton
+        .builder(Translations.Screen.NAME, button -> {
+          this.editingTitle = !this.editingTitle;
+          this.readingManual = false;
+          this.currentPage = 0;
+          this.updateButtonVisibility();
+          this.clearDisplayCacheAfterPageChange();
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    this.helpButton = this.addRenderableWidget(RailcraftButton
+        .builder(Translations.Screen.HELP, button -> {
+          this.readingManual = !this.readingManual;
+          this.editingTitle = false;
+          this.currentPage = 0;
+          this.clearDisplayCacheAfterPageChange();
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    var doneButton = this.addRenderableWidget(RailcraftButton
+        .builder(CommonComponents.GUI_DONE, button -> {
+          this.saveChanges();
+          this.minecraft.setScreen(null);
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    var layout = new LinearLayout(this.width / 2 - 100, this.height / 2 + 90, 200, 20,
+        LinearLayout.Orientation.HORIZONTAL);
+    layout.addChild(this.titleButton);
+    layout.addChild(this.helpButton);
+    layout.addChild(doneButton);
+    layout.arrangeElements();
+
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    forwardButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, BOOK_LOCATION, button -> {
-          this.pageForward();
-        })
-    );
-    backButton = this.addRenderableWidget(
-        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, BOOK_LOCATION, button -> {
-          this.pageBack();
-        })
-    );
+    this.forwardButton = this.addRenderableWidget(
+        new RailcraftPageButton(xOffset + 200, yOffset + 150, true, BOOK_LOCATION,
+            button -> this.pageForward()));
+    this.backButton = this.addRenderableWidget(
+        new RailcraftPageButton(xOffset + 30, yOffset + 150, false, BOOK_LOCATION,
+            button -> this.pageBack()));
     this.updateButtonVisibility();
   }
 
@@ -222,10 +221,10 @@ public class RoutingTableBookScreen extends Screen {
     this.forwardButton.visible = !this.editingTitle && this.currentPage < this.getMaxPages() - 1;
     this.backButton.visible = !this.editingTitle && this.currentPage > 0;
 
-    helpButton.setMessage(readingManual ? CommonComponents.GUI_BACK :
-        Component.translatable(Translations.Screen.HELP));
-    titleButton.setMessage(editingTitle ? CommonComponents.GUI_BACK :
-        Component.translatable(Translations.Screen.NAME));
+    helpButton.setMessage(readingManual ? CommonComponents.GUI_BACK
+        : Component.translatable(Translations.Screen.HELP));
+    titleButton.setMessage(editingTitle ? CommonComponents.GUI_BACK
+        : Component.translatable(Translations.Screen.NAME));
   }
 
   private int getMaxPages() {
@@ -238,7 +237,7 @@ public class RoutingTableBookScreen extends Screen {
 
   private void eraseEmptyTrailingPages() {
     var listiterator = this.pages.listIterator(this.pages.size());
-    while(listiterator.hasPrevious() && listiterator.previous().isEmpty()) {
+    while (listiterator.hasPrevious() && listiterator.previous().isEmpty()) {
       listiterator.remove();
     }
   }
@@ -421,7 +420,9 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   private String getCurrentPageText() {
-    return this.currentPage >= 0 && this.currentPage < this.pages.size() ? this.pages.get(this.currentPage) : "";
+    return this.currentPage >= 0 && this.currentPage < this.pages.size()
+        ? this.pages.get(this.currentPage)
+        : "";
   }
 
   private void setCurrentPageText(String text) {
@@ -466,7 +467,7 @@ public class RoutingTableBookScreen extends Screen {
       int l = this.font.width(this.pageMsg);
       guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
       var displayCache = this.getDisplayCache();
-      for(var lineinfo : displayCache.lines) {
+      for (var lineinfo : displayCache.lines) {
         guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
             -16777216, false);
       }
@@ -489,7 +490,7 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   private void renderHighlight(GuiGraphics guiGraphics, Rect2i[] selected) {
-    for(var rect2i : selected) {
+    for (var rect2i : selected) {
       int i = rect2i.getX();
       int j = rect2i.getY();
       int k = i + rect2i.getWidth();
@@ -523,7 +524,7 @@ public class RoutingTableBookScreen extends Screen {
         long i = Util.getMillis();
         var displayCache = this.getDisplayCache();
         int j = displayCache.getIndexAtPosition(this.font,
-            this.convertScreenToLocal(new Pos2i((int)mouseX, (int)mouseY)));
+            this.convertScreenToLocal(new Pos2i((int) mouseX, (int) mouseY)));
         if (j >= 0) {
           if (j == this.lastIndex && i - this.lastClickTime < 250L) {
             if (!this.pageEdit.isSelecting()) {
@@ -549,7 +550,8 @@ public class RoutingTableBookScreen extends Screen {
         StringSplitter.getWordPosition(s, 1, pIndex, false));
   }
 
-  public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+  public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX,
+      double dragY) {
     if (super.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
       return true;
     } else {
@@ -596,15 +598,15 @@ public class RoutingTableBookScreen extends Screen {
       StringSplitter stringsplitter = this.font.getSplitter();
       stringsplitter.splitLines(s, TEXT_WIDTH, Style.EMPTY, true,
           (style, beginIndex, endIndex) -> {
-        int k3 = mutableint.getAndIncrement();
-        String s2 = s.substring(beginIndex, endIndex);
-        mutableboolean.setValue(s2.endsWith("\n"));
-        String s3 = StringUtils.stripEnd(s2, " \n");
-        int l3 = k3 * 9;
-        var pos = this.convertLocalToScreen(new Pos2i(0, l3));
-        intlist.add(beginIndex);
-        list.add(new LineInfo(style, s3, pos.x, pos.y));
-      });
+            int k3 = mutableint.getAndIncrement();
+            String s2 = s.substring(beginIndex, endIndex);
+            mutableboolean.setValue(s2.endsWith("\n"));
+            String s3 = StringUtils.stripEnd(s2, " \n");
+            int l3 = k3 * 9;
+            var pos = this.convertLocalToScreen(new Pos2i(0, l3));
+            intlist.add(beginIndex);
+            list.add(new LineInfo(style, s3, pos.x, pos.y));
+          });
       int[] aint = intlist.toIntArray();
       boolean flag = i == s.length();
       Pos2i pos;
@@ -629,13 +631,14 @@ public class RoutingTableBookScreen extends Screen {
         } else {
           int i3 = j1 + 1 > aint.length ? s.length() : aint[j1 + 1];
           list1.add(this.createPartialLineSelection(s, stringsplitter, l2, i3, j1 * 9, aint[j1]));
-          for(int j3 = j1 + 1; j3 < k1; ++j3) {
+          for (int j3 = j1 + 1; j3 < k1; ++j3) {
             int j2 = j3 * 9;
             String s1 = s.substring(aint[j3], aint[j3 + 1]);
-            int k2 = (int)stringsplitter.stringWidth(s1);
+            int k2 = (int) stringsplitter.stringWidth(s1);
             list1.add(this.createSelection(new Pos2i(0, j2), new Pos2i(k2, j2 + 9)));
           }
-          list1.add(this.createPartialLineSelection(s, stringsplitter, aint[k1], i1, k1 * 9, aint[k1]));
+          list1.add(
+              this.createPartialLineSelection(s, stringsplitter, aint[k1], i1, k1 * 9, aint[k1]));
         }
       }
       return new DisplayCache(s, pos, flag, aint, list.toArray(new LineInfo[0]),
@@ -653,8 +656,8 @@ public class RoutingTableBookScreen extends Screen {
       int p_98123_, int p_98124_, int p_98125_) {
     String s = input.substring(p_98125_, p_98122_);
     String s1 = input.substring(p_98125_, p_98123_);
-    var corner1 = new Pos2i((int)splitter.stringWidth(s), p_98124_);
-    var corner2 = new Pos2i((int)splitter.stringWidth(s1), p_98124_ + 9);
+    var corner1 = new Pos2i((int) splitter.stringWidth(s), p_98124_);
+    var corner2 = new Pos2i((int) splitter.stringWidth(s1), p_98124_ + 9);
     return this.createSelection(corner1, corner2);
   }
 
@@ -670,7 +673,7 @@ public class RoutingTableBookScreen extends Screen {
 
   static class DisplayCache {
     static final DisplayCache EMPTY = new DisplayCache("", new Pos2i(0, 0), true,
-        new int[]{0}, new LineInfo[]{new LineInfo(Style.EMPTY, "", 0, 0)}, new Rect2i[0]);
+        new int[] {0}, new LineInfo[] {new LineInfo(Style.EMPTY, "", 0, 0)}, new Rect2i[0]);
     private final String fullText;
     final Pos2i cursor;
     final boolean cursorAtEnd;
