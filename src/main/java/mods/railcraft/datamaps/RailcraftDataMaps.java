@@ -1,8 +1,6 @@
-package mods.railcraft.util.datamaps;
+package mods.railcraft.datamaps;
 
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.datamaps.builtin.FluidHeat;
-import mods.railcraft.util.datamaps.builtin.TunnelBoreHead;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;

@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AgeDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AnimalDetectorBlockEntity;
@@ -354,17 +353,6 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("force_track",
           () -> BlockEntityType.Builder
               .of(ForceTrackBlockEntity::new, RailcraftBlocks.FORCE_TRACK.get())
-              .build(null));
-
-  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBlockEntity>> BATTERY =
-      deferredRegister.register("battery",
-          () -> BlockEntityType.Builder
-              .of(BatteryBlockEntity::new,
-                  RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
-                  RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
-                  RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
-                  RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
-                  RailcraftBlocks.FRAME.get())
               .build(null));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =

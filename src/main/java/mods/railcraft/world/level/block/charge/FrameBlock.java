@@ -1,13 +1,11 @@
 package mods.railcraft.world.level.block.charge;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
-import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -17,14 +15,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public class FrameBlock extends ChargeBlock implements EntityBlock {
+public class FrameBlock extends ChargeBlock {
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -48,13 +44,7 @@ public class FrameBlock extends ChargeBlock implements EntityBlock {
 
   @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
-    return Collections.singletonMap(Charge.distribution, CHARGE_SPEC);
-  }
-
-  @Nullable
-  @Override
-  public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-    return new BatteryBlockEntity(pos, state);
+    return Map.of(Charge.distribution, CHARGE_SPEC);
   }
 
   @Override

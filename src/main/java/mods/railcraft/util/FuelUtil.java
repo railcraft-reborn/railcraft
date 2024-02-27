@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import mods.railcraft.RailcraftConfig;
-import mods.railcraft.util.datamaps.RailcraftDataMaps;
+import mods.railcraft.datamaps.RailcraftDataMaps;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public final class FuelUtil {

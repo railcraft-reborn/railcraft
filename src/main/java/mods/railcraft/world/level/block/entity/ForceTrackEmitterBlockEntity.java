@@ -1,11 +1,8 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Optional;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.ForceSpawnParticleOptions;
-import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.Magnifiable;
@@ -14,7 +11,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +21,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -37,12 +32,10 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
    * Field to prevent recursive removing of tracks when a track is broken by the emitter.
    */
   private boolean removingTrack;
-  private final IEnergyStorage energyHandler;
 
   public ForceTrackEmitterBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get(), blockPos, blockState);
     this.loadState(ForceTrackEmitterState.RETRACTED);
-    this.energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 
   public ForceTrackEmitterState.Instance getStateInstance() {
@@ -71,14 +64,17 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
       ForceTrackEmitterBlockEntity blockEntity) {
     if (!blockEntity.isPowered()) {
       blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
+      return;
+    }
+
+    var draw = getRequiredEnergy(blockEntity.getTrackCount());
+    var access = Charge.distribution
+        .network((ServerLevel) level)
+        .access(blockPos);
+    if (access.useCharge(draw, false)) {
+      blockEntity.stateInstance.charged(access).ifPresent(blockEntity::loadState);
     } else {
-      var draw = getRequiredEnergy(blockEntity.getTrackCount());
-      var access = blockEntity.access();
-      if (access.useCharge(draw, false)) {
-        blockEntity.stateInstance.charged(access).ifPresent(blockEntity::loadState);
-      } else {
-        blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
-      }
+      blockEntity.stateInstance.uncharged().ifPresent(blockEntity::loadState);
     }
   }
 
@@ -223,20 +219,7 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   @Override
   public void load(CompoundTag tag) {
     this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT);
-    ForceTrackEmitterState.fromName(tag.getString(CompoundTagKeys.STATE)).ifPresent(this::loadState);
-  }
-
-  private Optional<? extends ChargeStorage> storage() {
-    return this.level().isClientSide() ? Optional.empty() : this.access().storage();
-  }
-
-  private Charge.Access access() {
-    return Charge.distribution
-        .network((ServerLevel) this.level)
-        .access(this.blockPos());
-  }
-
-  public IEnergyStorage getEnergyCap(Direction side) {
-    return this.energyHandler;
+    ForceTrackEmitterState.fromName(tag.getString(CompoundTagKeys.STATE))
+        .ifPresent(this::loadState);
   }
 }

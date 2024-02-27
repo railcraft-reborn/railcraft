@@ -9,7 +9,6 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.util.BoxBuilder;
-import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -19,15 +18,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class BatteryBlock extends ChargeBlock implements EntityBlock, JeiSearchable {
+public abstract class BatteryBlock extends ChargeBlock implements JeiSearchable {
 
   private static final VoxelShape SHAPE = Shapes.create(BoxBuilder.create()
       .box()
@@ -64,12 +61,6 @@ public abstract class BatteryBlock extends ChargeBlock implements EntityBlock, J
   @Override
   public RenderShape getRenderShape(BlockState state) {
     return RenderShape.MODEL;
-  }
-
-  @Nullable
-  @Override
-  public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-    return new BatteryBlockEntity(pos, state);
   }
 
   @Override

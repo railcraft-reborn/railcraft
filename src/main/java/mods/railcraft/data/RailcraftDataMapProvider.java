@@ -1,10 +1,10 @@
 package mods.railcraft.data;
 
 import java.util.concurrent.CompletableFuture;
+import mods.railcraft.datamaps.FluidHeat;
+import mods.railcraft.datamaps.RailcraftDataMaps;
+import mods.railcraft.datamaps.TunnelBoreHead;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.datamaps.RailcraftDataMaps;
-import mods.railcraft.util.datamaps.builtin.FluidHeat;
-import mods.railcraft.util.datamaps.builtin.TunnelBoreHead;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
