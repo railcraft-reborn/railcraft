@@ -9,6 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;
 import net.minecraft.core.Direction;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 
 /**
@@ -207,10 +208,10 @@ public class CuboidModelRenderer {
     float minV = spriteInfo.getSprite().getV(v1);
     float maxV = spriteInfo.getSprite().getV(v2);
     int argb = colors[face.ordinal()];
-    float red = RenderUtil.getRed(argb);
-    float green = RenderUtil.getGreen(argb);
-    float blue = RenderUtil.getBlue(argb);
-    float alpha = RenderUtil.getAlpha(argb);
+    var red = FastColor.ARGB32.red(argb);
+    var green = FastColor.ARGB32.green(argb);
+    var blue = FastColor.ARGB32.blue(argb);
+    var alpha = FastColor.ARGB32.alpha(argb);
     // add quads
     switch (face) {
       case DOWN:
@@ -265,7 +266,7 @@ public class CuboidModelRenderer {
   }
 
   private static void drawFace(VertexConsumer buffer, Matrix4f matrix, Matrix3f normalMatrix,
-      float red, float green, float blue, float alpha, float minU, float maxU,
+      int red, int green, int blue, int alpha, float minU, float maxU,
       float minV, float maxV, int light, int overlay, FaceDisplay faceDisplay, Vector3f normal,
       float x1, float y1, float z1,
       float x2, float y2, float z2,

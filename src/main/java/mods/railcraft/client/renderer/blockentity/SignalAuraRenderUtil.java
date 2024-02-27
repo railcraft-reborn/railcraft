@@ -7,11 +7,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
-import mods.railcraft.client.util.RenderUtil;
-import mods.railcraft.client.util.SimpleLineRenderer;
+import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -58,22 +58,22 @@ public class SignalAuraRenderUtil {
       return;
     }
 
-    var renderer = new SimpleLineRenderer(bufferSource);
+    var renderer = LineRenderer.simple(bufferSource);
     for (var target : endPoints) {
-      int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), BlockPos.containing(target));
-      float red = RenderUtil.getRed(color);
-      float green = RenderUtil.getGreen(color);
-      float blue = RenderUtil.getBlue(color);
+      int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(),
+          BlockPos.containing(target));
+      var red = FastColor.ARGB32.red(color);
+      var green = FastColor.ARGB32.green(color);
+      var blue = FastColor.ARGB32.blue(color);
 
       float endX = (float) target.x() - blockEntity.getBlockPos().getX();
       float endY = (float) target.y() - blockEntity.getBlockPos().getY();
       float endZ = (float) target.z() - blockEntity.getBlockPos().getZ();
 
       renderer.renderLine(poseStack,
-          red ,green, blue,
+          red, green, blue, 255,
           0.5F, 0.5F, 0.5F,
-          endX, endY, endZ
-      );
+          endX, endY, endZ);
     }
   }
 
@@ -84,22 +84,21 @@ public class SignalAuraRenderUtil {
       return;
     }
 
-    var renderer = new SimpleLineRenderer(bufferSource);
+    var renderer = LineRenderer.simple(bufferSource);
     for (var target : endPoints) {
       int color = colorProfile.getColor(blockEntity, blockEntity.getBlockPos(), target);
-      float red = RenderUtil.getRed(color);
-      float green = RenderUtil.getGreen(color);
-      float blue = RenderUtil.getBlue(color);
+      var red = FastColor.ARGB32.red(color);
+      var green = FastColor.ARGB32.green(color);
+      var blue = FastColor.ARGB32.blue(color);
 
       float endX = 0.5F + target.getX() - blockEntity.getBlockPos().getX();
       float endY = 0.5F + target.getY() - blockEntity.getBlockPos().getY();
       float endZ = 0.5F + target.getZ() - blockEntity.getBlockPos().getZ();
 
       renderer.renderLine(poseStack,
-          red,  green, blue,
-          0.5F, 0.5F,  0.5F,
-          endX, endY,  endZ
-      );
+          red, green, blue, 255,
+          0.5F, 0.5F, 0.5F,
+          endX, endY, endZ);
     }
   }
 

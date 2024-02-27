@@ -1,7 +1,6 @@
 package mods.railcraft.client.particle;
 
 import mods.railcraft.api.signal.SignalUtil;
-import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.particle.TuningAuraParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -9,6 +8,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraParticle extends DimmableParticle {
@@ -26,9 +26,9 @@ public class TuningAuraParticle extends DimmableParticle {
 
     var color = options.color();
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
-    this.rCol = RenderUtil.getRed(color) * variant;
-    this.gCol = RenderUtil.getGreen(color) * variant;
-    this.bCol = RenderUtil.getBlue(color) * variant;
+    this.rCol = (FastColor.ARGB32.red(color) / 255.0F) * variant;
+    this.gCol = (FastColor.ARGB32.green(color) / 255.0F) * variant;
+    this.bCol = (FastColor.ARGB32.blue(color) / 255.0F) * variant;
     this.setLifetime(2000);
     this.hasPhysics = false;
     this.pickSprite(sprites);

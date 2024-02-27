@@ -1,11 +1,9 @@
 package mods.railcraft.client.gui.screen;
 
-import java.util.List;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
-import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.world.item.TicketItem;
@@ -13,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -44,31 +43,32 @@ public class GoldenTicketScreen extends IngameWindowScreen {
 
   @Override
   protected void init() {
-    var buttons = List.of(
-        RailcraftButton
-            .builder(CommonComponents.GUI_DONE, button -> {
-              sendMessageToServer();
-              this.minecraft.setScreen(null);
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 75)
-            .size(65, 20)
-            .build(),
-        this.helpButton = RailcraftButton
-            .builder(Translations.Screen.HELP, button -> {
-              this.readingManual = !this.readingManual;
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 75)
-            .size(65, 20)
-            .build(),
-        RailcraftButton
-            .builder(CommonComponents.GUI_CANCEL, button -> {
-              this.minecraft.setScreen(null);
-            }, ButtonTexture.LARGE_BUTTON)
-            .pos(0, this.height / 2 + 75)
-            .size(65, 20)
-            .build()
-    );
-    GuiUtil.newButtonRowAuto(this::addRenderableWidget, this.width / 2 - 100, 200, buttons);
+    var doneButton = this.addRenderableWidget(RailcraftButton
+        .builder(CommonComponents.GUI_DONE, button -> {
+          sendMessageToServer();
+          this.minecraft.setScreen(null);
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    this.helpButton = this.addRenderableWidget(RailcraftButton
+        .builder(Translations.Screen.HELP, button -> {
+          this.readingManual = !this.readingManual;
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    var cancelButton = this.addRenderableWidget(RailcraftButton
+        .builder(CommonComponents.GUI_CANCEL, button -> {
+          this.minecraft.setScreen(null);
+        }, ButtonTexture.LARGE_BUTTON)
+        .size(64, 20)
+        .build());
+    var layout = new LinearLayout(this.width / 2 - 100, this.height / 2 + 75,
+        LinearLayout.Orientation.HORIZONTAL);
+    layout.spacing(4);
+    layout.addChild(doneButton);
+    layout.addChild(this.helpButton);
+    layout.addChild(cancelButton);
+    layout.arrangeElements();
 
     this.editBoxDest = new EditBox(font, this.width / 2 - (234 / 2), this.height / 2 + 23,
         234, 20, Component.empty());
@@ -78,15 +78,18 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+      float partialTicks) {
     if (this.readingManual) {
       this.editBoxDest.setVisible(false);
       var about = Component.translatable(Translations.Screen.GOLDEN_TICKET_ABOUT);
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      GuiUtil.drawCenteredString(guiGraphics, font, about, windowWidth, 15);
-      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, IngameWindowScreen.TEXT_COLOR);
+      guiGraphics.drawString(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
+          15, TEXT_COLOR, false);
+
+      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
@@ -95,11 +98,15 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
       var poseStack = guiGraphics.pose();
       poseStack.pushPose();
-      poseStack.scale(2, 2, 2);
-      GuiUtil.drawCenteredString(guiGraphics, font, title, IMAGE_WIDTH / 2, 8, true);
+      {
+        poseStack.scale(2, 2, 2);
+        guiGraphics.drawCenteredString(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
+      }
       poseStack.popPose();
-      GuiUtil.drawCenteredString(guiGraphics, font, desc1, windowWidth, 45);
-      GuiUtil.drawCenteredString(guiGraphics, font, desc2, windowWidth, 60);
+      guiGraphics.drawString(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
+          45, TEXT_COLOR, false);
+      guiGraphics.drawString(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
+          60, TEXT_COLOR, false);
       this.editBoxDest.setVisible(true);
       this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
     }
