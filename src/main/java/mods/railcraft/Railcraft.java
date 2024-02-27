@@ -192,7 +192,9 @@ public class Railcraft {
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
       event.registerEntity(RollingStock.CAPABILITY, entityType,
-          (entity, ctx) -> entity.getData(RailcraftAttachmentTypes.MINECART_ROLLING_STOCK.get()));
+          (entity, ctx) -> entity instanceof AbstractMinecart
+              ? entity.getData(RailcraftAttachmentTypes.MINECART_ROLLING_STOCK.get())
+              : null);
     }
 
     event.registerEntity(Capabilities.FluidHandler.ENTITY,
