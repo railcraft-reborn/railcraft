@@ -1,6 +1,7 @@
 package mods.railcraft.client;
 
 import mods.railcraft.api.signal.TuningAuraHandler;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.client.renderer.blockentity.SignalAuraRenderUtil;
 import mods.railcraft.particle.TuningAuraParticleOptions;
 import mods.railcraft.world.item.GogglesItem;
@@ -16,24 +17,21 @@ public class TuningAuraHandlerImpl implements TuningAuraHandler {
   }
 
   @Override
-  public void spawnTuningAura(BlockEntity start, BlockEntity dest) {
-    var level = start.getLevel();
+  public void spawnTuningAura(SignalControllerEntity start, BlockEntity dest) {
+    var level = start.asBlockEntity().getLevel();
     var random = level.getRandom();
     if (random.nextInt(2) != 0) {
       return;
     }
 
-    var pos = start.getBlockPos();
+    var pos = start.asBlockEntity().getBlockPos();
     var px = pos.getX() + getRandomParticleOffset(random);
     var py = pos.getY() + getRandomParticleOffset(random);
     var pz = pos.getZ() + getRandomParticleOffset(random);
 
-    var colorProfile =
-        GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)
-            ? SignalAuraRenderUtil.ColorProfile.CONTROLLER_ASPECT
-            : SignalAuraRenderUtil.ColorProfile.COORD_RAINBOW;
-
-    int color = colorProfile.getColor(start, start.getBlockPos(), dest.getBlockPos());
+    var color = GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)
+        ? start.getSignalController().aspect().color()
+        : SignalAuraRenderUtil.rainbow(pos, dest.getBlockPos());
 
     level.addParticle(
         new TuningAuraParticleOptions(dest.getBlockPos().getCenter(), color),

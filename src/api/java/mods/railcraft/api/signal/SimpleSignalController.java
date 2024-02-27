@@ -8,6 +8,7 @@ package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -110,7 +111,7 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
     var handler = SignalUtil.tuningAuraHandler();
     if (handler.isTuningAuraActive()) {
       this.stream().forEach(peer -> handler.spawnTuningAura(
-          this.getBlockEntity(), peer.asBlockEntity()));
+          (SignalControllerEntity) this.getBlockEntity(), peer.asBlockEntity()));
     }
   }
 

@@ -6,11 +6,12 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
+import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface TuningAuraHandler {
 
   boolean isTuningAuraActive();
 
-  void spawnTuningAura(BlockEntity start, BlockEntity dest);
+  void spawnTuningAura(SignalControllerEntity start, BlockEntity dest);
 }
