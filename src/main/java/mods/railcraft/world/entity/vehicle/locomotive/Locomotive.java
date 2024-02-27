@@ -618,7 +618,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
       var extension = RollingStock.getOrThrow(this);
 
-      if (extension.train().entities(this.level()).noneMatch(t -> t.hasPassenger(entity))
+      if (extension.train().entities().noneMatch(t -> t.hasPassenger(entity))
           && (this.isVelocityHigherThan(0.2f) || extension.isHighSpeed())
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
@@ -710,8 +710,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
     tag.putInt(CompoundTagKeys.FUEL, this.fuel);
 
     tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
-    this.getOwner().ifPresent(owner ->
-        tag.put(CompoundTagKeys.OWNER, NbtUtils.writeGameProfile(new CompoundTag(), owner)));
+    this.getOwner().ifPresent(owner -> tag.put(CompoundTagKeys.OWNER,
+        NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
@@ -727,9 +727,11 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
 
     this.setPrimaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR), this.getDefaultPrimaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR),
+            this.getDefaultPrimaryColor()));
     this.setSecondaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR), this.getDefaultSecondaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR),
+            this.getDefaultSecondaryColor()));
 
     this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
 
@@ -746,7 +748,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
-    var locos = RollingStock.getOrThrow(this).train().entities(this.level())
+    var locos = RollingStock.getOrThrow(this).train().entities()
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {

@@ -1,6 +1,8 @@
-package mods.railcraft.util.attachment;
+package mods.railcraft.attachment;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.entity.vehicle.RollingStockImpl;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -16,7 +18,9 @@ public class RailcraftAttachmentTypes {
     deferredRegister.register(modEventBus);
   }
 
-  public static final DeferredHolder<AttachmentType<?>, AttachmentType<RollingStockDataAttachment>> ROLLING_STOCK_DATA =
-      deferredRegister.register("rolling_stock_data",
-          () -> AttachmentType.serializable(RollingStockDataAttachment::new).build());
+  public static final DeferredHolder<AttachmentType<?>, AttachmentType<RollingStockImpl>> MINECART_ROLLING_STOCK =
+      deferredRegister.register("minecart_rolling_stock",
+          () -> AttachmentType
+              .serializable(holder -> new RollingStockImpl((AbstractMinecart) holder))
+              .build());
 }

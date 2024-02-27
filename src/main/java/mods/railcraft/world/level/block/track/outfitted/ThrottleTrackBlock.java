@@ -52,7 +52,7 @@ public class ThrottleTrackBlock extends PoweredOutfittedTrackBlock {
   public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
     super.onMinecartPass(state, level, pos, cart);
     if (isPowered(state)) {
-      RollingStock.getOrThrow(cart).train().entities(level)
+      RollingStock.getOrThrow(cart).train().entities()
           .flatMap(FunctionalUtil.ofType(Locomotive.class))
           .forEach(locomotive -> {
             locomotive.setSpeed(state.getValue(LOCOMOTIVE_SPEED));

@@ -22,7 +22,7 @@ public class TrainDetectorBlockEntity extends DetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     if (minecarts.stream()
-        .mapToInt(cart -> RollingStock.getOrThrow(cart).train().size(this.level))
+        .mapToInt(cart -> RollingStock.getOrThrow(cart).train().size())
         .anyMatch(count -> count >= this.getTrainSize())) {
       return Redstone.SIGNAL_MAX;
     }

@@ -29,7 +29,7 @@ public enum SpeedController implements TrackType.EventHandler {
       var level = cart.level();
       return (MinecartUtil.getCartSpeedUncapped(cart.entity().getDeltaMovement()) > 0.35F
           && level.getRandom().nextInt(500) == 250)
-          || cart.train().stream(level).anyMatch(RollingStock::isDerailed);
+          || cart.train().stream().anyMatch(RollingStock::isDerailed);
     }
 
     @Override

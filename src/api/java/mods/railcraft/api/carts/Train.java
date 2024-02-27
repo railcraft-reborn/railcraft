@@ -1,12 +1,12 @@
 package mods.railcraft.api.carts;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 
@@ -17,35 +17,27 @@ public interface Train {
 
   UUID id();
 
-  UUID idMinecartFront();
-
-  default RollingStock front(Level level) {
-    var entity = level.getEntities().get(idMinecartFront());
-    if (entity instanceof AbstractMinecart minecart) {
-      return RollingStock.getOrThrow(minecart);
-    }
-    throw new IllegalStateException();
-  }
+  RollingStock front();
 
   void copyTo(Train train);
 
-  default Stream<RollingStock> stream(Level level) {
-    return this.front(level).traverseTrainWithSelf(Side.BACK);
+  default Stream<RollingStock> stream() {
+    return this.front().traverseTrainWithSelf(Side.BACK);
   }
 
-  default Stream<? extends AbstractMinecart> entities(Level level) {
-    return this.stream(level).map(RollingStock::entity);
+  default Stream<? extends AbstractMinecart> entities() {
+    return this.stream().map(RollingStock::entity);
   }
 
-  default Stream<Entity> passengers(Level level) {
-    return this.entities(level)
+  default Stream<Entity> passengers() {
+    return this.entities()
         .flatMap(minecart -> minecart.getPassengers().stream());
   }
 
-  int getNumRunningLocomotives(Level level);
+  int getNumRunningLocomotives();
 
-  default int size(Level level) {
-    return (int) this.stream(level).count();
+  default int size() {
+    return (int) this.stream().count();
   }
 
   State state();
@@ -68,18 +60,15 @@ public interface Train {
     return this.state() == State.IDLE || this.isLocked();
   }
 
-  Optional<IItemHandler> itemHandler(Level level);
+  Optional<IItemHandler> itemHandler();
 
-  Optional<IFluidHandler> fluidHandler(Level level);
+  Optional<IFluidHandler> fluidHandler();
 
   enum State implements StringRepresentable {
 
     STOPPED("stopped"),
     IDLE("idle"),
     NORMAL("normal");
-
-    private static final StringRepresentable.EnumCodec<State> CODEC =
-        StringRepresentable.fromEnum(State::values);
 
     private final String name;
 
@@ -97,7 +86,7 @@ public interface Train {
     }
 
     public static Optional<State> fromName(String name) {
-      return Optional.ofNullable(CODEC.byName(name));
+      return Arrays.stream(values()).filter(state -> state.name.equals(name)).findAny();
     }
   }
 }

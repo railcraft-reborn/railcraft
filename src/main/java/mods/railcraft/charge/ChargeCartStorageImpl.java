@@ -50,7 +50,7 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   @Override
   public void tick(AbstractMinecart owner) {
-    if (!(owner.level() instanceof ServerLevel serverLevel)) {
+    if (owner.level().isClientSide()) {
       return;
     }
     clock++;
@@ -62,7 +62,7 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
     if (drewFromTrack > 0) {
       drewFromTrack--;
     } else if (energy < (capacity * 0.5) && clock % DRAW_INTERVAL == 0) {
-      RollingStock.getOrThrow(owner).train().entities(serverLevel)
+      RollingStock.getOrThrow(owner).train().entities()
           .flatMap(c -> Optional.ofNullable(
               c.getCapability(Capabilities.EnergyStorage.ENTITY, null)).stream())
           .findAny()

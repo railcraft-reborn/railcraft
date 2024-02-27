@@ -5,6 +5,7 @@ import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
@@ -33,7 +34,6 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.datamaps.RailcraftDataMaps;
 import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
@@ -43,7 +43,6 @@ import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
@@ -192,8 +191,8 @@ public class Railcraft {
 
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
-      event.registerEntity(RollingStock.CAPABILITY, entityType, (entity, ctx) ->
-          entity instanceof AbstractMinecart minecart ? new RollingStockImpl(minecart) : null);
+      event.registerEntity(RollingStock.CAPABILITY, entityType,
+          (entity, ctx) -> entity.getData(RailcraftAttachmentTypes.MINECART_ROLLING_STOCK.get()));
     }
 
     event.registerEntity(Capabilities.FluidHandler.ENTITY,
@@ -356,7 +355,8 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayer player && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
+    if (event.player instanceof ServerPlayer player
+        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)

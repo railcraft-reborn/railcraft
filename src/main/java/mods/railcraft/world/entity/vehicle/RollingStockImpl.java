@@ -12,23 +12,27 @@ import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.event.CartLinkEvent;
-import mods.railcraft.util.attachment.RailcraftAttachmentTypes;
-import mods.railcraft.util.attachment.RollingStockDataAttachment;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class RollingStockImpl implements RollingStock {
+public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
+
   private static final double LINK_DRAG = 0.95;
   private static final float MAX_DISTANCE = 8F;
   private static final float STIFFNESS = 0.7F;
@@ -42,46 +46,122 @@ public class RollingStockImpl implements RollingStock {
 
   private final AbstractMinecart minecart;
 
-  private int primaryLinkTimeoutTicks, secondaryLinkTimeoutTicks;
+  @Nullable
+  private TrainImpl train;
 
-  public RollingStockImpl(AbstractMinecart minecart) {
+  @Nullable
+  private RollingStock frontLink;
+  @Nullable
+  private RollingStock backLink;
+  @Nullable
+  private UUID unresolvedBackLink;
+  @Nullable
+  private UUID unresolvedFrontLink;
+
+  private boolean backAutoLinkEnabled;
+  private boolean frontAutoLinkEnabled;
+  private LaunchState launchState = LaunchState.LANDED;
+  private int elevatorRemainingTicks;
+  private int preventMountRemainingTicks;
+  private int derailedRemainingTicks;
+  private boolean explosionPending;
+  private boolean highSpeed;
+
+  private int primaryLinkTimeoutTicks;
+  private int secondaryLinkTimeoutTicks;
+
+  public RollingStockImpl(IAttachmentHolder holder) {
+    if (!(holder instanceof AbstractMinecart minecart)) {
+      throw new IllegalArgumentException("holder must be instance of AbstractMinecart.");
+    }
     this.minecart = minecart;
-  }
-
-  private RollingStockDataAttachment getDataAttachment() {
-    return this.minecart.getData(RailcraftAttachmentTypes.ROLLING_STOCK_DATA.get());
   }
 
   @Override
   public boolean hasLink(Side side) {
-    return this.getDataAttachment().hasLink(side);
+    return switch (side) {
+      case FRONT -> this.frontLink != null;
+      case BACK -> this.backLink != null;
+    };
   }
 
   @Override
   public Optional<RollingStock> linkAt(Side side) {
-    return this.getDataAttachment().linkAt(this::resolveLink, side);
+    this.resolveLinks();
+    return Optional.ofNullable(switch (side) {
+      case FRONT -> this.frontLink;
+      case BACK -> this.backLink;
+    });
+  }
+
+  private void setLink(Side side, @Nullable RollingStock minecart) {
+    switch (side) {
+      case FRONT -> this.frontLink = minecart;
+      case BACK -> this.backLink = minecart;
+    }
+  }
+
+  private void resolveLinks() {
+    if (this.unresolvedBackLink != null) {
+      this.resolveLink(this.unresolvedBackLink)
+          .ifPresent(cart -> {
+            this.backLink = cart;
+            this.unresolvedBackLink = null;
+          });
+    }
+
+    if (this.unresolvedFrontLink != null) {
+      this.resolveLink(this.unresolvedFrontLink)
+          .ifPresent(cart -> {
+            this.frontLink = cart;
+            this.unresolvedFrontLink = null;
+          });
+    }
   }
 
   private Optional<RollingStock> resolveLink(UUID minecartId) {
-    var level = (ServerLevel) this.level();
+    var level = (ServerLevel) this.minecart.level();
     var entity = level.getEntity(minecartId);
-    if (entity == null)
-      return Optional.empty();
-    return Optional.ofNullable(entity.getCapability(CAPABILITY))
-        .filter(cart -> {
-          var result = cart.isLinkedWith(this);
-          if (!result) {
-            LOGGER.warn("Link mismatch between {} and {} (link was missing on {})",
-                this.minecart, cart.entity(), cart.entity());
-          }
-          return result;
-        });
+    return entity instanceof AbstractMinecart minecart
+        ? Optional.ofNullable(minecart.getCapability(CAPABILITY))
+            .filter(cart -> {
+              var result = cart.isLinkedWith(this);
+              if (!result) {
+                LOGGER.warn("Link mismatch between {} and {} (link was missing on {})",
+                    this.minecart, cart.entity(), cart.entity());
+              }
+              return result;
+            })
+        : Optional.empty();
   }
 
   @Override
   public Optional<Side> sideOf(RollingStock rollingStock) {
     Objects.requireNonNull(rollingStock, "rollingStock cannot be null.");
-    return this.getDataAttachment().sideOf(rollingStock);
+
+    if (this.unresolvedBackLink != null
+        && rollingStock.entity().getUUID().equals(this.unresolvedBackLink)) {
+      this.unresolvedBackLink = null;
+      this.backLink = rollingStock;
+      return Optional.of(Side.BACK);
+    }
+
+    if (this.unresolvedFrontLink != null
+        && rollingStock.entity().getUUID().equals(this.unresolvedFrontLink)) {
+      this.unresolvedFrontLink = null;
+      this.frontLink = rollingStock;
+      return Optional.of(Side.FRONT);
+    }
+
+    if (this.backLink == rollingStock) {
+      return Optional.of(Side.BACK);
+    }
+
+    if (this.frontLink == rollingStock) {
+      return Optional.of(Side.FRONT);
+    }
+
+    return Optional.empty();
   }
 
   @Override
@@ -174,18 +254,13 @@ public class RollingStockImpl implements RollingStock {
     return true;
   }
 
-  @Nullable
-  private RollingStock getLink(Side side) {
-    return this.getDataAttachment().getLink(side);
-  }
-
-  private void setLink(Side side, @Nullable RollingStock rollingStock) {
-    this.getDataAttachment().setLink(side, rollingStock);
-  }
-
   @Override
   public boolean swapLinks(Side side) {
-    var next = this.getLink(side);
+    var next = switch (side) {
+      case FRONT -> this.frontLink;
+      case BACK -> this.backLink;
+    };
+
     if (next != null && !next.swapLinks(side)) {
       return false;
     }
@@ -195,15 +270,18 @@ public class RollingStockImpl implements RollingStock {
       return false;
     }
 
-    var oldFront = this.getLink(Side.FRONT);
-    this.setLink(Side.FRONT, this.getLink(Side.BACK));
-    this.setLink(Side.BACK, oldFront);
+    var oldFront = this.frontLink;
+    this.frontLink = this.backLink;
+    this.backLink = oldFront;
     return true;
   }
 
   @Override
   public boolean isAutoLinkEnabled(Side side) {
-    return this.getDataAttachment().isAutoLinkEnabled(side);
+    return switch (side) {
+      case BACK -> this.backAutoLinkEnabled;
+      case FRONT -> this.frontAutoLinkEnabled;
+    };
   }
 
   @Override
@@ -211,64 +289,68 @@ public class RollingStockImpl implements RollingStock {
     if (enabled && this.disabledSide().filter(side::equals).isPresent()) {
       return false;
     }
-    return this.getDataAttachment().setAutoLinkEnabled(side, enabled);
+    switch (side) {
+      case BACK -> this.backAutoLinkEnabled = enabled;
+      case FRONT -> this.frontAutoLinkEnabled = enabled;
+    }
+    return true;
   }
 
   @Override
   public boolean isLaunched() {
-    return this.getDataAttachment().checkLaunchState(LaunchState.LAUNCHED);
+    return this.launchState == LaunchState.LAUNCHED;
   }
 
   @Override
   public void launch() {
-    this.getDataAttachment().setLaunchState(LaunchState.LAUNCHING);
+    this.launchState = LaunchState.LAUNCHING;
     this.minecart.setCanUseRail(false);
   }
 
   @Override
   public int getElevatorRemainingTicks() {
-    return this.getDataAttachment().getElevatorRemainingTicks();
+    return this.elevatorRemainingTicks;
   }
 
   @Override
   public void setElevatorRemainingTicks(int elevatorRemainingTicks) {
-    this.getDataAttachment().setElevatorRemainingTicks(elevatorRemainingTicks);
+    this.elevatorRemainingTicks = elevatorRemainingTicks;
   }
 
   @Override
   public boolean isMountable() {
-    return this.getDataAttachment().isMountable();
+    return this.preventMountRemainingTicks <= 0;
   }
 
   @Override
   public void setPreventMountRemainingTicks(int preventMountRemainingTicks) {
-    this.getDataAttachment().setPreventMountRemainingTicks(preventMountRemainingTicks);
+    this.preventMountRemainingTicks = preventMountRemainingTicks;
   }
 
   @Override
   public boolean isDerailed() {
-    return this.getDataAttachment().isDerailed();
+    return this.derailedRemainingTicks > 0;
   }
 
   @Override
   public void setDerailedRemainingTicks(int derailedRemainingTicks) {
-    this.getDataAttachment().setDerailedRemainingTicks(derailedRemainingTicks);
+    this.derailedRemainingTicks = derailedRemainingTicks;
   }
 
   @Override
   public void primeExplosion() {
-    this.getDataAttachment().setExplosionPending(true);
+    this.explosionPending = true;
   }
 
   @Override
   public boolean isHighSpeed() {
-    return this.getDataAttachment().isHighSpeed();
+    return this.highSpeed;
   }
 
   @Override
   public void checkHighSpeed(BlockPos blockPos) {
     var currentMotion = this.minecart.getDeltaMovement();
-    if (this.isHighSpeed()) {
+    if (this.highSpeed) {
       HighSpeedTrackUtil.checkSafetyAndExplode(this.level(), blockPos, this.minecart);
       return;
     }
@@ -281,13 +363,13 @@ public class RollingStockImpl implements RollingStock {
     if (Math.abs(currentMotion.x()) > HIGH_SPEED_THRESHOLD) {
       double motionX = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.x());
       this.minecart.setDeltaMovement(motionX, currentMotion.y(), currentMotion.z());
-      this.setHighSpeed(true);
+      this.highSpeed = true;
     }
 
     if (Math.abs(currentMotion.z()) > HIGH_SPEED_THRESHOLD) {
       double motionZ = Math.copySign(HIGH_SPEED_THRESHOLD, currentMotion.z());
       this.minecart.setDeltaMovement(currentMotion.x(), currentMotion.y(), motionZ);
-      this.setHighSpeed(true);
+      this.highSpeed = true;
     }
   }
 
@@ -298,29 +380,30 @@ public class RollingStockImpl implements RollingStock {
     this.minecart.setDeltaMovement(motionX, motion.y(), motionZ);
   }
 
-  private void setHighSpeed(boolean highSpeed) {
-    this.getDataAttachment().setHighSpeed(highSpeed);
-  }
-
   @Override
   public AbstractMinecart entity() {
     return this.minecart;
   }
 
-  @Override
   public boolean isFront() {
-    return this.getDataAttachment().isFront(this::resolveLink);
+    this.resolveLinks();
+    return this.frontLink == null;
   }
 
   private boolean validateTrainOwnership() {
-    return this.getDataAttachment()
-        .validateTrainOwnership(this::resolveLink, this.minecart.getUUID());
+    var front = this.isFront();
+    if (!front && this.train != null) {
+      this.train = null;
+    }
+    if (front && this.train == null) {
+      this.train = TrainImpl.create(this);
+    }
+    return front;
   }
 
   @Override
-  @Nullable
   public Train train() {
-    return this.getDataAttachment().train(this::resolveLink, this.minecart.getUUID());
+    return this.validateTrainOwnership() ? this.train : this.frontLink.train();
   }
 
   @Override
@@ -338,29 +421,33 @@ public class RollingStockImpl implements RollingStock {
 
     this.adjustCart();
 
-    if (!this.isMountable()) {
-      this.getDataAttachment().decrementPreventMountRemainingTicks();
+    if (this.preventMountRemainingTicks > 0) {
+      this.preventMountRemainingTicks--;
     }
 
-    if (this.getElevatorRemainingTicks() < ElevatorTrackBlock.ELEVATOR_TIMER) {
+    if (this.elevatorRemainingTicks < ElevatorTrackBlock.ELEVATOR_TIMER) {
       this.minecart.setNoGravity(false);
     }
 
-    this.getDataAttachment().decrementElevatorRemainingTicks();
+    if (this.elevatorRemainingTicks > 0) {
+      this.elevatorRemainingTicks--;
+    }
 
-    this.getDataAttachment().decrementDerailedRemainingTicks();
+    if (this.derailedRemainingTicks > 0) {
+      this.derailedRemainingTicks--;
+    }
 
-    if (this.getDataAttachment().getExplosionPending()) {
-      this.getDataAttachment().setExplosionPending(false);
+    if (this.explosionPending) {
+      this.explosionPending = false;
       MinecartUtil.explodeCart(this.entity());
     }
 
-    if (this.isHighSpeed()) {
+    if (this.highSpeed) {
       if (MinecartUtil.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
-        this.setHighSpeed(false);
-      } else if (this.getDataAttachment().checkLaunchState(LaunchState.LANDED)) {
-        HighSpeedTrackUtil
-            .checkSafetyAndExplode(this.level(), this.minecart.blockPosition(), this.entity());
+        this.highSpeed = false;
+      } else if (this.launchState == LaunchState.LANDED) {
+        HighSpeedTrackUtil.checkSafetyAndExplode(this.level(),
+            this.minecart.blockPosition(), this.entity());
       }
     }
 
@@ -378,13 +465,13 @@ public class RollingStockImpl implements RollingStock {
       if (this.minecart.isVehicle()) {
         this.minecart.getPassengers().forEach(p -> p.fallDistance = 0);
       }
-      if (this.isLaunched()) {
+      if (this.launchState == LaunchState.LAUNCHED) {
         this.land();
       }
-    } else if (this.getDataAttachment().checkLaunchState(LaunchState.LAUNCHING)) {
-      this.getDataAttachment().setLaunchState(LaunchState.LAUNCHED);
+    } else if (this.launchState == LaunchState.LAUNCHING) {
+      this.launchState = LaunchState.LAUNCHED;
       this.minecart.setCanUseRail(true);
-    } else if (this.isLaunched() && this.minecart.onGround()) {
+    } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.onGround()) {
       this.land();
     }
 
@@ -417,7 +504,7 @@ public class RollingStockImpl implements RollingStock {
 
     // Speed & End Drag
     if (this.validateTrainOwnership()) {
-      this.getDataAttachment().trainRefreshMaxSpeed(this.level());
+      this.train.refreshMaxSpeed();
       // if (linked && !(cart instanceof EntityLocomotive)) {
       // double drag = 0.97;
       // cart.motionX *= drag;
@@ -546,7 +633,7 @@ public class RollingStockImpl implements RollingStock {
   }
 
   private void land() {
-    this.getDataAttachment().setLaunchState(LaunchState.LANDED);
+    this.launchState = LaunchState.LANDED;
     this.minecart.setMaxSpeedAirLateral(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_LATERAL);
     this.minecart.setMaxSpeedAirVertical(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_VERTICAL);
     this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
@@ -587,5 +674,61 @@ public class RollingStockImpl implements RollingStock {
   @Override
   public Optional<GameProfile> owner() {
     return this.entity() instanceof Locomotive loco ? loco.getOwner() : Optional.empty();
+  }
+
+  @Override
+  public CompoundTag serializeNBT() {
+    var tag = new CompoundTag();
+
+    if (this.train != null) {
+      tag.put(CompoundTagKeys.TRAIN, this.train.toTag());
+    }
+
+    if (this.unresolvedBackLink != null) {
+      tag.putUUID(CompoundTagKeys.BACK_LINK, this.unresolvedBackLink);
+    } else if (this.backLink != null) {
+      tag.putUUID(CompoundTagKeys.BACK_LINK, this.backLink.entity().getUUID());
+    }
+
+    if (this.unresolvedFrontLink != null) {
+      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.unresolvedFrontLink);
+    } else if (this.frontLink != null) {
+      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.frontLink.entity().getUUID());
+    }
+
+    tag.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
+    tag.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
+
+    tag.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
+    tag.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
+    tag.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
+    tag.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
+    tag.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
+    tag.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
+    return tag;
+  }
+
+  @Override
+  public void deserializeNBT(CompoundTag tag) {
+    this.train = tag.contains(CompoundTagKeys.TRAIN, Tag.TAG_COMPOUND)
+        ? TrainImpl.fromTag(tag.getCompound(CompoundTagKeys.TRAIN), this)
+        : null;
+
+    this.unresolvedBackLink = tag.hasUUID(CompoundTagKeys.BACK_LINK)
+        ? tag.getUUID(CompoundTagKeys.BACK_LINK)
+        : null;
+    this.unresolvedFrontLink = tag.hasUUID(CompoundTagKeys.FRONT_LINK)
+        ? tag.getUUID(CompoundTagKeys.FRONT_LINK)
+        : null;
+
+    this.backAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED);
+    this.frontAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED);
+
+    this.launchState = LaunchState.fromName(tag.getString(CompoundTagKeys.LAUNCH_STATE));
+    this.elevatorRemainingTicks = tag.getInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS);
+    this.preventMountRemainingTicks = tag.getInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS);
+    this.derailedRemainingTicks = tag.getInt(CompoundTagKeys.DERAILED_REMAINING_TICKS);
+    this.explosionPending = tag.getBoolean(CompoundTagKeys.EXPLOSION_PENDING);
+    this.highSpeed = tag.getBoolean(CompoundTagKeys.HIGH_SPEED);
   }
 }

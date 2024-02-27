@@ -107,7 +107,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
 
     var sub = new Vector2d(other.getX(), other.getZ()).sub(cart.getX(), cart.getZ());
-    var unit = sub.equals(0, 0) ? sub : sub.normalize(); //Check for NaN
+    var unit = sub.equals(0, 0) ? sub : sub.normalize(); // Check for NaN
 
     double distance = cart.distanceTo(other);
     double depth = distance - OPTIMAL_DISTANCE;
@@ -189,7 +189,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         return;
       }
 
-      if (rollingStock.train().entities(rollingStock.level()).anyMatch(c -> c.hasPassenger(other))) {
+      if (rollingStock.train().entities().anyMatch(c -> c.hasPassenger(other))) {
         return;
       }
 

@@ -32,7 +32,7 @@ public class RiderCondition {
 
     return (router, rollingStock) -> {
       var level = rollingStock.entity().level();
-      return type.matches(rollingStock.train().passengers(level), context);
+      return type.matches(rollingStock.train().passengers(), context);
     };
   }
 
