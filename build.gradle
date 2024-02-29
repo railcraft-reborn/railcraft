@@ -66,7 +66,7 @@ minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/
 runs {
     configureEach {
         systemProperty 'forge.logging.console.level', 'debug'
-        systemProperty 'forge.enabledGameTestNamespaces', 'railcraft'
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'railcraft'
 
         modSource project.sourceSets.api
         modSource project.sourceSets.main

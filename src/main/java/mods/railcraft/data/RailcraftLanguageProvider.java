@@ -37,6 +37,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, RailcraftConstants.NAME + " Outfitted Tracks");
     this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, RailcraftConstants.NAME + " Decorative Blocks");
 
+    this.add("fml.menu.mods.info.displayname." + RailcraftConstants.ID, RailcraftConstants.NAME);
+    this.add("fml.menu.mods.info.description." + RailcraftConstants.ID, "Redefine your rails");
+
     this.blockTranslations();
     this.itemTranslations();
     this.entityTranslations();

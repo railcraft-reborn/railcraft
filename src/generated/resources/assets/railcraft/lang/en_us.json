@@ -489,6 +489,8 @@
   "error.routing.railcraft.unsupported_regex": "Regex Unsupported",
   "fluid_type.railcraft.creosote": "Creosote",
   "fluid_type.railcraft.steam": "Steam",
+  "fml.menu.mods.info.description.railcraft": "Redefine your rails",
+  "fml.menu.mods.info.displayname.railcraft": "Railcraft Reborn",
   "item.minecraft.lingering_potion.effect.creosote": "Lingering Potion of Creosote",
   "item.minecraft.potion.effect.creosote": "Potion of Creosote",
   "item.minecraft.splash_potion.effect.creosote": "Splash Potion of Creosote",
