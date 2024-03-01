@@ -99,8 +99,6 @@
   "screen.railcraft.steam_turbine.output": "Output:",
   "screen.railcraft.steam_turbine.rotor": "Rotore:",
   "screen.railcraft.steam_turbine.usage": "Utilizzo:",
-  "screen.railcraft.switch_track_router.private_railway": "Ferrovia Privata",
-  "screen.railcraft.switch_track_router.public_railway": "Ferrovia Pubblica",
   "screen.railcraft.tunnel_bore.fuel": "Carburante",
   "screen.railcraft.tunnel_bore.head": "Testa",
   "screen.railcraft.water_tank.humidity": "Moltiplicatore umidità: %s",

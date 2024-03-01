@@ -1,1 +1,23 @@
-{}
+{
+  "advancements.railcraft.carts.bed_cart.name": "Marzenia na kółkach",
+  "advancements.railcraft.tracks.blast_furnace.desc": "Zbuduj piec hutniczy",
+  "advancements.railcraft.tracks.crusher.desc": "Zbuduj kruszarkę",
+  "advancements.railcraft.tracks.root.name": "Tory",
+  "block.railcraft.elevator_track": "Tor Winda",
+  "item.railcraft.diamond_tunnel_bore_head": "Diamentowa Głowica",
+  "item.railcraft.goggles": "Gogle Kolejarza",
+  "item.railcraft.iron_tunnel_bore_head": "Żelazna Głowica",
+  "item.railcraft.overalls": "Kombinezon Inżyniera",
+  "item.railcraft.steel_axe": "Stalowa Siekiera",
+  "item.railcraft.steel_boots": "Stalowe Buty",
+  "item.railcraft.steel_chestplate": "Stalowa Zbroja",
+  "item.railcraft.steel_helmet": "Stalowy Hełm",
+  "item.railcraft.steel_hoe": "Stalowa Motyka",
+  "item.railcraft.steel_leggings": "Stalowe Spodnie",
+  "item.railcraft.steel_pickaxe": "Stalowy Kilof",
+  "item.railcraft.steel_shovel": "Stalowa Łopata",
+  "item.railcraft.steel_sword": "Stalowy Miecz",
+  "item.railcraft.steel_tunnel_bore_head": "Stalowa Głowica",
+  "item.railcraft.whistle_tuner": "Tuner Gwizdu",
+  "tips.railcraft.signal_surveyor": "Inspektor Sygnału"
+}
