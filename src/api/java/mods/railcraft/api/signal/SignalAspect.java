@@ -12,6 +12,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.DyeColor;
 
 /**
  * Represents a Signal state.
@@ -129,6 +130,14 @@ public enum SignalAspect implements StringRepresentable {
 
   public SignalAspect previous() {
     return EnumUtil.previous(this, values());
+  }
+
+  public int color() {
+    return (switch (this) {
+      case GREEN -> DyeColor.LIME;
+      case YELLOW, BLINK_YELLOW -> DyeColor.YELLOW;
+      default -> DyeColor.RED;
+    }).getFireworkColor();
   }
 
   /**
