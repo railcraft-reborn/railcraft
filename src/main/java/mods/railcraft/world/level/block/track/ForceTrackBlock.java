@@ -46,9 +46,8 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
   }
 
   @Override
-  protected BlockState updateDir(Level level, BlockPos pos,
-      BlockState blockState, boolean initialPlacement) {
-    return blockState;
+  public BlockState updateDir(Level level, BlockPos pos, BlockState state, boolean alwaysPlace) {
+    return state;
   }
 
   @Override

@@ -210,6 +210,13 @@ public final class TrackUtil {
     return level.setBlockAndUpdate(pos, blockState);
   }
 
+  public static void updateDir(Level level, BlockPos pos) {
+    var state = level.getBlockState(pos);
+    if (state.getBlock() instanceof BaseRailBlock railBlock) {
+      railBlock.updateDir(level, pos, state, false);
+    }
+  }
+
   public static void traverseConnectedTracks(Level level, BlockPos pos,
       BiFunction<Level, BlockPos, Boolean> action) {
     traverseConnectedTracks(level, pos, action, new HashSet<>());
