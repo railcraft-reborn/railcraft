@@ -11,12 +11,14 @@ import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TypedTrack;
+import mods.railcraft.world.item.SpikeMaulItem;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -88,6 +90,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     if (this.getTrackType().isElectric()) {
       Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 75);
     }
+  }
+
+  @Override
+  public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+    if (context.getItemInHand().getItem() instanceof SpikeMaulItem) {
+      return true;
+    }
+    return super.canBeReplaced(state, context);
   }
 
   @Override

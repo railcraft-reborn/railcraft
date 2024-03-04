@@ -95,7 +95,7 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
   }
 
   @Override
-  public boolean canBeReplaced(BlockState blockState, BlockPlaceContext context) {
+  public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
     return true;
   }
 
