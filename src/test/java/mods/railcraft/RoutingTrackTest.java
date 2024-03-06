@@ -29,7 +29,7 @@ public class RoutingTrackTest {
     final var dest = "HOME";
     if (helper.getBlockEntity(ROUTING_TRACK_POS) instanceof RoutingTrackBlockEntity routingTrack) {
       var goldenTicket = new ItemStack(RailcraftItems.GOLDEN_TICKET.get());
-      TicketItem.setTicketData(goldenTicket, dest, RailcraftConstants.FAKE_GAMEPROFILE);
+      TicketItem.setTicketData(goldenTicket, dest, helper.makeMockPlayer().getGameProfile());
       routingTrack.setItem(0, goldenTicket);
     }
     var train = helper.spawn(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), SPAWN_POINT);
@@ -51,7 +51,7 @@ public class RoutingTrackTest {
     final var dest = "HOME";
     if (helper.getBlockEntity(ROUTING_TRACK_POS) instanceof RoutingTrackBlockEntity routingTrack) {
       var goldenTicket = new ItemStack(RailcraftItems.GOLDEN_TICKET.get());
-      TicketItem.setTicketData(goldenTicket, dest, RailcraftConstants.FAKE_GAMEPROFILE);
+      TicketItem.setTicketData(goldenTicket, dest, helper.makeMockPlayer().getGameProfile());
       routingTrack.setItem(0, goldenTicket);
     }
     var train = helper.spawn(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), SPAWN_POINT);
