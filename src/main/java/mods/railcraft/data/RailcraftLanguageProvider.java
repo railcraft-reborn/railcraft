@@ -45,6 +45,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
+    this.jadeTranslations();
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
@@ -928,6 +929,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
     this.add(Translations.Jei.SPLIT, "Split");
+  }
+
+  private void jadeTranslations() {
+    this.add(Translations.Jade.SIGNAL_CONTROLLER, "Signal Controller");
+    this.add(Translations.Jade.SWITCH_TRACK, "Switch Track");
+    this.add(Translations.Jade.EMITTED_ASPECT, "Emitted aspect: ");
+    this.add(Translations.Jade.SWITCHED, "Switched: ");
+    this.add(Translations.Jade.YES, "Yes");
+    this.add(Translations.Jade.NO, "No");
   }
 
   private void signalTranslations() {

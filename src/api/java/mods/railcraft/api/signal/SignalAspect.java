@@ -10,7 +10,9 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 
@@ -50,7 +52,7 @@ public enum SignalAspect implements StringRepresentable {
 
   private final String name;
   private final int blockLight;
-  private final Component displayName;
+  private final MutableComponent displayName;
 
   private static final int LAMP_LIGHT = 12;
   private static final int BLINK_DELAY_TICKS = 16;
@@ -72,8 +74,17 @@ public enum SignalAspect implements StringRepresentable {
     return this.blockLight;
   }
 
-  public Component getDisplayName() {
+  public MutableComponent getDisplayName() {
     return this.displayName;
+  }
+
+  public MutableComponent getDisplayNameWithColor() {
+    var color = switch (this) {
+      case GREEN -> ChatFormatting.GREEN;
+      case YELLOW, BLINK_YELLOW -> ChatFormatting.YELLOW;
+      case BLINK_RED, RED, OFF -> ChatFormatting.RED;
+    };
+    return this.getDisplayName().withStyle(color);
   }
 
   @Override

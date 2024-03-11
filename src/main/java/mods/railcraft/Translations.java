@@ -395,6 +395,15 @@ public class Translations {
     public static final String SPLIT = makeKey("jei.gui", "split");
   }
 
+  public static class Jade {
+    public static final String SIGNAL_CONTROLLER = makeJadeKey("signal_controller");
+    public static final String SWITCH_TRACK = makeJadeKey("switch_track");
+    public static final String EMITTED_ASPECT = makeKey("jade", "emitted_aspect");
+    public static final String SWITCHED = makeKey("jade", "switched");
+    public static final String YES = makeKey("jade", "yes");
+    public static final String NO = makeKey("jade", "no");
+  }
+
   public static class Signal {
 
     public static final String SIGNAL_SURVEYOR_INVALID_TRACK =
@@ -586,5 +595,9 @@ public class Translations {
 
   public static String makeKey(String type, String name) {
     return RailcraftConstants.makeTranslationKey(type, name);
+  }
+
+  private static String makeJadeKey(String name) {
+    return String.format("config.jade.plugin_%s.%s", RailcraftConstants.ID, name);
   }
 }
