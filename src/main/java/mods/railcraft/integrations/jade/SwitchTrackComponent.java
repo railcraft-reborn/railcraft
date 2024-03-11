@@ -21,11 +21,11 @@ public class SwitchTrackComponent implements IBlockComponentProvider {
       var theme = IThemeHelper.get();
       MutableComponent info;
       if (SwitchTrackBlock.isSwitched(accessor.getBlockState())) {
-        info = theme.success(Component.translatable(Translations.Jade.YES));
+        info = theme.success(Component.translatable(Translations.LookingAt.YES));
       } else {
-        info = theme.danger(Component.translatable(Translations.Jade.NO));
+        info = theme.danger(Component.translatable(Translations.LookingAt.NO));
       }
-      tooltip.add(Component.translatable(Translations.Jade.SWITCHED).append(info));
+      tooltip.add(Component.translatable(Translations.LookingAt.SWITCHED).append(info));
     }
   }
 

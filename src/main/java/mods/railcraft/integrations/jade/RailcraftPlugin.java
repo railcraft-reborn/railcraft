@@ -1,6 +1,7 @@
 package mods.railcraft.integrations.jade;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import snownee.jade.api.IWailaClientRegistration;
@@ -20,5 +21,7 @@ public class RailcraftPlugin implements IWailaPlugin {
   public void registerClient(IWailaClientRegistration registration) {
     registration.registerBlockComponent(new SignalControllerComponent(), SignalControllerBoxBlock.class);
     registration.registerBlockComponent(new SwitchTrackComponent(), SwitchTrackActuatorBlock.class);
+
+    registration.registerEntityComponent(new LocomotiveComponent(), Locomotive.class);
   }
 }

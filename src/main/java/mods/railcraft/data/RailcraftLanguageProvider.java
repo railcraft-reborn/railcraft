@@ -45,7 +45,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
-    this.jadeTranslations();
+    this.lookingAtTranslations();
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
@@ -931,13 +931,17 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.SPLIT, "Split");
   }
 
-  private void jadeTranslations() {
-    this.add(Translations.Jade.SIGNAL_CONTROLLER, "Signal Controller");
-    this.add(Translations.Jade.SWITCH_TRACK, "Switch Track");
-    this.add(Translations.Jade.EMITTED_ASPECT, "Emitted aspect: ");
-    this.add(Translations.Jade.SWITCHED, "Switched: ");
-    this.add(Translations.Jade.YES, "Yes");
-    this.add(Translations.Jade.NO, "No");
+  private void lookingAtTranslations() {
+    this.add(Translations.LookingAt.SIGNAL_CONTROLLER, "Signal Controller");
+    this.add(Translations.LookingAt.SWITCH_TRACK, "Switch Track");
+    this.add(Translations.LookingAt.LOCOMOTIVE, "Locomotive");
+    this.add(Translations.LookingAt.EMITTED_ASPECT, "Emitted aspect: ");
+    this.add(Translations.LookingAt.SWITCHED, "Switched: ");
+    this.add(Translations.LookingAt.YES, "Yes");
+    this.add(Translations.LookingAt.NO, "No");
+    this.add(Translations.LookingAt.MODE, "Mode: ");
+    this.add(Translations.LookingAt.SPEED, "Speed: %sx");
+    this.add(Translations.LookingAt.REVERSE, "Reverse: ");
   }
 
   private void signalTranslations() {

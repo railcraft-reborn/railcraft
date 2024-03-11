@@ -16,7 +16,7 @@ public class SignalControllerComponent implements IBlockComponentProvider {
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
     if (accessor.getBlockEntity() instanceof SignalControllerBoxBlockEntity signalController) {
       var aspect = signalController.getSignalAspect(null).getDisplayAspect();
-      tooltip.add(Component.translatable(Translations.Jade.EMITTED_ASPECT)
+      tooltip.add(Component.translatable(Translations.LookingAt.EMITTED_ASPECT)
           .append(aspect.getDisplayNameWithColor()));
     }
   }

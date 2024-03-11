@@ -395,13 +395,17 @@ public class Translations {
     public static final String SPLIT = makeKey("jei.gui", "split");
   }
 
-  public static class Jade {
+  public static class LookingAt {
     public static final String SIGNAL_CONTROLLER = makeJadeKey("signal_controller");
     public static final String SWITCH_TRACK = makeJadeKey("switch_track");
-    public static final String EMITTED_ASPECT = makeKey("jade", "emitted_aspect");
-    public static final String SWITCHED = makeKey("jade", "switched");
-    public static final String YES = makeKey("jade", "yes");
-    public static final String NO = makeKey("jade", "no");
+    public static final String LOCOMOTIVE = makeJadeKey("locomotive");
+    public static final String EMITTED_ASPECT = makeKey("looking_at", "emitted_aspect");
+    public static final String SWITCHED = makeKey("looking_at", "switched");
+    public static final String YES = makeKey("looking_at", "yes");
+    public static final String NO = makeKey("looking_at", "no");
+    public static final String MODE = makeKey("looking_at", "mode");
+    public static final String SPEED = makeKey("looking_at", "speed");
+    public static final String REVERSE = makeKey("looking_at", "reverse");
   }
 
   public static class Signal {
