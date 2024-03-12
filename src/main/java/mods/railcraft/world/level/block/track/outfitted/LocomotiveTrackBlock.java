@@ -57,15 +57,13 @@ public class LocomotiveTrackBlock extends PoweredOutfittedTrackBlock {
   @Override
   protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    final var locomotiveMode = LocomotiveTrackBlock.getMode(state);
-    var newLocomotiveMode = player.isCrouching() ? locomotiveMode.previous() : locomotiveMode.next();
-    if (!level.isClientSide()) {
-      level.setBlockAndUpdate(pos, state.setValue(LOCOMOTIVE_MODE, newLocomotiveMode));
-      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
-      var mode = newLocomotiveMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
-      player.displayClientMessage(currentMode.append(" ").append(mode), true);
-    }
-    return true;
+    var mode = LocomotiveTrackBlock.getMode(state);
+    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    var res = level.setBlockAndUpdate(pos, state.setValue(LOCOMOTIVE_MODE, newMode));
+    var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
+    var modeDisplay = newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+    player.displayClientMessage(currentMode.append(" ").append(modeDisplay), true);
+    return res;
   }
 
   @Override
