@@ -855,7 +855,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> ELECTRIC_DETECTOR_TRACK =
       deferredRegister.register("electric_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.ELECTRIC,
-              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get()).randomTicks()));
+              BlockBehaviour.Properties.copy(ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<CouplerTrackBlock> ELECTRIC_COUPLER_TRACK =
       deferredRegister.register("electric_coupler_track",
@@ -1014,7 +1014,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> HIGH_SPEED_ELECTRIC_DETECTOR_TRACK =
       deferredRegister.register("high_speed_electric_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get()).randomTicks()));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
   public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
       deferredRegister.register("high_speed_electric_wye_track",
