@@ -5,12 +5,12 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Season;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -32,8 +32,8 @@ import net.minecraftforge.network.NetworkHooks;
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, ItemTransferHandler {
 
-  private static final EntityDataAccessor<Byte> SEASON =
-      SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<Season> SEASON =
+      SynchedEntityData.defineId(RailcraftMinecart.class, RailcraftDataSerializers.MINECART_SEASON);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   @Nullable
@@ -60,18 +60,18 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(SEASON, (byte) Season.DEFAULT.ordinal());
+    this.entityData.define(SEASON, Season.DEFAULT);
   }
 
   @Override
   public Season getSeason() {
     // TODO: 1.20.4+ use Season.fromName(this.entityData.get(SEASON));
-    return Season.values()[this.entityData.get(SEASON)];
+    return this.entityData.get(SEASON);
   }
 
   @Override
   public void setSeason(Season season) {
-    this.entityData.set(SEASON, (byte) season.ordinal());
+    this.entityData.set(SEASON, season);
   }
 
   @Override
@@ -190,7 +190,8 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     };
   }
 
-  private @Nullable Direction determineVerticalTravelDirection(RailShape shape) {
+  @Nullable
+  private Direction determineVerticalTravelDirection(RailShape shape) {
     return shape.isAscending() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
   }
 
