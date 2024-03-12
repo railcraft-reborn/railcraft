@@ -17,7 +17,7 @@ import snownee.jade.api.Identifiers;
 import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
-public class RoutingTrackComponent implements IBlockComponentProvider,
+class RoutingTrackComponent implements IBlockComponentProvider,
     IServerDataProvider<BlockAccessor> {
 
   @Override

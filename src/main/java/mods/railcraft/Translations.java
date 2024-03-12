@@ -396,11 +396,12 @@ public class Translations {
   }
 
   public static class LookingAt {
-    public static final String SIGNAL_CONTROLLER = makeJadeKey("signal_controller");
+    public static final String SIGNALS = makeJadeKey("signals");
     public static final String SWITCH_TRACK = makeJadeKey("switch_track");
     public static final String LOCOMOTIVE = makeJadeKey("locomotive");
     public static final String TRACK_COMPONENT = makeJadeKey("track_component");
-    public static final String EMITTED_ASPECT = makeKey("looking_at", "emitted_aspect");
+    public static final String ASPECT_SENT = makeKey("looking_at", "aspect_sent");
+    public static final String ASPECT_RECEIVED = makeKey("looking_at", "aspect_received");
     public static final String SWITCHED = makeKey("looking_at", "switched");
     public static final String YES = makeKey("looking_at", "yes");
     public static final String NO = makeKey("looking_at", "no");

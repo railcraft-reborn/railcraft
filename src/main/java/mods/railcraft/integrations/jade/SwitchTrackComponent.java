@@ -12,7 +12,7 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.theme.IThemeHelper;
 
-public class SwitchTrackComponent implements IBlockComponentProvider {
+class SwitchTrackComponent implements IBlockComponentProvider {
 
   @Override
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {

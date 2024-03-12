@@ -932,11 +932,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void lookingAtTranslations() {
-    this.add(Translations.LookingAt.SIGNAL_CONTROLLER, "Signal Controller");
+    this.add(Translations.LookingAt.SIGNALS, "Signals");
     this.add(Translations.LookingAt.SWITCH_TRACK, "Switch Track");
     this.add(Translations.LookingAt.LOCOMOTIVE, "Locomotive");
     this.add(Translations.LookingAt.TRACK_COMPONENT, "Track Component");
-    this.add(Translations.LookingAt.EMITTED_ASPECT, "Emitted aspect: ");
+    this.add(Translations.LookingAt.ASPECT_SENT, "Aspect sent: ");
+    this.add(Translations.LookingAt.ASPECT_RECEIVED, "Aspect received: ");
     this.add(Translations.LookingAt.SWITCHED, "Switched: ");
     this.add(Translations.LookingAt.YES, "Yes");
     this.add(Translations.LookingAt.NO, "No");

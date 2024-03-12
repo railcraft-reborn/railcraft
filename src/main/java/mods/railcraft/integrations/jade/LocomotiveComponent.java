@@ -10,7 +10,7 @@ import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-public class LocomotiveComponent implements IEntityComponentProvider {
+class LocomotiveComponent implements IEntityComponentProvider {
 
   @Override
   public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig config) {

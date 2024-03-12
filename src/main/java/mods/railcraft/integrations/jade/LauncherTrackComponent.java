@@ -10,7 +10,7 @@ import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-public class LauncherTrackComponent implements IBlockComponentProvider {
+class LauncherTrackComponent implements IBlockComponentProvider {
 
   @Override
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
