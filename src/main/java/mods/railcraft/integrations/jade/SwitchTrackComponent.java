@@ -5,7 +5,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -19,7 +18,7 @@ public class SwitchTrackComponent implements IBlockComponentProvider {
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
     if (accessor.getBlock() instanceof SwitchTrackActuatorBlock) {
       var theme = IThemeHelper.get();
-      MutableComponent info;
+      Component info;
       if (SwitchTrackBlock.isSwitched(accessor.getBlockState())) {
         info = theme.success(Component.translatable(Translations.LookingAt.YES));
       } else {

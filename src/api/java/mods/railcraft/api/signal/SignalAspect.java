@@ -84,7 +84,7 @@ public enum SignalAspect implements StringRepresentable {
       case YELLOW, BLINK_YELLOW -> ChatFormatting.YELLOW;
       case BLINK_RED, RED, OFF -> ChatFormatting.RED;
     };
-    return this.getDisplayName().withStyle(color);
+    return this.getDisplayName().copy().withStyle(color);
   }
 
   @Override

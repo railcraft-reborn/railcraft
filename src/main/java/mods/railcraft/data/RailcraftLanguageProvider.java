@@ -935,6 +935,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.LookingAt.SIGNAL_CONTROLLER, "Signal Controller");
     this.add(Translations.LookingAt.SWITCH_TRACK, "Switch Track");
     this.add(Translations.LookingAt.LOCOMOTIVE, "Locomotive");
+    this.add(Translations.LookingAt.TRACK_COMPONENT, "Track Component");
     this.add(Translations.LookingAt.EMITTED_ASPECT, "Emitted aspect: ");
     this.add(Translations.LookingAt.SWITCHED, "Switched: ");
     this.add(Translations.LookingAt.YES, "Yes");

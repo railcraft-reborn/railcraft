@@ -414,6 +414,7 @@
   "config.jade.plugin_railcraft.locomotive": "Locomotive",
   "config.jade.plugin_railcraft.signal_controller": "Signal Controller",
   "config.jade.plugin_railcraft.switch_track": "Switch Track",
+  "config.jade.plugin_railcraft.track_component": "Track Component",
   "container.railcraft.blast_furnace": "Blast Furnace",
   "container.railcraft.coke_oven": "Coke Oven",
   "container.railcraft.crusher": "Crusher",

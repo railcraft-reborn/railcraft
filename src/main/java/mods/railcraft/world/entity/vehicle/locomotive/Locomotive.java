@@ -836,6 +836,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
       this.name = name;
     }
 
+    public Mode next() {
+      return EnumUtil.next(this, values());
+    }
+
+    public Mode previous() {
+      return EnumUtil.previous(this, values());
+    }
+
     @Override
     public String getSerializedName() {
       return this.name;

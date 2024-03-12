@@ -57,12 +57,24 @@ public class LocomotiveTrackBlock extends PoweredOutfittedTrackBlock {
   @Override
   protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    return level.setBlockAndUpdate(pos, state.cycle(LOCOMOTIVE_MODE));
+    final var locomotiveMode = LocomotiveTrackBlock.getMode(state);
+    var newLocomotiveMode = player.isCrouching() ? locomotiveMode.previous() : locomotiveMode.next();
+    if (!level.isClientSide()) {
+      level.setBlockAndUpdate(pos, state.setValue(LOCOMOTIVE_MODE, newLocomotiveMode));
+      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
+      var mode = newLocomotiveMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+      player.displayClientMessage(currentMode.append(" ").append(mode), true);
+    }
+    return true;
   }
 
   @Override
   public int getPowerPropagation(BlockState blockState, Level level, BlockPos blockPos) {
     return 8;
+  }
+
+  public static Locomotive.Mode getMode(BlockState blockState) {
+    return blockState.getValue(LOCOMOTIVE_MODE);
   }
 
   @Override
