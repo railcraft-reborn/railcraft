@@ -796,7 +796,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<DetectorTrackBlock> ABANDONED_DETECTOR_TRACK =
       deferredRegister.register("abandoned_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get()).randomTicks()));
 
   public static final DeferredBlock<CouplerTrackBlock> ABANDONED_COUPLER_TRACK =
       deferredRegister.register("abandoned_coupler_track",
@@ -999,7 +999,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<DetectorTrackBlock> HIGH_SPEED_DETECTOR_TRACK =
       deferredRegister.register("high_speed_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get()).randomTicks()));
 
   public static final DeferredBlock<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.register("high_speed_wye_track",
@@ -1130,7 +1130,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<DetectorTrackBlock> IRON_DETECTOR_TRACK =
       deferredRegister.register("iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get()).randomTicks()));
 
   public static final DeferredBlock<CouplerTrackBlock> IRON_COUPLER_TRACK =
       deferredRegister.register("iron_coupler_track",
@@ -1237,7 +1237,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<DetectorTrackBlock> REINFORCED_DETECTOR_TRACK =
       deferredRegister.register("reinforced_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get()).randomTicks()));
 
   public static final DeferredBlock<CouplerTrackBlock> REINFORCED_COUPLER_TRACK =
       deferredRegister.register("reinforced_coupler_track",
@@ -1344,7 +1344,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<DetectorTrackBlock> STRAP_IRON_DETECTOR_TRACK =
       deferredRegister.register("strap_iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get()).randomTicks()));
 
   public static final DeferredBlock<CouplerTrackBlock> STRAP_IRON_COUPLER_TRACK =
       deferredRegister.register("strap_iron_coupler_track",

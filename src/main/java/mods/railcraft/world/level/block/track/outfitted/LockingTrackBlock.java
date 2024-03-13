@@ -52,9 +52,17 @@ public class LockingTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   @Override
   protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    return level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
-        .map(lockingTrack -> lockingTrack.crowbarWhack(player))
-        .orElse(false);
+    var mode = LockingTrackBlock.getLockingMode(state);
+    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    var res = level.setBlockAndUpdate(pos, state.setValue(LOCKING_MODE, newMode));
+    if (!level.isClientSide()) {
+      level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCKING_TRACK.get())
+          .ifPresent(lockingTrack -> lockingTrack.setLockingModeController(newMode.create(lockingTrack)));
+    }
+    var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
+    var modeDisplay = newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+    player.displayClientMessage(currentMode.append(" ").append(modeDisplay), true);
+    return res;
   }
 
   @Override

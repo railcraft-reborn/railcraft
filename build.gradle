@@ -97,6 +97,10 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
+    maven {
+        name 'curseforge'
+        url 'https://www.cursemaven.com'
+    }
 }
 
 dependencies {
@@ -111,6 +115,10 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     runtimeOnly "vazkii.patchouli:Patchouli:$patchouli_version"
+
+    compileOnly "curse.maven:jade-api-324717:$jade_id_api"
+    runtimeOnly "curse.maven:jade-324717:$jade_id"
+
 }
 
 test {

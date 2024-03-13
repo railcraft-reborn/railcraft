@@ -52,8 +52,7 @@ public class ReversibleOutfittedTrackBlock extends OutfittedTrackBlock {
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    level.setBlockAndUpdate(pos, blockState.cycle(REVERSED));
-    return true;
+    return level.setBlockAndUpdate(pos, blockState.cycle(REVERSED));
   }
 
   public static boolean isReversed(BlockState blockState) {

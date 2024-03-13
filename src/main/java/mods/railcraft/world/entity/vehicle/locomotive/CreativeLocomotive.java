@@ -119,6 +119,11 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
+  public Speed getMaxReverseSpeed() {
+    return Speed.MAX;
+  }
+
+  @Override
   protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return new CreativeLocomotiveMenu(id, playerInventory, this);
   }

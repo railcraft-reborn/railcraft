@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.NeedsFuel;
@@ -827,9 +828,25 @@ public abstract class Locomotive extends RailcraftMinecart implements
       this.name = name;
     }
 
+    public Mode next() {
+      return EnumUtil.next(this, values());
+    }
+
+    public Mode previous() {
+      return EnumUtil.previous(this, values());
+    }
+
     @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public Component getDisplayName() {
+      return Component.translatable(this.getTranslationKey());
+    }
+
+    public String getTranslationKey() {
+      return Translations.makeKey("screen", "locomotive.mode." + this.name);
     }
 
     public static Mode fromName(String name) {

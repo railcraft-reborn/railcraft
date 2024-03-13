@@ -67,15 +67,10 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
     // Mode buttons
     for (var mode : this.locomotive.getSupportedModes()) {
-      var translationKey = switch (mode) {
-        case IDLE -> Translations.Screen.LOCOMOTIVE_MODE_IDLE;
-        case SHUTDOWN -> Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN;
-        case RUNNING -> Translations.Screen.LOCOMOTIVE_MODE_RUNNING;
-      };
       var tooltip = Component.translatable(Translations.makeKey("screen",
           String.format("locomotive.%s.mode.description.%s", type, mode.getSerializedName())));
       var button = this.addRenderableWidget(RailcraftButton
-          .builder(translationKey, __ -> this.setMode(mode), ButtonTexture.SMALL_BUTTON)
+          .builder(mode.getDisplayName(), __ -> this.setMode(mode), ButtonTexture.SMALL_BUTTON)
           .size(54, 16)
           .tooltip(Tooltip.create(tooltip))
           .build());
