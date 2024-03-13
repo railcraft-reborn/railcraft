@@ -45,6 +45,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
+    this.lookingAtTranslations();
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
@@ -928,6 +929,22 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
     this.add(Translations.Jei.SPLIT, "Split");
+  }
+
+  private void lookingAtTranslations() {
+    this.add(Translations.LookingAt.SIGNALS, "Signals");
+    this.add(Translations.LookingAt.SWITCH_TRACK, "Switch Track");
+    this.add(Translations.LookingAt.LOCOMOTIVE, "Locomotive");
+    this.add(Translations.LookingAt.TRACK_COMPONENT, "Track Component");
+    this.add(Translations.LookingAt.ASPECT_SENT, "Aspect sent: ");
+    this.add(Translations.LookingAt.ASPECT_RECEIVED, "Aspect received: ");
+    this.add(Translations.LookingAt.ASPECT_RELAYED, "Aspect relayed: ");
+    this.add(Translations.LookingAt.SWITCHED, "Switched: ");
+    this.add(Translations.LookingAt.YES, "Yes");
+    this.add(Translations.LookingAt.NO, "No");
+    this.add(Translations.LookingAt.MODE, "Mode: ");
+    this.add(Translations.LookingAt.SPEED, "Speed: %sx");
+    this.add(Translations.LookingAt.REVERSE, "Reverse: ");
   }
 
   private void signalTranslations() {

@@ -208,15 +208,11 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   @Override
   public boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos, Player player,
       InteractionHand hand, ItemStack itemStack) {
-    if (level.isClientSide()) {
-      return true;
-    }
-    final int newState = ((isOneWay(blockState) ? 2 : 0) | (isReversed(blockState) ? 1 : 0))
+    int newState = ((isOneWay(blockState) ? 2 : 0) | (isReversed(blockState) ? 1 : 0))
         + (player.isShiftKeyDown() ? 3 : 1);
-    level.setBlockAndUpdate(pos, blockState
+    return level.setBlockAndUpdate(pos, blockState
         .setValue(ONE_WAY, (newState & 2) == 2)
         .setValue(REVERSED, (newState & 1) == 1));
-    return true;
   }
 
   @Override

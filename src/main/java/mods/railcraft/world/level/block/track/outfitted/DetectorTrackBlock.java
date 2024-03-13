@@ -74,14 +74,9 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    Mode mode = blockState.getValue(MODE);
-    if (player.isCrouching()) {
-      mode = mode.previous();
-    } else {
-      mode = mode.next();
-    }
-    level.setBlockAndUpdate(blockPos, blockState.setValue(MODE, mode));
-    return true;
+    final var mode = blockState.getValue(MODE);
+    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    return level.setBlockAndUpdate(blockPos, blockState.setValue(MODE, newMode));
   }
 
   @Override

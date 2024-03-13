@@ -52,16 +52,13 @@ public class CouplerTrackBlock extends PoweredOutfittedTrackBlock implements Ent
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos blockPos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    final var couplerMode = CouplerTrackBlock.getMode(blockState);
-    var newCouplerMode = player.isCrouching() ? couplerMode.previous() : couplerMode.next();
-    if (!level.isClientSide()) {
-      level.setBlockAndUpdate(blockPos,
-          blockState.setValue(CouplerTrackBlock.MODE, newCouplerMode));
-      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
-      var mode = newCouplerMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
-      player.displayClientMessage(currentMode.append(" ").append(mode), true);
-    }
-    return true;
+    var mode = CouplerTrackBlock.getMode(blockState);
+    var newMode = player.isCrouching() ? mode.previous() : mode.next();
+    var res = level.setBlockAndUpdate(blockPos, blockState.setValue(MODE, newMode));
+    var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
+    var modeDisplay = newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
+    player.displayClientMessage(currentMode.append(" ").append(modeDisplay), true);
+    return res;
   }
 
   @Override
