@@ -23,12 +23,12 @@ public class EnergyMinecart extends RailcraftMinecart {
   private final LazyOptional<EnergyStorage> cartBattery =
       LazyOptional.of(() -> new EnergyStorage(MAX_CHARGE));
 
-  protected EnergyMinecart(EntityType<?> type, Level level) {
+  public EnergyMinecart(EntityType<?> type, Level level) {
     super(type, level);
   }
 
-  protected EnergyMinecart(EntityType<?> type, double x, double y, double z, Level level) {
-    super(type, x, y, z, level);
+  public EnergyMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
+    super(itemStack, null, x, y, z, level);
   }
 
   @Override
@@ -38,10 +38,9 @@ public class EnergyMinecart extends RailcraftMinecart {
 
   @Override
   public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    if (ForgeCapabilities.ENERGY == capability) {
-      return this.cartBattery.cast();
-    }
-    return super.getCapability(capability, facing);
+    return ForgeCapabilities.ENERGY == capability
+        ? this.cartBattery.cast()
+        : super.getCapability(capability, facing);
   }
 
   @Override
@@ -70,7 +69,7 @@ public class EnergyMinecart extends RailcraftMinecart {
 
   @Override
   public ItemStack getPickResult() {
-    ItemStack itemStack = super.getPickResult();
+    var itemStack = super.getPickResult();
     this.cartBattery.ifPresent(cell -> {
       itemStack.getOrCreateTag().putInt("batteryEnergy", cell.getEnergyStored());
     });

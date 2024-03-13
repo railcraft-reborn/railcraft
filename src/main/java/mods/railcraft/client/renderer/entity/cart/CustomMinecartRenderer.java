@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.Directional;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -78,16 +79,27 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
     }
     poseStack.translate(0, 0.375F, 0);
 
-    if (cart.hasCustomName() && !Seasons.GHOST_TRAIN.equals(cart.getCustomName().getString())
-        && !Seasons.POLAR_EXPRESS.equals(cart.getCustomName().getString())) {
-      this.renderNameTag(cart, cart.getCustomName(), poseStack, bufferSource, packedLight);
+    boolean renderName = false;
+    if (cart.hasCustomName()) {
+      var customName = cart.getCustomName().getString();
+      if (!Seasons.GHOST_TRAIN.equals(customName) && !Seasons.POLAR_EXPRESS.equals(customName)) {
+        this.renderNameTag(cart, cart.getCustomName(), poseStack, bufferSource, packedLight);
+        renderName = true;
+      }
     }
 
     if (cart instanceof Routable routable) {
       String dest = routable.getDestination();
-      if (!StringUtils.isBlank(dest))
-        this.renderNameTag(cart, Component.literal(dest), poseStack, bufferSource,
-            packedLight);
+      if (!StringUtils.isBlank(dest)) {
+        poseStack.pushPose();
+        if (renderName) {
+          poseStack.translate(0, 0.3F, 0);
+        }
+        var destination = Component.literal(dest)
+            .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
+        this.renderNameTag(cart, destination, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
+      }
     }
 
     poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));

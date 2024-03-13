@@ -32,7 +32,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   public TrackLayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
+    super(itemStack, RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
   }
 
   @Override

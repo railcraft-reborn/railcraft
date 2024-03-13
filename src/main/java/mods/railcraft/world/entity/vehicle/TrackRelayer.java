@@ -34,7 +34,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
   }
 
   public TrackRelayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(RailcraftEntityTypes.TRACK_RELAYER.get(), x, y, z, level);
+    super(itemStack, RailcraftEntityTypes.TRACK_RELAYER.get(), x, y, z, level);
   }
 
   @Override
