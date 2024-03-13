@@ -3,6 +3,7 @@ package mods.railcraft.integrations.jade;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
+import mods.railcraft.world.level.block.signal.SignalBlockRelayBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
@@ -40,6 +41,7 @@ public class RailcraftPlugin implements IWailaPlugin {
     // Signals
     registration.registerBlockComponent(SignalComponent.INSTANCE, SignalControllerBoxBlock.class);
     registration.registerBlockComponent(SignalComponent.INSTANCE, SignalReceiverBoxBlock.class);
+    registration.registerBlockComponent(SignalComponent.INSTANCE, SignalBlockRelayBoxBlock.class);
 
     // Actuators
     registration.registerBlockComponent(new SwitchTrackComponent(), SwitchTrackActuatorBlock.class);

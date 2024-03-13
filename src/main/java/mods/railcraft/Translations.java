@@ -402,6 +402,7 @@ public class Translations {
     public static final String TRACK_COMPONENT = makeJadeKey("track_component");
     public static final String ASPECT_SENT = makeKey("looking_at", "aspect_sent");
     public static final String ASPECT_RECEIVED = makeKey("looking_at", "aspect_received");
+    public static final String ASPECT_RELAYED = makeKey("looking_at", "aspect_relayed");
     public static final String SWITCHED = makeKey("looking_at", "switched");
     public static final String YES = makeKey("looking_at", "yes");
     public static final String NO = makeKey("looking_at", "no");

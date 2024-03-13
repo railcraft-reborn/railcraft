@@ -2,6 +2,7 @@ package mods.railcraft.integrations.jade;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import net.minecraft.network.chat.Component;
@@ -28,6 +29,10 @@ class SignalComponent implements IBlockComponentProvider {
     } else if (blockEntity instanceof SignalReceiverBoxBlockEntity signalReceiver) {
       var aspect = signalReceiver.getSignalAspect(null).getDisplayAspect();
       tooltip.add(Component.translatable(Translations.LookingAt.ASPECT_RECEIVED)
+          .append(aspect.getDisplayNameWithColor()));
+    } else if (blockEntity instanceof BlockSignalRelayBoxBlockEntity signalRelay) {
+      var aspect = signalRelay.getSignalAspect(null).getDisplayAspect();
+      tooltip.add(Component.translatable(Translations.LookingAt.ASPECT_RELAYED)
           .append(aspect.getDisplayNameWithColor()));
     }
   }

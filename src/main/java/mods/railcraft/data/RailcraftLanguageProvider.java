@@ -938,6 +938,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.LookingAt.TRACK_COMPONENT, "Track Component");
     this.add(Translations.LookingAt.ASPECT_SENT, "Aspect sent: ");
     this.add(Translations.LookingAt.ASPECT_RECEIVED, "Aspect received: ");
+    this.add(Translations.LookingAt.ASPECT_RELAYED, "Aspect relayed: ");
     this.add(Translations.LookingAt.SWITCHED, "Switched: ");
     this.add(Translations.LookingAt.YES, "Yes");
     this.add(Translations.LookingAt.NO, "No");
