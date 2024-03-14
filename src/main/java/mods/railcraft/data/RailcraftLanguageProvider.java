@@ -1284,7 +1284,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void chargeMeterTranslations() {
     this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
-    this.add(Translations.ChargeMeter.CART, "Cart:");
     this.add(Translations.ChargeMeter.CHARGE, "Charge:");
     this.add(Translations.ChargeMeter.DRAW, "Draw:");
     this.add(Translations.ChargeMeter.LOSS, "Loss:");

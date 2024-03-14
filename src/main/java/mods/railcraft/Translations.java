@@ -584,7 +584,6 @@ public class Translations {
 
   public static class ChargeMeter {
     public static final String START = makeKey("charge_meter", "start");
-    public static final String CART = makeKey("charge_meter", "cart");
     public static final String CHARGE = makeKey("charge_meter", "charge");
     public static final String DRAW = makeKey("charge_meter", "draw");
     public static final String LOSS = makeKey("charge_meter", "loss");
