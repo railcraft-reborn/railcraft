@@ -109,7 +109,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
   protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,
       double y, double z, ServerLevel level) {
     super(itemStack, type, x, y, z, level);
-    this.loadFromItemStack(itemStack);
   }
 
   @Override

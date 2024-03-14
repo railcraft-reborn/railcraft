@@ -55,7 +55,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public SteamLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
-
+    this.loadFromItemStack(itemStack);
     this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {

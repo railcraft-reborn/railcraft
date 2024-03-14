@@ -111,11 +111,6 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.WORLD_SPIKE_MINECART.get().getDefaultInstance();
-  }
-
-  @Override
   public Item getDropItem() {
     return RailcraftItems.WORLD_SPIKE_MINECART.get();
   }

@@ -38,11 +38,6 @@ public class TrackRelayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.TRACK_RELAYER.get().getDefaultInstance();
-  }
-
-  @Override
   public Item getDropItem() {
     return RailcraftItems.TRACK_RELAYER.get();
   }

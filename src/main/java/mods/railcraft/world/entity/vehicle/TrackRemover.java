@@ -81,11 +81,6 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.TRACK_REMOVER.get().getDefaultInstance();
-  }
-
-  @Override
   public Item getDropItem() {
     return RailcraftItems.TRACK_REMOVER.get();
   }

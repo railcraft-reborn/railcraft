@@ -49,11 +49,6 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
   }
 
   @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.TRACK_UNDERCUTTER.get().getDefaultInstance();
-  }
-
-  @Override
   public Item getDropItem() {
     return RailcraftItems.TRACK_UNDERCUTTER.get();
   }

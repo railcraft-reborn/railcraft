@@ -13,6 +13,7 @@ import mods.railcraft.client.gui.screen.inventory.CreativeLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.DumpingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.ElectricLocomotiveScreen;
+import mods.railcraft.client.gui.screen.inventory.EnergyMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
@@ -145,6 +146,7 @@ public class ClientManager {
     MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
+    MenuScreens.register(RailcraftMenuTypes.ENERGY_MINECART.get(), EnergyMinecartScreen::new);
     MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
         SwitchTrackRouterScreen::new);
     MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);

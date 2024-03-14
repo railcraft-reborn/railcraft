@@ -465,10 +465,11 @@ public class RailcraftCreativeModeTabs {
         new ItemStack(Items.SHEARS),
         new ItemStack(RailcraftItems.STEEL_SHEARS.get()),
         DEFAULT_VISIBILITY);
-    entries.putAfter(
-        new ItemStack(Items.CHEST_MINECART),
-        new ItemStack(RailcraftItems.TANK_MINECART.get()),
-        DEFAULT_VISIBILITY);
+
+    var addAfterChestMinecart = List.of(
+        Items.CHEST_MINECART,
+        RailcraftItems.TANK_MINECART.get(),
+        RailcraftItems.ENERGY_MINECART.get());
 
     var addAfterIronHoe = List.of(
         Items.IRON_HOE,
@@ -534,6 +535,7 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
         RailcraftItems.DUAL_TOKEN_SIGNAL.get());
 
+    addItemsToTab(addAfterChestMinecart, entries);
     addItemsToTab(addAfterIronHoe, entries);
     addItemsToTab(addAfterTNTMinecart, entries);
     addItemsToTab(addAfterActivatorRail, entries);
