@@ -613,6 +613,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
     this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
     this.add(Translations.Tips.EMPTY, "Empty");
+    this.add(Translations.Tips.ENERGY, "Energy:");
+    this.add(Translations.Tips.PERCENTAGE, "Percentage:");
   }
 
   private void screenTranslations() {
@@ -1282,15 +1284,16 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void chargeMeterTranslations() {
     this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
-    this.add(Translations.ChargeMeter.CART, """
-        Cart -> Charge: %s FE | Draw: %s FE/t | Loss: %s FE/t""");
-    this.add(Translations.ChargeMeter.NETWORK, """
-        Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
-    this.add(Translations.ChargeMeter.NODE, "Node -> Draw: %s FE/t | Loss: %s FE/t");
-    this.add(Translations.ChargeMeter.PRODUCER, """
-        Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
+    this.add(Translations.ChargeMeter.CART, "Cart:");
+    this.add(Translations.ChargeMeter.CHARGE, "Charge:");
+    this.add(Translations.ChargeMeter.DRAW, "Draw:");
+    this.add(Translations.ChargeMeter.LOSS, "Loss:");
+    this.add(Translations.ChargeMeter.NETWORK, "Network:");
+    this.add(Translations.ChargeMeter.SIZE, "Size:");
+    this.add(Translations.ChargeMeter.MAX_DRAW, "MaxDraw:");
+    this.add(Translations.ChargeMeter.EFFICIENCY, "Efficiency:");
+    this.add(Translations.ChargeMeter.NODE, "Node:");
+    this.add(Translations.ChargeMeter.PRODUCER, "Producer:");
   }
 
   private void keyBindingTranslations() {

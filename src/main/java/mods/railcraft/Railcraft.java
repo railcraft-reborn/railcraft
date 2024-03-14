@@ -302,8 +302,7 @@ public class Railcraft {
               .filter(ChargeCartStorageImpl.class::isInstance)
               .map(ChargeCartStorageImpl.class::cast)
               .ifPresent(battery -> {
-                ChargeMeterItem.sendChat(player, Translations.ChargeMeter.CART,
-                    battery.getEnergyStored(), battery.getDraw(), battery.getLosses());
+                ChargeMeterItem.sendCartStat(player, cart.getDisplayName(), battery);
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
               });
