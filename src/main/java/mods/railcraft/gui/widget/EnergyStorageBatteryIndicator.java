@@ -2,7 +2,9 @@ package mods.railcraft.gui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
+import mods.railcraft.Translations;
 import mods.railcraft.util.HumanReadableNumberFormatter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
@@ -23,10 +25,18 @@ public class EnergyStorageBatteryIndicator implements Gauge {
     float chargeLevel = charge * 100.0F;
     float energyStorage = charge * capacity;
     this.tooltip.clear();
-    this.tooltip.add(Component.literal(String.format("%.0f%%", chargeLevel)));
-    this.tooltip.add(Component.literal(String.format("%sFE / %sFE",
+    this.tooltip.add(Component.translatable(Translations.Tips.PERCENTAGE)
+        .withStyle(ChatFormatting.GREEN)
+        .append(" ")
+        .append(Component.literal(String.format("%.0f%%", chargeLevel))
+            .withStyle(ChatFormatting.WHITE)));
+    this.tooltip.add(Component.translatable(Translations.Tips.ENERGY)
+        .withStyle(ChatFormatting.GREEN)
+        .append(" ")
+        .append(Component.literal(String.format("%sFE / %sFE",
             HumanReadableNumberFormatter.format(energyStorage),
-            HumanReadableNumberFormatter.format(capacity))));
+            HumanReadableNumberFormatter.format(capacity)))
+            .withStyle(ChatFormatting.WHITE)));
   }
 
   @Override

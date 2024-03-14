@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
+import snownee.jade.api.Identifiers;
+import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
 class LocomotiveComponent implements IEntityComponentProvider {
@@ -23,7 +25,13 @@ class LocomotiveComponent implements IEntityComponentProvider {
       var reverse = locomotive.isReverse() ? Translations.LookingAt.YES : Translations.LookingAt.NO;
       tooltip.add(Component.translatable(Translations.LookingAt.REVERSE)
           .append(Component.translatable(reverse)));
+      tooltip.remove(Identifiers.UNIVERSAL_ITEM_STORAGE);
     }
+  }
+
+  @Override
+  public int getDefaultPriority() {
+    return TooltipPosition.TAIL;
   }
 
   @Override

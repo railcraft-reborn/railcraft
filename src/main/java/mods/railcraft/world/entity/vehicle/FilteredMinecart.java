@@ -25,7 +25,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
 
   protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
       Level level) {
-    super(type, x, y, z, level);
+    super(itemStack, type, x, y, z, level);
     this.setFilter(getFilterFromCartItem(itemStack));
   }
 
@@ -35,31 +35,22 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
     this.entityData.define(FILTER, ItemStack.EMPTY);
   }
 
-  public static ItemStack getFilterFromCartItem(ItemStack cartStack) {
-    return cartStack.getItem() instanceof PrototypedItem
-        ? ((PrototypedItem) cartStack.getItem()).getPrototype(cartStack)
+  private static ItemStack getFilterFromCartItem(ItemStack cartStack) {
+    return cartStack.getItem() instanceof PrototypedItem prototypedItem
+        ? prototypedItem.getPrototype(cartStack)
         : ItemStack.EMPTY;
   }
 
-  public static ItemStack addFilterToCartItem(ItemStack cartStack, ItemStack filterStack) {
-    if (!filterStack.isEmpty() && cartStack.getItem() instanceof PrototypedItem) {
-      ((PrototypedItem) cartStack.getItem()).setPrototype(cartStack, filterStack);
+  private static ItemStack addFilterToCartItem(ItemStack cartStack, ItemStack filterStack) {
+    if (!filterStack.isEmpty() && cartStack.getItem() instanceof PrototypedItem prototypedItem) {
+      prototypedItem.setPrototype(cartStack, filterStack);
     }
     return cartStack;
   }
 
-  public ItemStack getFilteredCartItem(ItemStack filterStack) {
-    ItemStack cartStack = this.getPickResult();
-    return cartStack.isEmpty() ? ItemStack.EMPTY : addFilterToCartItem(cartStack, filterStack);
-  }
-
   @Override
   public ItemStack getPickResult() {
-    ItemStack stack = this.getFilteredCartItem(this.getFilterItem());
-    if (!stack.isEmpty() && this.hasCustomName()) {
-      stack.setHoverName(this.getDisplayName());
-    }
-    return stack;
+    return addFilterToCartItem(super.getPickResult(), this.getFilterItem());
   }
 
   @Override

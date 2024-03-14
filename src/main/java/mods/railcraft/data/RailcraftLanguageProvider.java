@@ -220,6 +220,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, "Steel Tunnel Bore Head");
     this.addItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, "Diamond Tunnel Bore Head");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
+    this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
@@ -364,6 +365,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void entityTranslations() {
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
+    this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
@@ -614,6 +616,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
     this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
     this.add(Translations.Tips.EMPTY, "Empty");
+    this.add(Translations.Tips.ENERGY, "Energy:");
+    this.add(Translations.Tips.PERCENTAGE, "Percentage:");
   }
 
   private void screenTranslations() {
@@ -1283,15 +1287,16 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void chargeMeterTranslations() {
     this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
-    this.add(Translations.ChargeMeter.CART, """
-        Cart -> Charge: %s FE | Draw: %s FE/t | Loss: %s FE/t""");
-    this.add(Translations.ChargeMeter.NETWORK, """
-        Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
-    this.add(Translations.ChargeMeter.NODE, "Node -> Draw: %s FE/t | Loss: %s FE/t");
-    this.add(Translations.ChargeMeter.PRODUCER, """
-        Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
+    this.add(Translations.ChargeMeter.CART, "Cart:");
+    this.add(Translations.ChargeMeter.CHARGE, "Charge:");
+    this.add(Translations.ChargeMeter.DRAW, "Draw:");
+    this.add(Translations.ChargeMeter.LOSS, "Loss:");
+    this.add(Translations.ChargeMeter.NETWORK, "Network:");
+    this.add(Translations.ChargeMeter.SIZE, "Size:");
+    this.add(Translations.ChargeMeter.MAX_DRAW, "MaxDraw:");
+    this.add(Translations.ChargeMeter.EFFICIENCY, "Efficiency:");
+    this.add(Translations.ChargeMeter.NODE, "Node:");
+    this.add(Translations.ChargeMeter.PRODUCER, "Producer:");
   }
 
   private void keyBindingTranslations() {

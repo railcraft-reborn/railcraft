@@ -1,6 +1,7 @@
 package mods.railcraft.world.inventory;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
@@ -146,6 +147,10 @@ public class RailcraftMenuTypes {
   public static final DeferredHolder<MenuType<?>, MenuType<TankMinecartMenu>> TANK_MINECART =
       deferredRegister.register("tank_minecart",
           () -> entityMenu(TankMinecart.class, TankMinecartMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<EnergyMinecartMenu>> ENERGY_MINECART =
+      deferredRegister.register("energy_minecart",
+          () -> entityMenu(EnergyMinecart.class, EnergyMinecartMenu::new));
 
   public static final DeferredHolder<MenuType<?>, MenuType<TunnelBoreMenu>> TUNNEL_BORE =
       deferredRegister.register("tunnel_bore",

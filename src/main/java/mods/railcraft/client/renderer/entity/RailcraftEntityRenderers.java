@@ -1,6 +1,7 @@
 package mods.railcraft.client.renderer.entity;
 
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
+import mods.railcraft.client.renderer.entity.cart.EnergyMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.TankMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackLayerMinecartRenderer;
@@ -18,6 +19,8 @@ public class RailcraftEntityRenderers {
   public static void register(EntityRenderersEvent.RegisterRenderers event) {
     event.registerEntityRenderer(RailcraftEntityTypes.TANK_MINECART.get(),
         TankMinecartRenderer::new);
+    event.registerEntityRenderer(RailcraftEntityTypes.ENERGY_MINECART.get(),
+        EnergyMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.WORLD_SPIKE.get(),
         WorldSpikeMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TRACK_LAYER.get(),

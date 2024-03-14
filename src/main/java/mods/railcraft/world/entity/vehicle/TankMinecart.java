@@ -62,6 +62,7 @@ public class TankMinecart extends FilteredMinecart
 
   public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
     super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
+    this.loadFromItemStack(itemStack);
   }
 
   @Override
@@ -204,7 +205,24 @@ public class TankMinecart extends FilteredMinecart
 
   @Override
   public ItemStack getPickResult() {
-    return RailcraftItems.TANK_MINECART.get().getDefaultInstance();
+    var itemStack = super.getPickResult();
+    if (!this.tank.isEmpty()) {
+      var tag = itemStack.getOrCreateTag();
+      var tankTag = new CompoundTag();
+      this.tank.writeToNBT(tankTag);
+      tag.put(CompoundTagKeys.TANK, tankTag);
+    }
+    return itemStack;
+  }
+
+  @Override
+  protected void loadFromItemStack(ItemStack itemStack) {
+    super.loadFromItemStack(itemStack);
+    var tag = itemStack.getTag();
+    if (tag == null) {
+      return;
+    }
+    this.tank.readFromNBT(tag.getCompound(CompoundTagKeys.TANK));
   }
 
   @Override

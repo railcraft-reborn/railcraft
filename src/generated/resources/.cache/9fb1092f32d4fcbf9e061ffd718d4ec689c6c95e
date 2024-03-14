@@ -1,4 +1,4 @@
-// 1.20.4	2024-02-24T17:49:27.711363	Recipes
+// 1.20.4	2024-03-14T16:57:43.311464	Recipes
 e5eea85f717041af4946ce58e2d6232c3465a0e5 data/minecraft/advancements/recipes/misc/gunpowder.json
 011a9cc786ff54ea803474ac272fce81d4fa3a32 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 3ee54895662683658430d64e469613e26f9136f6 data/minecraft/advancements/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -235,6 +235,7 @@ c64091bd34f9549ba008075e69c2e5848267b59b data/railcraft/advancements/recipes/mis
 d6e3da2e8d208d54e00c5dc19c5dbcbc25f139d1 data/railcraft/advancements/recipes/misc/elevator_track.json
 9e2e414ef787fdb51124f3102d8ad1296478f16c data/railcraft/advancements/recipes/misc/embarking_track_kit.json
 840febe5508da3f7168b570120d4bc614c84b595 data/railcraft/advancements/recipes/misc/empty_detector.json
+127b755597278b9395bc50b42e12bdfc6a0fada1 data/railcraft/advancements/recipes/misc/energy_minecart.json
 e0c38d9fadd29689438444e6b284095204451d33 data/railcraft/advancements/recipes/misc/etched_abyssal_stone.json
 8be9a225e6aea2276a665775759e8995c20075ef data/railcraft/advancements/recipes/misc/etched_quarried_stone.json
 5910c11ef966233447411c2121ff584dca45d4bd data/railcraft/advancements/recipes/misc/feed_station.json
@@ -843,6 +844,7 @@ c491533c5287ad3d5356956df863357aed52e852 data/railcraft/recipes/electric_wye_tra
 4fe90895663c50472bcabc81340192b245bd101f data/railcraft/recipes/elevator_track.json
 f9d2fd1ffaf7c6362782769abcb1e9122ca33a74 data/railcraft/recipes/embarking_track_kit.json
 e58d5fd463acc2258932811279ea7eea21827510 data/railcraft/recipes/empty_detector.json
+4ab7c9d3fcdd43dcd79aa69db75ff909d8d6ac9a data/railcraft/recipes/energy_minecart.json
 265a265655e5df57f32fcfe4d08af3ab3b8519f6 data/railcraft/recipes/etched_abyssal_stone.json
 37908544cb6d22054472688c9087cfa1816814e3 data/railcraft/recipes/etched_quarried_stone.json
 1ac481d12c370c25a105a83e8cb96e4cae98d8b5 data/railcraft/recipes/feed_station.json

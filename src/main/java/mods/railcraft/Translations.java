@@ -337,6 +337,8 @@ public class Translations {
     public static final String TYPE_RECHARGEABLE = makeKey("tips", "type_rechargeable");
     public static final String TYPE_DISPOSABLE = makeKey("tips", "type_disposable");
     public static final String EMPTY = makeKey("tips", "empty");
+    public static final String ENERGY = makeKey("tips", "energy");
+    public static final String PERCENTAGE = makeKey("tips", "percentage");
   }
 
   public static class Container {
@@ -583,7 +585,13 @@ public class Translations {
   public static class ChargeMeter {
     public static final String START = makeKey("charge_meter", "start");
     public static final String CART = makeKey("charge_meter", "cart");
+    public static final String CHARGE = makeKey("charge_meter", "charge");
+    public static final String DRAW = makeKey("charge_meter", "draw");
+    public static final String LOSS = makeKey("charge_meter", "loss");
     public static final String NETWORK = makeKey("charge_meter", "network");
+    public static final String SIZE = makeKey("charge_meter", "size");
+    public static final String MAX_DRAW = makeKey("charge_meter", "max_draw");
+    public static final String EFFICIENCY = makeKey("charge_meter", "efficiency");
     public static final String NODE = makeKey("charge_meter", "node");
     public static final String PRODUCER = makeKey("charge_meter", "producer");
   }

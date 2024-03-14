@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.TrackLayer;
 import mods.railcraft.world.entity.vehicle.TrackRelayer;
@@ -33,6 +34,15 @@ public class RailcraftEntityTypes {
           () -> create("tank_minecart",
               EntityType.Builder
                   .<TankMinecart>of(TankMinecart::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final DeferredHolder<EntityType<?>, EntityType<EnergyMinecart>> ENERGY_MINECART =
+      deferredRegister.register("energy_minecart",
+          () -> create("energy_minecart",
+              EntityType.Builder
+                  .<EnergyMinecart>of(EnergyMinecart::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));

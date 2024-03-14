@@ -56,6 +56,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, serverLevel);
+    this.loadFromItemStack(itemStack);
   }
 
   @Override
@@ -173,11 +174,10 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   protected void loadFromItemStack(ItemStack itemStack) {
     super.loadFromItemStack(itemStack);
-    var tag = itemStack.getOrCreateTag();
-    if (this.cartStorage == null) {
-      this.cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
+    var tag = itemStack.getTag();
+    if (tag != null && tag.contains(CompoundTagKeys.ENERGY)) {
+      this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
     }
-    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
   }
 
   @Override
