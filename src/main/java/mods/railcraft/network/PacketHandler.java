@@ -9,6 +9,7 @@ import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.network.to_server.SetActionSignalBoxMessage;
 import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.network.to_server.SetEmbarkingTrackMessage;
+import mods.railcraft.network.to_server.SetFilterSlotMessage;
 import mods.railcraft.network.to_server.SetFluidManipulatorMessage;
 import mods.railcraft.network.to_server.SetItemDetectorMessage;
 import mods.railcraft.network.to_server.SetItemManipulatorMessage;
@@ -88,6 +89,7 @@ public final class PacketHandler {
     registrar.play(SetItemDetectorMessage.ID, SetItemDetectorMessage::read);
     registrar.play(SetRoutingDetectorMessage.ID, SetRoutingDetectorMessage::read);
     registrar.play(SetTankDetectorMessage.ID, SetTankDetectorMessage::read);
+    registrar.play(SetFilterSlotMessage.ID, SetFilterSlotMessage::read);
   }
 
   private static void registerServerToClient(PacketRegistrar registrar) {

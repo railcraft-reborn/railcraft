@@ -1,39 +1,46 @@
-package mods.railcraft.network.play;
+package mods.railcraft.network.to_server;
 
-import java.util.function.Supplier;
+import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.network.RailcraftCustomPacketPayload;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public record SetFilterSlotMessage(int slotIndex, ItemStack stack) {
+public record SetFilterSlotMessage(
+    int slotIndex, ItemStack stack) implements RailcraftCustomPacketPayload {
 
-  public static SetFilterSlotMessage decode(FriendlyByteBuf in) {
-    var slotIndex = in.readVarInt();
-    var stack = in.readItem();
-    return new SetFilterSlotMessage(slotIndex, stack);
+  public static final ResourceLocation ID = RailcraftConstants.rl("set_filter_slot");
+
+  public static SetFilterSlotMessage read(FriendlyByteBuf buf) {
+    return new SetFilterSlotMessage(buf.readVarInt(), buf.readItem());
   }
 
-  public void encode(FriendlyByteBuf out) {
-    out.writeVarInt(this.slotIndex);
-    out.writeItem(this.stack);
+  @Override
+  public void write(FriendlyByteBuf buf) {
+    buf.writeVarInt(this.slotIndex);
+    buf.writeItem(this.stack);
   }
 
-  public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var player = context.get().getSender();
-    if (player == null) {
-      return false;
-    }
-    if (!this.stack.isEmpty() && this.stack.getCount() <= this.stack.getMaxStackSize()) {
-      var container = player.containerMenu;
-      if (container != null && this.slotIndex >= 0 && this.slotIndex < container.slots.size()) {
-        if (container.getSlot(this.slotIndex) instanceof RailcraftSlot slot && slot.isPhantom()) {
-          if (slot.mayPlace(this.stack)) {
-            slot.set(this.stack);
+  @Override
+  public ResourceLocation id() {
+    return ID;
+  }
+
+  @Override
+  public void handle(PlayPayloadContext context) {
+    context.player().ifPresent(player -> {
+      if (!this.stack.isEmpty() && this.stack.getCount() <= this.stack.getMaxStackSize()) {
+        var container = player.containerMenu;
+        if (container != null && this.slotIndex >= 0 && this.slotIndex < container.slots.size()) {
+          if (container.getSlot(this.slotIndex) instanceof RailcraftSlot slot && slot.isPhantom()) {
+            if (slot.mayPlace(this.stack)) {
+              slot.set(this.stack);
+            }
           }
         }
       }
-    }
-    return true;
+    });
   }
 }

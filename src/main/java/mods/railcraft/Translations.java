@@ -183,6 +183,7 @@ public class Translations {
     public static final String NONE = makeKey("tips", "none");
     public static final String GOOGLES_DESC = makeKey("tips", "googles.desc");
     public static final String GOOGLES_AURA = makeKey("tips", "googles.aura");
+    public static final String GOOGLES_AURA_NONE = makeKey("tips", "googles.aura.none");
     public static final String GOOGLES_AURA_SHUNTING = makeKey("tips", "googles.aura.shunting");
     public static final String GOOGLES_AURA_SIGNALLING =
         makeKey("tips", "googles.aura.signalling");
