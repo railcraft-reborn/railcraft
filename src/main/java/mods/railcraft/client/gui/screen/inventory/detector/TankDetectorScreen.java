@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen.inventory.detector;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
@@ -10,12 +11,11 @@ import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class TankDetectorScreen extends AbstractContainerScreen<TankDetectorMenu> {
+public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       RailcraftConstants.rl("textures/gui/container/tank_detector.png");
@@ -29,6 +29,11 @@ public class TankDetectorScreen extends AbstractContainerScreen<TankDetectorMenu
     this.imageHeight = 140;
     this.inventoryLabelY = this.imageHeight - 94;
     this.tankDetectorBlockEntity = this.menu.getTankDetectorBlockEntity();
+  }
+
+  @Override
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 
   @Override
@@ -59,14 +64,6 @@ public class TankDetectorScreen extends AbstractContainerScreen<TankDetectorMenu
     if (this.refreshTimer++ >= REFRESH_INTERVAL_TICKS) {
       this.mode.setState(this.tankDetectorBlockEntity.getMode());
     }
-  }
-
-  @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
-    final int x = this.leftPos;
-    final int y = this.topPos;
-    guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
   }
 
   @Override

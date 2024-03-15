@@ -2,19 +2,19 @@ package mods.railcraft.client.gui.screen.inventory.detector;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
+import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 
-public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu> {
+public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       RailcraftConstants.rl("textures/gui/container/item_detector.png");
@@ -24,6 +24,11 @@ public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu
   public ItemDetectorScreen(ItemDetectorMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
     this.itemDetector = menu.getItemDetector();
+  }
+
+  @Override
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 
   @Override
@@ -73,19 +78,10 @@ public class ItemDetectorScreen extends AbstractContainerScreen<ItemDetectorMenu
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
-    final int x = this.leftPos;
-    final int y = this.topPos;
-    guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
+    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
     var visible = itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED;
     this.filterLeft.visible = visible;
     this.filterRight.visible = visible;
-  }
-
-  @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    super.render(guiGraphics, mouseX, mouseY, partialTick);
-
   }
 
   @Override
