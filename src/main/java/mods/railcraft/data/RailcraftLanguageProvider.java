@@ -402,10 +402,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
     this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_NO_WHISTLE, "There is currently no whistle installed");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "Whistle pitch:");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
     this.add(Translations.Tips.TRACK_RELAYER, "Replaces one track with another");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
@@ -421,10 +422,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
     this.add(Translations.Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
     this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
-    this.add(Translations.Tips.CLEAR, "Clear");
+    this.add(Translations.Tips.NONE, "None");
     this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
     this.add(Translations.Tips.GOOGLES_AURA, "Current Aura:");
-    this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");
     this.add(Translations.Tips.GOOGLES_AURA_SHUNTING, "Shunting");
     this.add(Translations.Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
     this.add(Translations.Tips.GOOGLES_AURA_SURVEYING, "Surveying");

@@ -90,7 +90,7 @@ public class GogglesItem extends ArmorItem {
   public enum Aura {
     // TODO: 1.20.4+ use CODECS
 
-    NONE(Translations.Tips.GOOGLES_AURA_NONE),
+    NONE(Translations.Tips.NONE),
     TRACKING(Translations.Tips.GOOGLES_AURA_TRACKING),
     TUNING(Translations.Tips.GOOGLES_AURA_TUNING),
     SHUNTING(Translations.Tips.GOOGLES_AURA_SHUNTING),
