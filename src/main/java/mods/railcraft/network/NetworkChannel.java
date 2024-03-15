@@ -8,6 +8,7 @@ import mods.railcraft.network.play.OpenLogBookScreen;
 import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.network.play.SetAnalogSignalControllerBoxAttributesMessage;
 import mods.railcraft.network.play.SetEmbarkingTrackAttributesMessage;
+import mods.railcraft.network.play.SetFilterSlotMessage;
 import mods.railcraft.network.play.SetFluidManipulatorAttributesMessage;
 import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
 import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
@@ -198,6 +199,13 @@ public enum NetworkChannel {
           .encoder(SetRoutingDetectorAttributesMessage::encode)
           .decoder(SetRoutingDetectorAttributesMessage::decode)
           .consumerMainThread(SetRoutingDetectorAttributesMessage::handle)
+          .add();
+      simpleChannel
+          .messageBuilder(SetFilterSlotMessage.class, 0x17,
+              NetworkDirection.PLAY_TO_SERVER)
+          .encoder(SetFilterSlotMessage::encode)
+          .decoder(SetFilterSlotMessage::decode)
+          .consumerMainThread(SetFilterSlotMessage::handle)
           .add();
     }
   };

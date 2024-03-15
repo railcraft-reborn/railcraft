@@ -15,6 +15,7 @@ import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.CrusherScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
+import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamOvenScreen;
 import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
@@ -71,6 +72,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeClickArea(CrusherScreen.class, 73, 20, 30, 38, RecipeTypes.CRUSHER);
     registration.addRecipeClickArea(SteamOvenScreen.class, 65, 18, 23, 50,
         mezz.jei.api.constants.RecipeTypes.SMELTING);
+    registration.addGhostIngredientHandler(RailcraftMenuScreen.class, new GhostIngredientHandler<>());
   }
 
   @Override

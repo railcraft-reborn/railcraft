@@ -14,6 +14,6 @@ public class FluidFilterSlot extends RailcraftSlot {
 
   @Override
   public boolean mayPlace(ItemStack itemstack) {
-    return !FluidTools.isEmptyContainer(itemstack);
+    return FluidTools.isFluidHandler(itemstack) && !FluidTools.isEmptyContainer(itemstack);
   }
 }

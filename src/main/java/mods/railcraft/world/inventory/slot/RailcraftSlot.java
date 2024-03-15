@@ -13,7 +13,7 @@ public class RailcraftSlot extends Slot {
 
   @Nullable
   protected List<Component> tooltip;
-  protected boolean phantom;
+  private boolean phantom;
   protected boolean canAdjustPhantom = true;
   protected boolean canShift = true;
   protected int stackLimit = -1;
