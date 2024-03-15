@@ -160,6 +160,8 @@ public class Translations {
         makeKey("tips", "locomotive.item.primary");
     public static final String LOCOMOTIVE_ITEM_SECONDARY =
         makeKey("tips", "locomotive.item.secondary");
+    public static final String LOCOMOTIVE_ITEM_NO_WHISTLE =
+        makeKey("tips", "locomotive.item.no_whistle");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
     public static final String TRACK_LAYER = makeKey("tips", "track_layer");
@@ -178,10 +180,9 @@ public class Translations {
     public static final String STEAM_TURBINE_DESC_3 = makeKey("tips", "steam_turbine_desc3");
     public static final String SPIKE_MAUL = makeKey("tips", "spike_maul");
     public static final String OVERALLS = makeKey("tips", "overalls");
-    public static final String CLEAR = makeKey("tips", "clear");
+    public static final String NONE = makeKey("tips", "none");
     public static final String GOOGLES_DESC = makeKey("tips", "googles.desc");
     public static final String GOOGLES_AURA = makeKey("tips", "googles.aura");
-    public static final String GOOGLES_AURA_NONE = makeKey("tips", "googles.aura.none");
     public static final String GOOGLES_AURA_SHUNTING = makeKey("tips", "googles.aura.shunting");
     public static final String GOOGLES_AURA_SIGNALLING =
         makeKey("tips", "googles.aura.signalling");
@@ -584,7 +585,6 @@ public class Translations {
 
   public static class ChargeMeter {
     public static final String START = makeKey("charge_meter", "start");
-    public static final String CART = makeKey("charge_meter", "cart");
     public static final String CHARGE = makeKey("charge_meter", "charge");
     public static final String DRAW = makeKey("charge_meter", "draw");
     public static final String LOSS = makeKey("charge_meter", "loss");

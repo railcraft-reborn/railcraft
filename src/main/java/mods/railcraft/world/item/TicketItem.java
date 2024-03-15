@@ -38,23 +38,26 @@ public class TicketItem extends Item {
   @Override
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list,
       TooltipFlag flag) {
-    if (stack.hasTag()) {
-      GameProfile owner = getOwner(stack);
-      if (owner != null) {
-        list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER));
-        list.add(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY));
-      }
-
-      String dest = getDestination(stack);
-      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST));
-      if (dest.isEmpty()) {
-        list.add(Component.translatable(Translations.Tips.CLEAR).withStyle(ChatFormatting.GRAY));
-      } else {
-        list.add(Component.literal(dest).withStyle(ChatFormatting.GRAY));
-      }
-    } else
+    if (!stack.hasTag()) {
       list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK)
           .withStyle(ChatFormatting.GRAY));
+      return;
+    }
+    var owner = getOwner(stack);
+    if (owner != null) {
+      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER)
+          .withStyle(ChatFormatting.AQUA)
+          .append(" ")
+          .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
+    }
+
+    String dest = getDestination(stack);
+    list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST)
+        .withStyle(ChatFormatting.AQUA)
+        .append(" ")
+        .append((dest.isEmpty()
+            ? Component.translatable(Translations.Tips.NONE)
+            : Component.literal(dest)).withStyle(ChatFormatting.GRAY)));
   }
 
   @Override

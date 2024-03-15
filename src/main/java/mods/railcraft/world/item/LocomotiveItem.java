@@ -39,25 +39,36 @@ public class LocomotiveItem extends CartItem implements Filter {
   public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip,
       TooltipFlag adv) {
     var owner = getOwner(stack);
-    if (owner != null && !StringUtils.isBlank(owner.getName())) {
-      tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, owner.getName())
-          .withStyle(ChatFormatting.GRAY));
+    if (owner != null && StringUtils.isNotBlank(owner.getName())) {
+      tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER)
+          .withStyle(ChatFormatting.AQUA)
+          .append(" ")
+          .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
     }
 
     tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY)
+        .withStyle(ChatFormatting.AQUA)
         .append(" ")
-        .append(Component.translatable("color.minecraft." + getPrimaryColor(stack).getName()))
-        .withStyle(ChatFormatting.GRAY));
+        .append(Component.translatable("color.minecraft." + getPrimaryColor(stack).getName())
+        .withStyle(ChatFormatting.GRAY)));
 
     tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY)
+        .withStyle(ChatFormatting.AQUA)
         .append(" ")
-        .append(Component.translatable("color.minecraft." + getSecondaryColor(stack).getName()))
-        .withStyle(ChatFormatting.GRAY));
+        .append(Component.translatable("color.minecraft." + getSecondaryColor(stack).getName())
+        .withStyle(ChatFormatting.GRAY)));
 
     float whistle = getWhistlePitch(stack);
-    var whistleText = whistle < 0 ? "???" : String.format("%.2f", whistle);
-    tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, whistleText)
-        .withStyle(ChatFormatting.GRAY));
+    if (whistle < 0) {
+      tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_NO_WHISTLE)
+          .withStyle(ChatFormatting.GRAY));
+    } else {
+      tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE)
+          .withStyle(ChatFormatting.AQUA)
+          .append(" ")
+          .append(Component.literal(String.format("%.2f", whistle))
+              .withStyle(ChatFormatting.GRAY)));
+    }
   }
 
   public static void setItemColorData(ItemStack stack, DyeColor primaryColor,

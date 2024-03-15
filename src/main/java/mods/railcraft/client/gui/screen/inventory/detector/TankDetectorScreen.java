@@ -32,6 +32,11 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   }
 
   @Override
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
+  }
+
+  @Override
   public void init() {
     super.init();
     int centreX = (this.width - this.getXSize()) / 2;
@@ -59,11 +64,6 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
     if (this.refreshTimer++ >= REFRESH_INTERVAL_TICKS) {
       this.mode.setState(this.tankDetectorBlockEntity.getMode());
     }
-  }
-
-  @Override
-  public ResourceLocation getWidgetsTexture() {
-    return BACKGROUND_TEXTURE;
   }
 
   @Override

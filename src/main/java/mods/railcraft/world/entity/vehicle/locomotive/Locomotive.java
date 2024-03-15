@@ -436,7 +436,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, 1);
+      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, this.whistlePitch);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }

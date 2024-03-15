@@ -9,6 +9,7 @@ import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
@@ -24,6 +25,11 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   public ItemDetectorScreen(ItemDetectorMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
     this.itemDetector = menu.getItemDetector();
+  }
+
+  @Override
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 
   @Override
@@ -72,11 +78,6 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
-    return BACKGROUND_TEXTURE;
-  }
-
-  @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
     super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
     var visible = itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED;
@@ -104,7 +105,8 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
       var slot = this.menu.slots.get(slotNum);
       int displayX = slot.x;
       int displayY = slot.y;
-      guiGraphics.fill(displayX, displayY, displayX + 16, displayY + 16, color);
+      guiGraphics.fill(RenderType.guiOverlay(), displayX, displayY,
+          displayX + 16, displayY + 16, color);
     }
   }
 }
