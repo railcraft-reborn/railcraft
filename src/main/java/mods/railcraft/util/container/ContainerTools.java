@@ -12,7 +12,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -93,8 +92,8 @@ public abstract class ContainerTools {
   public static Block getBlockFromStack(ItemStack stack) {
     if (stack.isEmpty())
       return Blocks.AIR;
-    Item item = stack.getItem();
-    return item instanceof BlockItem ? ((BlockItem) item).getBlock() : Blocks.AIR;
+    var item = stack.getItem();
+    return item instanceof BlockItem blockItem ? blockItem.getBlock() : Blocks.AIR;
   }
 
   public static BlockState getBlockStateFromStack(ItemStack stack) {

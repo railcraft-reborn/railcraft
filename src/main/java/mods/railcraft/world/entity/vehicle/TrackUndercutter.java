@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle;
 
-import java.util.Set;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackUtil;
@@ -28,16 +27,14 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class TrackUndercutter extends MaintenancePatternMinecart {
 
-  private static final Set<Block> EXCLUDED_BLOCKS = Set.of(Blocks.SAND);
-
   public static final int SLOT_STOCK_UNDER = 0;
   public static final int SLOT_STOCK_SIDE = 1;
-  private static final int SLOT_EXIST_UNDER_A = 0;
-  private static final int SLOT_EXIST_UNDER_B = 1;
-  private static final int SLOT_EXIST_SIDE_A = 2;
-  private static final int SLOT_EXIST_SIDE_B = 3;
-  private static final int SLOT_REPLACE_UNDER = 4;
-  private static final int SLOT_REPLACE_SIDE = 5;
+  public static final int SLOT_EXIST_UNDER_A = 0;
+  public static final int SLOT_EXIST_UNDER_B = 1;
+  public static final int SLOT_EXIST_SIDE_A = 2;
+  public static final int SLOT_EXIST_SIDE_B = 3;
+  public static final int SLOT_REPLACE_UNDER = 4;
+  public static final int SLOT_REPLACE_SIDE = 5;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 2);
 
   public TrackUndercutter(EntityType<?> type, Level level) {
@@ -127,7 +124,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     var existingTrack = this.patternContainer.getItem(existingSlot);
     var stockTrack = this.getItem(stockSlot);
 
-    if (!isValidBallast(stockTrack, this)) {
+    if (!isValidBallast(stockTrack)) {
       return;
     }
 
@@ -206,16 +203,14 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     return false;
   }
 
-  public static boolean isValidBallast(ItemStack stack, TrackUndercutter trackUndercutter) {
+  public boolean isValidBallast(ItemStack stack) {
     if (stack.isEmpty()) {
       return false;
     }
     var state = ContainerTools.getBlockStateFromStack(stack);
-    if (EXCLUDED_BLOCKS.contains(state.getBlock())) {
+    if (state.is(RailcraftTags.Blocks.TRACK_UNDERCUTTER_INVALID_BALLAST)) {
       return false;
     }
-
-    return state.isSuffocating(trackUndercutter.level(),
-        trackUndercutter.blockPosition());
+    return state.isSuffocating(this.level(), this.blockPosition());
   }
 }

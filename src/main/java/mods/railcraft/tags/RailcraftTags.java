@@ -200,6 +200,8 @@ public class RailcraftTags {
   public static class Blocks {
 
     public static final TagKey<Block> BALLAST = tag("ballast");
+    public static final TagKey<Block> TRACK_UNDERCUTTER_INVALID_BALLAST =
+        tag("track_undercutter_invalid_ballast");
     public static final TagKey<Block> SWITCH_TRACK_ACTUATOR = tag("switch_track_actuator");
     public static final TagKey<Block> ASPECT_RECEIVER = tag("aspect_receiver");
     public static final TagKey<Block> ASPECT_EMITTER = tag("aspect_emitter");
