@@ -23,10 +23,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceRecipe> {
 
-  private static final int WIDTH = 82;
-  private static final int HEIGHT = 54;
+  public static final int WIDTH = 82;
+  public static final int HEIGHT = 54;
 
-  private static final ResourceLocation BLAST_FURNACE_BACKGROUND =
+  public static final ResourceLocation BLAST_FURNACE_BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
 
   private final IDrawable background, icon, flame, arrow;

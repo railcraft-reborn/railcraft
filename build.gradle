@@ -125,6 +125,10 @@ repositories {
         name 'curseforge'
         url 'https://www.cursemaven.com'
     }
+    maven {
+        name 'TerraformersMC'
+        url 'https://maven.terraformersmc.com/'
+    }
 }
 
 dependencies {
@@ -138,6 +142,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
+
+    compileOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version:api")
+    runtimeOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version")
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
