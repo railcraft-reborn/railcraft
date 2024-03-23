@@ -34,7 +34,7 @@ public class BlastFurnaceEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(BlastFurnaceRecipeCategory.BLAST_FURNACE_BACKGROUND,
+    widgets.addTexture(BlastFurnaceRecipeCategory.BACKGROUND,
         0, 0, width, height, 55, 16);
     widgets.addFillingArrow(24, 18, 10_000).tooltip((x, y) -> {
       int cookTime = recipe.getCookingTime();

@@ -63,10 +63,10 @@ public class RailcraftEmiPlugin implements EmiPlugin {
   }
 
   private <C extends Container, T extends Recipe<C>> void registerRecipe(
-      EmiRegistry registry, RecipeType<T> recipeType, Function<T, EmiRecipe> consumer) {
+      EmiRegistry registry, RecipeType<T> recipeType, Function<T, EmiRecipe> emiRecipeFunction) {
     var manager = registry.getRecipeManager();
     for (var x : manager.getAllRecipesFor(recipeType)) {
-      registry.addRecipe(consumer.apply(x));
+      registry.addRecipe(emiRecipeFunction.apply(x));
     }
   }
 }

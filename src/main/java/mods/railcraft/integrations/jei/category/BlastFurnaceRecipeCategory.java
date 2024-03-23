@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
@@ -26,21 +27,21 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
   public static final int WIDTH = 82;
   public static final int HEIGHT = 54;
 
-  public static final ResourceLocation BLAST_FURNACE_BACKGROUND =
+  public static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
 
   private final IDrawable background, icon, flame, arrow;
 
   public BlastFurnaceRecipeCategory(IGuiHelper guiHelper) {
-    this.background = guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 55, 16, WIDTH, HEIGHT);
+    this.background = guiHelper.createDrawable(BACKGROUND, 55, 16, WIDTH, HEIGHT);
     var itemStack = new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get());
     this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.flame = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 176, 0, 14, 14),
+        guiHelper.createDrawable(BACKGROUND, 176, 0, 14, 14),
         200, IDrawableAnimated.StartDirection.TOP, true);
     this.arrow = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(BLAST_FURNACE_BACKGROUND, 177, 14, 22, 15),
+        guiHelper.createDrawable(BACKGROUND, 177, 14, 22, 15),
         200, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
@@ -56,30 +57,29 @@ public class BlastFurnaceRecipeCategory implements IRecipeCategory<BlastFurnaceR
 
   @Override
   public IDrawable getBackground() {
-    return background;
+    return this.background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return icon;
+    return this.icon;
   }
 
   @Override
   public void draw(BlastFurnaceRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
       double mouseX, double mouseY) {
-    flame.draw(guiGraphics, 1, 20);
-    arrow.draw(guiGraphics, 25, 19);
+    this.flame.draw(guiGraphics, 1, 20);
+    this.arrow.draw(guiGraphics, 25, 19);
 
     int cookTime = recipe.getCookingTime();
     if (cookTime > 0) {
       int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
       var timeString = Component.translatable("gui.jei.category.smelting.time.seconds",
           cookTimeSeconds);
-      var minecraft = Minecraft.getInstance();
-      var font = minecraft.font;
+      var font = Minecraft.getInstance().font;
       int stringWidth = font.width(timeString);
       guiGraphics.drawString(font, timeString, getBackground().getWidth() - stringWidth - 30,
-          45, 0xFF808080, false);
+          45, RailcraftJeiPlugin.TEXT_COLOR, false);
     }
   }
 

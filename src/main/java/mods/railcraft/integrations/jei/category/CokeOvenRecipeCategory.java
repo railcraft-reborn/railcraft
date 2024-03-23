@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
@@ -27,21 +28,21 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   public static final int WIDTH = 124;
   public static final int HEIGHT = 49;
 
-  public static final ResourceLocation COKE_OVEN_BACKGROUND =
+  public static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/coke_oven.png");
 
   private final IDrawable background, icon, flame, arrow;
 
   public CokeOvenRecipeCategory(IGuiHelper guiHelper) {
-    this.background = guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 15, 23, WIDTH, HEIGHT);
+    this.background = guiHelper.createDrawable(BACKGROUND, 15, 23, WIDTH, HEIGHT);
     var itemStack = new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get());
     this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.flame = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 176, 47, 14, 14),
+        guiHelper.createDrawable(BACKGROUND, 176, 47, 14, 14),
         200, IDrawableAnimated.StartDirection.TOP, true);
     this.arrow = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(COKE_OVEN_BACKGROUND, 176, 61, 22, 15),
+        guiHelper.createDrawable(BACKGROUND, 176, 61, 22, 15),
         200, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
@@ -57,30 +58,29 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
 
   @Override
   public IDrawable getBackground() {
-    return background;
+    return this.background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return icon;
+    return this.icon;
   }
 
   @Override
   public void draw(CokeOvenRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
       double mouseX, double mouseY) {
-    flame.draw(guiGraphics, 1, 3);
-    arrow.draw(guiGraphics, 19, 21);
+    this.flame.draw(guiGraphics, 1, 3);
+    this.arrow.draw(guiGraphics, 19, 21);
 
     int cookTime = recipe.getCookingTime();
     if (cookTime > 0) {
       int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
       var timeString = Component.translatable("gui.jei.category.smelting.time.seconds",
           cookTimeSeconds);
-      var minecraft = Minecraft.getInstance();
-      var font = minecraft.font;
+      var font = Minecraft.getInstance().font;
       int stringWidth = font.width(timeString);
       guiGraphics.drawString(font, timeString, getBackground().getWidth() - stringWidth - 80, 43,
-          0xFF808080, false);
+          RailcraftJeiPlugin.TEXT_COLOR, false);
     }
   }
 

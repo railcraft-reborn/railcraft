@@ -44,7 +44,8 @@ public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
       double mouseY) {
     var font = Minecraft.getInstance().font;
     int stringWidth = font.width(this.info) / 2;
-    guiGraphics.drawString(font, this.info, 82 - stringWidth, 0, 0xFF808080, false);
+    guiGraphics.drawString(font, this.info, 82 - stringWidth, 0,
+        RailcraftJeiPlugin.TEXT_COLOR, false);
   }
 
   @Override

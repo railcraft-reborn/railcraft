@@ -31,8 +31,8 @@ public class CrusherEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(CrusherRecipeCategory.CRUSHER_BACKGROUND, 0, 0, width, height, 0, 171);
-    var crushingTexture = new EmiTexture(CrusherRecipeCategory.CRUSHER_BACKGROUND,
+    widgets.addTexture(CrusherRecipeCategory.BACKGROUND, 0, 0, width, height, 0, 171);
+    var crushingTexture = new EmiTexture(CrusherRecipeCategory.BACKGROUND,
         144, 171, 29, 53);
     widgets.addAnimatedTexture(crushingTexture, 58, 0,
         1000 * this.recipe.getProcessTime() / SharedConstants.TICKS_PER_SECOND,

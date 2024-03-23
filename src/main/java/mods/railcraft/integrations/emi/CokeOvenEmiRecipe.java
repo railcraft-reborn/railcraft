@@ -1,6 +1,7 @@
 package mods.railcraft.integrations.emi;
 
 import java.util.List;
+import dev.emi.emi.api.forge.ForgeEmiStack;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.render.EmiTooltipComponents;
@@ -28,7 +29,7 @@ public class CokeOvenEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(CokeOvenRecipeCategory.COKE_OVEN_BACKGROUND, 0, 0, width, height, 15, 23);
+    widgets.addTexture(CokeOvenRecipeCategory.BACKGROUND, 0, 0, width, height, 15, 23);
     widgets.addFillingArrow(18, 20, 10_000).tooltip((x, y) -> {
       int cookTime = recipe.getCookingTime();
       if (cookTime > 0) {
@@ -44,7 +45,7 @@ public class CokeOvenEmiRecipe extends BasicEmiRecipe {
     widgets.addSlot(this.inputs.get(0), 0, 19);
     widgets.addSlot(this.outputs.get(0), 42, 15).large(true).recipeContext(this);
 
-    var fluid = EmiStack.of(recipe.getCreosote().getFluid(), recipe.getCreosote().getAmount());
+    var fluid = ForgeEmiStack.of(recipe.getCreosote());
     widgets.addTank(fluid, 74, 0, 50, 49, 10_000)
         .drawBack(false)
         .recipeContext(this);
