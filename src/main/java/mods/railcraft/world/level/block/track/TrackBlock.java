@@ -11,12 +11,14 @@ import mods.railcraft.api.item.SpikeMaulTarget;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.track.TypedTrack;
+import mods.railcraft.world.item.SpikeMaulItem;
 import mods.railcraft.world.level.block.track.behaivor.TrackSupportTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -91,6 +93,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
+  public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+    if (context.getItemInHand().getItem() instanceof SpikeMaulItem) {
+      return true;
+    }
+    return super.canBeReplaced(state, context);
+  }
+
+  @Override
   public void onPlace(BlockState blockState, Level level, BlockPos pos, BlockState oldBlockState,
       boolean moved) {
     super.onPlace(blockState, level, pos, oldBlockState, moved);
@@ -103,6 +113,17 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
       if (this.getTrackType().isElectric()) {
         this.registerNode(blockState, (ServerLevel) level, pos);
       }
+    }
+  }
+
+  @Override
+  public BlockState updateDir(Level level, BlockPos pos, BlockState state, boolean alwaysPlace) {
+    if (level.isClientSide) {
+      return state;
+    } else {
+      var railshape = state.getValue(this.getShapeProperty());
+      return (new RailcraftState(level, pos, state))
+          .place(level.hasNeighborSignal(pos), alwaysPlace, railshape).getState();
     }
   }
 

@@ -52,28 +52,17 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
     var railShape = TrackUtil.getRailShapeRaw(blockState);
     boolean reversed = blockState.getValue(REVERSED);
 
-    switch (railShape) {
-      case EAST_WEST -> {
-        var offset = reversed ? pos.north() : pos.south();
-        if (!BaseRailBlock.isRail(level, offset)) {
-          return;
-        }
-        var otherShape = TrackUtil.getTrackDirection(level, offset);
-        if (otherShape != RailShape.NORTH_SOUTH) {
-          TrackUtil.setRailShape(level, offset, RailShape.NORTH_SOUTH);
-        }
+    if (railShape == RailShape.NORTH_SOUTH || railShape == RailShape.EAST_WEST) {
+      BlockPos offset;
+      if (railShape == RailShape.NORTH_SOUTH) {
+        offset = reversed ? pos.west() : pos.east();
+      } else {
+        offset = reversed ? pos.north() : pos.south();
       }
-      case NORTH_SOUTH -> {
-        var offset = reversed ? pos.west() : pos.east();
-        if (!BaseRailBlock.isRail(level, offset)) {
-          return;
-        }
-        var otherShape = TrackUtil.getTrackDirection(level, offset);
-        if (otherShape != RailShape.EAST_WEST) {
-          TrackUtil.setRailShape(level, offset, RailShape.EAST_WEST);
-        }
+      if (!BaseRailBlock.isRail(level, offset)) {
+        return;
       }
-      default -> {}
+      TrackUtil.updateDir(level, offset);
     }
   }
 
