@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_comparator",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_comparator"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:signal_sequencer_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

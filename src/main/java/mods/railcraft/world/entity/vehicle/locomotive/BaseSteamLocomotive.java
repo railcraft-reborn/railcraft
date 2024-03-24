@@ -1,6 +1,5 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
@@ -16,7 +15,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
 import mods.railcraft.world.level.material.steam.SteamConstants;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -26,18 +24,15 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public abstract class BaseSteamLocomotive extends Locomotive implements FluidTransferHandler {
 
@@ -56,7 +51,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   protected final StandardTank waterTank =
       StandardTank.ofBuckets(6)
           .fillProcessor(this::checkFill)
-          .filter(() -> Fluids.WATER);
+          .filter(FluidTags.WATER);
 
   protected final StandardTank steamTank =
       StandardTank.ofBuckets(16)
@@ -71,8 +66,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   protected final ContainerMapper invWaterContainers =
       ContainerMapper.make(this, SLOT_WATER_INPUT, 3).ignoreItemChecks();
 
-  private final LazyOptional<TankManager> tankManager =
-      LazyOptional.of(() -> new TankManager(this.waterTank, this.steamTank));
+  private final TankManager tankManager = new TankManager(this.waterTank, this.steamTank);
 
   private int fluidProcessingTimer = 0;
 
@@ -117,14 +111,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   public TankManager getTankManager() {
-    return this.tankManager.orElseThrow(() -> new IllegalStateException("Expected tank manager"));
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == ForgeCapabilities.FLUID_HANDLER
-        ? this.tankManager.cast()
-        : super.getCapability(capability, facing);
+    return this.tankManager;
   }
 
   @Override
@@ -223,7 +210,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   private void ventSteam() {
-    this.steamTank.internalDrain(4, FluidAction.EXECUTE);
+    this.steamTank.internalDrain(4, IFluidHandler.FluidAction.EXECUTE);
   }
 
   public SteamBoiler boiler() {
@@ -237,7 +224,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       return 0;
     }
     if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
-      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, FluidAction.EXECUTE);
+      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, IFluidHandler.FluidAction.EXECUTE);
       return FUEL_PER_REQUEST;
     }
     return 0;
@@ -265,12 +252,12 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public boolean canPassFluidRequests(FluidStack fluid) {
-    return Fluids.WATER.isSame(fluid.getFluid());
+    return fluid.is(FluidTags.WATER);
   }
 
   @Override
   public boolean canAcceptPushedFluid(RollingStock requester, FluidStack fluid) {
-    return Fluids.WATER.isSame(fluid.getFluid());
+    return fluid.is(FluidTags.WATER);
   }
 
   @Override

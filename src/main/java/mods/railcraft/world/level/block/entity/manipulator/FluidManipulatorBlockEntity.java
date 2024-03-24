@@ -25,12 +25,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
 
 public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     implements WorldlyContainer, MenuProvider {
@@ -43,7 +42,6 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   protected final AdvancedContainer fluidFilterContainer =
       new AdvancedContainer(1).listener((Container) this).phantom();
   protected final TankManager tankManager = new TankManager();
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(() -> this.tankManager);
   protected final StandardTank tank = StandardTank.ofBuckets(32);
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int fluidProcessingTimer;
@@ -81,8 +79,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Nullable
   protected static IFluidHandler getFluidHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(ForgeCapabilities.FLUID_HANDLER, direction)
-        .orElse(null);
+    return cart.getCapability(Capabilities.FluidHandler.ENTITY, direction);
   }
 
   public boolean use(Player player, InteractionHand hand) {
@@ -92,8 +89,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart
-        .getCapability(ForgeCapabilities.FLUID_HANDLER, this.getFacing().getOpposite())
-        .isPresent()
+        .getCapability(Capabilities.FluidHandler.ENTITY, this.getFacing().getOpposite()) != null
         && super.canHandleCart(cart);
   }
 
@@ -180,10 +176,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.readPacketData(data);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == ForgeCapabilities.FLUID_HANDLER
-        ? this.fluidHandler.cast()
-        : super.getCapability(capability, facing);
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.tankManager;
   }
 }

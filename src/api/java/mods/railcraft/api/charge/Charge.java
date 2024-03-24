@@ -9,14 +9,19 @@ package mods.railcraft.api.charge;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 /**
  * The heart of the Charge system is here.
@@ -106,7 +111,8 @@ import net.minecraft.world.level.block.state.BlockState;
  * As of 2021, Charge changed from 1 Charge unit to 1 IC2 EU to 1 Charge unit to 1 FE/RF
  *
  */
-public enum Charge implements StringRepresentable {
+public enum Charge implements StringRepresentable,
+    IBlockCapabilityProvider<IEnergyStorage, @Nullable Direction> {
   /**
    * The distribution network is the charge network used by standard consumers, wires, tracks, and
    * batteries.
@@ -165,9 +171,21 @@ public enum Charge implements StringRepresentable {
   /**
    * This is how you get access to the meat of the charge network.
    */
-  public Charge.Network network(ServerLevel level) {
+  public Network network(ServerLevel level) {
     Objects.requireNonNull(this.provider);
     return this.provider.network(level);
+  }
+
+  @Override
+  public final ChargeStorage getCapability(
+      Level level,
+      BlockPos pos,
+      BlockState state,
+      @Nullable BlockEntity blockEntity,
+      @Nullable Direction context) {
+    return level instanceof ServerLevel serverLevel
+        ? this.network(serverLevel).access(pos).storage().orElse(null)
+        : null;
   }
 
   /**

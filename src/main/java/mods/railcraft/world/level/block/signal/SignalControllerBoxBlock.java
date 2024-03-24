@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.signal;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -26,8 +27,16 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class SignalControllerBoxBlock extends SignalBoxBlock implements EntityBlock {
 
+  private static final MapCodec<SignalControllerBoxBlock> CODEC =
+      simpleCodec(SignalControllerBoxBlock::new);
+
   public SignalControllerBoxBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends SignalBoxBlock> codec() {
+    return CODEC;
   }
 
   @Override

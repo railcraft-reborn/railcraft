@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_nickel_electrode",
-      "has_zinc_electrode",
-      "has_the_recipe"
+      "has_zinc_electrode"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:nickel_zinc_battery"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

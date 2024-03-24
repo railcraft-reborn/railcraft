@@ -13,10 +13,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
 
@@ -27,7 +26,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   private static final int FUEL_PER_TICK = 5;
   private final ContainerMapper fuelContainer, outputContainer, slagContainer;
 
-  private final LazyOptional<IItemHandler> itemHandler;
+  private final IItemHandler itemHandler;
 
   /**
    * The number of ticks that the furnace will keep burning
@@ -45,7 +44,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
 
-    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+    itemHandler = new InvWrapper(this) {
       @Override
       @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -63,7 +62,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
         }
         return stack;
       }
-    });
+    };
   }
 
   public ContainerManipulator<?> getFuelContainer() {
@@ -123,7 +122,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   private int getItemBurnTime(ItemStack itemStack) {
-    return ForgeHooks.getBurnTime(itemStack, null);
+    return CommonHooks.getBurnTime(itemStack, null);
   }
 
   private void loadFuel() {
@@ -176,7 +175,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return this.getItemBurnTime(itemStack) > 0;
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return itemHandler;
   }
 

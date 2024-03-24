@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_advanced_rail",
-      "has_standard_rail",
-      "has_the_recipe"
+      "has_standard_rail"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:elevator_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

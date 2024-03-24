@@ -1,41 +1,21 @@
 package mods.railcraft.advancements;
 
-import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 
-public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.Instance> {
-
-  private static final ResourceLocation ID = RailcraftConstants.rl("use_track_kit");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  public UseTrackKitTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
-    var used = JsonUtil.getAsJsonObject(json, "item")
-        .map(ItemPredicate::fromJson)
-        .orElse(ItemPredicate.ANY);
-    var location = JsonUtil.getAsJsonObject(json, "location")
-        .map(LocationPredicate::fromJson)
-        .orElse(LocationPredicate.ANY);
-    return new UseTrackKitTrigger.Instance(contextAwarePredicate, used, location);
-  }
+public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user explodes a cart.
@@ -43,42 +23,43 @@ public class UseTrackKitTrigger extends SimpleCriterionTrigger<UseTrackKitTrigge
   public void trigger(ServerPlayer playerEntity, ServerLevel serverLevel,
       BlockPos blockPos, ItemStack stack) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(serverLevel, blockPos, stack));
+        criterionInstance -> criterionInstance.matches(serverLevel, blockPos, stack));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public static Criterion<TriggerInstance> hasUsedTrackKit() {
+    return RailcraftCriteriaTriggers.TRACK_KIT_USE.createCriterion(
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
 
-    private final ItemPredicate item;
-    private final LocationPredicate location;
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
-        ItemPredicate itemPredicate, LocationPredicate locationPredicate) {
-      super(UseTrackKitTrigger.ID, contextAwarePredicate);
-      this.item = itemPredicate;
-      this.location = locationPredicate;
-    }
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<ItemPredicate> item,
+      Optional<LocationPredicate> location) implements SimpleCriterionTrigger.SimpleInstance {
 
-    public static UseTrackKitTrigger.Instance hasUsedTrackKit() {
-      return new UseTrackKitTrigger.Instance(ContextAwarePredicate.ANY,
-          ItemPredicate.ANY, LocationPredicate.ANY);
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(ItemPredicate.CODEC, "item")
+                .forGetter(TriggerInstance::item),
+            ExtraCodecs.strictOptionalField(LocationPredicate.CODEC, "location")
+                .forGetter(TriggerInstance::location)
+        ).apply(instance, TriggerInstance::new));
 
     public boolean matches(ServerLevel level, BlockPos blockPos, ItemStack stack) {
-      return item.matches(stack)
-          && this.location.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ());
+      return this.item.map(x -> x.matches(stack)).orElse(true)
+          && this.location.map(x ->
+          x.matches(level, blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse(true);
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
-      JsonObject json = new JsonObject();
-      json.add("item", this.item.serializeToJson());
-      json.add("location", this.location.serializeToJson());
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

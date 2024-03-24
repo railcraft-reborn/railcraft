@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.inventory.slot.OutputSlot;
@@ -10,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
 
@@ -51,12 +52,11 @@ public class ItemUnloaderBlockEntity extends ItemManipulatorBlockEntity {
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return super.canHandleCart(cart)
-        && cart
-            .getCapability(
-                ForgeCapabilities.ITEM_HANDLER, this.getFacing().getOpposite())
-            .map(ContainerManipulator::of)
-            .map(ContainerManipulator::hasItems)
-            .orElse(false);
+        && Optional.ofNullable(cart
+          .getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, this.getFacing().getOpposite())
+        ).map(ContainerManipulator::of)
+        .map(ContainerManipulator::hasItems)
+        .orElse(false);
   }
 
   private void clearContainer() {

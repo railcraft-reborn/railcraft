@@ -1,18 +1,18 @@
 package mods.railcraft;
 
-import org.slf4j.Logger;
-import com.mojang.logging.LogUtils;
+import java.util.Optional;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.api.fuel.FuelUtil;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.data.RailcraftBlockTagsProvider;
 import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
+import mods.railcraft.data.RailcraftDataMapProvider;
 import mods.railcraft.data.RailcraftDatapackProvider;
 import mods.railcraft.data.RailcraftFluidTagsProvider;
 import mods.railcraft.data.RailcraftItemTagsProvider;
@@ -27,16 +27,14 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
-import mods.railcraft.fuel.FuelManagerImpl;
+import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.loot.RailcraftLootModifiers;
-import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
-import mods.railcraft.network.play.LinkedCartsMessage;
+import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.capability.CapabilityUtil;
 import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
@@ -45,7 +43,6 @@ import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
-import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
@@ -56,7 +53,25 @@ import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
+import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
+import mods.railcraft.world.level.block.entity.detector.FilterDetectorBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
+import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
+import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
+import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
@@ -67,12 +82,11 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.SharedConstants;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -80,36 +94,39 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.world.ForgeChunkManager;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
+import net.neoforged.neoforge.common.world.chunk.TicketController;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
 
   public static final boolean BETA = true;
-  private static final Logger LOGGER = LogUtils.getLogger();
+  public static final TicketController CHUNK_CONTROLLER =
+      new TicketController(RailcraftConstants.rl("ticket_controller"),
+          new WorldSpikeBlockEntity.RailcraftValidationTicket());
 
   static {
-    FuelUtil._setFuelManager(new FuelManagerImpl());
     Charge._setZapEffectProvider(new ZapEffectProviderImpl());
     for (var value : ChargeProviderImpl.values()) {
       value.getCharge()._setProvider(value);
@@ -118,20 +135,22 @@ public class Railcraft {
 
   private final MinecartHandler minecartHandler = new MinecartHandler();
 
-  public Railcraft() {
-    MinecraftForge.EVENT_BUS.register(this);
+  public Railcraft(IEventBus modEventBus, Dist dist) {
+    NeoForge.EVENT_BUS.register(this);
 
     RailcraftConfig.registerConfig(ModLoadingContext.get());
 
-    var modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     modEventBus.addListener(this::handleCommonSetup);
+    modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::registerChunkControllers);
 
-    if (FMLEnvironment.dist.isClient()) {
+    if (dist.isClient()) {
       ClientManager.init(modEventBus);
     }
 
+    PacketHandler.register(modEventBus);
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
@@ -155,43 +174,119 @@ public class Railcraft {
     RailcraftLootModifiers.register(modEventBus);
     RailcraftStructureTypes.register(modEventBus);
     RailcraftStructurePieces.register(modEventBus);
+    RailcraftCriteriaTriggers.register(modEventBus);
+    RailcraftAttachmentTypes.register(modEventBus);
+    RailcraftDataMaps.register(modEventBus);
   }
 
   // Mod Events
   private void handleCommonSetup(FMLCommonSetupEvent event) {
-    NetworkChannel.registerAll();
-
     event.enqueueWork(() -> {
-      RailcraftCriteriaTriggers.register();
       BrewingRecipeRegistry.addRecipe(new BrewingRecipe(Potions.AWKWARD,
           RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE.get()));
-      ForgeChunkManager.setForcedChunkLoadingCallback(RailcraftConstants.ID, (level, ticketHelper) -> {
-        for (var entry : ticketHelper.getBlockTickets().entrySet()) {
-          var key = entry.getKey();
-          var value = entry.getValue();
-          int ticketCount = value.getFirst().size();
-          int tickingTicketCount = value.getSecond().size();
-          var be = level.getBlockEntity(key);
-          if (be instanceof WorldSpikeBlockEntity) {
-            LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for position: {}.", ticketCount, tickingTicketCount, key);
-          } else {
-            ticketHelper.removeAllTickets(key);
-            LOGGER.info("Removing {} chunk tickets and {} ticking chunk tickets for no longer valid position: {}.", ticketCount, tickingTicketCount, key);
-          }
-        }
-        for (var entry : ticketHelper.getEntityTickets().entrySet()) {
-          var key = entry.getKey();
-          var value = entry.getValue();
-          int ticketCount = value.getFirst().size();
-          int tickingTicketCount = value.getSecond().size();
-          LOGGER.info("Allowing {} chunk tickets and {} ticking chunk tickets to be reinstated for entity: {}.", ticketCount, tickingTicketCount, key);
-        }
-      });
     });
-    FuelUtil.fuelManager().addFuel(RailcraftTags.Fluids.CREOSOTE, 4800);
   }
 
-  public void buildContents(BuildCreativeModeTabContentsEvent event) {
+  private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
+    for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
+      event.registerEntity(RollingStock.CAPABILITY, entityType,
+          (entity, ctx) -> entity instanceof AbstractMinecart
+              ? entity.getData(RailcraftAttachmentTypes.MINECART_ROLLING_STOCK.get())
+              : null);
+    }
+
+    event.registerEntity(Capabilities.FluidHandler.ENTITY,
+        RailcraftEntityTypes.TANK_MINECART.get(), (e, side) -> e.getTankManager());
+    event.registerEntity(Capabilities.EnergyStorage.ENTITY,
+        RailcraftEntityTypes.ENERGY_MINECART.get(), (e, side) -> e.getBatteryCart());
+    event.registerEntity(Capabilities.EnergyStorage.ENTITY,
+        RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), (e, side) -> e.getBatteryCart());
+    event.registerEntity(Capabilities.FluidHandler.ENTITY,
+        RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getTankManager());
+
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.WATER_TANK_SIDING.get(), WaterTankSidingBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.COKE_OVEN.get(), CokeOvenBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.COKE_OVEN.get(), CokeOvenBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_OVEN.get(), SteamOvenBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_OVEN.get(), SteamOvenBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.CRUSHER.get(), CrusherBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.CRUSHER.get(), CrusherBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.BLAST_FURNACE.get(), BlastFurnaceBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_BOILER.get(), SteamBoilerBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_BOILER.get(), SteamBoilerBlockEntity::getFluidCap);
+
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(),
+        PoweredRollingMachineBlockEntity::getItemCap);
+
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.IRON_TANK.get(), IronTankBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEEL_TANK.get(), SteelTankBlockEntity::getFluidCap);
+
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.CART_DISPENSER.get(), CartDispenserBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.TRAIN_DISPENSER.get(), TrainDispenserBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FEED_STATION.get(), FeedStationBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_LOADER.get(), FluidLoaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_LOADER.get(), FluidLoaderBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_UNLOADER.get(), FluidUnloaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.FLUID_UNLOADER.get(), FluidUnloaderBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_LOADER.get(), ItemLoaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ADVANCED_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.ITEM_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.LOCOMOTIVE_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.SHEEP_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.TANK_DETECTOR.get(), FilterDetectorBlockEntity::getItemCap);
+
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new CreosoteBottleWrapper(stack), Items.GLASS_BOTTLE);
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new CreosoteBottleWrapper(stack), RailcraftItems.CREOSOTE_BOTTLE);
+    event.registerItem(Capabilities.FluidHandler.ITEM,
+        (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
+
+    event.registerBlock(Capabilities.EnergyStorage.BLOCK, Charge.distribution,
+        RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
+        RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
+        RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
+        RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
+        RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get(),
+        RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
+        RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get(),
+        RailcraftBlocks.FRAME.get(),
+        RailcraftBlocks.POWERED_ROLLING_MACHINE.get());
+  }
+
+  private void buildContents(BuildCreativeModeTabContentsEvent event) {
     if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
       RailcraftCreativeModeTabs.addToolsAndUtilities(event.getEntries());
     } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
@@ -223,6 +318,8 @@ public class Railcraft {
         new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(),
         new RailcraftDatapackProvider(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new RailcraftDataMapProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeClient(),
         new RailcraftItemModelProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
@@ -231,7 +328,11 @@ public class Railcraft {
     generator.addProvider(event.includeClient(),
         new RailcraftSoundsProvider(packOutput, fileHelper));
     generator.addProvider(event.includeClient(),
-        new RailcraftSpriteSourceProvider(packOutput, fileHelper));
+        new RailcraftSpriteSourceProvider(packOutput, lookupProvider, fileHelper));
+  }
+
+  private void registerChunkControllers(RegisterTicketControllersEvent event) {
+    event.register(CHUNK_CONTROLLER);
   }
 
   // Forge Events
@@ -248,23 +349,6 @@ public class Railcraft {
   }
 
   @SubscribeEvent
-  public void handleAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-    if (event.getObject() instanceof AbstractMinecart minecart) {
-      event.addCapability(RollingStockImpl.KEY,
-          CapabilityUtil.serializableProvider(
-              CompoundTag::new, () -> new RollingStockImpl(minecart), RollingStock.CAPABILITY));
-    }
-  }
-
-  @SubscribeEvent
-  public void handleAttachItemStackCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
-    var stack = event.getObject();
-    if (stack.is(Items.GLASS_BOTTLE)) {
-      event.addCapability(RailcraftConstants.rl("bottle_container"), new CreosoteBottleWrapper(stack));
-    }
-  }
-
-  @SubscribeEvent
   public void handleLevelTick(TickEvent.LevelTickEvent event) {
     if (event.level instanceof ServerLevel level && event.phase == TickEvent.Phase.END) {
       for (var provider : ChargeProviderImpl.values()) {
@@ -276,7 +360,8 @@ public class Railcraft {
 
   @SubscribeEvent
   public void handlePlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.player instanceof ServerPlayer player && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
+    if (event.player instanceof ServerPlayer player
+        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)
@@ -284,7 +369,7 @@ public class Railcraft {
           .map(RollingStock::getOrThrow)
           .map(LinkedCartsMessage.LinkedCart::new)
           .toList();
-      NetworkChannel.GAME.sendTo(new LinkedCartsMessage(linkedCarts), player);
+      PacketHandler.sendTo(player, new LinkedCartsMessage(linkedCarts));
     }
   }
 
@@ -298,7 +383,7 @@ public class Railcraft {
       if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
         player.swing(hand);
         if (!player.level().isClientSide()) {
-          cart.getCapability(ForgeCapabilities.ENERGY)
+          Optional.ofNullable(cart.getCapability(Capabilities.EnergyStorage.ENTITY, null))
               .filter(ChargeCartStorageImpl.class::isInstance)
               .map(ChargeCartStorageImpl.class::cast)
               .ifPresent(battery -> {
@@ -336,7 +421,7 @@ public class Railcraft {
         var drop = entityItem.getItem();
         var cooked = recipeManager
             .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(drop), level)
-            .map(x -> x.getResultItem(registryAccess))
+            .map(x -> x.value().getResultItem(registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
           entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));

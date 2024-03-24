@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.manipulator;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.FluidUnloaderBlockEntity;
@@ -21,8 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidUnloaderBlock extends FluidManipulatorBlock<FluidUnloaderBlockEntity> {
 
+  private static final MapCodec<FluidUnloaderBlock> CODEC = simpleCodec(FluidUnloaderBlock::new);
+
   public FluidUnloaderBlock(Properties properties) {
     super(FluidUnloaderBlockEntity.class, properties);
+  }
+
+  @Override
+  protected MapCodec<? extends FluidManipulatorBlock<FluidUnloaderBlockEntity>> codec() {
+    return CODEC;
   }
 
   @Override

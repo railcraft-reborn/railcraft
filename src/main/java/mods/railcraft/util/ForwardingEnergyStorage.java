@@ -3,7 +3,7 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Supplier;
 import mods.railcraft.api.charge.ChargeStorage;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ForwardingEnergyStorage implements IEnergyStorage {
 

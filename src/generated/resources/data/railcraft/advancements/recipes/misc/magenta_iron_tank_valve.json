@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_white_iron_tank_valve",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_white_iron_tank_valve"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:magenta_iron_tank_valve"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

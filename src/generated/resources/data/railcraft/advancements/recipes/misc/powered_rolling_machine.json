@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_manual_rolling_machine",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_manual_rolling_machine"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:powered_rolling_machine"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

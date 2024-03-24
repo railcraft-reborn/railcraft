@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.LevelUtil;
@@ -56,10 +57,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class TunnelBore extends RailcraftMinecart implements Linkable {
 
@@ -405,7 +406,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TUNNEL_BORE.get();
   }
 
@@ -711,9 +712,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     ServerPlayer fakePlayer = MinecartUtil.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
-    BlockEvent.BreakEvent breakEvent =
-        new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
-    MinecraftForge.EVENT_BUS.post(breakEvent);
+    var breakEvent = new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
+    NeoForge.EVENT_BUS.post(breakEvent);
 
     if (breakEvent.isCanceled()) {
       return false;
@@ -767,11 +767,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     hardness *= HARDNESS_MULTIPLIER;
 
     var boreSlot = this.getItem(0);
-    if (!boreSlot.isEmpty() && boreSlot.getItem() instanceof TunnelBoreHead head) {
-      double dig = head.getDigModifier();
-      hardness /= dig;
-      int e = boreSlot.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-      hardness /= (e * e * 0.2d + 1);
+    if (!boreSlot.isEmpty()) {
+      var tunnelBoreHead = boreSlot.getItemHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
+      if (tunnelBoreHead != null) {
+        double dig = tunnelBoreHead.digModifier();
+        hardness /= dig;
+        int e = boreSlot.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+        hardness /= (e * e * 0.2d + 1);
+      }
     }
 
     hardness /= RailcraftConfig.SERVER.boreMiningSpeedMultiplier.get();
@@ -909,7 +912,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     for (int slot = 0; slot < this.fuelContainer.getContainerSize(); slot++) {
       var stack = this.fuelContainer.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = ForgeHooks.getBurnTime(stack, null);
+        burn = CommonHooks.getBurnTime(stack, null);
         if (burn > 0) {
           if (stack.getItem().hasCraftingRemainingItem(stack)) {
             this.fuelContainer.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));

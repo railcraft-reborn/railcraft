@@ -2,10 +2,6 @@
   "parent": "railcraft:carts/root",
   "criteria": {
     "linked_carts": {
-      "conditions": {
-        "other": {},
-        "owned": {}
-      },
       "trigger": "railcraft:cart_linking"
     }
   },
@@ -14,13 +10,10 @@
     "description": {
       "translate": "advancements.railcraft.carts.link_carts.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "railcraft:steel_crowbar",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.link_carts.name"
     }

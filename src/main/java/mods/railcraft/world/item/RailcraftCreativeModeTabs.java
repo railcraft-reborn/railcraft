@@ -12,17 +12,17 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.util.MutableHashedLinkedMap;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftCreativeModeTabs {
 
   public static final DeferredRegister<CreativeModeTab> deferredRegister =
       DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RailcraftConstants.ID);
   private static final TabVisibility DEFAULT_VISIBILITY = TabVisibility.PARENT_AND_SEARCH_TABS;
-  public static final RegistryObject<CreativeModeTab> MAIN_TAB =
+  public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB =
       deferredRegister.register("main_tab", () -> CreativeModeTab.builder()
           .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
           .title(Component.translatable(Translations.Tab.RAILCRAFT))
@@ -259,7 +259,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(DyeColor.WHITE).get());
           })
           .build());
-  public static final RegistryObject<CreativeModeTab> OUTFITTED_TRACKS =
+  public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OUTFITTED_TRACKS =
       deferredRegister.register("outfitted_tracks", () -> CreativeModeTab.builder()
           .withTabsBefore(MAIN_TAB.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS))
@@ -399,7 +399,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK.get());
             output.accept(RailcraftItems.HIGH_SPEED_ELECTRIC_JUNCTION_TRACK.get());
           }).build());
-  public static final RegistryObject<CreativeModeTab> DECORATIVE_BLOCKS =
+  public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATIVE_BLOCKS =
       deferredRegister.register("decorative_blocks", () -> CreativeModeTab.builder()
           .withTabsBefore(OUTFITTED_TRACKS.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))

@@ -24,6 +24,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -276,13 +277,15 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     this.getCartFilters().fromTag(tag.getList("cartFilters", Tag.TAG_COMPOUND));
   }
 
-  public enum TransferMode implements ButtonState<TransferMode> {
-    // TODO: 1.20.4+ use CODECS
+  public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {
 
     ALL("all", "➧➧➧"),
     EXCESS("excess", "#➧➧"),
     STOCK("stock", "➧➧#"),
     TRANSFER("transfer", "➧#➧");
+
+    private static final StringRepresentable.EnumCodec<TransferMode> CODEC =
+        StringRepresentable.fromEnum(TransferMode::values);
 
     private final String name;
     private final Component label;
@@ -321,8 +324,17 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     }
 
     @Override
+    public String getSerializedName() {
+      return this.name;
+    }
+
+    @Override
     public TransferMode next() {
       return EnumUtil.next(this, values());
+    }
+
+    public static TransferMode fromName(String name) {
+      return CODEC.byName(name, ALL);
     }
   }
 

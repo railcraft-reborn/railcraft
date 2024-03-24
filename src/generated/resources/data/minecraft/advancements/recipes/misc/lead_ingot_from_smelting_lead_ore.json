@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_lead_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_lead_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:lead_ingot_from_smelting_lead_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

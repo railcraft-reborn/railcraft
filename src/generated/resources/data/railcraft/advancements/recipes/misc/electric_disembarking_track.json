@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_disembarking_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_disembarking_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:electric_disembarking_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

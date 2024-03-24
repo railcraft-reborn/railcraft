@@ -14,21 +14,22 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class BlastFurnaceEmiRecipe extends BasicEmiRecipe {
 
   private final BlastFurnaceRecipe recipe;
 
-  public BlastFurnaceEmiRecipe(BlastFurnaceRecipe recipe) {
-    super(RailcraftEmiPlugin.BLASTING_CATEGORY, recipe.getId(),
+  public BlastFurnaceEmiRecipe(RecipeHolder<BlastFurnaceRecipe> recipe) {
+    super(RailcraftEmiPlugin.BLASTING_CATEGORY, recipe.id(),
         BlastFurnaceRecipeCategory.WIDTH, BlastFurnaceRecipeCategory.HEIGHT);
-    this.recipe = recipe;
-    this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
+    this.recipe = recipe.value();
+    this.inputs.add(EmiIngredient.of(this.recipe.getIngredients().get(0)));
     var level = Minecraft.getInstance().level;
-    this.outputs.add(EmiStack.of(recipe.getResultItem(level.registryAccess())));
-    if (recipe.getSlagOutput() > 0) {
+    this.outputs.add(EmiStack.of(this.recipe.getResultItem(level.registryAccess())));
+    if (this.recipe.getSlagOutput() > 0) {
       this.outputs.add(EmiStack.of(
-          new ItemStack(RailcraftItems.SLAG.get(), recipe.getSlagOutput())));
+          new ItemStack(RailcraftItems.SLAG.get(), this.recipe.getSlagOutput())));
     }
   }
 

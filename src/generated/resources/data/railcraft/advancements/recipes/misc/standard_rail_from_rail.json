@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_rail",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_rail"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:standard_rail_from_rail"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

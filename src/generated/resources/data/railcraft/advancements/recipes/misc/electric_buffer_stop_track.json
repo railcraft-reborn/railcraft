@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_buffer_stop_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_buffer_stop_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:electric_buffer_stop_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

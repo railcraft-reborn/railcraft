@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_ender_dust",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ender_dust"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:force_track_emitter"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

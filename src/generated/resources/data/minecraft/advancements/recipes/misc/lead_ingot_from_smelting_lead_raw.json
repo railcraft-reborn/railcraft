@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_lead_raw",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_lead_raw"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:lead_ingot_from_smelting_lead_raw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

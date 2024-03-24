@@ -2,11 +2,11 @@ import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 import static org.apache.commons.lang3.StringUtils.repeat
 
 plugins {
+    id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle' version '[6.0.18,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.neoforged.gradle.userdev' version "$neo_gradle_version"
+    id 'net.neoforged.gradle.mixin' version "$neo_gradle_version"
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '2.1.2'
     id 'me.modmuss50.mod-publish-plugin' version '0.5.1'
     id 'com.diffplug.spotless' version '6.25.0'
@@ -44,79 +44,55 @@ sourceSets {
     api {
         // API has no resources
         resources.srcDirs = []
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
     }
     main {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
+        compileClasspath += api.output
+        runtimeClasspath += api.output
         resources {
             srcDir 'src/generated/resources'
             exclude '.cache'
         }
     }
     test {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
+        compileClasspath += api.output
+        runtimeClasspath += api.output
     }
 }
 
-configurations {
-    apiImplementation.extendsFrom(implementation)
-    apiRuntimeOnly.extendsFrom(runtimeOnly)
-}
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
-minecraft {
-    mappings channel: mappings_channel, version: mappings_version
+runs {
+    configureEach {
+        systemProperty 'forge.logging.console.level', 'debug'
+        systemProperty 'neoforge.enabledGameTestNamespaces', 'railcraft'
 
-    copyIdeResources = true
+        modSource project.sourceSets.api
+        modSource project.sourceSets.main
+        modSource project.sourceSets.test
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    runs {
-        configureEach {
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'railcraft'
-
-            // Enables better hot reloading if using the JetBrains Runtime
-            if (System.getProperty('idea.active')) {
-                jvmArgs '-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowRedefinitionToAddDeleteMethods'
-            }
-
-            args '--mixin', 'railcraft.mixins.json'
-
-            mods {
-                railcraft {
-                    source sourceSets.main
-                    source sourceSets.api
-                    source sourceSets.test
-                }
-            }
+        if (System.getProperty('idea.active')) {
+            jvmArguments.add("-XX:+AllowEnhancedClassRedefinition")
         }
+    }
 
-        client {
-            workingDirectory project.file('run/client')
-        }
+    client {
+    }
 
-        server {
-            workingDirectory project.file('run/server')
-        }
+    server {
+        programArgument '--nogui'
+    }
 
-        data {
-            workingDirectory project.file('run/data')
+    gameTestServer {
+    }
 
-            args '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
-
-        gameTestServer {
-            workingDirectory project.file('run/test')
-        }
+    data {
+        programArguments.addAll '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
 repositories {
-    maven {
-        name 'sponge'
-        url 'https://repo.spongepowered.org/repository/maven-public'
-    }
     maven {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
@@ -132,25 +108,23 @@ repositories {
 }
 
 dependencies {
-    minecraft group: 'net.neoforged', name: 'forge', version: "$minecraft_version-$neo_version"
+    implementation group: 'net.neoforged', name: 'neoforge', version: neo_version
 
-    annotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
-    testAnnotationProcessor group: 'org.spongepowered', name: 'mixin', version: mixin_version, classifier: 'processor'
     testImplementation platform("org.junit:junit-bom:$jupiter_version")
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-common-api:$jei_version")
-    compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
-    runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
+    compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
+    runtimeOnly "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
 
-    compileOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version:api")
-    runtimeOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version")
+    compileOnly "dev.emi:emi-neoforge:$emi_version+$minecraft_version:api"
+    runtimeOnly "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+    compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:$patchouli_version"
 
-    compileOnly fg.deobf("curse.maven:jade-api-324717:$jade_id_api")
-    runtimeOnly fg.deobf("curse.maven:jade-324717:$jade_id")
+    compileOnly "curse.maven:jade-api-324717:$jade_id_api"
+    runtimeOnly "curse.maven:jade-324717:$jade_id"
 
 }
 
@@ -212,11 +186,8 @@ tasks.named('jar', Jar).configure {
             'Implementation-Version'    : project.version,
             'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
             'Implementation-Commit'     : 'git rev-parse HEAD'.execute().text.trim(),
-            'Implementation-Timestamp'  : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            'MixinConfigs'              : 'railcraft.mixins.json'
         ])
     }
-    finalizedBy 'reobfJar'
 }
 
 tasks.register('apiJar', Jar) {
@@ -232,7 +203,7 @@ artifacts {
 }
 
 mixin {
-    add sourceSets.main, 'railcraft.refmap.json'
+    config 'railcraft.mixins.json'
 }
 
 def penultimateTag = { ->
@@ -266,9 +237,6 @@ publishMods {
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
 
     modLoaders.add('neoforge')
-    if (minecraft_version == '1.20.1') {
-        modLoaders.add('forge')
-    }
     file = jar.archiveFile
     additionalFiles.from(apiJar)
 

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_quarried_stone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_quarried_stone"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:polished_quarried_stone_from_quarried_stone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

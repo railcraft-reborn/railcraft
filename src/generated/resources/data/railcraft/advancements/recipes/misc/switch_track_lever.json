@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_lever",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_lever"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:switch_track_lever"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

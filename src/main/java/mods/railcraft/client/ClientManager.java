@@ -63,29 +63,29 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.GrassColor;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.VersionChecker;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.VersionChecker;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
@@ -93,6 +93,7 @@ public class ClientManager {
   private static ShuntingAuraRenderer shuntingAuraRenderer;
 
   public static void init(IEventBus modEventBus) {
+    modEventBus.addListener(ClientManager::handleRegisterMenuScreens);
     modEventBus.addListener(ClientManager::handleClientSetup);
     modEventBus.addListener(ClientManager::handleItemColors);
     modEventBus.addListener(ClientManager::handleBlockColors);
@@ -100,7 +101,7 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
     modEventBus.addListener(ClientManager::handleKeyRegister);
-    MinecraftForge.EVENT_BUS.register(ClientManager.class);
+    NeoForge.EVENT_BUS.register(ClientManager.class);
 
     shuntingAuraRenderer = new ShuntingAuraRenderer();
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
@@ -114,51 +115,48 @@ public class ClientManager {
   // Mod Events
   // ================================================================================
 
-  private static void handleClientSetup(FMLClientSetupEvent event) {
-    // === Menu Screens ===
-    MenuScreens.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
+  private static void handleRegisterMenuScreens(RegisterMenuScreensEvent event) {
+    event.register(RailcraftMenuTypes.SOLID_FUELED_STEAM_BOILER.get(),
         SolidFueledSteamBoilerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
+    event.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
         FluidFueledSteamBoilerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(),
-        WaterTankSidingScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(),
-        CreativeLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(),
-        ElectricLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
+    event.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
+    event.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
+    event.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(), WaterTankSidingScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_RELAYER.get(), TrackRelayerScreen::new);
+    event.register(RailcraftMenuTypes.TRACK_UNDERCUTTER.get(), TrackUndercutterScreen::new);
+    event.register(RailcraftMenuTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
+    event.register(RailcraftMenuTypes.FEED_STATION.get(), FeedStationScreen::new);
+    event.register(RailcraftMenuTypes.CREATIVE_LOCOMOTIVE.get(), CreativeLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.ELECTRIC_LOCOMOTIVE.get(), ElectricLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.STEAM_LOCOMOTIVE.get(), SteamLocomotiveScreen::new);
+    event.register(RailcraftMenuTypes.MANUAL_ROLLING_MACHINE.get(),
         ManualRollingMachineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
+    event.register(RailcraftMenuTypes.POWERED_ROLLING_MACHINE.get(),
         PoweredRollingMachineScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.COKE_OVEN.get(), CokeOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CRUSHER.get(), CrusherScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.STEAM_OVEN.get(), SteamOvenScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), ItemManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), FluidManipulatorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ENERGY_MINECART.get(), EnergyMinecartScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(),
-        SwitchTrackRouterScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ITEM_DETECTOR.get(), ItemDetectorScreen::new);
-    MenuScreens.register(RailcraftMenuTypes.ROUTING_DETECTOR.get(), RoutingDetectorScreen::new);
+    event.register(RailcraftMenuTypes.COKE_OVEN.get(), CokeOvenScreen::new);
+    event.register(RailcraftMenuTypes.CRUSHER.get(), CrusherScreen::new);
+    event.register(RailcraftMenuTypes.STEAM_OVEN.get(), SteamOvenScreen::new);
+    event.register(RailcraftMenuTypes.ITEM_MANIPULATOR.get(), ItemManipulatorScreen::new);
+    event.register(RailcraftMenuTypes.FLUID_MANIPULATOR.get(), FluidManipulatorScreen::new);
+    event.register(RailcraftMenuTypes.CART_DISPENSER.get(), CartDispenserScreen::new);
+    event.register(RailcraftMenuTypes.TRAIN_DISPENSER.get(), TrainDispenserScreen::new);
+    event.register(RailcraftMenuTypes.TANK_MINECART.get(), TankMinecartScreen::new);
+    event.register(RailcraftMenuTypes.ENERGY_MINECART.get(), EnergyMinecartScreen::new);
+    event.register(RailcraftMenuTypes.SWITCH_TRACK_ROUTER.get(), SwitchTrackRouterScreen::new);
+    event.register(RailcraftMenuTypes.TUNNEL_BORE.get(), TunnelBoreScreen::new);
+    event.register(RailcraftMenuTypes.ROUTING_TRACK.get(), RoutingTrackScreen::new);
+    event.register(RailcraftMenuTypes.DUMPING_TRACK.get(), DumpingTrackScreen::new);
+    event.register(RailcraftMenuTypes.SHEEP_DETECTOR.get(), SheepDetectorScreen::new);
+    event.register(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), LocomotiveDetectorScreen::new);
+    event.register(RailcraftMenuTypes.TANK_DETECTOR.get(), TankDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), AdvancedDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ITEM_DETECTOR.get(), ItemDetectorScreen::new);
+    event.register(RailcraftMenuTypes.ROUTING_DETECTOR.get(), RoutingDetectorScreen::new);
+  }
 
+  private static void handleClientSetup(FMLClientSetupEvent event) {
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();
     }

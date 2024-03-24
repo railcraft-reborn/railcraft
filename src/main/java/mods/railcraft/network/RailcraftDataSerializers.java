@@ -8,14 +8,15 @@ import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RailcraftDataSerializers {
 
   private static final DeferredRegister<EntityDataSerializer<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);
+      DeferredRegister
+          .create(NeoForgeRegistries.Keys.ENTITY_DATA_SERIALIZERS, RailcraftConstants.ID);
 
   public static final EntityDataSerializer<Optional<GameProfile>> OPTIONAL_GAME_PROFILE =
       EntityDataSerializer

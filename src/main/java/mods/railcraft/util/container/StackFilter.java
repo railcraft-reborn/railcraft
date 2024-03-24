@@ -11,6 +11,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,17 +19,16 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.CommonHooks;
+import net.neoforged.neoforge.common.Tags;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
-  FUEL(itemStack -> ForgeHooks.getBurnTime(itemStack, null) > 0),
+  FUEL(itemStack -> CommonHooks.getBurnTime(itemStack, null) > 0),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
     var item = itemStack.getItem();
@@ -40,15 +40,14 @@ public enum StackFilter implements Predicate<ItemStack> {
   BALLAST(itemStack -> ContainerTools.getBlockFromStack(itemStack)
       .builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
   FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
-      .isPresent()),
+      .getCapability(Capabilities.FluidHandler.ITEM) != null),
   FEED(itemStack -> itemStack.getItem().isEdible()
       || itemStack.is(Items.WHEAT)
       || ContainerTools.getBlockFromStack(itemStack) instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
       || !FluidTools.isFluidHandler(itemStack))
       && !RailcraftConfig.SERVER.cargoBlacklist.get()
-          .contains(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString())),
+          .contains(BuiltInRegistries.ITEM.getKey(itemStack.getItem()).toString())),
   DYES(itemStack -> itemStack.is(Tags.Items.DYES)),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 

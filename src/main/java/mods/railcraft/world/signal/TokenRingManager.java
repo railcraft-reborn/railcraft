@@ -88,10 +88,11 @@ public class TokenRingManager extends SavedData {
   }
 
   public static TokenRingManager get(ServerLevel level) {
-    return level.getDataStorage().computeIfAbsent(tag -> {
-      var manager = new TokenRingManager(level);
-      manager.load(tag);
-      return manager;
-    }, () -> new TokenRingManager(level), DATA_TAG);
+    return level.getDataStorage()
+        .computeIfAbsent(new SavedData.Factory<>(() -> new TokenRingManager(level), tag -> {
+          var manager = new TokenRingManager(level);
+          manager.load(tag);
+          return manager;
+        }), DATA_TAG);
   }
 }

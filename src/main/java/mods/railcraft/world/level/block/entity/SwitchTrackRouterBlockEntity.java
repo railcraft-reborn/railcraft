@@ -7,7 +7,6 @@ import com.mojang.datafixers.util.Either;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.SwitchActuator;
-import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
@@ -124,7 +123,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
         .orElse(false);
     if (this.railway == Railway.PRIVATE) {
       shouldSwitch = rollingStock.owner()
-          .filter(owner -> PlayerUtil.isSamePlayer(owner, this.getOwnerOrThrow()))
+          .filter(owner -> owner.equals(this.getOwnerOrThrow()))
           .isPresent();
     }
     SwitchTrackActuatorBlock.setSwitched(

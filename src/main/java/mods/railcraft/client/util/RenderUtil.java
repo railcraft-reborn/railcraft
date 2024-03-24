@@ -9,8 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class RenderUtil {
 
@@ -29,7 +29,7 @@ public class RenderUtil {
       return -1;
     }
     int color = getColorARGB(fluidStack);
-    if (fluidStack.getFluid().getFluidType().isLighterThanAir()) {
+    if (fluidStack.getFluidType().isLighterThanAir()) {
       // TODO: We probably want to factor in the fluid's alpha value somehow
       var alpha = (int) (Math.min(1, fluidScale + 0.2F) * 255);
       return FastColor.ARGB32.color(
@@ -47,7 +47,7 @@ public class RenderUtil {
 
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {
     return fluid.isEmpty() ? combinedLight
-        : calculateGlowLight(combinedLight, fluid.getFluid().getFluidType().getLightLevel(fluid));
+        : calculateGlowLight(combinedLight, fluid.getFluidType().getLightLevel(fluid));
   }
 
   public static int calculateGlowLight(int combinedLight, int glow) {

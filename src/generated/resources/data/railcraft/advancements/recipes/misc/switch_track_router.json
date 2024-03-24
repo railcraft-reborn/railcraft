@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_switch_track_motor",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_switch_track_motor"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:switch_track_router"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,17 +1,15 @@
 package mods.railcraft.data.recipes.builders;
 
-import java.util.function.Consumer;
-import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.api.core.RecipeJsonKeys;
-import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
+import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 
 public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
@@ -45,39 +43,20 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
   }
 
   @Override
-  public void save(Consumer<FinishedRecipe> finishedRecipe, ResourceLocation resourceLocation) {
+  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
     var path = resourceLocation.getPath();
     var customResourceLocation = RailcraftConstants.rl("blast_furnace/" + path);
 
     var advancementId = customResourceLocation.withPrefix("recipes/");
 
-    finishedRecipe.accept(new Result(customResourceLocation,
-        this.result, this.count, this.ingredient,
-        this.experience, this.cookingTime, this.slagOutput, this.advancement, advancementId));
-  }
+    var builder = recipeOutput.advancement()
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
+        .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
+        .requirements(AdvancementRequirements.Strategy.OR);
+    this.criteria.forEach(builder::addCriterion);
 
-  private static class Result extends AbstractCookingRecipeBuilder.AbstractResult {
-
-    private final int slagOutput;
-
-    public Result(ResourceLocation id, Item result, int count, Ingredient ingredient,
-        float experience, int cookingTime, int slagOutput, Advancement.Builder advancement,
-        ResourceLocation advancementId) {
-      super(id, result, count, ingredient, experience, cookingTime, advancement,
-          advancementId);
-      this.slagOutput = slagOutput;
-    }
-
-    @Override
-    protected void addJsonProperty(JsonObject json) {
-      if (this.slagOutput != 0) {
-        json.addProperty(RecipeJsonKeys.SLAG_OUTPUT, this.slagOutput);
-      }
-    }
-
-    @Override
-    public RecipeSerializer<?> getType() {
-      return RailcraftRecipeSerializers.BLASTING.get();
-    }
+    var recipe = new BlastFurnaceRecipe(this.ingredient, new ItemStack(this.result, this.count),
+        this.experience, this.cookingTime, this.slagOutput);
+    recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
   }
 }

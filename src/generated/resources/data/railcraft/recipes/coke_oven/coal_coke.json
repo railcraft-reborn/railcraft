@@ -1,6 +1,5 @@
 {
   "type": "railcraft:coking",
-  "cookingTime": 400,
   "creosoteOutput": 500,
   "experience": 0.0,
   "ingredient": {

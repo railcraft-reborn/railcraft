@@ -1,21 +1,21 @@
 {
-  "type": "railcraft:crusher",
-  "conditions": [
+  "neoforge:conditions": [
     {
-      "type": "forge:not",
+      "type": "neoforge:not",
       "value": {
-        "type": "forge:tag_empty",
+        "type": "neoforge:tag_empty",
         "tag": "forge:storage_blocks/raw_nickel"
       }
     },
     {
-      "type": "forge:not",
+      "type": "neoforge:not",
       "value": {
-        "type": "forge:tag_empty",
+        "type": "neoforge:tag_empty",
         "tag": "forge:dusts/nickel"
       }
     }
   ],
+  "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:storage_blocks/raw_nickel"
   },

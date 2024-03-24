@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_iron_plate",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iron_plate"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:low_pressure_steam_boiler_tank"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

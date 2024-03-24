@@ -1,23 +1,20 @@
 package mods.railcraft.advancements;
 
-import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 /**
  * TODO: Implament this on carts.
  */
-public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.Instance> {
+public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.TriggerInstance> {
 
-  private static final ResourceLocation ID = RailcraftConstants.rl("cart_riding");
   // private static final int FREQUENCY = 20;
 
   // private final Map<ServerPlayerEntity, AbstractMinecartEntity> mounting =
@@ -29,26 +26,16 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // MinecraftForge.EVENT_BUS.register(this);
   // }
 
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  public CartRidingTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
-    var predicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new CartRidingTrigger.Instance(contextAwarePredicate, predicate);
-  }
-
   /**
    * Invoked when the user rides a cart.
    */
   public void trigger(ServerPlayer playerEntity, AbstractMinecart cart) {
-    this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cart));
+    this.trigger(playerEntity, criterionInstance -> criterionInstance.matches(playerEntity, cart));
+  }
+
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
   }
 
   // @SubscribeEvent
@@ -81,33 +68,29 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // }
   // }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
-    private final MinecartPredicate cartPredicate;
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
+        ).apply(instance, TriggerInstance::new));
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, MinecartPredicate predicate) {
-      super(CartRidingTrigger.ID, contextAwarePredicate);
-      this.cartPredicate = predicate;
-    }
-
-    public static CartRidingTrigger.Instance hasRidden() {
-      return new CartRidingTrigger.Instance(ContextAwarePredicate.ANY, MinecartPredicate.ANY);
+    public static TriggerInstance hasRidden() {
+      return new TriggerInstance(Optional.empty(), Optional.empty());
     }
 
     public boolean matches(ServerPlayer player, AbstractMinecart cart) {
-      return cartPredicate.test(player, cart);
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
-      JsonObject json = new JsonObject();
-      json.add("cart", this.cartPredicate.serializeToJson());
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

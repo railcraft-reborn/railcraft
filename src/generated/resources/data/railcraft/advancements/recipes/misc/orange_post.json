@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_black_post",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_black_post"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:orange_post"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

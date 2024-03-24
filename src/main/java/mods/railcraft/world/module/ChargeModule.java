@@ -5,22 +5,20 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.util.ForwardingEnergyStorage;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ChargeModule<T extends BlockModuleProvider> extends BaseModule<T> {
 
   private final Charge network;
 
-  private final LazyOptional<IEnergyStorage> energyStorage =
-      LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
+  private final IEnergyStorage energyStorage = new ForwardingEnergyStorage(this::storage);
 
   public ChargeModule(T provider, Charge network) {
     super(provider);
     this.network = network;
   }
 
-  public LazyOptional<IEnergyStorage> getEnergyStorage() {
+  public IEnergyStorage getEnergyStorage() {
     return this.energyStorage;
   }
 

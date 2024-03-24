@@ -22,7 +22,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class TrackKitItem extends Item {
 
@@ -51,7 +51,7 @@ public class TrackKitItem extends Item {
     TrackType trackType;
     if (oldState.getBlock() instanceof TrackBlock trackBlock) {
       trackType = trackBlock.getTrackType();
-    } else if (oldState.getBlock() == Blocks.RAIL) {
+    } else if (oldState.is(Blocks.RAIL)) {
       trackType = TrackTypes.IRON.get();
     } else {
       return InteractionResult.PASS;
@@ -72,7 +72,7 @@ public class TrackKitItem extends Item {
     }
 
     var outfittedBlock = this.outfittedBlocks
-        .getOrDefault(TrackTypes.REGISTRY.get().getKey(trackType), () -> null).get();
+        .getOrDefault(TrackTypes.REGISTRY.getKey(trackType), () -> null).get();
     if (outfittedBlock == null) {
       player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
           .withStyle(ChatFormatting.RED), true);
@@ -85,7 +85,7 @@ public class TrackKitItem extends Item {
       level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
       if (!level.isClientSide()) {
-        RailcraftCriteriaTriggers.TRACK_KIT_USE.trigger(
+        RailcraftCriteriaTriggers.TRACK_KIT_USE.value().trigger(
             (ServerPlayer) player, (ServerLevel) level, blockPos, itemStack);
       }
 
@@ -105,7 +105,7 @@ public class TrackKitItem extends Item {
     private boolean allowedOnSlopes;
 
     public Properties addOutfittedBlock(
-        RegistryObject<? extends TrackType> trackType,
+        DeferredHolder<TrackType, ? extends TrackType> trackType,
         Supplier<? extends BaseRailBlock> block) {
       return this.addOutfittedBlock(trackType.getId(), block);
     }

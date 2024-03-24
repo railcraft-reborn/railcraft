@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_iron_plate",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_iron_plate"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:iron_tank_wall"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

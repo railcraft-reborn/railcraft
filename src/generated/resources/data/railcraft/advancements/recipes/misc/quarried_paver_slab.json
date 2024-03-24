@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_quarried_paver",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_quarried_paver"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:quarried_paver_slab"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

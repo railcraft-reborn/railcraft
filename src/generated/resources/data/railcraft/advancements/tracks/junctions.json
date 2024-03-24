@@ -2,7 +2,6 @@
   "parent": "railcraft:tracks/regular_track",
   "criteria": {
     "has_used_spikemaul": {
-      "conditions": {},
       "trigger": "railcraft:spike_maul_use"
     }
   },
@@ -12,12 +11,10 @@
       "translate": "advancements.railcraft.tracks.junctions.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:iron_spike_maul",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.tracks.junctions.name"
     }

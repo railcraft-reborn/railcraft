@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class ManualRollingMachineMenu extends RailcraftMenu {
 
@@ -59,6 +60,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
   @Override
   public void slotsChanged(Container container) {
     this.craftResult.setItem(0, this.blockEntity.getRecipe()
+        .map(RecipeHolder::value)
         .map(r -> r.assemble(this.craftMatrix, this.blockEntity.level().registryAccess()))
         .orElse(ItemStack.EMPTY));
   }

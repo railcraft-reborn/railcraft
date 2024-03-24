@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_gated_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_gated_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:electric_gated_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

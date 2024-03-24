@@ -22,4 +22,5 @@ public class SheepDetectorScreen extends RailcraftMenuScreen<SheepDetectorMenu> 
   public ResourceLocation getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
+
 }

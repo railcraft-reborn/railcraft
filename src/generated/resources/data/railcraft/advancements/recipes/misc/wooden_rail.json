@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_wooden_tie",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_wooden_tie"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:wooden_rail"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

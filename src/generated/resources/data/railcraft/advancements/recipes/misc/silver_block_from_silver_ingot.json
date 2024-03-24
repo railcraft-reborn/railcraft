@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_silver_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_silver_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:silver_block_from_silver_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

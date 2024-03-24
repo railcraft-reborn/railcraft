@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_tin_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_tin_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:tin_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

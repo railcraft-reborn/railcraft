@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_steel_plate",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_steel_plate"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:steam_oven"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -8,6 +8,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,8 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.IMinecartCollisionHandler;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.IMinecartCollisionHandler;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
@@ -107,7 +107,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
 
     var sub = new Vector2d(other.getX(), other.getZ()).sub(cart.getX(), cart.getZ());
-    var unit = sub.equals(0, 0) ? sub : sub.normalize(); //Check for NaN
+    var unit = sub.equals(0, 0) ? sub : sub.normalize(); // Check for NaN
 
     double distance = cart.distanceTo(other);
     double depth = distance - OPTIMAL_DISTANCE;
@@ -203,7 +203,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       }
 
       if (!other.isAlive() || RailcraftConfig.SERVER.highSpeedTrackIgnoredEntities.get()
-          .contains(ForgeRegistries.ENTITY_TYPES.getKey(other.getType()).toString())) {
+          .contains(BuiltInRegistries.ENTITY_TYPE.getKey(other.getType()).toString())) {
         return;
       }
 

@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.CompoundTagKeys;
-import mods.railcraft.util.PlayerUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -49,7 +48,7 @@ public class TicketItem extends Item {
       list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER)
           .withStyle(ChatFormatting.AQUA)
           .append(" ")
-          .append(PlayerUtil.getUsername(level, owner).copy().withStyle(ChatFormatting.GRAY)));
+          .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
     }
 
     String dest = getDestination(stack);

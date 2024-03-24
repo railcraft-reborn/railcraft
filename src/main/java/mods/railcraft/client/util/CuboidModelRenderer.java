@@ -203,10 +203,10 @@ public class CuboidModelRenderer {
     v1 = 1f - v2;
     v2 = 1f - temp;
 
-    float minU = spriteInfo.getSprite().getU(u1 * spriteInfo.getSize());
-    float maxU = spriteInfo.getSprite().getU(u2 * spriteInfo.getSize());
-    float minV = spriteInfo.getSprite().getV(v1 * spriteInfo.getSize());
-    float maxV = spriteInfo.getSprite().getV(v2 * spriteInfo.getSize());
+    float minU = spriteInfo.getSprite().getU(u1);
+    float maxU = spriteInfo.getSprite().getU(u2);
+    float minV = spriteInfo.getSprite().getV(v1);
+    float maxV = spriteInfo.getSprite().getV(v2);
     int argb = colors[face.ordinal()];
     var red = FastColor.ARGB32.red(argb);
     var green = FastColor.ARGB32.green(argb);
@@ -288,13 +288,17 @@ public class CuboidModelRenderer {
     }
     if (faceDisplay.back) {
       buffer.vertex(matrix, x4, y4, z4).color(red, green, blue, alpha).uv(maxU, maxV)
-          .overlayCoords(overlay).uv2(light).normal(normalMatrix, 0, -1, 0).endVertex();
+          .overlayCoords(overlay).uv2(light)
+          .normal(normalMatrix, 0, -1, 0).endVertex();
       buffer.vertex(matrix, x3, y3, z3).color(red, green, blue, alpha).uv(maxU, minV)
-          .overlayCoords(overlay).uv2(light).normal(normalMatrix, 0, -1, 0).endVertex();
+          .overlayCoords(overlay).uv2(light)
+          .normal(normalMatrix, 0, -1, 0).endVertex();
       buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).uv(minU, minV)
-          .overlayCoords(overlay).uv2(light).normal(normalMatrix, 0, -1, 0).endVertex();
+          .overlayCoords(overlay).uv2(light)
+          .normal(normalMatrix, 0, -1, 0).endVertex();
       buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).uv(minU, maxV)
-          .overlayCoords(overlay).uv2(light).normal(normalMatrix, 0, -1, 0).endVertex();
+          .overlayCoords(overlay).uv2(light)
+          .normal(normalMatrix, 0, -1, 0).endVertex();
     }
   }
 

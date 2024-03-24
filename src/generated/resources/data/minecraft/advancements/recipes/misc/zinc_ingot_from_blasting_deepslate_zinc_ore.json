@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_zinc_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_zinc_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:zinc_ingot_from_blasting_deepslate_zinc_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

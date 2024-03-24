@@ -18,8 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.common.IForgeShearable;
-import net.minecraftforge.common.IPlantable;
+import net.neoforged.neoforge.common.IPlantable;
+import net.neoforged.neoforge.common.IShearable;
 
 public class TrackLayer extends MaintenancePatternMinecart {
 
@@ -36,7 +36,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TRACK_LAYER.get();
   }
 
@@ -99,7 +99,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
     var block = state.getBlock();
     return (state.isAir() ||
         block instanceof IPlantable ||
-        block instanceof IForgeShearable ||
+        block instanceof IShearable ||
         state.is(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS));
   }
 

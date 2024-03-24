@@ -20,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_material",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_material"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:bushing_gear_bronze"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

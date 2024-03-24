@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_reinforced_rail",
-      "has_stone_railbed",
-      "has_the_recipe"
+      "has_stone_railbed"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:reinforced_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -15,10 +15,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> {
 
@@ -32,7 +31,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   private final WaterTankSidingBlockEntity blockEntity;
   private final StandardTank tank;
-  private final LazyOptional<IFluidHandler> fluidHandler;
 
   private State state = State.INACTIVE;
   private int refillTicks;
@@ -44,7 +42,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
     super(provider, 3);
     this.blockEntity = provider;
     this.tank = StandardTank.ofBuckets(RailcraftConfig.SERVER.tankCapacityPerBlock.get() * 26);
-    this.fluidHandler = LazyOptional.of(() -> this.tank);
   }
 
   public State getState() {
@@ -78,7 +75,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidTools.isRoomInContainer(stack, this.tank.getFluidType()))
+          && FluidTools.isRoomInContainer(stack, this.tank.getFluid().getFluid()))
           || FluidUtil.getFluidContained(stack).isPresent();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;
@@ -99,10 +96,6 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
   public StandardTank getTank() {
     return this.tank;
-  }
-
-  public LazyOptional<IFluidHandler> getFluidHandler() {
-    return this.fluidHandler;
   }
 
   @Override

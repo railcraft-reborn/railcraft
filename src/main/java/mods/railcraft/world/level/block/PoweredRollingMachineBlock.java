@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -31,7 +32,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class PoweredRollingMachineBlock extends BaseEntityBlock
     implements ChargeBlock, JeiSearchable {
@@ -40,8 +40,16 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
           new ChargeStorage.Spec(ChargeStorage.State.RECHARGEABLE, 8000, 1000, 1));
 
+  private static final MapCodec<PoweredRollingMachineBlock> CODEC =
+      simpleCodec(PoweredRollingMachineBlock::new);
+
   public PoweredRollingMachineBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override
@@ -68,7 +76,7 @@ public class PoweredRollingMachineBlock extends BaseEntityBlock
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (player instanceof ServerPlayer serverPlayer) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get())
-          .ifPresent(blockEntity -> NetworkHooks.openScreen(serverPlayer, blockEntity, pos));
+          .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

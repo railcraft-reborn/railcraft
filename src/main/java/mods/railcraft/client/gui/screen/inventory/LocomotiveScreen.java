@@ -9,8 +9,8 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
@@ -60,9 +60,10 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     var centreX = (this.width - this.getXSize()) / 2;
     var centreY = (this.height - this.getYSize()) / 2;
 
-    var modeLayout =
-        new LinearLayout(centreX + 4, centreY + this.getYSize() - 129, this.imageWidth - 10, 16,
-            LinearLayout.Orientation.HORIZONTAL);
+    var layout = LinearLayout.vertical();
+    layout.setPosition(centreX + 4, centreY + this.getYSize() - 129);
+
+    var modeLayout = layout.addChild(LinearLayout.horizontal().spacing(2));
 
     // Mode buttons
     for (var mode : this.locomotive.getSupportedModes()) {
@@ -76,11 +77,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       modeLayout.addChild(button);
       this.modeButtons.put(mode, button);
     }
-    modeLayout.arrangeElements();
 
-    var speedLayout = new LinearLayout(centreX + 4, centreY + this.getYSize() - 112, 105, 16,
-        LinearLayout.Orientation.HORIZONTAL);
-
+    var speedLayout = layout.addChild(LinearLayout.horizontal().spacing(4));
     // Reverse button
     this.reverseButton = this.addRenderableWidget(ToggleButton
         .toggleBuilder(Component.literal("R"), __ -> this.toggleReverse(),
@@ -102,7 +100,6 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       speedLayout.addChild(button);
       this.speedButtons.put(speed, button);
     }
-    speedLayout.arrangeElements();
 
     // Lock button
     this.lockButton = this.addRenderableWidget(
@@ -113,6 +110,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
             .build());
 
     this.updateButtons();
+
+    layout.arrangeElements();
   }
 
   private void setMode(Locomotive.Mode mode) {
@@ -134,7 +133,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.locomotive.setLock(lock);
       this.locomotive.setOwner(lock == Locomotive.Lock.UNLOCKED
           ? null
-          : this.minecraft.getUser().getGameProfile());
+          : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -146,10 +145,10 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   protected void sendAttributes() {
     this.updateButtons();
-    NetworkChannel.GAME.sendToServer(
-        new SetLocomotiveAttributesMessage(this.locomotive.getId(),
-            locomotive.getMode(), locomotive.getSpeed(), locomotive.getLock(),
-            locomotive.isReverse()));
+    PacketHandler.sendToServer(
+        new SetLocomotiveMessage(this.locomotive.getId(),
+            this.locomotive.getMode(), this.locomotive.getSpeed(), this.locomotive.getLock(),
+            this.locomotive.isReverse()));
   }
 
   @Override
@@ -170,7 +169,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
                 || speed.getLevel() <= locomotive.getMaxReverseSpeed().getLevel()));
     this.reverseButton.setToggled(locomotive.isReverse());
     this.lockButton.active = !locomotive.isLocked()
-        || locomotive.getOwnerOrThrow().equals(this.minecraft.getUser().getGameProfile());
+        || locomotive.getOwnerOrThrow().equals(this.minecraft.player.getGameProfile());
     this.lockButton.setState(locomotive.getLock());
   }
 }

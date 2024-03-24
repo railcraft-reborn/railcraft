@@ -2,13 +2,11 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.FeedStationMenu;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class FeedStationScreen extends AbstractContainerScreen<FeedStationMenu> {
+public class FeedStationScreen extends RailcraftMenuScreen<FeedStationMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       RailcraftConstants.rl("textures/gui/container/single_slot.png");
@@ -20,10 +18,7 @@ public class FeedStationScreen extends AbstractContainerScreen<FeedStationMenu> 
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
-    final int x = this.leftPos;
-    final int y = this.topPos;
-    guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 }

@@ -23,7 +23,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
 
@@ -123,8 +123,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       if (this.currentTrain != null) {
         this.currentTrain.addLock(this.lockId);
       }
-      MinecraftForge.EVENT_BUS.post(
-          new CartLockdownEvent.Lock(this.currentCart, this.getBlockPos()));
+      NeoForge.EVENT_BUS.post(new CartLockdownEvent.Lock(this.currentCart, this.getBlockPos()));
       this.lockingModeController.locked(this.currentCart);
       this.currentCart.setDeltaMovement(0.0D, this.currentCart.getDeltaMovement().y(), 0.0D);
       RailShape railShape = TrackBlock.getRailShapeRaw(this.getBlockState());
@@ -148,8 +147,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       this.currentTrain.removeLock(this.lockId);
     }
     if (this.currentCart != null) {
-      MinecraftForge.EVENT_BUS
-          .post(new CartLockdownEvent.Release(this.currentCart, this.getBlockPos()));
+      NeoForge.EVENT_BUS.post(new CartLockdownEvent.Release(this.currentCart, this.getBlockPos()));
       this.lockingModeController.released(this.currentCart);
     }
   }

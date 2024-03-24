@@ -21,9 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
@@ -106,22 +105,19 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
     return Component.translatable(Translations.Container.COKE_OVEN);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+  public IItemHandler getItemCap(Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CokeOvenBlockEntity::getCokeOvenModule);
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return masterModule
-          .map(CokeOvenModule::getItemHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    if (cap == ForgeCapabilities.FLUID_HANDLER) {
-      return masterModule
-          .map(CokeOvenModule::getFluidHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+    return masterModule
+        .map(CokeOvenModule::getItemHandler)
+        .orElse(null);
+  }
+
+  public IFluidHandler getFluidCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(CokeOvenBlockEntity::getCokeOvenModule);
+    return masterModule
+        .map(CokeOvenModule::getTank)
+        .orElse(null);
   }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_booster_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_booster_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:high_speed_booster_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

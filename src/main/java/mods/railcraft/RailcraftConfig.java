@@ -5,32 +5,31 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 public class RailcraftConfig {
 
   public static final Client CLIENT;
   public static final Common COMMON;
   public static final Server SERVER;
-  private static final ForgeConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
+  private static final ModConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
 
   static {
-    final var commonPair = new ForgeConfigSpec.Builder().configure(Common::new);
+    final var commonPair = new ModConfigSpec.Builder().configure(Common::new);
     COMMON_SPEC = commonPair.getRight();
     COMMON = commonPair.getLeft();
 
-    final var clientPair = new ForgeConfigSpec.Builder().configure(Client::new);
+    final var clientPair = new ModConfigSpec.Builder().configure(Client::new);
     CLIENT_SPEC = clientPair.getRight();
     CLIENT = clientPair.getLeft();
 
-    final var serverPair = new ForgeConfigSpec.Builder().configure(Server::new);
+    final var serverPair = new ModConfigSpec.Builder().configure(Server::new);
     SERVER_SPEC = serverPair.getRight();
     SERVER = serverPair.getLeft();
   }
@@ -65,13 +64,16 @@ public class RailcraftConfig {
     public final IntValue waterCollectionRate;
     public final IntValue maxLauncherTrackForce;
     public final DoubleValue lossMultiplier;
+
     public final DoubleValue fuelMultiplier;
     public final DoubleValue fuelPerSteamMultiplier;
+
     public final IntValue cartDispenserDelay;
+
     public final BooleanValue changeDungeonLoot;
     public final ConfigValue<List<? extends String>> preferredOres;
 
-    private Server(Builder builder) {
+    private Server(ModConfigSpec.Builder builder) {
       builder.comment("High Speed Track Configuration");
       builder.push("highSpeedTrack");
       {
@@ -223,7 +225,7 @@ public class RailcraftConfig {
     public final IntValue halloween;
     public final IntValue harvest;
 
-    private Common(Builder builder) {
+    private Common(ModConfigSpec.Builder builder) {
       builder.comment("General configuration settings")
           .push("common");
 
@@ -254,7 +256,7 @@ public class RailcraftConfig {
     public final BooleanValue showMessageBeta;
     public final IntValue locomotiveLightLevel;
 
-    private Client(Builder builder) {
+    private Client(ModConfigSpec.Builder builder) {
       this.ghostTrainEnabled = builder
           .comment("Change to false to disable Ghost Train rendering")
           .define("ghostTrainEnabled", true);
@@ -274,5 +276,4 @@ public class RailcraftConfig {
           .define("showMessageBeta", true);
     }
   }
-
 }

@@ -2,8 +2,8 @@ package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetTrainDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetTrainDetectorMessage;
 import mods.railcraft.world.level.block.entity.detector.TrainDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -45,8 +45,8 @@ public class TrainDetectorScreen extends IngameWindowScreen {
     var size = Mth.clamp(trainDetector.getTrainSize() + incrementAmount, 1, 100);
     if (this.trainDetector.getTrainSize() != size) {
       this.trainDetector.setTrainSize(size);
-      NetworkChannel.GAME.sendToServer(
-          new SetTrainDetectorAttributesMessage(this.trainDetector.getBlockPos(),
+      PacketHandler.sendToServer(
+          new SetTrainDetectorMessage(this.trainDetector.getBlockPos(),
               this.trainDetector.getTrainSize()));
     }
   }

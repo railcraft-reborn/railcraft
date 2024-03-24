@@ -11,7 +11,7 @@ public class EnergyMinecartMenu extends RailcraftMenu {
 
   public EnergyMinecartMenu(int id, Inventory inventory, EnergyMinecart energyMinecart) {
     super(RailcraftMenuTypes.ENERGY_MINECART.get(), id, inventory.player, energyMinecart::stillValid);
-    var chargeIndicator = new EnergyStorageBatteryIndicator(energyMinecart.getCartBattery());
+    var chargeIndicator = new EnergyStorageBatteryIndicator(energyMinecart.getBatteryCart());
     this.addWidget(
         this.energyGauge = new GaugeWidget(chargeIndicator, 57, 38, 176, 0, 62, 8, false));
   }

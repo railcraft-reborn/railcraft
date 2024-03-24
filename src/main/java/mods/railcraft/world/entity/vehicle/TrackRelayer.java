@@ -38,7 +38,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TRACK_RELAYER.get();
   }
 

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_whistle_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_whistle_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:strap_iron_whistle_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

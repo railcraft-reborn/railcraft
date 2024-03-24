@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public abstract class AbstractSignalBlockEntity extends RailcraftBlockEntity {
 
@@ -25,10 +24,5 @@ public abstract class AbstractSignalBlockEntity extends RailcraftBlockEntity {
   @Override
   public void setCustomName(@Nullable Component name) {
     super.setCustomName(name);
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return new AABB(this.blockPos().offset(-1, 0, -1), this.blockPos().offset(2, 2, 2));
   }
 }

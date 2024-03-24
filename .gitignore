@@ -83,6 +83,9 @@ gradle/
 # other
 bin
 run
+runs
+run-data
+repo
 
 #Visual studio stuff
 *.vscode/*

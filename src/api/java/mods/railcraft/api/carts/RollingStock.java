@@ -10,9 +10,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
@@ -20,22 +22,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.AutoRegisterCapability;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.EntityCapability;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 /**
  * Main capability for all things minecart/locomotive related.
  *
  * @author Sm0keySa1m0n
  */
-@AutoRegisterCapability
 public interface RollingStock {
 
   /**
@@ -58,10 +56,11 @@ public interface RollingStock {
   int MAX_BLOCKING_ITEM_SLOTS = 8;
   int MAX_BLOCKING_TANK_CAPACITY = 8 * FluidType.BUCKET_VOLUME;
 
-  Capability<RollingStock> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+  EntityCapability<RollingStock, Void> CAPABILITY =
+      EntityCapability.createVoid(RailcraftConstants.rl("rolling_stock"), RollingStock.class);
 
   static RollingStock getOrThrow(AbstractMinecart minecart) {
-    return minecart.getCapability(CAPABILITY)
+    return Optional.ofNullable(minecart.getCapability(CAPABILITY))
         .orElseThrow(() -> new IllegalStateException("RollingStock missing on " + minecart));
   }
 
@@ -117,16 +116,10 @@ public interface RollingStock {
    */
   Optional<RollingStock> linkAt(Side side);
 
-  /**
-   * Shorthand for {@link #linkAt(Side.FRONT)}
-   */
   default Optional<RollingStock> frontLink() {
     return this.linkAt(Side.FRONT);
   }
 
-  /**
-   * Shorthand for {@link #linkAt(Side.BACK)}
-   */
   default Optional<RollingStock> backLink() {
     return this.linkAt(Side.BACK);
   }
@@ -245,6 +238,7 @@ public interface RollingStock {
     return Stream.concat(Stream.of(this), this.traverseTrain(side));
   }
 
+  @Nullable
   Train train();
 
   default boolean isSameTrainAs(@NotNull RollingStock rollingStock) {
@@ -265,9 +259,10 @@ public interface RollingStock {
           () -> this.traverseTrain(side).iterator();
       for (var target : targets) {
         var cart = target.entity();
-        var adaptor = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
-            .map(ContainerManipulator::of)
-            .orElse(null);
+        var adaptor =
+            Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY, null))
+                .map(ContainerManipulator::of)
+                .orElse(null);
         if (adaptor != null && this.canAcceptPushedItem(cart, itemStack)) {
           itemStack = adaptor.insert(itemStack);
         }
@@ -304,7 +299,7 @@ public interface RollingStock {
       SlotAccessor result = null;
       for (var target : targets) {
         var cart = target.entity();
-        var slot = cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        var slot = Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
             .map(ContainerManipulator::of)
             .flatMap(manipulator -> manipulator.findFirstExtractable(
                 filter.and(stack -> this.canProvidePulledItem(cart, stack))))
@@ -370,7 +365,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canAcceptPushedFluid(cart, remainder)) {
-          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
           if (fluidHandler != null) {
             var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
             remainder.setAmount(remainder.getAmount() - filled);
@@ -411,7 +406,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canProvidePulledFluid(cart, fluidStack)) {
-          var fluidHandler = cart.getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
           if (fluidHandler != null) {
             var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
             if (!drained.isEmpty()) {
@@ -501,7 +496,7 @@ public interface RollingStock {
   private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof ItemTransferHandler handler
         ? !handler.canPassItemRequests(stack)
-        : cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
+        : Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
             .map(IItemHandler::getSlots)
             .orElse(0) < MAX_BLOCKING_ITEM_SLOTS;
   }
@@ -509,7 +504,7 @@ public interface RollingStock {
   private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidTransferHandler fluidMinecart
         ? !fluidMinecart.canPassFluidRequests(fluid)
-        : cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
+        : Optional.ofNullable(cart.getCapability(Capabilities.FluidHandler.ENTITY, null))
             .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }

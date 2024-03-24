@@ -1,19 +1,19 @@
 package mods.railcraft.api.carts;
 
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 /**
  * @author Sm0keySa1m0n
  */
-public interface Train extends Iterable<RollingStock> {
+public interface Train {
 
   UUID id();
 
@@ -32,11 +32,6 @@ public interface Train extends Iterable<RollingStock> {
   default Stream<Entity> passengers() {
     return this.entities()
         .flatMap(minecart -> minecart.getPassengers().stream());
-  }
-
-  @Override
-  default Iterator<RollingStock> iterator() {
-    return this.stream().iterator();
   }
 
   int getNumRunningLocomotives();
@@ -75,9 +70,6 @@ public interface Train extends Iterable<RollingStock> {
     IDLE("idle"),
     NORMAL("normal");
 
-    private static final StringRepresentable.EnumCodec<State> CODEC =
-        StringRepresentable.fromEnum(State::values);
-
     private final String name;
 
     State(String name) {
@@ -94,7 +86,7 @@ public interface Train extends Iterable<RollingStock> {
     }
 
     public static Optional<State> fromName(String name) {
-      return Optional.ofNullable(CODEC.byName(name));
+      return Arrays.stream(values()).filter(state -> state.name.equals(name)).findAny();
     }
   }
 }

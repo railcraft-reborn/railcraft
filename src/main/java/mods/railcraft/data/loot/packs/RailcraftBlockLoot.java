@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftBlockLoot extends BlockLootSubProvider {
 
@@ -403,6 +403,6 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
 
   @Override
   protected Iterable<Block> getKnownBlocks() {
-    return RailcraftBlocks.entries().stream().map(RegistryObject::get).toList();
+    return RailcraftBlocks.entries().stream().map(DeferredHolder::get).map(Block.class::cast).toList();
   }
 }

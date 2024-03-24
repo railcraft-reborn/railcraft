@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_reinforced_rail",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_reinforced_rail"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:reinforced_junction_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

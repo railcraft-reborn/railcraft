@@ -1,37 +1,17 @@
 package mods.railcraft.advancements;
 
-import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigger.Instance> {
-
-  private static final ResourceLocation ID = RailcraftConstants.rl("cart_linking");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  public CartLinkingTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
-    var owned = JsonUtil.getAsJsonObject(json, "owned")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    var other = JsonUtil.getAsJsonObject(json, "other")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new CartLinkingTrigger.Instance(contextAwarePredicate, owned, other);
-  }
+public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user links a cart.
@@ -39,43 +19,42 @@ public class CartLinkingTrigger extends SimpleCriterionTrigger<CartLinkingTrigge
   public void trigger(ServerPlayer playerEntity, AbstractMinecart owned,
       AbstractMinecart other) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, owned, other));
+        criterionInstance -> criterionInstance.matches(playerEntity, owned, other));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public static Criterion<TriggerInstance> hasLinked() {
+    return RailcraftCriteriaTriggers.CART_LINK.createCriterion(
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
 
-    private final MinecartPredicate owned;
-    private final MinecartPredicate other;
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
-        MinecartPredicate owned, MinecartPredicate other) {
-      super(CartLinkingTrigger.ID, contextAwarePredicate);
-      this.owned = owned;
-      this.other = other;
-    }
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<MinecartPredicate> owned,
+      Optional<MinecartPredicate> other) implements SimpleCriterionTrigger.SimpleInstance {
 
-    public static CartLinkingTrigger.Instance hasLinked() {
-      return new CartLinkingTrigger.Instance(ContextAwarePredicate.ANY,
-          MinecartPredicate.ANY, MinecartPredicate.ANY);
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "owned")
+                .forGetter(TriggerInstance::owned),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "other")
+                .forGetter(TriggerInstance::other)
+        ).apply(instance, TriggerInstance::new));
 
-    public boolean matches(ServerPlayer player, AbstractMinecart owned,
-        AbstractMinecart other) {
-      return this.owned.test(player, owned) && this.other.test(player, other);
+    public boolean matches(ServerPlayer player, AbstractMinecart owned, AbstractMinecart other) {
+      return this.owned.map(x -> x.matches(player, owned)).orElse(true)
+          && this.other.map(x -> x.matches(player, other)).orElse(true);
     }
 
     @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
-      JsonObject json = new JsonObject();
-      json.add("owned", this.owned.serializeToJson());
-      json.add("other", this.other.serializeToJson());
-      return json;
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
-
 }

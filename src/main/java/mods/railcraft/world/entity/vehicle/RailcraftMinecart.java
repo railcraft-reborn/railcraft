@@ -28,7 +28,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
@@ -107,10 +106,9 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (!this.level().isClientSide()) {
+    if (player instanceof ServerPlayer serverPlayer) {
       if (this.hasMenu()) {
-        NetworkHooks.openScreen((ServerPlayer) player, this,
-            data -> data.writeVarInt(this.getId()));
+        serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));
       }
       PiglinAi.angerNearbyPiglins(player, true);
     }

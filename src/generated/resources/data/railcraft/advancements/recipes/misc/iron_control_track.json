@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_control_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_control_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:iron_control_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

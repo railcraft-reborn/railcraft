@@ -5,7 +5,7 @@ import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 
 public class FluidGaugeWidget extends Widget {

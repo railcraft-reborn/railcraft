@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_charge_motor",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_charge_motor"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:crusher"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -11,9 +11,9 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.MinecartFurnace;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 
-@Mixin(MinecartFurnace.class)
+@Mixin(value = MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
 
   @Shadow
@@ -30,17 +30,17 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
 
   /**
    * Replace fuel checks with
-   * {@link ForgeHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
+   * {@link CommonHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
    */
   @Overwrite
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    InteractionResult ret = super.interact(player, hand);
+    var ret = super.interact(player, hand);
     if (ret.consumesAction()) {
       return ret;
     }
     ItemStack itemstack = player.getItemInHand(hand);
-    var burnTime = ForgeHooks.getBurnTime(itemstack, null);
+    var burnTime = CommonHooks.getBurnTime(itemstack, null);
     if (burnTime > 0 && this.fuel + burnTime <= 32000) {
       if (!player.getAbilities().instabuild) {
         itemstack.shrink(1);

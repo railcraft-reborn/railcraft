@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
@@ -30,12 +29,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
 
 public class TankMinecart extends FilteredMinecart
     implements WorldlyContainer, FluidTransferHandler {
@@ -57,8 +52,6 @@ public class TankMinecart extends FilteredMinecart
           .setValidator(fluidStack -> this.getFilterFluid()
               .map(fluidStack::isFluidEqual)
               .orElse(true));
-  private final LazyOptional<IFluidHandler> fluidHandlerCapability =
-      LazyOptional.of(() -> this.tank);
   private final ContainerMapper invLiquids = ContainerMapper.make(this).ignoreItemChecks();
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -97,13 +90,6 @@ public class TankMinecart extends FilteredMinecart
 
   public StandardTank getTankManager() {
     return this.tank;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return capability == ForgeCapabilities.FLUID_HANDLER
-        ? this.fluidHandlerCapability.cast()
-        : super.getCapability(capability, facing);
   }
 
   @Override
@@ -240,7 +226,7 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TANK_MINECART.get();
   }
 

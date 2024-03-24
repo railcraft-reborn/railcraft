@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_signal_circuit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_signal_circuit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:block_signal"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

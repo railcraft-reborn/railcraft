@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_stone_slab",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_stone_slab"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:player_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

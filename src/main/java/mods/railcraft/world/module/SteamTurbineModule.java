@@ -13,11 +13,9 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.IFluidTank;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
@@ -35,7 +33,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private float operatingRatio;
   private int energy;
 
-  private final LazyOptional<IFluidHandler> fluidHandler = LazyOptional.of(FluidHandler::new);
+  private final IFluidHandler fluidHandler = new FluidHandler();
 
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
@@ -50,7 +48,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
         .changeCallback(provider::setChanged);
   }
 
-  public LazyOptional<IFluidHandler> getFluidHandler() {
+  public IFluidHandler getFluidHandler() {
     return this.fluidHandler;
   }
 
@@ -59,14 +57,14 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     super.serverTick();
     var addedEnergy = false;
     if (this.energy < CHARGE_OUTPUT) {
-      var steam = this.steamTank.internalDrain(STEAM_USAGE, FluidAction.SIMULATE);
+      var steam = this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.SIMULATE);
       if (steam.getAmount() >= STEAM_USAGE) {
         var rotorStack = this.rotorContainer.getItem(0);
         if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
           addedEnergy = true;
           this.energy += CHARGE_OUTPUT;
-          this.steamTank.internalDrain(STEAM_USAGE, FluidAction.EXECUTE);
-          this.waterTank.internalFill(new FluidStack(Fluids.WATER, 2), FluidAction.EXECUTE);
+          this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.EXECUTE);
+          this.waterTank.internalFill(new FluidStack(Fluids.WATER, 2), IFluidHandler.FluidAction.EXECUTE);
           this.rotorContainer.setItem(0, useRotor(rotorStack));
         }
       }

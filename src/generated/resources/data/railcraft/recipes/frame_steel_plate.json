@@ -17,6 +17,5 @@
   "result": {
     "count": 10,
     "item": "railcraft:frame"
-  },
-  "show_notification": true
+  }
 }

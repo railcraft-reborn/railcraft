@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_nickel_raw",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_nickel_raw"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:nickel_ingot_from_blasting_nickel_raw"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

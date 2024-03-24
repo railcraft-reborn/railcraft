@@ -1,19 +1,19 @@
 package mods.railcraft.world.effect;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftMobEffects {
 
   private static final DeferredRegister<MobEffect> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, RailcraftConstants.ID);
+      DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, RailcraftConstants.ID);
 
-  public static final RegistryObject<CreosoteEffect> CREOSOTE =
+  public static final DeferredHolder<MobEffect, CreosoteEffect> CREOSOTE =
       deferredRegister.register("creosote",
           () -> new CreosoteEffect(MobEffectCategory.BENEFICIAL, 0xCCA300));
 

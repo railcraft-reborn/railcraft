@@ -19,14 +19,4 @@ public interface TunnelBoreHead {
    * @return The texture file path
    */
   ResourceLocation getTextureLocation();
-
-  /**
-   * Return the dig speed modifier of this bore head.
-   *
-   * This value controls how much faster or slow this bore head mines each layer compared to the
-   * default time.
-   *
-   * @return The dig speed modifier
-   */
-  double getDigModifier();
 }

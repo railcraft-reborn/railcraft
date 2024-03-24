@@ -1,4 +1,5 @@
 {
+  "parent": "minecraft:recipes/root",
   "criteria": {
     "has_logs": {
       "conditions": {
@@ -9,12 +10,23 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:coke_oven/charcoal"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_logs"
     ]
   ],
-  "sends_telemetry_event": true
+  "rewards": {
+    "recipes": [
+      "railcraft:coke_oven/charcoal"
+    ]
+  }
 }

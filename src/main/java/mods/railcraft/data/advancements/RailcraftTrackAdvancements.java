@@ -9,19 +9,20 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-class RailcraftTrackAdvancements implements ForgeAdvancementProvider.AdvancementGenerator {
+class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGenerator {
 
   @Override
-  public void generate(HolderLookup.Provider registries, Consumer<Advancement> consumer,
+  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer,
       ExistingFileHelper fileHelper) {
     var root = Advancement.Builder.advancement()
         .display(
@@ -29,7 +30,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.ROOT),
             Component.translatable(Translations.Advancement.Tracks.ROOT_DESC),
             new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
-            FrameType.TASK,
+            AdvancementType.TASK,
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
@@ -41,7 +42,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE),
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE_DESC),
             null,
-            FrameType.CHALLENGE,
+            AdvancementType.CHALLENGE,
             true, true, false)
         .parent(root)
         .addCriterion("inv_changed",
@@ -54,10 +55,10 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE),
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(root)
-        .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger.Instance
+        .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
         .save(consumer, RailcraftConstants.rl("tracks/blast_furnace"), fileHelper);
 
@@ -67,10 +68,10 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN),
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, true, false)
         .parent(root)
-        .addCriterion("has_coke_oven", MultiBlockFormedTrigger.Instance
+        .addCriterion("has_coke_oven", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
         .save(consumer, RailcraftConstants.rl("tracks/coke_oven"), fileHelper);
 
@@ -80,14 +81,13 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE),
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/manual_rolling_machine"),
-            fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/manual_rolling_machine"), fileHelper);
 
     Advancement.Builder.advancement()
         .display(
@@ -95,7 +95,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.CRUSHER),
             Component.translatable(Translations.Advancement.Tracks.CRUSHER_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
@@ -108,7 +108,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK),
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
@@ -120,10 +120,10 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT),
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, true, false)
         .parent(basicTrack)
-        .addCriterion("has_used_track_kit", UseTrackKitTrigger.Instance.hasUsedTrackKit())
+        .addCriterion("has_used_track_kit", UseTrackKitTrigger.hasUsedTrackKit())
         .save(consumer, RailcraftConstants.rl("tracks/track_kit"), fileHelper);
 
     Advancement.Builder.advancement()
@@ -132,10 +132,10 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS),
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS_DESC),
             null,
-            FrameType.GOAL,
+            AdvancementType.GOAL,
             true, false, false)
         .parent(basicTrack)
-        .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.Instance.hasUsedSpikeMaul())
+        .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.hasUsedSpikeMaul())
         .save(consumer, RailcraftConstants.rl("tracks/junctions"), fileHelper);
 
     Advancement.Builder.advancement()
@@ -144,7 +144,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK),
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK_DESC),
             null,
-            FrameType.CHALLENGE,
+            AdvancementType.CHALLENGE,
             true, true, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",
@@ -157,7 +157,7 @@ class RailcraftTrackAdvancements implements ForgeAdvancementProvider.Advancement
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK),
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK_DESC),
             null,
-            FrameType.TASK,
+            AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",

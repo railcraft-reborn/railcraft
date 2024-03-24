@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_repeater",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_repeater"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:signal_capacitor_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

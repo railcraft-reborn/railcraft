@@ -190,7 +190,7 @@ public class ElevatorTrackBlock extends Block {
     BlockPos posUp = pos.above();
     BlockState stateUp = level.getBlockState(posUp);
     return level.hasNeighborSignal(pos)
-        || stateUp.getBlock() == this && this.determinePowered(level, posUp, stateUp);
+        || stateUp.is(this) && this.determinePowered(level, posUp, stateUp);
   }
 
   /**

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_zinc_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_zinc_nugget"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:zinc_ingot_from_zinc_nugget"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

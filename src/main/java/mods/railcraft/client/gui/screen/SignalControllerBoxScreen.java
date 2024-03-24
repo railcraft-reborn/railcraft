@@ -3,8 +3,8 @@ package mods.railcraft.client.gui.screen;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -66,8 +66,8 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
     if (this.minecraft.level != null) {
       this.signalBox.setDefaultAspect(this.defaultAspect);
       this.signalBox.setPoweredAspect(this.poweredAspect);
-      NetworkChannel.GAME.sendToServer(
-          new SetSignalControllerBoxAttributesMessage(this.signalBox.getBlockPos(),
+      PacketHandler.sendToServer(
+          new SetSignalControllerBoxMessage(this.signalBox.getBlockPos(),
               this.defaultAspect, this.poweredAspect));
     }
   }

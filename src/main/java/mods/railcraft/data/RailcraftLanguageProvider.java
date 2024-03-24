@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.VariantRegistrar;
+import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
@@ -22,8 +22,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
 
@@ -36,6 +36,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tab.RAILCRAFT, RailcraftConstants.NAME);
     this.add(Translations.Tab.RAILCRAFT_OUTFITTED_TRACKS, RailcraftConstants.NAME + " Outfitted Tracks");
     this.add(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS, RailcraftConstants.NAME + " Decorative Blocks");
+
+    this.add("fml.menu.mods.info.displayname." + RailcraftConstants.ID, RailcraftConstants.NAME);
+    this.add("fml.menu.mods.info.description." + RailcraftConstants.ID, "Redefine your rails");
 
     this.blockTranslations();
     this.itemTranslations();
@@ -425,6 +428,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.NONE, "None");
     this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
     this.add(Translations.Tips.GOOGLES_AURA, "Current Aura:");
+    this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");
     this.add(Translations.Tips.GOOGLES_AURA_SHUNTING, "Shunting");
     this.add(Translations.Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
     this.add(Translations.Tips.GOOGLES_AURA_SURVEYING, "Surveying");
@@ -1315,12 +1319,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void addBlockColorVariants(
-      VariantRegistrar<DyeColor, ? extends Block> blocks, String name) {
+      VariantSet<DyeColor, Block, ? extends Block> blocks, String name) {
     this.addBlockVariants(blocks, name, RailcraftLanguageProvider::getColorName);
   }
 
   private <K extends Enum<K> & StringRepresentable> void addBlockVariants(
-      VariantRegistrar<K, ? extends Block> blocks, String name, Function<K, String> nameGetter) {
+      VariantSet<K, Block, ? extends Block> blocks, String name, Function<K, String> nameGetter) {
     blocks.forEach((color, block) -> this.addBlock(block, nameGetter.apply(color) + " " + name));
   }
 

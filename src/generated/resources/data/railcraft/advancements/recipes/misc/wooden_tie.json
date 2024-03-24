@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_creosote_bucket",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_creosote_bucket"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:wooden_tie"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -1,40 +1,19 @@
 package mods.railcraft.advancements;
 
-import java.util.Objects;
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public class JukeboxCartPlayMusicTrigger
-    extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.Instance> {
-
-  private static final ResourceLocation ID = RailcraftConstants.rl("jukebox_cart_play_music");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  public JukeboxCartPlayMusicTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
-    var sound = JsonUtil.getAsString(json, "music")
-        .map(ResourceLocation::tryParse)
-        .orElse(null);
-    var cart = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new JukeboxCartPlayMusicTrigger.Instance(contextAwarePredicate, sound, cart);
-  }
+    extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.TriggerInstance> {
 
   /**
    * Invoked when the user plays music on a cart.
@@ -42,50 +21,49 @@ public class JukeboxCartPlayMusicTrigger
   public void trigger(ServerPlayer playerEntity, AbstractMinecart cart,
       ResourceLocation music) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cart, music));
+        criterionInstance -> criterionInstance.matches(playerEntity, cart, music));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public static Criterion<TriggerInstance> hasPlayedAnyMusic() {
+    return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
 
-    @Nullable
-    private final ResourceLocation music;
-    private final MinecartPredicate cart;
+  public static Criterion<TriggerInstance> hasPlayedMusic(Optional<ResourceLocation> music) {
+    return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
+        new TriggerInstance(Optional.empty(), music, Optional.empty()));
+  }
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
-        @Nullable ResourceLocation music, MinecartPredicate cart) {
-      super(JukeboxCartPlayMusicTrigger.ID, contextAwarePredicate);
-      this.music = music;
-      this.cart = cart;
-    }
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedAnyMusic() {
-      return new JukeboxCartPlayMusicTrigger.Instance(ContextAwarePredicate.ANY,
-          null, MinecartPredicate.ANY);
-    }
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<ResourceLocation> music,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
-    public static JukeboxCartPlayMusicTrigger.Instance hasPlayedMusic(ResourceLocation music) {
-      return new JukeboxCartPlayMusicTrigger.Instance(ContextAwarePredicate.ANY,
-          music, MinecartPredicate.ANY);
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(ResourceLocation.CODEC, "music")
+                .forGetter(TriggerInstance::music),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
+        ).apply(instance, TriggerInstance::new));
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cart,
-        ResourceLocation sound) {
-      return (music == null || Objects.equals(sound, music)) && this.cart.test(player, cart);
-    }
-
-    @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
-      JsonObject json = new JsonObject();
-      if (this.music != null) {
-        json.addProperty("music", this.music.toString());
+    public boolean matches(ServerPlayer player, AbstractMinecart cart, ResourceLocation music) {
+      if (this.music.isPresent() && !this.music.get().equals(music)) {
+        return false;
       }
-      json.add("cart", this.cart.serializeToJson());
-      return json;
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
+    }
+
+    @Override
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

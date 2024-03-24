@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_raw_firestone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_raw_firestone"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:cut_firestone"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

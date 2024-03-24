@@ -1,7 +1,7 @@
-// 1.20.1	2023-08-04T14:31:23.575924	Global Loot Modifiers : railcraft
-65ad395f76f4223eb6783e680dfbed57147b9c17 data/forge/loot_modifiers/global_loot_modifiers.json
-2af8300727d748f166fe7d78ccb1383b83eaf333 data/railcraft/loot_modifiers/chests/abandoned_mineshaft.json
-0b90f33c05ba6be88173174454928673509c9274 data/railcraft/loot_modifiers/chests/simple_dungeon.json
-6b599e6175c03de8188edbd660ffb5ce2570b360 data/railcraft/loot_modifiers/chests/stronghold_corridor.json
-3338cd81404db3e004e8c9af6836542ac0fe4571 data/railcraft/loot_modifiers/chests/stronghold_crossing.json
-b85ee7c2df1ba31936f97057c513829ce5ce534e data/railcraft/loot_modifiers/chests/village/village_armorer.json
+// 1.20.4	2024-01-04T21:08:03.992333	Global Loot Modifiers : railcraft
+65ad395f76f4223eb6783e680dfbed57147b9c17 data/neoforge/loot_modifiers/global_loot_modifiers.json
+16e59dbf9d9bf0b818ed46e4d8e14b5521a88cda data/railcraft/loot_modifiers/chests/abandoned_mineshaft.json
+94e692f317874a895e1a93b7d6e95968a34db451 data/railcraft/loot_modifiers/chests/simple_dungeon.json
+e49251d306dd55e90d93e0b60ba24b30c1420b04 data/railcraft/loot_modifiers/chests/stronghold_corridor.json
+109bf739a0ac753294bc274636ba857e1df23282 data/railcraft/loot_modifiers/chests/stronghold_crossing.json
+98419d6e0296d7b103e7f241b3737a4728d4d318 data/railcraft/loot_modifiers/chests/village/village_armorer.json

@@ -1,23 +1,15 @@
 package mods.railcraft.util.fluids;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.FluidBottleItem;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public class CreosoteBottleWrapper implements IFluidHandlerItem, ICapabilityProvider {
-
-  private final LazyOptional<IFluidHandlerItem> holder = LazyOptional.of(() -> this);
+public class CreosoteBottleWrapper implements IFluidHandlerItem {
 
   @NotNull
   protected ItemStack container;
@@ -32,9 +24,8 @@ public class CreosoteBottleWrapper implements IFluidHandlerItem, ICapabilityProv
     return this.container;
   }
 
-  @SuppressWarnings("deprecation")
   public boolean canFillFluidType(FluidStack fluid) {
-    return fluid.getFluid().is(RailcraftTags.Fluids.CREOSOTE);
+    return fluid.is(RailcraftTags.Fluids.CREOSOTE);
   }
 
   @NotNull
@@ -124,12 +115,5 @@ public class CreosoteBottleWrapper implements IFluidHandlerItem, ICapabilityProv
     }
 
     return FluidStack.EMPTY;
-  }
-
-  @Override
-  @NotNull
-  public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability,
-      @Nullable Direction facing) {
-    return ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(capability, this.holder);
   }
 }

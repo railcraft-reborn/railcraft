@@ -21,9 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEntity, Void> {
 
@@ -138,21 +137,19 @@ public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEn
     return Component.translatable(Container.STEAM_OVEN);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return this.getMasterBlockEntity()
-          .map(SteamOvenBlockEntity::getSteamOvenModule)
-          .map(SteamOvenModule::getItemHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    } else if (cap == ForgeCapabilities.FLUID_HANDLER) {
-      return this.getMasterBlockEntity()
-          .map(SteamOvenBlockEntity::getSteamOvenModule)
-          .map(SteamOvenModule::getFluidHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+  public IItemHandler getItemCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(SteamOvenBlockEntity::getSteamOvenModule);
+    return masterModule
+        .map(SteamOvenModule::getItemHandler)
+        .orElse(null);
+  }
+
+  public IFluidHandler getFluidCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(SteamOvenBlockEntity::getSteamOvenModule);
+    return masterModule
+        .map(SteamOvenModule::getSteamTank)
+        .orElse(null);
   }
 }

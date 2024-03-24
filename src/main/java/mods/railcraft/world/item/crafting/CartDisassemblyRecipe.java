@@ -3,7 +3,6 @@ package mods.railcraft.world.item.crafting;
 import java.util.stream.IntStream;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,9 +17,8 @@ public abstract class CartDisassemblyRecipe extends CustomRecipe {
   private final Item ingredient;
   private final Item result;
 
-  public CartDisassemblyRecipe(ResourceLocation id, Item ingredient, Item result,
-      CraftingBookCategory category) {
-    super(id, category);
+  public CartDisassemblyRecipe(Item ingredient, Item result, CraftingBookCategory category) {
+    super(category);
     this.ingredient = ingredient;
     this.result = result;
   }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_ender_pearl",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_ender_pearl"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:world_spike"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

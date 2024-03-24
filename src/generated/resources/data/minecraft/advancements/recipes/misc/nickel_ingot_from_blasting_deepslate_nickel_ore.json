@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_nickel_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_nickel_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:nickel_ingot_from_blasting_deepslate_nickel_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

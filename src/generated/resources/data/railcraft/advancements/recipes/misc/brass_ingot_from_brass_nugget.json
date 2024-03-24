@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_brass_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brass_nugget"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:brass_ingot_from_brass_nugget"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class EnergyUtil {
 
@@ -22,7 +22,8 @@ public class EnergyUtil {
       int pushPerSide, Direction side, Predicate<BlockEntity> filter) {
     return LevelUtil.getBlockEntity(level, blockPos.relative(side))
         .filter(filter)
-        .flatMap(target -> target.getCapability(ForgeCapabilities.ENERGY, side.getOpposite()).resolve())
+        .map(target -> level.getCapability(Capabilities.EnergyStorage.BLOCK,
+            target.getBlockPos(), side.getOpposite()))
         .filter(IEnergyStorage::canReceive)
         .map(receiver -> {
           int amountToPush = energyStorage.extractEnergy(pushPerSide, true);

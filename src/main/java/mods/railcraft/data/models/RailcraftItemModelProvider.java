@@ -1,14 +1,13 @@
 package mods.railcraft.data.models;
 
-import java.util.Objects;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemModelProvider extends ItemModelProvider {
 
@@ -17,7 +16,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
   }
 
   private ItemModelBuilder basicCustomItem(Item item, String model) {
-    var rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+    var rl = BuiltInRegistries.ITEM.getKey(item);
     return withExistingParent(rl.getPath(), "item/" + model)
         .texture("layer0", modLoc("item/" + rl.getPath()));
   }

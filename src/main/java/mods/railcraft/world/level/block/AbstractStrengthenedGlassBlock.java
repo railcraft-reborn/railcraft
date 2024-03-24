@@ -3,14 +3,14 @@ package mods.railcraft.world.level.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractGlassBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 
-public abstract class AbstractStrengthenedGlassBlock extends AbstractGlassBlock {
+public abstract class AbstractStrengthenedGlassBlock extends TransparentBlock {
 
   public static final Property<Type> TYPE = EnumProperty.create("type", Type.class);
 

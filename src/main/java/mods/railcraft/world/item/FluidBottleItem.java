@@ -1,13 +1,8 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
-import mods.railcraft.util.fluids.CreosoteBottleWrapper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class FluidBottleItem extends Item {
 
@@ -22,11 +17,5 @@ public class FluidBottleItem extends Item {
 
   public Fluid getFluid() {
     return fluidSupplier.get();
-  }
-
-  @Nullable
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag tag) {
-    return new CreosoteBottleWrapper(stack);
   }
 }

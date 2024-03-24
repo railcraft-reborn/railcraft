@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_slag",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_slag"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:bag_of_cement_slag"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_white_strengthened_glass",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_white_strengthened_glass"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:gray_strengthened_glass"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

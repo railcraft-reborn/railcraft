@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_detector_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_detector_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:fluid_unloader"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

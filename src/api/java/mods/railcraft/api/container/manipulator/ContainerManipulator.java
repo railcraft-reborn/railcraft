@@ -16,9 +16,9 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 /**
  * This interface defines the standard inventory operations.
@@ -63,8 +63,9 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return () -> Arrays.stream(Direction.values())
         .flatMap(direction -> Stream.ofNullable(level.getBlockEntity(blockPos.relative(direction)))
             .filter(filter)
-            .flatMap(blockEntity -> blockEntity
-                .getCapability(ForgeCapabilities.ITEM_HANDLER, direction.getOpposite())
+            .flatMap(blockEntity -> Optional.ofNullable(
+                level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(),
+                    direction.getOpposite()))
                 .map(ContainerManipulator::of)
                 .stream()))
         .flatMap(ContainerManipulator::stream);

@@ -65,7 +65,7 @@ public class FirestoneItem extends Item {
   public static FirestoneItemEntity createEntityItem(Level level, Entity entity,
       ItemStack itemStack) {
     var firestone = new FirestoneItemEntity(level, entity.position(), itemStack);
-    firestone.setThrower(entity.getUUID());
+    firestone.setThrower(entity);
     firestone.setDeltaMovement(entity.getDeltaMovement());
     firestone.setDefaultPickUpDelay();
     return firestone;

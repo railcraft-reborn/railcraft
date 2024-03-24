@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_glowstone_dust",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_glowstone_dust"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:signal_lamp"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

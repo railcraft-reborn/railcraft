@@ -7,17 +7,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public record TuningAuraParticleOptions(Vec3 destination, int color) implements ParticleOptions {
 
-  public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder.create(
-      instance -> instance.group(
-              Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
-              Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color))
-          .apply(instance, TuningAuraParticleOptions::new));
+  public static final Codec<TuningAuraParticleOptions> CODEC = RecordCodecBuilder
+      .create(instance -> instance.group(
+          Vec3.CODEC.fieldOf("destination").forGetter(TuningAuraParticleOptions::destination),
+          Codec.INT.fieldOf("color").forGetter(TuningAuraParticleOptions::color)
+      ).apply(instance, TuningAuraParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<TuningAuraParticleOptions> DESERIALIZER =
@@ -39,23 +39,20 @@ public record TuningAuraParticleOptions(Vec3 destination, int color) implements 
         @Override
         public TuningAuraParticleOptions fromNetwork(ParticleType<TuningAuraParticleOptions> type,
             FriendlyByteBuf buf) {
-          return new TuningAuraParticleOptions(
-              new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()), buf.readVarInt());
+          return new TuningAuraParticleOptions(buf.readVec3(), buf.readVarInt());
         }
       };
 
   @Override
   public void writeToNetwork(FriendlyByteBuf buf) {
-    buf.writeDouble(this.destination.x());
-    buf.writeDouble(this.destination.y());
-    buf.writeDouble(this.destination.z());
+    buf.writeVec3(this.destination);
     buf.writeVarInt(this.color);
   }
 
   @Override
   public String writeToString() {
     return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d",
-        ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
+        BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
         this.destination.x(),
         this.destination.y(),
         this.destination.z(),

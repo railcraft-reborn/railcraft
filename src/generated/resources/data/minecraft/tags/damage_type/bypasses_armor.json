@@ -1,9 +1,24 @@
 {
   "values": [
-    "railcraft:bore",
-    "railcraft:electric",
-    "railcraft:track_electric",
-    "railcraft:train",
-    "railcraft:creosote"
+    {
+      "id": "railcraft:bore",
+      "required": false
+    },
+    {
+      "id": "railcraft:electric",
+      "required": false
+    },
+    {
+      "id": "railcraft:track_electric",
+      "required": false
+    },
+    {
+      "id": "railcraft:train",
+      "required": false
+    },
+    {
+      "id": "railcraft:creosote",
+      "required": false
+    }
   ]
 }

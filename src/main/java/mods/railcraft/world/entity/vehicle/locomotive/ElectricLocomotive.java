@@ -28,10 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
@@ -51,18 +48,15 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
 
   private ChargeCartStorageImpl cartStorage = new ChargeCartStorageImpl(MAX_CHARGE);
-  private final LazyOptional<IEnergyStorage> energyHandler;
 
   public ElectricLocomotive(EntityType<?> type, Level level) {
     super(type, level);
-    this.energyHandler = LazyOptional.of(() -> this.cartStorage);
   }
 
   public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, serverLevel);
     this.loadFromItemStack(itemStack);
-    this.energyHandler = LazyOptional.of(() -> this.cartStorage);
   }
 
   @Override
@@ -100,7 +94,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.ELECTRIC_LOCOMOTIVE.get();
   }
 
@@ -191,13 +185,6 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     var itemStack = super.getPickResult();
     itemStack.getOrCreateTag().putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
     return itemStack;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return ForgeCapabilities.ENERGY == capability
-        ? this.energyHandler.cast()
-        : super.getCapability(capability, facing);
   }
 
   @Override

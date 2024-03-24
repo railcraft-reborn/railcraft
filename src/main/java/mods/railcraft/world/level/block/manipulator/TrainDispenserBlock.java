@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.manipulator;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
@@ -23,15 +24,21 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEntity>{
+public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEntity> {
 
   public static final DirectionProperty FACING = BlockStateProperties.FACING;
+  private static final MapCodec<TrainDispenserBlock> CODEC = simpleCodec(TrainDispenserBlock::new);
 
   public TrainDispenserBlock(Properties properties) {
     super(TrainDispenserBlockEntity.class, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(POWERED, false)
         .setValue(FACING, Direction.DOWN));
+  }
+
+  @Override
+  protected MapCodec<? extends ManipulatorBlock<TrainDispenserBlockEntity>> codec() {
+    return CODEC;
   }
 
   @Override

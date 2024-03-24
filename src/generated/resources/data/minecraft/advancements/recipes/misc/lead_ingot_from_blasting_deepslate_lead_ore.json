@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_lead_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_lead_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:lead_ingot_from_blasting_deepslate_lead_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

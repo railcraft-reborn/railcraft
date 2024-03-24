@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_polished_abyssal_stone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_polished_abyssal_stone"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:abyssal_bricks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

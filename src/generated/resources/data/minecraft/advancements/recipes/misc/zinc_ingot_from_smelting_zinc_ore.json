@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_zinc_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_zinc_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:zinc_ingot_from_smelting_zinc_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

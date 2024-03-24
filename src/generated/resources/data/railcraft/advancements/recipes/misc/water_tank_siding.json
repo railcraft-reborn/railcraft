@@ -32,15 +32,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_iron_ingot",
-      "has_slime_ball",
-      "has_the_recipe"
+      "has_slime_ball"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:water_tank_siding"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

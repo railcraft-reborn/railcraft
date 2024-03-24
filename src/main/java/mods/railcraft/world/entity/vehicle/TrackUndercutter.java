@@ -46,7 +46,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
   }
 
   @Override
-  public Item getDropItem() {
+  protected Item getDropItem() {
     return RailcraftItems.TRACK_UNDERCUTTER.get();
   }
 
@@ -198,7 +198,7 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
       return true;
     }
     if (stack.getItem() instanceof BlockItem item) {
-      return state.is(item.getBlock()) || state.is(Blocks.GRASS) && item.getBlock() == Blocks.DIRT;
+      return state.is(item.getBlock()) || state.is(Blocks.GRASS_BLOCK) && item.getBlock() == Blocks.DIRT;
     }
     return false;
   }

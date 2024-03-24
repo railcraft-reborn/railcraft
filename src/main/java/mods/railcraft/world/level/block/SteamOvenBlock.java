@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
@@ -32,12 +33,18 @@ public class SteamOvenBlock extends MultiblockBlock {
 
   public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
   public static final Property<Type> TYPE = EnumProperty.create("type", Type.class);
+  private static final MapCodec<SteamOvenBlock> CODEC = simpleCodec(SteamOvenBlock::new);
 
   public SteamOvenBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(FACING, Direction.NORTH)
         .setValue(TYPE, Type.DEFAULT));
+  }
+
+  @Override
+  protected MapCodec<? extends MultiblockBlock> codec() {
+    return CODEC;
   }
 
   @Override

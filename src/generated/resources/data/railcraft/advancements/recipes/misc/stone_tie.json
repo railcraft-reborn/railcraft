@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_bag_of_cement",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bag_of_cement"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:stone_tie"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

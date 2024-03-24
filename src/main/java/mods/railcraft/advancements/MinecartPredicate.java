@@ -1,120 +1,74 @@
 package mods.railcraft.advancements;
 
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Ownable;
-import mods.railcraft.util.JsonUtil;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-/**
- * A utility for testing carts or so.
- */
-public final class MinecartPredicate {
+public record MinecartPredicate(
+    Optional<Boolean> highSpeed,
+    Optional<Boolean> launched,
+    Optional<Boolean> onElevator,
+    Optional<Boolean> derailed,
+    Optional<Boolean> mountable,
+    Optional<Boolean> checksOwner,
+    MinMaxBounds.Doubles speed,
+    Optional<EntityPredicate> parent
+) {
 
-  public static final MinecartPredicate ANY =
-      new MinecartPredicate(null, null, null, null, null, null,
-          MinMaxBounds.Doubles.ANY, EntityPredicate.ANY);
+  public static final Codec<MinecartPredicate> CODEC = RecordCodecBuilder.create(
+      instance -> instance.group(
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "highSpeed")
+              .forGetter(MinecartPredicate::highSpeed),
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "launched")
+              .forGetter(MinecartPredicate::launched),
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "onElevator")
+              .forGetter(MinecartPredicate::onElevator),
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "derailed")
+              .forGetter(MinecartPredicate::derailed),
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "mountable")
+              .forGetter(MinecartPredicate::mountable),
+          ExtraCodecs.strictOptionalField(Codec.BOOL, "checksOwner")
+              .forGetter(MinecartPredicate::checksOwner),
+          ExtraCodecs.strictOptionalField(MinMaxBounds.Doubles.CODEC, "speed",
+              MinMaxBounds.Doubles.ANY).forGetter(MinecartPredicate::speed),
+          ExtraCodecs.strictOptionalField(EntityPredicate.CODEC, "parent")
+              .forGetter(MinecartPredicate::parent)
+      ).apply(instance, MinecartPredicate::new));
 
-  @Nullable
-  private final Boolean highSpeed;
-  @Nullable
-  private final Boolean launched;
-  @Nullable
-  private final Boolean onElevator;
-  @Nullable
-  private final Boolean derailed;
-  @Nullable
-  private final Boolean mountable;
-  @Nullable
-  private final Boolean checksOwner;
-
-  private final MinMaxBounds.Doubles speed;
-  private final EntityPredicate parent;
-
-  public MinecartPredicate(@Nullable Boolean highSpeed, @Nullable Boolean launched,
-      @Nullable Boolean elevator, @Nullable Boolean derailed, @Nullable Boolean mountable,
-      @Nullable Boolean checkOwner, MinMaxBounds.Doubles speed, EntityPredicate parent) {
-    this.highSpeed = highSpeed;
-    this.launched = launched;
-    this.onElevator = elevator;
-    this.derailed = derailed;
-    this.mountable = mountable;
-    this.checksOwner = checkOwner;
-    this.speed = speed;
-    this.parent = parent;
-  }
-
-  public boolean test(ServerPlayer player, AbstractMinecart cart) {
+  public boolean matches(ServerPlayer player, AbstractMinecart cart) {
     var rollingStock = RollingStock.getOrThrow(cart);
 
-    if (this.highSpeed != null && rollingStock.isHighSpeed() != this.highSpeed) {
+    if (this.highSpeed.isPresent() && rollingStock.isHighSpeed() != this.highSpeed.get()) {
       return false;
     }
-    if (this.launched != null && rollingStock.isLaunched() != this.launched) {
+    if (this.launched.isPresent() && rollingStock.isLaunched() != this.launched.get()) {
       return false;
     }
-    if (this.onElevator != null && rollingStock.isOnElevator() != this.onElevator) {
+    if (this.onElevator.isPresent() && rollingStock.isOnElevator() != this.onElevator.get()) {
       return false;
     }
-    if (this.derailed != null && rollingStock.isDerailed() != this.derailed) {
+    if (this.derailed.isPresent() && rollingStock.isDerailed() != this.derailed.get()) {
       return false;
     }
-    if (this.mountable != null && rollingStock.isMountable() != this.mountable) {
+    if (this.mountable.isPresent() && rollingStock.isMountable() != this.mountable.get()) {
       return false;
     }
-    if (this.checksOwner != null && cart instanceof Ownable
-        && ((Ownable) cart).getOwner().map(owner -> !owner.equals(player.getGameProfile()))
-            .orElse(false)) {
+    if (this.checksOwner.isPresent() && cart instanceof Ownable ownable
+        && ownable.getOwner()
+        .map(owner -> !owner.equals(player.getGameProfile())).orElse(false)) {
       return false;
     }
     if (!this.speed.matchesSqr(MinecartUtil.getCartSpeedUncappedSquared(cart.getDeltaMovement()))) {
       return false;
     }
-    return this.parent.matches(player, cart);
-  }
-
-  private void addOptionalBoolean(JsonObject json, String name, @Nullable Boolean value) {
-    if (value != null) {
-      json.addProperty(name, value);
-    }
-  }
-
-  public JsonElement serializeToJson() {
-    JsonObject json = new JsonObject();
-    this.addOptionalBoolean(json, "high_speed", this.highSpeed);
-    this.addOptionalBoolean(json, "launched", this.launched);
-    this.addOptionalBoolean(json, "on_elevator", this.onElevator);
-    this.addOptionalBoolean(json, "derailed", this.derailed);
-    this.addOptionalBoolean(json, "mountable", this.mountable);
-    this.addOptionalBoolean(json, "check_owner", this.checksOwner);
-    json.add("speed", this.speed.serializeToJson());
-    json.add("parent", this.parent.serializeToJson());
-    return json;
-  }
-
-  public static MinecartPredicate deserialize(@Nullable JsonObject element) {
-    if (element == null || element.isJsonNull()
-        || (element.isJsonObject() && element.getAsJsonObject().size() < 1)) {
-      return MinecartPredicate.ANY;
-    }
-
-    Boolean highSpeed = JsonUtil.getAsBoolean(element, "high_speed").orElse(null);
-    Boolean launched = JsonUtil.getAsBoolean(element, "launched").orElse(null);
-    Boolean elevator = JsonUtil.getAsBoolean(element, "on_elevator").orElse(null);
-    Boolean derail = JsonUtil.getAsBoolean(element, "derailed").orElse(null);
-    Boolean canMount = JsonUtil.getAsBoolean(element, "canMount").orElse(null);
-    Boolean checksOwner = JsonUtil.getAsBoolean(element, "check_owner").orElse(null);
-    MinMaxBounds.Doubles speed = MinMaxBounds.Doubles.fromJson(element.get("speed"));
-    EntityPredicate parent = EntityPredicate.fromJson(element.get("parent"));
-
-    return new MinecartPredicate(highSpeed, launched, elevator, derail, canMount, checksOwner,
-        speed,
-        parent);
+    return this.parent.map(x -> x.matches(player, cart)).orElse(true);
   }
 }

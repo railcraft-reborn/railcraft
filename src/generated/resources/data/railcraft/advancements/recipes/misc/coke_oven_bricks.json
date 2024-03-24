@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_brick",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_brick"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:coke_oven_bricks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

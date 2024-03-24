@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_one_way_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_one_way_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:abandoned_one_way_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -30,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_nickel_ingot",
-      "has_iron_ingot",
-      "has_the_recipe"
+      "has_iron_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:invar_ingot_crafted_with_ingots"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

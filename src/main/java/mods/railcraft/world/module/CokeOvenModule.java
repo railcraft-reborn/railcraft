@@ -12,10 +12,9 @@ import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -32,8 +31,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private final ContainerMapper fluidContainer;
 
-  private final LazyOptional<IItemHandler> itemHandler;
-  private final LazyOptional<IFluidHandler> fluidHandler;
+  private final IItemHandler itemHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
@@ -44,7 +42,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
 
-    itemHandler = LazyOptional.of(() -> new InvWrapper(this) {
+    itemHandler = new InvWrapper(this) {
       @Override
       @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -62,9 +60,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
         }
         return stack;
       }
-    });
-
-    fluidHandler = LazyOptional.of(() -> tank);
+    };
   }
 
   @Override
@@ -139,12 +135,8 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     } && super.canPlaceItem(slot, itemStack);
   }
 
-  public LazyOptional<IItemHandler> getItemHandler() {
+  public IItemHandler getItemHandler() {
     return itemHandler;
-  }
-
-  public LazyOptional<IFluidHandler> getFluidHandler() {
-    return fluidHandler;
   }
 
   @Override

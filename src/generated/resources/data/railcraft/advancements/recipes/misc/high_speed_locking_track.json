@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_locking_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_locking_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:high_speed_locking_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

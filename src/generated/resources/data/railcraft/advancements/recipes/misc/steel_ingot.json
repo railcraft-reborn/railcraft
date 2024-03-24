@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_steel_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_steel_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:steel_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

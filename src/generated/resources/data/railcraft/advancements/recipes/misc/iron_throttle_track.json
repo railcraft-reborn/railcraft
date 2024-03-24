@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_throttle_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_throttle_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:iron_throttle_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

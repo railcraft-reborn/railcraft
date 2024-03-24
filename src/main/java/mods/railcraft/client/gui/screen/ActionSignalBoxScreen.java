@@ -8,8 +8,8 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetActionSignalBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.SharedConstants;
@@ -73,7 +73,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
       this.signalBox.setLock(lock);
       this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED
           ? null
-          : this.minecraft.getUser().getGameProfile());
+          : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -106,7 +106,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.signalBox.canAccess(this.minecraft.getUser().getGameProfile());
+    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.signalBox.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -117,11 +117,11 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.signalBox.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetActionSignalBoxAttributesMessage(this.signalBox.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetActionSignalBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));
   }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_invar_plate",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_invar_plate"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:fluid_fueled_firebox"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

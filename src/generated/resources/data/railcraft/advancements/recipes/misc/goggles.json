@@ -32,15 +32,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_steel_ingot",
-      "has_receiver_circuit",
-      "has_the_recipe"
+      "has_receiver_circuit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:goggles"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

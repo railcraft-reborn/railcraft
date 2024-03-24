@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_rebar",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_rebar"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:frame_iron_plate"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

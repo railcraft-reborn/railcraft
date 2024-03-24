@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_writable_book",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_writable_book"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:logbook"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

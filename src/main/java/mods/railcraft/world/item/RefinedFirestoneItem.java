@@ -104,6 +104,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
 
     if (!(level instanceof ServerLevel serverLevel))
       return InteractionResult.sidedSuccess(level.isClientSide());
+
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
 
@@ -144,7 +145,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   private ItemStack cookedItem(Level level, ItemStack ingredient) {
     return level.getRecipeManager()
         .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(ingredient), level)
-        .map(x -> x.getResultItem(level.registryAccess()))
+        .map(x -> x.value().getResultItem(level.registryAccess()))
         .orElse(ItemStack.EMPTY);
   }
 

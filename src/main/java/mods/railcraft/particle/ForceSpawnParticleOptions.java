@@ -7,15 +7,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public record ForceSpawnParticleOptions(int color) implements ParticleOptions {
 
-  public static final Codec<ForceSpawnParticleOptions> CODEC = RecordCodecBuilder.create(
-      instance -> instance.group(
-              Codec.INT.fieldOf("color").forGetter(ForceSpawnParticleOptions::color))
-          .apply(instance, ForceSpawnParticleOptions::new));
+  public static final Codec<ForceSpawnParticleOptions> CODEC = RecordCodecBuilder
+      .create(instance -> instance.group(
+          Codec.INT.fieldOf("color").forGetter(ForceSpawnParticleOptions::color)
+      ).apply(instance, ForceSpawnParticleOptions::new));
 
   @SuppressWarnings("deprecation")
   public static final Deserializer<ForceSpawnParticleOptions> DESERIALIZER =
@@ -43,7 +43,7 @@ public record ForceSpawnParticleOptions(int color) implements ParticleOptions {
   @Override
   public String writeToString() {
     return String.format(Locale.ROOT, "%s %d",
-        ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()),
+        BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
         this.color);
   }
 

@@ -6,8 +6,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetSwitchTrackRouterAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetSwitchTrackRouterMessage;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -84,7 +84,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
     if (this.switchTrackRouter.getLock() != lock) {
       this.switchTrackRouter.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -93,7 +93,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
     if (this.switchTrackRouter.getRailway() != railway) {
       this.switchTrackRouter.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -125,7 +125,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void updateButtons() {
-    var canAccess = this.switchTrackRouter.canAccess(this.minecraft.getUser().getGameProfile());
+    var canAccess = this.switchTrackRouter.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackRouter.getLock());
     this.railwayButton.active = canAccess;
@@ -133,11 +133,11 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackRouter.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.switchTrackRouter.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetSwitchTrackRouterAttributesMessage(this.switchTrackRouter.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetSwitchTrackRouterMessage(this.switchTrackRouter.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }
 

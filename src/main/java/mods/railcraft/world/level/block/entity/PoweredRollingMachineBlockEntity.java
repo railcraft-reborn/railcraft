@@ -1,11 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
-import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
-import mods.railcraft.api.charge.ChargeStorage;
-import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.container.CombinedInvWrapper;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import net.minecraft.core.BlockPos;
@@ -15,40 +11,23 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockEntity {
 
   private static final int CHARGE_PER_TICK = 10;
-  private final LazyOptional<IItemHandler> itemHandler;
-  private final LazyOptional<IEnergyStorage> energyHandler;
+  private final IItemHandler itemHandler;
 
   public PoweredRollingMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.POWERED_ROLLING_MACHINE.get(), blockPos, blockState);
-    this.itemHandler = LazyOptional.of(() ->
-        new CombinedInvWrapper(this.craftMatrix, this.invResult));
-    this.energyHandler = LazyOptional.of(() -> new ForwardingEnergyStorage(this::storage));
+    this.itemHandler = new CombinedInvWrapper(this.craftMatrix, this.invResult);
   }
 
   @Override
   protected void progress() {
-    if (access().useCharge(CHARGE_PER_TICK, false)) {
+    if (this.access().useCharge(CHARGE_PER_TICK, false)) {
       super.progress();
     }
-  }
-
-  @Nullable
-  @Override
-  public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
-    return new PoweredRollingMachineMenu(containerId, inventory, this);
-  }
-
-  private Optional<? extends ChargeStorage> storage() {
-    return this.level().isClientSide() ? Optional.empty() : this.access().storage();
   }
 
   private Charge.Access access() {
@@ -57,21 +36,13 @@ public class PoweredRollingMachineBlockEntity extends ManualRollingMachineBlockE
         .access(this.blockPos());
   }
 
+  @Nullable
   @Override
-  @NotNull
-  public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-    if (cap == ForgeCapabilities.ENERGY) {
-      return this.energyHandler.cast();
-    } else if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return this.itemHandler.cast();
-    }
-    return super.getCapability(cap, side);
+  public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+    return new PoweredRollingMachineMenu(containerId, inventory, this);
   }
 
-  @Override
-  public void invalidateCaps() {
-    super.invalidateCaps();
-    this.energyHandler.invalidate();
-    this.itemHandler.invalidate();
+  public IItemHandler getItemCap(Direction side) {
+    return this.itemHandler;
   }
 }

@@ -18,19 +18,16 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public abstract class ContainerBlockEntity extends RailcraftBlockEntity
     implements ForwardingContainer, ContainerManipulator<ModifiableSlotAccessor> {
 
   private AdvancedContainer container;
-  private LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
-  private Map<Direction, LazyOptional<IItemHandler>> directionalItemHandlers =
-      new EnumMap<>(Direction.class);
+  private IItemHandler itemHandler = new InvWrapper(this);
+  private Map<Direction, IItemHandlerModifiable> directionalItemHandlers = new EnumMap<>(Direction.class);
 
   public ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     this(type, blockPos, blockState, 0);
@@ -61,16 +58,12 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
     return this.container;
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability,
-      @Nullable Direction direction) {
-    if (capability == ForgeCapabilities.ITEM_HANDLER) {
-      return direction == null
-          ? this.itemHandler.cast()
-          : this.directionalItemHandlers.computeIfAbsent(direction,
-              __ -> LazyOptional.of(() -> ItemHandlerFactory.wrap(this, direction))).cast();
+  public IItemHandler getItemCap(@Nullable Direction side) {
+    if (side == null) {
+      return this.itemHandler;
     }
-    return super.getCapability(capability, direction);
+    return this.directionalItemHandlers
+        .computeIfAbsent(side, __ -> ItemHandlerFactory.wrap(this, side));
   }
 
   @Override

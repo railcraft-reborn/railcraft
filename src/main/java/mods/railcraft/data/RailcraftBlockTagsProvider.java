@@ -8,9 +8,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
@@ -318,21 +318,21 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
             RailcraftTags.Blocks.STEEL_TANK_WALL);
 
-    RailcraftBlocks.STRENGTHENED_GLASS.resolveVariants()
+    RailcraftBlocks.STRENGTHENED_GLASS.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.STRENGTHENED_GLASS).add(x));
-    RailcraftBlocks.IRON_TANK_GAUGE.resolveVariants()
+    RailcraftBlocks.IRON_TANK_GAUGE.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.IRON_TANK_GAUGE).add(x));
-    RailcraftBlocks.IRON_TANK_VALVE.resolveVariants()
+    RailcraftBlocks.IRON_TANK_VALVE.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.IRON_TANK_VALVE).add(x));
-    RailcraftBlocks.IRON_TANK_WALL.resolveVariants()
+    RailcraftBlocks.IRON_TANK_WALL.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.IRON_TANK_WALL).add(x));
-    RailcraftBlocks.STEEL_TANK_GAUGE.resolveVariants()
+    RailcraftBlocks.STEEL_TANK_GAUGE.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.STEEL_TANK_GAUGE).add(x));
-    RailcraftBlocks.STEEL_TANK_VALVE.resolveVariants()
+    RailcraftBlocks.STEEL_TANK_VALVE.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.STEEL_TANK_VALVE).add(x));
-    RailcraftBlocks.STEEL_TANK_WALL.resolveVariants()
+    RailcraftBlocks.STEEL_TANK_WALL.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.STEEL_TANK_WALL).add(x));
-    RailcraftBlocks.POST.resolveVariants()
+    RailcraftBlocks.POST.boundVariants()
         .forEach(x -> this.tag(RailcraftTags.Blocks.POST).add(x));
 
     this.tag(RailcraftTags.Blocks.QUARRIED)

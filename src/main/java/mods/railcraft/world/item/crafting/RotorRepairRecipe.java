@@ -4,7 +4,6 @@ import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -20,8 +19,8 @@ public class RotorRepairRecipe extends CustomRecipe {
   private static final Ingredient ROTOR = Ingredient.of(RailcraftItems.TURBINE_ROTOR.get());
   private static final Ingredient BLADE = Ingredient.of(RailcraftItems.TURBINE_BLADE.get());
 
-  public RotorRepairRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public RotorRepairRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   @Override

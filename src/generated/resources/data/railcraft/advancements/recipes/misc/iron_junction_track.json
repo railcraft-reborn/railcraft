@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_standard_rail",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_standard_rail"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:iron_junction_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

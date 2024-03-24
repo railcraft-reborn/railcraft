@@ -111,7 +111,7 @@ public class SimpleSignalController extends BlockEntitySignalNetwork<SignalRecei
     var handler = SignalUtil.tuningAuraHandler();
     if (handler.isTuningAuraActive()) {
       this.stream().forEach(peer -> handler.spawnTuningAura(
-          (SignalControllerEntity )this.getBlockEntity(), peer.asBlockEntity()));
+          (SignalControllerEntity) this.getBlockEntity(), peer.asBlockEntity()));
     }
   }
 

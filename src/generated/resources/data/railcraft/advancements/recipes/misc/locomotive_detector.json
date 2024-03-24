@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_blast_furnace_bricks",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_blast_furnace_bricks"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:locomotive_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

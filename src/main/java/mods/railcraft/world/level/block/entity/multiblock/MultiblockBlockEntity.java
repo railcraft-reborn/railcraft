@@ -24,7 +24,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M>, M>
     extends RailcraftBlockEntity implements MenuProvider {
@@ -95,7 +94,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @return the result
    */
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
-    NetworkHooks.openScreen(player, this, this.getBlockPos());
+    player.openMenu(this, this.getBlockPos());
     return InteractionResult.CONSUME;
   }
 

@@ -3,8 +3,8 @@ package mods.railcraft.client.gui.screen;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetLauncherTrackAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetLauncherTrackMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -61,8 +61,8 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.sendToServer(
-        new SetLauncherTrackAttributesMessage(this.track.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetLauncherTrackMessage(this.track.getBlockPos(),
             this.track.getLaunchForce()));
   }
 }

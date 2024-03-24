@@ -17,10 +17,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 public class LevelUtil {
 
@@ -46,7 +46,7 @@ public class LevelUtil {
       entity = RailcraftFakePlayer.get((ServerLevel) level, pos);
     BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, pos);
     boolean result = level.setBlockAndUpdate(pos, blockState);
-    if (ForgeEventFactory.onBlockPlace(entity, snapshot, Direction.UP)) {
+    if (EventHooks.onBlockPlace(entity, snapshot, Direction.UP)) {
       snapshot.restore(true, false);
       return false;
     }
@@ -75,8 +75,9 @@ public class LevelUtil {
     if (actor == null)
       actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
 
-    if (MinecraftForge.EVENT_BUS.post(
-        new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor)))
+    var event = NeoForge.EVENT_BUS.post(
+        new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor));
+    if (event.isCanceled())
       return false;
 
     return level.destroyBlock(pos, dropBlock);
@@ -96,7 +97,8 @@ public class LevelUtil {
     var blockState = level.getBlockState(pos);
     var blockEntity = level.getBlockEntity(pos);
 
-    if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player)))
+    var event = NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player));
+    if (event.isCanceled())
       return false;
 
     if (!blockState.onDestroyedByPlayer(level, pos, player, dropBlock, level.getFluidState(pos))) {

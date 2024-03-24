@@ -109,7 +109,7 @@ public class LogBookScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
+    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     this.setFocused(null);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_controller_circuit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_controller_circuit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:signal_controller_box"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

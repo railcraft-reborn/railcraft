@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import com.google.common.collect.HashMultiset;
@@ -30,7 +31,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     implements MenuProvider {
@@ -142,13 +143,13 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   protected void processCart(AbstractMinecart cart) {
     this.chests = ContainerManipulator.of(this.bufferContainer, this.findAdjacentContainers());
 
-    var cartInv = cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
-        this.getFacing().getOpposite()).map(ContainerManipulator::of).orElse(null);
+    var cartInv = cart
+        .getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, this.getFacing().getOpposite());
     if (cartInv == null) {
       sendCart(cart);
       return;
     }
-    this.cart = cartInv;
+    this.cart = ContainerManipulator.of(cartInv);
 
     ContainerManifest filterManifest = ContainerManifest.create(getItemFilters());
     Stream<ContainerManifest.ManifestEntry> manifestStream = filterManifest.values().stream();
@@ -192,14 +193,12 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
-    var cartInv = cart
-        .getCapability(ForgeCapabilities.ITEM_HANDLER,
-            this.getFacing().getOpposite())
-        .map(ContainerManipulator::of)
-        .orElse(null);
-    if (cartInv == null) {
+    var itemHandler = cart
+        .getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, this.getFacing().getOpposite());
+    if (itemHandler == null) {
       return false;
     }
+    var cartInv = ContainerManipulator.of(itemHandler);
     switch (this.getRedstoneMode()) {
       case IMMEDIATE:
         return false;
@@ -232,8 +231,8 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
 
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
-    return cart.getCapability(ForgeCapabilities.ITEM_HANDLER,
-        this.getFacing().getOpposite())
+    return Optional.ofNullable(cart
+        .getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, this.getFacing().getOpposite()))
         .map(inventory -> inventory.getSlots() > 0).orElse(false)
         && super.canHandleCart(cart);
   }
@@ -258,14 +257,14 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt(CompoundTagKeys.TRANSFER_MODE, this.transferMode.ordinal());
+    tag.putString(CompoundTagKeys.TRANSFER_MODE, this.transferMode.getSerializedName());
     tag.put(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters().createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
-    this.transferMode = TransferMode.values()[tag.getInt(CompoundTagKeys.TRANSFER_MODE)];
+    this.transferMode = TransferMode.fromName(tag.getString(CompoundTagKeys.TRANSFER_MODE));
     this.getItemFilters().fromTag(tag.getList(CompoundTagKeys.ITEM_FILTERS, Tag.TAG_COMPOUND));
   }
 }

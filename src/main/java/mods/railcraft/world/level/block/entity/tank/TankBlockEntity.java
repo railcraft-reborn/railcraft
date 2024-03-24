@@ -31,18 +31,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
@@ -56,7 +52,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private int maxY;
   private int maxZ;
 
-  private LazyOptional<IFluidHandler> fluidHandler = LazyOptional.empty();
+  private IFluidHandler fluidHandler;
 
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern<Void>> patterns) {
@@ -69,15 +65,15 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   @Override
   protected void serverTick() {
     super.serverTick();
-    this.fluidHandler.ifPresent(fluidHandler -> {
+    if (this.fluidHandler != null) {
       var neighbors = FluidTools.findNeighbors(this.getLevel(), this.getBlockPos(),
           blockEntity -> !(blockEntity instanceof TankBlockEntity tank)
               || !tank.getMembership().equals(this.getMembership()),
           Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
       for (var neighbor : neighbors) {
-        FluidUtil.tryFluidTransfer(neighbor, fluidHandler, FLOW_RATE, true);
+        FluidUtil.tryFluidTransfer(neighbor, this.fluidHandler, FLOW_RATE, true);
       }
-    });
+    }
   }
 
   private void lightChanged(int light) {
@@ -96,7 +92,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.syncToClient();
 
     var fluidStack = this.module.getTank().getFluid();
-    var fluidType = this.module.getTank().getFluidType().getFluidType();
+    var fluidType = this.module.getTank().getFluidType();
     var light = fluidType.getLightLevel(fluidStack);
     if (light != this.lastLight) {
       this.lastLight = light;
@@ -162,9 +158,10 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     if (membership == null) {
       this.getModule().getTank().setFluid(FluidStack.EMPTY);
       this.lightChanged(BlockStateProperties.MIN_LEVEL);
-      this.fluidHandler = LazyOptional.empty();
+      level.invalidateCapabilities(this.getBlockPos());
+      this.fluidHandler = null;
     } else if (this.getBlockState().getBlock() instanceof TankValveBlock) {
-      this.fluidHandler = LazyOptional.of(() -> new ValveFluidHandler(this, membership.master()));
+      this.fluidHandler = new ValveFluidHandler(this, membership.master());
     }
 
     if (this.getBlockState().getBlock() instanceof TankGaugeBlock block) {
@@ -178,13 +175,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-    if (capability == ForgeCapabilities.FLUID_HANDLER) {
-      return this.fluidHandler.cast();
-    }
-
-    return super.getCapability(capability, side);
+  public IFluidHandler getFluidCap(Direction side) {
+    return this.fluidHandler;
   }
 
   @Override
@@ -368,11 +360,6 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
     pattern.add(bottom);
     return pattern;
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return BlockEntity.INFINITE_EXTENT_AABB;
   }
 
   @FunctionalInterface

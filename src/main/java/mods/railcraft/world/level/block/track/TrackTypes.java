@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.track;
 
 import java.util.Optional;
-import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.TrackType;
@@ -20,11 +19,9 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class TrackTypes {
 
@@ -34,14 +31,15 @@ public class TrackTypes {
   private static final DeferredRegister<TrackType> deferredRegister =
       DeferredRegister.create(REGISTRY_KEY, RailcraftConstants.ID);
 
-  public static final Supplier<IForgeRegistry<TrackType>> REGISTRY =
-      deferredRegister.makeRegistry(RegistryBuilder::new);
+  public static final Registry<TrackType> REGISTRY =
+      deferredRegister.makeRegistry(__ -> {
+      });
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
 
-  public static final RegistryObject<TrackType> ABANDONED =
+  public static final DeferredHolder<TrackType, TrackType> ABANDONED =
       deferredRegister.register("abandoned",
           () -> new TrackType.Builder(RailcraftBlocks.ABANDONED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ABANDONED_TURNOUT_TRACK)
@@ -51,7 +49,7 @@ public class TrackTypes {
               .setMaxSupportDistance(2)
               .build());
 
-  public static final RegistryObject<TrackType> ELECTRIC =
+  public static final DeferredHolder<TrackType, TrackType> ELECTRIC =
       deferredRegister.register("electric",
           () -> new TrackType.Builder(RailcraftBlocks.ELECTRIC_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.ELECTRIC_TURNOUT_TRACK)
@@ -62,7 +60,7 @@ public class TrackTypes {
               .setElectric(true)
               .build());
 
-  public static final RegistryObject<TrackType> HIGH_SPEED =
+  public static final DeferredHolder<TrackType, TrackType> HIGH_SPEED =
       deferredRegister.register("high_speed",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_TURNOUT_TRACK)
@@ -72,7 +70,7 @@ public class TrackTypes {
               .setHighSpeed(true)
               .build());
 
-  public static final RegistryObject<TrackType> HIGH_SPEED_ELECTRIC =
+  public static final DeferredHolder<TrackType, TrackType> HIGH_SPEED_ELECTRIC =
       deferredRegister.register("high_speed_electric",
           () -> new TrackType.Builder(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TURNOUT_TRACK)
@@ -84,7 +82,7 @@ public class TrackTypes {
               .setHighSpeed(true)
               .build());
 
-  public static final RegistryObject<TrackType> IRON =
+  public static final DeferredHolder<TrackType, TrackType> IRON =
       deferredRegister.register("iron",
           () -> new TrackType.Builder(() -> (BaseRailBlock) Blocks.RAIL)
               .addSpikeMaulVariant(RailcraftBlocks.IRON_TURNOUT_TRACK)
@@ -93,7 +91,7 @@ public class TrackTypes {
               .setEventHandler(SpeedController.IRON)
               .build());
 
-  public static final RegistryObject<TrackType> REINFORCED =
+  public static final DeferredHolder<TrackType, TrackType> REINFORCED =
       deferredRegister.register("reinforced",
           () -> new TrackType.Builder(RailcraftBlocks.REINFORCED_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.REINFORCED_TURNOUT_TRACK)
@@ -102,7 +100,7 @@ public class TrackTypes {
               .setEventHandler(SpeedController.REINFORCED)
               .build());
 
-  public static final RegistryObject<TrackType> STRAP_IRON =
+  public static final DeferredHolder<TrackType, TrackType> STRAP_IRON =
       deferredRegister.register("strap_iron",
           () -> new TrackType.Builder(RailcraftBlocks.STRAP_IRON_TRACK)
               .addSpikeMaulVariant(RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK)

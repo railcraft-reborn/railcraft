@@ -2,9 +2,6 @@
   "parent": "railcraft:carts/root",
   "criteria": {
     "on_season_set": {
-      "conditions": {
-        "cart": {}
-      },
       "trigger": "railcraft:set_season"
     }
   },
@@ -14,12 +11,10 @@
       "translate": "advancements.railcraft.carts.seasons.desc"
     },
     "frame": "goal",
-    "hidden": false,
     "icon": {
       "item": "railcraft:seasons_crowbar",
       "nbt": "{Damage:0}"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.seasons.name"
     }

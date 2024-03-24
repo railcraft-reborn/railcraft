@@ -8,11 +8,11 @@ import mods.railcraft.Translations;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.util.routing.RoutingStatementParser;
 import mods.railcraft.util.routing.expression.Expression;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class RiderCondition {
 
@@ -29,7 +29,11 @@ public class RiderCondition {
     checkSyntax(type, tokens, line);
 
     var context = new Context(statement, tokens);
-    return (router, rollingStock) -> type.matches(rollingStock.train().passengers(), context);
+
+    return (router, rollingStock) -> {
+      var level = rollingStock.entity().level();
+      return type.matches(rollingStock.train().passengers(), context);
+    };
   }
 
   private static void checkRegexSyntax(Type type, String[] tokens, String line)
@@ -78,7 +82,7 @@ public class RiderCondition {
     ANIMAL(passengers -> passengers.anyMatch(Animal.class::isInstance)),
     UNNAMED(passengers -> passengers.anyMatch(p -> !p.hasCustomName())),
     ENTITY((passengers, context) -> passengers.anyMatch(e -> {
-      var registryName = ForgeRegistries.ENTITY_TYPES.getKey(e.getType()).toString();
+      var registryName = BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();
       return context.tokens[1].equalsIgnoreCase(registryName);
     })),
     PLAYER((passengers, context) -> {

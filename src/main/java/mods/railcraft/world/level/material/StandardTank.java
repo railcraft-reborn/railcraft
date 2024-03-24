@@ -14,14 +14,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 /**
  * Our fancy type of tank. Use this preferably over forge's default one
  *
- * @see net.minecraftforge.fluids.capability.templates.FluidTank Forge FluidTank
+ * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank FluidTank
  */
 public class StandardTank extends FluidTank {
 
@@ -55,9 +55,8 @@ public class StandardTank extends FluidTank {
     return this;
   }
 
-  @SuppressWarnings("deprecation")
   public StandardTank filter(TagKey<Fluid> tag) {
-    return this.setValidator(fluidStack -> fluidStack.getFluid().is(tag));
+    return this.setValidator(fluidStack -> fluidStack.is(tag));
   }
 
   public StandardTank filter(Fluid filter) {
@@ -66,7 +65,7 @@ public class StandardTank extends FluidTank {
 
   public StandardTank filter(Supplier<? extends Fluid> filter) {
     this.filter = () -> new FluidStack(filter.get(), 1);
-    return this.setValidator(fluidStack -> this.filter.get().isFluidEqual(fluidStack));
+    return this.setValidator(fluidStack -> fluidStack.is(filter.get()));
   }
 
   @Override
@@ -99,8 +98,8 @@ public class StandardTank extends FluidTank {
    * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
    * @param action If SIMULATE, fill will only be simulated.
    * @return Amount of resource that was (or would have been, if simulated) filled.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#fill(FluidStack, FluidAction)
-   *      Forge FluidTank#fill()
+   *
+   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#fill(FluidStack, FluidAction) FluidTank#fill()
    */
   public int internalFill(FluidStack resource, FluidAction action) {
     return super.fill(resource, action);
@@ -113,8 +112,8 @@ public class StandardTank extends FluidTank {
    * @param action If SIMULATE, fill will only be simulated.
    * @return FluidStack representing the Fluid and amount that was (or would have been, if
    *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain(FluidStack, FluidAction)
-   *      Forge FluidTank#drain()
+   *
+   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#drain(FluidStack, FluidAction) FluidTank#drain()
    */
   public FluidStack internalDrain(FluidStack resource, FluidAction action) {
     return super.drain(resource, action);
@@ -127,8 +126,7 @@ public class StandardTank extends FluidTank {
    * @param action If SIMULATE, fill will only be simulated.
    * @return FluidStack representing the Fluid and amount that was (or would have been, if
    *         simulated) drained.
-   * @see net.minecraftforge.fluids.capability.templates.FluidTank#drain(int, FluidAction) () Forge
-   *      FluidTank#drain()
+   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#drain(int, FluidAction) FluidTank#drain()
    */
   public FluidStack internalDrain(int maxDrain, FluidAction action) {
     return super.drain(maxDrain, action);
@@ -173,13 +171,8 @@ public class StandardTank extends FluidTank {
     return this.getCapacity() - this.getFluidAmount();
   }
 
-  /**
-   * Get the fluid type we currently have.
-   *
-   * @return Fluid type or <code>Fluids.EMPTY</code> if empty
-   */
-  public Fluid getFluidType() {
-    return this.getFluid().getFluid();
+  public FluidType getFluidType() {
+    return this.getFluid().getFluidType();
   }
 
   @Override
@@ -225,7 +218,7 @@ public class StandardTank extends FluidTank {
   }
 
   protected Component getFluidNameToolTip(FluidStack fluidStack) {
-    var fluidType = fluidStack.getFluid().getFluidType();
+    var fluidType = fluidStack.getFluidType();
     var rarity = fluidType.getRarity();
     return fluidStack.getDisplayName().copy().withStyle(rarity.getStyleModifier());
   }

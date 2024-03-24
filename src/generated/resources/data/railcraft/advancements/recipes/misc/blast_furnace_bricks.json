@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_magma_cream",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_magma_cream"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:blast_furnace_bricks"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

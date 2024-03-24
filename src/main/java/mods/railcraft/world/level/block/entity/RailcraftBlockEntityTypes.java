@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.entity.charge.BatteryBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AdvancedDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AgeDetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.AnimalDetectorBlockEntity;
@@ -54,23 +54,23 @@ import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.worldspike.PersonalWorldSpikeBlockEntity;
 import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftBlockEntityTypes {
 
   private static final DeferredRegister<BlockEntityType<?>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, RailcraftConstants.ID);
+      DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
 
-  public static final RegistryObject<BlockEntityType<IronTankBlockEntity>> IRON_TANK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IronTankBlockEntity>> IRON_TANK =
       deferredRegister.register("iron_tank",
           () -> BlockEntityType.Builder
               .of(IronTankBlockEntity::new,
@@ -80,7 +80,7 @@ public class RailcraftBlockEntityTypes {
                       RailcraftBlocks.IRON_TANK_WALL.variants()))
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
       deferredRegister.register("steel_tank",
           () -> BlockEntityType.Builder
               .of(SteelTankBlockEntity::new,
@@ -90,7 +90,7 @@ public class RailcraftBlockEntityTypes {
                       RailcraftBlocks.STEEL_TANK_WALL.variants()))
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
       deferredRegister.register("steam_boiler",
           () -> BlockEntityType.Builder
               .of(SteamBoilerBlockEntity::new,
@@ -98,275 +98,264 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SolidFueledSteamBoilerBlockEntity>> SOLID_FUELED_STEAM_BOILER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolidFueledSteamBoilerBlockEntity>> SOLID_FUELED_STEAM_BOILER =
       deferredRegister.register("solid_fueled_steam_boiler",
           () -> BlockEntityType.Builder
               .of(SolidFueledSteamBoilerBlockEntity::new,
                   RailcraftBlocks.SOLID_FUELED_FIREBOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<FluidFueledSteamBoilerBlockEntity>> FLUID_FUELED_STEAM_BOILER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidFueledSteamBoilerBlockEntity>> FLUID_FUELED_STEAM_BOILER =
       deferredRegister.register("fluid_fueled_steam_boiler",
           () -> BlockEntityType.Builder
               .of(FluidFueledSteamBoilerBlockEntity::new,
                   RailcraftBlocks.FLUID_FUELED_FIREBOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamTurbineBlockEntity>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
           () -> BlockEntityType.Builder
               .of(SteamTurbineBlockEntity::new, RailcraftBlocks.STEAM_TURBINE.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
       deferredRegister.register("blast_furnace",
           () -> BlockEntityType.Builder
               .of(BlastFurnaceBlockEntity::new, RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<FeedStationBlockEntity>> FEED_STATION =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FeedStationBlockEntity>> FEED_STATION =
       deferredRegister.register("feed_station",
           () -> BlockEntityType.Builder
               .of(FeedStationBlockEntity::new, RailcraftBlocks.FEED_STATION.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<LogBookBlockEntity>> LOGBOOK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LogBookBlockEntity>> LOGBOOK =
       deferredRegister.register("logbook",
           () -> BlockEntityType.Builder
               .of(LogBookBlockEntity::new, RailcraftBlocks.LOGBOOK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidLoaderBlockEntity>> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
           () -> BlockEntityType.Builder
               .of(FluidLoaderBlockEntity::new, RailcraftBlocks.FLUID_LOADER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<FluidUnloaderBlockEntity>> FLUID_UNLOADER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidUnloaderBlockEntity>> FLUID_UNLOADER =
       deferredRegister.register("fluid_unloader",
           () -> BlockEntityType.Builder
               .of(FluidUnloaderBlockEntity::new, RailcraftBlocks.FLUID_UNLOADER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ItemLoaderBlockEntity>> ITEM_LOADER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemLoaderBlockEntity>> ITEM_LOADER =
       deferredRegister.register("item_loader",
           () -> BlockEntityType.Builder
               .of(ItemLoaderBlockEntity::new, RailcraftBlocks.ITEM_LOADER.get(),
                   RailcraftBlocks.ADVANCED_ITEM_LOADER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ItemUnloaderBlockEntity>> ITEM_UNLOADER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemUnloaderBlockEntity>> ITEM_UNLOADER =
       deferredRegister.register("item_unloader",
           () -> BlockEntityType.Builder
               .of(ItemUnloaderBlockEntity::new, RailcraftBlocks.ITEM_UNLOADER.get(),
                   RailcraftBlocks.ADVANCED_ITEM_UNLOADER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<CartDispenserBlockEntity>> CART_DISPENSER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CartDispenserBlockEntity>> CART_DISPENSER =
       deferredRegister.register("cart_dispenser",
           () -> BlockEntityType.Builder
               .of(CartDispenserBlockEntity::new, RailcraftBlocks.CART_DISPENSER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<TrainDispenserBlockEntity>> TRAIN_DISPENSER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TrainDispenserBlockEntity>> TRAIN_DISPENSER =
       deferredRegister.register("train_dispenser",
           () -> BlockEntityType.Builder
               .of(TrainDispenserBlockEntity::new, RailcraftBlocks.TRAIN_DISPENSER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<AdvancedDetectorBlockEntity>> ADVANCED_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvancedDetectorBlockEntity>> ADVANCED_DETECTOR =
       deferredRegister.register("advanced_detector",
           () -> BlockEntityType.Builder
               .of(AdvancedDetectorBlockEntity::new, RailcraftBlocks.ADVANCED_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<AgeDetectorBlockEntity>> AGE_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AgeDetectorBlockEntity>> AGE_DETECTOR =
       deferredRegister.register("age_detector",
           () -> BlockEntityType.Builder
               .of(AgeDetectorBlockEntity::new, RailcraftBlocks.AGE_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<AnimalDetectorBlockEntity>> ANIMAL_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AnimalDetectorBlockEntity>> ANIMAL_DETECTOR =
       deferredRegister.register("animal_detector",
           () -> BlockEntityType.Builder
               .of(AnimalDetectorBlockEntity::new, RailcraftBlocks.ANIMAL_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<AnyDetectorBlockEntity>> ANY_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AnyDetectorBlockEntity>> ANY_DETECTOR =
       deferredRegister.register("any_detector",
           () -> BlockEntityType.Builder
               .of(AnyDetectorBlockEntity::new, RailcraftBlocks.ANY_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<EmptyDetectorBlockEntity>> EMPTY_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EmptyDetectorBlockEntity>> EMPTY_DETECTOR =
       deferredRegister.register("empty_detector",
           () -> BlockEntityType.Builder
               .of(EmptyDetectorBlockEntity::new, RailcraftBlocks.EMPTY_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ItemDetectorBlockEntity>> ITEM_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemDetectorBlockEntity>> ITEM_DETECTOR =
       deferredRegister.register("item_detector",
           () -> BlockEntityType.Builder
               .of(ItemDetectorBlockEntity::new, RailcraftBlocks.ITEM_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<LocomotiveDetectorBlockEntity>> LOCOMOTIVE_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LocomotiveDetectorBlockEntity>> LOCOMOTIVE_DETECTOR =
       deferredRegister.register("locomotive_detector",
           () -> BlockEntityType.Builder
               .of(LocomotiveDetectorBlockEntity::new, RailcraftBlocks.LOCOMOTIVE_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<MobDetectorBlockEntity>> MOB_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MobDetectorBlockEntity>> MOB_DETECTOR =
       deferredRegister.register("mob_detector",
           () -> BlockEntityType.Builder
               .of(MobDetectorBlockEntity::new, RailcraftBlocks.MOB_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<PlayerDetectorBlockEntity>> PLAYER_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PlayerDetectorBlockEntity>> PLAYER_DETECTOR =
       deferredRegister.register("player_detector",
           () -> BlockEntityType.Builder
               .of(PlayerDetectorBlockEntity::new, RailcraftBlocks.PLAYER_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<RoutingDetectorBlockEntity>> ROUTING_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RoutingDetectorBlockEntity>> ROUTING_DETECTOR =
       deferredRegister.register("routing_detector",
           () -> BlockEntityType.Builder
               .of(RoutingDetectorBlockEntity::new, RailcraftBlocks.ROUTING_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SheepDetectorBlockEntity>> SHEEP_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SheepDetectorBlockEntity>> SHEEP_DETECTOR =
       deferredRegister.register("sheep_detector",
           () -> BlockEntityType.Builder
               .of(SheepDetectorBlockEntity::new, RailcraftBlocks.SHEEP_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<TankDetectorBlockEntity>> TANK_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TankDetectorBlockEntity>> TANK_DETECTOR =
       deferredRegister.register("tank_detector",
           () -> BlockEntityType.Builder
               .of(TankDetectorBlockEntity::new, RailcraftBlocks.TANK_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<TrainDetectorBlockEntity>> TRAIN_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TrainDetectorBlockEntity>> TRAIN_DETECTOR =
       deferredRegister.register("train_detector",
           () -> BlockEntityType.Builder
               .of(TrainDetectorBlockEntity::new, RailcraftBlocks.TRAIN_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<VillagerDetectorBlockEntity>> VILLAGER_DETECTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VillagerDetectorBlockEntity>> VILLAGER_DETECTOR =
       deferredRegister.register("villager_detector",
           () -> BlockEntityType.Builder
               .of(VillagerDetectorBlockEntity::new, RailcraftBlocks.VILLAGER_DETECTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AnalogSignalControllerBoxBlockEntity>> ANALOG_SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("analog_signal_controller_box",
           () -> BlockEntityType.Builder
               .of(AnalogSignalControllerBoxBlockEntity::new,
                   RailcraftBlocks.ANALOG_SIGNAL_CONTROLLER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SignalSequencerBoxBlockEntity>> SIGNAL_SEQUENCER_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignalSequencerBoxBlockEntity>> SIGNAL_SEQUENCER_BOX =
       deferredRegister.register("signal_sequencer_box",
           () -> BlockEntityType.Builder
               .of(SignalSequencerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_SEQUENCER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SignalCapacitorBoxBlockEntity>> SIGNAL_CAPACITOR_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignalCapacitorBoxBlockEntity>> SIGNAL_CAPACITOR_BOX =
       deferredRegister.register("signal_capacitor_box",
           () -> BlockEntityType.Builder
               .of(SignalCapacitorBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CAPACITOR_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SignalInterlockBoxBlockEntity>> SIGNAL_INTERLOCK_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignalInterlockBoxBlockEntity>> SIGNAL_INTERLOCK_BOX =
       deferredRegister.register("signal_interlock_box",
           () -> BlockEntityType.Builder
               .of(SignalInterlockBoxBlockEntity::new, RailcraftBlocks.SIGNAL_INTERLOCK_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<BlockSignalRelayBoxBlockEntity>> BLOCK_SIGNAL_RELAY_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockSignalRelayBoxBlockEntity>> BLOCK_SIGNAL_RELAY_BOX =
       deferredRegister.register("block_signal_relay_box",
           () -> BlockEntityType.Builder
               .of(BlockSignalRelayBoxBlockEntity::new, RailcraftBlocks.SIGNAL_BLOCK_RELAY_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignalReceiverBoxBlockEntity>> SIGNAL_RECEIVER_BOX =
       deferredRegister.register("signal_receiver_box",
           () -> BlockEntityType.Builder
               .of(SignalReceiverBoxBlockEntity::new, RailcraftBlocks.SIGNAL_RECEIVER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SignalControllerBoxBlockEntity>> SIGNAL_CONTROLLER_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SignalControllerBoxBlockEntity>> SIGNAL_CONTROLLER_BOX =
       deferredRegister.register("signal_controller_box",
           () -> BlockEntityType.Builder
               .of(SignalControllerBoxBlockEntity::new, RailcraftBlocks.SIGNAL_CONTROLLER_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<TokenSignalBoxBlockEntity>> TOKEN_SIGNAL_BOX =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TokenSignalBoxBlockEntity>> TOKEN_SIGNAL_BOX =
       deferredRegister.register("token_signal_box",
           () -> BlockEntityType.Builder
               .of(TokenSignalBoxBlockEntity::new, RailcraftBlocks.TOKEN_SIGNAL_BOX.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<DualBlockSignalBlockEntity>> DUAL_BLOCK_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DualBlockSignalBlockEntity>> DUAL_BLOCK_SIGNAL =
       deferredRegister.register("dual_block_signal",
           () -> BlockEntityType.Builder
               .of(DualBlockSignalBlockEntity::new, RailcraftBlocks.DUAL_BLOCK_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<DualDistantSignalBlockEntity>> DUAL_DISTANT_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DualDistantSignalBlockEntity>> DUAL_DISTANT_SIGNAL =
       deferredRegister.register("dual_distant_signal",
           () -> BlockEntityType.Builder
               .of(DualDistantSignalBlockEntity::new, RailcraftBlocks.DUAL_DISTANT_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<DualTokenSignalBlockEntity>> DUAL_TOKEN_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DualTokenSignalBlockEntity>> DUAL_TOKEN_SIGNAL =
       deferredRegister.register("dual_token_signal",
           () -> BlockEntityType.Builder
               .of(DualTokenSignalBlockEntity::new, RailcraftBlocks.DUAL_TOKEN_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockSignalBlockEntity>> BLOCK_SIGNAL =
       deferredRegister.register("block_signal",
           () -> BlockEntityType.Builder
               .of(BlockSignalBlockEntity::new, RailcraftBlocks.BLOCK_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<DistantSignalBlockEntity>> DISTANT_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DistantSignalBlockEntity>> DISTANT_SIGNAL =
       deferredRegister.register("distant_signal",
           () -> BlockEntityType.Builder
               .of(DistantSignalBlockEntity::new, RailcraftBlocks.DISTANT_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<TokenSignalBlockEntity>> TOKEN_SIGNAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TokenSignalBlockEntity>> TOKEN_SIGNAL =
       deferredRegister.register("token_signal",
           () -> BlockEntityType.Builder
               .of(TokenSignalBlockEntity::new, RailcraftBlocks.TOKEN_SIGNAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ForceTrackEmitterBlockEntity>> FORCE_TRACK_EMITTER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForceTrackEmitterBlockEntity>> FORCE_TRACK_EMITTER =
       deferredRegister.register("force_track_emitter",
           () -> BlockEntityType.Builder
               .of(ForceTrackEmitterBlockEntity::new, RailcraftBlocks.FORCE_TRACK_EMITTER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ForceTrackBlockEntity>> FORCE_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ForceTrackBlockEntity>> FORCE_TRACK =
       deferredRegister.register("force_track",
           () -> BlockEntityType.Builder
               .of(ForceTrackBlockEntity::new, RailcraftBlocks.FORCE_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<BatteryBlockEntity>> BATTERY =
-      deferredRegister.register("battery",
-          () -> BlockEntityType.Builder
-              .of(BatteryBlockEntity::new,
-                  RailcraftBlocks.NICKEL_IRON_BATTERY.get(),
-                  RailcraftBlocks.NICKEL_ZINC_BATTERY.get(),
-                  RailcraftBlocks.ZINC_SILVER_BATTERY.get(),
-                  RailcraftBlocks.ZINC_CARBON_BATTERY.get(),
-                  RailcraftBlocks.FRAME.get())
-              .build(null));
-
-  public static final RegistryObject<BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TurnoutTrackBlockEntity>> TURNOUT_TRACK =
       deferredRegister.register("turnout_track",
           () -> BlockEntityType.Builder
               .of(TurnoutTrackBlockEntity::new,
@@ -379,7 +368,7 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_TURNOUT_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<WyeTrackBlockEntity>> WYE_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WyeTrackBlockEntity>> WYE_TRACK =
       deferredRegister.register("wye_track",
           () -> BlockEntityType.Builder
               .of(WyeTrackBlockEntity::new,
@@ -392,81 +381,81 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_WYE_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<RitualBlockEntity>> RITUAL =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RitualBlockEntity>> RITUAL =
       deferredRegister.register("ritual",
           () -> BlockEntityType.Builder
               .of(RitualBlockEntity::new, RailcraftBlocks.RITUAL.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<ManualRollingMachineBlockEntity>> MANUAL_ROLLING_MACHINE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ManualRollingMachineBlockEntity>> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
           () -> BlockEntityType.Builder
               .of(ManualRollingMachineBlockEntity::new,
                   RailcraftBlocks.MANUAL_ROLLING_MACHINE.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<PoweredRollingMachineBlockEntity>> POWERED_ROLLING_MACHINE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PoweredRollingMachineBlockEntity>> POWERED_ROLLING_MACHINE =
       deferredRegister.register("powered_rolling_machine",
           () -> BlockEntityType.Builder
               .of(PoweredRollingMachineBlockEntity::new,
                   RailcraftBlocks.POWERED_ROLLING_MACHINE.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<CokeOvenBlockEntity>> COKE_OVEN =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CokeOvenBlockEntity>> COKE_OVEN =
       deferredRegister.register("coke_oven",
           () -> BlockEntityType.Builder
               .of(CokeOvenBlockEntity::new, RailcraftBlocks.COKE_OVEN_BRICKS.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<CrusherBlockEntity>> CRUSHER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrusherBlockEntity>> CRUSHER =
       deferredRegister.register("crusher",
           () -> BlockEntityType.Builder
               .of(CrusherBlockEntity::new, RailcraftBlocks.CRUSHER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SteamOvenBlockEntity>> STEAM_OVEN =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamOvenBlockEntity>> STEAM_OVEN =
       deferredRegister.register("steam_oven",
           () -> BlockEntityType.Builder
               .of(SteamOvenBlockEntity::new, RailcraftBlocks.STEAM_OVEN.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<WaterTankSidingBlockEntity>> WATER_TANK_SIDING =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WaterTankSidingBlockEntity>> WATER_TANK_SIDING =
       deferredRegister.register("water_tank_siding",
           () -> BlockEntityType.Builder
               .of(WaterTankSidingBlockEntity::new, RailcraftBlocks.WATER_TANK_SIDING.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SwitchTrackLeverBlockEntity>> SWITCH_TRACK_LEVER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SwitchTrackLeverBlockEntity>> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",
           () -> BlockEntityType.Builder
               .of(SwitchTrackLeverBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_LEVER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SwitchTrackMotorBlockEntity>> SWITCH_TRACK_MOTOR =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SwitchTrackMotorBlockEntity>> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> BlockEntityType.Builder
               .of(SwitchTrackMotorBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<SwitchTrackRouterBlockEntity>> SWITCH_TRACK_ROUTER =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SwitchTrackRouterBlockEntity>> SWITCH_TRACK_ROUTER =
       deferredRegister.register("switch_track_router",
           () -> BlockEntityType.Builder
               .of(SwitchTrackRouterBlockEntity::new, RailcraftBlocks.SWITCH_TRACK_ROUTER.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<WorldSpikeBlockEntity>> WORLD_SPIKE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WorldSpikeBlockEntity>> WORLD_SPIKE =
       deferredRegister.register("world_spike",
           () -> BlockEntityType.Builder
               .of(WorldSpikeBlockEntity::new, RailcraftBlocks.WORLD_SPIKE.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<PersonalWorldSpikeBlockEntity>> PERSONAL_WORLD_SPIKE =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PersonalWorldSpikeBlockEntity>> PERSONAL_WORLD_SPIKE =
       deferredRegister.register("personal_world_spike",
           () -> BlockEntityType.Builder
               .of(PersonalWorldSpikeBlockEntity::new, RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
       deferredRegister.register("locking_track",
           () -> BlockEntityType.Builder
               .of(LockingTrackBlockEntity::new,
@@ -479,7 +468,7 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<CouplerTrackBlockEntity>> COUPLER_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CouplerTrackBlockEntity>> COUPLER_TRACK =
       deferredRegister.register("coupler_track",
           () -> BlockEntityType.Builder
               .of(CouplerTrackBlockEntity::new,
@@ -490,7 +479,7 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_COUPLER_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<LauncherTrackBlockEntity>> LAUNCHER_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LauncherTrackBlockEntity>> LAUNCHER_TRACK =
       deferredRegister.register("launcher_track",
           () -> BlockEntityType.Builder
               .of(LauncherTrackBlockEntity::new,
@@ -501,7 +490,7 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<RoutingTrackBlockEntity>> ROUTING_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RoutingTrackBlockEntity>> ROUTING_TRACK =
       deferredRegister.register("routing_track",
           () -> BlockEntityType.Builder
               .of(RoutingTrackBlockEntity::new,
@@ -512,7 +501,7 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_ROUTING_TRACK.get())
               .build(null));
 
-  public static final RegistryObject<BlockEntityType<DumpingTrackBlockEntity>> DUMPING_TRACK =
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DumpingTrackBlockEntity>> DUMPING_TRACK =
       deferredRegister.register("dumping_track",
           () -> BlockEntityType.Builder
               .of(DumpingTrackBlockEntity::new,
@@ -525,10 +514,10 @@ public class RailcraftBlockEntityTypes {
 
   @SafeVarargs
   private static Block[] toArray(
-      Collection<? extends RegistryObject<? extends Block>>... collections) {
+      Collection<? extends Supplier<? extends Block>>... collections) {
     return Stream.of(collections)
         .flatMap(Collection::stream)
-        .map(RegistryObject::get)
+        .map(Supplier::get)
         .toArray(Block[]::new);
   }
 }

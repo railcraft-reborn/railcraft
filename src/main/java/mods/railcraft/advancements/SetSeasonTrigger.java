@@ -1,86 +1,63 @@
 package mods.railcraft.advancements;
 
-import org.jetbrains.annotations.Nullable;
-import com.google.gson.JsonObject;
-import mods.railcraft.api.core.RailcraftConstants;
+import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.season.Season;
-import mods.railcraft.util.JsonUtil;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.SerializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
-public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Instance> {
-
-  private static final ResourceLocation ID = RailcraftConstants.rl("set_season");
-
-  @Override
-  public ResourceLocation getId() {
-    return ID;
-  }
-
-  @Override
-  public Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
-    var season = JsonUtil.getAsString(json, "season")
-        .map(Integer::valueOf)
-        .map(x -> Season.values()[x])
-        .orElse(null);
-    var cartPredicate = JsonUtil.getAsJsonObject(json, "cart")
-        .map(MinecartPredicate::deserialize)
-        .orElse(MinecartPredicate.ANY);
-    return new SetSeasonTrigger.Instance(contextAwarePredicate, season, cartPredicate);
-  }
+public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.TriggerInstance> {
 
   /**
-   * Invoked when the user changes the cart's season option i think?.
+   * Invoked when the user changes the cart's season option I think?.
    */
   public void trigger(ServerPlayer playerEntity, AbstractMinecart cart,
       Season target) {
     this.trigger(playerEntity,
-        (criterionInstance) -> criterionInstance.matches(playerEntity, cart, target));
+        criterionInstance -> criterionInstance.matches(playerEntity, cart, target));
   }
 
-  public static class Instance extends AbstractCriterionTriggerInstance {
+  public static Criterion<TriggerInstance> onSeasonSet() {
+    return RailcraftCriteriaTriggers.SEASON_SET.createCriterion(
+        new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
+  }
 
-    @Nullable
-    private final Season season;
-    private final MinecartPredicate cartPredicate;
+  @Override
+  public Codec<TriggerInstance> codec() {
+    return TriggerInstance.CODEC;
+  }
 
-    private Instance(ContextAwarePredicate contextAwarePredicate, @Nullable Season season,
-        MinecartPredicate predicate) {
-      super(SetSeasonTrigger.ID, contextAwarePredicate);
-      this.season = season;
-      this.cartPredicate = predicate;
-    }
+  public record TriggerInstance(
+      Optional<ContextAwarePredicate> player,
+      Optional<Season> season,
+      Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
-    public static SetSeasonTrigger.Instance onSeasonSet() {
-      return new SetSeasonTrigger.Instance(ContextAwarePredicate.ANY,
-          null, MinecartPredicate.ANY);
-    }
+    public static final Codec<TriggerInstance> CODEC =
+        RecordCodecBuilder.create(instance -> instance.group(
+            ExtraCodecs.strictOptionalField(EntityPredicate.ADVANCEMENT_CODEC, "player")
+                .forGetter(TriggerInstance::player),
+            ExtraCodecs.strictOptionalField(Season.CODEC, "season")
+                .forGetter(TriggerInstance::season),
+            ExtraCodecs.strictOptionalField(MinecartPredicate.CODEC, "cart")
+                .forGetter(TriggerInstance::cart)
+        ).apply(instance, TriggerInstance::new));
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cart, Season target) {
-      return (this.season == null || this.season.equals(target))
-          && this.cartPredicate.test(player, cart);
-    }
-
-    @Override
-    public ResourceLocation getCriterion() {
-      return ID;
-    }
-
-    @Override
-    public JsonObject serializeToJson(SerializationContext serializer) {
-      JsonObject json = new JsonObject();
-      if (this.season != null) {
-        json.addProperty("season", this.season.ordinal());
+    public boolean matches(ServerPlayer player, AbstractMinecart cart, Season season) {
+      if (this.season.isPresent() && !this.season.get().equals(season)) {
+        return false;
       }
-      json.add("cart", this.cartPredicate.serializeToJson());
-      return json;
+      return this.cart.map(x -> x.matches(player, cart)).orElse(true);
+    }
+
+    @Override
+    public Optional<ContextAwarePredicate> player() {
+      return player;
     }
   }
 }

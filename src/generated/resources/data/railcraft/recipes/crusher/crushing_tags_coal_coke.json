@@ -1,21 +1,21 @@
 {
-  "type": "railcraft:crusher",
-  "conditions": [
+  "neoforge:conditions": [
     {
-      "type": "forge:not",
+      "type": "neoforge:not",
       "value": {
-        "type": "forge:tag_empty",
+        "type": "neoforge:tag_empty",
         "tag": "forge:coal_coke"
       }
     },
     {
-      "type": "forge:not",
+      "type": "neoforge:not",
       "value": {
-        "type": "forge:tag_empty",
+        "type": "neoforge:tag_empty",
         "tag": "forge:dusts/coal_coke"
       }
     }
   ],
+  "type": "railcraft:crusher",
   "ingredient": {
     "tag": "forge:coal_coke"
   },

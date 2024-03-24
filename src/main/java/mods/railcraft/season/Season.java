@@ -12,7 +12,7 @@ public enum Season implements StringRepresentable {
   CHRISTMAS("christmas"),
   NONE("none");
 
-  private static final StringRepresentable.EnumCodec<Season> CODEC =
+  public static final StringRepresentable.EnumCodec<Season> CODEC =
       StringRepresentable.fromEnum(Season::values);
   private final String name;
 
@@ -36,7 +36,6 @@ public enum Season implements StringRepresentable {
   public Season getNext() {
     return EnumUtil.next(this, values());
   }
-
   public static Season fromName(String name) {
     return CODEC.byName(name, DEFAULT);
   }

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SyncWidgetMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_client.SyncWidgetMessage;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -77,8 +77,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       var byteBuf = new FriendlyByteBuf(Unpooled.buffer());
       try {
         widget.writeToBuf(player, byteBuf);
-        var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf);
-        NetworkChannel.GAME.sendTo(message, player);
+        var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf.array());
+        PacketHandler.sendTo(player, message);
       } finally {
         byteBuf.release();
       }

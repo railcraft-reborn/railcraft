@@ -19,11 +19,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
@@ -72,12 +70,6 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
   private boolean isPipeRetracted() {
     return this.pipeLength <= 0;
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return new AABB(this.getX(), this.getY() - 1, this.getZ(), this.getX() + 1,
-        this.getY() + 1, this.getZ() + 1);
   }
 
   @Override
@@ -156,12 +148,12 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       this.setPowered(false);
     }
 
-    if (cart instanceof FluidTransferHandler) {
-      ((FluidTransferHandler) cart).setFilling(this.isProcessing());
+    if (cart instanceof FluidTransferHandler fluidTransferHandler) {
+      fluidTransferHandler.setFilling(this.isProcessing());
     }
 
     if (!this.tank.getFluid().isEmpty()
-        && tankCart.fill(this.tank.getFluid(), FluidAction.SIMULATE) == 0) {
+        && tankCart.fill(this.tank.getFluid(), IFluidHandler.FluidAction.SIMULATE) == 0) {
       this.setResetTimer(RESET_WAIT);
     }
   }
@@ -169,7 +161,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   private boolean cartNeedsFilling(IFluidHandler cartFluidHandler) {
     FluidStack fluidStack = this.tank.getFluid();
     return !fluidStack.isEmpty()
-        && cartFluidHandler.fill(fluidStack, FluidAction.SIMULATE) > 0;
+        && cartFluidHandler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) > 0;
   }
 
   @Override
@@ -185,15 +177,11 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (fluid.isEmpty()) {
       return false;
     }
-    switch (this.getRedstoneMode()) {
-      case COMPLETE:
-        return cartFluidHandler.fill(fluid, FluidAction.SIMULATE) > 0;
-      case PARTIAL:
-        return !cartFluidHandler.drain(fluid, FluidAction.SIMULATE).isEmpty();
-      default:
-        break;
-    }
-    return false;
+    return switch (this.getRedstoneMode()) {
+      case COMPLETE -> cartFluidHandler.fill(fluid, IFluidHandler.FluidAction.SIMULATE) > 0;
+      case PARTIAL -> !cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty();
+      default -> false;
+    };
   }
 
   @Override

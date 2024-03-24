@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_bronze_block",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bronze_block"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:bronze_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

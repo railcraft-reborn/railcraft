@@ -67,6 +67,7 @@ import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
@@ -88,14 +89,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelProvider;
+import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockModelProvider extends BlockStateProvider {
 
@@ -155,7 +155,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private ResourceLocation key(Block block) {
-    return ForgeRegistries.BLOCKS.getKey(block);
+    return BuiltInRegistries.BLOCK.getKey(block);
   }
 
   private String name(Block block) {
@@ -567,13 +567,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var singleModel = this.models().cubeAll(this.name(block, "_single"), endTexture)
         .renderType(CUTOUT);
     var topModel = this.models().cubeColumn(this.name(block, "_top"),
-            TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
+        TextureMapping.getBlockTexture(block, "_side_top"), endTexture)
         .renderType(CUTOUT);
     var centerModel = this.models().cubeColumn(this.name(block, "_center"),
-            TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
+        TextureMapping.getBlockTexture(block, "_side_center"), endTexture)
         .renderType(CUTOUT);
     var bottomModel = this.models().cubeColumn(this.name(block, "_bottom"),
-            TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
+        TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
         .renderType(CUTOUT);
 
     this.getVariantBuilder(block)
@@ -592,7 +592,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private void createFluidManipulator(FluidManipulatorBlock<?> block) {
     var texture = TextureMapping.cubeBottomTop(block);
     var model = this.models().cubeBottomTop(this.name(block), texture.get(TextureSlot.SIDE),
-            texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
+        texture.get(TextureSlot.BOTTOM), texture.get(TextureSlot.TOP))
         .renderType(CUTOUT);
 
     this.simpleBlock(block, model);
@@ -932,15 +932,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     var model =
         this.models().withExistingParent(name(block), frameTemplate)
-        .texture("side", sideTexture)
-        .texture("top", topTexture)
-        .renderType(CUTOUT);
+            .texture("side", sideTexture)
+            .texture("top", topTexture)
+            .renderType(CUTOUT);
 
     var modelPowered =
         this.models().withExistingParent(name(block, "_powered"), frameTemplate)
-        .texture("side", sideTexture)
-        .texture("top", topPoweredTexture)
-        .renderType(CUTOUT);
+            .texture("side", sideTexture)
+            .texture("top", topPoweredTexture)
+            .renderType(CUTOUT);
 
     this.getVariantBuilder(block)
         .forAllStates(blockState -> {
@@ -1563,7 +1563,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.getMultipartBuilder(block)
         .part()
-        .modelFile(this.models().getExistingFile(this.mcLoc("block/grass"))).addModel()
+        .modelFile(this.models().getExistingFile(this.mcLoc("block/short_grass"))).addModel()
         .condition(AbandonedTrackBlock.GRASS, true).end()
         .part()
         .modelFile(flatModel0).nextModel().modelFile(flatModel1).addModel()
@@ -1880,7 +1880,6 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .condition(ThrottleTrackBlock.POWERED, true)
         .condition(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST).end();
   }
-
 
 
 

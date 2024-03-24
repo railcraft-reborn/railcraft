@@ -3,8 +3,8 @@ package mods.railcraft.client.gui.screen.inventory.detector;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetItemDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetItemDetectorMessage;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,8 +72,8 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.sendToServer(
-        new SetItemDetectorAttributesMessage(this.itemDetector.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetItemDetectorMessage(this.itemDetector.getBlockPos(),
             this.itemDetector.getPrimaryMode(), this.itemDetector.getFilterMode()));
   }
 

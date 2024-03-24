@@ -1,13 +1,11 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.EnergyMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,20 +18,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class EnergyMinecart extends RailcraftMinecart {
 
-  private static final int MAX_CHARGE = 50000;
-
+  public static final int MAX_CHARGE = 50000;
   private static final EntityDataAccessor<Integer> ENERGY =
       SynchedEntityData.defineId(EnergyMinecart.class, EntityDataSerializers.INT);
-
   private final CartStorage energyStorage = new CartStorage();
-  private final LazyOptional<IEnergyStorage> cartBattery = LazyOptional.of(() -> energyStorage);
 
   public EnergyMinecart(EntityType<?> type, Level level) {
     super(type, level);
@@ -67,15 +59,8 @@ public class EnergyMinecart extends RailcraftMinecart {
     return 0;
   }
 
-  public IEnergyStorage getCartBattery() {
+  public IEnergyStorage getBatteryCart() {
     return this.energyStorage;
-  }
-
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-    return ForgeCapabilities.ENERGY == capability
-        ? this.cartBattery.cast()
-        : super.getCapability(capability, facing);
   }
 
   @Override

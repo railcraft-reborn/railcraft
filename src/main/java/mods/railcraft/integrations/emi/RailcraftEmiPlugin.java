@@ -13,6 +13,7 @@ import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 
 @EmiEntrypoint
@@ -63,7 +64,8 @@ public class RailcraftEmiPlugin implements EmiPlugin {
   }
 
   private <C extends Container, T extends Recipe<C>> void registerRecipe(
-      EmiRegistry registry, RecipeType<T> recipeType, Function<T, EmiRecipe> emiRecipeFunction) {
+      EmiRegistry registry, RecipeType<T> recipeType,
+      Function<RecipeHolder<T>, EmiRecipe> emiRecipeFunction) {
     var manager = registry.getRecipeManager();
     for (var x : manager.getAllRecipesFor(recipeType)) {
       registry.addRecipe(emiRecipeFunction.apply(x));

@@ -30,15 +30,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_zinc_ingot",
-      "has_copper_ingot",
-      "has_the_recipe"
+      "has_copper_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:brass_ingot_crafted_with_ingots"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

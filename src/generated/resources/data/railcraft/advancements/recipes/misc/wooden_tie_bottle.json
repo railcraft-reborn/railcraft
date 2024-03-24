@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_creosote_bottle",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_creosote_bottle"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:wooden_tie_bottle"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

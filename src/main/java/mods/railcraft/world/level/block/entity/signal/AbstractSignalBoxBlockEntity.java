@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity {
 
@@ -61,10 +60,5 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
 
   public int getRedstoneSignal(Direction direction) {
     return 0;
-  }
-
-  @Override
-  public AABB getRenderBoundingBox() {
-    return new AABB(this.blockPos().offset(-1, 0, -1), this.blockPos().offset(2, 2, 2));
   }
 }

@@ -8,8 +8,8 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetSwitchTrackMotorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetSwitchTrackMotorMessage;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import net.minecraft.SharedConstants;
@@ -84,7 +84,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (this.switchTrackMotor.getLock() != lock) {
       this.switchTrackMotor.setLock(
           lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -125,7 +125,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile());
+    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackMotor.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -138,11 +138,11 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackMotor.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetSwitchTrackMotorAttributesMessage(this.switchTrackMotor.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetSwitchTrackMotorMessage(this.switchTrackMotor.getBlockPos(),
             this.switchTrackMotor.getActionSignalAspects(),
             this.switchTrackMotor.isRedstoneTriggered(),
             this.lockButton.getState()));

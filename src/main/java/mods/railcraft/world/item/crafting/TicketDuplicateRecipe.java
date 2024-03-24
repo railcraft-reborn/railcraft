@@ -4,7 +4,6 @@ import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,8 +18,8 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   private static final Ingredient SOURCE = Ingredient.of(RailcraftItems.GOLDEN_TICKET.get());
   private static final Ingredient BLANK = Ingredient.of(Items.PAPER);
 
-  public TicketDuplicateRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public TicketDuplicateRecipe(CraftingBookCategory category) {
+    super(category);
   }
 
   @Override

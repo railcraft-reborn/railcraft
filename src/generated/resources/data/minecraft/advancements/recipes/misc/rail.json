@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_standard_rail",
-      "has_wooden_railbed",
-      "has_the_recipe"
+      "has_wooden_railbed"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:rail"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

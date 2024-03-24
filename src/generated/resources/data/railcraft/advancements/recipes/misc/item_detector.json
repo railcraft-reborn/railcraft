@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_stripped_acacia_wood",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_stripped_acacia_wood"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:item_detector"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -2,9 +2,6 @@
   "parent": "railcraft:carts/locomotive",
   "criteria": {
     "has_slept_in_rc_bed": {
-      "conditions": {
-        "cart": {}
-      },
       "trigger": "railcraft:bed_cart_sleep"
     }
   },
@@ -13,12 +10,9 @@
     "description": {
       "translate": "advancements.railcraft.carts.bed_cart.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "minecraft:minecart"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancements.railcraft.carts.bed_cart.name"
     }

@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
@@ -19,8 +20,15 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class WaterTankSiding extends MultiblockBlock {
 
+  private static final MapCodec<WaterTankSiding> CODEC = simpleCodec(WaterTankSiding::new);
+
   public WaterTankSiding(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends MultiblockBlock> codec() {
+    return CODEC;
   }
 
   @Override

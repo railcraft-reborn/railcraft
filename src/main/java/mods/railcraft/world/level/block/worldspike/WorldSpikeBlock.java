@@ -1,8 +1,9 @@
 package mods.railcraft.world.level.block.worldspike;
 
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
+import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
-import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.worldspike.WorldSpikeBlockEntity;
@@ -17,12 +18,18 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.world.ForgeChunkManager;
 
 public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
 
+  private static final MapCodec<WorldSpikeBlock> CODEC = simpleCodec(WorldSpikeBlock::new);
+
   public WorldSpikeBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override
@@ -52,8 +59,7 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
     var chunkPos = new ChunkPos(pos);
     for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
       for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
-        ForgeChunkManager.forceChunk(serverLevel, RailcraftConstants.ID,
-            pos, x, z, add, false);
+        Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, pos, x, z, add, false);
       }
     }
   }

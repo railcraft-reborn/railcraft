@@ -13,15 +13,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RailcraftDatapackProvider extends DatapackBuiltinEntriesProvider {
 
   private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
       .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
       .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
-      .add(ForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
+      .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
       .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
       .add(Registries.STRUCTURE, RailcraftStructures::bootstrap)
       .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap);

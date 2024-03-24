@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_nickel_nugget",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_nickel_nugget"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:nickel_ingot_from_nickel_nugget"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

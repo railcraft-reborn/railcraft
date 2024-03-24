@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_abyssal_bricks",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_abyssal_bricks"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:abyssal_paver"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

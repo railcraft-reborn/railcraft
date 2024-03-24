@@ -31,7 +31,6 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
     super.render(guiGraphics, mouseX, mouseY, partialTicks);
     var left = this.leftPos;
     var top = this.topPos;

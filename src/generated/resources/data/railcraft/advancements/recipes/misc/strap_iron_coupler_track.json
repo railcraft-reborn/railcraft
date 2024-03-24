@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_coupler_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_coupler_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:strap_iron_coupler_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

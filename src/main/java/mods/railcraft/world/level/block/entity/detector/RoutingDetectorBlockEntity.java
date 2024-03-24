@@ -11,7 +11,6 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
-import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.routing.RouterBlockEntity;
 import mods.railcraft.util.routing.RoutingLogic;
@@ -53,7 +52,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
       var rollingStock = RollingStock.getOrThrow(cart);
       if (this.railway == Railway.PRIVATE) {
         if (rollingStock.owner()
-            .filter(owner -> PlayerUtil.isSamePlayer(owner, this.getOwnerOrThrow()))
+            .filter(owner -> owner.equals(this.getOwnerOrThrow()))
             .isEmpty()) {
           continue;
         }

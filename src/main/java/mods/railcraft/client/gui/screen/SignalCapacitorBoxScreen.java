@@ -4,8 +4,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.util.GuiUtil;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetSignalCapacitorBoxAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetSignalCapacitorBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,8 +82,8 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    NetworkChannel.GAME.sendToServer(
-        new SetSignalCapacitorBoxAttributesMessage(this.signalBox.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetSignalCapacitorBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getTicksToPower(), this.modeButton.getState()));
   }
 }

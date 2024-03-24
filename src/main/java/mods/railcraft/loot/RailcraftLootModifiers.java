@@ -1,22 +1,23 @@
 package mods.railcraft.loot;
 
+import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraftforge.common.loot.IGlobalLootModifier;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RailcraftLootModifiers {
 
   private static final DeferredRegister<Codec<? extends IGlobalLootModifier>> deferredRegister =
-      DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, RailcraftConstants.ID);
+      DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS,
+          RailcraftConstants.ID);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
 
-  public static final RegistryObject<Codec<? extends IGlobalLootModifier>> DUNGEON_LOOT_MODIFIER =
+  public static final Supplier<Codec<? extends IGlobalLootModifier>> DUNGEON_LOOT_MODIFIER =
       deferredRegister.register("dungeon_loot_modifier", DungeonLootModifier.CODEC);
 }

@@ -1,12 +1,12 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
@@ -24,7 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class SolidBoilerRecipeCategory implements IRecipeCategory<SolidBoilerJEIRecipe> {
 
@@ -82,10 +82,10 @@ public class SolidBoilerRecipeCategory implements IRecipeCategory<SolidBoilerJEI
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, SolidBoilerJEIRecipe recipe, IFocusGroup focuses) {
     builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 4)
-        .addIngredient(ForgeTypes.FLUID_STACK, recipe.steam())
+        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.steam())
         .setFluidRenderer(10_000, true, 16, 47);
     builder.addSlot(RecipeIngredientRole.INPUT, 100, 4)
-        .addIngredient(ForgeTypes.FLUID_STACK, recipe.water())
+        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.water())
         .setFluidRenderer(10_000, true, 16, 47);
   }
 

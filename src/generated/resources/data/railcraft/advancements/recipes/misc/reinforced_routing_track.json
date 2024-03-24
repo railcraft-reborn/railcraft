@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_routing_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_routing_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:reinforced_routing_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

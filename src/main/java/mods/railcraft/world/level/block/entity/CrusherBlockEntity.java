@@ -26,9 +26,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -76,18 +76,19 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       blockEntity.getMasterBlockEntity()
           .ifPresent(master -> {
             var target = blockPos.above();
-            var energyCap = master.getCapability(ForgeCapabilities.ENERGY);
+            var energyCap = level
+                .getCapability(Capabilities.EnergyStorage.BLOCK, master.getBlockPos(), null);
             EntitySearcher.findLiving()
                 .at(target)
                 .and(ModEntitySelector.KILLABLE)
                 .list(level)
                 .forEach(livingEntity -> {
-                  energyCap.ifPresent(energyStorage -> {
-                    if (energyStorage.getEnergyStored() >= KILLING_POWER_COST) {
+                  if (energyCap != null) {
+                    if (energyCap.getEnergyStored() >= KILLING_POWER_COST) {
                       livingEntity.hurt(RailcraftDamageSources.crusher(level.registryAccess()), 5);
-                      energyStorage.extractEnergy(KILLING_POWER_COST, false);
+                      energyCap.extractEnergy(KILLING_POWER_COST, false);
                     }
-                  });
+                  }
                 });
           });
     }
@@ -149,22 +150,19 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
     return Component.translatable(Container.CRUSHER);
   }
 
-  @Override
-  public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+  public IItemHandler getItemCap(Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
-    if (cap == ForgeCapabilities.ITEM_HANDLER) {
-      return masterModule
-          .map(CrusherModule::getItemHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    if (cap == ForgeCapabilities.ENERGY) {
-      return masterModule
-          .map(CrusherModule::getEnergyHandler)
-          .<LazyOptional<T>>map(LazyOptional::cast)
-          .orElse(LazyOptional.empty());
-    }
-    return super.getCapability(cap, side);
+    return masterModule
+        .map(CrusherModule::getItemHandler)
+        .orElse(null);
+  }
+
+  public IEnergyStorage getEnergyCap(Direction side) {
+    var masterModule = this.getMasterBlockEntity()
+        .map(CrusherBlockEntity::getCrusherModule);
+    return masterModule
+        .map(CrusherModule::getEnergyHandler)
+        .orElse(null);
   }
 }

@@ -18,7 +18,6 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
-import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.SimpleTexturePosition;
@@ -165,15 +164,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void setOwner(@Nullable GameProfile owner) {
-    if (owner != null && !owner.isComplete()) {
-      var ownerName = RailcraftConstants.UNKNOWN_PLAYER;
-      if (!StringUtils.isBlank(owner.getName())) {
-        ownerName = owner.getName();
-      }
-
-      owner = new GameProfile(owner.getId(), ownerName);
-    }
-
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 
@@ -629,7 +619,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
                   Mth.cos(yaw) * KNOCKBACK * 0.5F));
         } else {
           if (living instanceof ServerPlayer serverPlayer) {
-            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.trigger(serverPlayer, this);
+            RailcraftCriteriaTriggers.KILLED_BY_LOCOMOTIVE.value().trigger(serverPlayer, this);
           }
         }
         return;
@@ -706,8 +696,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
     tag.putInt(CompoundTagKeys.FUEL, this.fuel);
 
     tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
-    this.getOwner().ifPresent(owner ->
-        tag.put(CompoundTagKeys.OWNER, NbtUtils.writeGameProfile(new CompoundTag(), owner)));
+    this.getOwner().ifPresent(owner -> tag.put(CompoundTagKeys.OWNER,
+        NbtUtils.writeGameProfile(new CompoundTag(), owner)));
   }
 
   @Override
@@ -723,9 +713,11 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
 
     this.setPrimaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR), this.getDefaultPrimaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR),
+            this.getDefaultPrimaryColor()));
     this.setSecondaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR), this.getDefaultSecondaryColor()));
+        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR),
+            this.getDefaultSecondaryColor()));
 
     this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
 

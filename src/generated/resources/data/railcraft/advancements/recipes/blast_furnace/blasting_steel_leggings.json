@@ -1,4 +1,5 @@
 {
+  "parent": "minecraft:recipes/root",
   "criteria": {
     "has_steel_leggings": {
       "conditions": {
@@ -11,12 +12,23 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:blast_furnace/blasting_steel_leggings"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_steel_leggings"
     ]
   ],
-  "sends_telemetry_event": true
+  "rewards": {
+    "recipes": [
+      "railcraft:blast_furnace/blasting_steel_leggings"
+    ]
+  }
 }

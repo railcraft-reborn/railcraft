@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
@@ -24,12 +25,19 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 
 public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSearchable {
 
+  private static final MapCodec<ManualRollingMachineBlock> CODEC =
+      simpleCodec(ManualRollingMachineBlock::new);
+
   public ManualRollingMachineBlock(Properties properties) {
     super(properties);
+  }
+
+  @Override
+  protected MapCodec<? extends BaseEntityBlock> codec() {
+    return CODEC;
   }
 
   @Override
@@ -56,7 +64,7 @@ public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSea
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (player instanceof ServerPlayer serverPlayer) {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.MANUAL_ROLLING_MACHINE.get())
-          .ifPresent(blockEntity -> NetworkHooks.openScreen(serverPlayer, blockEntity, pos));
+          .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
   }

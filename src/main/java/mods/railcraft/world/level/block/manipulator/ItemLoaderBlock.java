@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.manipulator;
 
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.ItemLoaderBlockEntity;
@@ -21,10 +22,17 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemLoaderBlock extends ManipulatorBlock<ItemLoaderBlockEntity> {
 
+  private static final MapCodec<ItemLoaderBlock> CODEC = simpleCodec(ItemLoaderBlock::new);
+
   public ItemLoaderBlock(Properties properties) {
     super(ItemLoaderBlockEntity.class, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(POWERED, false));
+  }
+
+  @Override
+  protected MapCodec<? extends ManipulatorBlock<ItemLoaderBlockEntity>> codec() {
+    return CODEC;
   }
 
   @Override

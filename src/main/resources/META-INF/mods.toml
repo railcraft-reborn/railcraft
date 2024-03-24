@@ -7,21 +7,20 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   modId = "railcraft"
   version = "${mod_version}"
   displayName = "Railcraft Reborn"
-  updateJSONURL = "https://api.modrinth.com/updates/railcraft-reborn/forge_updates.json"
+  updateJSONURL = "https://api.modrinth.com/updates/railcraft-reborn/forge_updates.json?neoforge=include"
   logoFile = "pack.png"
   credits = "From an original idea by CovertJaguar, developed for modern versions of Minecraft by the community"
   modUrl = "https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn"
   authors = "Sm0keySa1m0n, Edivad99"
-  description = "Redefine your rails"
 
 [[dependencies.railcraft]]
-  mandatory = true
-  modId = "forge"
+  type = "required"
+  modId = "neoforge"
   ordering = "AFTER"
   side = "BOTH"
   versionRange = "${neo_version_range}"
 [[dependencies.railcraft]]
-  mandatory = true
+  type = "required"
   modId = "minecraft"
   ordering = "NONE"
   side = "BOTH"

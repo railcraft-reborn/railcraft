@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_quartz",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_quartz"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:bag_of_cement"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

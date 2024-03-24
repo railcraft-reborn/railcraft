@@ -5,8 +5,8 @@ import java.util.List;
 import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
 import mezz.jei.api.ingredients.ITypedIngredient;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetFilterSlotMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetFilterSlotMessage;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +38,7 @@ public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
               @Override
               public void accept(I ingredient) {
                 var itemStack = ((ItemStack) ingredient).copy();
-                NetworkChannel.GAME.sendToServer(new SetFilterSlotMessage(slot.index, itemStack));
+                PacketHandler.sendToServer(new SetFilterSlotMessage(slot.index, itemStack));
                 slot.set(itemStack);
               }
             });

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_deepslate_silver_ore",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_deepslate_silver_ore"
     ]
   ],
   "rewards": {
     "recipes": [
       "minecraft:silver_ingot_from_smelting_deepslate_silver_ore"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,8 +5,8 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetItemManipulatorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetItemManipulatorMessage;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -69,8 +69,8 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   @Override
   protected void sendAttributes() {
     ItemManipulatorBlockEntity manipulator = this.menu.getManipulator();
-    NetworkChannel.GAME.sendToServer(
-        new SetItemManipulatorAttributesMessage(manipulator.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetItemManipulatorMessage(manipulator.getBlockPos(),
             manipulator.getRedstoneMode(), manipulator.getTransferMode()));
   }
 

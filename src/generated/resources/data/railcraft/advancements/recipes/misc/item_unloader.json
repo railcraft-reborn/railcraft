@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_item_detector",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_item_detector"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:item_unloader"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

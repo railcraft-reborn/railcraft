@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.util.FunctionalUtil;
@@ -15,16 +14,16 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 
 /**
  * @author Sm0keySa1m0n
  */
-final class TrainImpl implements Train {
+public final class TrainImpl implements Train {
 
   private final UUID id;
   private final RollingStockImpl front;
@@ -79,9 +78,8 @@ final class TrainImpl implements Train {
   @Override
   public Optional<IItemHandler> itemHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> cart.getCapability(ForgeCapabilities.ITEM_HANDLER)
-            .map(Stream::of)
-            .orElse(Stream.empty()))
+        .flatMap(cart -> Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
+            .stream())
         .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
         .toArray(IItemHandlerModifiable[]::new);
     return cartHandlers.length == 0
@@ -92,9 +90,8 @@ final class TrainImpl implements Train {
   @Override
   public Optional<IFluidHandler> fluidHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> cart.getCapability(ForgeCapabilities.FLUID_HANDLER)
-            .map(Stream::of)
-            .orElse(Stream.empty()))
+        .flatMap(cart -> Optional.ofNullable(
+            cart.getCapability(Capabilities.FluidHandler.ENTITY, null)).stream())
         .toList();
     return cartHandlers.isEmpty()
         ? Optional.empty()
@@ -102,7 +99,7 @@ final class TrainImpl implements Train {
   }
 
   public void refreshMaxSpeed() {
-    setMaxSpeed(calculateMaxSpeed());
+    this.setMaxSpeed(this.calculateMaxSpeed());
   }
 
   private float calculateMaxSpeed() {
@@ -146,17 +143,17 @@ final class TrainImpl implements Train {
     if (!(obj instanceof TrainImpl other)) {
       return false;
     }
-    return id.equals(other.id);
+    return this.id.equals(other.id);
   }
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return this.id.hashCode();
   }
 
   @Override
   public String toString() {
-    return String.format("Train{id=%s,n=%d}", this.id, this.size());
+    return String.format("Train{id=%s}", this.id);
   }
 
   static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {

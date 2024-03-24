@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_fire_charge",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_fire_charge"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:solid_fueled_firebox"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

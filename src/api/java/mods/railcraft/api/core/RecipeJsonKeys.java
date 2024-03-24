@@ -17,11 +17,7 @@ public final class RecipeJsonKeys {
   public static final String CREOSOTE_OUTPUT = "creosoteOutput";
   public static final String PROBABILITY = "probability";
   public static final String OUTPUTS = "outputs";
-  public static final String ITEM = "item";
   public static final String COUNT = "count";
-  public static final String PATTERN = "pattern";
-  public static final String KEY = "key";
-  public static final String CONDITIONS = "conditions";
 
   private RecipeJsonKeys() {
   }

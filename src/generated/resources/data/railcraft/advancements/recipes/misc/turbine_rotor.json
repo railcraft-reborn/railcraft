@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_turbine_disk",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_turbine_disk"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:turbine_rotor"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

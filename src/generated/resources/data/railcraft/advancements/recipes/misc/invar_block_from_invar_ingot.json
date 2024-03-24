@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_invar_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_invar_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:invar_block_from_invar_ingot"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -8,7 +8,7 @@ import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public class SteelTankBlockEntity extends TankBlockEntity {
 

@@ -32,8 +32,7 @@ public class CrowbarHandler {
           .weakValues()
           .makeMap();
 
-  private CrowbarHandler() {
-  }
+  private CrowbarHandler() {}
 
   public static InteractionResult handleInteract(AbstractMinecart cart, Player player,
       InteractionHand hand) {
@@ -52,7 +51,7 @@ public class CrowbarHandler {
         && RailcraftConfig.COMMON.seasonsEnabled.get()) {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
-      RailcraftCriteriaTriggers.SEASON_SET.trigger(serverPlayer, cart, season);
+      RailcraftCriteriaTriggers.SEASON_SET.value().trigger(serverPlayer, cart, season);
       return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
@@ -91,7 +90,7 @@ public class CrowbarHandler {
         return;
       }
 
-      RailcraftCriteriaTriggers.CART_LINK.trigger(player, last.entity(), cart);
+      RailcraftCriteriaTriggers.CART_LINK.value().trigger(player, last.entity(), cart);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
           .withStyle(ChatFormatting.GREEN);
       player.displayClientMessage(message, true);

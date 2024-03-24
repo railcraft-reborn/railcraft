@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_bronze_ingot",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_bronze_ingot"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:bronze_nugget"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -5,8 +5,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetRoutingTrackAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetRoutingTrackMessage;
 import mods.railcraft.world.inventory.RoutingTrackMenu;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -51,7 +51,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
     if (this.routingBlockEntity.getLock() != lock) {
       this.routingBlockEntity.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-              ? null : this.minecraft.getUser().getGameProfile());
+              ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -74,17 +74,17 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   }
 
   private void updateButtons() {
-    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.getUser().getGameProfile());
+    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingBlockEntity.getLock());
   }
 
   private void sendAttributes() {
-    if (!this.routingBlockEntity.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetRoutingTrackAttributesMessage(this.routingBlockEntity.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetRoutingTrackMessage(this.routingBlockEntity.getBlockPos(),
             this.lockButton.getState()));
   }
 

@@ -5,8 +5,8 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetTankDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetTankDetectorMessage;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
@@ -53,8 +53,8 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   private void setMode(TankDetectorBlockEntity.Mode mode) {
     if (mode != this.tankDetectorBlockEntity.getMode()) {
       this.tankDetectorBlockEntity.setMode(mode);
-      NetworkChannel.GAME.sendToServer(
-          new SetTankDetectorAttributesMessage(this.tankDetectorBlockEntity.getBlockPos(), mode));
+      PacketHandler.sendToServer(
+          new SetTankDetectorMessage(this.tankDetectorBlockEntity.getBlockPos(), mode));
     }
   }
 

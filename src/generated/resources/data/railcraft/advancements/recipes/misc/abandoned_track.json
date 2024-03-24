@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_standard_rail",
-      "has_wooden_tie",
-      "has_the_recipe"
+      "has_wooden_tie"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:abandoned_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

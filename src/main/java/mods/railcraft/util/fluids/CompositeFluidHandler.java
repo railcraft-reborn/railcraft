@@ -2,9 +2,9 @@ package mods.railcraft.util.fluids;
 
 import java.util.Arrays;
 import java.util.Collection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.EmptyFluidHandler;
 
 public class CompositeFluidHandler implements IFluidHandler {
 

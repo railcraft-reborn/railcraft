@@ -1,28 +1,27 @@
 package mods.railcraft.world.item.crafting;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
-import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
-import mods.railcraft.util.JsonUtil;
+import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class CokeOvenRecipe extends AbstractCookingRecipe {
 
   private final FluidStack creosote;
 
-  public CokeOvenRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result,
+  public CokeOvenRecipe(Ingredient ingredient, ItemStack result,
       float experience, int cookingTime, int creosoteOutput) {
-    super(RailcraftRecipeTypes.COKING.get(), id, "", CookingBookCategory.MISC,
+    super(RailcraftRecipeTypes.COKING.get(), "", CookingBookCategory.MISC,
         ingredient, result, experience, cookingTime);
     this.creosote = new FluidStack(RailcraftFluids.CREOSOTE.get(), creosoteOutput);
   }
@@ -48,27 +47,36 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
+    private static final Codec<CokeOvenRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
+            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
+                .forGetter(recipe -> recipe.ingredient),
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
+                .forGetter(recipe -> recipe.result),
+            Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
+                .orElse(0.0F)
+                .forGetter(recipe -> recipe.experience),
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.COOKING_TIME,
+                    BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
+                .forGetter(recipe -> recipe.cookingTime),
+            ExtraCodecs.POSITIVE_INT.fieldOf(RecipeJsonKeys.CREOSOTE_OUTPUT)
+                .forGetter(recipe -> recipe.creosote.getAmount())
+        ).apply(instance, CokeOvenRecipe::new));
+
     @Override
-    public CokeOvenRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      var cookingTime = GsonHelper.getAsInt(json, RecipeJsonKeys.COOKING_TIME,
-          CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME);
-      var creosoteOutput = GsonHelper.getAsInt(json, RecipeJsonKeys.CREOSOTE_OUTPUT, 1000); // 1 bucket
-      var ingredient = Ingredient.fromJson(json.get(RecipeJsonKeys.INGREDIENT));
-      var result = JsonUtil.itemFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
-      var experience = GsonHelper.getAsFloat(json, RecipeJsonKeys.EXPERIENCE, 0);
-      return new CokeOvenRecipe(recipeId, ingredient, result, experience, cookingTime,
-          creosoteOutput);
+    public Codec<CokeOvenRecipe> codec() {
+      return CODEC;
     }
 
     @Override
-    public CokeOvenRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+    public CokeOvenRecipe fromNetwork(FriendlyByteBuf buffer) {
       var creosoteOutput = buffer.readVarInt();
       var cookingTime = buffer.readVarInt();
       var ingredient = Ingredient.fromNetwork(buffer);
       var result = buffer.readItem();
       var experience = buffer.readFloat();
-      return new CokeOvenRecipe(recipeId, ingredient, result, experience, cookingTime,
-          creosoteOutput);
+      return new CokeOvenRecipe(ingredient, result, experience, cookingTime, creosoteOutput);
     }
 
     @Override

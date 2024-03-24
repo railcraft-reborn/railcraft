@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_charge_spool_large",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_charge_spool_large"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:charge_spool_medium_from_large"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

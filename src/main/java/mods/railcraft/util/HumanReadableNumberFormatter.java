@@ -21,7 +21,7 @@ public class HumanReadableNumberFormatter {
   }
 
   private static String format(double number, int iteration) {
-    var prefix = number < 0.0 ? "-" : "";
+    var prefix = number < 0 ? "-" : "";
     number = Math.abs(number);
     if (number < 1_000.0 || iteration == SUFFIX.length - 1) {
       var formatter = iteration > 0 ? LARGE_NUMBER_FORMATTER : SMALL_NUMBER_FORMATTER;

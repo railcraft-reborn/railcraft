@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_cracked_firestone",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_cracked_firestone"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:firestone_cracked_fixing"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_abyssal_paver",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_abyssal_paver"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:abyssal_paver_stairs"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

@@ -6,8 +6,8 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
-import mods.railcraft.network.NetworkChannel;
-import mods.railcraft.network.play.SetRoutingDetectorAttributesMessage;
+import mods.railcraft.network.PacketHandler;
+import mods.railcraft.network.to_server.SetRoutingDetectorMessage;
 import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -85,7 +85,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getLock() != lock) {
       this.routingDetector.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -94,7 +94,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getRailway() != railway) {
       this.routingDetector.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
-          ? null : this.minecraft.getUser().getGameProfile());
+          ? null : this.minecraft.player.getGameProfile());
       this.sendAttributes();
     }
   }
@@ -126,7 +126,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void updateButtons() {
-    var canAccess = this.routingDetector.canAccess(this.minecraft.getUser().getGameProfile());
+    var canAccess = this.routingDetector.canAccess(this.minecraft.player.getGameProfile());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingDetector.getLock());
     this.railwayButton.active = canAccess;
@@ -134,11 +134,11 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void sendAttributes() {
-    if (!this.routingDetector.canAccess(this.minecraft.getUser().getGameProfile())) {
+    if (!this.routingDetector.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    NetworkChannel.GAME.sendToServer(
-        new SetRoutingDetectorAttributesMessage(this.routingDetector.getBlockPos(),
+    PacketHandler.sendToServer(
+        new SetRoutingDetectorMessage(this.routingDetector.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }
 

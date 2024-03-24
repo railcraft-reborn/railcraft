@@ -22,14 +22,13 @@
   },
   "requirements": [
     [
-      "has_locomotive_track_kit",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_locomotive_track_kit"
     ]
   ],
   "rewards": {
     "recipes": [
       "railcraft:strap_iron_locomotive_track"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

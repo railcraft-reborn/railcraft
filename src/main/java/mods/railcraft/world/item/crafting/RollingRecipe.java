@@ -1,36 +1,31 @@
 package mods.railcraft.world.item.crafting;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 
 public class RollingRecipe implements Recipe<CraftingContainer> {
-  private final ResourceLocation recipeId;
-  private final int width, height;
-  private final NonNullList<Ingredient> ingredients;
+
+  private final ShapedRecipePattern pattern;
   private final ItemStack result;
   private final int processTime;
 
-  public RollingRecipe(ResourceLocation recipeId, int width, int height,
-      NonNullList<Ingredient> ingredients, ItemStack result, int processTime) {
-    this.recipeId = recipeId;
-    this.width = width;
-    this.height = height;
-    this.ingredients = ingredients;
+  public RollingRecipe(ShapedRecipePattern pattern, ItemStack result, int processTime) {
+    this.pattern = pattern;
     this.result = result;
     this.processTime = processTime;
   }
@@ -45,51 +40,16 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   public int getWidth() {
-    return this.width;
+    return this.pattern.width();
   }
 
   public int getHeight() {
-    return this.height;
+    return this.pattern.height();
   }
 
   @Override
   public boolean matches(CraftingContainer inventory, Level level) {
-    for (int i = 0; i <= inventory.getWidth() - this.width; ++i) {
-      for (int j = 0; j <= inventory.getHeight() - this.height; ++j) {
-        if (this.matches(inventory, i, j, true)) {
-          return true;
-        }
-
-        if (this.matches(inventory, i, j, false)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  private boolean matches(CraftingContainer inventory, int x, int y, boolean inverse) {
-    for (int i = 0; i < inventory.getWidth(); ++i) {
-      for (int j = 0; j < inventory.getHeight(); ++j) {
-        int k = i - x;
-        int l = j - y;
-        Ingredient ingredient = Ingredient.EMPTY;
-        if (k >= 0 && l >= 0 && k < this.width && l < this.height) {
-          if (inverse) {
-            ingredient = this.ingredients.get(this.width - k - 1 + l * this.width);
-          } else {
-            ingredient = this.ingredients.get(k + l * this.width);
-          }
-        }
-
-        if (!ingredient.test(inventory.getItem(i + j * inventory.getWidth()))) {
-          return false;
-        }
-      }
-    }
-
-    return true;
+    return this.pattern.matches(inventory);
   }
 
   @Override
@@ -99,7 +59,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   @Override
   public boolean canCraftInDimensions(int width, int height) {
-    return width >= this.width && height >= this.height;
+    return width >= this.pattern.width() && height >= this.pattern.height();
   }
 
   @Override
@@ -109,12 +69,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   @Override
   public NonNullList<Ingredient> getIngredients() {
-    return this.ingredients;
-  }
-
-  @Override
-  public ResourceLocation getId() {
-    return this.recipeId;
+    return this.pattern.ingredients();
   }
 
   @Override
@@ -139,38 +94,34 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
 
   public static class Serializer implements RecipeSerializer<RollingRecipe> {
 
-    @Override
-    public RollingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-      var map = ShapedRecipe.keyFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.KEY));
-      var patterns = ShapedRecipe.shrink(ShapedRecipe.patternFromJson(
-          GsonHelper.getAsJsonArray(json, RecipeJsonKeys.PATTERN)));
-      int width = patterns[0].length();
-      int height = patterns.length;
+    private static final Codec<RollingRecipe> CODEC = RecordCodecBuilder
+        .create(instance -> instance.group(
+            ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
+            ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf(RecipeJsonKeys.RESULT)
+                .forGetter(recipe -> recipe.result),
+            ExtraCodecs
+                .strictOptionalField(ExtraCodecs.POSITIVE_INT, RecipeJsonKeys.PROCESS_TIME,
+                    RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
+                .forGetter(recipe -> recipe.processTime)
+        ).apply(instance, RollingRecipe::new));
 
-      int processTime = GsonHelper.getAsInt(json, RecipeJsonKeys.PROCESS_TIME, RollingRecipeBuilder.DEFAULT_PROCESSING_TIME);
-      var ingredients = ShapedRecipe.dissolvePattern(patterns, map, width, height);
-      var resultItemStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, RecipeJsonKeys.RESULT));
-      return new RollingRecipe(recipeId, width, height, ingredients, resultItemStack, processTime);
+    @Override
+    public Codec<RollingRecipe> codec() {
+      return CODEC;
     }
 
     @Override
-    public RollingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-      int width = buffer.readVarInt();
-      int height = buffer.readVarInt();
-      int tickCost = buffer.readVarInt();
-      var ingredients =
-          buffer.readCollection(NonNullList::createWithCapacity, Ingredient::fromNetwork);
+    public RollingRecipe fromNetwork(FriendlyByteBuf buffer) {
+      var pattern = ShapedRecipePattern.fromNetwork(buffer);
+      int processTime = buffer.readVarInt();
       var result = buffer.readItem();
-
-      return new RollingRecipe(recipeId, width, height, ingredients, result, tickCost);
+      return new RollingRecipe(pattern, result, processTime);
     }
 
     @Override
     public void toNetwork(FriendlyByteBuf buffer, RollingRecipe recipe) {
-      buffer.writeVarInt(recipe.width);
-      buffer.writeVarInt(recipe.height);
+      recipe.pattern.toNetwork(buffer);
       buffer.writeVarInt(recipe.processTime);
-      buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buffer));
       buffer.writeItem(recipe.result);
     }
   }
