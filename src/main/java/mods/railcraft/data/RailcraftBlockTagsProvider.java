@@ -25,6 +25,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
   protected void addTags(HolderLookup.Provider provider) {
     this.tag(RailcraftTags.Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVEL);
+    this.tag(RailcraftTags.Blocks.TRACK_UNDERCUTTER_INVALID_BALLAST)
+        .addTags(Tags.Blocks.SAND, BlockTags.SAND);
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
         .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get())

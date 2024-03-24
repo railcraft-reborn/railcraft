@@ -13,7 +13,6 @@ import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,14 +37,13 @@ public enum StackFilter implements Predicate<ItemStack> {
         item instanceof CartItem;
   }),
   @SuppressWarnings("deprecation")
-  BALLAST(itemStack -> itemStack.getItem() instanceof BlockItem blockItem
-      && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
+  BALLAST(itemStack -> ContainerTools.getBlockFromStack(itemStack)
+      .builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
   FLUID_CONTAINER(itemStack -> itemStack
       .getCapability(Capabilities.FluidHandler.ITEM) != null),
   FEED(itemStack -> itemStack.getItem().isEdible()
       || itemStack.is(Items.WHEAT)
-      || itemStack.getItem() instanceof BlockItem blockItem
-          && blockItem.getBlock() instanceof StemBlock),
+      || ContainerTools.getBlockFromStack(itemStack) instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
       || !FluidTools.isFluidHandler(itemStack))
       && !RailcraftConfig.SERVER.cargoBlacklist.get()

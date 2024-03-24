@@ -101,6 +101,10 @@ repositories {
         name 'curseforge'
         url 'https://www.cursemaven.com'
     }
+    maven {
+        name 'TerraformersMC'
+        url 'https://maven.terraformersmc.com/'
+    }
 }
 
 dependencies {
@@ -112,6 +116,9 @@ dependencies {
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
     runtimeOnly "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
+
+    compileOnly "dev.emi:emi-neoforge:$emi_version+$minecraft_version:api"
+    runtimeOnly "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
 
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     runtimeOnly "vazkii.patchouli:Patchouli:$patchouli_version"

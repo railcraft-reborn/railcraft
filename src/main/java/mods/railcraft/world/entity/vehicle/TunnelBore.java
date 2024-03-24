@@ -43,7 +43,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -553,8 +552,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     if (!Block.canSupportRigidBlock(this.level(), targetPos)) {
       return this.ballastContainer.stream()
           .filter(slot -> slot.hasItem()
-              && slot.item().getItem() instanceof BlockItem blockItem
-              && blockItem.getBlock().builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST))
+              && ContainerTools.getBlockFromStack(slot.item())
+              .builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST))
           .findFirst()
           .map(slot -> {
             var searchPos = targetPos.mutable();

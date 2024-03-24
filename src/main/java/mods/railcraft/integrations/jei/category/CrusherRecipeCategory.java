@@ -22,21 +22,21 @@ import net.minecraft.world.item.ItemStack;
 
 public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
-  private static final int WIDTH = 144;
-  private static final int HEIGHT = 54;
+  public static final int WIDTH = 144;
+  public static final int HEIGHT = 54;
 
-  private static final ResourceLocation CRUSHER_BACKGROUND =
+  public static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/crusher.png");
 
   private final IDrawable background, icon, arrow;
 
   public CrusherRecipeCategory(IGuiHelper guiHelper) {
-    this.background = guiHelper.createDrawable(CRUSHER_BACKGROUND, 0, 171, WIDTH, HEIGHT);
+    this.background = guiHelper.createDrawable(BACKGROUND, 0, 171, WIDTH, HEIGHT);
     var itemStack = new ItemStack(RailcraftItems.CRUSHER.get());
     this.icon = guiHelper.createDrawableItemStack(itemStack);
 
     this.arrow = guiHelper.createAnimatedDrawable(
-        guiHelper.createDrawable(CRUSHER_BACKGROUND, 144, 171, 29, 53),
+        guiHelper.createDrawable(BACKGROUND, 144, 171, 29, 53),
         500, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
@@ -52,18 +52,18 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
   @Override
   public IDrawable getBackground() {
-    return background;
+    return this.background;
   }
 
   @Override
   public IDrawable getIcon() {
-    return icon;
+    return this.icon;
   }
 
   @Override
   public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
       double mouseX, double mouseY) {
-    arrow.draw(guiGraphics, 58, 0);
+    this.arrow.draw(guiGraphics, 58, 0);
   }
 
   @Override

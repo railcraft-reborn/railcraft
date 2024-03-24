@@ -20,7 +20,9 @@ import mods.railcraft.client.gui.screen.inventory.SteamOvenScreen;
 import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
 import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
 import mods.railcraft.integrations.jei.category.CrusherRecipeCategory;
+import mods.railcraft.integrations.jei.category.FluidBoilerRecipeCategory;
 import mods.railcraft.integrations.jei.category.RollingRecipeCategory;
+import mods.railcraft.integrations.jei.category.SolidBoilerRecipeCategory;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import mods.railcraft.world.inventory.CrusherMenu;
@@ -47,6 +49,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 @JeiPlugin
 public class RailcraftJeiPlugin implements IModPlugin {
 
+  public static final int TEXT_COLOR = 0xFF808080;
+
   @Override
   public ResourceLocation getPluginUid() {
     return RailcraftConstants.rl("jei_plugin");
@@ -59,6 +63,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipeCategories(new CokeOvenRecipeCategory(guiHelper));
     registration.addRecipeCategories(new BlastFurnaceRecipeCategory(guiHelper));
     registration.addRecipeCategories(new CrusherRecipeCategory(guiHelper));
+    registration.addRecipeCategories(new SolidBoilerRecipeCategory(guiHelper));
+    registration.addRecipeCategories(new FluidBoilerRecipeCategory(guiHelper));
   }
 
   @Override
@@ -110,6 +116,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipes(RecipeTypes.CRUSHER,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
             .map(RecipeHolder::value).toList());
+    registration.addRecipes(RecipeTypes.SOLID_BOILER, SolidBoilerRecipeCategory.getBoilerRecipes());
+    registration.addRecipes(RecipeTypes.FLUID_BOILER, FluidBoilerRecipeCategory.getBoilerRecipes());
 
     RailcraftBlocks.entries()
         .stream()
@@ -167,5 +175,17 @@ public class RailcraftJeiPlugin implements IModPlugin {
         RecipeTypes.CRUSHER);
     registration.addRecipeCatalyst(new ItemStack(RailcraftItems.STEAM_OVEN.get()),
         mezz.jei.api.constants.RecipeTypes.SMELTING);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.SOLID_FUELED_FIREBOX.get()),
+        RecipeTypes.SOLID_BOILER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()),
+        RecipeTypes.SOLID_BOILER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()),
+        RecipeTypes.SOLID_BOILER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.FLUID_FUELED_FIREBOX.get()),
+        RecipeTypes.FLUID_BOILER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()),
+        RecipeTypes.FLUID_BOILER);
+    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()),
+        RecipeTypes.FLUID_BOILER);
   }
 }
