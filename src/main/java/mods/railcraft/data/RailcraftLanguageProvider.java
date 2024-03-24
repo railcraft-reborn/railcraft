@@ -874,6 +874,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.COKE_OVEN, "Coke Oven Smelting");
     this.add(Translations.Jei.BLAST_FURNACE, "Blast Furnace Smelting");
     this.add(Translations.Jei.CRUSHER, "Rock Crushing");
+    this.add(Translations.Emi.ROLLING_CATEGORY, "Metal Rolling");
+    this.add(Translations.Emi.COKING_CATEGORY, "Coke Oven Smelting");
+    this.add(Translations.Emi.BLASTING_CATEGORY, "Blast Furnace Smelting");
+    this.add(Translations.Emi.CRUSHING_CATEGORY, "Rock Crushing");
+    this.add(Translations.Jei.SOLID_BOILER, "Solid Boiler");
+    this.add(Translations.Jei.FLUID_BOILER, "Fluid Boiler");
     this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
     this.add(Translations.Jei.MANUAL_ROLLING_MACHINE, """
         Machine for rolling various shapes of metal. If there is only enough items in the grid \
