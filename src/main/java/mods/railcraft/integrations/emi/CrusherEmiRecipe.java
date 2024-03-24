@@ -13,16 +13,17 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class CrusherEmiRecipe extends BasicEmiRecipe {
 
   private final CrusherRecipe recipe;
 
-  public CrusherEmiRecipe(CrusherRecipe recipe) {
-    super(RailcraftEmiPlugin.CRUSHING_CATEGORY, recipe.getId(),
+  public CrusherEmiRecipe(RecipeHolder<CrusherRecipe> recipe) {
+    super(RailcraftEmiPlugin.CRUSHING_CATEGORY, recipe.id(),
         CrusherRecipeCategory.WIDTH, CrusherRecipeCategory.HEIGHT);
-    this.recipe = recipe;
-    this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
+    this.recipe = recipe.value();
+    this.inputs.add(EmiIngredient.of(this.recipe.getIngredients().get(0)));
     this.recipe.getProbabilityOutputs().stream()
         .map(CrusherRecipe.CrusherOutput::getOutput)
         .map(EmiStack::of)
