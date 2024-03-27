@@ -149,8 +149,6 @@
   "tips.railcraft.crowbar.link.created": "Wagonnets attachés avec succès",
   "tips.railcraft.crowbar.link.started": "A commencé à attacher des wagonnets",
   "tips.railcraft.efficiency": "Efficacité : %s%%",
-  "tips.railcraft.locomotive.item.owner": "Propriétaire : %s",
-  "tips.railcraft.locomotive.item.whistle": "Il n'y a pas actuellement de sifflet installé.",
   "tips.railcraft.locomotive.slot.ticket": "Insérer un billet",
   "tips.railcraft.manipulator.transfer_mode.all": "Tout",
   "tips.railcraft.routing.ticket.blank": "Billet vierge",
