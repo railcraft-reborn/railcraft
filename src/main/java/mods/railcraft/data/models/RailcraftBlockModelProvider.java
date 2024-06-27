@@ -1,9 +1,11 @@
 package mods.railcraft.data.models;
 
+import java.util.EnumMap;
 import java.util.function.Function;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
@@ -38,6 +40,9 @@ import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.block.track.TrackBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackRouterBlock;
 import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
@@ -66,6 +71,7 @@ import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
+import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.models.blockstates.Condition;
@@ -379,6 +385,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createDualSignalBlock(RailcraftBlocks.DUAL_BLOCK_SIGNAL.get());
     this.createDualSignalBlock(RailcraftBlocks.DUAL_DISTANT_SIGNAL.get());
     this.createDualSignalBlock(RailcraftBlocks.DUAL_TOKEN_SIGNAL.get());
+
+    this.createSwitchTrackLever(RailcraftBlocks.SWITCH_TRACK_LEVER.get());
+    this.createSwitchTrackMotorOrRouter(RailcraftBlocks.SWITCH_TRACK_MOTOR.get());
+    this.createSwitchTrackMotorOrRouter(RailcraftBlocks.SWITCH_TRACK_ROUTER.get());
 
     // Not put in the constructor!
     this.activatorTrackModels = this.createTrackModelSet("activator_track");
@@ -1260,6 +1270,97 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .part()
         .modelFile(signalConnectorModel).rotationY(180).addModel()
         .condition(DualSignalBlock.WEST, true).end();
+  }
+
+  private MultiPartBlockStateBuilder createSwitchTrackActuatorBlockCommon(
+      SwitchTrackActuatorBlock block) {
+    var flagRed = this.models().getExistingFile(modLoc("block/switch_track_actuator_flag_red"));
+    var flagNeutralRed = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator_flag_neutral_red"));
+    var flagWhite = this.models().getExistingFile(modLoc("block/switch_track_actuator_flag_white"));
+    var flagNeutralWhite = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator_flag_neutral_white"));
+    var builder = this.getMultipartBuilder(block);
+    var arrowDirectionMap = Util.make(new EnumMap<ArrowDirection, Integer>(ArrowDirection.class), x -> {
+      x.put(ArrowDirection.NORTH, 0);
+      x.put(ArrowDirection.EAST, 90);
+      x.put(ArrowDirection.SOUTH, 180);
+      x.put(ArrowDirection.WEST, 270);
+      x.put(ArrowDirection.NORTH_SOUTH, 0);
+      x.put(ArrowDirection.EAST_WEST, 90);
+    });
+
+    for (var arrow : ArrowDirection.values()) {
+      ModelFile.ExistingModelFile modelRed, modelWhite;
+      if (arrow == ArrowDirection.NORTH_SOUTH || arrow == ArrowDirection.EAST_WEST) {
+        modelRed = flagNeutralRed;
+        modelWhite = flagNeutralWhite;
+      } else {
+        modelRed = flagRed;
+        modelWhite = flagWhite;
+      }
+      builder = builder.part()
+          .modelFile(modelRed).rotationY(arrowDirectionMap.get(arrow)).addModel()
+          .condition(SwitchTrackLeverBlock.RED_ARROW_DIRECTION, arrow).end()
+          .part()
+          .modelFile(modelWhite).rotationY(arrowDirectionMap.get(arrow)).addModel()
+          .condition(SwitchTrackLeverBlock.WHITE_ARROW_DIRECTION, arrow).end();
+    }
+    return builder;
+  }
+
+  private void createSwitchTrackLever(SwitchTrackLeverBlock block) {
+    var switchTrackActuator = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator"));
+    var switchTrackActuatorLeverOn = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator_lever_on"));
+    var switchTrackActuatorLeverOff = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator_lever_off"));
+
+    var builder = this.createSwitchTrackActuatorBlockCommon(block);
+    var directionMap = Util.make(new EnumMap<Direction, Integer>(Direction.class), x -> {
+      x.put(Direction.NORTH, 0);
+      x.put(Direction.EAST, 90);
+      x.put(Direction.SOUTH, 180);
+      x.put(Direction.WEST, 270);
+    });
+
+    for (var direction : Direction.Plane.HORIZONTAL) {
+      var rot = directionMap.get(direction);
+      builder = builder.part()
+          .modelFile(switchTrackActuator).rotationY(rot).addModel()
+          .condition(SwitchTrackLeverBlock.FACING, direction).end()
+          .part()
+          .modelFile(switchTrackActuatorLeverOn).rotationY(rot).addModel()
+          .condition(SwitchTrackLeverBlock.SWITCHED, true)
+          .condition(SwitchTrackLeverBlock.FACING, direction).end()
+          .part()
+          .modelFile(switchTrackActuatorLeverOff).rotationY(rot).addModel()
+          .condition(SwitchTrackLeverBlock.SWITCHED, false)
+          .condition(SwitchTrackLeverBlock.FACING, direction).end();
+    }
+  }
+
+  private void createSwitchTrackMotorOrRouter(SwitchTrackActuatorBlock block) {
+    var isRouter = block instanceof SwitchTrackRouterBlock;
+    var switchTrackActuator = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator"));
+    var switchTrackActuatorRouter = this.models()
+        .getExistingFile(modLoc("block/switch_track_actuator_router"));
+    var builder = this.createSwitchTrackActuatorBlockCommon(block);
+    var directionMap = Util.make(new EnumMap<Direction, Integer>(Direction.class), x -> {
+      x.put(Direction.NORTH, 0);
+      x.put(Direction.EAST, 90);
+      x.put(Direction.SOUTH, 180);
+      x.put(Direction.WEST, 270);
+    });
+    for (var direction : Direction.Plane.HORIZONTAL) {
+      var rot = directionMap.get(direction);
+      var model = isRouter ? switchTrackActuatorRouter : switchTrackActuator;
+      builder = builder.part()
+          .modelFile(model).rotationY(rot).addModel()
+          .condition(SwitchTrackLeverBlock.FACING, direction).end();
+    }
   }
 
   public void fluidBlock(LiquidBlock block) {

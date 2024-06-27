@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
-import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -17,12 +16,9 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,10 +57,8 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     this.lockingModeController = LockingTrackBlock.getLockingMode(blockState).create(this);
   }
 
-  public void setLockingMode(LockingMode lockingMode) {
-    this.level.setBlockAndUpdate(this.getBlockPos(),
-        this.getBlockState().setValue(LockingTrackBlock.LOCKING_MODE, lockingMode));
-    this.lockingModeController = lockingMode.create(this);
+  public void setLockingModeController(LockingModeController lockingModeController) {
+    this.lockingModeController = lockingModeController;
   }
 
   @Override
@@ -109,18 +103,6 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
       blockEntity.setChanged();
       blockEntity.syncToClient();
     }
-  }
-
-  public boolean crowbarWhack(Player player) {
-    final var lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
-    var newLockingMode = player.isCrouching() ? lockingMode.previous() : lockingMode.next();
-    if (!this.level.isClientSide()) {
-      this.setLockingMode(newLockingMode);
-      var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
-      var mode = newLockingMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
-      player.displayClientMessage(currentMode.append(" ").append(mode), true);
-    }
-    return true;
   }
 
   @Override

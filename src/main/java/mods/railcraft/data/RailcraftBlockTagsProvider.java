@@ -25,6 +25,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
   protected void addTags(HolderLookup.Provider provider) {
     this.tag(RailcraftTags.Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVEL);
+    this.tag(RailcraftTags.Blocks.TRACK_UNDERCUTTER_INVALID_BALLAST)
+        .addTags(Tags.Blocks.SAND, BlockTags.SAND);
     this.tag(RailcraftTags.Blocks.SWITCH_TRACK_ACTUATOR)
         .add(RailcraftBlocks.SWITCH_TRACK_LEVER.get())
         .add(RailcraftBlocks.SWITCH_TRACK_MOTOR.get())
@@ -239,10 +241,6 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.TIN_BLOCK.get())
         .add(RailcraftBlocks.ZINC_BLOCK.get())
         .add(RailcraftBlocks.FORCE_TRACK_EMITTER.get())
-        .add(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get())
-        .add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get())
-        .add(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get())
-        .add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get())
         .add(RailcraftBlocks.NICKEL_IRON_BATTERY.get())
         .add(RailcraftBlocks.NICKEL_ZINC_BATTERY.get())
         .add(RailcraftBlocks.ZINC_SILVER_BATTERY.get())
@@ -266,9 +264,17 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.IRON_TANK_WALL,
             RailcraftTags.Blocks.STEEL_TANK_GAUGE,
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
-            RailcraftTags.Blocks.STEEL_TANK_WALL,
-            RailcraftTags.Blocks.QUARRIED,
-            RailcraftTags.Blocks.ABYSSAL);
+            RailcraftTags.Blocks.STEEL_TANK_WALL)
+        .addTag(RailcraftTags.Blocks.ABYSSAL)
+        .add(RailcraftBlocks.ABYSSAL_BRICK_STAIRS.get())
+        .add(RailcraftBlocks.ABYSSAL_PAVER_STAIRS.get())
+        .add(RailcraftBlocks.ABYSSAL_BRICK_SLAB.get())
+        .add(RailcraftBlocks.ABYSSAL_PAVER_SLAB.get())
+        .addTag(RailcraftTags.Blocks.QUARRIED)
+        .add(RailcraftBlocks.QUARRIED_BRICK_STAIRS.get())
+        .add(RailcraftBlocks.QUARRIED_PAVER_STAIRS.get())
+        .add(RailcraftBlocks.QUARRIED_BRICK_SLAB.get())
+        .add(RailcraftBlocks.QUARRIED_PAVER_SLAB.get());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.get())

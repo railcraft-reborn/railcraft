@@ -76,8 +76,7 @@ public class TransitionTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    level.setBlockAndUpdate(pos, blockState.setValue(REVERSED, !blockState.getValue(REVERSED)));
-    return true;
+    return level.setBlockAndUpdate(pos, blockState.setValue(REVERSED, !blockState.getValue(REVERSED)));
   }
 
   private static void boostCartSpeed(AbstractMinecart cart, double currentSpeed) {

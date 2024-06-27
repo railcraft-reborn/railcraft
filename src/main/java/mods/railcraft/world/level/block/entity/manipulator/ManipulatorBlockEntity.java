@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
@@ -264,16 +265,16 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   @Override
   protected void saveAdditional(CompoundTag tag) {
     super.saveAdditional(tag);
-    tag.putInt("redstoneMode", this.redstoneMode.ordinal());
-    tag.put("cartFilters", this.getCartFilters().createTag());
+    tag.putInt(CompoundTagKeys.REDSTONE_MODE, this.redstoneMode.ordinal());
+    tag.put(CompoundTagKeys.CART_FILTERS, this.getCartFilters().createTag());
   }
 
   @Override
   public void load(CompoundTag tag) {
     super.load(tag);
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
-    this.redstoneMode = RedstoneMode.values()[tag.getInt("redstoneMode")];
-    this.getCartFilters().fromTag(tag.getList("cartFilters", Tag.TAG_COMPOUND));
+    this.redstoneMode = RedstoneMode.values()[tag.getInt(CompoundTagKeys.REDSTONE_MODE)];
+    this.getCartFilters().fromTag(tag.getList(CompoundTagKeys.CART_FILTERS, Tag.TAG_COMPOUND));
   }
 
   public enum TransferMode implements ButtonState<TransferMode> {

@@ -17,11 +17,11 @@ import net.minecraft.world.inventory.InventoryMenu;
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
-  public static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
+  private static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
       RailcraftConstants.rl("entity/fluid_loader/pipe_side");
-  public static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
+  private static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
       RailcraftConstants.rl("entity/fluid_loader/pipe_end");
-  public static final CuboidModel pipeModel = new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
+  private static final CuboidModel PIPE_MODEL = new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
       1 - PIPE_OFFSET, RenderUtil.PIXEL, 1 - PIPE_OFFSET);
 
   @Override
@@ -32,29 +32,29 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
         packedOverlay);
     Minecraft minecraft = Minecraft.getInstance();
 
-    CuboidModel.Face sideFace = pipeModel.new Face()
+    CuboidModel.Face sideFace = PIPE_MODEL.new Face()
         .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
             .apply(PIPE_SIDE_TEXTURE_LOCATION));
-    pipeModel.set(Direction.NORTH, sideFace);
-    pipeModel.set(Direction.SOUTH, sideFace);
-    pipeModel.set(Direction.EAST, sideFace);
-    pipeModel.set(Direction.WEST, sideFace);
+    PIPE_MODEL.set(Direction.NORTH, sideFace);
+    PIPE_MODEL.set(Direction.SOUTH, sideFace);
+    PIPE_MODEL.set(Direction.EAST, sideFace);
+    PIPE_MODEL.set(Direction.WEST, sideFace);
 
-    CuboidModel.Face endFace = pipeModel.new Face()
+    CuboidModel.Face endFace = PIPE_MODEL.new Face()
         .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
             .apply(PIPE_END_TEXTURE_LOCATION));
-    pipeModel.set(Direction.UP, endFace);
-    pipeModel.set(Direction.DOWN, endFace);
+    PIPE_MODEL.set(Direction.UP, endFace);
+    PIPE_MODEL.set(Direction.DOWN, endFace);
 
-    pipeModel.setPackedLight(packedLight);
-    pipeModel.setPackedOverlay(packedOverlay);
+    PIPE_MODEL.setPackedLight(packedLight);
+    PIPE_MODEL.setPackedOverlay(packedOverlay);
 
     poseStack.pushPose();
     {
-      pipeModel.setMinY(RenderUtil.PIXEL - blockEntity.getPipeLength(partialTick));
+      PIPE_MODEL.setMinY(RenderUtil.PIXEL - blockEntity.getPipeLength(partialTick));
       VertexConsumer vertexBuilder =
           bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-      CuboidModelRenderer.render(pipeModel, poseStack, vertexBuilder, 0xFFFFFFFF,
+      CuboidModelRenderer.render(PIPE_MODEL, poseStack, vertexBuilder, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
     }
     poseStack.popPose();

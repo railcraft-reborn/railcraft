@@ -18,6 +18,7 @@ public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
         .addSource(new DirectoryLister("entity/signal_box_aspect", "entity/signal_box_aspect/"))
         .addSource(new DirectoryLister("entity/signal_box", "entity/signal_box/"))
         .addSource(new DirectoryLister("entity/fluid_manipulator", "entity/fluid_manipulator/"))
-        .addSource(new DirectoryLister("entity/fluid_loader", "entity/fluid_loader/"));
+        .addSource(new DirectoryLister("entity/fluid_loader", "entity/fluid_loader/"))
+        .addSource(new DirectoryLister("entity/minecart", "entity/minecart/"));
   }
 }

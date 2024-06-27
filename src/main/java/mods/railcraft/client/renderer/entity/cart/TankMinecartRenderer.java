@@ -42,15 +42,15 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
 
   @Override
   protected void renderContents(TankMinecart cart, float partialTicks,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
+      PoseStack poseStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
       float green, float blue, float alpha) {
     var vertexBuilder =
         renderTypeBuffer.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
-    this.tankModel.renderToBuffer(matrixStack, vertexBuilder, packedLight,
+    this.tankModel.renderToBuffer(poseStack, vertexBuilder, packedLight,
         OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
-    this.renderTank(cart, partialTicks, matrixStack, renderTypeBuffer, packedLight);
+    this.renderTank(cart, partialTicks, poseStack, renderTypeBuffer, packedLight);
     if (cart.hasFilter()) {
-      this.renderFilterItem(cart, matrixStack, renderTypeBuffer, packedLight);
+      this.renderFilterItem(cart, poseStack, renderTypeBuffer, packedLight);
     }
   }
 

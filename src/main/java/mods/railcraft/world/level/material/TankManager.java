@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import org.jetbrains.annotations.NotNull;
+import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -44,7 +45,7 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
     for (byte i = 0; i < this.tanks.size(); i++) {
       var tank = this.tanks.get(i);
       var tankTag = new CompoundTag();
-      tankTag.putByte("index", i);
+      tankTag.putByte(CompoundTagKeys.INDEX, i);
       tank.writeToNBT(tankTag);
       tanksTag.add(tankTag);
     }
@@ -55,7 +56,7 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   public void deserializeNBT(ListTag tanksTag) {
     for (int i = 0; i < tanksTag.size(); i++) {
       var tag = tanksTag.getCompound(i);
-      int index = tag.getByte("index");
+      int index = tag.getByte(CompoundTagKeys.INDEX);
       if (index >= 0 && index < this.tanks.size()) {
         this.tanks.get(index).readFromNBT(tag);
       }

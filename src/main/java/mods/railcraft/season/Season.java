@@ -7,25 +7,23 @@ import net.minecraft.util.StringRepresentable;
 
 public enum Season implements StringRepresentable {
 
-  DEFAULT("default"),
-  HALLOWEEN("halloween"),
-  CHRISTMAS("christmas"),
-  NONE("none");
+  DEFAULT(Translations.Season.DEFAULT),
+  HALLOWEEN(Translations.Season.HALLOWEEN),
+  CHRISTMAS(Translations.Season.CHRISTMAS),
+  NONE(Translations.Season.NONE);
 
   private static final StringRepresentable.EnumCodec<Season> CODEC =
       StringRepresentable.fromEnum(Season::values);
   private final String name;
+  private final String translationKey;
 
-  Season(String name) {
-    this.name = name;
+  Season(String translationKey) {
+    this.translationKey = translationKey;
+    this.name = translationKey.substring(translationKey.lastIndexOf('.') + 1);
   }
 
   public Component getDisplayName() {
-    return Component.translatable(this.getTranslationKey());
-  }
-
-  public String getTranslationKey() {
-    return Translations.makeKey("season", this.name);
+    return Component.translatable(this.translationKey);
   }
 
   @Override

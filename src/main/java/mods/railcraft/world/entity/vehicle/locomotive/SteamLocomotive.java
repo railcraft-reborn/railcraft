@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
@@ -55,7 +56,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public SteamLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel serverLevel) {
     super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
-
+    this.loadFromItemStack(itemStack);
     this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
       public float consumeFuel() {
@@ -82,8 +83,6 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       return;
     }
     this.extraFuelContainer.moveOneItemTo(this.fuelContainer);
-    // fuelInventory.moveOneItemTo(invWaterOutput,
-    // (ItemStack item) -> (ForgeHooks.getBurnTime(item) > 0));
 
     var rollingStock = RollingStock.getOrThrow(this);
     var pulledFuel = rollingStock.pullItem(this.extraFuelContainer::canFit);
@@ -91,8 +90,9 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       this.extraFuelContainer.insert(pulledFuel);
     }
     if (this.isSafeToFill() && this.waterTank.getFluidAmount() < this.waterTank.getCapacity() / 2) {
-      var pulledWater = rollingStock.pullFluid(new FluidStack(Fluids.WATER, 1));
-      if (pulledWater != null) {
+      var pulledWater = rollingStock.pullFluid(
+          new FluidStack(Fluids.WATER, RailcraftConfig.SERVER.tankCartFluidTransferRate.get()));
+      if (!pulledWater.isEmpty()) {
         this.waterTank.fill(pulledWater, FluidAction.EXECUTE);
       }
     }

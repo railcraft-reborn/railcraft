@@ -1,3 +1,4 @@
+import java.util.regex.Matcher
 import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
 import static org.apache.commons.lang3.StringUtils.repeat
 
@@ -121,6 +122,14 @@ repositories {
         name 'JEI/Patchouli'
         url 'https://maven.blamejared.com/'
     }
+    maven {
+        name 'curseforge'
+        url 'https://www.cursemaven.com'
+    }
+    maven {
+        name 'TerraformersMC'
+        url 'https://maven.terraformersmc.com/'
+    }
 }
 
 dependencies {
@@ -135,8 +144,15 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge-api:$jei_version")
     runtimeOnly fg.deobf("mezz.jei:jei-$minecraft_version-forge:$jei_version")
 
+    compileOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version:api")
+    //runtimeOnly fg.deobf("dev.emi:emi-forge:$emi_version+$minecraft_version")
+
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:$patchouli_version")
+
+    compileOnly fg.deobf("curse.maven:jade-api-324717:$jade_id_api")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:$jade_id")
+
 }
 
 test {
@@ -161,6 +177,32 @@ spotless {
         }
     }
     bumpThisNumberIfACustomStepChanges(1)
+  }
+}
+
+tasks.register('generatePackageInfos', Task) {
+  doLast {
+    fileTree('src/main/java').each { javaFile ->
+      def packageInfoFile = new File(javaFile.parent, 'package-info.java')
+      if (!packageInfoFile.exists()) {
+        def pkgName = javaFile.toString().replaceAll(Matcher.quoteReplacement(File.separator), '/')
+        pkgName = pkgName.substring(pkgName.indexOf('mods/railcraft/'), pkgName.lastIndexOf('/'))
+        pkgName = pkgName.replaceAll('/', '.')
+
+        def pkgInfoText = """
+            |@FieldsAreNonnullByDefault
+            |@MethodsReturnNonnullByDefault
+            |@ParametersAreNonnullByDefault
+            |package $pkgName;
+            |
+            |import javax.annotation.ParametersAreNonnullByDefault;
+            |import net.minecraft.FieldsAreNonnullByDefault;
+            |import net.minecraft.MethodsReturnNonnullByDefault;
+        """.stripMargin().trim()
+
+        packageInfoFile.text = pkgInfoText
+      }
+    }
   }
 }
 

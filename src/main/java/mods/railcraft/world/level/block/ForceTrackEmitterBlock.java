@@ -9,6 +9,7 @@ import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.api.charge.ChargeStorage.State;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterState;
@@ -109,7 +110,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   private ItemStack getItem(BlockState blockState) {
     var itemStack = this.asItem().getDefaultInstance();
     var tag = itemStack.getOrCreateTag();
-    tag.putString("color", blockState.getValue(COLOR).getName());
+    tag.putString(CompoundTagKeys.COLOR, blockState.getValue(COLOR).getName());
     return itemStack;
   }
 
@@ -177,7 +178,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     var tag = itemStack.getTag();
     if (tag != null) {
       if (level.getBlockEntity(pos) instanceof ForceTrackEmitterBlockEntity t) {
-        var color = DyeColor.byName(tag.getString("color"), null);
+        var color = DyeColor.byName(tag.getString(CompoundTagKeys.COLOR), null);
         if (color != null) {
           t.setColor(color);
         }

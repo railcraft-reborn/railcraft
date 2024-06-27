@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -91,7 +92,7 @@ public class AdvancedContainer extends SimpleContainer
   public void fromTag(ListTag tag) {
     for (int i = 0; i < tag.size(); ++i) {
       var slotTag = tag.getCompound(i);
-      this.setItem(slotTag.getInt("index"), ItemStack.of(slotTag));
+      this.setItem(slotTag.getInt(CompoundTagKeys.INDEX), ItemStack.of(slotTag));
     }
   }
 
@@ -100,7 +101,7 @@ public class AdvancedContainer extends SimpleContainer
     var tag = new ListTag();
     for (int i = 0; i < this.getContainerSize(); ++i) {
       var slotTag = new CompoundTag();
-      slotTag.putInt("index", i);
+      slotTag.putInt(CompoundTagKeys.INDEX, i);
       this.getItem(i).save(slotTag);
       tag.add(slotTag);
     }

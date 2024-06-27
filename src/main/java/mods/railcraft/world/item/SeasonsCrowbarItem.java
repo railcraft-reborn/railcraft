@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.season.Season;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -45,12 +46,12 @@ public class SeasonsCrowbarItem extends CrowbarItem {
 
   public static Season getSeason(ItemStack itemStack) {
     var tag = itemStack.getOrCreateTag();
-    return Season.fromName(tag.getString("season"));
+    return Season.fromName(tag.getString(CompoundTagKeys.SEASON));
   }
 
   private static void incrementSeason(ItemStack itemStack) {
     var season = getSeason(itemStack).getNext();
-    itemStack.getOrCreateTag().putString("season", season.getSerializedName());
+    itemStack.getOrCreateTag().putString(CompoundTagKeys.SEASON, season.getSerializedName());
   }
 
   private static Component getDescriptionText(Season value, boolean tooltip) {

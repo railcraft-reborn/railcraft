@@ -24,6 +24,11 @@
       "type": "minecraft:directory",
       "prefix": "entity/fluid_loader/",
       "source": "entity/fluid_loader"
+    },
+    {
+      "type": "minecraft:directory",
+      "prefix": "entity/minecart/",
+      "source": "entity/minecart"
     }
   ]
 }

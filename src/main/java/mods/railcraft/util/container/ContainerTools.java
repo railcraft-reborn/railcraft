@@ -3,6 +3,7 @@ package mods.railcraft.util.container;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.Filter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,7 +13,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -65,7 +65,7 @@ public abstract class ContainerTools {
       var itemStack = container.getItem(i);
       if (!itemStack.isEmpty()) {
         var slotTag = new CompoundTag();
-        slotTag.putByte("index", i);
+        slotTag.putByte(CompoundTagKeys.INDEX, i);
         itemStack.save(slotTag);
         tag.add(slotTag);
       }
@@ -76,7 +76,7 @@ public abstract class ContainerTools {
   public static void readContainer(Container container, ListTag tag) {
     for (byte i = 0; i < tag.size(); i++) {
       var slotTag = tag.getCompound(i);
-      int slot = slotTag.getByte("index");
+      int slot = slotTag.getByte(CompoundTagKeys.INDEX);
       if (slot >= 0 && slot < container.getContainerSize()) {
         var itemStack = ItemStack.of(slotTag);
         container.setItem(slot, itemStack);
@@ -93,8 +93,8 @@ public abstract class ContainerTools {
   public static Block getBlockFromStack(ItemStack stack) {
     if (stack.isEmpty())
       return Blocks.AIR;
-    Item item = stack.getItem();
-    return item instanceof BlockItem ? ((BlockItem) item).getBlock() : Blocks.AIR;
+    var item = stack.getItem();
+    return item instanceof BlockItem blockItem ? blockItem.getBlock() : Blocks.AIR;
   }
 
   public static BlockState getBlockStateFromStack(ItemStack stack) {

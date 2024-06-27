@@ -42,6 +42,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     this.basicItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get());
     this.basicItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
     this.basicItem(RailcraftItems.TANK_MINECART.get());
+    this.basicItem(RailcraftItems.ENERGY_MINECART.get());
     this.basicItem(RailcraftItems.WORLD_SPIKE_MINECART.get());
     this.basicItem(RailcraftItems.TRACK_LAYER.get());
     this.basicItem(RailcraftItems.TRACK_RELAYER.get());

@@ -72,6 +72,14 @@ public class ThrottleTrackBlock extends PoweredOutfittedTrackBlock {
     return level.setBlockAndUpdate(pos, newState);
   }
 
+  public static Locomotive.Speed getSpeedMode(BlockState blockState) {
+    return blockState.getValue(LOCOMOTIVE_SPEED);
+  }
+
+  public static boolean isReverse(BlockState blockState) {
+    return blockState.getValue(REVERSE);
+  }
+
   @Override
   public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines,
       TooltipFlag flag) {

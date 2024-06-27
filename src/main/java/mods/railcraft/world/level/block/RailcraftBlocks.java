@@ -67,7 +67,6 @@ import mods.railcraft.world.level.block.track.ReinforcedTrackBlock;
 import mods.railcraft.world.level.block.track.StrapIronTrackBlock;
 import mods.railcraft.world.level.block.track.TrackConstants;
 import mods.railcraft.world.level.block.track.TrackTypes;
-import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackRouterBlock;
@@ -602,14 +601,14 @@ public class RailcraftBlocks {
       deferredRegister.register("villager_detector",
           () -> new VillagerDetectorBlock(BlockBehaviour.Properties.copy(ADVANCED_DETECTOR.get())));
 
-  public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_LEVER =
+  public static final RegistryObject<SwitchTrackLeverBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",
           () -> new SwitchTrackLeverBlock(BlockBehaviour.Properties.of()
               .strength(8.0F, 50.0F)
               .sound(SoundType.METAL)
               .noOcclusion()));
 
-  public static final RegistryObject<SwitchTrackActuatorBlock> SWITCH_TRACK_MOTOR =
+  public static final RegistryObject<SwitchTrackMotorBlock> SWITCH_TRACK_MOTOR =
       deferredRegister.register("switch_track_motor",
           () -> new SwitchTrackMotorBlock(
               BlockBehaviour.Properties.copy(SWITCH_TRACK_LEVER.get())));
@@ -747,7 +746,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> ABANDONED_DETECTOR_TRACK =
       deferredRegister.register("abandoned_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.ABANDONED,
-              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get())));
+              BlockBehaviour.Properties.copy(ABANDONED_TRACK.get()).randomTicks()));
 
   public static final RegistryObject<CouplerTrackBlock> ABANDONED_COUPLER_TRACK =
       deferredRegister.register("abandoned_coupler_track",
@@ -951,7 +950,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> HIGH_SPEED_DETECTOR_TRACK =
       deferredRegister.register("high_speed_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.HIGH_SPEED,
-              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get())));
+              BlockBehaviour.Properties.copy(HIGH_SPEED_TRACK.get()).randomTicks()));
 
   public static final RegistryObject<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.register("high_speed_wye_track",
@@ -1082,7 +1081,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> IRON_DETECTOR_TRACK =
       deferredRegister.register("iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get())));
+              BlockBehaviour.Properties.copy(IRON_LOCKING_TRACK.get()).randomTicks()));
 
   public static final RegistryObject<CouplerTrackBlock> IRON_COUPLER_TRACK =
       deferredRegister.register("iron_coupler_track",
@@ -1189,7 +1188,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> REINFORCED_DETECTOR_TRACK =
       deferredRegister.register("reinforced_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.REINFORCED,
-              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get())));
+              BlockBehaviour.Properties.copy(REINFORCED_TRACK.get()).randomTicks()));
 
   public static final RegistryObject<CouplerTrackBlock> REINFORCED_COUPLER_TRACK =
       deferredRegister.register("reinforced_coupler_track",
@@ -1296,7 +1295,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<DetectorTrackBlock> STRAP_IRON_DETECTOR_TRACK =
       deferredRegister.register("strap_iron_detector_track",
           () -> new DetectorTrackBlock(TrackTypes.STRAP_IRON,
-              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get())));
+              BlockBehaviour.Properties.copy(STRAP_IRON_TRACK.get()).randomTicks()));
 
   public static final RegistryObject<CouplerTrackBlock> STRAP_IRON_COUPLER_TRACK =
       deferredRegister.register("strap_iron_coupler_track",

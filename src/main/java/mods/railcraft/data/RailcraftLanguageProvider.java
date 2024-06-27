@@ -4,7 +4,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.season.Season;
 import mods.railcraft.util.VariantRegistrar;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -45,6 +44,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.tipsTranslations();
     this.screenTranslations();
     this.jeiTranslations();
+    this.lookingAtTranslations();
     this.signalTranslations();
     this.enchantmentTranslations();
     this.advancementTranslations();
@@ -216,6 +216,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, "Steel Tunnel Bore Head");
     this.addItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, "Diamond Tunnel Bore Head");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
+    this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
@@ -360,6 +361,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void entityTranslations() {
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
+    this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
@@ -399,10 +401,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TICKET_BLANK, "Blank Ticket");
     this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner: %s");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
-    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "There is currently no whistle installed.");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_NO_WHISTLE, "There is currently no whistle installed");
+    this.add(Translations.Tips.LOCOMOTIVE_ITEM_WHISTLE, "Whistle pitch:");
     this.add(Translations.Tips.TRACK_LAYER, "Lays track as it moves");
     this.add(Translations.Tips.TRACK_RELAYER, "Replaces one track with another");
     this.add(Translations.Tips.TRACK_REMOVER, "Removes tracks it passes over");
@@ -418,16 +421,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
     this.add(Translations.Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
     this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
-    this.add(Translations.Tips.CLEAR, "Clear");
-    this.add(Translations.Tips.GOOGLES_DESC, "Right-click to change aura.");
-    this.add(Translations.Tips.GOOGLES_AURA, "Current Aura:");
-    this.add(Translations.Tips.GOOGLES_AURA_NONE, "None");
-    this.add(Translations.Tips.GOOGLES_AURA_SHUNTING, "Shunting");
-    this.add(Translations.Tips.GOOGLES_AURA_SIGNALLING, "Signalling");
-    this.add(Translations.Tips.GOOGLES_AURA_SURVEYING, "Surveying");
-    this.add(Translations.Tips.GOOGLES_AURA_TRACKING, "Tracking");
-    this.add(Translations.Tips.GOOGLES_AURA_TUNING, "Tuning");
-    this.add(Translations.Tips.GOOGLES_AURA_WORLDSPIKE, "Worldspike");
+    this.add(Translations.Tips.NONE, "None");
+    this.add(Translations.Tips.GOGGLES_DESC, "Right-click to change aura.");
+    this.add(Translations.Tips.GOGGLES_AURA, "Current Aura:");
+    this.add(Translations.Tips.GOGGLES_AURA_SHUNTING, "Shunting");
+    this.add(Translations.Tips.GOGGLES_AURA_SIGNALLING, "Signalling");
+    this.add(Translations.Tips.GOGGLES_AURA_SURVEYING, "Surveying");
+    this.add(Translations.Tips.GOGGLES_AURA_TRACKING, "Tracking");
+    this.add(Translations.Tips.GOGGLES_AURA_TUNING, "Tuning");
+    this.add(Translations.Tips.GOGGLES_AURA_WORLDSPIKE, "Worldspike");
     this.add(Translations.Tips.CROWBAR_DESC, "Right-click while sneaking to link carts.");
     this.add(Translations.Tips.CROWBAR_LINK_BROKEN, "Link Broken");
     this.add(Translations.Tips.CROWBAR_LINK_CREATED, "Successfully Linked Carts");
@@ -435,10 +437,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CROWBAR_LINK_STARTED, "Started Linking Carts");
     this.add(Translations.Tips.CROWBAR_SEASON_DESC, "Current season:");
 
-    this.add(Season.NONE.getTranslationKey(), "None");
-    this.add(Season.DEFAULT.getTranslationKey(), "Default");
-    this.add(Season.CHRISTMAS.getTranslationKey(), "Christmas");
-    this.add(Season.HALLOWEEN.getTranslationKey(), "Halloween");
+    this.add(Translations.Season.NONE, "None");
+    this.add(Translations.Season.DEFAULT, "Default");
+    this.add(Translations.Season.CHRISTMAS, "Christmas");
+    this.add(Translations.Season.HALLOWEEN, "Halloween");
 
     this.add(Translations.Tips.SIGNAL_LABEL_DESC1, "- Rename in Anvil -");
     this.add(Translations.Tips.SIGNAL_LABEL_DESC2,
@@ -610,6 +612,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.TOKEN_SIGNAL, "Detects carts entering/leaving Token Area");
     this.add(Translations.Tips.TOKEN_AREA, "%sx Token Area");
     this.add(Translations.Tips.EMPTY, "Empty");
+    this.add(Translations.Tips.ENERGY, "Energy:");
+    this.add(Translations.Tips.PERCENTAGE, "Percentage:");
   }
 
   private void screenTranslations() {
@@ -869,6 +873,12 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.COKE_OVEN, "Coke Oven Smelting");
     this.add(Translations.Jei.BLAST_FURNACE, "Blast Furnace Smelting");
     this.add(Translations.Jei.CRUSHER, "Rock Crushing");
+    this.add(Translations.Emi.ROLLING_CATEGORY, "Metal Rolling");
+    this.add(Translations.Emi.COKING_CATEGORY, "Coke Oven Smelting");
+    this.add(Translations.Emi.BLASTING_CATEGORY, "Blast Furnace Smelting");
+    this.add(Translations.Emi.CRUSHING_CATEGORY, "Rock Crushing");
+    this.add(Translations.Jei.SOLID_BOILER, "Solid Boiler");
+    this.add(Translations.Jei.FLUID_BOILER, "Fluid Boiler");
     this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
     this.add(Translations.Jei.MANUAL_ROLLING_MACHINE, """
         Machine for rolling various shapes of metal. If there is only enough items in the grid \
@@ -928,6 +938,22 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
     this.add(Translations.Jei.SPLIT, "Split");
+  }
+
+  private void lookingAtTranslations() {
+    this.add(Translations.LookingAt.SIGNALS, "Signals");
+    this.add(Translations.LookingAt.SWITCH_TRACK, "Switch Track");
+    this.add(Translations.LookingAt.LOCOMOTIVE, "Locomotive");
+    this.add(Translations.LookingAt.TRACK_COMPONENT, "Track Component");
+    this.add(Translations.LookingAt.ASPECT_SENT, "Aspect sent: ");
+    this.add(Translations.LookingAt.ASPECT_RECEIVED, "Aspect received: ");
+    this.add(Translations.LookingAt.ASPECT_RELAYED, "Aspect relayed: ");
+    this.add(Translations.LookingAt.SWITCHED, "Switched: ");
+    this.add(Translations.LookingAt.YES, "Yes");
+    this.add(Translations.LookingAt.NO, "No");
+    this.add(Translations.LookingAt.MODE, "Mode: ");
+    this.add(Translations.LookingAt.SPEED, "Speed: %sx");
+    this.add(Translations.LookingAt.REVERSE, "Reverse: ");
   }
 
   private void signalTranslations() {
@@ -1263,15 +1289,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void chargeMeterTranslations() {
     this.add(Translations.ChargeMeter.START, "Recording data over %s seconds...");
-    this.add(Translations.ChargeMeter.CART, """
-        Cart -> Charge: %s FE | Draw: %s FE/t | Loss: %s FE/t""");
-    this.add(Translations.ChargeMeter.NETWORK, """
-        Network -> Size: %s | Charge: %s FE | Draw: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
-    this.add(Translations.ChargeMeter.NODE, "Node -> Draw: %s FE/t | Loss: %s FE/t");
-    this.add(Translations.ChargeMeter.PRODUCER, """
-        Supply -> Charge: %s FE | Production: %s FE/t | MaxDraw: %s FE/t | Loss: %s FE/t | \
-        Eff: %s%%""");
+    this.add(Translations.ChargeMeter.CHARGE, "Charge:");
+    this.add(Translations.ChargeMeter.DRAW, "Draw:");
+    this.add(Translations.ChargeMeter.LOSS, "Loss:");
+    this.add(Translations.ChargeMeter.NETWORK, "Network:");
+    this.add(Translations.ChargeMeter.SIZE, "Size:");
+    this.add(Translations.ChargeMeter.MAX_DRAW, "MaxDraw:");
+    this.add(Translations.ChargeMeter.EFFICIENCY, "Efficiency:");
+    this.add(Translations.ChargeMeter.NODE, "Node:");
+    this.add(Translations.ChargeMeter.PRODUCER, "Producer:");
   }
 
   private void keyBindingTranslations() {

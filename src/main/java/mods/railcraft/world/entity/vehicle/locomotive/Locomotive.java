@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
+import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.NeedsFuel;
@@ -53,7 +54,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -61,7 +61,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -70,12 +69,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   private static final EntityDataAccessor<Boolean> HAS_FUEL =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
-  private static final EntityDataAccessor<Byte> MODE =
-      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
-  private static final EntityDataAccessor<Byte> SPEED =
-      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
-  private static final EntityDataAccessor<Byte> LOCK =
-      SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<Mode> MODE =
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.LOCOMOTIVE_MODE);
+  private static final EntityDataAccessor<Speed> SPEED =
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.LOCOMOTIVE_SPEED);
+  private static final EntityDataAccessor<Lock> LOCK =
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.LOCOMOTIVE_LOCK);
   private static final EntityDataAccessor<Boolean> REVERSE =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Integer> PRIMARY_COLOR =
@@ -109,8 +108,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,
       double y, double z, ServerLevel level) {
-    super(type, x, y, z, level);
-    this.loadFromItemStack(itemStack);
+    super(itemStack, type, x, y, z, level);
   }
 
   @Override
@@ -119,9 +117,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.entityData.define(HAS_FUEL, false);
     this.entityData.define(PRIMARY_COLOR, this.getDefaultPrimaryColor().getId());
     this.entityData.define(SECONDARY_COLOR, this.getDefaultSecondaryColor().getId());
-    this.entityData.define(MODE, (byte) Mode.SHUTDOWN.ordinal());
-    this.entityData.define(SPEED, (byte) Speed.NORMAL.ordinal());
-    this.entityData.define(LOCK, (byte) Lock.UNLOCKED.ordinal());
+    this.entityData.define(MODE, Mode.SHUTDOWN);
+    this.entityData.define(SPEED, Speed.NORMAL);
+    this.entityData.define(LOCK, Lock.UNLOCKED);
     this.entityData.define(REVERSE, false);
     this.entityData.define(DESTINATION, "");
     this.entityData.define(OWNER, Optional.empty());
@@ -136,6 +134,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   protected void loadFromItemStack(ItemStack itemStack) {
+    super.loadFromItemStack(itemStack);
     var tag = itemStack.getTag();
     if (tag == null || !(itemStack.getItem() instanceof LocomotiveItem)) {
       return;
@@ -180,19 +179,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   private float getNewWhistlePitch() {
     return 1f + (float) this.random.nextGaussian() * 0.2f;
-  }
-
-  @Override
-  public void destroy(DamageSource source) {
-    this.kill();
-    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
-      ItemStack itemstack = getPickResult().copy();
-      if (this.hasCustomName()) {
-        itemstack.setHoverName(this.getCustomName());
-      }
-      this.spawnAtLocation(itemstack);
-    }
-    this.chestVehicleDestroyed(source, this.level(), this);
   }
 
   @Override
@@ -270,26 +256,26 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * Gets the lock status.
    */
   public Lock getLock() {
-    return Lock.values()[this.entityData.get(LOCK)];
+    return this.entityData.get(LOCK);
   }
 
   /**
    * Sets the lock from the status.
    */
   public void setLock(Lock lock) {
-    this.entityData.set(LOCK, (byte) lock.ordinal());
+    this.entityData.set(LOCK, lock);
   }
 
   @Override
   public String getDestination() {
-    return this.getEntityData().get(DESTINATION);
+    return this.entityData.get(DESTINATION);
   }
 
   /**
    * Set the destination used by routing the train around your train network.
    */
   public void setDestination(String destination) {
-    this.getEntityData().set(DESTINATION, destination);
+    this.entityData.set(DESTINATION, destination);
   }
 
   /**
@@ -324,7 +310,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * Gets the current train's mode. Returns an enum mode.
    */
   public Mode getMode() {
-    return RailcraftDataSerializers.getEnum(this.getEntityData(), MODE, Mode.values());
+    return this.entityData.get(MODE);
   }
 
   /**
@@ -334,7 +320,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (!this.isAllowedMode(mode)) {
       return;
     }
-    RailcraftDataSerializers.setEnum(this.getEntityData(), MODE, mode);
+    this.entityData.set(MODE, mode);
   }
 
   /**
@@ -362,7 +348,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * @see Speed
    */
   public Speed getSpeed() {
-    return RailcraftDataSerializers.getEnum(this.getEntityData(), SPEED, Speed.values());
+    return this.entityData.get(SPEED);
   }
 
   /**
@@ -374,7 +360,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (this.isReverse() && (speed.getLevel() > this.getMaxReverseSpeed().getLevel())) {
       return;
     }
-    RailcraftDataSerializers.setEnum(this.getEntityData(), SPEED, speed);
+    this.entityData.set(SPEED, speed);
   }
 
   /**
@@ -403,19 +389,19 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public boolean hasFuel() {
-    return this.getEntityData().get(HAS_FUEL);
+    return this.entityData.get(HAS_FUEL);
   }
 
   public void setHasFuel(boolean hasFuel) {
-    this.getEntityData().set(HAS_FUEL, hasFuel);
+    this.entityData.set(HAS_FUEL, hasFuel);
   }
 
   public boolean isReverse() {
-    return this.getEntityData().get(REVERSE);
+    return this.entityData.get(REVERSE);
   }
 
   public void setReverse(boolean reverse) {
-    this.getEntityData().set(REVERSE, reverse);
+    this.entityData.set(REVERSE, reverse);
   }
 
   public boolean isRunning() {
@@ -460,7 +446,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, 1);
+      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, this.whistlePitch);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }
@@ -746,7 +732,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.fuel = tag.getInt(CompoundTagKeys.FUEL);
 
     if (tag.contains(CompoundTagKeys.REVERSE, Tag.TAG_BYTE)) {
-      this.getEntityData().set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
+      this.entityData.set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
     }
     if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
       this.setOwner(NbtUtils.readGameProfile(tag.getCompound(CompoundTagKeys.OWNER)));;
@@ -822,22 +808,36 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public enum Mode implements StringRepresentable {
 
-    SHUTDOWN("shutdown"),
-    IDLE("idle"),
-    RUNNING("running");
+    SHUTDOWN(Translations.Screen.LOCOMOTIVE_MODE_SHUTDOWN),
+    IDLE(Translations.Screen.LOCOMOTIVE_MODE_IDLE),
+    RUNNING(Translations.Screen.LOCOMOTIVE_MODE_RUNNING);
 
     private static final StringRepresentable.EnumCodec<Mode> CODEC =
         StringRepresentable.fromEnum(Mode::values);
 
     private final String name;
+    private final String translationKey;
 
-    Mode(String name) {
-      this.name = name;
+    Mode(String translationKey) {
+      this.translationKey = translationKey;
+      this.name = translationKey.substring(translationKey.lastIndexOf('.') + 1);
+    }
+
+    public Mode next() {
+      return EnumUtil.next(this, values());
+    }
+
+    public Mode previous() {
+      return EnumUtil.previous(this, values());
     }
 
     @Override
     public String getSerializedName() {
       return this.name;
+    }
+
+    public Component getDisplayName() {
+      return Component.translatable(this.translationKey);
     }
 
     public static Mode fromName(String name) {

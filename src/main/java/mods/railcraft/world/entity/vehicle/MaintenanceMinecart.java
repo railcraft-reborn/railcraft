@@ -28,26 +28,27 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
-  private static final EntityDataAccessor<Byte> BLINK =
-      SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<Integer> BLINK =
+      SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.INT);
   protected static final double DRAG_FACTOR = 0.9;
   private static final int BLINK_DURATION = 3;
-  private static final EntityDataAccessor<Byte> MODE =
-      SynchedEntityData.defineId(MaintenanceMinecart.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<Mode> MODE =
+      SynchedEntityData.defineId(MaintenanceMinecart.class, RailcraftDataSerializers.MAINTENANCE_MODE);
 
   protected MaintenanceMinecart(EntityType<?> type, Level level) {
     super(type, level);
   }
 
-  protected MaintenanceMinecart(EntityType<?> type, double x, double y, double z, Level level) {
-    super(type, x, y, z, level);
+  protected MaintenanceMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
+      double z, Level level) {
+    super(itemStack, type, x, y, z, level);
   }
 
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(BLINK, (byte) 0);
-    this.entityData.define(MODE, (byte) Mode.ON.ordinal());
+    this.entityData.define(BLINK, 0);
+    this.entityData.define(MODE, Mode.ON);
   }
 
   @Override
@@ -56,11 +57,11 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   public Mode mode() {
-    return RailcraftDataSerializers.getEnum(this.entityData, MODE, Mode.values());
+    return this.entityData.get(MODE);
   }
 
   public void setMode(Mode mode) {
-    RailcraftDataSerializers.setEnum(this.entityData, MODE, mode);
+    this.entityData.set(MODE, mode);
   }
 
   @Override
@@ -69,14 +70,14 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   protected void blink() {
-    this.entityData.set(BLINK, (byte) BLINK_DURATION);
+    this.entityData.set(BLINK, BLINK_DURATION);
   }
 
-  protected void setBlink(byte blink) {
+  protected void setBlink(int blink) {
     this.entityData.set(BLINK, blink);
   }
 
-  protected byte getBlink() {
+  protected int getBlink() {
     return this.entityData.get(BLINK);
   }
 
@@ -92,7 +93,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     }
 
     if (this.isBlinking()) {
-      this.setBlink((byte) (this.getBlink() - 1));
+      this.setBlink(this.getBlink() - 1);
     }
   }
 
@@ -110,7 +111,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("mode", this.mode().getSerializedName());
+    tag.putString(CompoundTagKeys.MODE, this.mode().getSerializedName());
   }
 
   @Override

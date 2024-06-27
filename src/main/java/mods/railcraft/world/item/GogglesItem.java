@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.UpdateAuraByKeyMessage;
@@ -27,11 +28,9 @@ public class GogglesItem extends ArmorItem {
   }
 
   public static Aura getAura(ItemStack itemStack) {
-    if (itemStack.hasTag()) {
-      var tag = itemStack.getTag();
-      if (tag.contains("aura")) {
-        return Aura.values()[tag.getInt("aura")];
-      }
+    var tag = itemStack.getTag();
+    if (tag != null && tag.contains(CompoundTagKeys.AURA)) {
+      return Aura.values()[tag.getInt(CompoundTagKeys.AURA)];
     }
     return Aura.NONE;
   }
@@ -41,7 +40,7 @@ public class GogglesItem extends ArmorItem {
     if (aura == Aura.TRACKING) {
       aura.getNext();
     }
-    itemStack.getOrCreateTag().putInt("aura", aura.ordinal());
+    itemStack.getOrCreateTag().putInt(CompoundTagKeys.AURA, aura.ordinal());
     return aura;
   }
 
@@ -62,7 +61,7 @@ public class GogglesItem extends ArmorItem {
   }
 
   private static Component getDescriptionText(MutableComponent value, boolean tooltip) {
-    var title = Component.translatable(Translations.Tips.GOOGLES_AURA);
+    var title = Component.translatable(Translations.Tips.GOGGLES_AURA);
     if (tooltip) {
       title.withStyle(ChatFormatting.GRAY);
     }
@@ -83,20 +82,20 @@ public class GogglesItem extends ArmorItem {
   public void appendHoverText(ItemStack itemStack, @Nullable Level level,
       List<Component> lines, TooltipFlag adv) {
     lines.add(getDescriptionText(getAura(itemStack).getDisplayName(), true));
-    lines.add(Component.translatable(Translations.Tips.GOOGLES_DESC)
+    lines.add(Component.translatable(Translations.Tips.GOGGLES_DESC)
         .withStyle(ChatFormatting.GRAY));
   }
 
   public enum Aura {
     // TODO: 1.20.4+ use CODECS
 
-    NONE(Translations.Tips.GOOGLES_AURA_NONE),
-    TRACKING(Translations.Tips.GOOGLES_AURA_TRACKING),
-    TUNING(Translations.Tips.GOOGLES_AURA_TUNING),
-    SHUNTING(Translations.Tips.GOOGLES_AURA_SHUNTING),
-    SIGNALLING(Translations.Tips.GOOGLES_AURA_SIGNALLING),
-    SURVEYING(Translations.Tips.GOOGLES_AURA_SURVEYING),
-    WORLDSPIKE(Translations.Tips.GOOGLES_AURA_WORLDSPIKE);
+    NONE(Translations.Tips.NONE),
+    TRACKING(Translations.Tips.GOGGLES_AURA_TRACKING),
+    TUNING(Translations.Tips.GOGGLES_AURA_TUNING),
+    SHUNTING(Translations.Tips.GOGGLES_AURA_SHUNTING),
+    SIGNALLING(Translations.Tips.GOGGLES_AURA_SIGNALLING),
+    SURVEYING(Translations.Tips.GOGGLES_AURA_SURVEYING),
+    WORLDSPIKE(Translations.Tips.GOGGLES_AURA_WORLDSPIKE);
 
     private final String translationKey;
 

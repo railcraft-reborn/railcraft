@@ -1,4 +1,4 @@
-// 1.20.1	2024-02-23T15:28:18.607937388	Block States: railcraft
+// 1.20.1	2024-05-02T14:34:16.11986	Block States: railcraft
 add6c7b9a50c93a0ccd9ba6e317c1464c29ff9f0 assets/railcraft/blockstates/abandoned_activator_track.json
 141e735829ad3c7798b22e3fcc73490d9a9602ac assets/railcraft/blockstates/abandoned_booster_track.json
 bf85af556cff4cd7c4421614b631bf7d67ad23fe assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -336,6 +336,9 @@ bc79c3c0a7e4876049f54543c4b22aa17f54d89a assets/railcraft/blockstates/strap_iron
 76ab6e520022e1cb93d7cab71c83b814ac0e2ab1 assets/railcraft/blockstates/strap_iron_whistle_track.json
 969e32d30f51c1a61d614607072580f79545991a assets/railcraft/blockstates/strap_iron_wye_track.json
 23c93a6b4730ade7e70d1577d752b9e1b200e27e assets/railcraft/blockstates/sulfur_ore.json
+5e21fa9824c3b9d5b74813e3bad5230281e4a7cd assets/railcraft/blockstates/switch_track_lever.json
+e9cb3e8b7d99eded93b8fbd10f27c2b6e555bd0b assets/railcraft/blockstates/switch_track_motor.json
+348796eeb1efb48adbe742663dd858ed624932ce assets/railcraft/blockstates/switch_track_router.json
 d49aeab726943273abb9b16fe2d6fa808dbe4942 assets/railcraft/blockstates/tank_detector.json
 1a29ee18d1ccf3d43ec5db84e9978e309729a3c9 assets/railcraft/blockstates/tin_block.json
 d144ae7674b5d4aa4204310db11cd6e0db0fc8a7 assets/railcraft/blockstates/tin_ore.json

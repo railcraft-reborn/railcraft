@@ -30,7 +30,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   }
 
   public WorldSpikeMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(RailcraftEntityTypes.WORLD_SPIKE.get(), x, y, z, level);
+    super(itemStack, RailcraftEntityTypes.WORLD_SPIKE.get(), x, y, z, level);
   }
 
   @Override
@@ -108,11 +108,6 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   @Override
   protected AbstractContainerMenu createMenu(int i, Inventory inventory) {
     return null;
-  }
-
-  @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.WORLD_SPIKE_MINECART.get().getDefaultInstance();
   }
 
   @Override

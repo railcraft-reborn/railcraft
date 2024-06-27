@@ -23,9 +23,9 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     super(type, level);
   }
 
-  protected MaintenancePatternMinecart(EntityType<?> type, double x, double y, double z,
-      Level level) {
-    super(type, x, y, z, level);
+  protected MaintenancePatternMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
+      double z, Level level) {
+    super(itemStack, type, x, y, z, level);
   }
 
   public Container getPattern() {

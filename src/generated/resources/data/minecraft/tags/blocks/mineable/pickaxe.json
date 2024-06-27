@@ -33,10 +33,6 @@
     "railcraft:tin_block",
     "railcraft:zinc_block",
     "railcraft:force_track_emitter",
-    "railcraft:quarried_brick_stairs",
-    "railcraft:quarried_brick_slab",
-    "railcraft:quarried_paver_stairs",
-    "railcraft:quarried_paver_slab",
     "railcraft:nickel_iron_battery",
     "railcraft:nickel_zinc_battery",
     "railcraft:zinc_silver_battery",
@@ -52,7 +48,7 @@
     "#forge:ores/sulfur",
     "#forge:ores/tin",
     "#forge:ores/zinc",
-    "#forge:ores/salt",
+    "#forge:ores/saltpeter",
     "#railcraft:post",
     "#railcraft:strengthened_glass",
     "#railcraft:iron_tank_gauge",
@@ -61,7 +57,15 @@
     "#railcraft:steel_tank_gauge",
     "#railcraft:steel_tank_valve",
     "#railcraft:steel_tank_wall",
+    "#railcraft:abyssal",
+    "railcraft:abyssal_brick_stairs",
+    "railcraft:abyssal_paver_stairs",
+    "railcraft:abyssal_brick_slab",
+    "railcraft:abyssal_paver_slab",
     "#railcraft:quarried",
-    "#railcraft:abyssal"
+    "railcraft:quarried_brick_stairs",
+    "railcraft:quarried_paver_stairs",
+    "railcraft:quarried_brick_slab",
+    "railcraft:quarried_paver_slab"
   ]
 }

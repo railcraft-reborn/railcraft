@@ -27,7 +27,7 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   public TrackRemover(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, level);
+    super(itemStack, RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, level);
   }
 
   @Override
@@ -78,11 +78,6 @@ public class TrackRemover extends MaintenanceMinecart {
   @Override
   protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
     return null;
-  }
-
-  @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.TRACK_REMOVER.get().getDefaultInstance();
   }
 
   @Override

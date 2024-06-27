@@ -23,7 +23,7 @@ public class RoutingStatementParser {
     Pattern pattern = null;
     if (isRegex) {
       try {
-        pattern = Pattern.compile(line);
+        pattern = Pattern.compile(value);
       } catch (PatternSyntaxException ex) {
         throw new RoutingLogicException(Translations.RoutingTable.ERROR_INVALID_REGEX, line);
       }

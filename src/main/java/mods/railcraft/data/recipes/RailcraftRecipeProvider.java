@@ -1215,6 +1215,17 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
         .save(consumer);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.ENERGY_MINECART.get())
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.LEAD_INGOT)
+        .define('b', Items.REDSTONE_BLOCK)
+        .define('c', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.LEAD_INGOT.get()),
+            has(RailcraftItems.LEAD_INGOT.get()))
+        .save(consumer);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART.get())
         .pattern("a")
         .pattern("b")

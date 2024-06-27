@@ -1,26 +1,31 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Season;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -32,8 +37,8 @@ import net.minecraftforge.network.NetworkHooks;
 public abstract class RailcraftMinecart extends AbstractMinecartContainer
     implements SeasonalCart, ItemTransferHandler {
 
-  private static final EntityDataAccessor<Byte> SEASON =
-      SynchedEntityData.defineId(RailcraftMinecart.class, EntityDataSerializers.BYTE);
+  private static final EntityDataAccessor<Season> SEASON =
+      SynchedEntityData.defineId(RailcraftMinecart.class, RailcraftDataSerializers.MINECART_SEASON);
 
   private final Direction[] travelDirectionHistory = new Direction[2];
   @Nullable
@@ -45,8 +50,24 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     super(type, level);
   }
 
-  protected RailcraftMinecart(EntityType<?> type, double x, double y, double z, Level level) {
+  protected RailcraftMinecart(EntityType<TunnelBore> type, double x, double y, double z,
+      Level level) {
     super(type, x, y, z, level);
+  }
+
+  protected RailcraftMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
+      double z, Level level) {
+    super(type, x, y, z, level);
+    this.loadCustomName(itemStack);
+  }
+
+  private void loadCustomName(ItemStack itemStack) {
+    if (itemStack.hasCustomHoverName()) {
+      this.setCustomName(itemStack.getHoverName());
+    }
+  }
+
+  protected void loadFromItemStack(ItemStack itemStack) {
   }
 
   public Optional<Direction> travelDirection() {
@@ -60,35 +81,34 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void defineSynchedData() {
     super.defineSynchedData();
-    this.entityData.define(SEASON, (byte) Season.DEFAULT.ordinal());
+    this.entityData.define(SEASON, Season.DEFAULT);
   }
 
   @Override
   public Season getSeason() {
-    // TODO: 1.20.4+ use Season.fromName(this.entityData.get(SEASON));
-    return Season.values()[this.entityData.get(SEASON)];
+    return this.entityData.get(SEASON);
   }
 
   @Override
   public void setSeason(Season season) {
-    this.entityData.set(SEASON, (byte) season.ordinal());
+    this.entityData.set(SEASON, season);
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString("season", this.getSeason().getSerializedName());
+    tag.putString(CompoundTagKeys.SEASON, this.getSeason().getSerializedName());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setSeason(Season.fromName(tag.getString("season")));
+    this.setSeason(Season.fromName(tag.getString(CompoundTagKeys.SEASON)));
   }
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (!player.level().isClientSide()) {
+    if (!this.level().isClientSide()) {
       if (this.hasMenu()) {
         NetworkHooks.openScreen((ServerPlayer) player, this,
             data -> data.writeVarInt(this.getId()));
@@ -110,6 +130,33 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
       }
     }
     super.remove(reason);
+  }
+
+  @Override
+  public final void destroy(DamageSource source) {
+    this.kill();
+    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+      var itemstack = this.getPickResult().copy();
+      if (this.hasCustomName()) {
+        itemstack.setHoverName(this.getCustomName());
+      }
+      this.spawnAtLocation(itemstack);
+    }
+    this.chestVehicleDestroyed(source, this.level(), this);
+  }
+
+  @Override
+  public ItemStack getPickResult() {
+    var itemStack = this.getDropItem().getDefaultInstance();
+    if (this.hasCustomName()) {
+      itemStack.setHoverName(this.getCustomName());
+    }
+    return itemStack;
+  }
+
+  @Override
+  protected Item getDropItem() {
+    throw new NotImplementedException();
   }
 
   @Override
@@ -190,7 +237,8 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     };
   }
 
-  private @Nullable Direction determineVerticalTravelDirection(RailShape shape) {
+  @Nullable
+  private Direction determineVerticalTravelDirection(RailShape shape) {
     return shape.isAscending() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
   }
 

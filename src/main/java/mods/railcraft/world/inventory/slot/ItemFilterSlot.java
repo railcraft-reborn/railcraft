@@ -12,7 +12,7 @@ public class ItemFilterSlot extends RailcraftSlot {
       int posX, int posY) {
     super(container, slotIndex, posX, posY);
     this.filter = filter;
-    setStackLimit(64);
+    this.setStackLimit(64);
   }
 
   @Override

@@ -10,17 +10,19 @@ public final class CompoundTagKeys {
 
   public static final String ACTION_SIGNAL_ASPECTS = "actionSignalAspects";
   public static final String ACTIVE = "active";
+  public static final String AURA = "aura";
   public static final String BACK_AUTO_LINK_ENABLED = "backAutoLinkEnabled";
   public static final String BACK_LINK = "backLink";
   public static final String BATTERIES = "batteries";
-  public static final String BATTERY = "battery";
   public static final String BLOCK_SIGNAL = "blockSignal";
   public static final String BOILER = "boiler";
   public static final String BURN_TIME = "burnTime";
   public static final String CART = "cart";
   public static final String CARTS = "carts";
   public static final String CART_FILTER = "cartFilter";
+  public static final String CART_FILTERS = "cartFilters";
   public static final String CHARGE = "charge";
+  public static final String COLOR = "color";
   public static final String CONTAINER = "container";
   public static final String CRAFT_MATRIX = "craftMatrix";
   public static final String CURRENT_CART = "currentCart";
@@ -33,6 +35,7 @@ public final class CompoundTagKeys {
   public static final String DELAY = "delay";
   public static final String DERAILED_REMAINING_TICKS = "derailedRemainingTicks";
   public static final String DEST = "dest";
+  public static final String DESTINATION = "destination";
   public static final String ELEVATOR_REMAINING_TICKS = "elevatorRemainingTicks";
   public static final String EMITTER_POS = "emitterPos";
   public static final String ENERGY = "energy";
@@ -48,6 +51,7 @@ public final class CompoundTagKeys {
   public static final String FUEL = "fuel";
   public static final String HIGH_SPEED = "highSpeed";
   public static final String ID = "id";
+  public static final String INDEX = "index";
   public static final String INPUT_SIGNAL = "inputSignal";
   public static final String INV_FILTER = "invFilter";
   public static final String ITEM_FILTER = "itemFilter";
@@ -60,6 +64,7 @@ public final class CompoundTagKeys {
   public static final String LOCKED = "locked";
   public static final String LOCKING_CARTS = "lockingCarts";
   public static final String LOCKING_MODE_CONTROLLER = "lockingModeController";
+  public static final String LOCKS = "locks";
   public static final String LOCK_ID = "lockId";
   public static final String LOG = "log";
   public static final String MASTER = "master";
@@ -73,6 +78,7 @@ public final class CompoundTagKeys {
   public static final String OUTPUT_DIRECTION = "outputDirection";
   public static final String OWNER = "owner";
   public static final String PATTERN = "pattern";
+  public static final String PEER_POS = "peerPos";
   public static final String PIPE_LENGTH = "pipeLength";
   public static final String PLAYERS = "players";
   public static final String POS = "pos";
@@ -89,9 +95,12 @@ public final class CompoundTagKeys {
   public static final String PROGRESS = "progress";
   public static final String RAILWAY = "railway";
   public static final String REBUILD_DELAY = "rebuildDelay";
+  public static final String REDSTONE_MODE = "redstoneMode";
   public static final String REDSTONE_TRIGGERED = "redstoneTriggered";
+  public static final String REFINED = "refined";
   public static final String REVERSE = "reverse";
   public static final String ROTOR_CONTAINER = "rotorContainer";
+  public static final String SEASON = "season";
   public static final String SECONDARY_COLOR = "secondaryColor";
   public static final String SIGNALS = "signals";
   public static final String SIGNAL_ASPECT = "signalAspect";
@@ -103,6 +112,7 @@ public final class CompoundTagKeys {
   public static final String SPRUNG = "sprung";
   public static final String STATE = "state";
   public static final String STEAM_TANK = "steamTank";
+  public static final String SYNC = "sync";
   public static final String TANK = "tank";
   public static final String TANK_MANAGER = "tankManager";
   public static final String TEMPERATURE = "temperature";

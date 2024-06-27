@@ -94,7 +94,7 @@ public class RailcraftTags {
     public static final TagKey<Item> LEAD_DUST = dustsTag("lead");
     public static final TagKey<Item> SILVER_DUST = dustsTag("silver");
     public static final TagKey<Item> TIN_DUST = dustsTag("tin");
-    public static final TagKey<Item> SALTPETER_DUST = dustsTag("salt");
+    public static final TagKey<Item> SALTPETER_DUST = dustsTag("saltpeter");
     public static final TagKey<Item> COAL_DUST = dustsTag("coal");
     public static final TagKey<Item> COAL_COKE_DUST = dustsTag("coal_coke");
     public static final TagKey<Item> CHARCOAL_DUST = dustsTag("charcoal");
@@ -200,6 +200,8 @@ public class RailcraftTags {
   public static class Blocks {
 
     public static final TagKey<Block> BALLAST = tag("ballast");
+    public static final TagKey<Block> TRACK_UNDERCUTTER_INVALID_BALLAST =
+        tag("track_undercutter_invalid_ballast");
     public static final TagKey<Block> SWITCH_TRACK_ACTUATOR = tag("switch_track_actuator");
     public static final TagKey<Block> ASPECT_RECEIVER = tag("aspect_receiver");
     public static final TagKey<Block> ASPECT_EMITTER = tag("aspect_emitter");

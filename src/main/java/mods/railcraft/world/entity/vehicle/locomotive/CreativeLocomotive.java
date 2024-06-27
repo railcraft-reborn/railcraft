@@ -38,6 +38,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   public CreativeLocomotive(ItemStack itemStack, double x, double y, double z,
       ServerLevel level) {
     super(itemStack, RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), x, y, z, level);
+    this.loadFromItemStack(itemStack);
   }
 
   @Override
@@ -116,6 +117,11 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public boolean needsFuel() {
     return false;
+  }
+
+  @Override
+  public Speed getMaxReverseSpeed() {
+    return Speed.MAX;
   }
 
   @Override

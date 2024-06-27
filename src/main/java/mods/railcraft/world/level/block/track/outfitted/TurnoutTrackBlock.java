@@ -118,8 +118,7 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
   @Override
   protected boolean crowbarWhack(BlockState blockState, Level level, BlockPos pos,
       Player player, InteractionHand hand, ItemStack itemStack) {
-    level.setBlockAndUpdate(pos, blockState.cycle(REVERSED).cycle(MIRRORED));
-    return true;
+    return level.setBlockAndUpdate(pos, blockState.cycle(REVERSED).cycle(MIRRORED));
   }
 
   @Override

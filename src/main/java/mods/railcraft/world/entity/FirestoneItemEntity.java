@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity;
 
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.CrackedFirestoneItem;
 import mods.railcraft.world.item.FirestoneItem;
@@ -94,12 +95,12 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void addAdditionalSaveData(CompoundTag compound) {
     super.addAdditionalSaveData(compound);
-    compound.putBoolean("refined", this.refined);
+    compound.putBoolean(CompoundTagKeys.REFINED, this.refined);
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag compound) {
     super.readAdditionalSaveData(compound);
-    this.refined = compound.getBoolean("refined");
+    this.refined = compound.getBoolean(CompoundTagKeys.REFINED);
   }
 }

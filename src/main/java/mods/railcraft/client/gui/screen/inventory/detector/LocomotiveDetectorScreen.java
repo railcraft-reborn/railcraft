@@ -2,14 +2,14 @@ package mods.railcraft.client.gui.screen.inventory.detector;
 
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.world.inventory.detector.LocomotiveDetectorMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class LocomotiveDetectorScreen extends AbstractContainerScreen<LocomotiveDetectorMenu> {
+public class LocomotiveDetectorScreen extends RailcraftMenuScreen<LocomotiveDetectorMenu> {
 
   private static final ResourceLocation BACKGROUND_TEXTURE =
       RailcraftConstants.rl("textures/gui/container/double_slot.png");
@@ -21,11 +21,8 @@ public class LocomotiveDetectorScreen extends AbstractContainerScreen<Locomotive
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    this.renderBackground(guiGraphics);
-    final int x = this.leftPos;
-    final int y = this.topPos;
-    guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight);
+  public ResourceLocation getWidgetsTexture() {
+    return BACKGROUND_TEXTURE;
   }
 
   @Override

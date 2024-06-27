@@ -160,6 +160,8 @@ public class Translations {
         makeKey("tips", "locomotive.item.primary");
     public static final String LOCOMOTIVE_ITEM_SECONDARY =
         makeKey("tips", "locomotive.item.secondary");
+    public static final String LOCOMOTIVE_ITEM_NO_WHISTLE =
+        makeKey("tips", "locomotive.item.no_whistle");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
     public static final String TRACK_LAYER = makeKey("tips", "track_layer");
@@ -178,18 +180,17 @@ public class Translations {
     public static final String STEAM_TURBINE_DESC_3 = makeKey("tips", "steam_turbine_desc3");
     public static final String SPIKE_MAUL = makeKey("tips", "spike_maul");
     public static final String OVERALLS = makeKey("tips", "overalls");
-    public static final String CLEAR = makeKey("tips", "clear");
-    public static final String GOOGLES_DESC = makeKey("tips", "googles.desc");
-    public static final String GOOGLES_AURA = makeKey("tips", "googles.aura");
-    public static final String GOOGLES_AURA_NONE = makeKey("tips", "googles.aura.none");
-    public static final String GOOGLES_AURA_SHUNTING = makeKey("tips", "googles.aura.shunting");
-    public static final String GOOGLES_AURA_SIGNALLING =
-        makeKey("tips", "googles.aura.signalling");
-    public static final String GOOGLES_AURA_SURVEYING = makeKey("tips", "googles.aura.surveying");
-    public static final String GOOGLES_AURA_TRACKING = makeKey("tips", "googles.aura.tracking");
-    public static final String GOOGLES_AURA_TUNING = makeKey("tips", "googles.aura.tuning");
-    public static final String GOOGLES_AURA_WORLDSPIKE =
-        makeKey("tips", "googles.aura.worldspike");
+    public static final String NONE = makeKey("tips", "none");
+    public static final String GOGGLES_DESC = makeKey("tips", "goggles.desc");
+    public static final String GOGGLES_AURA = makeKey("tips", "goggles.aura");
+    public static final String GOGGLES_AURA_SHUNTING = makeKey("tips", "goggles.aura.shunting");
+    public static final String GOGGLES_AURA_SIGNALLING =
+        makeKey("tips", "goggles.aura.signalling");
+    public static final String GOGGLES_AURA_SURVEYING = makeKey("tips", "goggles.aura.surveying");
+    public static final String GOGGLES_AURA_TRACKING = makeKey("tips", "goggles.aura.tracking");
+    public static final String GOGGLES_AURA_TUNING = makeKey("tips", "goggles.aura.tuning");
+    public static final String GOGGLES_AURA_WORLDSPIKE =
+        makeKey("tips", "goggles.aura.worldspike");
     public static final String CROWBAR_DESC = makeKey("tips", "crowbar.desc");
     public static final String CROWBAR_LINK_BROKEN = makeKey("tips", "crowbar.link.broken");
     public static final String CROWBAR_LINK_CREATED = makeKey("tips", "crowbar.link.created");
@@ -337,6 +338,8 @@ public class Translations {
     public static final String TYPE_RECHARGEABLE = makeKey("tips", "type_rechargeable");
     public static final String TYPE_DISPOSABLE = makeKey("tips", "type_disposable");
     public static final String EMPTY = makeKey("tips", "empty");
+    public static final String ENERGY = makeKey("tips", "energy");
+    public static final String PERCENTAGE = makeKey("tips", "percentage");
   }
 
   public static class Container {
@@ -359,6 +362,8 @@ public class Translations {
     public static final String COKE_OVEN = makeKey("jei", "category.coke_oven");
     public static final String BLAST_FURNACE = makeKey("jei", "category.blast_furnace");
     public static final String CRUSHER = makeKey("jei", "category.crusher");
+    public static final String SOLID_BOILER = makeKey("jei", "category.solid_boiler");
+    public static final String FLUID_BOILER = makeKey("jei", "category.fluid_boiler");
     public static final String CRUSHER_TIP = makeKey("jei", "tips.crusher");
 
     public static final String MANUAL_ROLLING_MACHINE =
@@ -393,6 +398,29 @@ public class Translations {
     public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");
     public static final String REPAIR = makeKey("jei.gui", "repair");
     public static final String SPLIT = makeKey("jei.gui", "split");
+  }
+
+  public static class Emi {
+    public static final String ROLLING_CATEGORY = makeKey("emi.category", "rolling_category");
+    public static final String COKING_CATEGORY = makeKey("emi.category", "coking_category");
+    public static final String BLASTING_CATEGORY = makeKey("emi.category", "blasting_category");
+    public static final String CRUSHING_CATEGORY = makeKey("emi.category", "crushing_category");
+  }
+
+  public static class LookingAt {
+    public static final String SIGNALS = makeJadeKey("signals");
+    public static final String SWITCH_TRACK = makeJadeKey("switch_track");
+    public static final String LOCOMOTIVE = makeJadeKey("locomotive");
+    public static final String TRACK_COMPONENT = makeJadeKey("track_component");
+    public static final String ASPECT_SENT = makeKey("looking_at", "aspect_sent");
+    public static final String ASPECT_RECEIVED = makeKey("looking_at", "aspect_received");
+    public static final String ASPECT_RELAYED = makeKey("looking_at", "aspect_relayed");
+    public static final String SWITCHED = makeKey("looking_at", "switched");
+    public static final String YES = makeKey("looking_at", "yes");
+    public static final String NO = makeKey("looking_at", "no");
+    public static final String MODE = makeKey("looking_at", "mode");
+    public static final String SPEED = makeKey("looking_at", "speed");
+    public static final String REVERSE = makeKey("looking_at", "reverse");
   }
 
   public static class Signal {
@@ -528,6 +556,13 @@ public class Translations {
     public static final String MACHINE_ZAP = makeKey("subtitle", "machine.zap");
   }
 
+  public static class Season {
+    public static final String DEFAULT = makeKey("season", "default");
+    public static final String HALLOWEEN = makeKey("season", "halloween");
+    public static final String CHRISTMAS = makeKey("season", "christmas");
+    public static final String NONE = makeKey("season", "none");
+  }
+
   public static class DamageSource {
     public static final List<String> BORE = IntStream.rangeClosed(1, 6)
         .mapToObj(i -> makeKey("death", "bore." + i)).toList();
@@ -566,8 +601,13 @@ public class Translations {
 
   public static class ChargeMeter {
     public static final String START = makeKey("charge_meter", "start");
-    public static final String CART = makeKey("charge_meter", "cart");
+    public static final String CHARGE = makeKey("charge_meter", "charge");
+    public static final String DRAW = makeKey("charge_meter", "draw");
+    public static final String LOSS = makeKey("charge_meter", "loss");
     public static final String NETWORK = makeKey("charge_meter", "network");
+    public static final String SIZE = makeKey("charge_meter", "size");
+    public static final String MAX_DRAW = makeKey("charge_meter", "max_draw");
+    public static final String EFFICIENCY = makeKey("charge_meter", "efficiency");
     public static final String NODE = makeKey("charge_meter", "node");
     public static final String PRODUCER = makeKey("charge_meter", "producer");
   }
@@ -586,5 +626,9 @@ public class Translations {
 
   public static String makeKey(String type, String name) {
     return RailcraftConstants.makeTranslationKey(type, name);
+  }
+
+  private static String makeJadeKey(String name) {
+    return String.format("config.jade.plugin_%s.%s", RailcraftConstants.ID, name);
   }
 }

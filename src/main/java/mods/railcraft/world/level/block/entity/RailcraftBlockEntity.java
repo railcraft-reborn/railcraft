@@ -55,13 +55,13 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     this.writeToBuf(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
-    nbt.putByteArray("sync", syncData);
+    nbt.putByteArray(CompoundTagKeys.SYNC, syncData);
     return nbt;
   }
 
   @Override
   public final void handleUpdateTag(CompoundTag tag) {
-    byte[] bytes = tag.getByteArray("sync");
+    byte[] bytes = tag.getByteArray(CompoundTagKeys.SYNC);
     this.readFromBuf(new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)));
   }
 

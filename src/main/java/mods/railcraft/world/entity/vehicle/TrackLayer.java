@@ -32,12 +32,7 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   public TrackLayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
-  }
-
-  @Override
-  public ItemStack getPickResult() {
-    return RailcraftItems.TRACK_LAYER.get().getDefaultInstance();
+    super(itemStack, RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
   }
 
   @Override

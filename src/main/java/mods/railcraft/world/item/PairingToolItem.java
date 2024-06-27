@@ -4,6 +4,7 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
+import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.item.ActivationBlockingItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -178,13 +179,13 @@ public abstract class PairingToolItem<T, P> extends Item {
     GlobalPos.CODEC
         .encodeStart(NbtOps.INSTANCE, peerPos)
         .resultOrPartial(logger::error)
-        .ifPresent(tag -> itemStack.getOrCreateTag().put("peerPos", tag));
+        .ifPresent(tag -> itemStack.getOrCreateTag().put(CompoundTagKeys.PEER_POS, tag));
   }
 
   public static void clearTargetPos(ItemStack itemStack) {
     var tag = itemStack.getTag();
     if (tag != null) {
-      tag.remove("peerPos");
+      tag.remove(CompoundTagKeys.PEER_POS);
     }
   }
 
