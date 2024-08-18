@@ -59,13 +59,18 @@
     "#railcraft:steel_tank_wall",
     "#railcraft:abyssal",
     "#railcraft:quarried",
+    "#railcraft:jaded",
     "railcraft:quarried_brick_stairs",
     "railcraft:abyssal_brick_stairs",
+    "railcraft:jaded_brick_stairs",
     "railcraft:quarried_paver_stairs",
     "railcraft:abyssal_paver_stairs",
+    "railcraft:jaded_paver_stairs",
     "railcraft:quarried_brick_slab",
     "railcraft:abyssal_brick_slab",
+    "railcraft:jaded_brick_slab",
     "railcraft:quarried_paver_slab",
-    "railcraft:abyssal_paver_slab"
+    "railcraft:abyssal_paver_slab",
+    "railcraft:jaded_paver_slab"
   ]
 }

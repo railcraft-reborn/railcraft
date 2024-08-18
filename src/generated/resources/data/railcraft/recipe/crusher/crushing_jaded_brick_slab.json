@@ -1,0 +1,19 @@
+{
+  "type": "railcraft:crusher",
+  "ingredient": [
+    {
+      "item": "railcraft:jaded_brick_slab"
+    },
+    {
+      "item": "railcraft:jaded_paver_slab"
+    }
+  ],
+  "outputs": [
+    {
+      "probability": 0.5,
+      "result": {
+        "item": "railcraft:jaded_cobblestone"
+      }
+    }
+  ]
+}

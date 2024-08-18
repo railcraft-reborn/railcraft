@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "railcraft:block/jaded_paver",
+    "side": "railcraft:block/jaded_paver",
+    "top": "railcraft:block/jaded_paver"
+  }
+}

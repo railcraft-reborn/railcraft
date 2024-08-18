@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_jaded_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "railcraft:jaded_stone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:polished_jaded_stone_from_jaded_stone_in_stonecutter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_jaded_stone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:polished_jaded_stone_from_jaded_stone_in_stonecutter"
+    ]
+  }
+}

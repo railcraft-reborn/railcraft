@@ -267,7 +267,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.Blocks.STEEL_TANK_VALVE,
             RailcraftTags.Blocks.STEEL_TANK_WALL)
         .addTag(RailcraftTags.Blocks.ABYSSAL)
-        .addTag(RailcraftTags.Blocks.QUARRIED);
+        .addTag(RailcraftTags.Blocks.QUARRIED)
+        .addTag(RailcraftTags.Blocks.JADED);
     RailcraftBlocks.DECORATIVE_BRICK_STAIRS.boundVariants()
         .forEach(x -> this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(x));
     RailcraftBlocks.DECORATIVE_PAVER_STAIRS.boundVariants()
@@ -363,6 +364,15 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).get(),
             RailcraftBlocks.DECORATIVE_BRICKS.variantFor(DecorativeBlock.ABYSSAL).get(),
             RailcraftBlocks.DECORATIVE_PAVER.variantFor(DecorativeBlock.ABYSSAL).get());
+
+    this.tag(RailcraftTags.Blocks.JADED)
+        .add(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.DECORATIVE_BRICKS.variantFor(DecorativeBlock.JADED).get(),
+            RailcraftBlocks.DECORATIVE_PAVER.variantFor(DecorativeBlock.JADED).get());
 
     this.tag(RailcraftTags.Blocks.DETECTOR)
         .add(RailcraftBlocks.ADVANCED_DETECTOR.get(),

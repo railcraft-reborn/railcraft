@@ -280,6 +280,7 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
     this.copy(RailcraftTags.Blocks.QUARRIED, RailcraftTags.Items.QUARRIED);
     this.copy(RailcraftTags.Blocks.ABYSSAL, RailcraftTags.Items.ABYSSAL);
+    this.copy(RailcraftTags.Blocks.JADED, RailcraftTags.Items.JADED);
     this.copy(RailcraftTags.Blocks.DETECTOR, RailcraftTags.Items.DETECTOR);
 
     // TOOLS

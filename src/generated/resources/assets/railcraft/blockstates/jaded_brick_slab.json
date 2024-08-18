@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "railcraft:block/jaded_brick_slab"
+    },
+    "type=double": {
+      "model": "railcraft:block/jaded_bricks"
+    },
+    "type=top": {
+      "model": "railcraft:block/jaded_brick_slab_top"
+    }
+  }
+}

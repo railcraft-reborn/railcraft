@@ -236,6 +236,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
             .variantFor(DecorativeBlock.ABYSSAL).get(), 1, 1)
         .save(recipeOutput);
+    CrusherRecipeBuilder.crush(RailcraftTags.Items.JADED)
+        .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
+            .variantFor(DecorativeBlock.JADED).get(), 1, 1)
+        .save(recipeOutput);
     for (var type : DecorativeBlock.values()) {
       CrusherRecipeBuilder.crush(Ingredient.of(
               RailcraftItems.DECORATIVE_BRICK_STAIRS.variantFor(type).get(),
