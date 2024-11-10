@@ -8,18 +8,14 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.redstone.Redstone;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -59,19 +55,6 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
   }
 
   public abstract Direction getFacing(BlockState blockState);
-
-  @Override
-  public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos,
-      Direction direction) {
-    boolean emit = false;
-    if (isPowered(blockState)) {
-      var neighborBlockState = level.getBlockState(blockPos.relative(direction.getOpposite()));
-      emit = BaseRailBlock.isRail(neighborBlockState)
-          || neighborBlockState.is(Blocks.REDSTONE_WIRE)
-          || neighborBlockState.is(Blocks.REPEATER);
-    }
-    return emit ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
-  }
 
   @SuppressWarnings("deprecation")
   @Override
