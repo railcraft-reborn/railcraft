@@ -1,6 +1,12 @@
 {
   "advancements.railcraft.carts.bed_cart.desc": "Durma enquanto anda no carrinho com cama",
   "advancements.railcraft.carts.bed_cart.name": "Sonhos nas rodas",
+  "advancements.railcraft.carts.jukebox_cart.desc": "Reproduzir um disco em um carrinho de som",
+  "advancements.railcraft.carts.jukebox_cart.name": "Música em movimento",
+  "advancements.railcraft.carts.link_carts.desc": "Nunca se esqueça de se esgueirar!",
+  "advancements.railcraft.carts.link_carts.name": "Carrinhos de ligação",
+  "advancements.railcraft.carts.locomotive.desc": "Alimente seu trem com locomotivas",
+  "advancements.railcraft.carts.locomotive.name": "Rolando por aí",
   "advancements.railcraft.tracks.wooden_track.name": "Idade da Madeira",
   "block.railcraft.abandoned_locomotive_track": "Trilha de Locomotiva Abandonada",
   "block.railcraft.any_detector": "Detector de Carrinhos",

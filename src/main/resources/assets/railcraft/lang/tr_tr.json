@@ -1,1 +1,22 @@
-{}
+{
+  "advancements.railcraft.carts.seasons.name": "Anakronizm",
+  "advancements.railcraft.tracks.blast_furnace.desc": "Yüksek güçlü fırın inşa et",
+  "advancements.railcraft.tracks.blast_furnace.name": "Çelik Fabrikası",
+  "advancements.railcraft.tracks.crusher.desc": "Kırıcı inşa et",
+  "advancements.railcraft.tracks.crusher.name": "Ağır Makine",
+  "advancements.railcraft.tracks.firestone.name": "Çözümsüz Enerji",
+  "block.railcraft.abandoned_activator_track": "Terk edilmiş Aktivatör Rayı",
+  "block.railcraft.abandoned_booster_track": "Terk edilmiş Güçlendirici Rayı",
+  "block.railcraft.abandoned_control_track": "Terk edilmiş Kontrol Rayı",
+  "block.railcraft.abandoned_coupler_track": "Terk edilmiş Bağlantı Rayı",
+  "block.railcraft.abandoned_detector_track": "Terk edilmiş Dedektör Rayı",
+  "block.railcraft.abandoned_locking_track": "Terk edilmiş Kilitli Ray",
+  "block.railcraft.abandoned_locomotive_track": "Terkedilmiş Lokomotif Rayı",
+  "block.railcraft.abyssal_stone": "Uçurum Taşı",
+  "block.railcraft.advanced_detector": "Gelişmiş Maden Arabası Dedektörü",
+  "block.railcraft.advanced_item_loader": "Gelişmiş eşya Yükleyicisi",
+  "block.railcraft.advanced_item_unloader": "Gelişmiş Eşya Boşaltıcısı",
+  "block.railcraft.age_detector": "Eski Maden Arabası Dedektörü",
+  "block.railcraft.chimney": "Baca",
+  "block.railcraft.crusher": "Öğütücü"
+}
