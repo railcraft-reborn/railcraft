@@ -105,17 +105,13 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public void registerRecipes(IRecipeRegistration registration) {
     var recipeManager = Minecraft.getInstance().level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
     registration.addRecipes(RecipeTypes.COKE_OVEN,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()));
     registration.addRecipes(RecipeTypes.BLAST_FURNACE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
     registration.addRecipes(RecipeTypes.CRUSHER,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()));
     registration.addRecipes(RecipeTypes.SOLID_BOILER, SolidBoilerRecipeCategory.getBoilerRecipes());
     registration.addRecipes(RecipeTypes.FLUID_BOILER, FluidBoilerRecipeCategory.getBoilerRecipes());
 
