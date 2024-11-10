@@ -3,7 +3,6 @@ package mods.railcraft.integrations.jade;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
-import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;
@@ -19,7 +18,7 @@ class SwitchTrackComponent implements IBlockComponentProvider {
     if (accessor.getBlock() instanceof SwitchTrackActuatorBlock) {
       var theme = IThemeHelper.get();
       Component info;
-      if (SwitchTrackBlock.isSwitched(accessor.getBlockState())) {
+      if (SwitchTrackActuatorBlock.isSwitched(accessor.getBlockState())) {
         info = theme.success(Component.translatable(Translations.LookingAt.YES));
       } else {
         info = theme.danger(Component.translatable(Translations.LookingAt.NO));
