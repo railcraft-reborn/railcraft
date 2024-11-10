@@ -7,21 +7,27 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import mods.railcraft.Translations;
-import mods.railcraft.integrations.jei.category.CrusherRecipeCategory;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class CrusherEmiRecipe extends BasicEmiRecipe {
 
+  private static final int WIDTH = 144;
+  private static final int HEIGHT = 54;
+
+  private static final ResourceLocation BACKGROUND =
+      RailcraftConstants.rl("textures/gui/container/crusher.png");
+
   private final CrusherRecipe recipe;
 
   public CrusherEmiRecipe(RecipeHolder<CrusherRecipe> recipe) {
-    super(RailcraftEmiPlugin.CRUSHING_CATEGORY, recipe.id(),
-        CrusherRecipeCategory.WIDTH, CrusherRecipeCategory.HEIGHT);
+    super(RailcraftEmiPlugin.CRUSHING_CATEGORY, recipe.id(), WIDTH, HEIGHT);
     this.recipe = recipe.value();
     this.inputs.add(EmiIngredient.of(this.recipe.getIngredients().getFirst()));
     this.recipe.getProbabilityOutputs().stream()
@@ -32,9 +38,8 @@ public class CrusherEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(CrusherRecipeCategory.BACKGROUND, 0, 0, width, height, 0, 171);
-    var crushingTexture = new EmiTexture(CrusherRecipeCategory.BACKGROUND,
-        144, 171, 29, 53);
+    widgets.addTexture(BACKGROUND, 0, 0, width, height, 0, 171);
+    var crushingTexture = new EmiTexture(BACKGROUND, 144, 171, 29, 53);
     widgets.addAnimatedTexture(crushingTexture, 58, 0,
         1000 * this.recipe.getProcessTime() / SharedConstants.TICKS_PER_SECOND,
         true, false, false);
