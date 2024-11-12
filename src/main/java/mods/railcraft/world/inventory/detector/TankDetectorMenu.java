@@ -13,7 +13,7 @@ public class TankDetectorMenu extends RailcraftMenu {
   public TankDetectorMenu(int id, Inventory inventory, TankDetectorBlockEntity blockEntity) {
     super(RailcraftMenuTypes.TANK_DETECTOR.get(), id, inventory.player, blockEntity::isStillValid);
     this.blockEntity = blockEntity;
-    this.addSlot(new FluidFilterSlot(blockEntity, 0, 26 ,24));
+    this.addSlot(new FluidFilterSlot(blockEntity.getInvFilters(), 0, 26 ,24));
     this.addInventorySlots(inventory, 140);
   }
 

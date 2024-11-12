@@ -37,7 +37,7 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   public FluidStack getFilterFluid() {
-    return FluidUtil.getFluidContained(this.getItem(0)).orElse(FluidStack.EMPTY);
+    return FluidUtil.getFluidContained(this.invFilters.getItem(0)).orElse(FluidStack.EMPTY);
   }
 
   @Override

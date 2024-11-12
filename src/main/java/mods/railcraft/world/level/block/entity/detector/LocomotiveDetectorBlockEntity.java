@@ -22,8 +22,8 @@ public class LocomotiveDetectorBlockEntity extends FilterDetectorBlockEntity {
 
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
-    var primary = getItem(0);
-    var secondary = getItem(1);
+    var primary = this.invFilters.getItem(0);
+    var secondary = this.invFilters.getItem(1);
     for (var cart : minecarts) {
       if (cart instanceof Locomotive locomotive) {
         if (primary.isEmpty() && secondary.isEmpty()) {
