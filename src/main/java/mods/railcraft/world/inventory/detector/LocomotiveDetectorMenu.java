@@ -10,8 +10,8 @@ public class LocomotiveDetectorMenu extends RailcraftMenu {
 
   public LocomotiveDetectorMenu(int id, Inventory inventory, LocomotiveDetectorBlockEntity blockEntity) {
     super(RailcraftMenuTypes.LOCOMOTIVE_DETECTOR.get(), id, inventory.player, blockEntity::isStillValid);
-    this.addSlot(new ColorFilterSlot(blockEntity, 0, 35 ,26));
-    this.addSlot(new ColorFilterSlot(blockEntity, 1, 35 ,52));
+    this.addSlot(new ColorFilterSlot(blockEntity.getInvFilters(), 0, 35 ,26));
+    this.addSlot(new ColorFilterSlot(blockEntity.getInvFilters(), 1, 35 ,52));
     this.addInventorySlots(inventory, 170);
   }
 }

@@ -14,8 +14,8 @@ public class ItemDetectorMenu extends RailcraftMenu {
     super(RailcraftMenuTypes.ITEM_DETECTOR.get(), id, inventory.player, blockEntity::isStillValid);
     this.blockEntity = blockEntity;
 
-    for (int i = 0; i < blockEntity.getContainerSize(); i++) {
-      this.addSlot(new RailcraftSlot(blockEntity, i, 8 + i * 18, 61)
+    for (int i = 0; i < blockEntity.getInvFilters().getContainerSize(); i++) {
+      this.addSlot(new RailcraftSlot(blockEntity.getInvFilters(), i, 8 + i * 18, 61)
           .setPhantom()
           .setEnableCheck(() -> blockEntity.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED));
     }

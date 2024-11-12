@@ -70,8 +70,8 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   private boolean matchesFilter(ContainerManipulator<SlotAccessor> containerManipulator) {
-    for (int i = 0; i < getContainerSize(); i++) {
-      var filter = getItem(i);
+    for (int i = 0; i < this.invFilters.getContainerSize(); i++) {
+      var filter = this.invFilters.getItem(i);
       if (filter.isEmpty())
         continue;
       var stackFilter = StackFilter.anyMatch(filter);
