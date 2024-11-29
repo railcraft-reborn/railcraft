@@ -9,20 +9,24 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleItemRecipe;
 
 public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
   private final int slagOutput;
 
-  public BlastFurnaceRecipe(Ingredient ingredient, ItemStack result,
+  public BlastFurnaceRecipe(Ingredient input, ItemStack result,
       float experience, int cookingTime, int slagOutput) {
-    super(RailcraftRecipeTypes.BLASTING.get(), "", CookingBookCategory.MISC,
-        ingredient, result, experience, cookingTime);
+    super("", CookingBookCategory.MISC, input, result, experience, cookingTime);
     this.slagOutput = slagOutput;
   }
 
@@ -31,8 +35,18 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<BlastFurnaceRecipe> getSerializer() {
     return RailcraftRecipeSerializers.BLASTING.get();
+  }
+
+  @Override
+  public RecipeType<BlastFurnaceRecipe> getType() {
+    return RailcraftRecipeTypes.BLASTING.get();
+  }
+
+  @Override
+  public RecipeBookCategory recipeBookCategory() {
+    return RecipeBookCategories.CRAFTING_MISC;
   }
 
   @Override
@@ -41,24 +55,24 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
   }
 
   @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
+  protected Item furnaceIcon() {
+    return RailcraftBlocks.BLAST_FURNACE_BRICKS.get().asItem();
   }
 
   public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
 
     private static final MapCodec<BlastFurnaceRecipe> CODEC =
         RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
-                .forGetter(recipe -> recipe.ingredient),
+            Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
+                .forGetter(SingleItemRecipe::input),
             ItemStack.CODEC.fieldOf(RecipeJsonKeys.RESULT)
-                .forGetter(recipe -> recipe.result),
+                .forGetter(recipe -> recipe.result()),
             Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
                 .orElse(0.0F)
-                .forGetter(recipe -> recipe.experience),
+                .forGetter(AbstractCookingRecipe::experience),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.COOKING_TIME,
                     BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
-                .forGetter(recipe -> recipe.cookingTime),
+                .forGetter(AbstractCookingRecipe::cookingTime),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf(RecipeJsonKeys.SLAG_OUTPUT, 0)
                 .forGetter(recipe -> recipe.slagOutput)
         ).apply(instance, BlastFurnaceRecipe::new));
@@ -87,10 +101,10 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
     private static void toNetwork(RegistryFriendlyByteBuf buffer, BlastFurnaceRecipe recipe) {
       buffer.writeVarInt(recipe.slagOutput);
-      buffer.writeVarInt(recipe.cookingTime);
-      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-      ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-      buffer.writeFloat(recipe.experience);
+      buffer.writeVarInt(recipe.cookingTime());
+      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input());
+      ItemStack.STREAM_CODEC.encode(buffer, recipe.result());
+      buffer.writeFloat(recipe.experience());
     }
   }
 }

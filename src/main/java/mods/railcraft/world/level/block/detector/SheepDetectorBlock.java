@@ -43,6 +43,6 @@ public class SheepDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SHEEP_DETECTOR.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

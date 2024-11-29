@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -18,6 +20,8 @@ public class RotorRepairRecipe extends CustomRecipe {
 
   private static final Ingredient ROTOR = Ingredient.of(RailcraftItems.TURBINE_ROTOR.get());
   private static final Ingredient BLADE = Ingredient.of(RailcraftItems.TURBINE_BLADE.get());
+  @Nullable
+  private PlacementInfo placementInfo;
 
   public RotorRepairRecipe(CraftingBookCategory category) {
     super(category);
@@ -25,6 +29,10 @@ public class RotorRepairRecipe extends CustomRecipe {
 
   @Override
   public boolean matches(CraftingInput craftingInput, Level level) {
+    if (craftingInput.height() < 2 || craftingInput.width() < 2) {
+      return false;
+    }
+
     boolean containsRotor = false;
     boolean containsBlade = false;
     for (int i = 0; i < craftingInput.size(); i++) {
@@ -49,10 +57,10 @@ public class RotorRepairRecipe extends CustomRecipe {
     if(rotor.isEmpty()) {
       return ItemStack.EMPTY;
     }
-    var numBlades = IntStream.range(0, craftingInput.size())
+    var numBlades = ((int) IntStream.range(0, craftingInput.size())
         .mapToObj(craftingInput::getItem)
         .filter(BLADE)
-        .count();
+        .count());
 
     int damage = rotor.getDamageValue();
     damage -= REPAIR_PER_BLADE * numBlades;
@@ -65,25 +73,18 @@ public class RotorRepairRecipe extends CustomRecipe {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(ROTOR);
-    ingredients.add(BLADE);
-    return ingredients;
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      NonNullList<Ingredient> ingredients = NonNullList.create();
+      ingredients.add(ROTOR);
+      ingredients.add(BLADE);
+      this.placementInfo = PlacementInfo.create(ingredients);
+    }
+    return this.placementInfo;
   }
 
   @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return new ItemStack(RailcraftItems.TURBINE_ROTOR.get());
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width >= 2 && height >= 2;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<RotorRepairRecipe> getSerializer() {
     return RailcraftRecipeSerializers.ROTOR_REPAIR.get();
   }
 }

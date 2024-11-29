@@ -48,11 +48,6 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  @Override
-  public boolean isEnchantable(ItemStack itemStack) {
-    return false;
-  }
-
   public void fillItemCategory(CreativeModeTab.Output output) {
     output.accept(new ItemStack(this));
     var item = new ItemStack(this);
@@ -77,7 +72,7 @@ public class FirestoneItem extends Item {
       boolean isSelected) {
     if (this.spawnsFire
         && level instanceof ServerLevel serverLevel
-        && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+        && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
       trySpawnFire(serverLevel, player.blockPosition(), stack, player);
@@ -104,7 +99,7 @@ public class FirestoneItem extends Item {
     int y = pos.getY() + random.nextInt(12);
     int z = pos.getZ() - 5 + random.nextInt(12);
 
-    y = Mth.clamp(y, level.getMinBuildHeight() + 2, level.getMaxBuildHeight() - 1);
+    y = Mth.clamp(y, level.getMinY() + 2, level.getMaxY() - 1);
 
     var firePos = new BlockPos(x, y, z);
     var blockState = BaseFireBlock.getState(level, firePos);

@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.List;
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.ChatFormatting;
@@ -11,8 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
@@ -21,7 +23,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -29,6 +32,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -97,15 +101,16 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public BlockState updateShape(BlockState blockState, Direction neighborDirection,
-      BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
     if (ReversibleOutfittedTrackBlock.getFacing(blockState).getClockWise()
-        .getAxis() != neighborDirection.getAxis()) {
-      return super.updateShape(blockState, neighborDirection, neighborState, level, pos,
-          neighborPos);
+        .getAxis() != direction.getAxis()) {
+      return super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction,
+          neighborPos, neighborState, randomSource);
     } else {
       return blockState.setValue(IN_WALL, this.isWall(neighborState)
-          || this.isWall(level.getBlockState(pos.relative(neighborDirection.getOpposite()))));
+          || this.isWall(levelReader.getBlockState(blockPos.relative(direction.getOpposite()))));
     }
   }
 
@@ -122,7 +127,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos pos) {
+  public VoxelShape getOcclusionShape(BlockState blockState) {
     if (blockState.getValue(IN_WALL)) {
       return getRailShapeRaw(blockState) == RailShape.EAST_WEST
           ? X_OCCLUSION_SHAPE_LOW
@@ -186,7 +191,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level,
+  protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     var result = super.useItemOn(itemStack, state, level, pos, player, hand, rayTraceResult);
     if (result.consumesAction()) {
@@ -200,7 +205,7 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
               : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1,
           level.getRandom().nextFloat() * 0.1F + 0.9F);
     }
-    return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -214,9 +219,9 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
+  public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
+      @Nullable Orientation orientation, boolean moved) {
+    super.neighborChanged(blockState, level, pos, neighborBlock, orientation, moved);
     if (!level.isClientSide()) {
       boolean powered = isPowered(blockState);
       if (powered != isOpen(blockState)) {

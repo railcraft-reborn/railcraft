@@ -12,13 +12,12 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class RailcraftDamageTypeTagsProvider extends DamageTypeTagsProvider {
 
   public RailcraftDamageTypeTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
-      ExistingFileHelper existingFileHelper) {
-    super(packOutput, lookupProvider, RailcraftConstants.ID, existingFileHelper);
+      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
+    super(packOutput, registries, RailcraftConstants.ID, existingFileHelper);
   }
 
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags(HolderLookup.Provider registries) {
     //FIXME: Have to use addOptional, as the add method causes an error
     // about missing references for some reason
     this.tag(DamageTypeTags.BYPASSES_ARMOR)

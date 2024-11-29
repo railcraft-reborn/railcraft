@@ -7,11 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -72,7 +73,7 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+  public boolean propagatesSkylightDown(BlockState state) {
     return !state.getValue(WATERLOGGED);
   }
 
@@ -97,14 +98,15 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, LevelAccessor level, BlockPos pos, BlockPos newPos) {
-    if (state.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
+    if (blockState.getValue(WATERLOGGED)) {
+      scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelReader));
     }
-    return level.getBlockState(newPos).getBlock() instanceof SwitchTrackBlock
-        ? state.setValue(FACING, direction)
-        : state;
+    return levelReader.getBlockState(neighborPos).getBlock() instanceof SwitchTrackBlock
+        ? blockState.setValue(FACING, direction)
+        : blockState;
   }
 
   @Override

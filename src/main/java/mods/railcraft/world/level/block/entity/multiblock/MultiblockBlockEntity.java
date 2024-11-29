@@ -21,7 +21,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,9 +93,9 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @param hand
    * @return the result
    */
-  public ItemInteractionResult use(ServerPlayer player, InteractionHand hand) {
+  public InteractionResult use(ServerPlayer player, InteractionHand hand) {
     player.openMenu(this, this.getBlockPos());
-    return ItemInteractionResult.CONSUME;
+    return InteractionResult.CONSUME;
   }
 
   /**

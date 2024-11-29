@@ -7,6 +7,7 @@ import mods.railcraft.util.EntitySearcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -14,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +27,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -42,7 +44,7 @@ public class ElevatorTrackBlock extends Block {
 
   public static final byte ELEVATOR_TIMER = SharedConstants.TICKS_PER_SECOND;
 
-  public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+  public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   protected static final VoxelShape EAST_SHAPE = box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
   protected static final VoxelShape WEST_SHAPE = box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -93,13 +95,15 @@ public class ElevatorTrackBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, LevelAccessor world, BlockPos pos, BlockPos newPos) {
-    if (direction.getOpposite() == state.getValue(FACING)
-        && !state.canSurvive(world, pos)) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
+    if (direction.getOpposite() == blockState.getValue(FACING)
+        && !blockState.canSurvive(levelReader, blockPos)) {
       return Blocks.AIR.defaultBlockState();
     } else {
-      return super.updateShape(state, direction, newState, world, pos, newPos);
+      return super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction,
+          neighborPos, neighborState, randomSource);
     }
   }
 
@@ -171,8 +175,8 @@ public class ElevatorTrackBlock extends Block {
   @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
-      BlockPos neighborPos, boolean something) {
-    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, something);
+      @Nullable Orientation orientation, boolean something) {
+    super.neighborChanged(blockState, level, pos, neighborBlock, orientation, something);
     boolean powered = getPowered(blockState);
     if (powered != this.determinePowered(level, pos, blockState))
       level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));

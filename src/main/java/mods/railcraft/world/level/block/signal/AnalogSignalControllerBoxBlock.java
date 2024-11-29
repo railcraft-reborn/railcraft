@@ -29,7 +29,7 @@ public class AnalogSignalControllerBoxBlock extends SignalControllerBoxBlock imp
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
           .ifPresent(ScreenFactories::openAnalogSignalControllerBoxScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

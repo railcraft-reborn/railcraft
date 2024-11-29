@@ -12,13 +12,13 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class RailcraftPoiTypeTagsProvider extends PoiTypeTagsProvider {
 
   public RailcraftPoiTypeTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
+      CompletableFuture<HolderLookup.Provider> registries,
       ExistingFileHelper existingFileHelper) {
-    super(packOutput, lookupProvider, RailcraftConstants.ID, existingFileHelper);
+    super(packOutput, registries, RailcraftConstants.ID, existingFileHelper);
   }
 
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags(HolderLookup.Provider registries) {
     this.tag(PoiTypeTags.ACQUIRABLE_JOB_SITE)
         .addOptional(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getId())
         .addOptional(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getId());

@@ -73,7 +73,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
 
   protected void onPulse(ServerLevel serverLevel) {
     EntitySearcher.findMinecarts()
-        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .at(this.getBlockPos().offset(this.getFacing().getUnitVec3i()))
         .stream(serverLevel)
         .findAny()
         .ifPresentOrElse(cart -> {
@@ -91,14 +91,14 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
             if (!cart.getPassengers().isEmpty()) {
               MinecartUtil.removePassengers(cart);
             }
-            cart.kill();
+            cart.kill(serverLevel);
           }
         }, () -> {
           if (this.timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * SharedConstants.TICKS_PER_SECOND) {
             for (int i = 0; i < this.getContainerSize(); i++) {
               var cartStack = this.getItem(i);
               if (!cartStack.isEmpty()) {
-                var pos = this.getBlockPos().offset(this.getFacing().getNormal());
+                var pos = this.getBlockPos().offset(this.getFacing().getUnitVec3i());
                 var placedCart = MinecartUtil.placeCart(cartStack, serverLevel, pos);
 
                 if (placedCart != null) {

@@ -6,9 +6,11 @@ import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.post.PostBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -76,13 +78,15 @@ public abstract class SingleSignalBlock extends SignalBlock {
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, LevelAccessor world, BlockPos pos, BlockPos newPos) {
-    state = super.updateShape(state, direction, newState, world, pos, newPos);
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction,
+      BlockPos neighborPos, BlockState neighborState, RandomSource randomSource) {
+    blockState = super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos,
+        direction, neighborPos, neighborState, randomSource);
     return direction == Direction.DOWN
-        ? state.setValue(DOWN, this.connectsTo(newState,
-            newState.isFaceSturdy(world, newPos, direction.getOpposite()), direction,
-            state.getValue(FACING)))
-        : state;
+        ? blockState.setValue(DOWN, this.connectsTo(neighborState,
+            neighborState.isFaceSturdy(levelReader, neighborPos, direction.getOpposite()), direction,
+            blockState.getValue(FACING)))
+        : blockState;
   }
 }

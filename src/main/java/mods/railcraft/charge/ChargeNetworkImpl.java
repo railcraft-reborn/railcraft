@@ -676,7 +676,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public void zap(Entity entity, Charge.DamageOrigin origin, float damage) {
-      if (!(entity.level() instanceof ServerLevel level)) {
+      if (!(entity.level() instanceof ServerLevel serverLevel)) {
         return;
       }
       // logical server
@@ -699,7 +699,7 @@ public class ChargeNetworkImpl implements Charge.Network {
           for (var entry : protections.entrySet()) {
             if (remainingDamage > 0.1F) {
               var result = entry.getValue()
-                  .zap(livingEntity.getItemBySlot(entry.getKey()), level,
+                  .zap(livingEntity.getItemBySlot(entry.getKey()), serverLevel,
                       livingEntity, remainingDamage);
               livingEntity.setItemSlot(entry.getKey(), result.stack());
               remainingDamage -= result.damagePrevented();
@@ -709,9 +709,9 @@ public class ChargeNetworkImpl implements Charge.Network {
           }
         }
         if (remainingDamage > 0.1F
-            && entity.hurt(origin == Charge.DamageOrigin.BLOCK
-                ? RailcraftDamageSources.electric(level.registryAccess())
-                : RailcraftDamageSources.trackElectric(level.registryAccess()), remainingDamage)) {
+          && entity.hurtServer(serverLevel, origin == Charge.DamageOrigin.BLOCK
+            ? RailcraftDamageSources.electric(serverLevel.registryAccess())
+            : RailcraftDamageSources.trackElectric(serverLevel.registryAccess()), remainingDamage)) {
           this.removeCharge(chargeCost, false);
           Charge.zapEffectProvider().zapEffectDeath(entity.level(),
               entity.getX(), entity.getY(), entity.getZ());
@@ -825,7 +825,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     positions = new ConnectionMap();
     for (Direction facing : Direction.values()) {
-      positions.put(facing.getNormal(), any);
+      positions.put(facing.getUnitVec3i(), any);
     }
     CONNECTION_MAPS.put(ChargeBlock.ConnectType.BLOCK, positions);
 

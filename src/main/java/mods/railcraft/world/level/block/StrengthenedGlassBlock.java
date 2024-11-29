@@ -6,6 +6,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class StrengthenedGlassBlock extends AbstractStrengthenedGlassBlock {
 
@@ -21,18 +22,18 @@ public class StrengthenedGlassBlock extends AbstractStrengthenedGlassBlock {
     return this.defaultBlockState().setValue(TYPE, Type.determine(blockPos, level, this));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    super.neighborChanged(blockState, level, blockPos, neighborBlock, neighborPos, moved);
-    if (neighborPos.getX() != blockPos.getX() || neighborPos.getZ() != blockPos.getZ()) {
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block neighborBlock,
+      @Nullable Orientation orientation, boolean movedByPiston) {
+    super.neighborChanged(blockState, level, blockPos, neighborBlock, orientation, movedByPiston);
+    throw new RuntimeException("TEST");
+    /*if (neighborPos.getX() != blockPos.getX() || neighborPos.getZ() != blockPos.getZ()) {
       return;
     }
 
     var type = Type.determine(blockPos, level, this);
     if (type != blockState.getValue(TYPE)) {
       level.setBlockAndUpdate(blockPos, blockState.setValue(TYPE, type));
-    }
+    }*/
   }
 }

@@ -1,6 +1,7 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
+import org.apache.commons.lang3.NotImplementedException;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
@@ -58,12 +59,13 @@ public class RollingRecipeCategory implements IRecipeCategory<RollingRecipe> {
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, RollingRecipe recipe, IFocusGroup focuses) {
     var registryAccess = Minecraft.getInstance().level.registryAccess();
-    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
+    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResult()));
     int width = recipe.getWidth();
     int height = recipe.getHeight();
-    var inputs = recipe.getIngredients().stream()
-        .map(ingredient -> List.of(ingredient.getItems()))
+    var inputs = recipe.placementInfo().ingredients().stream()
+        .map(ingredient -> List.of(ingredient.items()))
         .toList();
-    this.craftingGridHelper.createAndSetInputs(builder, inputs, width, height);
+    throw new NotImplementedException("Not implemented");
+    //this.craftingGridHelper.createAndSetInputs(builder, inputs, width, height);
   }
 }

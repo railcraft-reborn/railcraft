@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -176,7 +177,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     if (level.isClientSide()) {
       return;
     }
@@ -247,7 +248,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
       CollisionContext context) {
     RailShape railShape = blockState.is(this) ? blockState.getValue(this.getShapeProperty()) : null;
-    return railShape != null && railShape.isAscending() ? HALF_BLOCK_AABB : FLAT_AABB;
+    return railShape != null && railShape.isSlope() ? HALF_BLOCK_AABB : FLAT_AABB;
   }
 
   /**

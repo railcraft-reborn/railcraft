@@ -1,7 +1,7 @@
 package mods.railcraft.client.model;
 
-import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import net.minecraft.client.model.HierarchicalModel;
+import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,12 +9,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class SteamLocomotiveModel extends HierarchicalModel<Locomotive> {
-
-  private final ModelPart root;
+public class SteamLocomotiveModel extends EntityModel<LocomotiveRenderState> {
 
   public SteamLocomotiveModel(ModelPart root) {
-    this.root = root;
+    super(root);
   }
 
   public static LayerDefinition createBodyLayer(CubeDeformation deformation) {
@@ -59,11 +57,6 @@ public class SteamLocomotiveModel extends HierarchicalModel<Locomotive> {
   }
 
   @Override
-  public void setupAnim(Locomotive entity, float limbSwing, float limbSwingAmount, float ageInTicks,
-      float netHeadYaw, float headPitch) {}
-
-  @Override
-  public ModelPart root() {
-    return this.root;
+  public void setupAnim(LocomotiveRenderState renderState) {
   }
 }

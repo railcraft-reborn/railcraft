@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -39,7 +39,7 @@ public class OutfittedTrackBlock extends TrackBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state,
+  protected InteractionResult useItemOn(ItemStack itemStack, BlockState state,
       Level level, BlockPos pos, Player player, InteractionHand hand,
       BlockHitResult rayTraceResult) {
     if (player instanceof ServerPlayer serverPlayer) {
@@ -47,10 +47,10 @@ public class OutfittedTrackBlock extends TrackBlock {
           && crowbar.canWhack(player, hand, itemStack, pos)
           && this.crowbarWhack(state, level, pos, player, hand, itemStack)) {
         crowbar.onWhack(serverPlayer, hand, itemStack, pos);
-        return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
       }
     }
-    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    return InteractionResult.TRY_WITH_EMPTY_HAND;
   }
 
   protected boolean crowbarWhack(BlockState state, Level level, BlockPos pos,

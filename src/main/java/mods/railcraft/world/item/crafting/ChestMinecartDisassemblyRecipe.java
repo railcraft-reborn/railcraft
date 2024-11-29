@@ -11,7 +11,7 @@ public class ChestMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<ChestMinecartDisassemblyRecipe> getSerializer() {
     return RailcraftRecipeSerializers.CHEST_MINECART_DISASSEMBLY.get();
   }
 }

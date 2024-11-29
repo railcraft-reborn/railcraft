@@ -1,6 +1,6 @@
 package mods.railcraft.client.model;
 
-import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -9,22 +9,20 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 
 /**
  * Copy of {@link MinecartModel} that accepts a {@link CubeDeformation}.
  *
  * @author Sm0keySa1m0n
  *
- * @param <T> - entity type
+ * @param <T> - EntityRenderState type
  */
-public class DeformableMinecartModel<T extends Entity> extends HierarchicalModel<T> {
-
-  private final ModelPart root;
+public class DeformableMinecartModel<T extends EntityRenderState> extends EntityModel<T> {
 
   public DeformableMinecartModel(ModelPart root) {
-    this.root = root;
+    super(root);
   }
 
   public static LayerDefinition createBodyLayer(CubeDeformation cubeDeformation) {
@@ -56,14 +54,5 @@ public class DeformableMinecartModel<T extends Entity> extends HierarchicalModel
             .addBox(-8, -9, -1, 16, 8, 2, cubeDeformation),
         PartPose.offset(0, 4, 7));
     return LayerDefinition.create(meshdefinition, 64, 32);
-  }
-
-  @Override
-  public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks,
-      float netHeadYaw, float headPitch) {}
-
-  @Override
-  public ModelPart root() {
-    return this.root;
   }
 }

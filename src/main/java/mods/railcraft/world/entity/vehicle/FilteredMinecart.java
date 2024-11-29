@@ -22,9 +22,9 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
-      Level level) {
-    super(itemStack, type, x, y, z, level);
+  protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override

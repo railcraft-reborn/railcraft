@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.track.actuator;
 
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements EntityBlock {
@@ -34,7 +36,7 @@ public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements 
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -56,7 +58,7 @@ public class SwitchTrackRouterBlock extends SwitchTrackActuatorBlock implements 
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborBlockPos, boolean moved) {
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
         .ifPresent(SwitchTrackRouterBlockEntity::neighborChanged);
   }

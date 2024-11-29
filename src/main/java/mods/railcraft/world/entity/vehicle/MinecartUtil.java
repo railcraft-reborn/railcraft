@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -61,14 +62,14 @@ public final class MinecartUtil {
     }
     cart.setDeltaMovement(0, cart.getDeltaMovement().y(), 0);
 
-    if (cart.level().isClientSide()) {
+    if (!(cart.level() instanceof ServerLevel serverLevel)) {
       return;
     }
     removePassengers(cart, cart.getX(), cart.getY() + 1.5D, cart.getZ());
-    cart.level().explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
+    serverLevel.explode(cart, cart.getX(), cart.getY(), cart.getZ(), 3F,
         Level.ExplosionInteraction.TNT);
-    if (cart.level().getRandom().nextInt(2) == 0) {
-      cart.kill();
+    if (serverLevel.getRandom().nextInt(2) == 0) {
+      cart.kill(serverLevel);
     }
   }
 
@@ -223,17 +224,18 @@ public final class MinecartUtil {
 
     if (EntitySearcher.findMinecarts().at(pos).list(level).isEmpty()) {
       var trackShape = TrackUtil.getTrackDirection(level, pos, blockState);
-      double h = trackShape.isAscending() ? 0.5 : 0.0;
+      double h = trackShape.isSlope() ? 0.5 : 0.0;
 
       var cartStack = cartItem.copy();
       AbstractMinecart cart = null;
 
       if (cartItem.getItem() instanceof CartItem railcraftCartItem) {
-        cart = railcraftCartItem.getMinecartFactory().createMinecart(cartStack, pos.getX() + 0.5,
-            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, level);
+        cart = railcraftCartItem.getMinecartFactory().createMinecart(cartStack, level,
+            pos.getX() + 0.5, pos.getY() + 0.0625D + h, pos.getZ() + 0.5);
       } else if (cartItem.getItem() instanceof MinecartItem minecartItem) {
         cart = AbstractMinecart.createMinecart(level, pos.getX() + 0.5,
-            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, minecartItem.type, cartItem, null);
+            pos.getY() + 0.0625D + h, pos.getZ() + 0.5, minecartItem.type,
+            EntitySpawnReason.SPAWN_ITEM_USE, cartItem, null);
       }
 
       if (cart == null) {

@@ -14,7 +14,7 @@ import vazkii.patchouli.api.PatchouliAPI;
 public class PatchouliBookCrafting extends ShapelessRecipe {
 
   public PatchouliBookCrafting(CraftingBookCategory category) {
-    super("", category, makeGuideBook(), NonNullList.of(Ingredient.EMPTY,
+    super("", category, makeGuideBook(), NonNullList.of(Ingredient.of(),
         Ingredient.of(Items.BOOK), Ingredient.of(RailcraftItems.IRON_CROWBAR.get())));
   }
 
@@ -23,7 +23,7 @@ public class PatchouliBookCrafting extends ShapelessRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<ShapelessRecipe> getSerializer() {
     return RailcraftRecipeSerializers.PATCHOULI_BOOK_CRAFTING.get();
   }
 }

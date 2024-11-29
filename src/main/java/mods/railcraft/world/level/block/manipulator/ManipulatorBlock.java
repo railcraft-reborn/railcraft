@@ -53,7 +53,7 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
       }
       serverPlayer.openMenu(this.blockEntityType.cast(blockEntity), blockPos);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   public abstract Direction getFacing(BlockState blockState);

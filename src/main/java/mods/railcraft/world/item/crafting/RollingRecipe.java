@@ -1,22 +1,29 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
-import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class RollingRecipe implements Recipe<CraftingInput> {
@@ -24,6 +31,8 @@ public class RollingRecipe implements Recipe<CraftingInput> {
   private final ShapedRecipePattern pattern;
   private final ItemStack result;
   private final int processTime;
+  @Nullable
+  private PlacementInfo placementInfo;
 
   public RollingRecipe(ShapedRecipePattern pattern, ItemStack result, int processTime) {
     this.pattern = pattern;
@@ -55,32 +64,29 @@ public class RollingRecipe implements Recipe<CraftingInput> {
 
   @Override
   public ItemStack assemble(CraftingInput inventory, HolderLookup.Provider provider) {
-    return this.getResultItem(provider).copy();
+    return this.result.copy();
+  }
+
+  public ItemStack getResult() {
+    return result;
   }
 
   @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width >= this.pattern.width() && height >= this.pattern.height();
-  }
-
-  @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return this.result;
-  }
-
-  @Override
-  public NonNullList<Ingredient> getIngredients() {
-    return this.pattern.ingredients();
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<RollingRecipe> getSerializer() {
     return RailcraftRecipeSerializers.ROLLING.get();
   }
 
   @Override
-  public RecipeType<?> getType() {
+  public RecipeType<RollingRecipe> getType() {
     return RailcraftRecipeTypes.ROLLING.get();
+  }
+
+  @Override
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      this.placementInfo = PlacementInfo.createFromOptionals(this.pattern.ingredients());
+    }
+    return this.placementInfo;
   }
 
   @Override
@@ -89,8 +95,25 @@ public class RollingRecipe implements Recipe<CraftingInput> {
   }
 
   @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.MANUAL_ROLLING_MACHINE.get());
+  public List<RecipeDisplay> display() {
+    return List.of(
+        new ShapedCraftingRecipeDisplay(
+            this.pattern.width(),
+            this.pattern.height(),
+            this.pattern.ingredients().stream()
+                .map(ingredient -> ingredient
+                    .map(Ingredient::display)
+                    .orElse(SlotDisplay.Empty.INSTANCE))
+                .toList(),
+            new SlotDisplay.ItemStackSlotDisplay(this.result),
+            new SlotDisplay.ItemSlotDisplay(RailcraftItems.MANUAL_ROLLING_MACHINE)
+        )
+    );
+  }
+
+  @Override
+  public RecipeBookCategory recipeBookCategory() {
+    return RecipeBookCategories.CRAFTING_MISC;
   }
 
   public static class Serializer implements RecipeSerializer<RollingRecipe> {

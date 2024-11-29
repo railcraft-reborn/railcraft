@@ -3,21 +3,23 @@ package mods.railcraft.world.item.crafting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.RecipeUtil;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -27,6 +29,8 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
   private final Ingredient ingredient;
   private final List<CrusherOutput> probabilityOutputs;
   private final int processTime;
+  @Nullable
+  private PlacementInfo placementInfo;
 
   public CrusherRecipe(Ingredient ingredient,
       List<CrusherOutput> probabilityOutputs, int processTime) {
@@ -46,20 +50,6 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
 
   @Override
   public ItemStack assemble(SingleRecipeInput inventory, HolderLookup.Provider provider) {
-    return this.getResultItem(provider).copy();
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int pWidth, int pHeight) {
-    return true;
-  }
-
-  /**
-   * Use {@link #getProbabilityOutputs()} since we have more output
-   */
-  @Override
-  @Deprecated
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
     return ItemStack.EMPTY;
   }
 
@@ -68,17 +58,20 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    return NonNullList.of(Ingredient.EMPTY, ingredient);
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      this.placementInfo = PlacementInfo.create(ingredient);
+    }
+    return this.placementInfo;
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<CrusherRecipe> getSerializer() {
     return RailcraftRecipeSerializers.CRUSHER.get();
   }
 
   @Override
-  public RecipeType<?> getType() {
+  public RecipeType<CrusherRecipe> getType() {
     return RailcraftRecipeTypes.CRUSHING.get();
   }
 
@@ -88,15 +81,15 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
   }
 
   @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.CRUSHER.get());
+  public RecipeBookCategory recipeBookCategory() {
+    return RecipeBookCategories.CRAFTING_MISC;
   }
 
   public record CrusherOutput(Ingredient output, int quantity, double probability) {
 
     private static final Codec<CrusherOutput> CODEC = RecordCodecBuilder
         .create(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.RESULT)
+            Ingredient.CODEC.fieldOf(RecipeJsonKeys.RESULT)
                 .forGetter(recipe -> recipe.output),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.COUNT, 1)
                 .forGetter(recipe -> recipe.quantity),
@@ -105,7 +98,7 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
         ).apply(instance, CrusherOutput::new));
 
     public ItemStack getOutput() {
-      return RecipeUtil.getPreferredStackbyMod(output.getItems()).copyWithCount(quantity);
+      return RecipeUtil.getPreferredStackByMod(output.items()).copyWithCount(quantity);
     }
   }
 
@@ -113,7 +106,7 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
 
     private static final MapCodec<CrusherRecipe> CODEC =
         RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
+            Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
                 .forGetter(recipe -> recipe.ingredient),
             CrusherOutput.CODEC.listOf().fieldOf(RecipeJsonKeys.OUTPUTS)
                 .orElse(Collections.emptyList())

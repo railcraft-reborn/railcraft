@@ -1,8 +1,6 @@
 package mods.railcraft.client.model;
 
 import java.util.function.Function;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
@@ -17,14 +15,8 @@ public class SimpleModel extends Model {
   }
 
   public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory, ModelPart root) {
-    super(renderTypeFactory);
+    super(root, renderTypeFactory);
     this.root = root;
-  }
-
-  @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer,
-      int packedLight, int packedOverlay, int color) {
-    this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
   }
 
   public void setRotation(float x, float y, float z) {

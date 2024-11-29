@@ -11,7 +11,7 @@ public class WorldSpikeMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<WorldSpikeMinecartDisassemblyRecipe> getSerializer() {
     return RailcraftRecipeSerializers.WORLDSPIKE_MINECART_DISASSEMBLY.get();
   }
 }

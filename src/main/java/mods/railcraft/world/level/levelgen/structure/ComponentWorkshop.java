@@ -30,12 +30,13 @@ public class ComponentWorkshop {
       ResourceLocation templatePoolName, ResourceLocation newStructureName, int frequency) {
 
     Holder<StructureProcessorList> emptyProcessorList = processorListRegistry
-        .getHolderOrThrow(EMPTY_PROCESSOR_LIST_KEY);
+        .getOrThrow(EMPTY_PROCESSOR_LIST_KEY);
 
-    var pool = templatePoolRegistry.get(templatePoolName);
-    if (pool == null) {
+    var optionalPool = templatePoolRegistry.get(templatePoolName);
+    if (optionalPool.isEmpty()) {
       return;
     }
+    var pool = optionalPool.get().value();
 
     var piece = SinglePoolElement
         .legacy(newStructureName.toString(), emptyProcessorList)
@@ -51,8 +52,8 @@ public class ComponentWorkshop {
   }
 
   public static void addVillageStructures(RegistryAccess.Frozen registryAccess) {
-    var templatePoolRegistry = registryAccess.registry(Registries.TEMPLATE_POOL).orElseThrow();
-    var processorListRegistry = registryAccess.registry(Registries.PROCESSOR_LIST).orElseThrow();
+    var templatePoolRegistry = registryAccess.lookup(Registries.TEMPLATE_POOL).orElseThrow();
+    var processorListRegistry = registryAccess.lookup(Registries.PROCESSOR_LIST).orElseThrow();
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         ResourceLocation.withDefaultNamespace("village/plains/houses"),

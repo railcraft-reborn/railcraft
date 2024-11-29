@@ -9,13 +9,10 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -244,33 +241,33 @@ public class RailcraftVillagerTrades {
 
   private static class CartTrade implements VillagerTrades.ItemListing {
 
-    private static final List<EntityType<? extends AbstractMinecart>> CHEAP = new ArrayList<>();
-    private static final List<EntityType<? extends AbstractMinecart>> EXPENSIVE = new ArrayList<>();
-    private final List<EntityType<? extends AbstractMinecart>> current;
+    private static final List<Item> CHEAP = new ArrayList<>();
+    private static final List<Item> EXPENSIVE = new ArrayList<>();
+    private final List<Item> current;
 
     private final int priceLow, priceHigh;
 
     static {
-      CHEAP.add(EntityType.MINECART);
-      CHEAP.add(EntityType.CHEST_MINECART);
-      CHEAP.add(EntityType.HOPPER_MINECART);
-      CHEAP.add(EntityType.TNT_MINECART);
+      CHEAP.add(Items.MINECART);
+      CHEAP.add(Items.CHEST_MINECART);
+      CHEAP.add(Items.HOPPER_MINECART);
+      CHEAP.add(Items.TNT_MINECART);
       // CHEAP.add(RailcraftCarts.CARGO);
       // CHEAP.add(RailcraftCarts.JUKEBOX);
       // CHEAP.add(RailcraftCarts.BED);
-      CHEAP.add(RailcraftEntityTypes.TANK_MINECART.get());
+      CHEAP.add(RailcraftItems.TANK_MINECART.get());
       // CHEAP.add(RailcraftCarts.TNT_WOOD);
       // CHEAP.add(RailcraftCarts.WORK);
-      EXPENSIVE.add(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get());
-      EXPENSIVE.add(RailcraftEntityTypes.STEAM_LOCOMOTIVE.get());
-      EXPENSIVE.add(RailcraftEntityTypes.WORLD_SPIKE.get());
+      EXPENSIVE.add(RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
+      EXPENSIVE.add(RailcraftItems.STEAM_LOCOMOTIVE.get());
+      EXPENSIVE.add(RailcraftItems.WORLD_SPIKE.get());
       // EXPENSIVE.add(RailcraftCarts.CHEST_METALS);
       // EXPENSIVE.add(RailcraftCarts.CHEST_VOID);
-      EXPENSIVE.add(RailcraftEntityTypes.TRACK_LAYER.get());
-      EXPENSIVE.add(RailcraftEntityTypes.TRACK_RELAYER.get());
-      EXPENSIVE.add(RailcraftEntityTypes.TRACK_REMOVER.get());
-      EXPENSIVE.add(RailcraftEntityTypes.TRACK_UNDERCUTTER.get());
-      EXPENSIVE.add(RailcraftEntityTypes.TUNNEL_BORE.get());
+      EXPENSIVE.add(RailcraftItems.TRACK_LAYER.get());
+      EXPENSIVE.add(RailcraftItems.TRACK_RELAYER.get());
+      EXPENSIVE.add(RailcraftItems.TRACK_REMOVER.get());
+      EXPENSIVE.add(RailcraftItems.TRACK_UNDERCUTTER.get());
+      EXPENSIVE.add(RailcraftItems.TUNNEL_BORE.get());
     }
 
     CartTrade(boolean expensive, int priceLow, int priceHigh) {
@@ -285,9 +282,7 @@ public class RailcraftVillagerTrades {
       if (current.isEmpty()) {
         return null;
       }
-      var stack = current.get(random.nextInt(current.size()))
-          .create(trader.level())
-          .getPickResult();
+      var stack = new ItemStack(current.get(random.nextInt(current.size())));
 
       int size = random.nextIntBetweenInclusive(priceLow, priceHigh);
       return new MerchantOffer(new ItemCost(Items.EMERALD, size), stack, 12, 15, 7);

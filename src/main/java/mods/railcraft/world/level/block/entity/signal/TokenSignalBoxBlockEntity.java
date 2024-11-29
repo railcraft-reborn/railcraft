@@ -19,7 +19,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -88,7 +87,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void writeToBuf(RegistryFriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeNullable(this.ringCentroidPos, FriendlyByteBuf::writeVec3);
+    data.writeNullable(this.ringCentroidPos, (buffer, value) -> buffer.writeVec3(value));
     data.writeUUID(this.ringId);
   }
 
@@ -96,7 +95,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   public void readFromBuf(RegistryFriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = data.readNullable(FriendlyByteBuf::readVec3);
+    this.ringCentroidPos = data.readNullable(buffer -> buffer.readVec3());
     this.ringId = data.readUUID();
   }
 

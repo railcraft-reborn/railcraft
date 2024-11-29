@@ -11,7 +11,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.MinecartFurnace;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.CommonHooks;
+import net.minecraft.world.phys.Vec3;
 
 @Mixin(value = MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
@@ -20,17 +20,14 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
   private int fuel;
 
   @Shadow
-  public double xPush;
-  @Shadow
-  public double zPush;
+  public Vec3 push;
 
   protected MinecartFurnaceMixin(EntityType<?> type, Level level) {
     super(type, level);
   }
 
   /**
-   * Replace fuel checks with
-   * {@link CommonHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
+   * Replace ItemTags.FURNACE_MINECART_FUEL with itemstack.getBurnTime(...)
    */
   @Overwrite
   @Override
@@ -40,10 +37,10 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
       return ret;
     }
     ItemStack itemstack = player.getItemInHand(hand);
-    var burnTime = itemstack.getBurnTime(null);
+    var burnTime = itemstack.getBurnTime(null, this.level().fuelValues());
     if (burnTime > 0 && this.fuel + burnTime <= 32000) {
       if (!player.getAbilities().instabuild) {
-        var craftRemainder = itemstack.getCraftingRemainingItem();
+        var craftRemainder = itemstack.getCraftingRemainder();
         itemstack.shrink(1);
         if (itemstack.isEmpty()) {
           player.setItemInHand(hand, craftRemainder);
@@ -54,10 +51,9 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
     }
 
     if (this.fuel > 0) {
-      this.xPush = this.getX() - player.getX();
-      this.zPush = this.getZ() - player.getZ();
+      this.push = this.position().subtract(player.position()).horizontal();
     }
 
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

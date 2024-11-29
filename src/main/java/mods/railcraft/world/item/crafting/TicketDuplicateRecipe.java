@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -18,6 +20,8 @@ public class TicketDuplicateRecipe extends CustomRecipe {
 
   private static final Ingredient SOURCE = Ingredient.of(RailcraftItems.GOLDEN_TICKET.get());
   private static final Ingredient BLANK = Ingredient.of(Items.PAPER);
+  @Nullable
+  private PlacementInfo placementInfo;
 
   public TicketDuplicateRecipe(CraftingBookCategory category) {
     super(category);
@@ -25,6 +29,10 @@ public class TicketDuplicateRecipe extends CustomRecipe {
 
   @Override
   public boolean matches(CraftingInput craftingInput, Level level) {
+    if (craftingInput.width() * craftingInput.height() < 2) {
+      return false;
+    }
+
     int numBlank = 0;
     int numSource = 0;
     for (int slot = 0; slot < craftingInput.size(); slot++) {
@@ -49,7 +57,7 @@ public class TicketDuplicateRecipe extends CustomRecipe {
         .filter(TicketDuplicateRecipe.SOURCE)
         .findFirst()
         .orElse(ItemStack.EMPTY);
-    var result = getResultItem(provider);
+    var result = new ItemStack(RailcraftItems.TICKET.get());
     if (!source.isEmpty()) {
       if (source.has(RailcraftDataComponents.TICKET)) {
         result.set(RailcraftDataComponents.TICKET, source.get(RailcraftDataComponents.TICKET));
@@ -59,25 +67,18 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(Ingredient.of(RailcraftItems.GOLDEN_TICKET.get()));
-    ingredients.add(Ingredient.of(Items.PAPER));
-    return ingredients;
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      NonNullList<Ingredient> ingredients = NonNullList.create();
+      ingredients.add(Ingredient.of(RailcraftItems.GOLDEN_TICKET.get()));
+      ingredients.add(Ingredient.of(Items.PAPER));
+      this.placementInfo = PlacementInfo.create(ingredients);
+    }
+    return this.placementInfo;
   }
 
   @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return new ItemStack(RailcraftItems.TICKET.get());
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width * height >= 2;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<TicketDuplicateRecipe> getSerializer() {
     return RailcraftRecipeSerializers.TICKET_DUPLICATE.get();
   }
 }

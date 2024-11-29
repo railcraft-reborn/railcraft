@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -95,7 +96,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   public Optional<RecipeHolder<RollingRecipe>> getRecipe() {
-    return this.level.getRecipeManager()
+    return ((ServerLevel) this.level).recipeAccess()
         .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), this.level);
   }
 

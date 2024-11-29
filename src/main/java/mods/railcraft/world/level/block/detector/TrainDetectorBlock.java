@@ -43,6 +43,6 @@ public class TrainDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.TRAIN_DETECTOR.get())
           .ifPresent(ScreenFactories::openTrainDetectorScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

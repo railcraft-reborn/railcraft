@@ -45,14 +45,16 @@ public class RailcraftEnchantments {
 
   public static void bootstrap(BootstrapContext<Enchantment> context) {
     var items = context.lookup(Registries.ITEM);
+    var entityType = context.lookup(Registries.ENTITY_TYPE);
+
     register(context, WRECKING, customDamageEnchantment(items, 1, 11, 20));
     register(context, IMPLOSION, customDamageEnchantment(items, 5, 8, 20)
         .withEffect(EnchantmentEffectComponents.DAMAGE,
             new AddValue(LevelBasedValue.perLevel(2.5f)),
             LootItemEntityPropertyCondition.hasProperties(
                 LootContext.EntityTarget.THIS,
-                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.CREEPER))
-            )));
+                EntityPredicate.Builder.entity()
+                    .entityType(EntityTypePredicate.of(entityType, EntityType.CREEPER)))));
     register(context, DESTRUCTION, Enchantment.enchantment(
         Enchantment.definition(items.getOrThrow(RailcraftTags.Items.CROWBAR), 1, 3,
             Enchantment.dynamicCost(5, 10), Enchantment.dynamicCost(15, 10),

@@ -22,11 +22,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEntity> {
 
-  public static final DirectionProperty FACING = BlockStateProperties.FACING;
+  public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
   private static final MapCodec<TrainDispenserBlock> CODEC = simpleCodec(TrainDispenserBlock::new);
 
   public TrainDispenserBlock(Properties properties) {
@@ -76,7 +77,7 @@ public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEnt
 
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
-      BlockPos fromPos, boolean isMoving) {
+      @Nullable Orientation orientation, boolean isMoving) {
 
     boolean flag = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
     level.setBlock(pos, state.setValue(POWERED, flag), 4);

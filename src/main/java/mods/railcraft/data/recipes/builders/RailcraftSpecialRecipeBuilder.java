@@ -2,8 +2,10 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 
@@ -11,7 +13,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
 
   private final Function<CraftingBookCategory, Recipe<?>> factory;
 
-  public RailcraftSpecialRecipeBuilder(Function<CraftingBookCategory, Recipe<?>> factory) {
+  private RailcraftSpecialRecipeBuilder(Function<CraftingBookCategory, Recipe<?>> factory) {
     super(factory);
     this.factory = factory;
   }
@@ -22,7 +24,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
 
   @Override
   public void save(RecipeOutput recipeOutput, String id) {
-    recipeOutput.accept(RailcraftConstants.rl(id),
-        this.factory.apply(CraftingBookCategory.MISC), null);
+    var resourceKey = ResourceKey.create(Registries.RECIPE, RailcraftConstants.rl(id));
+    recipeOutput.accept(resourceKey, this.factory.apply(CraftingBookCategory.MISC), null);
   }
 }

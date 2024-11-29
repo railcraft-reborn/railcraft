@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.tank;
 
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.redstone.Orientation;
 
 public abstract class TankValveBlock extends BaseTankBlock {
 
@@ -33,8 +35,8 @@ public abstract class TankValveBlock extends BaseTankBlock {
   @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    super.neighborChanged(blockState, level, blockPos, neighborBlock, neighborPos, moved);
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
+    super.neighborChanged(blockState, level, blockPos, neighborBlock, orientation, moved);
     var currentAxis = blockState.getValue(AXIS);
     var axis = determineAxis(level, blockPos, currentAxis);
     if (axis != currentAxis) {

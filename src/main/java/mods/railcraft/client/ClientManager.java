@@ -1,9 +1,7 @@
 package mods.railcraft.client;
 
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
-import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
+import org.joml.Vector4f;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
@@ -75,13 +73,14 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -186,7 +185,7 @@ public class ClientManager {
   }
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.register((stack, tintIndex) -> FastColor.ARGB32.opaque(switch (tintIndex) {
+    event.register((stack, tintIndex) -> ARGB.opaque(switch (tintIndex) {
       case 0 -> LocomotiveItem.getColor(stack).primary().getMapColor().col;
       case 1 -> LocomotiveItem.getColor(stack).secondary().getMapColor().col;
       default -> 0xFFFFFFFF;
@@ -301,19 +300,19 @@ public class ClientManager {
 
       @Override
       @NotNull
-      public Vector3f modifyFogColor(Camera camera, float partialTick,
-          ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+      public Vector4f modifyFogColor(Camera camera, float partialTick,
+          ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
         var x = Integer.parseInt("6A", 16) / 255f;
         var y = Integer.parseInt("62", 16) / 255f;
         var z = Integer.parseInt("00", 16) / 255f;
-        return new Vector3f(x, y, z);
+        return new Vector4f(x, y, z, fluidFogColor.w());
       }
 
       @Override
-      public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance,
-          float partialTick, float nearDistance, float farDistance, FogShape shape) {
-        RenderSystem.setShaderFogStart(0);
-        RenderSystem.setShaderFogEnd(3f);
+      public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode,
+          float renderDistance, float partialTick, FogParameters fogParameters) {
+        return new FogParameters(0, 3f, fogParameters.shape(),
+            fogParameters.red(), fogParameters.green(), fogParameters.blue(), fogParameters.alpha());
       }
     }, RailcraftFluidTypes.CREOSOTE.get());
   }

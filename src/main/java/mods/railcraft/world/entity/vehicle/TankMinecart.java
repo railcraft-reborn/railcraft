@@ -64,8 +64,8 @@ public class TankMinecart extends FilteredMinecart
     super(type, level);
   }
 
-  public TankMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), x, y, z, level);
+  public TankMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.TANK_MINECART.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
   }
 

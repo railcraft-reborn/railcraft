@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.model.TunnelBoreModel;
+import mods.railcraft.client.renderer.entity.state.TunnelBoreRendererState;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,10 +13,10 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
-public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
+public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRendererState> {
 
   private static final ResourceLocation TEXTURE =
       RailcraftConstants.rl("textures/entity/tunnel_bore/tunnel_bore.png");
@@ -30,55 +31,57 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
   // A lot of this is copied from the minecart renderer.
   @Override
-  public void render(TunnelBore bore, float yaw, float partialTicks,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
-    matrixStack.pushPose();
-    long var10 = (long) bore.getId() * 493286711L;
-    var10 = var10 * var10 * 4392167121L + var10 * 98761L;
-    float tx = (((float) (var10 >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-    float ty = (((float) (var10 >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-    float tz = (((float) (var10 >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-    matrixStack.translate(tx, ty, tz);
+  public void render(TunnelBoreRendererState renderState, PoseStack poseStack,
+      MultiBufferSource bufferSource, int packedLight) {
+    poseStack.pushPose();
+    long i = renderState.offsetSeed;
+    float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+    float f1 = (((float) (i >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+    float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
+    poseStack.translate(f, f1, f2);
 
-    matrixStack.translate(0F, 0.375F, 0F);
+    float yaw = renderState.yRot;
+    poseStack.translate(0F, 0.375F, 0F);
+    poseStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
+    poseStack.mulPose(Axis.YP.rotationDegrees(90));
 
-    matrixStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
-
-    float roll = (float) bore.getHurtTime() - partialTicks;
-    float damage = bore.getDamage() - partialTicks;
-    if (damage < 0)
-      damage = 0;
+    float roll = renderState.hurtTime;
     if (roll > 0) {
-      matrixStack.mulPose(Axis.XP.rotationDegrees(
-          Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
+      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float)renderState.hurtDir));
     }
 
     // float light = bore.getBrightness();
     // light = light + ((1.0f - light) * 0.4f);
 
-    boolean ghostTrain = Seasons.isGhostTrain(bore);
+    boolean ghostTrain = Seasons.isGhostTrain(renderState);
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    var head = bore.getBoreHead();
+    var head = renderState.head;
     modelTunnelBore.setRenderBoreHead(head != null);
 
-    matrixStack.scale(-1, -1, 1);
+    poseStack.scale(-1, -1, 1);
 
-    this.modelTunnelBore.setBoreHeadRotation(bore.getBoreRotationAngle());
-    this.modelTunnelBore.setBoreActive(bore.isMinecartPowered());
-    this.modelTunnelBore.setupAnim(bore, 0, 0, -0.1F, 0, 0);
-    var textureLocation = getTextureLocation(bore);
-    var vertexBuilder = renderTypeBuffer.getBuffer(this.modelTunnelBore.renderType(textureLocation));
-    this.modelTunnelBore.renderToBuffer(matrixStack, vertexBuilder, packedLight,
-        OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(ghostTrain ? 0.8F : 1,
-        colorIntensity, colorIntensity, colorIntensity));
-    matrixStack.popPose();
+    this.modelTunnelBore.setBoreHeadRotation(renderState.rotationAngle);
+    this.modelTunnelBore.setBoreActive(renderState.isMinecartPowered);
+    this.modelTunnelBore.setupAnim(renderState);
+    var textureLocation = head != null ? head.getTextureLocation() : TEXTURE;
+    var vertexBuilder = bufferSource.getBuffer(this.modelTunnelBore.renderType(textureLocation));
+    this.modelTunnelBore.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
+        ARGB.colorFromFloat(ghostTrain ? 0.8F : 1, colorIntensity, colorIntensity, colorIntensity));
+    poseStack.popPose();
   }
 
   @Override
-  public ResourceLocation getTextureLocation(TunnelBore entity) {
-    var head = entity.getBoreHead();
-    return head != null ? head.getTextureLocation() : TEXTURE;
+  public void extractRenderState(TunnelBore entity, TunnelBoreRendererState reusedState,
+      float partialTick) {
+    super.extractRenderState(entity, reusedState, partialTick);
+    reusedState.head = entity.getBoreHead();
+    reusedState.rotationAngle = entity.getBoreRotationAngle();
+    reusedState.isMinecartPowered = entity.isMinecartPowered();
+  }
+
+  @Override
+  public TunnelBoreRendererState createRenderState() {
+    return new TunnelBoreRendererState();
   }
 }

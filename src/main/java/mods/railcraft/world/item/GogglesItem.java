@@ -9,7 +9,6 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -17,20 +16,21 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 public class GogglesItem extends ArmorItem {
 
-  public GogglesItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+  public GogglesItem(ArmorMaterial material, ArmorType type, Properties properties) {
     super(material, type, properties);
   }
 
@@ -75,13 +75,13 @@ public class GogglesItem extends ArmorItem {
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+  public InteractionResult use(Level level, Player player, InteractionHand hand) {
     var itemStack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
       var aura = incrementAura(itemStack);
       player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
     }
-    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

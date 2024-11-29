@@ -8,6 +8,7 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -64,7 +65,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   }
 
   private Optional<RecipeHolder<SmeltingRecipe>> getRecipe(ItemStack itemStack) {
-    return provider.getLevel().getRecipeManager()
+    return ((ServerLevel) provider.getLevel()).recipeAccess()
         .getRecipeFor(RecipeType.SMELTING,
             new SingleRecipeInput(itemStack), provider.getLevel());
   }
@@ -102,7 +103,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
           continue;
         }
         var output = getRecipe(stack)
-            .map(x -> x.value().getResultItem(registryAccess))
+            .map(x -> x.value().assemble(new SingleRecipeInput(stack), registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!output.isEmpty() &&
             outputContainer.canFit(output) &&

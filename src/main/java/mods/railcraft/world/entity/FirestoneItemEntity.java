@@ -46,40 +46,40 @@ public class FirestoneItemEntity extends ItemEntity {
     if (++this.clock % 4 == 0
         && this.getItem().getItem() instanceof FirestoneItem item
         && item.spawnsFire()
-        && this.level().getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+        && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
       FirestoneItem.trySpawnFire(serverLevel, this.blockPosition(), getItem(), this.getOwner());
     }
   }
 
   @Override
   public void lavaHurt() {
-    if (!this.refined || !this.isAlive() || this.level().isClientSide()) {
+    if (!this.refined || !this.isAlive() || !(this.level() instanceof ServerLevel serverLevel)) {
       return;
     }
     var firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
     var surface = this.blockPosition();
-    if (!this.level().getFluidState(surface).is(FluidTags.LAVA)
-        && !this.level().getFluidState(surface.above()).is(FluidTags.LAVA)) {
+    if (!serverLevel.getFluidState(surface).is(FluidTags.LAVA)
+        && !serverLevel.getFluidState(surface.above()).is(FluidTags.LAVA)) {
       return;
     }
 
     for (int i = 0; i < 10; i++) {
       surface = surface.above();
-      if (!this.level().getBlockState(surface).isAir()
-          || !this.level().getFluidState(surface.below()).is(FluidTags.LAVA)) {
+      if (!serverLevel.getBlockState(surface).isAir()
+          || !serverLevel.getFluidState(surface.below()).is(FluidTags.LAVA)) {
         continue;
       }
 
       var cracked = getItem().getItem() instanceof CrackedFirestoneItem;
-      if (LevelUtil.setBlockState(this.level(), surface,
+      if (LevelUtil.setBlockState(serverLevel, surface,
           firestoneBlock.setValue(RitualBlock.CRACKED, cracked), this.getOwner())) {
-        var blockEntity = this.level().getBlockEntity(surface);
+        var blockEntity = serverLevel.getBlockEntity(surface);
         if (blockEntity instanceof RitualBlockEntity fireEntity) {
           var firestone = getItem();
           fireEntity.setCharge(firestone.getMaxDamage() - firestone.getDamageValue());
           if (firestone.has(DataComponents.CUSTOM_NAME))
             fireEntity.setItemName(firestone.getDisplayName());
-          this.kill();
+          this.kill(serverLevel);
           return;
         }
       }

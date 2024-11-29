@@ -3,6 +3,7 @@ package mods.railcraft.client.gui.screen.inventory;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,12 +26,14 @@ public class BlastFurnaceScreen extends RailcraftMenuScreen<BlastFurnaceMenu> {
     var logic = this.menu.getBlastFurnace().getBlastFurnaceModule();
     if (logic.isBurning()) {
       int burnProgressScale = logic.getBurnProgressScaled(12);
-      guiGraphics.blit(WIDGETS_TEXTURE, x + 56, y + 36 + 12 - burnProgressScale, 176,
-        12 - burnProgressScale, 14, burnProgressScale + 2);
+      guiGraphics.blit(RenderType::guiTextured, WIDGETS_TEXTURE, x + 56,
+          y + 36 + 12 - burnProgressScale, 176, 12 - burnProgressScale,
+          14, burnProgressScale + 2, 256, 256);
     }
 
     int progressScale = (int) (logic.getProgressPercent() * 24);
-    guiGraphics.blit(WIDGETS_TEXTURE, x + 79, y + 34, 176, 14, progressScale + 1, 16);
+    guiGraphics.blit(RenderType::guiTextured, WIDGETS_TEXTURE, x + 79, y + 34, 176, 14,
+        progressScale + 1, 16, 256, 256);
   }
 
   @Override

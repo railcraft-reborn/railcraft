@@ -151,7 +151,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
       var humidityMultiplier = biome.getModifiedClimateSettings().downfall();
 
       var precipitationMultiplier = 1.0D;
-      if (biome.coldEnoughToSnow(pos)) {
+      if (biome.coldEnoughToSnow(pos, level.getSeaLevel())) {
         precipitationMultiplier = REFILL_PENALTY_FROZEN;
       } else if (level.isRainingAt(pos)) {
         precipitationMultiplier = REFILL_BOOST_RAIN;
@@ -159,7 +159,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
 
       var temperaturePenalty = 0.0D;
       @SuppressWarnings("deprecation")
-      var temperature = biome.getTemperature(pos);
+      var temperature = biome.getTemperature(pos, level.getSeaLevel());
       if (temperature > 1.0D) {
         temperaturePenalty = temperature - 1.0D;
       }

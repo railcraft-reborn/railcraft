@@ -16,7 +16,7 @@ public class RailcraftPotions {
 
   public static final DeferredHolder<Potion, Potion> CREOSOTE =
       deferredRegister.register("creosote",
-          () -> new Potion(new MobEffectInstance(RailcraftMobEffects.CREOSOTE, 3600)));
+          () -> new Potion("creosote", new MobEffectInstance(RailcraftMobEffects.CREOSOTE, 3600)));
 
   public static final DeferredHolder<Potion, Potion> LONG_CREOSOTE =
       deferredRegister.register("long_creosote",

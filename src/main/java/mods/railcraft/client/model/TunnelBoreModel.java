@@ -1,7 +1,7 @@
 package mods.railcraft.client.model;
 
-import mods.railcraft.world.entity.vehicle.TunnelBore;
-import net.minecraft.client.model.HierarchicalModel;
+import mods.railcraft.client.renderer.entity.state.TunnelBoreRendererState;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,16 +9,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class TunnelBoreModel extends HierarchicalModel<TunnelBore> {
+public class TunnelBoreModel extends EntityModel<TunnelBoreRendererState> {
 
-  private final ModelPart root;
   private final ModelPart boreHead;
   private final ModelPart furnaceActive;
   private final ModelPart furnaceIdle;
 
   public TunnelBoreModel(ModelPart root) {
-    super(RenderType::entityTranslucentCull);
-    this.root = root;
+    super(root, RenderType::entityTranslucent);
     this.boreHead = root.getChild("boreHead");
     this.furnaceActive = root.getChild("furnaceActive");
     this.furnaceIdle = root.getChild("furnaceIdle");
@@ -87,11 +85,6 @@ public class TunnelBoreModel extends HierarchicalModel<TunnelBore> {
   }
 
   @Override
-  public void setupAnim(TunnelBore entity, float limbSwing, float limbSwingAmount, float ageInTicks,
-      float netHeadYaw, float headPitch) {}
-
-  @Override
-  public ModelPart root() {
-    return this.root;
+  public void setupAnim(TunnelBoreRendererState renderState) {
   }
 }

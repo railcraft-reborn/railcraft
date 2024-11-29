@@ -36,7 +36,7 @@ public class ChargeMeterItem extends Item {
     }
     var pos = context.getClickedPos();
     var player = context.getPlayer();
-    var returnValue = InteractionResult.PASS;
+    InteractionResult returnValue = InteractionResult.PASS;
     var state = level.getBlockState(pos);
     if (state.getBlock() instanceof ChargeBlock chargeBlock) {
       var node = (ChargeNetworkImpl.ChargeNode) chargeBlock.getMeterAccess(Charge.distribution,

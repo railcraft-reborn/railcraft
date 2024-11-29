@@ -22,9 +22,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,24 +34,19 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class SpikeMaulItem extends TieredItem {
+public class SpikeMaulItem extends Item {
 
-  private final ItemAttributeModifiers defaultModifiers;
-
-  public SpikeMaulItem(float attackDamage, float attackSpeed, Tier tier, Properties properties) {
-    super(tier, properties.durability(tier.getUses()));
-    float attackDamageWithBonus = attackDamage + tier.getAttackDamageBonus();
-    this.defaultModifiers = ItemAttributeModifiers.builder()
-        .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
-            attackDamageWithBonus, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-        .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID,
-            attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-        .build();
-  }
-
-  @Override
-  public ItemAttributeModifiers getDefaultAttributeModifiers() {
-    return this.defaultModifiers;
+  public SpikeMaulItem(float attackDamage, float attackSpeed, ToolMaterial material, Properties properties) {
+    super(properties
+        .durability(material.durability())
+        .attributes(
+            ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
+                    attackDamage + material.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID,
+                    attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build()
+    ));
   }
 
   @Override
@@ -66,7 +61,7 @@ public class SpikeMaulItem extends TieredItem {
     }
 
     var railShape = TrackBlock.getRailShapeRaw(existingBlockState);
-    if (railShape.isAscending()) {
+    if (railShape.isSlope()) {
       return InteractionResult.PASS;
     }
 
@@ -123,7 +118,7 @@ public class SpikeMaulItem extends TieredItem {
       heldStack.hurtAndBreak(1, serverLevel, player,
           item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

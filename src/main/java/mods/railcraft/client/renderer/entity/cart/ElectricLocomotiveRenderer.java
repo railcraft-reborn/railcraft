@@ -5,6 +5,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.ElectricLocomotiveLampModel;
 import mods.railcraft.client.model.ElectricLocomotiveModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
+import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -35,20 +36,25 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
   }
 
   @Override
-  public void renderBody(Locomotive cart, float time, PoseStack poseStack,
-      MultiBufferSource renderTypeBuffer, int packedLight, int color) {
-    super.renderBody(cart, time, poseStack, renderTypeBuffer, packedLight, color);
+  protected void renderBody(LocomotiveRenderState renderState, PoseStack poseStack,
+      MultiBufferSource multiBufferSource, int packedLight, int color) {
+    super.renderBody(renderState, poseStack, multiBufferSource, packedLight, color);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     poseStack.translate(0.05F, 0, 0);
 
-    boolean bright = cart.getMode() == Locomotive.Mode.RUNNING;
+    boolean bright = renderState.mode == Locomotive.Mode.RUNNING;
 
-    var vertexBuilder = renderTypeBuffer
+    var vertexBuilder = multiBufferSource
         .getBuffer(this.lampModel.renderType(bright ? this.lampTextureOn : this.lampTextureOff));
 
     this.lampModel.renderToBuffer(poseStack, vertexBuilder,
         bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY, color);
     poseStack.popPose();
+  }
+
+  @Override
+  public LocomotiveRenderState createRenderState() {
+    return new LocomotiveRenderState();
   }
 }

@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,11 +39,11 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState,
+  protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState,
       Level level, BlockPos pos, Player player, InteractionHand interactionHand,
       BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
-      return ItemInteractionResult.SUCCESS;
+      return InteractionResult.SUCCESS;
     }
 
     return LevelUtil.getBlockEntity(level, pos, MultiblockBlockEntity.class)
@@ -51,6 +51,6 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
         .flatMap(MultiblockBlockEntity::getMembership)
         .map(MultiblockBlockEntity.Membership::master)
         .map(master -> master.use((ServerPlayer) player, interactionHand))
-        .orElse(ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION);
+        .orElse(InteractionResult.TRY_WITH_EMPTY_HAND);
   }
 }

@@ -250,13 +250,13 @@ public final class TrackUtil {
     }
 
     var up = pos.above();
-    if (shape.isAscending() && BaseRailBlock.isRail(level.getBlockState(up))) {
+    if (shape.isSlope() && BaseRailBlock.isRail(level.getBlockState(up))) {
       return Optional.of(up);
     }
 
     var down = pos.below();
     if (BaseRailBlock.isRail(level.getBlockState(down))
-        && getRailShapeRaw(level, down).isAscending()) {
+        && getRailShapeRaw(level, down).isSlope()) {
       return Optional.of(down);
     }
 

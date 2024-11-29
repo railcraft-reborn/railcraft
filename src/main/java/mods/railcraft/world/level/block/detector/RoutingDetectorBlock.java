@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class RoutingDetectorBlock extends DetectorBlock {
@@ -45,7 +46,7 @@ public class RoutingDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @SuppressWarnings("deprecation")
@@ -62,7 +63,7 @@ public class RoutingDetectorBlock extends DetectorBlock {
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborBlockPos, boolean moved) {
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
         .ifPresent(RoutingDetectorBlockEntity::neighborChanged);
   }

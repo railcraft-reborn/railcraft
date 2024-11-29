@@ -436,7 +436,8 @@ public class RoutingTableBookScreen extends Screen {
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    guiGraphics.blit(RenderType::guiTextured, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
+        IMAGE_HEIGHT, 256, 256);
     if (this.editingTitle) {
       boolean flag = this.frameTick / 6 % 2 == 0;
       var formattedcharsequence = FormattedCharSequence.composite(

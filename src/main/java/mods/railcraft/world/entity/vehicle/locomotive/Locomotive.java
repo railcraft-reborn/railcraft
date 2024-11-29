@@ -113,9 +113,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     super(type, level);
   }
 
-  protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,
-      double y, double z, ServerLevel level) {
-    super(itemStack, type, x, y, z, level);
+  protected Locomotive(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override
@@ -196,7 +196,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
     if (this.level().isClientSide()) {
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     var itemStack = player.getItemInHand(hand);
@@ -207,12 +207,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
         itemStack.hurtAndBreak(1, (ServerLevel) this.level(), (ServerPlayer) player,
             item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
       }
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+      return InteractionResult.SUCCESS;
     }
     if (this.canControl(player)) {
       return super.interact(player, hand);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   /**
@@ -506,13 +506,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  protected void applyNaturalSlowdown() {
+  protected Vec3 applyNaturalSlowdown(Vec3 entitySpeed) {
     if (this.isRemoved()) {
-      return;
+      return Vec3.ZERO;
     }
 
-    this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
-
+    Vec3 result = this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag());
     if (this.isReverse() && this.getSpeed().getLevel() > this.getMaxReverseSpeed().getLevel()) {
       this.setSpeed(this.getMaxReverseSpeed());
     }
@@ -529,8 +528,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
         }
       }
       double yaw = this.getYRot() * Mth.DEG_TO_RAD;
-      this.setDeltaMovement(
-          this.getDeltaMovement().add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force));
+      result = result.add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force);
     }
 
     if (speed != Speed.MAX) {
@@ -541,13 +539,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
         default -> 0.4F;
       };
 
-      var motion = this.getDeltaMovement();
 
-      this.setDeltaMovement(
-          Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
-          motion.y(),
-          Math.copySign(Math.min(Math.abs(motion.z()), limit), motion.z()));
+      return new Vec3(
+          Math.copySign(Math.min(Math.abs(result.x()), limit), result.x()),
+          result.y(),
+          Math.copySign(Math.min(Math.abs(result.z()), limit), result.z()));
     }
+
+    return result;
   }
 
   private int getFuelUse() {

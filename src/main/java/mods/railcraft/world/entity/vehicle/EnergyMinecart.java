@@ -7,7 +7,6 @@ import mods.railcraft.world.inventory.EnergyMinecartMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.LocomotiveEnergyComponent;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,7 +18,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class EnergyMinecart extends RailcraftMinecart {
@@ -33,8 +31,8 @@ public class EnergyMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  public EnergyMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(itemStack, RailcraftEntityTypes.ENERGY_MINECART.get(), x, y, z, level);
+  public EnergyMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.ENERGY_MINECART.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
   }
 
@@ -45,8 +43,8 @@ public class EnergyMinecart extends RailcraftMinecart {
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
+  protected void moveAlongTrack(ServerLevel serverLevel) {
+    super.moveAlongTrack(serverLevel);
     if (!this.level().isClientSide) {
       int drawnFromTrack = Charge.distribution
           .network((ServerLevel) this.level())

@@ -28,6 +28,10 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
+import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
+import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
+import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
+import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
@@ -314,7 +318,15 @@ public class Railcraft {
     generator.addProvider(event.includeServer(),
         new RailcraftAdvancementProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(),
-        new RailcraftRecipeProvider(packOutput, lookupProvider));
+        new RailcraftRecipeProvider.Runner(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new BlastFurnaceRecipeProvider.Runner(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new CokeOvenRecipeProvider.Runner(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new CrusherRecipeProvider.Runner(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new RollingRecipeProvider.Runner(packOutput, lookupProvider));
     generator.addProvider(event.includeServer(),
         new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
     generator.addProvider(event.includeServer(),
@@ -433,15 +445,15 @@ public class Railcraft {
 
   @SubscribeEvent
   public void modifyDrops(LivingDropsEvent event) {
-    var level = event.getEntity().level();
+    var level = (ServerLevel) event.getEntity().level();
     var registryAccess = level.registryAccess();
     if (event.getSource().equals(RailcraftDamageSources.steam(registryAccess))) {
-      var recipeManager = level.getRecipeManager();
+      var recipeManager = level.recipeAccess();
       for (var entityItem : event.getDrops()) {
         var drop = entityItem.getItem();
         var cooked = recipeManager
             .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(drop), level)
-            .map(x -> x.value().getResultItem(registryAccess))
+            .map(x -> x.value().assemble(null, registryAccess))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
           entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));

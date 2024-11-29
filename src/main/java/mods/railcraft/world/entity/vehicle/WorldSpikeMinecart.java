@@ -28,8 +28,8 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  public WorldSpikeMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(itemStack, RailcraftEntityTypes.WORLD_SPIKE.get(), x, y, z, level);
+  public WorldSpikeMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.WORLD_SPIKE.get(), level, x, y, z);
   }
 
   @Override

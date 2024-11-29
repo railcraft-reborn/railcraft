@@ -45,7 +45,7 @@ public class CoalCokeBlock extends Block {
   public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
       TooltipFlag flag) {
     super.appendHoverText(stack, context, tooltip, flag);
-    var burnTime = stack.getBurnTime(null);
+    var burnTime = stack.getBurnTime(null, context.level().fuelValues());
     tooltip.add(Component.translatable(Translations.Tips.COAL_COKE_BLOCK, burnTime)
         .withStyle(ChatFormatting.GRAY));
   }

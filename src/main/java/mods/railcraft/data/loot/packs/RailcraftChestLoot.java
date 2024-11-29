@@ -17,7 +17,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public record RailcraftChestLoot(HolderLookup.Provider provider) implements LootTableSubProvider {
+public record RailcraftChestLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
 
   // If you change the name, remember to regenerate the chest inside the structure
   // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}

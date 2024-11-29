@@ -11,7 +11,6 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.material.steam.SolidFuelProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
@@ -53,9 +52,8 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     });
   }
 
-  public SteamLocomotive(ItemStack itemStack, double x, double y, double z,
-      ServerLevel serverLevel) {
-    super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), x, y, z, serverLevel);
+  public SteamLocomotive(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
     this.boiler().setFuelProvider(new SolidFuelProvider(this, FUEL_SLOT) {
       @Override
@@ -104,7 +102,8 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     if (water.isEmpty() || water.getAmount() < this.waterTank.getCapacity() / 3) {
       return true;
     }
-    int numItems = this.allFuelContainer.countItems(item -> item.getBurnTime(null) > 0);
+    int numItems = this.allFuelContainer
+        .countItems(item -> item.getBurnTime(null, this.level().fuelValues()) > 0);
     if (numItems == 0) {
       return true;
     }
@@ -145,7 +144,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C ->
-          stack.getBurnTime(null) > 0;
+          stack.getBurnTime(null, this.level().fuelValues()) > 0;
       case SLOT_WATER_INPUT ->
           // if (FluidItemHelper.getFluidStackInContainer(stack)
           // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
@@ -159,7 +158,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
 
   @Override
   public boolean canAcceptPushedItem(RollingStock requester, ItemStack stack) {
-    return stack.getBurnTime(null) > 0;
+    return stack.getBurnTime(null, this.level().fuelValues()) > 0;
   }
 
   @Override

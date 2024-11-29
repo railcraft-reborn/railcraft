@@ -9,7 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,11 +60,11 @@ public class ChimneyBlock extends BaseEntityBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.SMOKER.get())
         .ifPresent(smokerBlockEntity -> smokerBlockEntity.changeColor(stack));
-    return ItemInteractionResult.SUCCESS;
+    return InteractionResult.SUCCESS;
   }
 
   @Override

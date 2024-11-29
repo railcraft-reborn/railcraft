@@ -8,6 +8,7 @@ import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -67,7 +68,8 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     int x = (this.width - this.getXSize()) / 2;
     int y = (this.height - this.getYSize()) / 2;
 
-    guiGraphics.blit(getWidgetsTexture(), x, y, 0, 0, this.getXSize(), this.getYSize());
+    guiGraphics.blit(RenderType::guiTextured, getWidgetsTexture(), x, y, 0, 0, this.getXSize(),
+        this.getYSize(), 256, 256);
 
     int relativeMouseX = mouseX - this.leftPos;
     int relativeMouseY = mouseY - this.topPos;

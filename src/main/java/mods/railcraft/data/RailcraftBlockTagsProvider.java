@@ -16,14 +16,13 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
   public RailcraftBlockTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
-      ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
+    super(packOutput, registries, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags(HolderLookup.Provider registries) {
     this.tag(RailcraftTags.Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVELS);
     this.tag(RailcraftTags.Blocks.TRACK_UNDERCUTTER_INVALID_BALLAST)

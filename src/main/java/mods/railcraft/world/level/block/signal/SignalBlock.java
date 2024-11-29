@@ -1,19 +1,18 @@
 package mods.railcraft.world.level.block.signal;
 
 import java.util.Map;
-import java.util.function.ToIntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.VoxelShapeUtil;
-import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -25,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -38,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public abstract class SignalBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
-  public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+  public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty NORTH = PipeBlock.NORTH;
   public static final BooleanProperty EAST = PipeBlock.EAST;
   public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -84,8 +83,7 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   }
 
   public final int getShapeIndex(BlockState blockState) {
-    return this.stateToIndex.computeIfAbsent(blockState,
-        (ToIntFunction<BlockState>) this::computeShapeIndex);
+    return this.stateToIndex.computeIfAbsent(blockState, this::computeShapeIndex);
   }
 
   protected int computeShapeIndex(BlockState blockState) {
@@ -99,17 +97,16 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter,
-      BlockPos blockPos) {
+  public boolean propagatesSkylightDown(BlockState blockState) {
     return !blockState.getValue(WATERLOGGED);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public int getLightBlock(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-    return LevelUtil.getBlockEntity(blockGetter, blockPos, AbstractSignalBlockEntity.class)
+  protected int getLightBlock(BlockState state) {
+    throw new RuntimeException("Not implemented");
+    /*return LevelUtil.getBlockEntity(state, state, AbstractSignalBlockEntity.class)
         .map(AbstractSignalBlockEntity::getLightValue)
-        .orElseGet(() -> super.getLightBlock(blockState, blockGetter, blockPos));
+        .orElseGet(() -> super.getLightBlock(state));*/
   }
 
   @Override
@@ -151,17 +148,18 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, LevelAccessor world, BlockPos pos, BlockPos newPos) {
-    if (state.getValue(WATERLOGGED)) {
-      world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
+    if (blockState.getValue(WATERLOGGED)) {
+      scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelReader));
     }
 
     return direction.getAxis().isHorizontal()
-        ? state.setValue(propertyByDirection.get(direction), this.connectsTo(newState,
-            newState.isFaceSturdy(world, newPos, direction.getOpposite()), direction,
-            state.getValue(FACING)))
-        : state;
+        ? blockState.setValue(propertyByDirection.get(direction), this.connectsTo(neighborState,
+        neighborState.isFaceSturdy(levelReader, neighborPos, direction.getOpposite()), direction,
+            blockState.getValue(FACING)))
+        : blockState;
   }
 
   public boolean connectsTo(BlockState blockState, boolean faceStudry, Direction direction,

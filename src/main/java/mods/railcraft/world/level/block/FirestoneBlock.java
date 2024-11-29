@@ -39,7 +39,7 @@ public class FirestoneBlock extends Block {
     BlockState state = level.getBlockState(pos);
 
     for (Direction facing : Direction.values()) {
-      if (!Block.shouldRenderFace(state, level, pos, facing, pos.relative(facing))) {
+      if (!Block.shouldRenderFace(level, pos, state, level.getBlockState(pos.relative(facing)), facing)) {
         continue;
       }
 
@@ -72,8 +72,8 @@ public class FirestoneBlock extends Block {
   @Override
   public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
     var enchantment = level.registryAccess()
-        .registryOrThrow(Registries.ENCHANTMENT)
-        .getHolderOrThrow(Enchantments.FROST_WALKER);
+        .lookupOrThrow(Registries.ENCHANTMENT)
+        .getOrThrow(Enchantments.FROST_WALKER);
     if (entity instanceof LivingEntity livingEntity && EnchantmentHelper.getEnchantmentLevel(enchantment, livingEntity) == 0) {
       entity.hurt(level.damageSources().hotFloor(), 1.5F);
     }

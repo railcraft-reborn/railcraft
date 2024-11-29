@@ -65,7 +65,7 @@ public class TrackKitItem extends Item {
       return InteractionResult.PASS;
     }
 
-    if (shape.isAscending() && !this.allowedOnSlopes) {
+    if (shape.isSlope() && !this.allowedOnSlopes) {
       player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
           .withStyle(ChatFormatting.RED), true);
       return InteractionResult.PASS;

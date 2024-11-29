@@ -16,15 +16,15 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
   public RailcraftItemTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
+      CompletableFuture<HolderLookup.Provider> registries,
       CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider,
       ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, blockTagProvider, RailcraftConstants.ID, fileHelper);
+    super(packOutput, registries, blockTagProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags(HolderLookup.Provider registries) {
     this.tag(Tags.Items.INGOTS)
         .addTag(RailcraftTags.Items.STEEL_INGOT)
         .addTag(RailcraftTags.Items.TIN_INGOT)

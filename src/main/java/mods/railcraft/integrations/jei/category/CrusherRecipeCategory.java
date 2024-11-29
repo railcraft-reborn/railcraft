@@ -68,7 +68,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, CrusherRecipe recipe, IFocusGroup focuses) {
-    var ingredients = recipe.getIngredients();
+    var ingredients = recipe.placementInfo().ingredients();
 
     builder
         .addSlot(RecipeIngredientRole.INPUT, 19, 19)

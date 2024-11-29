@@ -41,7 +41,7 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
       if (masterModule.needsFuel && this.fuelMoveTicks++ >= 128) {
         this.fuelMoveTicks = 0;
         this.provider.findAdjacentContainers()
-            .moveOneItemTo(masterModule.fuelContainer, SolidFueledSteamBoilerModule::isFuel);
+            .moveOneItemTo(masterModule.fuelContainer, this::isFuel);
       }
     });
   }
@@ -61,7 +61,7 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
     return false;
   }
 
-  private static boolean isFuel(ItemStack itemStack) {
-    return itemStack.getBurnTime(null) > 0;
+  private boolean isFuel(ItemStack itemStack) {
+    return itemStack.getBurnTime(null, this.provider.level().fuelValues()) > 0;
   }
 }

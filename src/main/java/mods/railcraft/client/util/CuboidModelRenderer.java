@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;
 import net.minecraft.core.Direction;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 /**
@@ -206,10 +206,10 @@ public class CuboidModelRenderer {
     float minV = spriteInfo.getSprite().getV(v1);
     float maxV = spriteInfo.getSprite().getV(v2);
     int argb = colors[face.ordinal()];
-    var red = FastColor.ARGB32.red(argb);
-    var green = FastColor.ARGB32.green(argb);
-    var blue = FastColor.ARGB32.blue(argb);
-    var alpha = FastColor.ARGB32.alpha(argb);
+    var red = ARGB.red(argb);
+    var green = ARGB.green(argb);
+    var blue = ARGB.blue(argb);
+    var alpha = ARGB.alpha(argb);
     // add quads
     switch (face) {
       case DOWN:

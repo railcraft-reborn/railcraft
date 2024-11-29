@@ -21,7 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -41,8 +41,8 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
       Set.of(LeverBlock.class, ButtonBlock.class, ChestBlock.class);
   private final Set<Class<? extends Block>> bannedRotations = Set.of(BaseRailBlock.class);
 
-  public CrowbarItem(Tier tier, Properties properties) {
-    super(tier, RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR, properties);
+  public CrowbarItem(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
+    super(material, RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR, attackDamage, attackSpeed, properties);
   }
 
   @Override
@@ -97,14 +97,14 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos,
       LivingEntity entityLiving) {
-    if (!level.isClientSide()
+    if (level instanceof ServerLevel serverLevel
         && entityLiving instanceof Player player && !player.isShiftKeyDown()) {
       var destructionEnchantment = level.registryAccess()
-          .registryOrThrow(Registries.ENCHANTMENT)
-          .getHolderOrThrow(RailcraftEnchantments.DESTRUCTION);
+          .lookupOrThrow(Registries.ENCHANTMENT)
+          .getOrThrow(RailcraftEnchantments.DESTRUCTION);
       int enchantLevel = stack.getEnchantmentLevel(destructionEnchantment) * 2 + 1;
       if (enchantLevel > 1) {
-        checkBlock(level, enchantLevel, pos, player);
+        checkBlock(serverLevel, enchantLevel, pos, player);
       }
     }
     return super.mineBlock(stack, level, state, pos, entityLiving);
@@ -170,7 +170,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
         .withStyle(ChatFormatting.ITALIC));
   }
 
-  private static void removeExtraBlocks(Level level, int enchantmentLevel, BlockPos pos,
+  private static void removeExtraBlocks(ServerLevel level, int enchantmentLevel, BlockPos pos,
       Player player) {
     if (enchantmentLevel > 0) {
       LevelUtil.playerRemoveBlock(level, pos, player);
@@ -178,14 +178,14 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
     }
   }
 
-  private static void checkBlock(Level level, int enchantmentLevel, BlockPos pos, Player player) {
+  private static void checkBlock(ServerLevel level, int enchantmentLevel, BlockPos pos, Player player) {
     var state = level.getBlockState(pos);
     if (player.hasCorrectToolForDrops(state)) {
       removeExtraBlocks(level, enchantmentLevel - 1, pos, player);
     }
   }
 
-  private static void checkBlocks(Level level, int enchantmentLevel, BlockPos pos, Player player) {
+  private static void checkBlocks(ServerLevel level, int enchantmentLevel, BlockPos pos, Player player) {
     // NORTH
     checkBlock(level, enchantmentLevel, pos.offset(0, 0, -1), player);
     checkBlock(level, enchantmentLevel, pos.offset(0, 1, -1), player);

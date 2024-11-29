@@ -15,7 +15,6 @@ import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.item.component.LocomotiveEnergyComponent;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +28,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
@@ -55,9 +53,8 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
     super(type, level);
   }
 
-  public ElectricLocomotive(ItemStack itemStack, double x, double y, double z,
-      ServerLevel serverLevel) {
-    super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), x, y, z, serverLevel);
+  public ElectricLocomotive(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
   }
 
@@ -145,9 +142,9 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
-    this.cartStorage.tickOnTrack(this, pos);
+  protected void moveAlongTrack(ServerLevel serverLevel) {
+    super.moveAlongTrack(serverLevel);
+    this.cartStorage.tickOnTrack(this, this.getCurrentBlockPosOrRailBelow());
   }
 
   @Override

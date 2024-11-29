@@ -77,7 +77,7 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOGBOOK.get())
           .ifPresent(blockEntity -> blockEntity.use(serverPlayer));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Nullable

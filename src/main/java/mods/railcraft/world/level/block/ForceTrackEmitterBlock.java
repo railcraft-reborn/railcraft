@@ -22,7 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -44,8 +44,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -53,7 +53,7 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   public static final DyeColor DEFAULT_COLOR = DyeColor.LIGHT_BLUE;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-  public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+  public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
   private static final Map<Charge, Spec> CHARGE_SPECS =
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
@@ -91,17 +91,17 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
 
   @SuppressWarnings("deprecation")
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level,
+  protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
     if (super.useItemOn(itemStack, state, level, pos, player, hand, rayTraceResult).consumesAction()) {
-      return ItemInteractionResult.CONSUME;
+      return InteractionResult.CONSUME;
     }
     if (player.isShiftKeyDown()) {
-      return ItemInteractionResult.FAIL;
+      return InteractionResult.FAIL;
     }
     ItemStack heldItem = player.getItemInHand(hand);
     if (heldItem.isEmpty() || hand == InteractionHand.OFF_HAND) {
-      return ItemInteractionResult.FAIL;
+      return InteractionResult.FAIL;
     }
     if (level.getBlockEntity(pos) instanceof ForceTrackEmitterBlockEntity t) {
       var color = DyeColor.getColor(heldItem);
@@ -109,10 +109,10 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
         if (!player.isCreative()) {
           player.setItemInHand(hand, ContainerTools.depleteItem(heldItem));
         }
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
       }
     }
-    return ItemInteractionResult.FAIL;
+    return InteractionResult.FAIL;
   }
 
   private ItemStack getItem(BlockState blockState) {
@@ -172,8 +172,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
-      BlockPos changedPos, boolean something) {
-    super.neighborChanged(state, level, pos, block, changedPos, something);
+      @Nullable Orientation orientation, boolean something) {
+    super.neighborChanged(state, level, pos, block, orientation, something);
     level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
   }

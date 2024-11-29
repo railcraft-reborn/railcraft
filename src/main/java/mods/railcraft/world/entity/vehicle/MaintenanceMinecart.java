@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
@@ -39,9 +40,9 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  protected MaintenanceMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
-      double z, Level level) {
-    super(itemStack, type, x, y, z, level);
+  protected MaintenanceMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override
@@ -103,9 +104,8 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   @Override
-  protected void applyNaturalSlowdown() {
-    super.applyNaturalSlowdown();
-    this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
+  protected Vec3 applyNaturalSlowdown(Vec3 speed) {
+    return speed.multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR);
   }
 
   @Override

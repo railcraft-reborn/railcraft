@@ -2,18 +2,14 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.ArrayList;
 import mods.railcraft.world.item.LocomotiveItem;
-import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.Tags;
 
 public class LocomotivePaintingRecipe extends CustomRecipe {
 
@@ -73,26 +69,7 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    var ingredients = NonNullList.withSize(9, Ingredient.EMPTY);
-    ingredients.set(1, Ingredient.of(Tags.Items.DYES));
-    ingredients.set(4, Ingredient.of(RailcraftItems.STEAM_LOCOMOTIVE.get()));
-    ingredients.set(7, Ingredient.of(Tags.Items.DYES));
-    return ingredients;
-  }
-
-  @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get());
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width >= 1 && height >= 3;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<LocomotivePaintingRecipe> getSerializer() {
     return RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get();
   }
 }

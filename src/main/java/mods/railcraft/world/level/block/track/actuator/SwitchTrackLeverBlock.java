@@ -28,7 +28,7 @@ public class SwitchTrackLeverBlock extends SwitchTrackActuatorBlock implements E
   protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos,
       Player player, BlockHitResult rayTraceResult) {
     setSwitched(blockState, level, blockPos, !blockState.getValue(SWITCHED));
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Nullable

@@ -11,7 +11,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -100,7 +100,7 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
           IngameWindowScreen.TEXT_COLOR, false);
       return;
     }
-    var color = FastColor.ARGB32.color(80, 0, 0, 0);
+    var color = ARGB.color(80, 0, 0, 0);
     for (int slotNum = 0; slotNum < 9; slotNum++) {
       var slot = this.menu.slots.get(slotNum);
       int displayX = slot.x;

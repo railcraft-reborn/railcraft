@@ -61,7 +61,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
       this.resetSpawnSequence();
       return false;
     }
-    var offset = this.getBlockPos().offset(this.getFacing().getNormal());
+    var offset = this.getBlockPos().offset(this.getFacing().getUnitVec3i());
     if (EntitySearcher.findMinecarts().at(offset).list(serverLevel).isEmpty()) {
       var cartItem = this.extract(filter);
       if (!cartItem.isEmpty()) {
@@ -96,7 +96,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   @Override
   protected void onPulse(ServerLevel serverLevel) {
     var empty = EntitySearcher.findMinecarts()
-        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .at(this.getBlockPos().offset(this.getFacing().getUnitVec3i()))
         .list(serverLevel)
         .isEmpty();
     if (!empty) {

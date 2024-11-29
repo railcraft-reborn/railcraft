@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.track.PoweredTrack;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 
 public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
     implements PoweredTrack {
@@ -65,9 +67,9 @@ public abstract class PoweredOutfittedTrackBlock extends OutfittedTrackBlock
   }
 
   @Override
-  public void neighborChanged(BlockState state, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
-    super.neighborChanged(state, level, pos, neighborBlock, neighborPos, moved);
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock,
+      @Nullable Orientation orientation, boolean moved) {
+    super.neighborChanged(state, level, pos, neighborBlock, orientation, moved);
     this.testPower(state, level, pos);
   }
 

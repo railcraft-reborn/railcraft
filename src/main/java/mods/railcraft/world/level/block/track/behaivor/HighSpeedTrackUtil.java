@@ -22,7 +22,7 @@ public final class HighSpeedTrackUtil {
   private static final float SPEED_SLOPE = 0.45F;
 
   public static double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
-    return TrackUtil.getTrackDirection(level, pos, cart).isAscending()
+    return TrackUtil.getTrackDirection(level, pos, cart).isSlope()
         ? SPEED_SLOPE
         : speedForNextTrack(level, pos, 0, cart);
   }
@@ -95,7 +95,7 @@ public final class HighSpeedTrackUtil {
       }
       if (foundTrack) {
         var railShape = TrackUtil.getTrackDirection(level, nextPos, cart);
-        if (railShape.isAscending()) {
+        if (railShape.isSlope()) {
           return SPEED_SLOPE;
         }
         maxSpeed = speedForNextTrack(level, nextPos, dist + 1, cart);

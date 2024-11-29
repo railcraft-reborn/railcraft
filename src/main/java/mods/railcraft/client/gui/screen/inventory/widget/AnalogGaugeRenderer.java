@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -83,7 +84,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
 
     BufferUploader.drawWithShader(buffer.buildOrThrow());
 
-    guiGraphics.blit(widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
-        this.widget.ov, 4, 3);
+    guiGraphics.blit(RenderType::guiTextured, widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
+        this.widget.ov, 4, 3, 256, 256);
   }
 }

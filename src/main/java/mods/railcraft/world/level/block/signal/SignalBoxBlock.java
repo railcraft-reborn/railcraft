@@ -1,16 +1,19 @@
 package mods.railcraft.world.level.block.signal;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -62,8 +66,8 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public void neighborChanged(BlockState state, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
+  protected void neighborChanged(BlockState state, Level level, BlockPos pos,
+      Block neighborBlock, @Nullable Orientation orientation, boolean isMoving) {
     LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
@@ -114,17 +118,18 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public BlockState updateShape(BlockState blockState, Direction direction,
-      BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
     if (blockState.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER,
-          Fluids.WATER.getTickDelay(level));
+      scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER,
+          Fluids.WATER.getTickDelay(levelReader));
     }
     return direction.getAxis().isHorizontal()
         ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
-        attachesTo(blockState, otherState))
+        attachesTo(blockState, neighborState))
         : direction == Direction.UP
-            ? blockState.setValue(CAP, !otherState.isAir())
+            ? blockState.setValue(CAP, !neighborState.isAir())
             : blockState;
   }
 

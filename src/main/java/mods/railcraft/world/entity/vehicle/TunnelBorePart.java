@@ -2,12 +2,12 @@ package mods.railcraft.world.entity.vehicle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.neoforged.neoforge.entity.PartEntity;
-
 
 public class TunnelBorePart extends PartEntity<TunnelBore> {
 
@@ -63,9 +63,12 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   }
 
   @Override
-  public boolean hurt(DamageSource damageSource, float amount) {
-    return !isInvulnerableTo(damageSource)
-        && getParent().attackEntityFromPart(this, damageSource, amount);
+  public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+    if (!isInvulnerableToBase(damageSource)) {
+      getParent().attackEntityFromPart(this, damageSource, amount);
+      return true;
+    }
+    return false;
   }
 
   @Override

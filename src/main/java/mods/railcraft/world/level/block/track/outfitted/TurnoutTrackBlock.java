@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
@@ -109,10 +110,10 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
-      BlockPos neighborPos, boolean moved) {
+      @Nullable Orientation orientation, boolean moved) {
     level.setBlockAndUpdate(pos,
         blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
-    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
+    super.neighborChanged(blockState, level, pos, neighborBlock, orientation, moved);
   }
 
   @Override

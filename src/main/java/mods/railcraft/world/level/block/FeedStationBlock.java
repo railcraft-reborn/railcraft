@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
@@ -62,7 +63,7 @@ public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.FEED_STATION.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -81,7 +82,7 @@ public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     if (!level.isClientSide()) {
       var powered = blockState.getValue(POWERED);
       var neighborSignal = level.hasNeighborSignal(blockPos);

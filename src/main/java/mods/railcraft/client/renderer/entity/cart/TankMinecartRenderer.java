@@ -6,6 +6,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
+import mods.railcraft.client.renderer.entity.state.TankMinecartRendererState;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
@@ -20,13 +21,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 
-public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
+public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart, TankMinecartRendererState> {
 
   private static final ResourceLocation TANK_TEXTURE_LOCATION =
       RailcraftConstants.rl("textures/entity/minecart/tank.png");
 
-  private final LowSidesMinecartModel<TankMinecart> bodyModel;
-  private final LowSidesMinecartModel<TankMinecart> snowModel;
+  private final LowSidesMinecartModel<TankMinecartRendererState> bodyModel;
+  private final LowSidesMinecartModel<TankMinecartRendererState> snowModel;
   private final CubeModel tankModel;
 
   public TankMinecartRenderer(EntityRendererProvider.Context context) {
@@ -35,26 +36,26 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART));
     this.snowModel = new LowSidesMinecartModel<>(
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART_SNOW));
-    this.tankModel = new CubeModel(RenderType::entityTranslucentCull,
+    this.tankModel = new CubeModel(RenderType::entityTranslucent,//entityTranslucentCull
         context.bakeLayer(RailcraftModelLayers.CUBE));
   }
 
   @Override
-  protected void renderContents(TankMinecart cart, float partialTicks,
-      PoseStack poseStack, MultiBufferSource renderTypeBuffer, int packedLight, int color) {
+  protected void renderContents(TankMinecartRendererState renderState, PoseStack poseStack,
+      MultiBufferSource multiBufferSource, int packedLight, int color) {
     var vertexBuilder =
-        renderTypeBuffer.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
+        multiBufferSource.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
     this.tankModel.renderToBuffer(poseStack, vertexBuilder, packedLight,
         OverlayTexture.NO_OVERLAY, color);
-    this.renderTank(cart, poseStack, renderTypeBuffer, packedLight);
-    if (cart.hasFilter()) {
-      this.renderFilterItem(cart, poseStack, renderTypeBuffer, packedLight);
+    this.renderTank(renderState, poseStack, multiBufferSource, packedLight);
+    if (renderState.hasFilter) {
+      this.renderFilterItem(renderState, poseStack, multiBufferSource, packedLight);
     }
   }
 
-  private void renderTank(TankMinecart cart, PoseStack poseStack,
+  private void renderTank(TankMinecartRendererState renderState, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight) {
-    var tank = cart.getTankManager();
+    var tank = renderState.tankManager;
     var fluidStack = tank.getFluid();
     float capacity = tank.getCapacity();
     if (capacity > 0 && fluidStack.getAmount() > 0) {
@@ -80,7 +81,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
           CuboidModelRenderer.FaceDisplay.FRONT, true);
       poseStack.popPose();
 
-      if (cart.isFilling()) {
+      if (renderState.isFilling) {
         poseStack.pushPose();
         final var size = 0.3F;
         poseStack.translate(0.5F - size / 2, 0F, 0.5F - size / 2);
@@ -98,10 +99,11 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     }
   }
 
-  private void renderFilterItem(TankMinecart cart, PoseStack matrixStack,
+  private void renderFilterItem(TankMinecartRendererState rendererState, PoseStack matrixStack,
       MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
-    var itemStack = cart.getFilterItem().copy();
+    var itemStack = rendererState.filterItem;
+    var level = Minecraft.getInstance().level;
 
     final float scale = 1.2F;
 
@@ -111,7 +113,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     matrixStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
         ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
+        matrixStack, renderTypeBuffer, level, 0);
     matrixStack.popPose();
 
     matrixStack.mulPose(Axis.YN.rotationDegrees(90));
@@ -119,17 +121,33 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     matrixStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
         ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
+        matrixStack, renderTypeBuffer, level, 0);
     matrixStack.popPose();
   }
 
   @Override
-  protected EntityModel<TankMinecart> getBodyModel(TankMinecart cart) {
+  protected EntityModel<TankMinecartRendererState> getBodyModel(TankMinecartRendererState cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<TankMinecart> getSnowModel(TankMinecart cart) {
+  protected EntityModel<TankMinecartRendererState> getSnowModel(TankMinecartRendererState cart) {
     return this.snowModel;
+  }
+
+
+  @Override
+  public TankMinecartRendererState createRenderState() {
+    return new TankMinecartRendererState();
+  }
+
+  @Override
+  public void extractRenderState(TankMinecart entity, TankMinecartRendererState reusedState,
+      float partialTick) {
+    super.extractRenderState(entity, reusedState, partialTick);
+    reusedState.isFilling = entity.isFilling();
+    reusedState.tankManager = entity.getTankManager();
+    reusedState.hasFilter = entity.hasFilter();
+    reusedState.filterItem = entity.getFilterItem().copy();
   }
 }

@@ -46,7 +46,7 @@ public class TokenSignalBoxBlock extends SignalBoxBlock implements EntityBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.TOKEN_SIGNAL_BOX.get())
           .ifPresent(ScreenFactories::openActionSignalBoxScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

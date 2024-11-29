@@ -4,16 +4,16 @@ import java.util.List;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.charge.ChargeProtectionItem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 
 public class OverallsItem extends ArmorItem implements ChargeProtectionItem {
 
-  public OverallsItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+  public OverallsItem(ArmorMaterial material, ArmorType type, Properties properties) {
     super(material, type, properties);
   }
 

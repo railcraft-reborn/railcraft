@@ -7,6 +7,7 @@ import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,7 +43,8 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
     int y = (height - this.getYSize()) / 2;
     if (this.menu.getLocomotive().boiler().hasFuel()) {
       int scale = this.menu.getLocomotive().boiler().getBurnProgressScaled(12);
-      guiGraphics.blit(TEXTURE_LOCATION, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
+      guiGraphics.blit(RenderType::guiTextured, TEXTURE_LOCATION, x + 99, y + 33 - scale, 176,
+          59 - scale, 14, scale + 2, 256, 256);
     }
   }
 }

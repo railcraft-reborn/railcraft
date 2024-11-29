@@ -33,12 +33,9 @@ public enum SpeedController implements TrackType.EventHandler {
     }
 
     @Override
-    @Nullable
-    // FIXME: Client and Server sync is not maintained here. Could result in strange
-    // behavior.
+    // FIXME: Client and Server sync is not maintained here. Could result in strange behavior.
     public Optional<RailShape> getRailShapeOverride(BlockGetter level, BlockPos pos,
-        BlockState state,
-        @Nullable AbstractMinecart cart) {
+        BlockState state, @Nullable AbstractMinecart cart) {
       if (cart == null || cart.level().isClientSide()) {
         return Optional.empty();
       }
@@ -89,7 +86,7 @@ public enum SpeedController implements TrackType.EventHandler {
         BlockPos pos) {
       var shape = TrackUtil.getTrackDirection(level, pos, cart);
       // 0.4f vanilla, this gets 10% more so 1.1*(ourspeed)
-      return RailShapeUtil.isTurn(shape) || shape.isAscending() ? 0.4F : 0.44F;
+      return RailShapeUtil.isTurn(shape) || shape.isSlope() ? 0.4F : 0.44F;
     }
   },
 

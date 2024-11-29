@@ -8,7 +8,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraParticle extends DimmableParticle {
@@ -26,9 +26,9 @@ public class TuningAuraParticle extends DimmableParticle {
 
     var color = options.color();
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
-    this.rCol = (FastColor.ARGB32.red(color) / 255.0F) * variant;
-    this.gCol = (FastColor.ARGB32.green(color) / 255.0F) * variant;
-    this.bCol = (FastColor.ARGB32.blue(color) / 255.0F) * variant;
+    this.rCol = (ARGB.red(color) / 255.0F) * variant;
+    this.gCol = (ARGB.green(color) / 255.0F) * variant;
+    this.bCol = (ARGB.blue(color) / 255.0F) * variant;
     this.setLifetime(2000);
     this.hasPhysics = false;
     this.pickSprite(sprites);

@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class RefinedFirestoneItem extends FirestoneItem {
@@ -59,12 +61,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public boolean hasCraftingRemainingItem(ItemStack stack) {
-    return true;
-  }
-
-  @Override
-  public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+  public ItemStack getCraftingRemainder(ItemStack itemStack) {
     ItemStack newStack;
     double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
     if (random.nextDouble() < damageLevel * 0.0001) {
@@ -84,7 +81,8 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public final int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
+  public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType,
+      FuelValues fuelValues) {
     return itemStack.getDamageValue() < itemStack.getMaxDamage() ? this.heat : 0;
   }
 
@@ -111,7 +109,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var random = level.getRandom();
 
     if (!(level instanceof ServerLevel serverLevel))
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
 
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
@@ -123,7 +121,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
         var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.getFirst().isEmpty()
             && drops.getFirst().getItem() instanceof BlockItem) {
-          var cooked = cookedItem(level, drops.getFirst());
+          var cooked = cookedItem(serverLevel, drops.getFirst());
           if (cooked.getItem() instanceof BlockItem) {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);
             if (newState != null) {
@@ -146,14 +144,15 @@ public class RefinedFirestoneItem extends FirestoneItem {
         stack.hurtAndBreak(1, serverLevel, serverPlayer, __ -> {});
       }
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @NotNull
-  private ItemStack cookedItem(Level level, ItemStack ingredient) {
-    return level.getRecipeManager()
-        .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(ingredient), level)
-        .map(x -> x.value().getResultItem(level.registryAccess()))
+  private ItemStack cookedItem(ServerLevel level, ItemStack ingredient) {
+    var input = new SingleRecipeInput(ingredient);
+    return level.recipeAccess()
+        .getRecipeFor(RecipeType.SMELTING, input, level)
+        .map(x -> x.value().assemble(input, level.registryAccess()))
         .orElse(ItemStack.EMPTY);
   }
 
@@ -170,7 +169,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
       player.swing(hand);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

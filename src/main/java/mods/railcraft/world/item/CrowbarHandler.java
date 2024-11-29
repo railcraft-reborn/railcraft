@@ -44,7 +44,7 @@ public class CrowbarHandler {
 
     var level = player.level();
     if (!(player instanceof ServerPlayer serverPlayer)) {
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     if ((stack.getItem() instanceof SeasonsCrowbarItem)
@@ -53,15 +53,15 @@ public class CrowbarHandler {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.value().trigger(serverPlayer, cart, season);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     if (crowbar.canLink(player, hand, stack, cart)) {
       linkCart(serverPlayer, hand, stack, cart, crowbar);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
       boostCart(serverPlayer, hand, stack, cart, crowbar);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     return InteractionResult.PASS;
@@ -113,8 +113,8 @@ public class CrowbarHandler {
       trackRemover.setMode(trackRemover.mode().next());
     } else {
       var smackEnchantment = player.level().registryAccess()
-          .registryOrThrow(Registries.ENCHANTMENT)
-          .getHolderOrThrow(RailcraftEnchantments.SMACK);
+          .lookupOrThrow(Registries.ENCHANTMENT)
+          .getOrThrow(RailcraftEnchantments.SMACK);
       int lvl = stack.getEnchantmentLevel(smackEnchantment);
       if (lvl == 0) {
         MinecartUtil.smackCart(cart, player, SMACK_VELOCITY);

@@ -154,7 +154,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
     if (hasSpace) {
       outputs.forEach(outputContainer::insert);
-      inputContainer.extract(recipe.getIngredients().getFirst());
+      inputContainer.extract(recipe.placementInfo().ingredients().getFirst());
       provider.getLevel().playSound(null, provider.blockPos(),
           SoundEvents.IRON_GOLEM_DEATH, SoundSource.BLOCKS, 1,
           provider.getLevel().getRandom().nextFloat() * 0.25F + 0.7F);
@@ -165,13 +165,13 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private boolean isRecipeValid() {
     return currentRecipe
         .map(RecipeHolder::value)
-        .map(r -> r.getIngredients().getFirst())
+        .map(r -> r.placementInfo().ingredients().getFirst())
         .map(r -> r.test(inputContainer.getItem(currentSlot)))
         .orElse(false);
   }
 
   private Optional<RecipeHolder<CrusherRecipe>> getRecipe(ItemStack itemStack) {
-    return provider.getLevel().getRecipeManager()
+    return ((ServerLevel) provider.getLevel()).recipeAccess()
         .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
             new SingleRecipeInput(itemStack), provider.getLevel());
   }

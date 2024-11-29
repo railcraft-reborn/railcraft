@@ -10,8 +10,8 @@ import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 
 public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
   public RailcraftSpriteSourceProvider(PackOutput output,
-      CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper fileHelper) {
-    super(output, lookupProvider, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
+    super(output, registries, RailcraftConstants.ID, fileHelper);
   }
 
   @Override

@@ -10,11 +10,16 @@ import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class CokeOvenRecipe extends AbstractCookingRecipe {
@@ -23,8 +28,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
   public CokeOvenRecipe(Ingredient ingredient, ItemStack result,
       float experience, int cookingTime, int creosoteOutput) {
-    super(RailcraftRecipeTypes.COKING.get(), "", CookingBookCategory.MISC,
-        ingredient, result, experience, cookingTime);
+    super("", CookingBookCategory.MISC, ingredient, result, experience, cookingTime);
     this.creosote = new FluidStack(RailcraftFluids.CREOSOTE.get(), creosoteOutput);
   }
 
@@ -33,8 +37,18 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<CokeOvenRecipe> getSerializer() {
     return RailcraftRecipeSerializers.COKING.get();
+  }
+
+  @Override
+  public RecipeType<CokeOvenRecipe> getType() {
+    return RailcraftRecipeTypes.COKING.get();
+  }
+
+  @Override
+  public RecipeBookCategory recipeBookCategory() {
+    return RecipeBookCategories.CRAFTING_MISC;
   }
 
   @Override
@@ -43,24 +57,24 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   }
 
   @Override
-  public ItemStack getToastSymbol() {
-    return new ItemStack(RailcraftBlocks.COKE_OVEN_BRICKS.get());
+  protected Item furnaceIcon() {
+    return RailcraftBlocks.COKE_OVEN_BRICKS.get().asItem();
   }
 
   public static class Serializer implements RecipeSerializer<CokeOvenRecipe> {
 
     private static final MapCodec<CokeOvenRecipe> CODEC =
         RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Ingredient.CODEC_NONEMPTY.fieldOf(RecipeJsonKeys.INGREDIENT)
-                .forGetter(recipe -> recipe.ingredient),
+            Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
+                .forGetter(SingleItemRecipe::input),
             ItemStack.CODEC.fieldOf(RecipeJsonKeys.RESULT)
-                .forGetter(recipe -> recipe.result),
+                .forGetter(recipe -> recipe.result()),
             Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
                 .orElse(0.0F)
-                .forGetter(recipe -> recipe.experience),
+                .forGetter(AbstractCookingRecipe::experience),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.COOKING_TIME,
                     BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
-                .forGetter(recipe -> recipe.cookingTime),
+                .forGetter(AbstractCookingRecipe::cookingTime),
             ExtraCodecs.POSITIVE_INT.fieldOf(RecipeJsonKeys.CREOSOTE_OUTPUT)
                 .forGetter(recipe -> recipe.creosote.getAmount())
         ).apply(instance, CokeOvenRecipe::new));
@@ -89,10 +103,10 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
 
     private static void toNetwork(RegistryFriendlyByteBuf buffer, CokeOvenRecipe recipe) {
       buffer.writeVarInt(recipe.creosote.getAmount());
-      buffer.writeVarInt(recipe.cookingTime);
-      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-      ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-      buffer.writeFloat(recipe.experience);
+      buffer.writeVarInt(recipe.cookingTime());
+      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input());
+      ItemStack.STREAM_CODEC.encode(buffer, recipe.result());
+      buffer.writeFloat(recipe.experience());
     }
   }
 }

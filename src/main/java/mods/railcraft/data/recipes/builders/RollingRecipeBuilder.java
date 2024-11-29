@@ -6,8 +6,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -43,8 +46,9 @@ public class RollingRecipeBuilder {
     return new RollingRecipeBuilder(result, count, processTime);
   }
 
-  public RollingRecipeBuilder define(Character key, TagKey<Item> itemTagValue) {
-    return this.define(key, Ingredient.of(itemTagValue));
+  public RollingRecipeBuilder define(HolderLookup.RegistryLookup<Item> items,
+      Character key, TagKey<Item> itemTagValue) {
+    return this.define(key, Ingredient.of(items.getOrThrow(itemTagValue)));
   }
 
   public RollingRecipeBuilder define(Character key, ItemLike itemValue) {
@@ -81,6 +85,6 @@ public class RollingRecipeBuilder {
     var pattern = ShapedRecipePattern.of(this.key, this.rows);
     var recipe = new RollingRecipe(pattern, new ItemStack(this.result, this.count),
         this.processTime);
-    recipeOutput.accept(customResourceLocation, recipe, null);
+    recipeOutput.accept(ResourceKey.create(Registries.RECIPE, customResourceLocation), recipe, null);
   }
 }

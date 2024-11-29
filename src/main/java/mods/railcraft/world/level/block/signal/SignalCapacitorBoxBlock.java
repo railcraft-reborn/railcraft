@@ -46,7 +46,7 @@ public class SignalCapacitorBoxBlock extends SignalBoxBlock implements EntityBlo
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.SIGNAL_CAPACITOR_BOX.get())
           .ifPresent(ScreenFactories::openSignalCapacitorBoxScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

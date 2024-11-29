@@ -15,6 +15,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +23,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -50,14 +50,14 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     super(type, level);
   }
 
-  protected RailcraftMinecart(EntityType<TunnelBore> type, double x, double y, double z,
-      Level level) {
-    super(type, x, y, z, level);
+  protected RailcraftMinecart(EntityType<?> type, Level level, double x, double y, double z) {
+    super(type, level);
+    this.setInitialPos(x, y, z);
   }
 
-  protected RailcraftMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
-      double z, Level level) {
-    super(type, x, y, z, level);
+  protected RailcraftMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    this(type, level, x, y, z);
     this.loadCustomName(itemStack);
   }
 
@@ -112,9 +112,9 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
       if (this.hasMenu()) {
         serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));
       }
-      PiglinAi.angerNearbyPiglins(player, true);
+      PiglinAi.angerNearbyPiglins((ServerLevel) serverPlayer.level(), player, true);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   protected boolean hasMenu() {
@@ -132,16 +132,16 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public final void destroy(DamageSource source) {
-    this.kill();
-    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+  public void destroy(ServerLevel level, DamageSource source) {
+    this.kill(level);
+    if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
       var itemstack = this.getPickResult().copy();
       if (this.hasCustomName()) {
         itemstack.set(DataComponents.CUSTOM_NAME, this.getCustomName());
       }
-      this.spawnAtLocation(itemstack);
+      this.spawnAtLocation(level, itemstack);
     }
-    this.chestVehicleDestroyed(source, this.level(), this);
+    this.chestVehicleDestroyed(source, level, this);
   }
 
   @Override
@@ -156,11 +156,6 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected Item getDropItem() {
     throw new NotImplementedException();
-  }
-
-  @Override
-  public AbstractMinecart.Type getMinecartType() {
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -238,7 +233,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Nullable
   private Direction determineVerticalTravelDirection(RailShape shape) {
-    return shape.isAscending() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
+    return shape.isSlope() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
   }
 
   @Override

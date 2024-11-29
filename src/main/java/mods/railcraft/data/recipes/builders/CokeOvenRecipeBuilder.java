@@ -7,9 +7,10 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
@@ -41,20 +42,21 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
   }
 
   @Override
-  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
-    var path = resourceLocation.getPath();
+  public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> resourceKey) {
+    var path = resourceKey.location().getPath();
     var customResourceLocation = RailcraftConstants.rl("coke_oven/" + path);
+    var customResourceKey = ResourceKey.create(resourceKey.registryKey(), customResourceLocation);
 
     var advancementId = customResourceLocation.withPrefix("recipes/");
 
     var builder = recipeOutput.advancement()
-        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
-        .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceKey))
+        .rewards(AdvancementRewards.Builder.recipe(customResourceKey))
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
     var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result, this.count),
         this.experience, this.cookingTime, this.creosoteOutput);
-    recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
+    recipeOutput.accept(customResourceKey, recipe, builder.build(advancementId));
   }
 }

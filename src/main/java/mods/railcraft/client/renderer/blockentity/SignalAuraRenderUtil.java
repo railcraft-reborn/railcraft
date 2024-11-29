@@ -11,7 +11,7 @@ import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -64,9 +64,9 @@ public class SignalAuraRenderUtil {
 
   private static void renderAuraLine(LineRenderer renderer, PoseStack poseStack, int color,
       BlockPos source, Position target) {
-    var red = FastColor.ARGB32.red(color);
-    var green = FastColor.ARGB32.green(color);
-    var blue = FastColor.ARGB32.blue(color);
+    var red = ARGB.red(color);
+    var green = ARGB.green(color);
+    var blue = ARGB.blue(color);
 
     var endX = (float) (target.x() - source.getX());
     var endY = (float) (target.y() - source.getY());

@@ -13,13 +13,12 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class RailcraftFluidTagsProvider extends FluidTagsProvider {
 
   public RailcraftFluidTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
-      ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
+    super(packOutput, registries, RailcraftConstants.ID, fileHelper);
   }
 
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags(HolderLookup.Provider registries) {
     this.tag(RailcraftTags.Fluids.STEAM)
         .add(RailcraftFluids.STEAM.get());
     this.tag(Tags.Fluids.GASEOUS)

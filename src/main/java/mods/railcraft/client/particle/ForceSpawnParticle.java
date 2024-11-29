@@ -5,7 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
 
@@ -18,9 +18,9 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
       double dz, int color, float scale, SpriteSet sprites) {
     super(level, x, y, z, dx, dy, dz, scale);
     this.gravity = -0.1F;
-    this.rCol = FastColor.ARGB32.red(color) / 255.0F;
-    this.gCol = FastColor.ARGB32.green(color) / 255.0F;
-    this.bCol = FastColor.ARGB32.blue(color) / 255.0F;
+    this.rCol = ARGB.red(color) / 255.0F;
+    this.gCol = ARGB.green(color) / 255.0F;
+    this.bCol = ARGB.blue(color) / 255.0F;
     this.lifetime = (int) (8.0F / (this.random.nextFloat() * 0.8F + 0.2F));
     this.lifetime = (int) ((float) this.lifetime * scale);
     this.hasPhysics = false;

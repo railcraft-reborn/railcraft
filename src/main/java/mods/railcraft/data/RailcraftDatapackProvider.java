@@ -29,7 +29,7 @@ public class RailcraftDatapackProvider extends DatapackBuiltinEntriesProvider {
       .add(Registries.ENCHANTMENT, RailcraftEnchantments::bootstrap);
 
   public RailcraftDatapackProvider(PackOutput output,
-      CompletableFuture<HolderLookup.Provider> lookupProvider) {
-    super(output, lookupProvider, BUILDER, Set.of(RailcraftConstants.ID));
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(output, registries, BUILDER, Set.of(RailcraftConstants.ID));
   }
 }

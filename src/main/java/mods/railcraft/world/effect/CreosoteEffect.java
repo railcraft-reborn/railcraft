@@ -14,13 +14,11 @@ public class CreosoteEffect extends MobEffect {
   }
 
   @Override
-  public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-    if (livingEntity.level() instanceof ServerLevel) {
-      if (livingEntity.getType().is(EntityTypeTags.ARTHROPOD)) {
-        var registryAccess = livingEntity.level().registryAccess();
-        livingEntity.hurt(RailcraftDamageSources.creosote(registryAccess),
-            (float) Math.pow(1.1D, amplifier));
-      }
+  public boolean applyEffectTick(ServerLevel level, LivingEntity livingEntity, int amplifier) {
+    if (livingEntity.getType().is(EntityTypeTags.ARTHROPOD)) {
+      var registryAccess = level.registryAccess();
+      livingEntity.hurt(RailcraftDamageSources.creosote(registryAccess),
+          (float) Math.pow(1.1D, amplifier));
     }
     return true;
   }

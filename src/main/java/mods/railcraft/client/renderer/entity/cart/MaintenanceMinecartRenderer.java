@@ -6,10 +6,10 @@ import mods.railcraft.client.model.DeformableMinecartModel;
 import mods.railcraft.client.model.MaintenanceLampModel;
 import mods.railcraft.client.model.MaintenanceModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
+import mods.railcraft.client.renderer.entity.state.MaintenanceMinecartRendererState;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class MaintenanceMinecartRenderer
-    extends ContentsMinecartRenderer<MaintenanceMinecart> {
+    extends ContentsMinecartRenderer<MaintenanceMinecart, MaintenanceMinecartRendererState> {
 
   private static final ResourceLocation LAMP_ON_TEX =
       RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_on.png");
@@ -29,8 +29,8 @@ public abstract class MaintenanceMinecartRenderer
 
   private final ResourceLocation maintenanceTextureLocation;
 
-  private final MinecartModel<MaintenanceMinecart> bodyModel;
-  private final DeformableMinecartModel<MaintenanceMinecart> snowModel;
+  private final DeformableMinecartModel<MaintenanceMinecartRendererState> bodyModel;
+  private final DeformableMinecartModel<MaintenanceMinecartRendererState> snowModel;
 
   private final Model maintenanceModel;
   private final Model lampModel;
@@ -41,7 +41,7 @@ public abstract class MaintenanceMinecartRenderer
 
     this.maintenanceTextureLocation = maintenanceTextureLocation;
 
-    this.bodyModel = new MinecartModel<>(context.bakeLayer(ModelLayers.MINECART));
+    this.bodyModel = new DeformableMinecartModel<>(context.bakeLayer(ModelLayers.MINECART));
     this.snowModel =
         new DeformableMinecartModel<>(context.bakeLayer(RailcraftModelLayers.MINECART_SNOW));
     this.maintenanceModel =
@@ -51,39 +51,47 @@ public abstract class MaintenanceMinecartRenderer
   }
 
   @Override
-  public void renderContents(MaintenanceMinecart cart, float partialTicks,
-      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int color) {
+  protected void renderContents(MaintenanceMinecartRendererState renderState, PoseStack poseStack,
+      MultiBufferSource multiBufferSource, int packedLight, int color) {
     var maintenanceVertexConsumer =
-        bufferSource.getBuffer(this.maintenanceModel.renderType(this.maintenanceTextureLocation));
+        multiBufferSource.getBuffer(this.maintenanceModel.renderType(this.maintenanceTextureLocation));
     this.maintenanceModel.renderToBuffer(poseStack, maintenanceVertexConsumer, packedLight,
         OverlayTexture.NO_OVERLAY, color);
 
     poseStack.pushPose();
     //poseStack.translate(-0.5F, -0.5F, -0.5F);
 
-    var blinking = cart.isBlinking();
+    boolean blinking = renderState.isBlinking;
     ResourceLocation textureLocation;
     if (blinking) {
       textureLocation = LAMP_ON_TEX;
-    } else if (cart.mode() == MaintenanceMinecart.Mode.OFF) {
+    } else if (renderState.mode == MaintenanceMinecart.Mode.OFF) {
       textureLocation = LAMP_DISABLED_TEX;
     } else {
       textureLocation = LAMP_OFF_TEX;
     }
     var lampVertexConsumer =
-        bufferSource.getBuffer(this.lampModel.renderType(textureLocation));
+        multiBufferSource.getBuffer(this.lampModel.renderType(textureLocation));
     this.lampModel.renderToBuffer(poseStack, lampVertexConsumer,
         blinking ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY, color);
     poseStack.popPose();
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecart> getBodyModel(MaintenanceMinecart cart) {
+  protected EntityModel<MaintenanceMinecartRendererState> getBodyModel(MaintenanceMinecartRendererState cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<? super MaintenanceMinecart> getSnowModel(MaintenanceMinecart cart) {
+  protected EntityModel<MaintenanceMinecartRendererState> getSnowModel(MaintenanceMinecartRendererState cart) {
     return this.snowModel;
+  }
+
+  @Override
+  public void extractRenderState(MaintenanceMinecart entity,
+      MaintenanceMinecartRendererState reusedState, float partialTick) {
+    super.extractRenderState(entity, reusedState, partialTick);
+    reusedState.isBlinking = entity.isBlinking();
+    reusedState.mode = entity.mode();
   }
 }

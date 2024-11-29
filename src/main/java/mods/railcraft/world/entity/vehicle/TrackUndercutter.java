@@ -41,8 +41,8 @@ public class TrackUndercutter extends MaintenancePatternMinecart {
     super(type, level);
   }
 
-  public TrackUndercutter(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(itemStack, RailcraftEntityTypes.TRACK_UNDERCUTTER.get(), x, y, z, level);
+  public TrackUndercutter(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.TRACK_UNDERCUTTER.get(), level, x, y, z);
   }
 
   @Override

@@ -17,8 +17,8 @@ import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
 
   public RailcraftLootModifierProvider(PackOutput output,
-      CompletableFuture<HolderLookup.Provider> provider) {
-    super(output, provider, RailcraftConstants.ID);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(output, registries, RailcraftConstants.ID);
   }
 
   @Override

@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -32,11 +32,7 @@ public class RenderUtil {
     if (fluidStack.getFluidType().isLighterThanAir()) {
       // TODO: We probably want to factor in the fluid's alpha value somehow
       var alpha = (int) (Math.min(1, fluidScale + 0.2F) * 255);
-      return FastColor.ARGB32.color(
-          alpha,
-          FastColor.ARGB32.red(color),
-          FastColor.ARGB32.green(color),
-          FastColor.ARGB32.blue(color));
+      return ARGB.color(alpha, ARGB.red(color), ARGB.green(color), ARGB.blue(color));
     }
     return color;
   }

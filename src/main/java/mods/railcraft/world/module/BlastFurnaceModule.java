@@ -100,7 +100,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
+    var output = this.recipe.assemble(null, this.provider.level().registryAccess());
 
     if (!this.outputContainer.canFit(output)) {
       return false;
@@ -122,7 +122,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   private int getItemBurnTime(ItemStack itemStack) {
-    return itemStack.getBurnTime(null);
+    return itemStack.getBurnTime(null, this.provider.level().fuelValues());
   }
 
   private void loadFuel() {
@@ -137,7 +137,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     }
     this.currentItemBurnTime = itemBurnTime + this.burnTime;
     this.setBurnTime(this.currentItemBurnTime);
-    var craftRemainder = fuel.getCraftingRemainingItem();
+    var craftRemainder = fuel.getCraftingRemainder();
     fuel.shrink(1);
     this.setItem(SLOT_FUEL, fuel.isEmpty() ? craftRemainder : fuel);
   }

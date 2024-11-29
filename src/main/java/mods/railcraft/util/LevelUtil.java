@@ -61,20 +61,20 @@ public class LevelUtil {
     return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
   }
 
-  public static boolean destroyBlock(Level level, BlockPos pos) {
+  public static boolean destroyBlock(ServerLevel level, BlockPos pos) {
     return level.destroyBlock(pos, level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
   }
 
-  public static boolean destroyBlock(Level level, BlockPos pos, @Nullable Player actor) {
+  public static boolean destroyBlock(ServerLevel level, BlockPos pos, @Nullable Player actor) {
     return destroyBlock(level, pos, actor,
         level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
   }
 
   public static boolean destroyBlock(Level level, BlockPos pos, @Nullable Player actor,
       boolean dropBlock) {
-    if (actor == null)
+    if (actor == null) {
       actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
-
+    }
     var event = NeoForge.EVENT_BUS.post(
         new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor));
     if (event.isCanceled())
@@ -83,7 +83,7 @@ public class LevelUtil {
     return level.destroyBlock(pos, dropBlock);
   }
 
-  public static boolean playerRemoveBlock(Level level, BlockPos pos,
+  public static boolean playerRemoveBlock(ServerLevel level, BlockPos pos,
       @Nullable Player player) {
     return playerRemoveBlock(level, pos, player,
         level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
