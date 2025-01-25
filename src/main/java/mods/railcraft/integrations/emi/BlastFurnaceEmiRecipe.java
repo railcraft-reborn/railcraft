@@ -7,21 +7,26 @@ import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import mods.railcraft.integrations.jei.category.BlastFurnaceRecipeCategory;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class BlastFurnaceEmiRecipe extends BasicEmiRecipe {
 
+  private static final int WIDTH = 82;
+  private static final int HEIGHT = 54;
+  private static final ResourceLocation BACKGROUND =
+      RailcraftConstants.rl("textures/gui/container/blast_furnace.png");
+
   private final BlastFurnaceRecipe recipe;
 
   public BlastFurnaceEmiRecipe(BlastFurnaceRecipe recipe) {
-    super(RailcraftEmiPlugin.BLASTING_CATEGORY, recipe.getId(),
-        BlastFurnaceRecipeCategory.WIDTH, BlastFurnaceRecipeCategory.HEIGHT);
+    super(RailcraftEmiPlugin.BLASTING_CATEGORY, recipe.getId(), WIDTH, HEIGHT);
     this.recipe = recipe;
     this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
     var level = Minecraft.getInstance().level;
@@ -34,8 +39,7 @@ public class BlastFurnaceEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(BlastFurnaceRecipeCategory.BACKGROUND,
-        0, 0, width, height, 55, 16);
+    widgets.addTexture(BACKGROUND, 0, 0, width, height, 55, 16);
     widgets.addFillingArrow(24, 18, 10_000).tooltip((x, y) -> {
       int cookTime = recipe.getCookingTime();
       if (cookTime > 0) {

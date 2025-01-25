@@ -25,10 +25,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
 
-  public static final int WIDTH = 124;
-  public static final int HEIGHT = 49;
+  private static final int WIDTH = 124;
+  private static final int HEIGHT = 49;
 
-  public static final ResourceLocation BACKGROUND =
+  private static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/coke_oven.png");
 
   private final IDrawable background, icon, flame, arrow;

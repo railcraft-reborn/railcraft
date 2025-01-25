@@ -22,10 +22,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
 
-  public static final int WIDTH = 144;
-  public static final int HEIGHT = 54;
+  private static final int WIDTH = 144;
+  private static final int HEIGHT = 54;
 
-  public static final ResourceLocation BACKGROUND =
+  private static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/crusher.png");
 
   private final IDrawable background, icon, arrow;

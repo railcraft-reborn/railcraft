@@ -28,10 +28,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class FluidBoilerRecipeCategory implements IRecipeCategory<FluidBoilerJEIRecipe> {
 
-  public static final int WIDTH = 117;
-  public static final int HEIGHT = 54;
+  private static final int WIDTH = 117;
+  private static final int HEIGHT = 54;
 
-  public static final ResourceLocation BACKGROUND =
+  private static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
 
   private final IDrawable background, icon, flame, bar;

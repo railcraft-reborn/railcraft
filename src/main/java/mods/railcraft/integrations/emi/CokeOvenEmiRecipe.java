@@ -8,19 +8,24 @@ import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import mods.railcraft.integrations.jei.category.CokeOvenRecipeCategory;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class CokeOvenEmiRecipe extends BasicEmiRecipe {
+
+  private static final int WIDTH = 124;
+  private static final int HEIGHT = 49;
+  private static final ResourceLocation BACKGROUND =
+      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
 
   private final CokeOvenRecipe recipe;
 
   public CokeOvenEmiRecipe(CokeOvenRecipe recipe) {
-    super(RailcraftEmiPlugin.COKING_CATEGORY, recipe.getId(),
-        CokeOvenRecipeCategory.WIDTH, CokeOvenRecipeCategory.HEIGHT);
+    super(RailcraftEmiPlugin.COKING_CATEGORY, recipe.getId(), WIDTH, HEIGHT);
     this.recipe = recipe;
     this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
     var level = Minecraft.getInstance().level;
@@ -29,7 +34,7 @@ public class CokeOvenEmiRecipe extends BasicEmiRecipe {
 
   @Override
   public void addWidgets(WidgetHolder widgets) {
-    widgets.addTexture(CokeOvenRecipeCategory.BACKGROUND, 0, 0, width, height, 15, 23);
+    widgets.addTexture(BACKGROUND, 0, 0, width, height, 15, 23);
     widgets.addFillingArrow(18, 20, 10_000).tooltip((x, y) -> {
       int cookTime = recipe.getCookingTime();
       if (cookTime > 0) {
