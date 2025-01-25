@@ -286,22 +286,22 @@ public class RailcraftItems {
   public static final DeferredItem<ArmorItem> STEEL_BOOTS =
       deferredRegister.registerItem("steel_boots", properties ->
           new ArmorItem(RailcraftArmorMaterials.STEEL, ArmorItem.Type.BOOTS,
-              properties.durability(25)));
+              properties.durability(260)));
 
   public static final DeferredItem<ArmorItem> STEEL_CHESTPLATE =
       deferredRegister.registerItem("steel_chestplate", properties ->
           new ArmorItem(RailcraftArmorMaterials.STEEL, ArmorItem.Type.CHESTPLATE,
-              properties.durability(25)));
+              properties.durability(320)));
 
   public static final DeferredItem<ArmorItem> STEEL_HELMET =
       deferredRegister.registerItem("steel_helmet", properties ->
           new ArmorItem(RailcraftArmorMaterials.STEEL, ArmorItem.Type.HELMET,
-              properties.durability(25)));
+              properties.durability(220)));
 
   public static final DeferredItem<ArmorItem> STEEL_LEGGINGS =
       deferredRegister.registerItem("steel_leggings", properties ->
           new ArmorItem(RailcraftArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS,
-              properties.durability(25)));
+              properties.durability(300)));
 
   public static final DeferredItem<TunnelBoreHeadItem> IRON_TUNNEL_BORE_HEAD =
       deferredRegister.registerItem("iron_tunnel_bore_head", properties ->
