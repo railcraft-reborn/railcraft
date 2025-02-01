@@ -1,4 +1,4 @@
-// 1.20.1	2024-07-02T18:27:53.134603	Tags for minecraft:item mod id railcraft
+// 1.20.1	2025-02-01T19:26:17.265989	Tags for minecraft:item mod id railcraft
 f0feda62604edc32e6dcc0eb8d52c2defbf8a4d2 data/forge/tags/items/armors/boots.json
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/forge/tags/items/armors/boots/steel.json
 32b89e811b184ba832d5a6e71cadeca8e34dff42 data/forge/tags/items/armors/chestplates.json
@@ -53,7 +53,7 @@ fa98655e67381fc33f8aff33d36629bd937280a6 data/forge/tags/items/ores.json
 7094cc9c85699e7afa6c283f7a769bab75eeeaff data/forge/tags/items/ores/sulfur.json
 0fbe7a7a55102f803486517de1004a189959f607 data/forge/tags/items/ores/tin.json
 e04f5a6285f9ec10108641e77582345991282073 data/forge/tags/items/ores/zinc.json
-ab8a6f7d61afc254cc8f018a4e9182ccac386840 data/forge/tags/items/ores_in_ground/deepslate.json
+43b4d4f06b17a3657cacf00c421a3f96471e94ce data/forge/tags/items/ores_in_ground/deepslate.json
 cba1c5a31aa2960efa0703b2e57f8390f53d4ce6 data/forge/tags/items/ores_in_ground/netherrack.json
 679d265c52f455f2a0f0f9afcfb254016b47f407 data/forge/tags/items/ores_in_ground/stone.json
 4ba7bc1b06f9b82047c5bcd4d444e63e0e05e010 data/forge/tags/items/plates/brass.json
