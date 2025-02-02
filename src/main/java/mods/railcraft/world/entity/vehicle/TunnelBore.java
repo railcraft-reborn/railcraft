@@ -322,8 +322,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
               TrackUtil.setRailShape(this.level(), targetPos, dir);
               setDelay(STANDARD_DELAY);
             }
-          } else if (existingState.isAir()
-              || existingState.is(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS)) {
+          } else if (existingState.isAir() || existingState.is(Blocks.TORCH)) {
             placeRail = true;
             setDelay(STANDARD_DELAY);
           } else {
