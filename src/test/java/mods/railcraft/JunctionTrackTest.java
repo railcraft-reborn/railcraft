@@ -13,13 +13,13 @@ public class JunctionTrackTest {
 
   @GameTest(template = "junction_track")
   public static void junctionTrackWest(GameTestHelper helper) {
-    helper.pressButton(0, 3, 3);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 5, 2, 3);
+    helper.pressButton(0, 2, 3);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 5, 1, 3);
   }
 
   @GameTest(template = "junction_track")
   public static void junctionTrackNorth(GameTestHelper helper) {
-    helper.pressButton(3, 3, 0);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 2, 5);
+    helper.pressButton(3, 2, 0);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 1, 5);
   }
 }

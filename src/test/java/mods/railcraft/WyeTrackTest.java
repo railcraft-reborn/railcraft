@@ -13,13 +13,13 @@ public class WyeTrackTest {
 
   @GameTest(template = "wye_track_active")
   public static void wyeTrackActive(GameTestHelper helper) {
-    helper.pressButton(0, 3, 3);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 2, 1);
+    helper.pressButton(0, 2, 3);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 1, 1);
   }
 
   @GameTest(template = "wye_track_passive")
   public static void wyeTrackPassive(GameTestHelper helper) {
-    helper.pressButton(0, 3, 3);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 2, 5);
+    helper.pressButton(0, 2, 3);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 1, 5);
   }
 }

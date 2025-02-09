@@ -18,10 +18,10 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class RoutingTrackTest {
 
-  private static final BlockPos SPAWN_POINT = new BlockPos(1, 2, 3);
-  private static final BlockPos DEST = new BlockPos(1,2,6);
-  private static final BlockPos LEVER_POS = new BlockPos(0, 2, 4);
-  private static final BlockPos ROUTING_TRACK_POS = new BlockPos(1, 2, 4);
+  private static final BlockPos SPAWN_POINT = new BlockPos(1, 1, 3);
+  private static final BlockPos DEST = new BlockPos(1, 1,6);
+  private static final BlockPos LEVER_POS = new BlockPos(0, 1, 4);
+  private static final BlockPos ROUTING_TRACK_POS = new BlockPos(1, 1, 4);
 
 
   @GameTest(template = "routing_track")

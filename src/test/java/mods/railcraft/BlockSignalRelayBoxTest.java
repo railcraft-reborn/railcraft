@@ -16,9 +16,9 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class BlockSignalRelayBoxTest {
 
-  private static final BlockPos BLOCK_SIGNAL_LEFT = new BlockPos(5, 2, 3);
-  private static final BlockPos BLOCK_SIGNAL_RIGHT = new BlockPos(1, 2, 5);
-  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX = new BlockPos(2, 2, 1);
+  private static final BlockPos BLOCK_SIGNAL_LEFT = new BlockPos(5, 1, 3);
+  private static final BlockPos BLOCK_SIGNAL_RIGHT = new BlockPos(1, 1, 5);
+  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX = new BlockPos(2, 1, 1);
 
 
   @GameTest(template = "block_signal_relay_box")
@@ -41,7 +41,7 @@ public class BlockSignalRelayBoxTest {
 
   @GameTest(template = "block_signal_relay_box")
   public static void blockSignalRelayBoxWithCart(GameTestHelper helper) {
-    helper.spawn(EntityType.MINECART, new BlockPos(4, 2, 2));
+    helper.spawn(EntityType.MINECART, new BlockPos(4, 1, 2));
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(BLOCK_SIGNAL_LEFT) instanceof BlockSignalBlockEntity left &&
           helper.getBlockEntity(BLOCK_SIGNAL_RIGHT) instanceof BlockSignalBlockEntity right &&
@@ -58,11 +58,11 @@ public class BlockSignalRelayBoxTest {
     });
   }
 
-  private static final BlockPos BLOCK_SIGNAL_LEFT_COMPLEX = new BlockPos(7, 2, 1);
-  private static final BlockPos BLOCK_SIGNAL_RIGHT_COMPLEX = new BlockPos(1, 2, 7);
-  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_1_COMPLEX = new BlockPos(6, 2, 4);
-  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_2_COMPLEX = new BlockPos(2, 2, 3);
-  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_3_COMPLEX = new BlockPos(4, 2, 6);
+  private static final BlockPos BLOCK_SIGNAL_LEFT_COMPLEX = new BlockPos(7, 1, 1);
+  private static final BlockPos BLOCK_SIGNAL_RIGHT_COMPLEX = new BlockPos(1, 1, 7);
+  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_1_COMPLEX = new BlockPos(6, 1, 4);
+  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_2_COMPLEX = new BlockPos(2, 1, 3);
+  private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_3_COMPLEX = new BlockPos(4, 1, 6);
 
   @GameTest(template = "block_signal_relay_box_complex")
   public static void blockSignalRelayBoxComplexNoCart(GameTestHelper helper) {
@@ -88,7 +88,7 @@ public class BlockSignalRelayBoxTest {
 
   @GameTest(template = "block_signal_relay_box_complex")
   public static void blockSignalRelayBoxComplexWithCart(GameTestHelper helper) {
-    helper.spawn(EntityType.MINECART, new BlockPos(6, 2, 2));
+    helper.spawn(EntityType.MINECART, new BlockPos(6, 1, 2));
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(BLOCK_SIGNAL_LEFT_COMPLEX) instanceof BlockSignalBlockEntity left &&
           helper.getBlockEntity(BLOCK_SIGNAL_RIGHT_COMPLEX) instanceof BlockSignalBlockEntity right &&

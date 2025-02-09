@@ -13,13 +13,13 @@ public class GatedTrackTest {
 
   @GameTest(template = "gated_track_active")
   public static void gatedTrackActive(GameTestHelper helper) {
-    helper.pressButton(0, 3, 1);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 5, 2, 1);
+    helper.pressButton(0, 2, 1);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 5, 1, 1);
   }
 
   @GameTest(template = "gated_track_passive")
   public static void gatedTrackPassive(GameTestHelper helper) {
-    helper.pressButton(0, 3, 1);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 2, 1);
+    helper.pressButton(0, 2, 1);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 3, 1, 1);
   }
 }

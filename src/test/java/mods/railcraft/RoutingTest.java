@@ -14,15 +14,15 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class RoutingTest {
 
-  private static final BlockPos SPAWN_POINT_A = new BlockPos(3, 2, 1);
-  private static final BlockPos SPAWN_POINT_B = new BlockPos(5, 2, 1);
-  private static final BlockPos SPAWN_POINT_A_B = new BlockPos(7, 2, 1);
-  private static final BlockPos SPAWN_POINT_A_C = new BlockPos(9, 2, 1);
+  private static final BlockPos SPAWN_POINT_A = new BlockPos(3, 1, 1);
+  private static final BlockPos SPAWN_POINT_B = new BlockPos(5, 1, 1);
+  private static final BlockPos SPAWN_POINT_A_B = new BlockPos(7, 1, 1);
+  private static final BlockPos SPAWN_POINT_A_C = new BlockPos(9, 1, 1);
 
-  private static final BlockPos TRAIN_A = new BlockPos(12, 2, 16);
-  private static final BlockPos TRAIN_B = new BlockPos(12, 2, 5);
-  private static final BlockPos TRAIN_A_B = new BlockPos(12, 2, 12);
-  private static final BlockPos TRAIN_A_C = new BlockPos(12, 2, 14);
+  private static final BlockPos TRAIN_A = new BlockPos(12, 1, 16);
+  private static final BlockPos TRAIN_B = new BlockPos(12, 1, 5);
+  private static final BlockPos TRAIN_A_B = new BlockPos(12, 1, 12);
+  private static final BlockPos TRAIN_A_C = new BlockPos(12, 1, 14);
 
   @GameTest(template = "complex_routing", timeoutTicks = 300)
   public static void complexRouting(GameTestHelper helper) {

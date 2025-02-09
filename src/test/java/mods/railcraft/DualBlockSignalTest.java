@@ -19,9 +19,9 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class DualBlockSignalTest {
 
-  private static final BlockPos DUAL_BLOCK_SIGNAL = new BlockPos(1, 2, 1);
-  private static final BlockPos BLOCK_SIGNAL = new BlockPos(1, 2, 3);
-  private static final BlockPos SIGNAL_CONTROLLER_BOX = new BlockPos(5, 2, 1);
+  private static final BlockPos DUAL_BLOCK_SIGNAL = new BlockPos(1, 1, 1);
+  private static final BlockPos BLOCK_SIGNAL = new BlockPos(1, 1, 3);
+  private static final BlockPos SIGNAL_CONTROLLER_BOX = new BlockPos(5, 1, 1);
 
   @GameTest(template = "dual_block_signal")
   public static void dualBlockSignalPrimaryNoCart(GameTestHelper helper) {
@@ -43,7 +43,7 @@ public class DualBlockSignalTest {
 
   @GameTest(template = "dual_block_signal")
   public static void dualBlockSignalPrimaryWithCart(GameTestHelper helper) {
-    helper.spawn(EntityType.MINECART, new BlockPos(1, 2, 2));
+    helper.spawn(EntityType.MINECART, new BlockPos(1, 1, 2));
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(DUAL_BLOCK_SIGNAL) instanceof DualBlockSignalBlockEntity dual &&
           helper.getBlockEntity(BLOCK_SIGNAL) instanceof BlockSignalBlockEntity single) {

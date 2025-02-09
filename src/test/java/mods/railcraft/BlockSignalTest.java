@@ -15,8 +15,8 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class BlockSignalTest {
 
-  private static final BlockPos BLOCK_SIGNAL_LEFT = new BlockPos(7, 2, 3);
-  private static final BlockPos BLOCK_SIGNAL_RIGHT = new BlockPos(2, 2, 3);
+  private static final BlockPos BLOCK_SIGNAL_LEFT = new BlockPos(7, 1, 3);
+  private static final BlockPos BLOCK_SIGNAL_RIGHT = new BlockPos(2, 1, 3);
 
 
   @GameTest(template = "block_signal")
@@ -37,7 +37,7 @@ public class BlockSignalTest {
 
   @GameTest(template = "block_signal")
   public static void blockSignalWithCart(GameTestHelper helper) {
-    helper.spawn(EntityType.MINECART, new BlockPos(5, 2, 2));
+    helper.spawn(EntityType.MINECART, new BlockPos(5, 1, 2));
     helper.succeedWhen(() -> {
       if (helper.getBlockEntity(BLOCK_SIGNAL_LEFT) instanceof BlockSignalBlockEntity left &&
           helper.getBlockEntity(BLOCK_SIGNAL_RIGHT) instanceof BlockSignalBlockEntity right) {

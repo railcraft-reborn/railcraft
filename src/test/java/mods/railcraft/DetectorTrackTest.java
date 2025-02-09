@@ -15,10 +15,10 @@ public class DetectorTrackTest {
 
   @GameTest(template = "detector_track")
   public static void detectorTrack(GameTestHelper helper) {
-    helper.pressButton(0, 3, 1);
+    helper.pressButton(0, 2, 1);
     helper.succeedWhen(() -> {
-      helper.assertEntityPresent(EntityType.MINECART, 3, 2, 1);
-      var redstoneLampPos = new BlockPos(3, 2, 0);
+      helper.assertEntityPresent(EntityType.MINECART, 3, 1, 1);
+      var redstoneLampPos = new BlockPos(3, 1, 0);
       helper.assertBlockProperty(redstoneLampPos, RedstoneLampBlock.LIT, true);
     });
   }

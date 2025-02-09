@@ -15,7 +15,7 @@ public class ForceTrackEmitterTest {
 
   @GameTest(template = "force_track_active", timeoutTicks = 200)
   public static void forceTrackActive(GameTestHelper helper) {
-    var pos =  helper.absolutePos(new BlockPos(4, 2, 2));
+    var pos =  helper.absolutePos(new BlockPos(4, 1, 2));
     helper.onEachTick(() -> {
       var energyStorage = helper.getLevel()
           .getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
@@ -24,7 +24,7 @@ public class ForceTrackEmitterTest {
       }
     });
 
-    helper.pressButton(1, 4, 2);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 10, 3, 2);
+    helper.pressButton(1, 3, 2);
+    helper.succeedWhenEntityPresent(EntityType.MINECART, 10, 2, 2);
   }
 }

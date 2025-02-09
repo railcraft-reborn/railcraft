@@ -18,10 +18,10 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 @PrefixGameTestTemplate(false)
 public class InterlockTest {
 
-  private static BlockPos MASTER_LEVER = new BlockPos(1, 2, 3);
-  private static BlockPos LEVER_1 = new BlockPos(6, 2, 1);
-  private static BlockPos LEVER_2 = new BlockPos(5, 2, 1);
-  private static BlockPos LEVER_3 = new BlockPos(4, 2, 1);
+  private static BlockPos MASTER_LEVER = new BlockPos(1, 1, 3);
+  private static BlockPos LEVER_1 = new BlockPos(6, 1, 1);
+  private static BlockPos LEVER_2 = new BlockPos(5, 1, 1);
+  private static BlockPos LEVER_3 = new BlockPos(4, 1, 1);
 
 
   @GameTest(template = "interlock", timeoutTicks = 200)
@@ -31,8 +31,8 @@ public class InterlockTest {
         .thenIdle(20)
         .thenExecute(() -> {
           helper.pullLever(LEVER_1);
-          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 3, 6));
-          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 3, 6));
+          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 6));
+          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 6));
           if (distant1.getPrimarySignalAspect() != SignalAspect.RED) {
             helper.fail("Distant 1 should be RED");
           }
@@ -43,8 +43,8 @@ public class InterlockTest {
         .thenIdle(20)
         .thenExecute(() -> {
           helper.pullLever(LEVER_2);
-          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 3, 6));
-          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 3, 6));
+          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 6));
+          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 6));
           if (distant2.getPrimarySignalAspect() != SignalAspect.RED) {
             helper.fail("Distant 2 should be RED");
           }
@@ -56,8 +56,8 @@ public class InterlockTest {
         .thenExecute(() -> {
           helper.pullLever(LEVER_3);
           helper.pullLever(LEVER_1);
-          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 3, 6));
-          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 3, 6));
+          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 6));
+          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 6));
           if (distant3.getPrimarySignalAspect() != SignalAspect.RED) {
             helper.fail("Distant 3 should be RED");
           }
@@ -68,9 +68,9 @@ public class InterlockTest {
         .thenIdle(20)
         .thenExecute(() -> {
           helper.pullLever(MASTER_LEVER);
-          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 3, 6));
-          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 3, 6));
-          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 3, 6));
+          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 6));
+          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 6));
+          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 6));
           if (distant1.getPrimarySignalAspect() != SignalAspect.RED) {
             helper.fail("Distant 1 should be RED");
           }
@@ -84,9 +84,9 @@ public class InterlockTest {
         .thenIdle(20)
         .thenExecute(() -> {
           helper.pullLever(MASTER_LEVER);
-          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 3, 6));
-          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 3, 6));
-          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 3, 6));
+          var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 6));
+          var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 6));
+          var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 6));
           if (distant1.getPrimarySignalAspect() != SignalAspect.GREEN) {
             helper.fail("Distant 1 should be GREEN");
           }
@@ -101,25 +101,25 @@ public class InterlockTest {
   }
 
   private static void setupTest(GameTestHelper helper) {
-    var controller1 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 2));
-    var interlock1 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 4));
+    var controller1 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(6, 1, 2));
+    var interlock1 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(6, 1, 4));
     link(controller1, interlock1);
-    var controller2 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 2));
-    var interlock2 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 4));
+    var controller2 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(5, 1, 2));
+    var interlock2 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(5, 1, 4));
     link(controller2, interlock2);
-    var controller3 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 2));
-    var interlock3 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 4));
+    var controller3 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(4, 1, 2));
+    var interlock3 = (SignalInterlockBoxBlockEntity) helper.getBlockEntity(new BlockPos(4, 1, 4));
     link(controller3, interlock3);
 
-    var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 3, 6));
-    var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 3, 6));
-    var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 3, 6));
+    var distant1 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(6, 2, 6));
+    var distant2 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(5, 2, 6));
+    var distant3 = (DistantSignalBlockEntity) helper.getBlockEntity(new BlockPos(4, 2, 6));
     link(interlock1, distant1);
     link(interlock2, distant2);
     link(interlock3, distant3);
 
-    var controller4 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(1, 2, 4));
-    var receiver1 = (SignalReceiverBoxBlockEntity) helper.getBlockEntity(new BlockPos(3, 2, 4));
+    var controller4 = (SignalControllerBoxBlockEntity) helper.getBlockEntity(new BlockPos(1, 1, 4));
+    var receiver1 = (SignalReceiverBoxBlockEntity) helper.getBlockEntity(new BlockPos(3, 1, 4));
     link(controller4, receiver1);
   }
 
