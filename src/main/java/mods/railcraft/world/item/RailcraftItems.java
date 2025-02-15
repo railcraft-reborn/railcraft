@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.Collection;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
@@ -48,8 +48,8 @@ public class RailcraftItems {
   private static final DeferredRegister.Items deferredRegister =
       DeferredRegister.createItems(RailcraftConstants.ID);
 
-  private static final Function<Block, BlockItem> BLOCK_TO_BLOCK_ITEM =
-      block -> new BlockItem(block, new Item.Properties());
+  private static final BiFunction<Item.Properties, Block, BlockItem> BLOCK_TO_BLOCK_ITEM =
+      (properties, block) -> new BlockItem(block, properties);
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -477,16 +477,16 @@ public class RailcraftItems {
               .stacksTo(1)));
 
   public static final DeferredItem<CartItem> TANK_MINECART =
-      deferredRegister.register("tank_minecart",
-          () -> new CartItem(TankMinecart::new, new Item.Properties().stacksTo(1)));
+      deferredRegister.registerItem("tank_minecart",
+          properties -> new CartItem(TankMinecart::new, properties.stacksTo(1)));
 
   public static final DeferredItem<CartItem> ENERGY_MINECART =
-      deferredRegister.register("energy_minecart",
-          () -> new CartItem(EnergyMinecart::new, new Item.Properties().stacksTo(1)));
+      deferredRegister.registerItem("energy_minecart",
+          properties -> new CartItem(EnergyMinecart::new, properties.stacksTo(1)));
 
   public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
-      deferredRegister.register("world_spike_minecart",
-          () -> new WorldSpikeMinecartItem(new Item.Properties()
+      deferredRegister.registerItem("world_spike_minecart",
+          properties -> new WorldSpikeMinecartItem(properties
               .stacksTo(1)
               .rarity(Rarity.UNCOMMON)));
 
@@ -981,16 +981,18 @@ public class RailcraftItems {
   public static final DeferredItem<Item> TRACK_PARTS = registerBasic("track_parts");
 
   public static final DeferredItem<TrackKitItem> TRANSITION_TRACK_KIT =
-      deferredRegister.register("transition_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("transition_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK)));
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK));
 
   public static final DeferredItem<TrackKitItem> LOCKING_TRACK_KIT =
-      deferredRegister.register("locking_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("locking_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK)
@@ -998,22 +1000,24 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCKING_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK));
 
   public static final DeferredItem<TrackKitItem> BUFFER_STOP_TRACK_KIT =
-      deferredRegister.register("buffer_stop_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("buffer_stop_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED,
                   RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK));
 
   public static final DeferredItem<TrackKitItem> ACTIVATOR_TRACK_KIT =
-      deferredRegister.register("activator_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("activator_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK)
@@ -1023,11 +1027,12 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ACTIVATOR_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK));
 
   public static final DeferredItem<TrackKitItem> BOOSTER_TRACK_KIT =
-      deferredRegister.register("booster_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("booster_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_BOOSTER_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_BOOSTER_TRACK)
@@ -1036,31 +1041,34 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_BOOSTER_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_BOOSTER_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK));
 
   public static final DeferredItem<TrackKitItem> CONTROL_TRACK_KIT =
-      deferredRegister.register("control_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("control_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_CONTROL_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_CONTROL_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_CONTROL_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_CONTROL_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_CONTROL_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_CONTROL_TRACK));
 
   public static final DeferredItem<TrackKitItem> GATED_TRACK_KIT =
-      deferredRegister.register("gated_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("gated_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_GATED_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_GATED_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_GATED_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_GATED_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_GATED_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_GATED_TRACK));
 
   public static final DeferredItem<TrackKitItem> DETECTOR_TRACK_KIT =
-      deferredRegister.register("detector_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("detector_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DETECTOR_TRACK)
@@ -1070,32 +1078,35 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_DETECTOR_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_DETECTOR_TRACK));
 
   public static final DeferredItem<TrackKitItem> COUPLER_TRACK_KIT =
-      deferredRegister.register("coupler_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("coupler_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_COUPLER_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_COUPLER_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_COUPLER_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_COUPLER_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_COUPLER_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_COUPLER_TRACK));
 
   public static final DeferredItem<TrackKitItem> EMBARKING_TRACK_KIT =
-      deferredRegister.register("embarking_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("embarking_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_EMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_EMBARKING_TRACK));
 
   public static final DeferredItem<TrackKitItem> DISEMBARKING_TRACK_KIT =
-      deferredRegister.register("disembarking_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("disembarking_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DISEMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DISEMBARKING_TRACK)
@@ -1103,11 +1114,12 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.REINFORCED,
                   RailcraftBlocks.REINFORCED_DISEMBARKING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_DISEMBARKING_TRACK));
 
   public static final DeferredItem<TrackKitItem> DUMPING_TRACK_KIT =
-      deferredRegister.register("dumping_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("dumping_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .setAllowedOnSlopes(true)
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_DUMPING_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_DUMPING_TRACK)
@@ -1115,33 +1127,36 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.REINFORCED,
                   RailcraftBlocks.REINFORCED_DUMPING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_DUMPING_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_DUMPING_TRACK));
 
   public static final DeferredItem<TrackKitItem> LAUNCHER_TRACK_KIT =
-      deferredRegister.register("launcher_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("launcher_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LAUNCHER_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LAUNCHER_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LAUNCHER_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED,
                   RailcraftBlocks.REINFORCED_LAUNCHER_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_LAUNCHER_TRACK));
 
   public static final DeferredItem<TrackKitItem> ONE_WAY_TRACK_KIT =
-      deferredRegister.register("one_way_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("one_way_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ONE_WAY_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ONE_WAY_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ONE_WAY_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED,
                   RailcraftBlocks.REINFORCED_ONE_WAY_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_ONE_WAY_TRACK));
 
   public static final DeferredItem<TrackKitItem> WHISTLE_TRACK_KIT =
-      deferredRegister.register("whistle_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("whistle_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_WHISTLE_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_WHISTLE_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_WHISTLE_TRACK)
@@ -1149,11 +1164,12 @@ public class RailcraftItems {
                   RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_WHISTLE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_WHISTLE_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_WHISTLE_TRACK));
 
   public static final DeferredItem<TrackKitItem> LOCOMOTIVE_TRACK_KIT =
-      deferredRegister.register("locomotive_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("locomotive_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_LOCOMOTIVE_TRACK)
@@ -1162,11 +1178,12 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCOMOTIVE_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_LOCOMOTIVE_TRACK));
 
   public static final DeferredItem<TrackKitItem> THROTTLE_TRACK_KIT =
-      deferredRegister.register("throttle_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("throttle_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.HIGH_SPEED, RailcraftBlocks.HIGH_SPEED_THROTTLE_TRACK)
@@ -1175,16 +1192,17 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_THROTTLE_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON,
-                  RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK)));
+                  RailcraftBlocks.STRAP_IRON_THROTTLE_TRACK));
 
   public static final DeferredItem<TrackKitItem> ROUTING_TRACK_KIT =
-      deferredRegister.register("routing_track_kit",
-          () -> new TrackKitItem(new TrackKitItem.Properties()
+      deferredRegister.registerItem("routing_track_kit",
+          properties -> new TrackKitItem((TrackKitItem.Properties) properties),
+          new TrackKitItem.Properties()
               .addOutfittedBlock(TrackTypes.ABANDONED, RailcraftBlocks.ABANDONED_ROUTING_TRACK)
               .addOutfittedBlock(TrackTypes.ELECTRIC, RailcraftBlocks.ELECTRIC_ROUTING_TRACK)
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_ROUTING_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_ROUTING_TRACK)
-              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_ROUTING_TRACK)));
+              .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_ROUTING_TRACK));
 
   public static final DeferredItem<GogglesItem> GOGGLES =
       deferredRegister.registerItem("goggles", properties ->

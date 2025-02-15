@@ -4,10 +4,14 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -23,29 +27,44 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
 
   void forEach(BiConsumer<K, DeferredHolder<R, ? extends V>> action);
 
-  static <K extends Enum<K> & StringRepresentable, R, V extends R> VariantSet<K, R, V> of(
+  static <K extends Enum<K> & StringRepresentable, V extends Block> VariantSet<K, Block, V> of(
       Class<K> keyType,
-      DeferredRegister<R> deferredRegister,
+      DeferredRegister.Blocks deferredRegister,
       String nameTemplate,
-      Function<K, V> factory) {
-    Map<K, DeferredHolder<R, ? extends V>> variants = new EnumMap<>(keyType);
+      BiFunction<BlockBehaviour.Properties, K, V> func,
+      BlockBehaviour.Properties properties) {
+    Map<K, DeferredHolder<Block, ? extends V>> variants = new EnumMap<>(keyType);
     for (var key : keyType.getEnumConstants()) {
-      variants.put(key, deferredRegister.register(
-          String.format(nameTemplate, key.getSerializedName()), () -> factory.apply(key)));
+      var name = String.format(nameTemplate, key.getSerializedName());
+      variants.put(key, deferredRegister.registerBlock(name, p -> func.apply(p, key), properties));
     }
     return new MappedVariantSet<>(variants);
   }
 
-  static <K extends Enum<K> & StringRepresentable, R, V extends R, SR, SV extends SR> VariantSet<K, R, V> ofMapped(
+  static <K extends Enum<K> & StringRepresentable, V extends Block> VariantSet<K, Block, V> of(
       Class<K> keyType,
-      DeferredRegister<R> deferredRegister,
+      DeferredRegister.Blocks deferredRegister,
+      String nameTemplate,
+      Function<BlockBehaviour.Properties, V> func,
+      BlockBehaviour.Properties properties) {
+    Map<K, DeferredHolder<Block, ? extends V>> variants = new EnumMap<>(keyType);
+    for (var key : keyType.getEnumConstants()) {
+      var name = String.format(nameTemplate, key.getSerializedName());
+      variants.put(key, deferredRegister.registerBlock(name, func, properties));
+    }
+    return new MappedVariantSet<>(variants);
+  }
+
+  static <K extends Enum<K> & StringRepresentable, V extends Item, SR, SV extends SR> VariantSet<K, Item, V> ofMapped(
+      Class<K> keyType,
+      DeferredRegister.Items deferredRegister,
       VariantSet<K, SR, SV> source,
-      Function<? super SV, ? extends V> mapper) {
-    Map<K, DeferredHolder<R, ? extends V>> variants = new EnumMap<>(keyType);
-    source.forEach((key, value) -> variants.put(key,
-        deferredRegister.register(
-            value.getId().getPath(),
-            () -> mapper.apply(value.get()))));
+      BiFunction<Item.Properties, ? super SV, ? extends V> mapper) {
+    Map<K, DeferredHolder<Item, ? extends V>> variants = new EnumMap<>(keyType);
+    source.forEach((key, value) -> {
+      variants.put(key, deferredRegister.registerItem(value.getId().getPath(),
+          properties -> mapper.apply(properties, value.get())));
+    });
     return new MappedVariantSet<>(variants);
   }
 

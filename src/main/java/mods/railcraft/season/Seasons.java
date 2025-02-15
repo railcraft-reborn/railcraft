@@ -61,7 +61,7 @@ public final class Seasons {
     Season season = getSeason(state);
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && HALLOWEEN)
-          || GHOST_TRAIN.equals(state.nameTag.getString());
+          || (state.nameTag != null && GHOST_TRAIN.equals(state.nameTag.getString()));
     }
     return season == Season.HALLOWEEN;
   }
@@ -72,7 +72,7 @@ public final class Seasons {
   public static boolean isPolarExpress(MinecartRenderState state) {
     var season = getSeason(state);
     var level = Minecraft.getInstance().level;
-    var pos = BlockPos.containing(state.posOnRail);
+    var pos = BlockPos.containing(state.x, state.y, state.z);
     return isPolarExpress(season, state.nameTag, level, pos);
   }
 
