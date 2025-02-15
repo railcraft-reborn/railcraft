@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "railcraft:abyssal_paver"
-    }
+    "#": "railcraft:abyssal_paver"
   },
   "pattern": [
     "#  ",

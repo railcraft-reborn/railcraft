@@ -9,34 +9,24 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/lapis"
-  },
+  "ingredient": "#c:ores/lapis",
   "outputs": [
     {
       "count": 8,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:lapis_lazuli"
-      }
+      "result": "minecraft:lapis_lazuli"
     },
     {
       "probability": 0.85,
-      "result": {
-        "item": "minecraft:lapis_lazuli"
-      }
+      "result": "minecraft:lapis_lazuli"
     },
     {
       "probability": 0.35,
-      "result": {
-        "item": "minecraft:lapis_lazuli"
-      }
+      "result": "minecraft:lapis_lazuli"
     },
     {
       "probability": 0.2,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     }
   ]
 }

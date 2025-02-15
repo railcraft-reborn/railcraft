@@ -2,9 +2,7 @@
   "type": "railcraft:blasting",
   "cookingTime": 800,
   "experience": 0.0,
-  "ingredient": {
-    "item": "railcraft:steel_helmet"
-  },
+  "ingredient": "railcraft:steel_helmet",
   "result": {
     "count": 4,
     "id": "railcraft:steel_ingot"

@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "railcraft:track_parts"
-    },
-    {
-      "item": "minecraft:piston"
-    },
-    {
-      "tag": "c:storage_blocks/steel"
-    },
-    {
-      "tag": "c:storage_blocks/steel"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#minecraft:planks",
+    "railcraft:track_parts",
+    "minecraft:piston",
+    "#c:storage_blocks/steel",
+    "#c:storage_blocks/steel",
+    "#c:dusts/redstone"
   ],
   "result": {
     "count": 1,

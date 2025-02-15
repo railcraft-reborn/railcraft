@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:control_track_kit"
-    },
-    {
-      "item": "railcraft:abandoned_track"
-    }
+    "railcraft:control_track_kit",
+    "railcraft:abandoned_track"
   ],
   "result": {
     "count": 1,

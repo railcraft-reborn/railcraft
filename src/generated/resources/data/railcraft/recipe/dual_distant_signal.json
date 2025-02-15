@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:signal_lamp"
-    },
-    "b": {
-      "item": "railcraft:receiver_circuit"
-    },
-    "c": {
-      "item": "minecraft:iron_ingot"
-    },
-    "d": {
-      "tag": "c:dyes/black"
-    },
-    "e": {
-      "item": "railcraft:receiver_circuit"
-    }
+    "a": "railcraft:signal_lamp",
+    "b": "railcraft:receiver_circuit",
+    "c": "minecraft:iron_ingot",
+    "d": "#c:dyes/black",
+    "e": "railcraft:receiver_circuit"
   },
   "pattern": [
     "abc",

@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:slimeballs"
-    },
-    "G": {
-      "tag": "c:ingots/gold"
-    },
-    "L": {
-      "tag": "c:gems/lapis"
-    },
-    "R": {
-      "item": "minecraft:repeater"
-    },
-    "S": {
-      "tag": "c:dusts/redstone"
-    },
-    "W": {
-      "item": "minecraft:blue_wool"
-    }
+    "B": "#c:slime_balls",
+    "G": "#c:ingots/gold",
+    "L": "#c:gems/lapis",
+    "R": "minecraft:repeater",
+    "S": "#c:dusts/redstone",
+    "W": "minecraft:blue_wool"
   },
   "pattern": [
     " RW",

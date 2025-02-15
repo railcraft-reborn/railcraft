@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "minecraft:wool"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "#minecraft:wool",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

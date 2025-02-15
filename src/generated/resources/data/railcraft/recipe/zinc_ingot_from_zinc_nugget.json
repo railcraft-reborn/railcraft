@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:zinc_nugget"
-    }
+    "a": "railcraft:zinc_nugget"
   },
   "pattern": [
     "aaa",

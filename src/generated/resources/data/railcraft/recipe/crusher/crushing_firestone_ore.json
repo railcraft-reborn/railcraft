@@ -1,14 +1,10 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "railcraft:firestone_ore"
-  },
+  "ingredient": "railcraft:firestone_ore",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:raw_firestone"
-      }
+      "result": "railcraft:raw_firestone"
     }
   ]
 }

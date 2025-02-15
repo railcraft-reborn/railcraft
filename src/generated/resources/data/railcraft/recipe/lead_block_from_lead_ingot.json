@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:lead_ingot"
-    }
+    "a": "railcraft:lead_ingot"
   },
   "pattern": [
     "aaa",

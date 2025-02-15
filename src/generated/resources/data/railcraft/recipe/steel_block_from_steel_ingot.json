@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:steel_ingot"
-    }
+    "a": "railcraft:steel_ingot"
   },
   "pattern": [
     "aaa",

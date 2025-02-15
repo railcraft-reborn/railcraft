@@ -45,21 +45,18 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
   }
 
   @Override
-  protected void buildRecipes() {}
-
-  public void genRecipes(RecipeOutput recipeOutput) {
+  protected void buildRecipes() {
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftBlocks.STEEL_BLOCK.get(), 1,
             Ingredient.of(this.items.getOrThrow(Tags.Items.STORAGE_BLOCKS_IRON)), 9, 9)
         .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
-        .save(recipeOutput, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()).toString());
+        .save(output, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()).toString());
 
     BlastFurnaceRecipeBuilder
         .smelting(RailcraftItems.STEEL_INGOT.get(),
             Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)), 1, 1)
         .unlockedBy("has_iron_ingots", has(Tags.Items.INGOTS_IRON))
-        .save(recipeOutput, getRailcraftBlastingRecipeName(Items.IRON_INGOT).toString());
-
+        .save(output, getRailcraftBlastingRecipeName(Items.IRON_INGOT).toString());
     consumeIronSteelItems();
   }
 

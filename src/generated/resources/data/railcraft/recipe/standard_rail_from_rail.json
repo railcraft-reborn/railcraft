@@ -2,30 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    },
-    {
-      "item": "minecraft:rail"
-    }
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail",
+    "minecraft:rail"
   ],
   "result": {
     "count": 1,

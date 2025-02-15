@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:world_spike"
-    },
-    "b": {
-      "item": "minecraft:minecart"
-    }
+    "a": "railcraft:world_spike",
+    "b": "minecraft:minecart"
   },
   "pattern": [
     "a",

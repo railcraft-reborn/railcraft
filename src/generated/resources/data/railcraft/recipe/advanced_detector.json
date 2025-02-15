@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "#c:ingots/steel",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

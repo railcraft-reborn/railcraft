@@ -1,15 +1,11 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:quartz_block"
-  },
+  "ingredient": "minecraft:quartz_block",
   "outputs": [
     {
       "count": 4,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:quartz"
-      }
+      "result": "minecraft:quartz"
     }
   ]
 }

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:writable_book"
-    },
-    {
-      "tag": "c:dyes/blue"
-    }
+    "minecraft:writable_book",
+    "#c:dyes/blue"
   ],
   "result": {
     "count": 1,

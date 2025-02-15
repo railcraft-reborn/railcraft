@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:glass_pane"
-    },
-    "b": {
-      "tag": "c:plates/steel"
-    }
+    "a": "minecraft:glass_pane",
+    "b": "#c:plates/steel"
   },
   "pattern": [
     "aba",

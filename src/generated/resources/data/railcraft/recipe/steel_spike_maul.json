@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "tag": "c:rods/wooden"
-    },
-    "c": {
-      "tag": "c:storage_blocks/steel"
-    }
+    "a": "#c:ingots/steel",
+    "b": "#c:rods/wooden",
+    "c": "#c:storage_blocks/steel"
   },
   "pattern": [
     "aca",

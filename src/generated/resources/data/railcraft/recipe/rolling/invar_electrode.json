@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:plates/invar"
-    }
+    "a": "#c:plates/invar"
   },
   "pattern": [
     " a ",

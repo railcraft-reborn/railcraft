@@ -4,9 +4,7 @@
   "cookingtime": 100,
   "experience": 1.0,
   "group": "tin_ingot",
-  "ingredient": {
-    "item": "railcraft:deepslate_tin_ore"
-  },
+  "ingredient": "railcraft:deepslate_tin_ore",
   "result": {
     "count": 1,
     "id": "railcraft:tin_ingot"

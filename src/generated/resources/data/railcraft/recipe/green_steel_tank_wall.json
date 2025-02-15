@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:steel_tank_wall"
-    },
-    "b": {
-      "item": "minecraft:green_dye"
-    }
+    "a": "#railcraft:steel_tank_wall",
+    "b": "minecraft:green_dye"
   },
   "pattern": [
     "aaa",

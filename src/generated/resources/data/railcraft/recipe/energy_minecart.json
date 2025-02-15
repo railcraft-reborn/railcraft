@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/lead"
-    },
-    "b": {
-      "item": "minecraft:redstone_block"
-    },
-    "c": {
-      "item": "minecraft:minecart"
-    }
+    "a": "#c:ingots/lead",
+    "b": "minecraft:redstone_block",
+    "c": "minecraft:minecart"
   },
   "pattern": [
     "aba",

@@ -16,15 +16,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ingots/gold"
-  },
+  "ingredient": "#c:ingots/gold",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/gold"
-      }
+      "result": "#c:dusts/gold"
     }
   ]
 }

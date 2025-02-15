@@ -3,9 +3,7 @@
   "cookingTime": 3600,
   "creosoteOutput": 5000,
   "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:coal_block"
-  },
+  "ingredient": "minecraft:coal_block",
   "result": {
     "count": 1,
     "id": "railcraft:coal_coke_block"

@@ -3,9 +3,7 @@
   "cookingTime": 300,
   "creosoteOutput": 250,
   "experience": 0.0,
-  "ingredient": {
-    "tag": "minecraft:logs"
-  },
+  "ingredient": "#minecraft:logs",
   "result": {
     "count": 1,
     "id": "minecraft:charcoal"

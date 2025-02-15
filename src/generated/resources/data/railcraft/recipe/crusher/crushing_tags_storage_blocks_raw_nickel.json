@@ -16,16 +16,12 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:storage_blocks/raw_nickel"
-  },
+  "ingredient": "#c:storage_blocks/raw_nickel",
   "outputs": [
     {
       "count": 12,
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/nickel"
-      }
+      "result": "#c:dusts/nickel"
     }
   ]
 }

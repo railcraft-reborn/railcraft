@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:turbine_blade"
-    },
-    "b": {
-      "tag": "c:ingots/steel"
-    }
+    "a": "railcraft:turbine_blade",
+    "b": "#c:ingots/steel"
   },
   "pattern": [
     "aaa",

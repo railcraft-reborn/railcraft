@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:storage_blocks/steel"
-    },
-    "b": {
-      "item": "minecraft:minecart"
-    },
-    "c": {
-      "item": "minecraft:furnace"
-    },
-    "d": {
-      "item": "minecraft:chest_minecart"
-    }
+    "a": "#c:storage_blocks/steel",
+    "b": "minecraft:minecart",
+    "c": "minecraft:furnace",
+    "d": "minecraft:chest_minecart"
   },
   "pattern": [
     "aba",

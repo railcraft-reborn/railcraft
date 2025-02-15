@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/gold"
-    },
-    "b": {
-      "item": "railcraft:bushing_gear"
-    }
+    "a": "#c:ingots/gold",
+    "b": "railcraft:bushing_gear"
   },
   "pattern": [
     " a ",

@@ -9,15 +9,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "railcraft:abyssal"
-  },
+  "ingredient": "#railcraft:abyssal",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:abyssal_cobblestone"
-      }
+      "result": "railcraft:abyssal_cobblestone"
     }
   ]
 }

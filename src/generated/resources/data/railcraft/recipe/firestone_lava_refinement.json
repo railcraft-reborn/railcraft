@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "L": {
-      "item": "minecraft:lava_bucket"
-    },
-    "R": {
-      "item": "minecraft:redstone_block"
-    },
-    "S": {
-      "item": "railcraft:cut_firestone"
-    }
+    "L": "minecraft:lava_bucket",
+    "R": "minecraft:redstone_block",
+    "S": "railcraft:cut_firestone"
   },
   "pattern": [
     "LRL",

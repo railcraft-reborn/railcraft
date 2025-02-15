@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:sand"
-    },
-    "b": {
-      "item": "minecraft:brick"
-    },
-    "c": {
-      "item": "minecraft:clay"
-    }
+    "a": "minecraft:sand",
+    "b": "minecraft:brick",
+    "c": "minecraft:clay"
   },
   "pattern": [
     "aba",

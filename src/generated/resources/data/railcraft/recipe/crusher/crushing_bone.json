@@ -1,15 +1,11 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:bone"
-  },
+  "ingredient": "minecraft:bone",
   "outputs": [
     {
       "count": 4,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:bone_meal"
-      }
+      "result": "minecraft:bone_meal"
     }
   ]
 }

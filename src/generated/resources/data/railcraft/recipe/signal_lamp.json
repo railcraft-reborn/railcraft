@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:glass_pane"
-    },
-    "b": {
-      "tag": "c:dyes/lime"
-    },
-    "c": {
-      "tag": "c:dyes/yellow"
-    },
-    "d": {
-      "tag": "c:dyes/red"
-    },
-    "e": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "f": {
-      "item": "minecraft:redstone"
-    }
+    "a": "minecraft:glass_pane",
+    "b": "#c:dyes/lime",
+    "c": "#c:dyes/yellow",
+    "d": "#c:dyes/red",
+    "e": "minecraft:glowstone_dust",
+    "f": "minecraft:redstone"
   },
   "pattern": [
     "ab ",

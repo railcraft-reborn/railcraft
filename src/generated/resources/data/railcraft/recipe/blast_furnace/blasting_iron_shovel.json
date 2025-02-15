@@ -1,9 +1,7 @@
 {
   "type": "railcraft:blasting",
   "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:iron_shovel"
-  },
+  "ingredient": "minecraft:iron_shovel",
   "result": {
     "count": 1,
     "id": "railcraft:steel_ingot"

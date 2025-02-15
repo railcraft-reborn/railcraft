@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:plates/bronze"
-    }
+    "a": "#c:plates/bronze"
   },
   "pattern": [
     " a ",

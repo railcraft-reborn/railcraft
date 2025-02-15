@@ -9,28 +9,20 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/sulfur"
-  },
+  "ingredient": "#c:ores/sulfur",
   "outputs": [
     {
       "count": 5,
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     },
     {
       "probability": 0.85,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     },
     {
       "probability": 0.35,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     }
   ]
 }

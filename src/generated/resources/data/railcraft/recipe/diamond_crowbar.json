@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:gems/diamond"
-    },
-    "b": {
-      "tag": "c:dyes/red"
-    }
+    "a": "#c:gems/diamond",
+    "b": "#c:dyes/red"
   },
   "pattern": [
     " ba",

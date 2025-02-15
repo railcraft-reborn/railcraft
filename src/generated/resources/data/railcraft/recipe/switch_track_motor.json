@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:dyes/red"
-    },
-    "b": {
-      "tag": "c:dyes/black"
-    },
-    "c": {
-      "item": "minecraft:bone_meal"
-    },
-    "d": {
-      "item": "minecraft:piston"
-    },
-    "e": {
-      "item": "railcraft:receiver_circuit"
-    },
-    "f": {
-      "item": "minecraft:iron_ingot"
-    }
+    "a": "#c:dyes/red",
+    "b": "#c:dyes/black",
+    "c": "minecraft:bone_meal",
+    "d": "minecraft:piston",
+    "e": "railcraft:receiver_circuit",
+    "f": "minecraft:iron_ingot"
   },
   "pattern": [
     "abc",

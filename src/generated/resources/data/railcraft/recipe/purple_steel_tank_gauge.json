@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:steel_tank_gauge"
-    },
-    "b": {
-      "item": "minecraft:purple_dye"
-    }
+    "a": "#railcraft:steel_tank_gauge",
+    "b": "minecraft:purple_dye"
   },
   "pattern": [
     "aaa",

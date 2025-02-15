@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:one_way_track_kit"
-    },
-    {
-      "item": "railcraft:reinforced_track"
-    }
+    "railcraft:one_way_track_kit",
+    "railcraft:reinforced_track"
   ],
   "result": {
     "count": 1,

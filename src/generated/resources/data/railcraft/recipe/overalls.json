@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:cyan_wool"
-    }
+    "a": "minecraft:cyan_wool"
   },
   "pattern": [
     "aaa",

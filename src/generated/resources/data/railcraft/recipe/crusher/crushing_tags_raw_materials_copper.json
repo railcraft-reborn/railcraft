@@ -23,21 +23,15 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:raw_materials/copper"
-  },
+  "ingredient": "#c:raw_materials/copper",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/copper"
-      }
+      "result": "#c:dusts/copper"
     },
     {
       "probability": 0.35,
-      "result": {
-        "tag": "c:dusts/copper"
-      }
+      "result": "#c:dusts/copper"
     }
   ]
 }

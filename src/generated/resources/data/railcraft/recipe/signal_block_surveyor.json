@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:compass"
-    },
-    "b": {
-      "tag": "c:glass_panes"
-    },
-    "c": {
-      "item": "minecraft:stone_button"
-    },
-    "d": {
-      "tag": "c:dusts/redstone"
-    }
+    "a": "minecraft:compass",
+    "b": "#c:glass_panes",
+    "c": "minecraft:stone_button",
+    "d": "#c:dusts/redstone"
   },
   "pattern": [
     " a ",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:iron_tank_valve"
-    },
-    "b": {
-      "item": "minecraft:light_gray_dye"
-    }
+    "a": "#railcraft:iron_tank_valve",
+    "b": "minecraft:light_gray_dye"
   },
   "pattern": [
     "aaa",

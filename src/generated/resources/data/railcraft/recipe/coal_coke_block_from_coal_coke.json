@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:coal_coke"
-    }
+    "a": "railcraft:coal_coke"
   },
   "pattern": [
     "aaa",

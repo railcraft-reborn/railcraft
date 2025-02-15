@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:glass"
-    },
-    "b": {
-      "item": "minecraft:hopper"
-    },
-    "c": {
-      "item": "railcraft:detector_track_kit"
-    }
+    "a": "minecraft:glass",
+    "b": "minecraft:hopper",
+    "c": "railcraft:detector_track_kit"
   },
   "pattern": [
     "aba",

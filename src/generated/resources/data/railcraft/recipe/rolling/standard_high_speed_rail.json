@@ -1,15 +1,9 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "item": "minecraft:blaze_powder"
-    },
-    "c": {
-      "tag": "c:ingots/gold"
-    }
+    "a": "#c:ingots/steel",
+    "b": "minecraft:blaze_powder",
+    "c": "#c:ingots/gold"
   },
   "pattern": [
     "abc",

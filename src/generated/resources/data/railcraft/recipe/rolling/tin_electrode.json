@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:plates/tin"
-    }
+    "a": "#c:plates/tin"
   },
   "pattern": [
     " a ",

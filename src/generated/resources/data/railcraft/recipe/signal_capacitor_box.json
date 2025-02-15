@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_ingot"
-    },
-    "b": {
-      "item": "minecraft:repeater"
-    },
-    "c": {
-      "item": "minecraft:redstone"
-    }
+    "a": "minecraft:iron_ingot",
+    "b": "minecraft:repeater",
+    "c": "minecraft:redstone"
   },
   "pattern": [
     "aba",

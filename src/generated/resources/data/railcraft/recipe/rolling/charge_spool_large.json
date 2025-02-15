@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:storage_blocks/copper"
-    }
+    "a": "#c:storage_blocks/copper"
   },
   "pattern": [
     "a"

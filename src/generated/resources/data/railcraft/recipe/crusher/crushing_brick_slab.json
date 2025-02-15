@@ -1,20 +1,14 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:brick_slab"
-  },
+  "ingredient": "minecraft:brick_slab",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:brick"
-      }
+      "result": "minecraft:brick"
     },
     {
       "probability": 0.75,
-      "result": {
-        "item": "minecraft:brick"
-      }
+      "result": "minecraft:brick"
     }
   ]
 }

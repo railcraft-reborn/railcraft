@@ -1,20 +1,14 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "railcraft:crushed_obsidian"
-  },
+  "ingredient": "railcraft:crushed_obsidian",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:obsidian_dust"
-      }
+      "result": "railcraft:obsidian_dust"
     },
     {
       "probability": 0.25,
-      "result": {
-        "item": "railcraft:obsidian_dust"
-      }
+      "result": "railcraft:obsidian_dust"
     }
   ]
 }

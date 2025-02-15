@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/brass"
-    },
-    "b": {
-      "tag": "c:plates/brass"
-    }
+    "a": "#c:ingots/brass",
+    "b": "#c:plates/brass"
   },
   "pattern": [
     " b ",

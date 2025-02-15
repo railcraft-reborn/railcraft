@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_bars"
-    },
-    "b": {
-      "tag": "c:plates/steel"
-    },
-    "c": {
-      "item": "minecraft:lever"
-    }
+    "a": "minecraft:iron_bars",
+    "b": "#c:plates/steel",
+    "c": "minecraft:lever"
   },
   "pattern": [
     "aba",

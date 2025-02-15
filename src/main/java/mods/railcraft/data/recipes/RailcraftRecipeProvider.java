@@ -10,7 +10,6 @@ import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
-import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
@@ -37,7 +36,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
-import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
@@ -169,9 +167,7 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .define('b', railBedType)
         .unlockedBy(getHasName(railType), has(railType))
         .unlockedBy(getHasName(railBedType), has(railBedType))
-        .save(output,
-            ResourceLocation.fromNamespaceAndPath(result.equals(Items.RAIL) ? "minecraft" : RailcraftConstants.ID,
-                RecipeBuilder.getDefaultRecipeId(result).getPath()).toString());
+        .save(output);
   }
 
   private void railsFromMaterials(Item result, int count, Item railType, Item railBedType,
@@ -1192,8 +1188,9 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(output);
 
-    RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
-        .save(output.withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");
+    //TODO: Restore
+    /*RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
+        .save(output.withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");*/
   }
 
   private void buildCartsVariant() {
@@ -2075,13 +2072,17 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
 
   private void square2x2(Item ingredient,
       Item result, int quantity, String suffix) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    shaped(RecipeCategory.MISC, result, quantity)
+    var builder = shaped(RecipeCategory.MISC, result, quantity)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredient)
-        .unlockedBy(getHasName(ingredient), has(ingredient))
-        .save(output, RailcraftConstants.rl(name + suffix).toString());
+        .unlockedBy(getHasName(ingredient), has(ingredient));
+    if (suffix.isEmpty()) {
+      builder.save(output);
+    } else {
+      var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+      builder.save(output, RailcraftConstants.rl(name + suffix).toString());
+    }
   }
 
   private void coloredBlockVariant(VariantSet<DyeColor, Item, BlockItem> colorItems,

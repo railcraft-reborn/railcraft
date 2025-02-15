@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:creosote_bottle"
-    },
-    "b": {
-      "tag": "minecraft:wooden_slabs"
-    }
+    "a": "railcraft:creosote_bottle",
+    "b": "#minecraft:wooden_slabs"
   },
   "pattern": [
     " a ",

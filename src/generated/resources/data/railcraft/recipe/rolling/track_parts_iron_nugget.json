@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:nuggets/iron"
-    }
+    "a": "#c:nuggets/iron"
   },
   "pattern": [
     "aa"

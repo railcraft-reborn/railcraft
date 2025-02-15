@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:strengthened_glass"
-    },
-    "b": {
-      "item": "minecraft:cyan_dye"
-    }
+    "a": "#railcraft:strengthened_glass",
+    "b": "minecraft:cyan_dye"
   },
   "pattern": [
     "aaa",

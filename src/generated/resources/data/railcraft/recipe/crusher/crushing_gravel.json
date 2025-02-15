@@ -1,26 +1,18 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:gravel"
-  },
+  "ingredient": "minecraft:gravel",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:sand"
-      }
+      "result": "minecraft:sand"
     },
     {
       "probability": 0.001,
-      "result": {
-        "item": "minecraft:gold_nugget"
-      }
+      "result": "minecraft:gold_nugget"
     },
     {
       "probability": 5.0E-5,
-      "result": {
-        "item": "minecraft:diamond"
-      }
+      "result": "minecraft:diamond"
     }
   ]
 }

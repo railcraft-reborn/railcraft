@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:activator_track_kit"
-    },
-    {
-      "item": "minecraft:rail"
-    }
+    "railcraft:activator_track_kit",
+    "minecraft:rail"
   ],
   "result": {
     "count": 1,

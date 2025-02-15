@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "tag": "c:storage_blocks/diamond"
-    }
+    "a": "#c:ingots/steel",
+    "b": "#c:storage_blocks/diamond"
   },
   "pattern": [
     "aaa",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:netherite_pickaxe"
-    },
-    "b": {
-      "item": "railcraft:raw_firestone"
-    }
+    "a": "minecraft:netherite_pickaxe",
+    "b": "railcraft:raw_firestone"
   },
   "pattern": [
     " a ",

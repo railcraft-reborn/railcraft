@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:steel_nugget"
-    }
+    "a": "railcraft:steel_nugget"
   },
   "pattern": [
     "aaa",

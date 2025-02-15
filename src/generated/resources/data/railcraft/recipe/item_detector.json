@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:stripped_acacia_wood"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "minecraft:stripped_acacia_wood",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:invar_nugget"
-    }
+    "a": "railcraft:invar_nugget"
   },
   "pattern": [
     "aaa",

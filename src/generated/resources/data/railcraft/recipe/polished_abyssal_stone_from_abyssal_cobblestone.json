@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:abyssal_cobblestone"
-    }
+    "a": "railcraft:abyssal_cobblestone"
   },
   "pattern": [
     "aa",

@@ -83,7 +83,7 @@ public class CrusherRecipeBuilder {
     String itemPath = this.ingredient.getValues()
         .unwrap()
         .map(
-            itemTagKey -> itemTagKey.location().getPath().replace("/", "_"),
+            itemTagKey -> "tags_" + itemTagKey.location().getPath().replace("/", "_"),
             items -> items.stream()
                 .filter(x -> !x.value().equals(Items.BARRIER))
                 .findFirst()

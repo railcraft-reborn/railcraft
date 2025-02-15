@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:polished_abyssal_stone"
-    }
+    "a": "railcraft:polished_abyssal_stone"
   },
   "pattern": [
     "aaa",

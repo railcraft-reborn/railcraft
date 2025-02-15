@@ -4,9 +4,7 @@
   "cookingtime": 100,
   "experience": 1.0,
   "group": "nickel_ingot",
-  "ingredient": {
-    "item": "railcraft:deepslate_nickel_ore"
-  },
+  "ingredient": "railcraft:deepslate_nickel_ore",
   "result": {
     "count": 1,
     "id": "railcraft:nickel_ingot"

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:post"
-    },
-    "b": {
-      "item": "minecraft:brown_dye"
-    }
+    "a": "#railcraft:post",
+    "b": "minecraft:brown_dye"
   },
   "pattern": [
     "aaa",

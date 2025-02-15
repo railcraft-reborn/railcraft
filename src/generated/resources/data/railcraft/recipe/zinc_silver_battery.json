@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:charge_terminal"
-    },
-    "b": {
-      "item": "railcraft:charge_spool_medium"
-    },
-    "c": {
-      "item": "railcraft:zinc_electrode"
-    },
-    "d": {
-      "tag": "c:dusts/saltpeter"
-    },
-    "e": {
-      "item": "railcraft:silver_electrode"
-    },
-    "f": {
-      "item": "minecraft:water_bucket"
-    }
+    "a": "railcraft:charge_terminal",
+    "b": "railcraft:charge_spool_medium",
+    "c": "railcraft:zinc_electrode",
+    "d": "#c:dusts/saltpeter",
+    "e": "railcraft:silver_electrode",
+    "f": "minecraft:water_bucket"
   },
   "pattern": [
     "aba",

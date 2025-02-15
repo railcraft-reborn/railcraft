@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:dyes/yellow"
-    },
-    "b": {
-      "item": "minecraft:redstone_lamp"
-    },
-    "c": {
-      "item": "minecraft:anvil"
-    },
-    "d": {
-      "tag": "c:storage_blocks/steel"
-    },
-    "e": {
-      "item": "minecraft:dispenser"
-    },
-    "f": {
-      "item": "minecraft:minecart"
-    }
+    "a": "#c:dyes/yellow",
+    "b": "minecraft:redstone_lamp",
+    "c": "minecraft:anvil",
+    "d": "#c:storage_blocks/steel",
+    "e": "minecraft:dispenser",
+    "f": "minecraft:minecart"
   },
   "pattern": [
     "aba",

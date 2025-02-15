@@ -9,22 +9,16 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/quartz"
-  },
+  "ingredient": "#c:ores/quartz",
   "outputs": [
     {
       "count": 3,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:quartz"
-      }
+      "result": "minecraft:quartz"
     },
     {
       "probability": 0.25,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     }
   ]
 }

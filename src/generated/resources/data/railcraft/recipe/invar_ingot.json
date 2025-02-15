@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:invar_block"
-    }
+    "railcraft:invar_block"
   ],
   "result": {
     "count": 9,

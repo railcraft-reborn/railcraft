@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "tag": "c:plates/tin"
-    },
-    "c": {
-      "item": "railcraft:charge_coil"
-    },
-    "d": {
-      "item": "railcraft:charge_terminal"
-    }
+    "a": "#c:ingots/steel",
+    "b": "#c:plates/tin",
+    "c": "railcraft:charge_coil",
+    "d": "railcraft:charge_terminal"
   },
   "pattern": [
     " a ",

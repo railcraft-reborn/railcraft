@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/iron"
-    },
-    "b": {
-      "tag": "c:dyes/red"
-    }
+    "a": "#c:ingots/iron",
+    "b": "#c:dyes/red"
   },
   "pattern": [
     " ba",

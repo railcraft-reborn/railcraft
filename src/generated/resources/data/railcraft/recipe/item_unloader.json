@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:cobblestone"
-    },
-    "b": {
-      "item": "railcraft:item_detector"
-    },
-    "c": {
-      "item": "minecraft:hopper"
-    }
+    "a": "minecraft:cobblestone",
+    "b": "railcraft:item_detector",
+    "c": "minecraft:hopper"
   },
   "pattern": [
     "aaa",

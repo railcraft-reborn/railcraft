@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:water_bucket"
-    },
-    "b": {
-      "item": "railcraft:bag_of_cement"
-    },
-    "c": {
-      "item": "railcraft:rebar"
-    }
+    "a": "minecraft:water_bucket",
+    "b": "railcraft:bag_of_cement",
+    "c": "railcraft:rebar"
   },
   "pattern": [
     " a ",

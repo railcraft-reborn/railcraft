@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:glass_blocks"
-    },
-    "b": {
-      "tag": "c:ingots/invar"
-    },
-    "c": {
-      "item": "railcraft:saltpeter_dust"
-    },
-    "d": {
-      "item": "minecraft:water_bucket"
-    }
+    "a": "#c:glass_blocks",
+    "b": "#c:ingots/invar",
+    "c": "railcraft:saltpeter_dust",
+    "d": "minecraft:water_bucket"
   },
   "pattern": [
     "aba",

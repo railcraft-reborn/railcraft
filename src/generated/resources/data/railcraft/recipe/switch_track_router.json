@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:switch_track_motor"
-    },
-    {
-      "item": "railcraft:routing_detector"
-    }
+    "railcraft:switch_track_motor",
+    "railcraft:routing_detector"
   ],
   "result": {
     "count": 1,

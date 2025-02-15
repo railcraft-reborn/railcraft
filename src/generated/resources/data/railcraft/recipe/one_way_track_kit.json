@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "railcraft:track_parts"
-    },
-    {
-      "item": "minecraft:stone_pressure_plate"
-    },
-    {
-      "item": "minecraft:piston"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#minecraft:planks",
+    "railcraft:track_parts",
+    "minecraft:stone_pressure_plate",
+    "minecraft:piston",
+    "#c:dusts/redstone"
   ],
   "result": {
     "count": 8,

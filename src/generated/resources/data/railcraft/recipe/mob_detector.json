@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:mossy_cobblestone"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "minecraft:mossy_cobblestone",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

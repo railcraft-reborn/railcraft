@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:dark_oak_log"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "minecraft:dark_oak_log",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

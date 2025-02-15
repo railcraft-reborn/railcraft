@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:creosote_bottle"
-    },
-    "b": {
-      "tag": "minecraft:wool"
-    },
-    "c": {
-      "tag": "c:rods/wooden"
-    }
+    "a": "railcraft:creosote_bottle",
+    "b": "#minecraft:wool",
+    "c": "#c:rods/wooden"
   },
   "pattern": [
     "a",

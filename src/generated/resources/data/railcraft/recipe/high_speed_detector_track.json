@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:detector_track_kit"
-    },
-    {
-      "item": "railcraft:high_speed_track"
-    }
+    "railcraft:detector_track_kit",
+    "railcraft:high_speed_track"
   ],
   "result": {
     "count": 1,

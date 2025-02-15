@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:nether_brick"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "minecraft:nether_brick",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

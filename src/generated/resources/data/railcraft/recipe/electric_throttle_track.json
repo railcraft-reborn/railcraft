@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:throttle_track_kit"
-    },
-    {
-      "item": "railcraft:electric_track"
-    }
+    "railcraft:throttle_track_kit",
+    "railcraft:electric_track"
   ],
   "result": {
     "count": 1,

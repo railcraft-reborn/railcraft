@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:lead_nugget"
-    }
+    "a": "railcraft:lead_nugget"
   },
   "pattern": [
     "aaa",

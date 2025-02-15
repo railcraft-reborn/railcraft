@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:chiseled_quartz_block"
-    },
-    "b": {
-      "item": "minecraft:stone_pressure_plate"
-    }
+    "a": "minecraft:chiseled_quartz_block",
+    "b": "minecraft:stone_pressure_plate"
   },
   "pattern": [
     "aaa",

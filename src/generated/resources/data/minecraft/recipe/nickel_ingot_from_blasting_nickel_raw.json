@@ -4,9 +4,7 @@
   "cookingtime": 100,
   "experience": 1.0,
   "group": "nickel_ingot",
-  "ingredient": {
-    "item": "railcraft:nickel_raw"
-  },
+  "ingredient": "railcraft:nickel_raw",
   "result": {
     "count": 1,
     "id": "railcraft:nickel_ingot"

@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:plates/invar"
-    },
-    "b": {
-      "item": "minecraft:iron_bars"
-    },
-    "c": {
-      "item": "minecraft:bucket"
-    },
-    "d": {
-      "item": "minecraft:fire_charge"
-    },
-    "e": {
-      "item": "minecraft:furnace"
-    }
+    "a": "#c:plates/invar",
+    "b": "minecraft:iron_bars",
+    "c": "minecraft:bucket",
+    "d": "minecraft:fire_charge",
+    "e": "minecraft:furnace"
   },
   "pattern": [
     "aca",

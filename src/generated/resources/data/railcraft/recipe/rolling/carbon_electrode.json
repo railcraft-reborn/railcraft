@@ -2,12 +2,8 @@
   "type": "railcraft:rolling",
   "key": {
     "a": [
-      {
-        "item": "minecraft:coal"
-      },
-      {
-        "item": "minecraft:charcoal"
-      }
+      "minecraft:coal",
+      "minecraft:charcoal"
     ]
   },
   "pattern": [

@@ -1,14 +1,10 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:ender_pearl"
-  },
+  "ingredient": "minecraft:ender_pearl",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:ender_dust"
-      }
+      "result": "railcraft:ender_dust"
     }
   ]
 }

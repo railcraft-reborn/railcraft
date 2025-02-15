@@ -1,15 +1,9 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    },
-    "b": {
-      "tag": "c:dusts/obsidian"
-    },
-    "c": {
-      "tag": "c:ingots/steel"
-    }
+    "a": "#c:ingots/steel",
+    "b": "#c:dusts/obsidian",
+    "c": "#c:ingots/steel"
   },
   "pattern": [
     "abc",

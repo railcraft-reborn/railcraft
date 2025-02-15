@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:brass_ingot"
-    }
+    "a": "railcraft:brass_ingot"
   },
   "pattern": [
     "aaa",

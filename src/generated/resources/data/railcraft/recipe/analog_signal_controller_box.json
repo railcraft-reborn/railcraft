@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_ingot"
-    },
-    "b": {
-      "item": "railcraft:controller_circuit"
-    },
-    "c": {
-      "item": "minecraft:comparator"
-    }
+    "a": "minecraft:iron_ingot",
+    "b": "railcraft:controller_circuit",
+    "c": "minecraft:comparator"
   },
   "pattern": [
     "aba",

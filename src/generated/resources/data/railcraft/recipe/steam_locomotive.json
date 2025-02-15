@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:iron_tank_wall"
-    },
-    "b": {
-      "item": "railcraft:blast_furnace_bricks"
-    },
-    "c": {
-      "item": "minecraft:iron_bars"
-    },
-    "d": {
-      "item": "minecraft:minecart"
-    }
+    "a": "#railcraft:iron_tank_wall",
+    "b": "railcraft:blast_furnace_bricks",
+    "c": "minecraft:iron_bars",
+    "d": "minecraft:minecart"
   },
   "pattern": [
     "aab",

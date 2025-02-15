@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:steel_ingot"
-    }
+    "railcraft:steel_ingot"
   ],
   "result": {
     "count": 9,

@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "d": {
-      "tag": "c:gems/emerald"
-    },
-    "g": {
-      "tag": "c:ingots/gold"
-    },
-    "o": {
-      "item": "minecraft:obsidian"
-    },
-    "p": {
-      "item": "minecraft:ender_pearl"
-    }
+    "d": "#c:gems/emerald",
+    "g": "#c:ingots/gold",
+    "o": "minecraft:obsidian",
+    "p": "minecraft:ender_pearl"
   },
   "pattern": [
     "gog",

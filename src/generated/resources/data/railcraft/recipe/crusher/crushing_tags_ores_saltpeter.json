@@ -9,28 +9,20 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/saltpeter"
-  },
+  "ingredient": "#c:ores/saltpeter",
   "outputs": [
     {
       "count": 3,
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:saltpeter_dust"
-      }
+      "result": "railcraft:saltpeter_dust"
     },
     {
       "probability": 0.85,
-      "result": {
-        "item": "railcraft:saltpeter_dust"
-      }
+      "result": "railcraft:saltpeter_dust"
     },
     {
       "probability": 0.35,
-      "result": {
-        "item": "railcraft:saltpeter_dust"
-      }
+      "result": "railcraft:saltpeter_dust"
     }
   ]
 }

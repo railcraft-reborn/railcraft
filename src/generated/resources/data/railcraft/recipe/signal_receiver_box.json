@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_ingot"
-    },
-    "b": {
-      "item": "railcraft:receiver_circuit"
-    },
-    "c": {
-      "item": "minecraft:redstone"
-    }
+    "a": "minecraft:iron_ingot",
+    "b": "railcraft:receiver_circuit",
+    "c": "minecraft:redstone"
   },
   "pattern": [
     "aba",

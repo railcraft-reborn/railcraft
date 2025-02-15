@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:gears/steel"
-    },
-    "b": {
-      "item": "minecraft:piston"
-    },
-    "c": {
-      "item": "minecraft:crafting_table"
-    },
-    "d": {
-      "item": "railcraft:charge_motor"
-    }
+    "a": "#c:gears/steel",
+    "b": "minecraft:piston",
+    "c": "minecraft:crafting_table",
+    "d": "railcraft:charge_motor"
   },
   "pattern": [
     "aba",

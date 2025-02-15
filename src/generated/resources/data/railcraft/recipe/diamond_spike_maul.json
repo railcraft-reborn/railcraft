@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:gems/diamond"
-    },
-    "b": {
-      "tag": "c:rods/wooden"
-    },
-    "c": {
-      "tag": "c:storage_blocks/diamond"
-    }
+    "a": "#c:gems/diamond",
+    "b": "#c:rods/wooden",
+    "c": "#c:storage_blocks/diamond"
   },
   "pattern": [
     "aca",

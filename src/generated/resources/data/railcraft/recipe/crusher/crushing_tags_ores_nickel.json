@@ -16,16 +16,12 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/nickel"
-  },
+  "ingredient": "#c:ores/nickel",
   "outputs": [
     {
       "count": 2,
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/nickel"
-      }
+      "result": "#c:dusts/nickel"
     }
   ]
 }

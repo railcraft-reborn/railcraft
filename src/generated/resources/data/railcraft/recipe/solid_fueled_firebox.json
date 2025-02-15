@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:nether_brick"
-    },
-    "b": {
-      "item": "minecraft:fire_charge"
-    },
-    "c": {
-      "item": "minecraft:furnace"
-    }
+    "a": "minecraft:nether_brick",
+    "b": "minecraft:fire_charge",
+    "c": "minecraft:furnace"
   },
   "pattern": [
     "aaa",

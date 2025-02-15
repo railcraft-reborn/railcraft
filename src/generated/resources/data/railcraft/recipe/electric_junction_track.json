@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:electric_rail"
-    },
-    "b": {
-      "item": "railcraft:stone_railbed"
-    }
+    "a": "railcraft:electric_rail",
+    "b": "railcraft:stone_railbed"
   },
   "pattern": [
     "aaa",

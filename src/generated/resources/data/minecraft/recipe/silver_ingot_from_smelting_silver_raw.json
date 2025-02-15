@@ -4,9 +4,7 @@
   "cookingtime": 200,
   "experience": 1.0,
   "group": "silver_ingot",
-  "ingredient": {
-    "item": "railcraft:silver_raw"
-  },
+  "ingredient": "railcraft:silver_raw",
   "result": {
     "count": 1,
     "id": "railcraft:silver_ingot"

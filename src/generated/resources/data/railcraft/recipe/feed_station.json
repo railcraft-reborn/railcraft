@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "minecraft:planks"
-    },
-    "b": {
-      "item": "minecraft:golden_carrot"
-    },
-    "c": {
-      "tag": "c:plates/steel"
-    }
+    "a": "#minecraft:planks",
+    "b": "minecraft:golden_carrot",
+    "c": "#c:plates/steel"
   },
   "pattern": [
     "aba",

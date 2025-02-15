@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "railcraft:post"
-    },
-    "b": {
-      "item": "minecraft:orange_dye"
-    }
+    "a": "#railcraft:post",
+    "b": "minecraft:orange_dye"
   },
   "pattern": [
     "aaa",

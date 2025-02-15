@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:zinc_ingot"
-    }
+    "a": "railcraft:zinc_ingot"
   },
   "pattern": [
     "aaa",

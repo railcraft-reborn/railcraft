@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:abyssal_bricks"
-    }
+    "a": "railcraft:abyssal_bricks"
   },
   "pattern": [
     "aa",

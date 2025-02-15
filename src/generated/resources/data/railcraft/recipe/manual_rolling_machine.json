@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:gears/bronze"
-    },
-    "b": {
-      "item": "minecraft:piston"
-    },
-    "c": {
-      "item": "minecraft:crafting_table"
-    }
+    "a": "#c:gears/bronze",
+    "b": "minecraft:piston",
+    "c": "minecraft:crafting_table"
   },
   "pattern": [
     "aba",
