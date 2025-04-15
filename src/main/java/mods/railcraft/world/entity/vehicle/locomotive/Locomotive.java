@@ -405,7 +405,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   public boolean isRunning() {
-    return this.fuel > 0 && this.getMode() == Mode.RUNNING && !(this.isIdle() || this.isShutdown());
+    return this.hasFuel() && this.getMode() == Mode.RUNNING && !(this.isIdle() || this.isShutdown());
   }
 
   /**
@@ -452,22 +452,21 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public void tick() {
+  public final void tick() {
     super.tick();
 
     if (this.isRemoved()) {
       return;
     }
 
-    if (this.level().isClientSide()) {
-      if (Seasons.isPolarExpress(this)
-          && (!MathUtil.nearZero(this.getDeltaMovement().x())
-              || !MathUtil.nearZero(this.getDeltaMovement().z()))) {
-        this.snowEffect(this.getX(), this.getBoundingBox().minY - this.getY(), this.getZ());
-      }
-      return;
+    if (!(this.level() instanceof ServerLevel serverLevel)) {
+      this.clientTick(this.level());
+    } else {
+      this.serverTick(serverLevel);
     }
+  }
 
+  protected void serverTick(ServerLevel level) {
     this.processTicket();
     this.updateFuel();
 
@@ -483,6 +482,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
         && this.isRunning()
         && this.random.nextInt(WHISTLE_CHANCE) == 0) {
       this.whistle();
+    }
+  }
+
+  protected void clientTick(Level level) {
+    if (Seasons.isPolarExpress(this)
+        && (!MathUtil.nearZero(this.getDeltaMovement().x())
+        || !MathUtil.nearZero(this.getDeltaMovement().z()))) {
+      this.snowEffect(this.getX(), this.getBoundingBox().minY - this.getY(), this.getZ());
     }
   }
 
