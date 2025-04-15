@@ -50,10 +50,7 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
   }
 
   @Override
-  public void tick(AbstractMinecart owner) {
-    if (owner.level().isClientSide()) {
-      return;
-    }
+  public void tick(ServerLevel level, AbstractMinecart owner) {
     clock++;
     removeLosses();
 

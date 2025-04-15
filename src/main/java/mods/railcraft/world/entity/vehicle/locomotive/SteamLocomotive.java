@@ -76,12 +76,8 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public void tick() {
-    super.tick();
-
-    if (this.level().isClientSide() || this.isRemoved()) {
-      return;
-    }
+  protected void serverTick(ServerLevel level) {
+    super.serverTick(level);
     this.extraFuelContainer.moveOneItemTo(this.fuelContainer);
 
     var rollingStock = RollingStock.getOrThrow(this);
@@ -150,7 +146,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
           // if (FluidItemHelper.getFluidStackInContainer(stack)
           // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
           // return false;
-          // } we allow tanks instafilling.
+          // } we allow tanks instant-filling.
           FluidTools.containsFluid(stack, Fluids.WATER);
       case TICKET_SLOT -> TicketItem.FILTER.test(stack);
       default -> false;
