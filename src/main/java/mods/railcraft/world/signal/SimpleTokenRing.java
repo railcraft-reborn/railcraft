@@ -95,7 +95,15 @@ public class SimpleTokenRing implements TokenRing {
   }
 
   public boolean isOrphaned(ServerLevel level) {
-    return !this.peers.stream().map(this::peerAt).allMatch(Optional::isPresent);
+    return this.peers.stream().allMatch(this::isNotTokenSignalEntity);
+  }
+
+  boolean isNotTokenSignalEntity(BlockPos blockPos) {
+    if (!this.level.isLoaded(blockPos)) {
+      return false;
+    }
+    var blockEntity = this.level.getBlockEntity(blockPos);
+    return !(blockEntity instanceof TokenSignalEntity) || blockEntity.isRemoved();
   }
 
   void loadSignals(Collection<BlockPos> signals) {
