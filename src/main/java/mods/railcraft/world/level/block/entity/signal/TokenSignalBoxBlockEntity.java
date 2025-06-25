@@ -149,6 +149,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
 
   public void setRingId(UUID tokenRingId) {
     this.ringId = tokenRingId;
+    this.setChanged();
   }
 
   @Override
