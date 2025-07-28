@@ -33,6 +33,11 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   }
 
   @Override
+  public boolean canPassItemRequests(ItemStack stack) {
+    return true;
+  }
+
+  @Override
   public BlockState getDefaultDisplayBlockState() {
     return RailcraftBlocks.WORLD_SPIKE.get().defaultBlockState();
   }
