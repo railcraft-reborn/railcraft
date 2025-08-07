@@ -11,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
@@ -28,7 +28,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
       int packedOverlay) {
     interiorModel.setAll(interiorModel.new Face()
-        .setSprite(Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        .setSprite(Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(INTERIOR_TEXTURE_LOCATION)));
     interiorModel.setPackedLight(packedLight);
     interiorModel.setPackedOverlay(packedOverlay);

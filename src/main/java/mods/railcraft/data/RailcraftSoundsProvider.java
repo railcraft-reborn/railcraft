@@ -4,13 +4,12 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 public class RailcraftSoundsProvider extends SoundDefinitionsProvider {
 
-  public RailcraftSoundsProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, RailcraftConstants.ID, fileHelper);
+  public RailcraftSoundsProvider(PackOutput packOutput) {
+    super(packOutput, RailcraftConstants.ID);
   }
 
   @Override

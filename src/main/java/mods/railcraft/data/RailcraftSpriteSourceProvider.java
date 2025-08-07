@@ -5,13 +5,12 @@ import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
 
 public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
   public RailcraftSpriteSourceProvider(PackOutput output,
-      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
-    super(output, registries, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(output, registries, RailcraftConstants.ID);
   }
 
   @Override

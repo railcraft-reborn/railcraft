@@ -74,17 +74,21 @@ import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.Util;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.blockstates.Condition;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.Variant;
+import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
-import net.minecraft.data.models.blockstates.Condition.TerminalCondition;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.AnvilBlock;
@@ -97,15 +101,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.ModelProvider;
-import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-public class RailcraftBlockModelProvider extends BlockStateProvider {
+public class RailcraftBlockModelProvider extends ModelProvider {
 
   private static final String CUTOUT = "cutout";
 
@@ -158,8 +155,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet disembarkingTrackRight;
   private StraightTrackModelSet activeDisembarkingTrackRight;
 
-  public RailcraftBlockModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, RailcraftConstants.ID, fileHelper);
+  public RailcraftBlockModelProvider(PackOutput packOutput) {
+    super(packOutput, RailcraftConstants.ID);
   }
 
   private ResourceLocation key(Block block) {
@@ -174,10 +171,10 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     return this.name(block) + suffix;
   }
 
-  @Override
-  public void simpleBlock(Block block) {
-    super.simpleBlock(block);
-    this.simpleBlockItem(block, this.cubeAll(block));
+  public void simpleBlock(BlockModelGenerators blockModels, Block block) {
+    //this.simpleBlockItem(block, this.cubeAll(block));
+    blockModels.createTrivialCube(block);
+    //blockModels.createGenericCube();
   }
 
   public void simpleStairsBlock(StairBlock stairBlock, Block textureBlock) {
@@ -202,11 +199,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             .build(), ignored);
   }
 
-  private BlockModelBuilder cube(String name, ResourceLocation parent,
+  private BlockModelBuilder cube(BlockModelGenerators blockModels, String name,
+      ResourceLocation parent,
       ResourceLocation down, ResourceLocation up,
       ResourceLocation north, ResourceLocation south,
       ResourceLocation east, ResourceLocation west,
       ResourceLocation particle) {
+
+
     return this.models().withExistingParent(name, parent)
         .texture("down", down)
         .texture("up", up)
@@ -230,15 +230,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
   private void basicItem(Block block, String suffix) {
     this.itemModels().withExistingParent(this.name(block), "item/generated")
-        .texture("layer0", this.modLoc("block/" + this.name(block) + suffix));
+        .texture("layer0", this.modLocation("block/" + this.name(block) + suffix));
   }
 
   @Override
-  protected void registerStatesAndModels() {
+  protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
     for (var dyeColor : DyeColor.values()) {
-      this.createStrengthenedGlass(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
-      this.createStrengthenedGlass(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
-      this.createStrengthenedGlass(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
+      this.createStrengthenedGlass(blockModels, RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
+      this.createStrengthenedGlass(blockModels, RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
+      this.createStrengthenedGlass(blockModels, RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
 
       this.createTankValve(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
           RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
@@ -249,43 +249,43 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
       this.createPost(RailcraftBlocks.POST.variantFor(dyeColor).get());
     }
 
-    this.simpleBlock(RailcraftBlocks.STEEL_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.BRASS_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.BRONZE_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.INVAR_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.LEAD_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.NICKEL_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.SILVER_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.TIN_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.ZINC_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.COAL_COKE_BLOCK.get());
-    this.simpleBlock(RailcraftBlocks.CRUSHED_OBSIDIAN.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.STEEL_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.BRASS_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.BRONZE_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.INVAR_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.LEAD_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.NICKEL_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.SILVER_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.TIN_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.ZINC_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.COAL_COKE_BLOCK.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.CRUSHED_OBSIDIAN.get());
 
-    this.simpleBlock(RailcraftBlocks.LEAD_ORE.get());
-    this.simpleBlock(RailcraftBlocks.NICKEL_ORE.get());
-    this.simpleBlock(RailcraftBlocks.SILVER_ORE.get());
-    this.simpleBlock(RailcraftBlocks.SULFUR_ORE.get());
-    this.simpleBlock(RailcraftBlocks.TIN_ORE.get());
-    this.simpleBlock(RailcraftBlocks.ZINC_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
-    this.simpleBlock(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
-    this.simpleBlock(RailcraftBlocks.SALTPETER_ORE.get());
-    this.simpleBlock(RailcraftBlocks.FIRESTONE_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.LEAD_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.NICKEL_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.SILVER_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.SULFUR_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.TIN_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.ZINC_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_LEAD_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_SILVER_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_TIN_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.SALTPETER_ORE.get());
+    this.simpleBlock(blockModels, RailcraftBlocks.FIRESTONE_ORE.get());
 
     for (var type : DecorativeBlock.values()) {
-      this.simpleBlock(RailcraftBlocks.DECORATIVE_STONE.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.DECORATIVE_BRICKS.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.DECORATIVE_STONE.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.DECORATIVE_BRICKS.variantFor(type).get());
       this.simpleStairsBlock(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.variantFor(type).get(),
           RailcraftBlocks.DECORATIVE_BRICKS.variantFor(type).get());
-      this.simpleBlock(RailcraftBlocks.DECORATIVE_PAVER.variantFor(type).get());
+      this.simpleBlock(blockModels, RailcraftBlocks.DECORATIVE_PAVER.variantFor(type).get());
       this.simpleStairsBlock(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.variantFor(type).get(),
           RailcraftBlocks.DECORATIVE_PAVER.variantFor(type).get());
       this.simpleSlabBlock(RailcraftBlocks.DECORATIVE_BRICK_SLAB.variantFor(type).get(),
@@ -560,7 +560,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
   }
 
-  private void createStrengthenedGlass(Block block) {
+  private void createStrengthenedGlass(BlockModelGenerators blockModels, Block block) {
     var endTexture = TextureMapping.getBlockTexture(block, "_top");
 
     var singleModel = this.models().cubeAll(this.name(block, "_single"), endTexture)
@@ -575,6 +575,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         TextureMapping.getBlockTexture(block, "_side_bottom"), endTexture)
         .renderType(CUTOUT);
 
+    blockModels.blockStateOutput.accept(
+        MultiVariantGenerator.multiVariant(
+            block,
+            Variant.variant().with(VariantProperties.MODEL, modelLoc)
+                .with(BlockModelGenerators.createHorizontalFacingDispatch())
+        )
+    );
+
     this.getVariantBuilder(block)
         .forAllStatesExcept(blockState -> ConfiguredModel.builder()
             .modelFile(switch (blockState.getValue(AbstractStrengthenedGlassBlock.TYPE)) {
@@ -585,7 +593,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
             }).build(), IronTankGaugeBlock.LEVEL);
 
     this.itemModels().withExistingParent(this.name(block),
-        this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_single")));
+        this.modLocation(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_single")));
   }
 
   private void createFluidManipulator(FluidManipulatorBlock<?> block) {
@@ -602,7 +610,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.models().cubeBottomTop(this.name(block, "_inventory"), side, bottom, top);
 
     this.itemModels().withExistingParent(this.name(block),
-        this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_inventory")));
+        this.modLocation(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_inventory")));
   }
 
   private void createManipulator(ManipulatorBlock<?> block) {
@@ -826,7 +834,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.createSteamTurbineModel(block, sideTexture, "_inventory", false);
     this.itemModels().withExistingParent(this.name(block),
-        this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_inventory")));
+        this.modLocation(ModelProvider.BLOCK_FOLDER + "/" + this.name(block, "_inventory")));
 
     var noneVariant = this.models().cubeAll(this.name(block, "_side"), sideTexture);
 
@@ -852,7 +860,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private BlockModelBuilder createSteamTurbineModel(Block block, ResourceLocation sideTexture,
       String suffix, boolean rotated) {
     var frontTexture = TextureMapping.getBlockTexture(block, suffix);
-    var parent = this.modLoc(ModelProvider.BLOCK_FOLDER + "/template_mirrored_cube");
+    var parent = this.modLocation(ModelProvider.BLOCK_FOLDER + "/template_mirrored_cube");
     return this.cube(this.name(block, suffix), parent,
         sideTexture,
         sideTexture,
@@ -864,7 +872,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private void createTankValve(TankValveBlock block, BaseTankBlock wallBlock) {
-    var verticalModel = this.cube(this.name(block), this.mcLoc("cube"),
+    var verticalModel = this.cube(this.name(block), this.mcLocation("cube"),
         TextureMapping.getBlockTexture(block, "_top"),
         TextureMapping.getBlockTexture(block, "_top"),
         TextureMapping.getBlockTexture(wallBlock, "_side"),
@@ -873,7 +881,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         TextureMapping.getBlockTexture(wallBlock, "_side"),
         TextureMapping.getBlockTexture(wallBlock, "_top"));
 
-    var horizontalModel = this.cube(this.name(block, "_horizontal"), this.mcLoc("cube"),
+    var horizontalModel = this.cube(this.name(block, "_horizontal"), this.mcLocation("cube"),
         TextureMapping.getBlockTexture(wallBlock, "_top"),
         TextureMapping.getBlockTexture(wallBlock, "_top"),
         TextureMapping.getBlockTexture(block, "_front"),
@@ -927,7 +935,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var topTexture = TextureMapping.getBlockTexture(block, "_top");
     var topPoweredTexture = TextureMapping.getBlockTexture(block, "_top_powered");
 
-    var frameTemplate = this.modLoc("frame_template");
+    var frameTemplate = this.modLocation("frame_template");
 
     var model =
         this.models().withExistingParent(name(block), frameTemplate)
@@ -957,7 +965,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var coverTexture = TextureMapping.getBlockTexture(block, "_cover");
     var paperTexture = TextureMapping.getBlockTexture(block, "_paper");
 
-    var logbookTemplate = this.modLoc("logbook_template");
+    var logbookTemplate = this.modLocation("logbook_template");
 
     var model =
         this.models().withExistingParent(name(block), logbookTemplate)
@@ -985,7 +993,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var sideTexture = TextureMapping.getBlockTexture(block, "_side");
     var interiorTexture = TextureMapping.getBlockTexture(block, "_interior");
 
-    var smokerTemplate = this.modLoc("chimney_template");
+    var smokerTemplate = this.modLocation("chimney_template");
 
     var model =
         this.models().withExistingParent(name(block), smokerTemplate)
@@ -1001,13 +1009,13 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
   private void createPost(PostBlock block) {
     var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
-    var postFullColumnTemplate = this.modLoc("template_post_full_column");
-    var postDoubleConnectionTemplate = this.modLoc("template_post_double_connection");
-    var postTopColumnTemplate = this.modLoc("template_post_top_column");
-    var postSmallColumnTemplate = this.modLoc("template_post_small_column");
-    var postPlatformTemplate = this.modLoc("template_post_platform");
-    var postSingleConnectionTemplate = this.modLoc("template_post_single_connection");
-    var postInventoryTemplate = this.modLoc("post_inventory");
+    var postFullColumnTemplate = this.modLocation("template_post_full_column");
+    var postDoubleConnectionTemplate = this.modLocation("template_post_double_connection");
+    var postTopColumnTemplate = this.modLocation("template_post_top_column");
+    var postSmallColumnTemplate = this.modLocation("template_post_small_column");
+    var postPlatformTemplate = this.modLocation("template_post_platform");
+    var postSingleConnectionTemplate = this.modLocation("template_post_single_connection");
+    var postInventoryTemplate = this.modLocation("post_inventory");
 
     var fullColumnModel = this.models()
         .singleTexture(this.name(block, "_full_column"), postFullColumnTemplate, texture);
@@ -1071,15 +1079,15 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var end = TextureMapping.getBlockTexture(block, "_end");
     var side = TextureMapping.getBlockTexture(block, "_side");
 
-    var steamBoilerTemplate = this.modLoc("template_steam_boiler_tank");
-    var steamBoilerNETemplate = this.modLoc("template_steam_boiler_tank_ne");
-    var steamBoilerNEWTemplate = this.modLoc("template_steam_boiler_tank_new");
-    var steamBoilerNSETemplate = this.modLoc("template_steam_boiler_tank_nse");
-    var steamBoilerNSWTemplate = this.modLoc("template_steam_boiler_tank_nsw");
-    var steamBoilerNWTemplate = this.modLoc("template_steam_boiler_tank_nw");
-    var steamBoilerSETemplate = this.modLoc("template_steam_boiler_tank_se");
-    var steamBoilerSEWTemplate = this.modLoc("template_steam_boiler_tank_sew");
-    var steamBoilerSWTemplate = this.modLoc("template_steam_boiler_tank_sw");
+    var steamBoilerTemplate = this.modLocation("template_steam_boiler_tank");
+    var steamBoilerNETemplate = this.modLocation("template_steam_boiler_tank_ne");
+    var steamBoilerNEWTemplate = this.modLocation("template_steam_boiler_tank_new");
+    var steamBoilerNSETemplate = this.modLocation("template_steam_boiler_tank_nse");
+    var steamBoilerNSWTemplate = this.modLocation("template_steam_boiler_tank_nsw");
+    var steamBoilerNWTemplate = this.modLocation("template_steam_boiler_tank_nw");
+    var steamBoilerSETemplate = this.modLocation("template_steam_boiler_tank_se");
+    var steamBoilerSEWTemplate = this.modLocation("template_steam_boiler_tank_sew");
+    var steamBoilerSWTemplate = this.modLocation("template_steam_boiler_tank_sw");
 
     var model = this.sideEnd(this.name(block), steamBoilerTemplate, side, end);
     var allModel = this.models().cubeColumn(this.name(block, "_all"), side, end);
@@ -1120,7 +1128,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var base = TextureMapping.getBlockTexture(RailcraftBlocks.STEEL_ANVIL.get());
     var top = TextureMapping.getBlockTexture(block, "_top");
 
-    var template = mcLoc("template_anvil");
+    var template = mcLocation("template_anvil");
     var model = this.models().withExistingParent(name(block), template)
         .texture("top", top)
         .texture("body", base)
@@ -1136,7 +1144,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var sideA = TextureMapping.getBlockTexture(battery, "_side_a");
     var sideB = TextureMapping.getBlockTexture(battery, "_side_b");
 
-    var model = this.models().withExistingParent(name(battery), modLoc("battery"))
+    var model = this.models().withExistingParent(name(battery), modLocation("battery"))
         .texture("bottom", bottom)
         .texture("top", top)
         .texture("side_a", sideA)
@@ -1153,7 +1161,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     var sideA = TextureMapping.getBlockTexture(battery, "_side_a_burned");
     var sideB = TextureMapping.getBlockTexture(battery, "_side_b_burned");
 
-    var model = this.models().withExistingParent(name(emptyBattery), modLoc("battery"))
+    var model = this.models().withExistingParent(name(emptyBattery), modLocation("battery"))
         .texture("bottom", bottom)
         .texture("top", top)
         .texture("side_a", sideA)
@@ -1163,17 +1171,17 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private void createSignalBoxBlock(SignalBoxBlock signalBlock) {
-    var up = modLoc("entity/signal_box/" + name(signalBlock));
+    var up = modLocation("entity/signal_box/" + name(signalBlock));
 
     var model = this.models()
-        .withExistingParent(name(signalBlock), modLoc("signal_box"))
+        .withExistingParent(name(signalBlock), modLocation("signal_box"))
         .texture("up", up);
 
     this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
 
-    var signalBoxCapModel = this.models().getExistingFile(modLoc("block/signal_box_cap"));
+    var signalBoxCapModel = this.models().getExistingFile(modLocation("block/signal_box_cap"));
     var signalBoxConnectorModel = this.models()
-        .getExistingFile(modLoc("block/signal_box_connector"));
+        .getExistingFile(modLocation("block/signal_box_connector"));
 
     this.getMultipartBuilder(signalBlock)
         .part()
@@ -1194,9 +1202,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private void createSingleSignalBlock(SingleSignalBlock signalBlock) {
-    var signalPostModel = this.models().getExistingFile(modLoc("block/signal_post"));
-    var signalModel = this.models().getExistingFile(modLoc("block/signal"));
-    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+    var signalPostModel = this.models().getExistingFile(modLocation("block/signal_post"));
+    var signalModel = this.models().getExistingFile(modLocation("block/signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLocation("block/signal_connector"));
 
     this.getMultipartBuilder(signalBlock)
         .part()
@@ -1232,27 +1240,27 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     ResourceLocation topLamp;
     ResourceLocation bottomLamp;
     if (signalBlock == RailcraftBlocks.DUAL_DISTANT_SIGNAL.get()) {
-      topLamp = modLoc("entity/signal_aspect/red");
-      bottomLamp = modLoc("entity/signal_aspect/green");
+      topLamp = modLocation("entity/signal_aspect/red");
+      bottomLamp = modLocation("entity/signal_aspect/green");
     } else if (signalBlock == RailcraftBlocks.DUAL_TOKEN_SIGNAL.get()) {
-      topLamp = modLoc("entity/signal_aspect/green");
-      bottomLamp = modLoc("entity/signal_aspect/yellow");
+      topLamp = modLocation("entity/signal_aspect/green");
+      bottomLamp = modLocation("entity/signal_aspect/yellow");
     } else if (signalBlock == RailcraftBlocks.DUAL_BLOCK_SIGNAL.get()) {
-      topLamp = modLoc("entity/signal_aspect/green");
-      bottomLamp = modLoc("entity/signal_aspect/red");
+      topLamp = modLocation("entity/signal_aspect/green");
+      bottomLamp = modLocation("entity/signal_aspect/red");
     } else {
       throw new NotImplementedException();
     }
 
     var model = this.models()
-        .withExistingParent(name(signalBlock, "_inventory"), modLoc("dual_signal_inventory"))
+        .withExistingParent(name(signalBlock, "_inventory"), modLocation("dual_signal_inventory"))
         .texture("top_lamp", topLamp)
         .texture("bottom_lamp", bottomLamp);
 
     this.itemModels().withExistingParent(this.name(signalBlock), model.getLocation());
 
-    var signalModel = this.models().getExistingFile(modLoc("block/dual_signal"));
-    var signalConnectorModel = this.models().getExistingFile(modLoc("block/signal_connector"));
+    var signalModel = this.models().getExistingFile(modLocation("block/dual_signal"));
+    var signalConnectorModel = this.models().getExistingFile(modLocation("block/signal_connector"));
 
     this.getMultipartBuilder(signalBlock)
         .part()
@@ -1283,12 +1291,12 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
   private MultiPartBlockStateBuilder createSwitchTrackActuatorBlockCommon(
       SwitchTrackActuatorBlock block) {
-    var flagRed = this.models().getExistingFile(modLoc("block/switch_track_actuator_flag_red"));
+    var flagRed = this.models().getExistingFile(modLocation("block/switch_track_actuator_flag_red"));
     var flagNeutralRed = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator_flag_neutral_red"));
-    var flagWhite = this.models().getExistingFile(modLoc("block/switch_track_actuator_flag_white"));
+        .getExistingFile(modLocation("block/switch_track_actuator_flag_neutral_red"));
+    var flagWhite = this.models().getExistingFile(modLocation("block/switch_track_actuator_flag_white"));
     var flagNeutralWhite = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator_flag_neutral_white"));
+        .getExistingFile(modLocation("block/switch_track_actuator_flag_neutral_white"));
     var builder = this.getMultipartBuilder(block);
     var arrowDirectionMap = Util.make(new EnumMap<ArrowDirection, Integer>(ArrowDirection.class), x -> {
       x.put(ArrowDirection.NORTH, 0);
@@ -1320,11 +1328,11 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
   private void createSwitchTrackLever(SwitchTrackLeverBlock block) {
     var switchTrackActuator = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator"));
+        .getExistingFile(modLocation("block/switch_track_actuator"));
     var switchTrackActuatorLeverOn = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator_lever_on"));
+        .getExistingFile(modLocation("block/switch_track_actuator_lever_on"));
     var switchTrackActuatorLeverOff = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator_lever_off"));
+        .getExistingFile(modLocation("block/switch_track_actuator_lever_off"));
 
     var builder = this.createSwitchTrackActuatorBlockCommon(block);
     var directionMap = Util.make(new EnumMap<Direction, Integer>(Direction.class), x -> {
@@ -1353,9 +1361,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private void createSwitchTrackMotorOrRouter(SwitchTrackActuatorBlock block) {
     var isRouter = block instanceof SwitchTrackRouterBlock;
     var switchTrackActuator = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator"));
+        .getExistingFile(modLocation("block/switch_track_actuator"));
     var switchTrackActuatorRouter = this.models()
-        .getExistingFile(modLoc("block/switch_track_actuator_router"));
+        .getExistingFile(modLocation("block/switch_track_actuator_router"));
     var builder = this.createSwitchTrackActuatorBlockCommon(block);
     var directionMap = Util.make(new EnumMap<Direction, Integer>(Direction.class), x -> {
       x.put(Direction.NORTH, 0);
@@ -1373,14 +1381,14 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   public void fluidBlock(LiquidBlock block) {
-    var model = this.models().withExistingParent(this.name(block), this.mcLoc("water"));
+    var model = this.models().withExistingParent(this.name(block), this.mcLocation("water"));
     this.simpleBlock(block, model);
   }
 
   private void createElevatorTrack(ElevatorTrackBlock block) {
     var texture = TextureMapping.defaultTexture(block).get(TextureSlot.TEXTURE);
     var textureOn = TextureMapping.getBlockTexture(block, "_on");
-    var template = this.modLoc("template_elevator_track");
+    var template = this.modLocation("template_elevator_track");
 
     var model = this.models()
         .singleTexture(this.name(block), template, texture)
@@ -1411,7 +1419,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
   private void createForceTrack(ForceTrackBlock block) {
     var texture = TextureMapping.getBlockTexture(block);
-    var template = this.modLoc("template_force_track");
+    var template = this.modLocation("template_force_track");
 
     var model = this.models()
         .singleTexture(this.name(block), template, "rail", texture)
@@ -1438,7 +1446,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         "_facing_unpowered_colored");
     var sideColoredUnpowered = TextureMapping.getBlockTexture(block, "_side_unpowered_colored");
 
-    var template = this.modLoc("force_track_emitter");
+    var template = this.modLocation("force_track_emitter");
 
     var modelUnpowered = this.models()
         .withExistingParent(this.name(block, "_unpowered"), template)
@@ -1673,7 +1681,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     this.getMultipartBuilder(block)
         .part()
-        .modelFile(this.models().getExistingFile(this.mcLoc("block/short_grass"))).addModel()
+        .modelFile(this.models().getExistingFile(this.mcLocation("block/short_grass"))).addModel()
         .condition(AbandonedTrackBlock.GRASS, true).end()
         .part()
         .modelFile(flatModel0).nextModel().modelFile(flatModel1).addModel()
@@ -1994,7 +2002,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
 
   private void createBufferStopTrack(BufferStopTrackBlock block, ModelFile trackModel) {
-    var bufferStop = new ModelFile.UncheckedModelFile(this.modLoc("block/buffer_stop"));
+    var bufferStop = new ModelFile.UncheckedModelFile(this.modLocation("block/buffer_stop"));
 
     this.getMultipartBuilder(block)
         .part()
@@ -2296,7 +2304,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   }
 
   private BlockModelBuilder createVariant(String name, ModelTemplate model) {
-    var texture = this.modLoc(ModelProvider.BLOCK_FOLDER + "/" + name);
+    var texture = this.modLocation(ModelProvider.BLOCK_FOLDER + "/" + name);
     var modelName = name + model.suffix.orElse("");
     var parent = model.model.orElseThrow();
 

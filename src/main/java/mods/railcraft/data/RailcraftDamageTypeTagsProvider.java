@@ -7,13 +7,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftDamageTypeTagsProvider extends DamageTypeTagsProvider {
 
   public RailcraftDamageTypeTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
-    super(packOutput, registries, RailcraftConstants.ID, existingFileHelper);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, RailcraftConstants.ID);
   }
 
   @Override

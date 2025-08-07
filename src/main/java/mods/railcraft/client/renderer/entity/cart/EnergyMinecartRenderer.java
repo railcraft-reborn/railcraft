@@ -14,8 +14,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 
 public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinecart, RailcraftMinecartRenderState> {
 
@@ -51,11 +51,11 @@ public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinec
     var minecraft = Minecraft.getInstance();
 
     CuboidModel.Face frameFace = FRAME_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        .setSprite(minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(FRAME));
 
     CuboidModel.Face coreFace = CORE_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        .setSprite(minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(CORE));
 
     FRAME_MODEL.setAll(frameFace);
@@ -68,7 +68,7 @@ public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinec
 
     poseStack.pushPose();
     var vertexBuilder =
-        multiBufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
+        multiBufferSource.getBuffer(RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS));
     CuboidModelRenderer.render(FRAME_MODEL, poseStack, vertexBuilder, 0xFFFFFFFF,
         CuboidModelRenderer.FaceDisplay.BOTH, false);
     CuboidModelRenderer.render(CORE_MODEL, poseStack, vertexBuilder, 0xFFFFFFFF,

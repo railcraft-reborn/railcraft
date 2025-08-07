@@ -8,13 +8,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftFluidTagsProvider extends FluidTagsProvider {
 
   public RailcraftFluidTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
-    super(packOutput, registries, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, RailcraftConstants.ID);
   }
 
   @Override

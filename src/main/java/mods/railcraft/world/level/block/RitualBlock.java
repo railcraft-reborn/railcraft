@@ -11,13 +11,13 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -64,7 +64,8 @@ public class RitualBlock extends BaseEntityBlock {
   }
 
   @Override
-  public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState) {
+  public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState,
+      boolean includeData, Player player) {
     return RefinedFirestoneItem.getItemCharged();
   }
 
@@ -87,11 +88,6 @@ public class RitualBlock extends BaseEntityBlock {
       drops.add(RefinedFirestoneItem.getItemEmpty());
     }
     return drops;
-  }
-
-  @Override
-  public RenderShape getRenderShape(BlockState state) {
-    return RenderShape.ENTITYBLOCK_ANIMATED;
   }
 
   @Override

@@ -300,54 +300,27 @@ public class Railcraft {
     }
   }
 
-  private void handleGatherData(GatherDataEvent event) {
-    var generator = event.getGenerator();
-    var packOutput = generator.getPackOutput();
-    var lookupProvider = event.getLookupProvider();
-    var fileHelper = event.getExistingFileHelper();
-
-    var blockTags = new RailcraftBlockTagsProvider(packOutput, lookupProvider, fileHelper);
-    var blockTagsLookup = blockTags.contentsGetter();
-    generator.addProvider(event.includeServer(), blockTags);
-    generator.addProvider(event.includeServer(),
-        new RailcraftItemTagsProvider(packOutput, lookupProvider, blockTagsLookup, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftFluidTagsProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftLootTableProvider(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new RailcraftAdvancementProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftRecipeProvider.Runner(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new BlastFurnaceRecipeProvider.Runner(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new CokeOvenRecipeProvider.Runner(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new CrusherRecipeProvider.Runner(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new RollingRecipeProvider.Runner(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new RailcraftPoiTypeTagsProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftLootModifierProvider(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new RailcraftDamageTypeTagsProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeServer(),
-        new RailcraftDatapackProvider(packOutput, lookupProvider));
-    generator.addProvider(event.includeServer(),
-        new RailcraftDataMapProvider(packOutput, lookupProvider));
-    generator.addProvider(event.includeClient(),
-        new RailcraftItemModelProvider(packOutput, fileHelper));
-    generator.addProvider(event.includeClient(),
-        new RailcraftBlockModelProvider(packOutput, fileHelper));
-    generator.addProvider(event.includeClient(), new RailcraftLanguageProvider(packOutput));
-    generator.addProvider(event.includeClient(),
-        new RailcraftSoundsProvider(packOutput, fileHelper));
-    generator.addProvider(event.includeClient(),
-        new RailcraftSpriteSourceProvider(packOutput, lookupProvider, fileHelper));
-    generator.addProvider(event.includeClient(),
-        new RailcraftParticleProvider(packOutput, fileHelper));
+  private void handleGatherData(GatherDataEvent.Client event) {
+    event.createBlockAndItemTags(RailcraftBlockTagsProvider::new, RailcraftItemTagsProvider::new);
+    event.createProvider(RailcraftFluidTagsProvider::new);
+    event.createProvider(RailcraftLootTableProvider::new);
+    event.createProvider(RailcraftAdvancementProvider::new);
+    event.createProvider(RailcraftRecipeProvider.Runner::new);
+    event.createProvider(BlastFurnaceRecipeProvider.Runner::new);
+    event.createProvider(CokeOvenRecipeProvider.Runner::new);
+    event.createProvider(CrusherRecipeProvider.Runner::new);
+    event.createProvider(RollingRecipeProvider.Runner::new);
+    event.createProvider(RailcraftPoiTypeTagsProvider::new);
+    event.createProvider(RailcraftLootModifierProvider::new);
+    event.createProvider(RailcraftDamageTypeTagsProvider::new);
+    event.createProvider(RailcraftDatapackProvider::new);
+    event.createProvider(RailcraftDataMapProvider::new);
+    event.createProvider(RailcraftItemModelProvider::new);
+    event.createProvider(RailcraftBlockModelProvider::new);
+    event.createProvider(RailcraftLanguageProvider::new);
+    event.createProvider(RailcraftSoundsProvider::new);
+    event.createProvider(RailcraftSpriteSourceProvider::new);
+    event.createProvider(RailcraftParticleProvider::new);
   }
 
   private void registerChunkControllers(RegisterTicketControllersEvent event) {

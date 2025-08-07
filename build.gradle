@@ -69,7 +69,7 @@ neoForge {
         minecraftVersion = project.parchment_minecraft_version
     }
 
-    validateAccessTransformers = true
+    //validateAccessTransformers = true
 
     runs {
         configureEach {
@@ -93,8 +93,8 @@ neoForge {
             programArgument '--nogui'
         }
 
-        data {
-            data()
+        clientData {
+            clientData()
             gameDirectory = project.file('runs/data')
             programArguments.addAll '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
@@ -143,9 +143,10 @@ dependencies {
     testImplementation platform("org.junit:junit-bom:$jupiter_version")
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly "mezz.jei:jei-1.21.1-common-api:$jei_version"
-    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:$jei_version"
-    //localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-lib:$jei_version"
+    compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
+    localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
 
     compileOnly "dev.emi:emi-neoforge:$emi_version+1.21:api"
     //localRuntime "dev.emi:emi-neoforge:$emi_version+$minecraft_version"

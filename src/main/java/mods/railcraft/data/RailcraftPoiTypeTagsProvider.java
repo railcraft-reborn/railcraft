@@ -7,14 +7,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.PoiTypeTagsProvider;
 import net.minecraft.tags.PoiTypeTags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftPoiTypeTagsProvider extends PoiTypeTagsProvider {
 
   public RailcraftPoiTypeTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries,
-      ExistingFileHelper existingFileHelper) {
-    super(packOutput, registries, RailcraftConstants.ID, existingFileHelper);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, RailcraftConstants.ID);
   }
 
   @Override

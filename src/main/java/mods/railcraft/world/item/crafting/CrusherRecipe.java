@@ -98,7 +98,7 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
         ).apply(instance, CrusherOutput::new));
 
     public ItemStack getOutput() {
-      return RecipeUtil.getPreferredStackByMod(output.items()).copyWithCount(quantity);
+      return RecipeUtil.getPreferredStackByMod(output.getValues().stream().toList()).copyWithCount(quantity);
     }
   }
 

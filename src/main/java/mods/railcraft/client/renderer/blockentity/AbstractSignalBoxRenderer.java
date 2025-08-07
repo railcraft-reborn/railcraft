@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.AABB;
 
 public abstract class AbstractSignalBoxRenderer
@@ -58,7 +58,7 @@ public abstract class AbstractSignalBoxRenderer
           blockEntity.getCustomName(), poseStack, bufferSource, packedLight);
     }
 
-    var spriteGetter = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
+    var spriteGetter = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
 
     this.model.setPackedLight(packedLight);
     this.model.setPackedOverlay(packedOverlay);
@@ -80,7 +80,7 @@ public abstract class AbstractSignalBoxRenderer
     }
 
     var vertexConsumer =
-        bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
+        bufferSource.getBuffer(RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS));
     CuboidModelRenderer.render(this.model, poseStack, vertexConsumer,
         0xFFFFFFFF, FaceDisplay.BOTH, false);
 

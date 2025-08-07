@@ -11,13 +11,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
   public RailcraftBlockTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper fileHelper) {
-    super(packOutput, registries, RailcraftConstants.ID, fileHelper);
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, RailcraftConstants.ID);
   }
 
   @SuppressWarnings("unchecked")

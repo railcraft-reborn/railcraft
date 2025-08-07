@@ -13,17 +13,15 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGenerator {
+class RailcraftTrackAdvancements implements AdvancementSubProvider {
 
   @Override
-  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer,
-      ExistingFileHelper fileHelper) {
+  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
     var root = Advancement.Builder.advancement()
         .display(
             RailcraftItems.REINFORCED_TRACK.get(),
@@ -34,7 +32,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/root"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/root"));
 
     Advancement.Builder.advancement()
         .display(
@@ -47,7 +45,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/firestone"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/firestone"));
 
     Advancement.Builder.advancement()
         .display(
@@ -60,7 +58,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(root)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/blast_furnace"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/blast_furnace"));
 
     Advancement.Builder.advancement()
         .display(
@@ -73,7 +71,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(root)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/coke_oven"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/coke_oven"));
 
     var rollingTable = Advancement.Builder.advancement()
         .display(
@@ -87,7 +85,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/manual_rolling_machine"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/manual_rolling_machine"));
 
     Advancement.Builder.advancement()
         .display(
@@ -100,7 +98,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/crusher"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/crusher"));
 
     var basicTrack = Advancement.Builder.advancement()
         .display(
@@ -112,7 +110,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
-        .save(consumer, RailcraftConstants.rl("tracks/regular_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/regular_track"));
 
     Advancement.Builder.advancement()
         .display(
@@ -124,7 +122,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             true, true, false)
         .parent(basicTrack)
         .addCriterion("has_used_track_kit", UseTrackKitTrigger.hasUsedTrackKit())
-        .save(consumer, RailcraftConstants.rl("tracks/track_kit"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/track_kit"));
 
     Advancement.Builder.advancement()
         .display(
@@ -136,7 +134,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
             true, false, false)
         .parent(basicTrack)
         .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.hasUsedSpikeMaul())
-        .save(consumer, RailcraftConstants.rl("tracks/junctions"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/junctions"));
 
     Advancement.Builder.advancement()
         .display(
@@ -149,7 +147,7 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/high_speed_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/high_speed_track"));
 
     Advancement.Builder.advancement()
         .display(
@@ -162,6 +160,6 @@ class RailcraftTrackAdvancements implements AdvancementProvider.AdvancementGener
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
-        .save(consumer, RailcraftConstants.rl("tracks/wooden_track"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("tracks/wooden_track"));
   }
 }

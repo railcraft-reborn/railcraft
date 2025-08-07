@@ -4,13 +4,12 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ParticleDescriptionProvider;
 
 public class RailcraftParticleProvider extends ParticleDescriptionProvider {
 
-  public RailcraftParticleProvider(PackOutput output, ExistingFileHelper fileHelper) {
-    super(output, fileHelper);
+  public RailcraftParticleProvider(PackOutput output) {
+    super(output);
   }
 
   @Override

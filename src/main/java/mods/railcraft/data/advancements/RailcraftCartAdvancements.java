@@ -14,17 +14,15 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
-class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenerator {
+class RailcraftCartAdvancements implements AdvancementSubProvider {
 
   @Override
-  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer,
-      ExistingFileHelper fileHelper) {
+  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
     var root = Advancement.Builder.advancement()
         .display(
             RailcraftItems.DIAMOND_CROWBAR.get(),
@@ -35,7 +33,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, RailcraftConstants.rl("carts/root"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/root"));
 
     Advancement.Builder.advancement()
         .display(
@@ -47,7 +45,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.hasLinked())
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/link_carts"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/link_carts"));
 
     Advancement.Builder.advancement()
         .display(
@@ -59,7 +57,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.onSeasonSet())
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/seasons"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/seasons"));
 
     var rcLocomotive = Advancement.Builder.advancement()
         .display(
@@ -72,7 +70,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/locomotive"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/locomotive"));
 
     Advancement.Builder.advancement()
         .display(
@@ -84,7 +82,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/bed_cart"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/bed_cart"));
 
     Advancement.Builder.advancement()
         .display(
@@ -96,7 +94,7 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/jukebox_cart"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/jukebox_cart"));
 
     Advancement.Builder.advancement()
         .display(
@@ -108,6 +106,6 @@ class RailcraftCartAdvancements implements AdvancementProvider.AdvancementGenera
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/surprise"), fileHelper);
+        .save(consumer, RailcraftConstants.rl("carts/surprise"));
   }
 }

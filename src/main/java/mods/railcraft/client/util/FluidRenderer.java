@@ -2,9 +2,9 @@ package mods.railcraft.client.util;
 
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -35,7 +35,7 @@ public class FluidRenderer {
     } else {
       spriteLocation = IClientFluidTypeExtensions.of(fluid).getFlowingTexture(fluidStack);
     }
-    return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spriteLocation);
+    return Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(spriteLocation);
   }
 
   public enum FluidType {

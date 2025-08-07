@@ -36,7 +36,7 @@ public enum ModEntitySelector implements Predicate<Entity> {
   NON_MECHANICAL {
     @Override
     public boolean test(Entity entity) {
-      return !entity.onlyOpCanSetNbt();
+      return !entity.getType().onlyOpCanSetNbt();
     }
   }
 }

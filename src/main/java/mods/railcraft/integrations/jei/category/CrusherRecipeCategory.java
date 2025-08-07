@@ -6,9 +6,7 @@ import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RecipeTypes;
@@ -19,60 +17,49 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
-public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
+public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<CrusherRecipe>> {
 
-  public static final int WIDTH = 144;
-  public static final int HEIGHT = 54;
+  private static final int WIDTH = 144;
+  private static final int HEIGHT = 54;
 
-  public static final ResourceLocation BACKGROUND =
+  private static final ResourceLocation BACKGROUND =
       RailcraftConstants.rl("textures/gui/container/crusher.png");
 
-  private final IDrawable background, icon, arrow;
+  private final IDrawable background, arrow;
 
   public CrusherRecipeCategory(IGuiHelper guiHelper) {
-    this.background = guiHelper.createDrawable(BACKGROUND, 0, 171, WIDTH, HEIGHT);
-    var itemStack = new ItemStack(RailcraftItems.CRUSHER.get());
-    this.icon = guiHelper.createDrawableItemStack(itemStack);
+    super(
+        RecipeTypes.CRUSHER,
+        Component.translatable(Translations.Jei.CRUSHER),
+        guiHelper.createDrawableItemLike(RailcraftItems.CRUSHER.get()),
+        WIDTH,
+        HEIGHT
+    );
 
+    this.background = guiHelper.createDrawable(BACKGROUND, 0, 171, WIDTH, HEIGHT);
     this.arrow = guiHelper.createAnimatedDrawable(
         guiHelper.createDrawable(BACKGROUND, 144, 171, 29, 53),
-        500, IDrawableAnimated.StartDirection.LEFT, false);
+        200, IDrawableAnimated.StartDirection.LEFT, false);
   }
 
   @Override
-  public RecipeType<CrusherRecipe> getRecipeType() {
-    return RecipeTypes.CRUSHER;
-  }
-
-  @Override
-  public Component getTitle() {
-    return Component.translatable(Translations.Jei.CRUSHER);
-  }
-
-  @Override
-  public IDrawable getBackground() {
-    return this.background;
-  }
-
-  @Override
-  public IDrawable getIcon() {
-    return this.icon;
-  }
-
-  @Override
-  public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
+  public void draw(RecipeHolder<CrusherRecipe> recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    this.background.draw(guiGraphics);
     this.arrow.draw(guiGraphics, 58, 0);
   }
 
   @Override
-  public void setRecipe(IRecipeLayoutBuilder builder, CrusherRecipe recipe, IFocusGroup focuses) {
+  public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrusherRecipe> recipeHolder,
+      IFocusGroup focuses) {
+    var recipe = recipeHolder.value();
     var ingredients = recipe.placementInfo().ingredients();
 
     builder
-        .addSlot(RecipeIngredientRole.INPUT, 19, 19)
-        .addIngredients(ingredients.getFirst());
+        .addInputSlot(19, 19)
+        .add(ingredients.getFirst());
 
     var outputs = recipe.getProbabilityOutputs();
     for (int y = 0; y < 3; y++) {
@@ -83,8 +70,8 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe> {
           itemStack = outputs.get(index - 1).getOutput();
         }
         var recipeLayout = builder
-            .addSlot(RecipeIngredientRole.OUTPUT, 91 + x * 18, y * 18 + 1)
-            .addItemStack(itemStack);
+            .addOutputSlot(91 + x * 18, y * 18 + 1)
+            .add(itemStack);
         if (!itemStack.isEmpty()) {
           recipeLayout.addRichTooltipCallback((recipeSlotView, tooltip) -> {
             double probability = outputs.get(index - 1).probability() * 100;

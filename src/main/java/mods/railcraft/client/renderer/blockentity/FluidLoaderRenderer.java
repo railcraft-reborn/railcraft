@@ -10,9 +10,9 @@ import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntit
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.AABB;
 
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
@@ -34,7 +34,7 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
     Minecraft minecraft = Minecraft.getInstance();
 
     CuboidModel.Face sideFace = PIPE_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        .setSprite(minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(PIPE_SIDE_TEXTURE_LOCATION));
     PIPE_MODEL.set(Direction.NORTH, sideFace);
     PIPE_MODEL.set(Direction.SOUTH, sideFace);
@@ -42,7 +42,7 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
     PIPE_MODEL.set(Direction.WEST, sideFace);
 
     CuboidModel.Face endFace = PIPE_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+        .setSprite(minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(PIPE_END_TEXTURE_LOCATION));
     PIPE_MODEL.set(Direction.UP, endFace);
     PIPE_MODEL.set(Direction.DOWN, endFace);
@@ -54,7 +54,7 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
     {
       PIPE_MODEL.setMinY(RenderUtil.PIXEL - blockEntity.getPipeLength(partialTick));
       VertexConsumer vertexBuilder =
-          bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
+          bufferSource.getBuffer(RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS));
       CuboidModelRenderer.render(PIPE_MODEL, poseStack, vertexBuilder, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
     }

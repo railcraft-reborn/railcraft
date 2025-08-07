@@ -122,7 +122,8 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   }
 
   @Override
-  public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState) {
+  public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState blockState,
+      boolean includeData, Player player) {
     return this.getItem(blockState);
   }
 

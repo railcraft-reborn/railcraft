@@ -44,7 +44,7 @@ public class FirestoneItem extends Item {
   }
 
   @Override
-  public boolean isRepairable(ItemStack itemStack) {
+  public boolean isCombineRepairable(ItemStack stack) {
     return false;
   }
 
