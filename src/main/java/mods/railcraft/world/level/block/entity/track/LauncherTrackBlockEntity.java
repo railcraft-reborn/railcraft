@@ -1,8 +1,10 @@
 package mods.railcraft.world.level.block.entity.track;
 
+import java.util.Optional;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
@@ -36,9 +38,9 @@ public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
       if (Math.abs(motion.z()) > LAUNCH_THRESHOLD) {
         newMotionZ = Math.copySign(0.6F, motion.z());
       }
-      cart.setMaxSpeedAirLateral(0.6F);
-      cart.setMaxSpeedAirVertical(0.5F);
-      cart.setDragAir(0.99999);
+      cart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_LATERAL, Optional.of(0.6F));
+      cart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_VERTICAL, 0.5F);
+      cart.setData(RailcraftAttachmentTypes.AIR_DRAG, 0.99999F);
       RollingStock.getOrThrow(cart).launch();
       cart.setDeltaMovement(newMotionX, this.getLaunchForce() * 0.1D, newMotionZ);
       cart.move(MoverType.SELF, cart.getDeltaMovement());

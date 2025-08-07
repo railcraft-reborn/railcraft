@@ -513,7 +513,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  protected Vec3 applyNaturalSlowdown(Vec3 entitySpeed) {
+  public Vec3 applyNaturalSlowdown(Vec3 entitySpeed) {
     if (this.isRemoved()) {
       return Vec3.ZERO;
     }
@@ -757,11 +757,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     } else {
       locos.forEach(action);
     }
-  }
-
-  @Override
-  public boolean canBeRidden() {
-    return false;
   }
 
   @Override

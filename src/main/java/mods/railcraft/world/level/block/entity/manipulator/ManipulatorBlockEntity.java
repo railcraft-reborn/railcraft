@@ -139,7 +139,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     if (this.isManualMode()) {
       return;
     }
-    if (MinecartUtil.cartVelocityIsLessThan(cart, STOP_VELOCITY) || cart.isPoweredCart()) {
+    if (MinecartUtil.cartVelocityIsLessThan(cart, STOP_VELOCITY) || cart.isFurnace()) {
       this.setPowered(true);
     }
   }

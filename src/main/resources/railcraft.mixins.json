@@ -5,14 +5,15 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AbstractMinecartMixin",
-    "MinecartMixin",
+    "AnvilBlockMixin",
+    "FenceBlockMixin",
     "MinecartChestMixin",
     "MinecartFurnaceMixin",
     "MinecartHopperMixin",
+    "MinecartMixin",
+    "OldMinecartBehaviorMixin",
     "SlotMixin",
-    "FenceBlockMixin",
-    "WallBlockMixin",
-    "AnvilBlockMixin"
+    "WallBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

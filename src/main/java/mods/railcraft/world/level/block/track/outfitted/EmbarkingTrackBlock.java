@@ -87,7 +87,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
       AbstractMinecart cart) {
     super.onMinecartPass(blockState, level, blockPos, cart);
     var extension = RollingStock.getOrThrow(cart);
-    if (isPowered(blockState) && cart.canBeRidden() && !cart.isVehicle()
+    if (isPowered(blockState) && cart.isRideable() && !cart.isVehicle()
         && extension.isMountable()) {
       int radius = getRadius(blockState);
       var box = BoxBuilder.create().at(blockPos).build();

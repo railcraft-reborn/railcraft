@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
@@ -132,6 +133,9 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
     // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
     this.setId(ENTITY_COUNTER.getAndAdd(this.parts.length + 1) + 1);
+
+    this.setData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL, SPEED);
+    this.setData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS, false);
   }
 
   @Override
@@ -399,11 +403,6 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     if (isMinecartPowered()) {
       boreRotationAngle += 5;
     }
-  }
-
-  @Override
-  public float getMaxCartSpeedOnRail() {
-    return SPEED;
   }
 
   @Override
@@ -966,7 +965,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  protected Vec3 applyNaturalSlowdown(Vec3 speed) {
+  public Vec3 applyNaturalSlowdown(Vec3 speed) {
     return speed.multiply(CartConstants.STANDARD_DRAG, 0, CartConstants.STANDARD_DRAG);
   }
 
@@ -1023,11 +1022,6 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   @Override
   public boolean canBeAdjusted(RollingStock cart) {
     return !isActive();
-  }
-
-  @Override
-  public boolean shouldDoRailFunctions() {
-    return false;
   }
 
   @Override

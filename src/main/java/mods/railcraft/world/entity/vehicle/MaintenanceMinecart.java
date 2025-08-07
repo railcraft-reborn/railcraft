@@ -5,6 +5,7 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
@@ -52,17 +53,13 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     builder.define(MODE, Mode.ON);
   }
 
-  @Override
-  public float getMaxCartSpeedOnRail() {
-    return this.mode().speed();
-  }
-
   public Mode mode() {
     return this.entityData.get(MODE);
   }
 
   public void setMode(Mode mode) {
     this.entityData.set(MODE, mode);
+    this.setData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL, mode.speed());
   }
 
   @Override
@@ -99,12 +96,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public boolean canBeRidden() {
-    return false;
-  }
-
-  @Override
-  protected Vec3 applyNaturalSlowdown(Vec3 speed) {
+  public Vec3 applyNaturalSlowdown(Vec3 speed) {
     return speed.multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR);
   }
 

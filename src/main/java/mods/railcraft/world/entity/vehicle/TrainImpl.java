@@ -7,6 +7,7 @@ import java.util.UUID;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -106,7 +107,10 @@ public final class TrainImpl implements Train {
   private float calculateMaxSpeed() {
     double locoBoost = Math.max(0.0, this.getNumRunningLocomotives() - 1.0) * 0.075;
     return (float) this.entities()
-        .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), this.softMaxSpeed(c) + locoBoost))
+        .mapToDouble(c -> {
+          var maxCartSpeedOnRail = c.getData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL);
+          return Math.min(maxCartSpeedOnRail, this.softMaxSpeed(c) + locoBoost);
+        })
         .min()
         .orElse(1.2F);
   }
@@ -114,11 +118,12 @@ public final class TrainImpl implements Train {
   private float softMaxSpeed(AbstractMinecart cart) {
     return cart instanceof WeightedCart weighted
         ? weighted.softMaxSpeed()
-        : cart.getMaxCartSpeedOnRail();
+        : cart.getData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL);
   }
 
   private void setMaxSpeed(float trainSpeed) {
-    this.entities().forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
+    this.entities().forEach(c ->
+        c.setData(RailcraftAttachmentTypes.CURRENT_SPEED_CAP_ON_RAIL, trainSpeed));
   }
 
   @Override

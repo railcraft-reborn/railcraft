@@ -16,7 +16,7 @@ public class EmptyDetectorBlockEntity extends DetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      if (cart.canBeRidden() && cart.getPassengers().isEmpty()) {
+      if (cart.isRideable() && cart.getPassengers().isEmpty()) {
         return Redstone.SIGNAL_MAX;
       }
     }

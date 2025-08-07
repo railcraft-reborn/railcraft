@@ -61,8 +61,6 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
-import mods.railcraft.world.item.LocomotiveItem;
-import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -82,7 +80,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -119,7 +116,7 @@ public class ClientManager {
   public static void init(IEventBus modEventBus) {
     modEventBus.addListener(ClientManager::handleRegisterMenuScreens);
     modEventBus.addListener(ClientManager::handleClientSetup);
-    modEventBus.addListener(ClientManager::handleItemColors);
+    //modEventBus.addListener(ClientManager::handleItemColors);
     modEventBus.addListener(ClientManager::handleBlockColors);
     modEventBus.addListener(ClientManager::handleParticleRegistration);
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
@@ -192,6 +189,7 @@ public class ClientManager {
     }
   }
 
+  /* FIXME
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.register((stack, tintIndex) -> ARGB.opaque(switch (tintIndex) {
       case 0 -> LocomotiveItem.getColor(stack).primary().getMapColor().col;
@@ -202,6 +200,7 @@ public class ClientManager {
         RailcraftItems.STEAM_LOCOMOTIVE.get(),
         RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
   }
+   */
 
   private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register((state, level, pos, tintIndex) ->

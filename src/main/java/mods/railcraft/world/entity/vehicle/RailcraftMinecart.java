@@ -159,12 +159,16 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
+  public final boolean isFurnace() {
+    return isPoweredCart();
+  }
+
   public boolean isPoweredCart() {
     return false;
   }
 
   @Override
-  public boolean canBeRidden() {
+  public boolean isRideable() {
     return false;
   }
 

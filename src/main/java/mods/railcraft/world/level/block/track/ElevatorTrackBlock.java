@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.track;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.SharedConstants;
@@ -265,13 +266,13 @@ public class ElevatorTrackBlock extends Block {
    *
    * @param cart the minecart for which motion and rotation will be adjusted
    */
-  protected void keepMinecartConnected(BlockPos pos, BlockState state,
-      AbstractMinecart cart) {
+  protected void keepMinecartConnected(BlockPos pos, BlockState state, AbstractMinecart cart) {
     if (BaseRailBlock.isRail(cart.level(), pos.below())
-        || BaseRailBlock.isRail(cart.level(), pos.below(2)))
-      cart.setCanUseRail(false);
-    else
-      cart.setCanUseRail(true);
+        || BaseRailBlock.isRail(cart.level(), pos.below(2))) {
+      cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, false);
+    } else {
+      cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
+    }
     Vec3 motion = cart.getDeltaMovement();
     cart.setDeltaMovement((pos.getX() + 0.5) - cart.getX(), motion.y(),
         (pos.getZ() + 0.5) - cart.getZ());
@@ -320,7 +321,7 @@ public class ElevatorTrackBlock extends Block {
    */
   private boolean pushMinecartOntoRail(Level level, BlockPos pos, BlockState state,
       AbstractMinecart cart, boolean up) {
-    cart.setCanUseRail(true);
+    cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
     Direction.Axis axis = state.getValue(FACING).getAxis();
     for (BlockPos target : new BlockPos[] {pos, up ? pos.above() : pos.below()}) {
       for (Direction.AxisDirection direction : Direction.AxisDirection.values()) {

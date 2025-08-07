@@ -155,11 +155,11 @@ dependencies {
     //localRuntime "vazkii.patchouli:Patchouli:$patchouli_version"
 
     implementation "curse.maven:jade-324717:$jade_id"
-    implementation "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
+    compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 
-    localRuntime "curse.maven:sodium-394468:6173749"
-    localRuntime "curse.maven:sodium-options-api-1103431:6100815"
-    localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
+    //localRuntime "curse.maven:sodium-394468:6173749"
+    //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
+    //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 }
 
 test {

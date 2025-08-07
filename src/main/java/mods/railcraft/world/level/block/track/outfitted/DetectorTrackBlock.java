@@ -106,9 +106,10 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
     if (hasAnalogOutputSignal(blockState)) {
       var carts = EntitySearcher.findMinecarts().at(pos).upTo(-0.2F).list(level);
-      if (!carts.isEmpty() && carts.getFirst().getComparatorLevel() > -1) {
+      // TODO: getComparatorLevel, was always set to -1, so it was not used
+      /*if (!carts.isEmpty() && carts.getFirst().getComparatorLevel() > -1) {
         return carts.getFirst().getComparatorLevel();
-      }
+      }*/
 
       var commandCarts = EntitySearcher.find(MinecartCommandBlock.class)
           .at(pos).upTo(-0.2F).list(level);

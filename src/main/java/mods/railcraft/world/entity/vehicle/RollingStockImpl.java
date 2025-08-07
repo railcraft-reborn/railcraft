@@ -8,12 +8,14 @@ import org.joml.Vector2d;
 import org.slf4j.Logger;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
+import mods.railcraft.Constants;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
@@ -305,7 +307,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   @Override
   public void launch() {
     this.launchState = LaunchState.LAUNCHING;
-    this.minecart.setCanUseRail(false);
+    this.minecart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, false);
   }
 
   @Override
@@ -471,7 +473,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       }
     } else if (this.launchState == LaunchState.LAUNCHING) {
       this.launchState = LaunchState.LAUNCHED;
-      this.minecart.setCanUseRail(true);
+      this.minecart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
     } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.onGround()) {
       this.land();
     }
@@ -635,9 +637,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
   private void land() {
     this.launchState = LaunchState.LANDED;
-    this.minecart.setMaxSpeedAirLateral(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_LATERAL);
-    this.minecart.setMaxSpeedAirVertical(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_VERTICAL);
-    this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
+    this.minecart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_LATERAL,
+        Optional.of(Constants.DEFAULT_MAX_SPEED_AIR_LATERAL));
+    this.minecart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_VERTICAL, Constants.DEFAULT_MAX_SPEED_AIR_VERTICAL);
+    this.minecart.setData(RailcraftAttachmentTypes.AIR_DRAG, Constants.DEFAULT_AIR_DRAG);
   }
 
   private float getOptimalDistance(RollingStock rollingStock) {
