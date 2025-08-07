@@ -80,7 +80,7 @@ public class CartDispenserBlock extends ManipulatorBlock<CartDispenserBlockEntit
       @Nullable Orientation orientation, boolean isMoving) {
 
     boolean flag = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
-    level.setBlock(pos, state.setValue(POWERED, flag), 4);
+    level.setBlock(pos, state.setValue(POWERED, flag), Block.UPDATE_ALL);
 
     if (level.isClientSide()) {
       return;

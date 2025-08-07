@@ -11,8 +11,8 @@ public class AdvancedDetectorMenu extends RailcraftMenu {
   public AdvancedDetectorMenu(int id, Inventory inventory, AdvancedDetectorBlockEntity blockEntity) {
     super(RailcraftMenuTypes.ADVANCED_DETECTOR.get(), id, inventory.player, blockEntity::isStillValid);
 
-    for (int i = 0; i < blockEntity.getContainerSize(); i++) {
-      this.addSlot(new PhantomMinecartSlot(blockEntity, i, 8 + i * 18, 24));
+    for (int i = 0; i < blockEntity.getInvFilters().getContainerSize(); i++) {
+      this.addSlot(new PhantomMinecartSlot(blockEntity.getInvFilters(), i, 8 + i * 18, 24));
     }
     this.addInventorySlots(inventory, 140);
   }

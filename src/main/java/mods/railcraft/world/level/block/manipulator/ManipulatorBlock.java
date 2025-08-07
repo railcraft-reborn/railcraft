@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -64,9 +63,7 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
     boolean emit = false;
     if (isPowered(blockState)) {
       var neighborBlockState = level.getBlockState(blockPos.relative(direction.getOpposite()));
-      emit = BaseRailBlock.isRail(neighborBlockState)
-          || neighborBlockState.is(Blocks.REDSTONE_WIRE)
-          || neighborBlockState.is(Blocks.REPEATER);
+      emit = BaseRailBlock.isRail(neighborBlockState);
     }
     return emit ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }

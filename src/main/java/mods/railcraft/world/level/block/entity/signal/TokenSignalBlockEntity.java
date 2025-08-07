@@ -133,6 +133,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
 
   public void setRingId(UUID tokenRingId) {
     this.ringId = tokenRingId;
+    this.setChanged();
   }
 
   @Override

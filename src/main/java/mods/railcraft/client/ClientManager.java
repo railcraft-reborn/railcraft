@@ -2,6 +2,7 @@ package mods.railcraft.client;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
+import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
@@ -57,6 +58,7 @@ import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
+import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.LocomotiveItem;
@@ -181,6 +183,12 @@ public class ClientManager {
   private static void handleClientSetup(FMLClientSetupEvent event) {
     if (ModList.get().isLoaded(PatchouliAPI.MOD_ID)) {
       Patchouli.setup();
+    }
+    if (ModList.get().isLoaded("sodiumdynamiclights")) {
+      DynamicLightHandlers.registerDynamicLightHandler(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(),
+          loco -> loco.isRunning() ? 12 : 0);
+      DynamicLightHandlers.registerDynamicLightHandler(RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(),
+          loco -> loco.isRunning() ? Math.round(loco.getLightLevel()) : 0);
     }
   }
 

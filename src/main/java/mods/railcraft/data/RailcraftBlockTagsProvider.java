@@ -446,7 +446,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
         .add(RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
-        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get());
+        .add(RailcraftBlocks.DEEPSLATE_ZINC_ORE.get())
+        .add(RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get());
     this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
         .add(RailcraftBlocks.FIRESTONE_ORE.get());
 

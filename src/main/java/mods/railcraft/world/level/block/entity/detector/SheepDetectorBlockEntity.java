@@ -22,7 +22,7 @@ public class SheepDetectorBlockEntity extends FilterDetectorBlockEntity {
 
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
-    var dyeItem = this.getItem(0);
+    var dyeItem = this.invFilters.getItem(0);
     for (var cart : minecarts) {
       var passengers = cart.getPassengers();
       if (passengers.stream()

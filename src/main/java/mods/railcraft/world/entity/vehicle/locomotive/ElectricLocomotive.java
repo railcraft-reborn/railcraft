@@ -17,8 +17,12 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
@@ -43,6 +47,8 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 1);
 
   private static final Set<Mode> ALLOWED_MODES = Set.of(Mode.RUNNING, Mode.SHUTDOWN);
+  private static final EntityDataAccessor<Float> LIGHT_LEVEL =
+      SynchedEntityData.defineId(ElectricLocomotive.class, EntityDataSerializers.FLOAT);
 
   private final Container ticketInventory =
       new ContainerMapper(this, SLOT_TICKET, 2).ignoreItemChecks();
@@ -56,6 +62,12 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   public ElectricLocomotive(ItemStack itemStack, Level level, double x, double y, double z) {
     super(itemStack, RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
+  }
+
+  @Override
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(LIGHT_LEVEL, 0F);
   }
 
   @Override
@@ -136,9 +148,10 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public void tick() {
-    super.tick();
-    this.cartStorage.tick(this);
+  protected void serverTick(ServerLevel level) {
+    super.serverTick(level);
+    this.cartStorage.tick(level, this);
+    this.entityData.set(LIGHT_LEVEL, Mth.map(this.getCharge(), 0, 1, 0, 12));
   }
 
   @Override
@@ -149,9 +162,15 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   public boolean needsFuel() {
-    float charge =
-        (float) this.cartStorage.getEnergyStored() / (float) this.cartStorage.getMaxEnergyStored();
-    return charge < 0.80;
+    return this.getCharge() < 0.80;
+  }
+
+  private float getCharge() {
+    return (float) this.cartStorage.getEnergyStored() / (float) this.cartStorage.getMaxEnergyStored();
+  }
+
+  public float getLightLevel() {
+    return this.entityData.get(LIGHT_LEVEL);
   }
 
   public IEnergyStorage getBatteryCart() {

@@ -114,18 +114,8 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   @Override
-  public void tick() {
-    super.tick();
-
-    if (this.isRemoved()) {
-      return;
-    }
-
-    if (this.level().isClientSide()) {
-      this.clientTick();
-      return;
-    }
-
+  protected void serverTick(ServerLevel level) {
+    super.serverTick(level);
     if (this.waterTank.isEmpty()) {
       this.setMode(Mode.SHUTDOWN);
     }
@@ -150,7 +140,9 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
     }
   }
 
-  private void clientTick() {
+  @Override
+  protected void clientTick(Level level) {
+    super.clientTick(level);
     // future information: renderYaw FACES at -x when at 0deg
     double rads = Math.toRadians(renderYaw);
     if (this.isSmoking()) {
@@ -164,10 +156,10 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       if (Seasons.isHalloween() && this.random.nextInt(4) == 0) { // 20%?
         particle = RailcraftParticleTypes.PUMPKIN.get();
       } else {
-        // smog obviously.
+        // smog, obviously.
         particle = ParticleTypes.CAMPFIRE_COSY_SMOKE;
       }
-      this.level().addParticle(particle, x, y, z, 0, 0.02, 0);
+      level.addParticle(particle, x, y, z, 0, 0.02, 0);
     }
     // steam spawns ON the engine itself, spreading left or right
     // as the pistons are on the train's sides
@@ -175,18 +167,18 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       float offset = 0.5f;
       double ninetyDeg = Math.toRadians(90) + Math.toRadians(this.random.nextInt(10)); // 10* bias
       double steamAngularSpeed = 0.01;
-      double ycoord = this.getY() + 0.15;
+      double yCoord = this.getY() + 0.15;
 
       var vx = steamAngularSpeed * Math.cos(rads - ninetyDeg);
       var vz = steamAngularSpeed * Math.sin(rads - ninetyDeg);
 
-      this.level().addParticle(RailcraftParticleTypes.STEAM.get(),
-          this.getX() - Math.cos(rads + ninetyDeg) * offset, ycoord,
+      level.addParticle(RailcraftParticleTypes.STEAM.get(),
+          this.getX() - Math.cos(rads + ninetyDeg) * offset, yCoord,
           this.getZ() - Math.sin(rads + ninetyDeg) * offset, vx,
           0.02 + (this.random.nextDouble() * 0.01), vz);
 
-      this.level().addParticle(RailcraftParticleTypes.STEAM.get(),
-          this.getX() - Math.cos(rads - ninetyDeg) * offset, ycoord,
+      level.addParticle(RailcraftParticleTypes.STEAM.get(),
+          this.getX() - Math.cos(rads - ninetyDeg) * offset, yCoord,
           this.getZ() - Math.sin(rads - ninetyDeg) * offset, vx,
           0.02 + (this.random.nextDouble() * 0.01), vz);
     }

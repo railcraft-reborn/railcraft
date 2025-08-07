@@ -7,6 +7,7 @@ import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -48,6 +49,10 @@ public class AdvancedContainer extends SimpleContainer
 
   public AdvancedContainer listener(ModuleProvider moduleProvider) {
     return this.listener(new ModuleProviderCallback(moduleProvider));
+  }
+
+  public AdvancedContainer listener(RailcraftBlockEntity blockEntity) {
+    return this.listener(new BlockEntityCallback(blockEntity));
   }
 
   public AdvancedContainer listener(Listener callback) {
@@ -181,6 +186,25 @@ public class AdvancedContainer extends SimpleContainer
     @Override
     public void containerChanged(Container container) {
       this.moduleProvider.save();
+    }
+  }
+
+  public static class BlockEntityCallback implements Listener {
+
+    private final RailcraftBlockEntity blockEntity;
+
+    public BlockEntityCallback(RailcraftBlockEntity blockEntity) {
+      this.blockEntity = blockEntity;
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+      return this.blockEntity.isStillValid(player);
+    }
+
+    @Override
+    public void containerChanged(Container container) {
+      this.blockEntity.setChanged();
     }
   }
 }

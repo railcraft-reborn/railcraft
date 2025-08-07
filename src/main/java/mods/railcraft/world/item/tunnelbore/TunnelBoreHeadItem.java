@@ -3,9 +3,9 @@ package mods.railcraft.world.item.tunnelbore;
 import java.util.Set;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.tags.RailcraftTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -18,7 +18,7 @@ public class TunnelBoreHeadItem extends Item implements TunnelBoreHead {
   private final ResourceLocation textureLocation;
 
   public TunnelBoreHeadItem(ToolMaterial material, String tierName, Properties properties) {
-    super(material.applyToolProperties(properties, RailcraftTags.Blocks.TUNNEL_BORE_MINEABLE_BLOCKS, 1.0F, 1));
+    super(material.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, 1.0F, 1));
     this.textureLocation =
         RailcraftConstants.rl("textures/entity/tunnel_bore/%s_tunnel_bore.png".formatted(tierName));
   }

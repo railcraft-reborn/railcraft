@@ -1,6 +1,7 @@
 package mods.railcraft.api.charge;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
@@ -21,7 +22,7 @@ public interface ChargeCartStorage extends IEnergyStorage {
    *
    * @param owner The cart that carries the battery
    */
-  void tick(AbstractMinecart owner);
+  void tick(ServerLevel level, AbstractMinecart owner);
 
   /**
    * Update the battery and tries to draw charge from the track.
