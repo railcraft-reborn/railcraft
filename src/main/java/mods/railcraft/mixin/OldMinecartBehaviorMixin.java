@@ -61,7 +61,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
    * some Railcraft Patches.
    */
   @Overwrite
-  public void moveAlongTrack(ServerLevel p_376285_) {
+  public void moveAlongTrack(ServerLevel serverLevel) {
     BlockPos blockpos = this.minecart.getCurrentBlockPosOrRailBelow();
     BlockState blockstate = self().level().getBlockState(blockpos);
     this.minecart.resetFallDistance();
@@ -169,7 +169,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     d2 = d9 + d5 * d12;
     this.setPos(d0, d1, d2);
     double d23 = this.minecart.isVehicle() ? (double)0.75F : (double)1.0F;
-    double d24 = this.getCustomMaxSpeed(p_376285_); //RAILCRAFT PATCH
+    double d24 = this.getCustomMaxSpeed(serverLevel); //RAILCRAFT PATCH
     vec31 = this.getDeltaMovement();
     this.minecart.move(
         MoverType.SELF, new Vec3(Mth.clamp(d23 * vec31.x, -d24, d24), (double)0.0F, Mth.clamp(d23 * vec31.z, -d24, d24)));
