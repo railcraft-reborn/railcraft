@@ -35,6 +35,7 @@ import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -137,6 +138,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
     craftingCategory.addExtension(LocomotivePaintingRecipe.class,
         new DefaultRecipeWrapper<>(false, Component.translatable(Translations.Jei.PAINT)));
     craftingCategory.addExtension(WoodenTieRecipe.class,
+        new DefaultRecipeWrapper<>(false));
+    craftingCategory.addExtension(StoneTieRecipe.class,
         new DefaultRecipeWrapper<>(false));
     craftingCategory.addExtension(TicketDuplicateRecipe.class,
         new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.COPY_TAG)));

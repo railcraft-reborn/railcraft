@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-17T16:22:58.90202	Recipes
+// 1.21.1	2025-08-17T16:44:32.17899	Recipes
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -503,7 +503,6 @@ eb1eff01ffeb72f7494c2f544946f4381955d9d4 data/railcraft/advancement/recipes/misc
 35532daa8154109d599be8639f45e032faff5e68 data/railcraft/advancement/recipes/misc/steel_tank_wall.json
 ecc8bd5886d3e59cfd6196a98a00786c593a1ca4 data/railcraft/advancement/recipes/misc/steel_tunnel_bore_head.json
 822c529f26afc91dbf4b81a62e368e06e7617440 data/railcraft/advancement/recipes/misc/stone_railbed.json
-246d9d78e272e94440e0762a10f898354c915926 data/railcraft/advancement/recipes/misc/stone_tie.json
 18a1d4a2ff7a122d7eb393825fddd239e7b3132e data/railcraft/advancement/recipes/misc/strap_iron_activator_track.json
 f29e45be1db2708f1fa9c8216d475e82515b341c data/railcraft/advancement/recipes/misc/strap_iron_booster_track.json
 5c33da34f1c5afb621ff6a34b22dfb042bd62093 data/railcraft/advancement/recipes/misc/strap_iron_buffer_stop_track.json
@@ -1164,7 +1163,7 @@ c3041018840584766b666f3306261c72478f5290 data/railcraft/recipe/steel_sword.json
 8f68435d1df116c9eaf18ae3254fa3b9dceabfc4 data/railcraft/recipe/steel_tank_wall.json
 97a1aac8deed34e9d76ca27448b4ca716a0d94ff data/railcraft/recipe/steel_tunnel_bore_head.json
 af7844ca02a9d12548d996cf9dd551b511da0e27 data/railcraft/recipe/stone_railbed.json
-c8d4fa3ab9c24feb4d66d03e33e94e407d0d7e97 data/railcraft/recipe/stone_tie.json
+e19c0323342518edc37cea7d73251bc8b26e9ffa data/railcraft/recipe/stone_tie.json
 d83429769a33e3fceda52c330cb154940168a31c data/railcraft/recipe/strap_iron_activator_track.json
 5676ee01746263ddc24f019a1e5a643a248fa64b data/railcraft/recipe/strap_iron_booster_track.json
 f78cf7d1e755d36f39ce3b22cd86ed4b766fe1d1 data/railcraft/recipe/strap_iron_buffer_stop_track.json

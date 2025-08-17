@@ -16,6 +16,7 @@ import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
@@ -1704,15 +1705,8 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
   private void buildTie(RecipeOutput recipeOutput) {
     RailcraftSpecialRecipeBuilder.special(WoodenTieRecipe::new)
         .save(recipeOutput, getItemName(RailcraftItems.WOODEN_TIE.get()));
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STONE_TIE.get())
-        .pattern(" a ")
-        .pattern("bcb")
-        .define('a', Items.WATER_BUCKET)
-        .define('b', RailcraftItems.BAG_OF_CEMENT.get())
-        .define('c', RailcraftItems.REBAR.get())
-        .unlockedBy(getHasName(RailcraftItems.BAG_OF_CEMENT.get()),
-            has(RailcraftItems.BAG_OF_CEMENT.get()))
-        .save(recipeOutput);
+    RailcraftSpecialRecipeBuilder.special(StoneTieRecipe::new)
+        .save(recipeOutput, getItemName(RailcraftItems.STONE_TIE.get()));
   }
 
   private void buildCement(RecipeOutput recipeOutput) {
