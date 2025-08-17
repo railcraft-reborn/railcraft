@@ -19,6 +19,10 @@ public class DefaultRecipeWrapper <T extends CraftingRecipe> implements ICraftin
   private final Component info;
   private Consumer<ItemStack> stackModifier;
 
+  DefaultRecipeWrapper(boolean isShapeless) {
+    this(isShapeless, Component.empty());
+  }
+
   DefaultRecipeWrapper(boolean isShapeless, Component info) {
     this.isShapeless = isShapeless;
     this.info = info;

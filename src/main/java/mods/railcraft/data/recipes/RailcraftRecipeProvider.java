@@ -17,6 +17,7 @@ import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import net.minecraft.core.HolderLookup;
@@ -1711,14 +1712,8 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
   }
 
   private void buildTie(RecipeOutput recipeOutput) {
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get(), 3)
-        .pattern(" a ")
-        .pattern("bbb")
-        .define('a', RailcraftItems.CREOSOTE_BUCKET.get())
-        .define('b', ItemTags.WOODEN_SLABS)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BUCKET.get()),
-            has(RailcraftItems.CREOSOTE_BUCKET.get()))
-        .save(recipeOutput);
+    RailcraftSpecialRecipeBuilder.special(WoodenTieRecipe::new)
+        .save(recipeOutput, getItemName(RailcraftItems.WOODEN_TIE.get()));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get())
         .pattern(" a ")
         .pattern("bbb")

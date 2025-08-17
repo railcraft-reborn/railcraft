@@ -1,4 +1,4 @@
-// 1.21.1	2024-10-31T19:28:27.921913	Recipes
+// 1.21.1	2025-08-17T12:49:58.566658	Recipes
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -568,7 +568,6 @@ ccce916686dbd21370a805b5b56e1e362f374689 data/railcraft/advancement/recipes/misc
 774b54b5758367951a23db645ab79569d68be0bc data/railcraft/advancement/recipes/misc/white_strengthened_glass.json
 3161bfda95316ec5f98df97161055607a725ff03 data/railcraft/advancement/recipes/misc/wooden_rail.json
 d544b358f3aafc0078e5d5f4e45d6903a0434ff9 data/railcraft/advancement/recipes/misc/wooden_railbed.json
-32a1a8c9a05097a0e29b5ace15d74249add6a0fa data/railcraft/advancement/recipes/misc/wooden_tie.json
 7185505bcedb6fcf93bc412140863da4381ef98a data/railcraft/advancement/recipes/misc/wooden_tie_bottle.json
 6cdef5d328c6bfbd330ce7abe6d33b9f6a4262d3 data/railcraft/advancement/recipes/misc/world_spike.json
 3ae1cde4e6791a74c89f6d6ca6d184888f558166 data/railcraft/advancement/recipes/misc/world_spike_minecart.json
@@ -1233,7 +1232,7 @@ cf5e905233352a95e643ba5820b227110d6ca1db data/railcraft/recipe/white_steel_tank_
 9052e5d403895ab1f36805282a2938ce43fb9af7 data/railcraft/recipe/white_strengthened_glass.json
 3a6e729efc9e883b69f3036da224661314826847 data/railcraft/recipe/wooden_rail.json
 94a40e2f4ab94b4f3a1d2379b83272ef28453463 data/railcraft/recipe/wooden_railbed.json
-4b0f6685380106522d7fbdae6b4e42ea34d0cb03 data/railcraft/recipe/wooden_tie.json
+a1254bba52d98b7d5c993709dd98fa3768afbbf8 data/railcraft/recipe/wooden_tie.json
 def580329b98a09bbf5bfba41fbe8204fd59842d data/railcraft/recipe/wooden_tie_bottle.json
 85ce199794e865836d8e89fe13aba4ba785599b6 data/railcraft/recipe/world_spike.json
 8ca6b1a00d741a7f1da006dec5af454f56542484 data/railcraft/recipe/world_spike_minecart.json

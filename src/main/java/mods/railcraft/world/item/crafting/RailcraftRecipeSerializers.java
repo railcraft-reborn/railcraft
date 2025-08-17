@@ -49,6 +49,10 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("patchouli_book_crafting",
           () -> new SimpleCraftingRecipeSerializer<>(PatchouliBookCrafting::new));
 
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WoodenTieRecipe>> WOODEN_TIE =
+      deferredRegister.register("wooden_tie",
+          () -> new SimpleCraftingRecipeSerializer<>(WoodenTieRecipe::new));
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
