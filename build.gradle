@@ -290,7 +290,7 @@ tasks.register('makeChangelog', GitChangelogTask) {
 publishMods {
     displayName = "railcraft-reborn-$minecraft_version-$mod_version"
     version = mod_version
-    type = BETA
+    type = STABLE
 
     def changelogFile = file('CHANGELOG.md')
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'
