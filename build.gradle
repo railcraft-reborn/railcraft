@@ -7,8 +7,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.5'
-    id 'me.modmuss50.mod-publish-plugin' version '0.8.3'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.7'
+    id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -156,8 +156,8 @@ dependencies {
     implementation "curse.maven:jade-api-324717:$jade_id"
     implementation "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 
-    localRuntime "curse.maven:mekanism-268560:6018306"
-    localRuntime "curse.maven:mekanism-268567:6018310"
+    localRuntime "curse.maven:mekanism-268560:6895130"//mekanism
+    localRuntime "curse.maven:mekanism-268567:6895134"//mekanism-tools
     localRuntime "curse.maven:sodium-394468:6173749"
     localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     localRuntime "curse.maven:reeses-sodium-options-511319:6091021"

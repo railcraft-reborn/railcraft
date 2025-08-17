@@ -24,7 +24,7 @@ public class RailcraftDataMapProvider extends DataMapProvider {
   }
 
   @Override
-  protected void gather() {
+  protected void gather(HolderLookup.Provider provider) {
     this.builder(NeoForgeDataMaps.FURNACE_FUELS)
         .add(RailcraftBlocks.COAL_COKE_BLOCK.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME * 10), false)
         .add(RailcraftItems.COAL_COKE.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME), false)
