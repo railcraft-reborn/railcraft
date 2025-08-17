@@ -6,7 +6,6 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
@@ -111,10 +110,8 @@ public class LogBookScreen extends Screen {
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
     super.render(guiGraphics, mouseX, mouseY, partialTicks);
     this.setFocused(null);
-    RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
 
     int l = this.font.width(this.pageMsg);
     guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
@@ -124,6 +121,14 @@ public class LogBookScreen extends Screen {
           -16777216, false);
     }
     this.updateButtonVisibility();
+  }
+
+  @Override
+  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    this.renderTransparentBackground(guiGraphics);
+    int xOffset = (this.width - IMAGE_WIDTH) / 2;
+    int yOffset = (this.height - IMAGE_HEIGHT) / 2;
+    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
   }
 
   private DisplayCache getDisplayCache() {
