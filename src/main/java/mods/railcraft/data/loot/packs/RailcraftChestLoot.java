@@ -72,8 +72,6 @@ public record RailcraftChestLoot(HolderLookup.Provider provider) implements Loot
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
             .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(1)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(LootItem.lootTableItem(RailcraftItems.CREOSOTE_BOTTLE.get()).setWeight(2)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 32))))
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_tracks")
@@ -115,8 +113,6 @@ public record RailcraftChestLoot(HolderLookup.Provider provider) implements Loot
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
             .add(TagEntry.expandTag(RailcraftTags.Items.INGOT_CHEST_LOOT).setWeight(4)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(LootItem.lootTableItem(RailcraftItems.CREOSOTE_BOTTLE.get()).setWeight(2)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 32))))
         )
     );
     biConsumer.accept(SIMPLE_DUNGEON, LootTable.lootTable()

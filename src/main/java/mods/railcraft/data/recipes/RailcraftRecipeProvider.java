@@ -1094,16 +1094,6 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .unlockedBy(getHasName(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
             has(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
         .save(recipeOutput);
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.TORCH, 8)
-        .pattern("a")
-        .pattern("b")
-        .pattern("c")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOOL)
-        .define('c', Tags.Items.RODS_WOODEN)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(recipeOutput, RailcraftConstants.rl("torch_creosote"));
     ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.GOLDEN_TICKET.get())
         .requires(Items.PAPER)
         .requires(Tags.Items.NUGGETS_GOLD)
@@ -1714,14 +1704,6 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
   private void buildTie(RecipeOutput recipeOutput) {
     RailcraftSpecialRecipeBuilder.special(WoodenTieRecipe::new)
         .save(recipeOutput, getItemName(RailcraftItems.WOODEN_TIE.get()));
-    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get())
-        .pattern(" a ")
-        .pattern("bbb")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOODEN_SLABS)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(recipeOutput, RailcraftConstants.rl("wooden_tie_bottle"));
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.STONE_TIE.get())
         .pattern(" a ")
         .pattern("bcb")

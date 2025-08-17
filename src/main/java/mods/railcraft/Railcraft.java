@@ -36,7 +36,6 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -49,7 +48,6 @@ import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.item.alchemy.RailcraftPotions;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -159,7 +157,6 @@ public class Railcraft {
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
-    RailcraftPotions.register(modEventBus);
     RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);
@@ -259,10 +256,6 @@ public class Railcraft {
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.FluidHandler.ITEM,
-        (stack, ctx) -> new CreosoteBottleWrapper(stack), Items.GLASS_BOTTLE);
-    event.registerItem(Capabilities.FluidHandler.ITEM,
-        (stack, ctx) -> new CreosoteBottleWrapper(stack), RailcraftItems.CREOSOTE_BOTTLE);
-    event.registerItem(Capabilities.FluidHandler.ITEM,
         (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
 
     event.registerBlock(Capabilities.EnergyStorage.BLOCK, Charge.distribution,
@@ -332,12 +325,6 @@ public class Railcraft {
   }
 
   // NeoForge Events
-  @SubscribeEvent
-  public void handleBrewingSetup(RegisterBrewingRecipesEvent event) {
-    event.getBuilder().addRecipe(
-        new BrewingRecipe(Potions.AWKWARD, RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE));
-  }
-
   @SubscribeEvent
   public void handleServerAboutToStart(ServerAboutToStartEvent event) {
     ComponentWorkshop.addVillageStructures(event.getServer().registryAccess());

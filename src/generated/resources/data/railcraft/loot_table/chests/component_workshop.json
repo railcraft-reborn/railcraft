@@ -162,22 +162,6 @@
             }
           ],
           "name": "minecraft:iron_ingot"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 32.0,
-                "min": 16.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "railcraft:creosote_bottle",
-          "weight": 2
         }
       ],
       "name": "railcraft_resources",

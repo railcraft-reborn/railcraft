@@ -67,7 +67,6 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     this.basicItem(RailcraftItems.STEEL_LEGGINGS.get());
     this.basicItem(RailcraftItems.STEEL_HELMET.get());
     this.basicItem(RailcraftItems.CREOSOTE_BUCKET.get());
-    this.basicItem(RailcraftItems.CREOSOTE_BOTTLE.get());
     this.basicItem(RailcraftItems.GOLDEN_TICKET.get());
     this.basicItem(RailcraftItems.TICKET.get());
     this.basicItem(RailcraftItems.ROUTING_TABLE_BOOK.get());
