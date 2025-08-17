@@ -1,7 +1,8 @@
 package mods.railcraft.integrations.jei.recipe;
 
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
-public record FluidBoilerJEIRecipe(FluidStack fuel, FluidStack water,
-                                   FluidStack steam, int temperature) {
+public record FluidBoilerJEIRecipe(FluidIngredient fuel, Fluid water,
+                                   Fluid steam, int temperature) {
 }
