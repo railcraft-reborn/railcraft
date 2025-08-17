@@ -11,7 +11,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.MinecartFurnace;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.CommonHooks;
 
 @Mixin(value = MinecartFurnace.class)
 public abstract class MinecartFurnaceMixin extends AbstractMinecart {
@@ -29,8 +28,11 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
   }
 
   /**
-   * Replace fuel checks with
-   * {@link CommonHooks#getBurnTime(ItemStack, net.minecraft.world.item.crafting.RecipeType)}.
+   * Refactors the fuel validation logic:<br>
+   * instead of relying on a fixed ingredient check and adding a constant fuel value,<br>
+   * the system now derives the fuel increment directly from the item's burn time.<br>
+   * This allows support for variable fuel sources while still enforcing<br>
+   * the maximum fuel capacity constraint.<br>
    */
   @Overwrite
   @Override
