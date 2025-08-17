@@ -77,8 +77,7 @@ public class CartDispenserBlock extends ManipulatorBlock<CartDispenserBlockEntit
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
       BlockPos fromPos, boolean isMoving) {
-
-    boolean flag = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
+    boolean flag = level.hasNeighborSignal(pos);
     level.setBlock(pos, state.setValue(POWERED, flag), Block.UPDATE_ALL);
 
     if (level.isClientSide()) {
