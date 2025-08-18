@@ -454,7 +454,7 @@ public class RoutingTableBookScreen extends Screen {
           yOffset + 15, 0, false);
       var page = Component.translatable(Translations.RoutingTable.MANUAL_PAGES.get(currentPage));
       guiGraphics.drawWordWrap(this.font, page, xOffset + 20,
-          yOffset + 27, TEXT_WIDTH, IngameWindowScreen.TEXT_COLOR);
+          yOffset + 27, TEXT_WIDTH, IngameWindowScreen.TEXT_COLOR, false);
     } else {
       int l = this.font.width(this.pageMsg);
       guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);

@@ -89,7 +89,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       guiGraphics.drawString(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
           15, TEXT_COLOR, false);
 
-      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR);
+      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR, false);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
