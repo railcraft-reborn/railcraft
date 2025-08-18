@@ -15,10 +15,13 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluids;
 
 public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoilerJEIRecipe> {
 
@@ -71,14 +74,13 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
-    /*builder.addInputSlot(73, 4)
-        .addIngredients(NeoForgeTypes.FLUID_STACK,
-            recipe.fuel().fluids().stream()
-                .map(x -> x.copyWithAmount(1000))
-                .toList())
+    /* FIXME
+    builder.addInputSlot(73, 4)
+        .add(NeoForgeTypes.FLUID_STACK, recipe.fuel())
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
-        .setBackground(tankBackground, -1, -1);*/
+        .setBackground(tankBackground, -1, -1);
+        */
     builder.addInputSlot(100, 4)
         .add(recipe.water(), 1000)
         .setFluidRenderer(1000, true, 16, 47)
@@ -87,11 +89,10 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
   }
 
   public static List<FluidBoilerJEIRecipe> getBoilerRecipes() {
-    return List.of();
-    /*return List.of(
-        new FluidBoilerJEIRecipe(FluidIngredient.of(RailcraftTags.Fluids.CREOSOTE),
+    return List.of(
+        new FluidBoilerJEIRecipe(RailcraftTags.Fluids.CREOSOTE,
             Fluids.WATER,
             RailcraftFluids.STEAM.get(), 100)
-    );*/
+    );
   }
 }
