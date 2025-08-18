@@ -27,7 +27,11 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
   }
 
   /**
-   * Replace ItemTags.FURNACE_MINECART_FUEL with itemstack.getBurnTime(...)
+   * Refactors the fuel validation logic:<br>
+   * instead of relying on a fixed ingredient check and adding a constant fuel value,<br>
+   * the system now derives the fuel increment directly from the item's burn time.<br>
+   * This allows support for variable fuel sources while still enforcing<br>
+   * the maximum fuel capacity constraint.<br>
    */
   @Overwrite
   @Override

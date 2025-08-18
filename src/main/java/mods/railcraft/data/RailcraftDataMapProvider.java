@@ -28,8 +28,7 @@ public class RailcraftDataMapProvider extends DataMapProvider {
     this.builder(NeoForgeDataMaps.FURNACE_FUELS)
         .add(RailcraftBlocks.COAL_COKE_BLOCK.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME * 10), false)
         .add(RailcraftItems.COAL_COKE.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME), false)
-        .add(RailcraftItems.CREOSOTE_BUCKET.getId(), new FurnaceFuel(CREOSOTE_BUCKET_BURN_TIME), false)
-        .add(RailcraftItems.CREOSOTE_BOTTLE.getId(), new FurnaceFuel(CREOSOTE_BUCKET_BURN_TIME / 3), false);
+        .add(RailcraftItems.CREOSOTE_BUCKET.getId(), new FurnaceFuel(CREOSOTE_BUCKET_BURN_TIME), false);
 
     this.builder(RailcraftDataMaps.TUNNEL_BORE_HEAD)
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)

@@ -7,8 +7,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.5'
-    id 'me.modmuss50.mod-publish-plugin' version '0.8.3'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.0.7'
+    id 'me.modmuss50.mod-publish-plugin' version '0.8.4'
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
@@ -289,7 +289,7 @@ tasks.register('makeChangelog', GitChangelogTask) {
 publishMods {
     displayName = "railcraft-reborn-$minecraft_version-$mod_version"
     version = mod_version
-    type = BETA
+    type = STABLE
 
     def changelogFile = file('CHANGELOG.md')
     changelog = changelogFile.exists() ? changelogFile.text : 'CHANGELOG.md not found'

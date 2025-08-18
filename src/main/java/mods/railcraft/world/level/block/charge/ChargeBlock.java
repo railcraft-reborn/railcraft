@@ -25,6 +25,13 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
     }
   }
 
+  @Override
+  protected void randomTick(BlockState state, ServerLevel level, BlockPos pos,
+      RandomSource random) {
+    super.randomTick(state, level, pos, random);
+    level.updateNeighbourForOutputSignal(pos, this);
+  }
+
   @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -59,6 +66,9 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
 
   @Override
   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-    return Charge.distribution.network((ServerLevel) level).access(pos).getComparatorOutput();
+    if (level instanceof ServerLevel serverLevel) {
+      return Charge.distribution.network(serverLevel).access(pos).getComparatorOutput();
+    }
+    return 0;
   }
 }

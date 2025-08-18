@@ -1,16 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "a": "railcraft:creosote_bucket",
-    "b": "#minecraft:wooden_slabs"
-  },
-  "pattern": [
-    " a ",
-    "bbb"
-  ],
-  "result": {
-    "count": 3,
-    "id": "railcraft:wooden_tie"
-  }
+  "type": "railcraft:wooden_tie",
+  "category": "misc"
 }

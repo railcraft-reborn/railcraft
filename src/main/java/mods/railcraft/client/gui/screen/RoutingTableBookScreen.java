@@ -8,7 +8,6 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.railcraft.Translations;
@@ -28,7 +27,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
@@ -83,7 +81,7 @@ public class RoutingTableBookScreen extends Screen {
   private long lastClickTime;
   private int lastIndex = -1;
 
-  private PageButton forwardButton, backButton;
+  private RailcraftPageButton forwardButton, backButton;
   private RailcraftButton titleButton, helpButton;
 
   @Nullable
@@ -433,11 +431,8 @@ public class RoutingTableBookScreen extends Screen {
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
     super.render(guiGraphics, mouseX, mouseY, partialTicks);
     this.setFocused(null);
-    RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(RenderType::guiTextured, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
-        IMAGE_HEIGHT, 256, 256);
     if (this.editingTitle) {
       boolean flag = this.frameTick / 6 % 2 == 0;
       var formattedcharsequence = FormattedCharSequence.composite(
@@ -472,6 +467,15 @@ public class RoutingTableBookScreen extends Screen {
       this.renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
     }
     this.updateButtonVisibility();
+  }
+
+  @Override
+  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    this.renderTransparentBackground(guiGraphics);
+    int xOffset = (this.width - IMAGE_WIDTH) / 2;
+    int yOffset = (this.height - IMAGE_HEIGHT) / 2;
+    guiGraphics.blit(RenderType::guiTextured, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
+        IMAGE_HEIGHT, 256, 256);
   }
 
   private void renderCursor(GuiGraphics guiGraphics, Pos2i cursorPos, boolean isEndOfText) {

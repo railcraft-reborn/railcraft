@@ -11,7 +11,6 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.item.alchemy.RailcraftPotions;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -56,7 +55,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.signalCapacitorTranslations();
     this.subtitleTranslations();
     this.effectTranslations();
-    this.potionTranslations();
     this.villagerTranslations();
     this.damageSourceTranslations();
     this.routingTableTranslations();
@@ -339,7 +337,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.HIGH_SPEED_RAIL, "High Speed Rail");
     this.addItem(RailcraftItems.ELECTRIC_RAIL, "Electric Rail");
     this.addItem(RailcraftItems.CREOSOTE_BUCKET, "Creosote Bucket");
-    this.addItem(RailcraftItems.CREOSOTE_BOTTLE, "Creosote Bottle");
     this.addItem(RailcraftItems.TRACK_PARTS, "Track Parts");
     this.addItem(RailcraftItems.TRANSITION_TRACK_KIT, "Transition Track Kit");
     this.addItem(RailcraftItems.LOCKING_TRACK_KIT, "Locking Track Kit");
@@ -1075,19 +1072,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void effectTranslations() {
     this.add(RailcraftMobEffects.CREOSOTE.get(), "Creosote");
-  }
-
-  private void potionTranslations() {
-    final String prefixPotion = "item.minecraft.potion.effect.";
-    final String prefixSplashPotion = "item.minecraft.splash_potion.effect.";
-    final String prefixLingeringPotion = "item.minecraft.lingering_potion.effect.";
-    final String prefixTippedArrow = "item.minecraft.tipped_arrow.effect.";
-
-    final String creosote = RailcraftPotions.CREOSOTE.getId().getPath();
-    this.add(prefixPotion + creosote, "Potion of Creosote");
-    this.add(prefixSplashPotion + creosote, "Splash Potion of Creosote");
-    this.add(prefixLingeringPotion + creosote, "Lingering Potion of Creosote");
-    this.add(prefixTippedArrow + creosote, "Arrow of Creosote");
   }
 
   private void villagerTranslations() {

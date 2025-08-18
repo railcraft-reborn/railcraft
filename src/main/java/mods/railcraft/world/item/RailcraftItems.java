@@ -1432,12 +1432,6 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> PERSONAL_WORLD_SPIKE =
       blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
 
-  public static final DeferredItem<FluidBottleItem> CREOSOTE_BOTTLE =
-      deferredRegister.registerItem("creosote_bottle", properties ->
-          new FluidBottleItem(RailcraftFluids.CREOSOTE, properties
-              .stacksTo(16)
-              .craftRemainder(Items.GLASS_BOTTLE)));
-
   private static DeferredItem<Item> registerBasic(String name) {
     return deferredRegister.registerSimpleItem(name);
   }

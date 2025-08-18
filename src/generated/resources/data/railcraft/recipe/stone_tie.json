@@ -1,17 +1,4 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "a": "minecraft:water_bucket",
-    "b": "railcraft:bag_of_cement",
-    "c": "railcraft:rebar"
-  },
-  "pattern": [
-    " a ",
-    "bcb"
-  ],
-  "result": {
-    "count": 1,
-    "id": "railcraft:stone_tie"
-  }
+  "type": "railcraft:stone_tie",
+  "category": "misc"
 }

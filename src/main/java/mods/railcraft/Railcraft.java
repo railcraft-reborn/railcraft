@@ -26,7 +26,6 @@ import mods.railcraft.data.loot.RailcraftLootModifierProvider;
 import mods.railcraft.data.loot.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
-import mods.railcraft.data.recipes.builders.BrewingRecipe;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
@@ -39,7 +38,6 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
-import mods.railcraft.util.fluids.CreosoteBottleWrapper;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -52,7 +50,6 @@ import mods.railcraft.world.item.ChargeMeterItem;
 import mods.railcraft.world.item.CrowbarHandler;
 import mods.railcraft.world.item.RailcraftCreativeModeTabs;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.item.alchemy.RailcraftPotions;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -94,8 +91,6 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.neoforged.api.distmarker.Dist;
@@ -111,7 +106,6 @@ import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -162,7 +156,6 @@ public class Railcraft {
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
-    RailcraftPotions.register(modEventBus);
     RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);
@@ -262,10 +255,6 @@ public class Railcraft {
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.FluidHandler.ITEM,
-        (stack, ctx) -> new CreosoteBottleWrapper(stack), Items.GLASS_BOTTLE);
-    event.registerItem(Capabilities.FluidHandler.ITEM,
-        (stack, ctx) -> new CreosoteBottleWrapper(stack), RailcraftItems.CREOSOTE_BOTTLE);
-    event.registerItem(Capabilities.FluidHandler.ITEM,
         (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
 
     event.registerBlock(Capabilities.EnergyStorage.BLOCK, Charge.distribution,
@@ -315,12 +304,6 @@ public class Railcraft {
   }
 
   // NeoForge Events
-  @SubscribeEvent
-  public void handleBrewingSetup(RegisterBrewingRecipesEvent event) {
-    event.getBuilder().addRecipe(
-        new BrewingRecipe(Potions.AWKWARD, RailcraftItems.CREOSOTE_BOTTLE.get(), RailcraftPotions.CREOSOTE));
-  }
-
   @SubscribeEvent
   public void handleServerAboutToStart(ServerAboutToStartEvent event) {
     ComponentWorkshop.addVillageStructures(event.getServer().registryAccess());

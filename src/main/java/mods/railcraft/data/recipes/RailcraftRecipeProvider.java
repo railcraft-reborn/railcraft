@@ -11,7 +11,9 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import net.minecraft.core.HolderLookup;
@@ -21,6 +23,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -1077,16 +1080,6 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
             has(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
         .save(output);
-    shaped(RecipeCategory.MISC, Items.TORCH, 8)
-        .pattern("a")
-        .pattern("b")
-        .pattern("c")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOOL)
-        .define('c', Tags.Items.RODS_WOODEN)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(output, RailcraftConstants.rl("torch_creosote").toString());
     shapeless(RecipeCategory.MISC, RailcraftItems.GOLDEN_TICKET.get())
         .requires(Items.PAPER)
         .requires(Tags.Items.NUGGETS_GOLD)
@@ -1690,31 +1683,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildTie() {
-    shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get(), 3)
-        .pattern(" a ")
-        .pattern("bbb")
-        .define('a', RailcraftItems.CREOSOTE_BUCKET.get())
-        .define('b', ItemTags.WOODEN_SLABS)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BUCKET.get()),
-            has(RailcraftItems.CREOSOTE_BUCKET.get()))
-        .save(output);
-    shaped(RecipeCategory.MISC, RailcraftItems.WOODEN_TIE.get())
-        .pattern(" a ")
-        .pattern("bbb")
-        .define('a', RailcraftItems.CREOSOTE_BOTTLE.get())
-        .define('b', ItemTags.WOODEN_SLABS)
-        .unlockedBy(getHasName(RailcraftItems.CREOSOTE_BOTTLE.get()),
-            has(RailcraftItems.CREOSOTE_BOTTLE.get()))
-        .save(output, RailcraftConstants.rl("wooden_tie_bottle").toString());
-    shaped(RecipeCategory.MISC, RailcraftItems.STONE_TIE.get())
-        .pattern(" a ")
-        .pattern("bcb")
-        .define('a', Items.WATER_BUCKET)
-        .define('b', RailcraftItems.BAG_OF_CEMENT.get())
-        .define('c', RailcraftItems.REBAR.get())
-        .unlockedBy(getHasName(RailcraftItems.BAG_OF_CEMENT.get()),
-            has(RailcraftItems.BAG_OF_CEMENT.get()))
-        .save(output);
+    RailcraftSpecialRecipeBuilder.special(WoodenTieRecipe::new)
+        .save(output, getItemName(RailcraftItems.WOODEN_TIE.get()));
+    RailcraftSpecialRecipeBuilder.special(StoneTieRecipe::new)
+        .save(output, getItemName(RailcraftItems.STONE_TIE.get()));
   }
 
   private void buildCement() {

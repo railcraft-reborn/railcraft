@@ -248,7 +248,6 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.CHARGE_COIL.get());
             output.accept(RailcraftItems.CHARGE_TERMINAL.get());
 
-            output.accept(RailcraftItems.CREOSOTE_BOTTLE.get());
             output.accept(RailcraftItems.CREOSOTE_BUCKET.get());
 
             output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(DyeColor.WHITE).get());

@@ -42,11 +42,13 @@ public class OutfittedTrackBlock extends TrackBlock {
   protected InteractionResult useItemOn(ItemStack itemStack, BlockState state,
       Level level, BlockPos pos, Player player, InteractionHand hand,
       BlockHitResult rayTraceResult) {
-    if (player instanceof ServerPlayer serverPlayer) {
-      if (itemStack.getItem() instanceof Crowbar crowbar
-          && crowbar.canWhack(player, hand, itemStack, pos)
-          && this.crowbarWhack(state, level, pos, player, hand, itemStack)) {
+    if (itemStack.getItem() instanceof Crowbar crowbar
+        && crowbar.canWhack(player, hand, itemStack, pos)
+        && this.crowbarWhack(state, level, pos, player, hand, itemStack)) {
+      if (player instanceof ServerPlayer serverPlayer) {
         crowbar.onWhack(serverPlayer, hand, itemStack, pos);
+        return InteractionResult.CONSUME;
+      } else {
         return InteractionResult.SUCCESS;
       }
     }
