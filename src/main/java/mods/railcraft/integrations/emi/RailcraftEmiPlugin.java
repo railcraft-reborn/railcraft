@@ -61,6 +61,27 @@
 //    registerRecipe(registry, RailcraftRecipeTypes.CRUSHING.get(), CrusherEmiRecipe::new);
 //    registerRecipe(registry, RailcraftRecipeTypes.COKING.get(), CokeOvenEmiRecipe::new);
 //    registerRecipe(registry, RailcraftRecipeTypes.BLASTING.get(), BlastFurnaceEmiRecipe::new);
+//    for (var recipe : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING)) {
+//    var id = recipe.id();
+//    switch (recipe.value()) {
+//        case TieRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, false));
+//        case LocomotivePaintingRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id,
+//                false, Component.translatable(Translations.Jei.PAINT)));
+//        case TicketDuplicateRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, true,
+//        Component.translatable(Translations.Jei.COPY_TAG)));
+//        case RotorRepairRecipe r -> registry.addRecipe(
+//                new DefaultRecipeWrapper(r, id, true, Component.translatable(Translations.Jei.REPAIR))
+//        .modifyInputs(stack -> {
+//        if (stack.is(RailcraftItems.TURBINE_ROTOR.get())) {
+//        stack.setDamageValue(RotorRepairRecipe.REPAIR_PER_BLADE);
+//                      }
+//                          }));
+//                          case CartDisassemblyRecipe r -> registry.addRecipe(new
+//                            DefaultRecipeWrapper(r, id, true,
+//        Component.translatable(Translations.Jei.SPLIT)));
+//    default -> {}
+//        }
+//    }
 //  }
 //
 //  private <C extends RecipeInput, T extends Recipe<C>> void registerRecipe(
