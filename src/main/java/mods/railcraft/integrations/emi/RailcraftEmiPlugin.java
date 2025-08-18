@@ -8,9 +8,17 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
+import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
+import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.TieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -61,6 +69,27 @@ public class RailcraftEmiPlugin implements EmiPlugin {
     registerRecipe(registry, RailcraftRecipeTypes.CRUSHING.get(), CrusherEmiRecipe::new);
     registerRecipe(registry, RailcraftRecipeTypes.COKING.get(), CokeOvenEmiRecipe::new);
     registerRecipe(registry, RailcraftRecipeTypes.BLASTING.get(), BlastFurnaceEmiRecipe::new);
+
+    for (var recipe : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING)) {
+      var id = recipe.id();
+      switch (recipe.value()) {
+        case TieRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, false));
+        case LocomotivePaintingRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id,
+            false, Component.translatable(Translations.Jei.PAINT)));
+        case TicketDuplicateRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, true,
+            Component.translatable(Translations.Jei.COPY_TAG)));
+        case RotorRepairRecipe r -> registry.addRecipe(
+            new DefaultRecipeWrapper(r, id, true, Component.translatable(Translations.Jei.REPAIR))
+                .modifyInputs(stack -> {
+                  if (stack.is(RailcraftItems.TURBINE_ROTOR.get())) {
+                    stack.setDamageValue(RotorRepairRecipe.REPAIR_PER_BLADE);
+                  }
+                }));
+        case CartDisassemblyRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, true,
+            Component.translatable(Translations.Jei.SPLIT)));
+        default -> {}
+      }
+    }
   }
 
   private <C extends RecipeInput, T extends Recipe<C>> void registerRecipe(
