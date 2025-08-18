@@ -1,1 +1,17 @@
-{}
+{
+  "advancements.railcraft.carts.bed_cart.desc": "Aludj miközben utazol egy csillében",
+  "advancements.railcraft.carts.bed_cart.name": "Kerekeken járó álom",
+  "advancements.railcraft.carts.jukebox_cart.desc": "Játssz le egy lemezt egy csillében",
+  "advancements.railcraft.carts.jukebox_cart.name": "Mozgó parti",
+  "advancements.railcraft.carts.link_carts.desc": "Ne felejts lopakodni!",
+  "advancements.railcraft.carts.link_carts.name": "Kocsikat kapcsolni",
+  "advancements.railcraft.carts.locomotive.desc": "Húzd a vonatod egy mozdonnyal",
+  "advancements.railcraft.carts.locomotive.name": "Végig gurulni",
+  "advancements.railcraft.carts.root.desc": "Járművek és varázslat a Railcraftól",
+  "advancements.railcraft.carts.root.name": "Railcraft kocsi",
+  "advancements.railcraft.tracks.blast_furnace.desc": "Építs egy nagy olvasztót",
+  "advancements.railcraft.tracks.blast_furnace.name": "Acélüzem",
+  "advancements.railcraft.tracks.coke_oven.desc": "Olvasd el a kokszoló kemencének a leírását és építs egyet",
+  "advancements.railcraft.tracks.coke_oven.name": "Koksz fejű",
+  "advancements.railcraft.tracks.crusher.desc": "Építs egy zúzógépet"
+}
