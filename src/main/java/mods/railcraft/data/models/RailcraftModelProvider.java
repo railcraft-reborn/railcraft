@@ -156,7 +156,6 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.STEEL_LEGGINGS.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.STEEL_HELMET.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.CREOSOTE_BUCKET.get(), ModelTemplates.FLAT_ITEM);
-    itemModels.generateFlatItem(RailcraftItems.CREOSOTE_BOTTLE.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.GOLDEN_TICKET.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TICKET.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ROUTING_TABLE_BOOK.get(), ModelTemplates.FLAT_ITEM);

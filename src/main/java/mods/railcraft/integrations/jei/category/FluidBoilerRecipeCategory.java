@@ -1,7 +1,6 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
-import java.util.stream.Stream;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -9,7 +8,6 @@ import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mods.railcraft.Translations;
@@ -17,14 +15,10 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoilerJEIRecipe> {
 

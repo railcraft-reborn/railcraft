@@ -52,11 +52,11 @@ public class RailcraftRecipeSerializers {
 
   public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WoodenTieRecipe>> WOODEN_TIE =
       deferredRegister.register("wooden_tie",
-          () -> new SimpleCraftingRecipeSerializer<>(WoodenTieRecipe::new));
+          () -> new CustomRecipe.Serializer<>(WoodenTieRecipe::new));
 
   public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<StoneTieRecipe>> STONE_TIE =
       deferredRegister.register("stone_tie",
-          () -> new SimpleCraftingRecipeSerializer<>(StoneTieRecipe::new));
+          () -> new CustomRecipe.Serializer<>(StoneTieRecipe::new));
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

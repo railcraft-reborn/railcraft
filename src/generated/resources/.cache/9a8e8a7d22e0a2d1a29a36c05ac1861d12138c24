@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-18T17:06:38.973593	Model Definitions - railcraft
+// 1.21.4	2025-08-18T18:08:56.812288	Model Definitions - railcraft
 08bbf602ca4febfa27719e6c3330a893ca4a9390 assets/railcraft/blockstates/abandoned_activator_track.json
 ff04d5d38e84d9333d3f5695ebba65cb8a8a26c0 assets/railcraft/blockstates/abandoned_booster_track.json
 04a1ae3d8c1515b67b9448dbb98a29165ddb599d assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -478,7 +478,6 @@ f5992603a40b4b9bf209d0592686aacdafd38b95 assets/railcraft/items/control_track_ki
 d1feba5c18e8ec7c6ea43aa03a3befb61d6c3d90 assets/railcraft/items/coupler_track_kit.json
 134ad179f41776de2e9e960389ce5a54f1372334 assets/railcraft/items/cracked_firestone.json
 0e8f8781c64af1113814fbaf82e0848d5cb0ac09 assets/railcraft/items/creative_locomotive.json
-4b5d130d17b995cd4289d71a29ec6d662acc3125 assets/railcraft/items/creosote_bottle.json
 a1c047a4c4f94ea755c4df162bc0b84319e7f2c2 assets/railcraft/items/creosote_bucket.json
 c3e9411053f19373440cb6c0fb237e617502b3fa assets/railcraft/items/crushed_obsidian.json
 ff0c7daf6cde17fdc81c8c0d6b97208a8c73c21b assets/railcraft/items/crusher.json
@@ -1650,7 +1649,6 @@ fec950cc3c46f7516c1ccccd410dfe4954fe4cf2 assets/railcraft/models/item/copper_pla
 ecf7136385d997fdafee99a1442647d0d776a9cd assets/railcraft/models/item/coupler_track_kit.json
 6dfa6071534ec8e322f42bd8e9fbd36ab5914b22 assets/railcraft/models/item/cracked_firestone.json
 407e032fcf8321693e8d18f57d17f779ddef525c assets/railcraft/models/item/creative_locomotive.json
-38ef5d9cd09edd8f4ea9d8371eb8c3b2e5bd06c5 assets/railcraft/models/item/creosote_bottle.json
 d6fb06bb3298177bc3fccaebea9c063a9d53dc4b assets/railcraft/models/item/creosote_bucket.json
 a648bfb8eeb9b85b9d4e31ea9600e472d47a6941 assets/railcraft/models/item/cut_firestone.json
 a316dff6851bed398cdc0215ee39f4da055e89bf assets/railcraft/models/item/detector_track_kit.json

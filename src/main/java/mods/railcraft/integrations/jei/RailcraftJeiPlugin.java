@@ -35,14 +35,12 @@ import mods.railcraft.world.inventory.SteamOvenMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
-import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -110,7 +108,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
-    var recipeManager = Minecraft.getInstance().level.getRecipeManager();
+    /*var recipeManager = Minecraft.getInstance().level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()).stream()
             .map(RecipeHolder::value).toList());
@@ -123,7 +121,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
     registration.addRecipes(RecipeTypes.CRUSHER,
         recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
             .map(RecipeHolder::value).toList());
-
+*/
 
     registration.addRecipes(RecipeTypes.SOLID_BOILER, SolidBoilerRecipeCategory.getBoilerRecipes());
     registration.addRecipes(RecipeTypes.FLUID_BOILER, FluidBoilerRecipeCategory.getBoilerRecipes());
