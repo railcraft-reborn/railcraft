@@ -5,6 +5,7 @@ import mods.railcraft.world.inventory.slot.RollingResultSlot;
 import mods.railcraft.world.inventory.slot.UnmodifiableSlot;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -59,10 +60,12 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
 
   @Override
   public void slotsChanged(Container container) {
-    this.craftResult.setItem(0, this.blockEntity.getRecipe()
-        .map(RecipeHolder::value)
-        .map(r -> r.assemble(this.craftMatrix.asCraftInput(), this.blockEntity.level().registryAccess()))
-        .orElse(ItemStack.EMPTY));
+    if (this.blockEntity.level() instanceof ServerLevel level) {
+      this.craftResult.setItem(0, this.blockEntity.getRecipe(level)
+          .map(RecipeHolder::value)
+          .map(r -> r.assemble(this.craftMatrix.asCraftInput(), this.blockEntity.level().registryAccess()))
+          .orElse(ItemStack.EMPTY));
+    }
   }
 
   public float rollingProgress() {

@@ -95,8 +95,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return this.invResult;
   }
 
-  public Optional<RecipeHolder<RollingRecipe>> getRecipe() {
-    return ((ServerLevel) this.level).recipeAccess()
+  public Optional<RecipeHolder<RollingRecipe>> getRecipe(ServerLevel level) {
+    return level.recipeAccess()
         .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), this.level);
   }
 
@@ -105,7 +105,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     blockEntity.balanceSlots();
 
     if (++blockEntity.clock % 8 == 0) {
-      blockEntity.currentRecipe = blockEntity.getRecipe();
+      blockEntity.currentRecipe = blockEntity.getRecipe((ServerLevel) level);
       blockEntity.processTime = blockEntity.currentRecipe
           .map(RecipeHolder::value)
           .map(RollingRecipe::getProcessTime)
@@ -113,7 +113,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       blockEntity.clock = 0;
     }
 
-    if (blockEntity.currentRecipe.isPresent() && blockEntity.canMakeMore()) {
+    if (blockEntity.currentRecipe.isPresent() && blockEntity.canMakeMore((ServerLevel) level)) {
       var recipe = blockEntity.currentRecipe.get();
       if (blockEntity.progress >= recipe.value().getProcessTime()) {
         blockEntity.isWorking = false;
@@ -167,8 +167,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     this.useLast = true;
   }
 
-  public boolean canMakeMore() {
-    if (this.getRecipe().isEmpty())
+  public boolean canMakeMore(ServerLevel level) {
+    if (this.getRecipe(level).isEmpty())
       return false;
     if (this.useLast)
       return true;
