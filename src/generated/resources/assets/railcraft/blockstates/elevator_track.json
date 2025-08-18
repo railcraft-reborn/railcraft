@@ -9,10 +9,12 @@
       "y": 90
     },
     "facing=north,powered=false": {
-      "model": "railcraft:block/elevator_track"
+      "model": "railcraft:block/elevator_track",
+      "y": 0
     },
     "facing=north,powered=true": {
-      "model": "railcraft:block/elevator_track_on"
+      "model": "railcraft:block/elevator_track_on",
+      "y": 0
     },
     "facing=south,powered=false": {
       "model": "railcraft:block/elevator_track",

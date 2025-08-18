@@ -2,7 +2,8 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_red"
+        "model": "railcraft:block/switch_track_actuator_flag_red",
+        "y": 0
       },
       "when": {
         "red_flag": "north"
@@ -10,7 +11,8 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_white"
+        "model": "railcraft:block/switch_track_actuator_flag_white",
+        "y": 0
       },
       "when": {
         "white_flag": "north"
@@ -72,7 +74,8 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_neutral_red"
+        "model": "railcraft:block/switch_track_actuator_flag_neutral_red",
+        "y": 0
       },
       "when": {
         "red_flag": "north_south"
@@ -80,7 +83,8 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_neutral_white"
+        "model": "railcraft:block/switch_track_actuator_flag_neutral_white",
+        "y": 0
       },
       "when": {
         "white_flag": "north_south"
@@ -106,7 +110,8 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator"
+        "model": "railcraft:block/switch_track_actuator",
+        "y": 0
       },
       "when": {
         "facing": "north"
@@ -114,20 +119,34 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_lever_on"
+        "model": "railcraft:block/switch_track_actuator_lever_on",
+        "y": 0
       },
       "when": {
-        "facing": "north",
-        "switched": "true"
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "switched": "true"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_lever_off"
+        "model": "railcraft:block/switch_track_actuator_lever_off",
+        "y": 0
       },
       "when": {
-        "facing": "north",
-        "switched": "false"
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "switched": "false"
+          }
+        ]
       }
     },
     {
@@ -145,8 +164,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "switched": "true"
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "switched": "true"
+          }
+        ]
       }
     },
     {
@@ -155,8 +180,14 @@
         "y": 90
       },
       "when": {
-        "facing": "east",
-        "switched": "false"
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "switched": "false"
+          }
+        ]
       }
     },
     {
@@ -174,8 +205,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "switched": "true"
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "switched": "true"
+          }
+        ]
       }
     },
     {
@@ -184,8 +221,14 @@
         "y": 180
       },
       "when": {
-        "facing": "south",
-        "switched": "false"
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "switched": "false"
+          }
+        ]
       }
     },
     {
@@ -203,8 +246,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "switched": "true"
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "switched": "true"
+          }
+        ]
       }
     },
     {
@@ -213,8 +262,14 @@
         "y": 270
       },
       "when": {
-        "facing": "west",
-        "switched": "false"
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "switched": "false"
+          }
+        ]
       }
     }
   ]

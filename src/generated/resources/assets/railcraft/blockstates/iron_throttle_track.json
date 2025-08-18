@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/rail_outfitted"
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted"
       },
       "when": {
         "shape": "north_south"
@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/rail_outfitted",
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted",
         "y": 90
       },
       "when": {
@@ -19,370 +19,690 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1"
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_on"
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2"
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_on"
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3"
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_on"
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4"
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_on"
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "false",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "true",
-        "reverse": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "false"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_reverse"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_reverse"
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_reverse_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_reverse_on"
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_reverse",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_reverse",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_1_reverse_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_1_reverse_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slowest",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slowest"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_reverse"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_reverse"
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_reverse_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_reverse_on"
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_reverse",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_reverse",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_2_reverse_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_2_reverse_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "slower",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "slower"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_reverse"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_reverse"
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_reverse_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_reverse_on"
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_reverse",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_reverse",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_3_reverse_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_3_reverse_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "normal",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "normal"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_reverse"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_reverse"
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_reverse_on"
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_reverse_on"
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_reverse",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_reverse",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "false",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "false"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/throttle_track_4_reverse_on",
+        "model": "railcraft:block/track_template/throttle_track/throttle_track_4_reverse_on",
         "y": 90
       },
       "when": {
-        "locomotive_speed": "max",
-        "powered": "true",
-        "reverse": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "locomotive_speed": "max"
+          },
+          {
+            "reverse": "true"
+          },
+          {
+            "powered": "true"
+          },
+          {
+            "shape": "east_west"
+          }
+        ]
       }
     }
   ]

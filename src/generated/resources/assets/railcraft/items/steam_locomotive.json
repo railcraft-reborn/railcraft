@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "railcraft:item/steam_locomotive",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -393218
+      }
+    ]
+  }
+}

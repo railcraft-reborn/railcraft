@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "railcraft:item/firestone",
-    "layer1": "railcraft:item/cut_firestone"
-  }
-}

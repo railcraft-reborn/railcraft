@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "railcraft:block/dual_token_signal_inventory"
+  }
+}

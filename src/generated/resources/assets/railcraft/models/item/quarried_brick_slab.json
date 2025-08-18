@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "railcraft:block/quarried_bricks",
-    "side": "railcraft:block/quarried_bricks",
-    "top": "railcraft:block/quarried_bricks"
-  }
-}

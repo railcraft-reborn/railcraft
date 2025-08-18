@@ -24,8 +24,7 @@ import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
 import mods.railcraft.data.loot.RailcraftLootModifierProvider;
 import mods.railcraft.data.loot.RailcraftLootTableProvider;
-import mods.railcraft.data.models.RailcraftBlockModelProvider;
-import mods.railcraft.data.models.RailcraftItemModelProvider;
+import mods.railcraft.data.models.RailcraftModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.data.recipes.builders.BrewingRecipe;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
@@ -304,8 +303,7 @@ public class Railcraft {
     event.createProvider(RailcraftDamageTypeTagsProvider::new);
     event.createProvider(RailcraftDatapackProvider::new);
     event.createProvider(RailcraftDataMapProvider::new);
-    event.createProvider(RailcraftItemModelProvider::new);
-    event.createProvider(RailcraftBlockModelProvider::new);
+    event.createProvider(RailcraftModelProvider::new);
     event.createProvider(RailcraftLanguageProvider::new);
     event.createProvider(RailcraftSoundsProvider::new);
     event.createProvider(RailcraftSpriteSourceProvider::new);
@@ -331,7 +329,7 @@ public class Railcraft {
   @SubscribeEvent
   public void handleServerStarted(ServerStartedEvent event) {
     if (RailcraftConfig.SERVER.solidCarts.get()) {
-      AbstractMinecart.registerCollisionHandler(this.minecartHandler);
+      //AbstractMinecart.registerCollisionHandler(this.minecartHandler);
     }
   }
 

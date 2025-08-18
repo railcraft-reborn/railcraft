@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "railcraft:item/creative_locomotive",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -393218
+      }
+    ]
+  }
+}

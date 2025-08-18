@@ -5,8 +5,14 @@
         "model": "railcraft:block/buffer_stop"
       },
       "when": {
-        "reversed": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "reversed": "false"
+          }
+        ]
       }
     },
     {
@@ -15,8 +21,14 @@
         "y": 180
       },
       "when": {
-        "reversed": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "reversed": "true"
+          }
+        ]
       }
     },
     {
@@ -25,8 +37,14 @@
         "y": 90
       },
       "when": {
-        "reversed": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "reversed": "false"
+          }
+        ]
       }
     },
     {
@@ -35,8 +53,14 @@
         "y": 270
       },
       "when": {
-        "reversed": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "reversed": "true"
+          }
+        ]
       }
     },
     {

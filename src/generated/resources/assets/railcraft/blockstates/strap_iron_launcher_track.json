@@ -2,14 +2,11 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted"
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 0
       },
       "when": {
-        "AND": [
-          {
-            "shape": "north_south"
-          }
-        ]
+        "shape": "north_south"
       }
     },
     {
@@ -18,63 +15,69 @@
         "y": 90
       },
       "when": {
-        "AND": [
-          {
-            "shape": "east_west"
-          }
-        ]
+        "shape": "east_west"
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/launcher_track"
+        "model": "railcraft:block/track_template/launcher_track/launcher_track",
+        "y": 0
       },
       "when": {
         "AND": [
           {
-            "powered": "false",
             "shape": "north_south"
+          },
+          {
+            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/launcher_track",
+        "model": "railcraft:block/track_template/launcher_track/launcher_track",
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "powered": "false",
             "shape": "east_west"
+          },
+          {
+            "powered": "false"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/launcher_track_on"
+        "model": "railcraft:block/track_template/launcher_track/launcher_track_on",
+        "y": 0
       },
       "when": {
         "AND": [
           {
-            "powered": "true",
             "shape": "north_south"
+          },
+          {
+            "powered": "true"
           }
         ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/launcher_track_on",
+        "model": "railcraft:block/track_template/launcher_track/launcher_track_on",
         "y": 90
       },
       "when": {
         "AND": [
           {
-            "powered": "true",
             "shape": "east_west"
+          },
+          {
+            "powered": "true"
           }
         ]
       }

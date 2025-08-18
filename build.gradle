@@ -69,7 +69,7 @@ neoForge {
         minecraftVersion = project.parchment_minecraft_version
     }
 
-    //validateAccessTransformers = true
+    validateAccessTransformers = true
 
     runs {
         configureEach {

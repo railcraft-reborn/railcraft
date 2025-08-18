@@ -3,7 +3,6 @@ package mods.railcraft.attachment;
 import java.util.Optional;
 import java.util.function.Supplier;
 import com.mojang.serialization.Codec;
-import mods.railcraft.Constants;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.RollingStockImpl;
 import net.minecraft.util.ExtraCodecs;
@@ -60,13 +59,13 @@ public class RailcraftAttachmentTypes {
 
   public static final Supplier<AttachmentType<Float>> MAX_SPEED_AIR_VERTICAL =
       deferredRegister.register("max_speed_air_vertical",
-          () -> AttachmentType.builder(() -> Constants.DEFAULT_MAX_SPEED_AIR_VERTICAL)
+          () -> AttachmentType.builder(() -> RailcraftConstants.DEFAULT_MAX_SPEED_AIR_VERTICAL)
               .serialize(Codec.FLOAT)
               .build());
 
   public static final Supplier<AttachmentType<Float>> AIR_DRAG =
       deferredRegister.register("air_drag",
-          () -> AttachmentType.builder(() -> Constants.DEFAULT_AIR_DRAG)
+          () -> AttachmentType.builder(() -> RailcraftConstants.DEFAULT_AIR_DRAG)
               .serialize(Codec.FLOAT)
               .build());
 }

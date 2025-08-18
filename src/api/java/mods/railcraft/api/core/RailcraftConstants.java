@@ -17,6 +17,9 @@ public final class RailcraftConstants {
   private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
+  public static float DEFAULT_MAX_SPEED_AIR_LATERAL = 0.4F;
+  public static float DEFAULT_MAX_SPEED_AIR_VERTICAL = -1.0F;
+  public static float DEFAULT_AIR_DRAG = 0.95F;
 
   private RailcraftConstants() {
   }
