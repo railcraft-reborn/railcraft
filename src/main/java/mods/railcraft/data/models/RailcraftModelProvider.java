@@ -9,11 +9,11 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.ArrowDirection;
+import mods.railcraft.client.color.item.LocomotiveColor;
 import mods.railcraft.data.RailcraftBlockFamilies;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
 import mods.railcraft.world.level.block.ChimneyBlock;
 import mods.railcraft.world.level.block.CrusherMultiblockBlock;
@@ -77,7 +77,6 @@ import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.Util;
-import net.minecraft.client.color.item.Dye;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -94,6 +93,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -606,11 +606,14 @@ public class RailcraftModelProvider extends ModelProvider {
         modLocation("item/%s_layer0".formatted(path)),
         modLocation("item/%s_layer1".formatted(path)));
 
-    var color = item.components().get(RailcraftDataComponents.LOCOMOTIVE_COLOR.get());
-    itemModels.itemModelOutput.accept(item, ItemModelUtils.tintedModel(rl,
-        new Dye(DyeColor.WHITE.getTextureDiffuseColor())));//TODO:FIXME
-    //new Dye(color.primary().getTextureDiffuseColor()),
-    //new Dye(color.secondary().getTextureDiffuseColor())));
+    itemModels.itemModelOutput.accept(item,
+        new BlockModelWrapper.Unbaked(rl,
+            List.of(
+                new LocomotiveColor(0),
+                new LocomotiveColor(1)
+            )
+        )
+    );
   }
 
   private void generateFirestone(ItemModelGenerators itemModels, Item item) {

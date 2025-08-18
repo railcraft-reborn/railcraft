@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-18T18:08:56.812288	Model Definitions - railcraft
+// 1.21.4	2025-08-18T21:40:49.108853	Model Definitions - railcraft
 08bbf602ca4febfa27719e6c3330a893ca4a9390 assets/railcraft/blockstates/abandoned_activator_track.json
 ff04d5d38e84d9333d3f5695ebba65cb8a8a26c0 assets/railcraft/blockstates/abandoned_booster_track.json
 04a1ae3d8c1515b67b9448dbb98a29165ddb599d assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -477,7 +477,7 @@ f5992603a40b4b9bf209d0592686aacdafd38b95 assets/railcraft/items/control_track_ki
 8f7538116e8f8b89fc2f77fd168c1f85f74a5771 assets/railcraft/items/copper_plate.json
 d1feba5c18e8ec7c6ea43aa03a3befb61d6c3d90 assets/railcraft/items/coupler_track_kit.json
 134ad179f41776de2e9e960389ce5a54f1372334 assets/railcraft/items/cracked_firestone.json
-0e8f8781c64af1113814fbaf82e0848d5cb0ac09 assets/railcraft/items/creative_locomotive.json
+254da628370a739c27acd60dd28540f52a958035 assets/railcraft/items/creative_locomotive.json
 a1c047a4c4f94ea755c4df162bc0b84319e7f2c2 assets/railcraft/items/creosote_bucket.json
 c3e9411053f19373440cb6c0fb237e617502b3fa assets/railcraft/items/crushed_obsidian.json
 ff0c7daf6cde17fdc81c8c0d6b97208a8c73c21b assets/railcraft/items/crusher.json
@@ -520,7 +520,7 @@ a17e2399759c0d3e2fd59123c1a5fc8efefd9141 assets/railcraft/items/electric_gated_t
 7490631aed0d925d15b46a328ad93dd9982c972f assets/railcraft/items/electric_junction_track.json
 936051e36db7b16d7254183845aa813408a2b992 assets/railcraft/items/electric_launcher_track.json
 729b795e59b12e815494f0c6fd6993100cf95823 assets/railcraft/items/electric_locking_track.json
-5864e408b9403c07da685e80dba55613c13db4e6 assets/railcraft/items/electric_locomotive.json
+0f0c693df5ae694d498a0957be502372fc88f4f1 assets/railcraft/items/electric_locomotive.json
 30a0b5843016d70ad29b2849a538d00b1fccaf87 assets/railcraft/items/electric_locomotive_track.json
 2c8eab0af11cc81ecf12933904f24a7d8cabb286 assets/railcraft/items/electric_one_way_track.json
 3ab438d8d3cbe3db6825c00dee051022a23c7995 assets/railcraft/items/electric_rail.json
@@ -789,7 +789,7 @@ b0916946c08239cd5187a6e7de98e6a8a154d0ff assets/railcraft/items/silver_raw.json
 ec7f0d45ebdf59c96eadec048407e91988f2a32b assets/railcraft/items/slag.json
 cc21a5ce854dbc9fa9b7200c6f51f6ee563a7f2a assets/railcraft/items/solid_fueled_firebox.json
 ab0689d9f9ed432436bb9745f50699214336be00 assets/railcraft/items/standard_rail.json
-675998acf12ae866120a203cc6426dbeabbe46ff assets/railcraft/items/steam_locomotive.json
+ba0d23d5f35deff3621f1ec934e88433aca7b29f assets/railcraft/items/steam_locomotive.json
 02abdb7c2027e2c230637d7fcb86ff7b61793448 assets/railcraft/items/steam_oven.json
 2fcdb10d61ef86b758459b8fef5aaa1ad2a06f2d assets/railcraft/items/steam_turbine.json
 a02fa51a4435da80c17fe92181c6396128c18e1b assets/railcraft/items/steel_anvil.json

@@ -9,6 +9,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
+import mods.railcraft.client.color.item.LocomotiveColor;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
 import mods.railcraft.client.gui.screen.inventory.CokeOvenScreen;
@@ -116,7 +117,7 @@ public class ClientManager {
   public static void init(IEventBus modEventBus) {
     modEventBus.addListener(ClientManager::handleRegisterMenuScreens);
     modEventBus.addListener(ClientManager::handleClientSetup);
-    //modEventBus.addListener(ClientManager::handleItemColors);
+    modEventBus.addListener(ClientManager::registerItemTintSources);
     modEventBus.addListener(ClientManager::handleBlockColors);
     modEventBus.addListener(ClientManager::handleParticleRegistration);
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
@@ -189,18 +190,9 @@ public class ClientManager {
     }
   }
 
-  /* FIXME
-  private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.register((stack, tintIndex) -> ARGB.opaque(switch (tintIndex) {
-      case 0 -> LocomotiveItem.getColor(stack).primary().getMapColor().col;
-      case 1 -> LocomotiveItem.getColor(stack).secondary().getMapColor().col;
-      default -> 0xFFFFFFFF;
-    }),
-        RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
-        RailcraftItems.STEAM_LOCOMOTIVE.get(),
-        RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
+  private static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
+    event.register(RailcraftConstants.rl("locomotive_color"), LocomotiveColor.MAP_CODEC);
   }
-   */
 
   private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register((state, level, pos, tintIndex) ->
