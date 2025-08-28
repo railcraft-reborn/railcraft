@@ -5,6 +5,7 @@ import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.DualSignalBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.phys.Vec3;
 
 public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & DualSignalBlockEntity>
     extends AbstractSignalRenderer<T> {
@@ -12,9 +13,9 @@ public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & Dual
   @Override
   public void render(
       T blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
     super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight,
-        packedOverlay);
+        packedOverlay, vec3);
 
     var direction = blockEntity.getBlockState().getValue(SignalBlock.FACING);
     poseStack.pushPose();

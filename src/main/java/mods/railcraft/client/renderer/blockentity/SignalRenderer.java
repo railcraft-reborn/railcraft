@@ -4,13 +4,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import mods.railcraft.world.level.block.signal.SignalBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.world.phys.Vec3;
 
 public class SignalRenderer extends AbstractSignalRenderer<AbstractSignalBlockEntity> {
 
   @Override
   public void render(AbstractSignalBlockEntity blockEntity, float partialTick,
-      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-    super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay);
+      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
+      Vec3 vec3) {
+    super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight, packedOverlay,
+        vec3);
     var direction = blockEntity.getBlockState().getValue(SignalBlock.FACING);
     var signalAspect = blockEntity.getPrimarySignalAspect().getDisplayAspect();
     poseStack.pushPose();

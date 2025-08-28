@@ -3,7 +3,6 @@ package mods.railcraft.world.entity.vehicle;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -36,7 +35,9 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.filterContainer.fromTag(tag.getList(CompoundTagKeys.FILTER, Tag.TAG_COMPOUND), this.registryAccess());
+    tag.getList(CompoundTagKeys.FILTER).ifPresent(listTag -> {
+      this.filterContainer.fromTag(listTag, this.registryAccess());
+    });
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 

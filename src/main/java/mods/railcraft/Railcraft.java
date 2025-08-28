@@ -407,9 +407,9 @@ public class Railcraft {
 
   @SubscribeEvent
   public void addCustomTrades(VillagerTradesEvent event) {
-    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.get()) {
+    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.getKey()) {
       RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
-    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.get()) {
+    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.getKey()) {
       RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
     } else if (event.getType() == VillagerProfession.ARMORER) {
       RailcraftVillagerTrades.addTradeForArmorer(event.getTrades());

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
 
@@ -28,9 +29,9 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
   @Override
   public void render(FluidLoaderBlockEntity blockEntity, float partialTick,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
-      int packedOverlay) {
+      int packedOverlay, Vec3 vec3) {
     super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight,
-        packedOverlay);
+        packedOverlay, vec3);
     Minecraft minecraft = Minecraft.getInstance();
 
     CuboidModel.Face sideFace = PIPE_MODEL.new Face()

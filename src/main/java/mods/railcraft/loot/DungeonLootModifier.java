@@ -1,6 +1,5 @@
 package mods.railcraft.loot;
 
-import org.jetbrains.annotations.NotNull;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -29,7 +28,6 @@ public class DungeonLootModifier extends LootModifier {
 
   @SuppressWarnings("deprecation")
   @Override
-  @NotNull
   protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,
       LootContext context) {
     if (RailcraftConfig.SERVER.changeDungeonLoot.get()) {

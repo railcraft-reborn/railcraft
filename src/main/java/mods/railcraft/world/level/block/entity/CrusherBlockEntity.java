@@ -20,6 +20,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -64,6 +65,14 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
         CrusherBlockEntity.class, List.of(pattern, rotatedPattern));
     this.crusherModule = this.moduleDispatcher.registerModule("crusher",
         new CrusherModule(this, Charge.distribution));
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    if (this.level instanceof ServerLevel serverLevel) {
+      ((CrusherMultiblockBlock) state.getBlock()).deregisterNode(serverLevel, pos);
+    }
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,

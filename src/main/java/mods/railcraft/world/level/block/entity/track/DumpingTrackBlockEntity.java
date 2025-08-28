@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -147,9 +146,13 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.cartFilter.fromTag(tag.getList(CompoundTagKeys.CART_FILTER, Tag.TAG_COMPOUND), provider);
-    this.itemFilter.fromTag(tag.getList(CompoundTagKeys.ITEM_FILTER, Tag.TAG_COMPOUND), provider);
-    this.ticksSinceLastDrop = tag.getInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP);
+    tag.getList(CompoundTagKeys.CART_FILTER).ifPresent(listTag -> {
+      this.cartFilter.fromTag(listTag, provider);
+    });
+    tag.getList(CompoundTagKeys.ITEM_FILTER).ifPresent(listTag -> {
+      this.itemFilter.fromTag(listTag, provider);
+    });
+    this.ticksSinceLastDrop = tag.getInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP).orElse(0);
   }
 
   @Nullable

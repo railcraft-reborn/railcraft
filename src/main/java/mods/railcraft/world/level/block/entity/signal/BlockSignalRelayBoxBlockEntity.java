@@ -30,7 +30,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
     this.blockSignal.destroy();
@@ -66,10 +66,12 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.blockSignal
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.BLOCK_SIGNAL));
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+    tag.getCompound(CompoundTagKeys.BLOCK_SIGNAL).ifPresent(compoundTag -> {
+      this.blockSignal.deserializeNBT(provider, compoundTag);
+    });
+    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

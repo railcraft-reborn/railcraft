@@ -1,14 +1,12 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,20 +41,15 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    var actionAspectsTag = new ListTag();
-    this.actionSignalAspects
-        .forEach(aspect -> actionAspectsTag.add(StringTag.valueOf(aspect.getSerializedName())));
-    tag.put(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, actionAspectsTag);
+    tag.store(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf(), new ArrayList<>(this.actionSignalAspects));
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    var actionAspectsTag = tag.getList(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, Tag.TAG_STRING);
     this.actionSignalAspects.clear();
-    for (var aspectTag : actionAspectsTag) {
-      SignalAspect.fromName(aspectTag.getAsString()).ifPresent(this.actionSignalAspects::add);
-    }
+    tag.read(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf())
+        .ifPresent(this.actionSignalAspects::addAll);
   }
 
   @Override

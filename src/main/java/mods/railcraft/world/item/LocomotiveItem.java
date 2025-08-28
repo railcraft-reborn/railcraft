@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 public class LocomotiveItem extends CartItem implements Filter {
 
@@ -30,22 +31,22 @@ public class LocomotiveItem extends CartItem implements Filter {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip,
-      TooltipFlag adv) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     var owner = getOwner(stack);
     if (owner != null && StringUtils.isNotBlank(owner.getName())) {
-      tooltip.add(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER)
+      tooltipAdder.accept(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER)
           .withStyle(ChatFormatting.AQUA)
           .append(CommonComponents.SPACE)
           .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
     }
     var color = stack.get(RailcraftDataComponents.LOCOMOTIVE_COLOR);
     if (color != null) {
-      color.addToTooltip(context, tooltip::add, adv);
+      color.addToTooltip(context, tooltipAdder, flag, this.components());
     }
     var whistlePitch = stack.get(RailcraftDataComponents.LOCOMOTIVE_WHISTLE_PITCH);
     if (whistlePitch != null) {
-      whistlePitch.addToTooltip(context, tooltip::add, adv);
+      whistlePitch.addToTooltip(context, tooltipAdder, flag, this.components());
     }
   }
 

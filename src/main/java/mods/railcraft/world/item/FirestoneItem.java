@@ -1,7 +1,8 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.ChatFormatting;
@@ -10,11 +11,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -68,14 +71,13 @@ public class FirestoneItem extends Item {
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId,
-      boolean isSelected) {
+  public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity,
+      @Nullable EquipmentSlot slot) {
     if (this.spawnsFire
-        && level instanceof ServerLevel serverLevel
-        && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+        && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
-      trySpawnFire(serverLevel, player.blockPosition(), stack, player);
+      trySpawnFire(level, player.blockPosition(), stack, player);
     }
   }
 
@@ -109,15 +111,15 @@ public class FirestoneItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents,
-      TooltipFlag isAdvanced) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     if (stack.is(RailcraftItems.RAW_FIRESTONE.get())) {
-      tooltipComponents
-          .add(Component.translatable(Translations.Tips.RAW_FIRESTONE)
+      tooltipAdder
+          .accept(Component.translatable(Translations.Tips.RAW_FIRESTONE)
               .withStyle(ChatFormatting.GRAY));
     } else if (stack.is(RailcraftItems.CUT_FIRESTONE.get())) {
-      tooltipComponents
-          .add(Component.translatable(Translations.Tips.CUT_FIRESTONE)
+      tooltipAdder
+          .accept(Component.translatable(Translations.Tips.CUT_FIRESTONE)
               .withStyle(ChatFormatting.GRAY));
     }
   }

@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 public class SignalTunerItem extends PairingToolItem<SignalControllerEntity, SignalReceiverEntity> {
 
@@ -18,8 +19,8 @@ public class SignalTunerItem extends PairingToolItem<SignalControllerEntity, Sig
 
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component
         .translatable(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS)
         .withStyle(ChatFormatting.GRAY));
   }

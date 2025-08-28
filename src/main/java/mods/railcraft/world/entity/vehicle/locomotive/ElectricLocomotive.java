@@ -180,7 +180,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY), false);
+    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY).orElse(0), false);
   }
 
   @Override

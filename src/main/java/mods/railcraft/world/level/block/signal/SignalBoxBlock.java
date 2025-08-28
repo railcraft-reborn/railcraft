@@ -61,7 +61,7 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
+  protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
     return Shapes.block();
   }
 
@@ -72,24 +72,13 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
-      boolean isMoving) {
-    if (!blockState.is(newState.getBlock())) {
-      LevelUtil.getBlockEntity(level, blockPos, AbstractSignalBoxBlockEntity.class)
-          .ifPresent(AbstractSignalBoxBlockEntity::blockRemoved);
-    }
-    super.onRemove(blockState, level, blockPos, newState, isMoving);
-  }
-
-  @Override
-  public boolean isSignalSource(BlockState blockState) {
+  protected boolean isSignalSource(BlockState blockState) {
     return true;
   }
 
   @Override
-  public int getSignal(BlockState state, BlockGetter level, BlockPos pos,
+  protected int getSignal(BlockState state, BlockGetter level, BlockPos pos,
       Direction direction) {
     return LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .map(blockEntity -> blockEntity.getRedstoneSignal(direction))
@@ -97,13 +86,13 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+  protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
       CollisionContext context) {
     return SHAPE;
   }
 
   @Override
-  public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+  protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
       CollisionContext context) {
     return SHAPE;
   }
@@ -141,9 +130,8 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         || isAspectEmitter(blockState) && isAspectReceiver(otherBlockState);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public float getDestroyProgress(BlockState state, Player player, BlockGetter blockGetter,
+  protected float getDestroyProgress(BlockState state, Player player, BlockGetter blockGetter,
       BlockPos pos) {
     return LevelUtil.getBlockEntity(blockGetter, pos, Lockable.class)
         .filter(Lockable::isLocked)

@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -43,6 +42,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   private int charge;
 
   private int rebuildDelay;
+  @Nullable
   private Component itemName;
   private int tick = 0;
 
@@ -202,11 +202,10 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.charge = tag.getShort(CompoundTagKeys.CHARGE);
-    this.rebuildDelay = tag.getByte(CompoundTagKeys.REBUILD_DELAY);
-    if (tag.contains(CompoundTagKeys.ITEM_NAME, Tag.TAG_STRING)) {
-      this.itemName =
-          Component.Serializer.fromJson(tag.getString(CompoundTagKeys.ITEM_NAME), provider);
-    }
+    this.charge = tag.getShort(CompoundTagKeys.CHARGE).orElse((short) 0);
+    this.rebuildDelay = tag.getByte(CompoundTagKeys.REBUILD_DELAY).orElse((byte) 0);
+    tag.getString(CompoundTagKeys.ITEM_NAME).ifPresent(name -> {
+      this.itemName = Component.Serializer.fromJson(name, provider);
+    });
   }
 }

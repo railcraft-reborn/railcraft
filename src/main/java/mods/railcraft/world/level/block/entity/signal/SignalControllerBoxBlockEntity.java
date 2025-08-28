@@ -56,7 +56,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
   }
@@ -113,8 +113,8 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.DEFAULT_ASPECT, this.defaultAspect.getSerializedName());
-    tag.putString(CompoundTagKeys.POWERED_ASPECT, this.poweredAspect.getSerializedName());
+    tag.store(CompoundTagKeys.DEFAULT_ASPECT, SignalAspect.CODEC, this.defaultAspect);
+    tag.store(CompoundTagKeys.POWERED_ASPECT, SignalAspect.CODEC, this.poweredAspect);
     tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
   }
 
@@ -122,11 +122,12 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
     this.defaultAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.DEFAULT_ASPECT)).orElse(SignalAspect.GREEN);
+        tag.read(CompoundTagKeys.DEFAULT_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.GREEN);
     this.poweredAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.POWERED_ASPECT)).orElse(SignalAspect.RED);
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+        tag.read(CompoundTagKeys.POWERED_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.RED);
+    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Inventory;
@@ -95,9 +96,15 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
   }
 
   @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
+  }
+
+  @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.feedCounter = tag.getByte(CompoundTagKeys.FEED_COUNTER);
+    this.feedCounter = tag.getByte(CompoundTagKeys.FEED_COUNTER).orElse((byte) 0);
   }
 
   @Override

@@ -4,7 +4,6 @@ import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntit
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -66,20 +65,6 @@ public abstract class ManipulatorBlock<T extends ManipulatorBlockEntity> extends
       emit = BaseRailBlock.isRail(neighborBlockState);
     }
     return emit ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean isMoving) {
-    if (!state.is(newState.getBlock())) {
-      var blockEntity = level.getBlockEntity(pos);
-      if (this.blockEntityType.isInstance(blockEntity)) {
-        Containers.dropContents(level, pos, this.blockEntityType.cast(blockEntity));
-        level.updateNeighbourForOutputSignal(pos, this);
-      }
-    }
-    super.onRemove(state, level, pos, newState, isMoving);
   }
 
   public static boolean isPowered(BlockState blockState) {

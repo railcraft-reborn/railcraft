@@ -6,7 +6,6 @@ import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
@@ -79,7 +78,8 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.patternContainer
-        .fromTag(tag.getList(CompoundTagKeys.PATTERN, Tag.TAG_COMPOUND), this.registryAccess());
+    tag.getList(CompoundTagKeys.PATTERN).ifPresent(listTag -> {
+      this.patternContainer.fromTag(listTag, this.registryAccess());
+    });
   }
 }

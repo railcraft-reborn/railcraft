@@ -5,7 +5,6 @@ import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 
@@ -39,6 +38,8 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
+    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
+      this.container.fromTag(listTag, provider);
+    });
   }
 }

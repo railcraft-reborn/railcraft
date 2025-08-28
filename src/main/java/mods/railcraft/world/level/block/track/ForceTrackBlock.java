@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.track;
 
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -78,16 +77,6 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
     if (!oldBlockState.is(blockState.getBlock())) {
       this.updateState(blockState, level, pos, moved);
     }
-  }
-
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean moved) {
-    if (!state.is(newState.getBlock())) {
-      level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK.get())
-          .ifPresent(ForceTrackBlockEntity::blockRemoved);
-    }
-    super.onRemove(state, level, pos, newState, moved);
   }
 
   @Override

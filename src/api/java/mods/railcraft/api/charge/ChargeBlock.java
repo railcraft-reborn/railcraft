@@ -75,7 +75,7 @@ public interface ChargeBlock {
    *
    * <p>
    * This function must be called from the following function:
-   * {@link BlockBehaviour#onRemove}.
+   * {@link net.minecraft.world.level.block.entity.BlockEntity#preRemoveSideEffects(BlockPos, BlockState)}.
    */
   default void deregisterNode(ServerLevel level, BlockPos pos) {
     // FLATTENING make sure this not called during state changes

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntity> {
 
@@ -22,7 +23,7 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
 
   @Override
   public void render(RitualBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
     poseStack.pushPose();
     var yOffset = blockEntity.getYOffset(partialTick);
     poseStack.translate(0.5F, 0.95F + yOffset, 0.5F);

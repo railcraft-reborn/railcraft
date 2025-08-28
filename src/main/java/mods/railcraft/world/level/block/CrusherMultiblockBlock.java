@@ -1,24 +1,17 @@
 package mods.railcraft.world.level.block;
 
-import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
-import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -79,12 +72,6 @@ public class CrusherMultiblockBlock extends MultiblockBlock implements ChargeBlo
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context,
-      List<Component> lines, TooltipFlag flag) {
-    lines.add(Component.translatable(Translations.Tips.MULTIBLOCK3X2X2).withStyle(ChatFormatting.GRAY));
-  }
-
-  @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state, ServerLevel level, BlockPos pos) {
     return CHARGE_SPECS;
   }
@@ -94,30 +81,18 @@ public class CrusherMultiblockBlock extends MultiblockBlock implements ChargeBlo
     Charge.zapEffectProvider().throwSparks(state, level, pos, random, 50);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     this.registerNode(state, level, pos);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+  protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
       boolean isMoving) {
     super.onPlace(state, level, pos, oldState, isMoving);
     if (!state.is(oldState.getBlock())) {
       this.registerNode(state, (ServerLevel) level, pos);
-    }
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean isMoving) {
-    super.onRemove(state, level, pos, oldState, isMoving);
-    if (!state.is(oldState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
     }
   }
 

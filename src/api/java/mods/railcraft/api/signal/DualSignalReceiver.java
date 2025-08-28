@@ -87,7 +87,8 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.secondarySignalClient.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT));
+    this.secondarySignalClient.deserializeNBT(provider,
+        tag.getCompound(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT).orElse(new CompoundTag()));
   }
 
   @Override

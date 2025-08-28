@@ -1,5 +1,6 @@
 package mods.railcraft.client;
 
+import java.net.URI;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
@@ -356,7 +357,7 @@ public class ClientManager {
               .withStyle(style -> style
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, modUrl))));
+                  .withClickEvent(new ClickEvent.OpenUrl(URI.create(modUrl)))));
       event.getPlayer().displayClientMessage(message, false);
     }
 
@@ -379,7 +380,7 @@ public class ClientManager {
               .withStyle(style -> style
                   .withColor(ChatFormatting.GREEN)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl))),
+                  .withClickEvent(new ClickEvent.OpenUrl(URI.create(issueUrl)))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
       event.getPlayer().displayClientMessage(message, false);

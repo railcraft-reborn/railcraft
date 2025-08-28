@@ -105,13 +105,13 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.MODE, this.mode.getSerializedName());
+    tag.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.mode = Mode.fromName(tag.getString(CompoundTagKeys.MODE));
+    this.mode = tag.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.VOID);
   }
 
   @Override
@@ -190,10 +190,6 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, VOID);
     }
   }
 }

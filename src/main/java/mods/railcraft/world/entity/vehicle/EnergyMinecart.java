@@ -66,7 +66,7 @@ public class EnergyMinecart extends RailcraftMinecart {
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.energyStorage.setEnergyStored(tag.getInt(CompoundTagKeys.ENERGY));
+    this.energyStorage.setEnergyStored(tag.getInt(CompoundTagKeys.ENERGY).orElse(0));
   }
 
   @Override

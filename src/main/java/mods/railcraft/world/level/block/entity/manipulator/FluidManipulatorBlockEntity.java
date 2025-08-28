@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -152,7 +151,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
+    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
     tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT(provider));
     tag.put(CompoundTagKeys.INV_FILTER, this.getFluidFilter().createTag(provider));
   }
@@ -160,11 +159,14 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.processState = FluidTools.ProcessState.fromTag(tag);
-    this.tankManager.deserializeNBT(provider,
-        tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
-    this.getFluidFilter()
-        .fromTag(tag.getList(CompoundTagKeys.INV_FILTER, Tag.TAG_COMPOUND), provider);
+    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
+    tag.getList(CompoundTagKeys.TANK_MANAGER).ifPresent(listTag -> {
+      this.tankManager.deserializeNBT(provider, listTag);
+    });
+    tag.getList(CompoundTagKeys.INV_FILTER).ifPresent(listTag -> {
+      this.getFluidFilter().fromTag(listTag, provider);
+    });
   }
 
   @Override

@@ -1076,9 +1076,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
   private void villagerTranslations() {
     final String trackman = Translations.makeKey("entity.minecraft.villager",
-        RailcraftVillagerProfession.TRACKMAN.get().name());
+        RailcraftVillagerProfession.TRACKMAN.getKey().location().getPath());
     final String railman = Translations.makeKey("entity.minecraft.villager",
-        RailcraftVillagerProfession.CARTMAN.get().name());
+        RailcraftVillagerProfession.CARTMAN.getKey().location().getPath());
 
     this.add(trackman, "Trackman");
     this.add(railman, "Cartman");

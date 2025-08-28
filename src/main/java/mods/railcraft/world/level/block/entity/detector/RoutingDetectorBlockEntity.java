@@ -21,9 +21,9 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -75,6 +75,12 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   }
 
   @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
+  }
+
+  @Override
   public Railway getRailway() {
     return this.railway;
   }
@@ -105,16 +111,18 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
-    this.railway = Railway.fromName(tag.getString(CompoundTagKeys.RAILWAY));
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
+    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
+      this.container.fromTag(listTag, provider);
+    });
+    this.railway = tag.read(CompoundTagKeys.RAILWAY, Railway.CODEC).orElse(Railway.PUBLIC);
+    this.powered = tag.getBoolean(CompoundTagKeys.POWERED).orElse(false);
   }
 
   @Override
   public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
     tag.put(CompoundTagKeys.CONTAINER, this.container.createTag(provider));
-    tag.putString(CompoundTagKeys.RAILWAY, this.railway.getSerializedName());
+    tag.store(CompoundTagKeys.RAILWAY, Railway.CODEC, this.railway);
     tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
   }
 

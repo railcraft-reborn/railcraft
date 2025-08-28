@@ -134,7 +134,7 @@ public enum ForceTrackEmitterState implements StringRepresentable {
   private static final int TICKS_PER_REFRESH = 64;
   private static final int MAX_TRACKS = 64;
 
-  private static final StringRepresentable.EnumCodec<ForceTrackEmitterState> CODEC =
+  public static final StringRepresentable.EnumCodec<ForceTrackEmitterState> CODEC =
       StringRepresentable.fromEnum(ForceTrackEmitterState::values);
 
   private final String name;
@@ -159,10 +159,6 @@ public enum ForceTrackEmitterState implements StringRepresentable {
   @Override
   public String getSerializedName() {
     return this.name;
-  }
-
-  public static Optional<ForceTrackEmitterState> fromName(String name) {
-    return Optional.ofNullable(CODEC.byName(name));
   }
 
   public interface Instance {

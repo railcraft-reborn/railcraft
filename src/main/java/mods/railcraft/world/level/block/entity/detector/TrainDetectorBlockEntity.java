@@ -37,7 +37,7 @@ public class TrainDetectorBlockEntity extends DetectorBlockEntity {
 
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.trainSize = tag.getInt(CompoundTagKeys.TRAIN_SIZE);
+    this.trainSize = tag.getInt(CompoundTagKeys.TRAIN_SIZE).orElse(5);
   }
 
   @Override

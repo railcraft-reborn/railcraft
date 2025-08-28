@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity> {
@@ -49,8 +50,7 @@ public abstract class AbstractSignalBoxRenderer
   @Override
   public void render(AbstractSignalBoxBlockEntity blockEntity, float partialTicks,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
-      int packedOverlay) {
-
+      int packedOverlay, Vec3 vec3) {
     SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, bufferSource);
 
     if (blockEntity.hasCustomName()) {

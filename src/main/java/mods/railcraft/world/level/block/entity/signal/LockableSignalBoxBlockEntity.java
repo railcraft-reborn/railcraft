@@ -47,13 +47,14 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
+    tag.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lock = Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
+    this.lock =
+        tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
   }
 
   @Override
@@ -102,10 +103,6 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
     }
   }
 }

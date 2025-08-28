@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,7 @@ public interface ModuleProvider {
 
   boolean isStillValid(Player player);
 
+  @Nullable
   Level level();
 
   void dropItem(ItemStack itemStack);

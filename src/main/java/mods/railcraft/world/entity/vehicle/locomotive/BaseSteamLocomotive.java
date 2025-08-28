@@ -18,7 +18,6 @@ import mods.railcraft.world.level.material.steam.SteamConstants;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -227,16 +226,20 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
     super.addAdditionalSaveData(tag);
     tag.put(CompoundTagKeys.TANK_MANAGER, this.getTankManager().serializeNBT(this.registryAccess()));
     tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT(this.registryAccess()));
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
+    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.getTankManager().deserializeNBT(this.registryAccess(),
-        tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(this.registryAccess(), tag.getCompound(CompoundTagKeys.BOILER));
-    this.processState = FluidTools.ProcessState.fromTag(tag);
+    tag.getList(CompoundTagKeys.TANK_MANAGER).ifPresent(listTag -> {
+      this.getTankManager().deserializeNBT(this.registryAccess(), listTag);
+    });
+    tag.getCompound(CompoundTagKeys.BOILER).ifPresent(compoundTag -> {
+      this.boiler.deserializeNBT(this.registryAccess(), compoundTag);
+    });
+    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
   }
 
   public boolean isSafeToFill() {

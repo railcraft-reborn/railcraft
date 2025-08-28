@@ -1,19 +1,12 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import java.util.List;
 import java.util.function.Supplier;
-import mods.railcraft.Translations;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -83,17 +76,5 @@ public class ControlTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
         cart.yRotO = cart.getYRot();
       }
     }
-  }
-
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> lines,
-      TooltipFlag flag) {
-    lines.add(Component.translatable(Translations.Tips.CONTROL_TRACK)
-        .withStyle(ChatFormatting.GRAY));
-    lines.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DIRECTION)
-        .withStyle(ChatFormatting.BLUE));
-    lines.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_CHANGE_DIRECTION)
-        .withStyle(ChatFormatting.RED));
   }
 }

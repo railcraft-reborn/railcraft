@@ -3,6 +3,7 @@ package mods.railcraft.util.container;
 import java.util.List;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
@@ -96,27 +97,33 @@ public class AdvancedContainer extends SimpleContainer
 
   @Override
   public void fromTag(ListTag tag, HolderLookup.Provider provider) {
-    for (int i = 0; i < tag.size(); ++i) {
-      var slotTag = tag.getCompound(i);
-      ItemStack.parse(provider, slotTag).ifPresent(itemStack -> {
-        int slot = slotTag.getInt(CompoundTagKeys.INDEX);
-        this.setItem(slot, itemStack);
-      });
-    }
+    tag.compoundStream()
+        .map(compoundTag -> {
+          var slot = compoundTag.getInt(CompoundTagKeys.INDEX);
+          var itemStack = ItemStack.parse(provider, compoundTag);
+          return new Pair<>(slot, itemStack);
+        })
+        .forEach(pair -> {
+          var slot = pair.getFirst();
+          var itemStack = pair.getSecond();
+          if (slot.isPresent() && itemStack.isPresent()) {
+            this.setItem(slot.get(), itemStack.get());
+          }
+        });
   }
 
   @Override
   public ListTag createTag(HolderLookup.Provider provider) {
-    var tag = new ListTag();
+    var listTag = new ListTag();
     for (int i = 0; i < this.getContainerSize(); ++i) {
-      var item = this.getItem(i);
-      if (!item.isEmpty()) {
+      var itemStack = this.getItem(i);
+      if (!itemStack.isEmpty()) {
         var slotTag = new CompoundTag();
         slotTag.putInt(CompoundTagKeys.INDEX, i);
-        tag.add(item.save(provider, slotTag));
+        listTag.add(itemStack.save(provider, slotTag));
       }
     }
-    return tag;
+    return listTag;
   }
 
   public static AdvancedContainer copyOf(Container original) {

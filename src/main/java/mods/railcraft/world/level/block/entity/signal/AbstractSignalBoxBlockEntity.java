@@ -23,6 +23,12 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
   }
 
   @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.blockRemoved();
+  }
+
+  @Override
   public void setCustomName(@Nullable Component name) {
     super.setCustomName(name);
   }
@@ -31,7 +37,7 @@ public abstract class AbstractSignalBoxBlockEntity extends RailcraftBlockEntity 
 
   public abstract SignalAspect getSignalAspect(Direction direction);
 
-  public void blockRemoved() {
+  protected void blockRemoved() {
     this.updateNeighborSignalBoxes(true);
   }
 

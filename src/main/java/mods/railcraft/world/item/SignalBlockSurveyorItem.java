@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.entity.MonitoringSignalEntity;
@@ -8,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 @SuppressWarnings("rawtypes")
 public class SignalBlockSurveyorItem
@@ -19,8 +20,8 @@ public class SignalBlockSurveyorItem
 
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-    tooltipComponents.add(Component
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component
         .translatable(Translations.Tips.SIGNAL_BLOCK_SURVEYOR)
         .withStyle(ChatFormatting.GRAY));
   }

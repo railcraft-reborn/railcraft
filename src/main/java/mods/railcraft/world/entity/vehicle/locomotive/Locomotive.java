@@ -42,8 +42,6 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -695,56 +693,48 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     tag.putString(CompoundTagKeys.DEST, StringUtils.defaultIfBlank(getDestination(), ""));
 
-    tag.putString(CompoundTagKeys.MODE, this.getMode().getSerializedName());
-    tag.putString(CompoundTagKeys.SPEED, this.getSpeed().getSerializedName());
-    tag.putString(CompoundTagKeys.LOCK, this.getLock().getSerializedName());
+    tag.store(CompoundTagKeys.MODE, Locomotive.Mode.CODEC, this.getMode());
+    tag.store(CompoundTagKeys.SPEED, Locomotive.Speed.CODEC, this.getSpeed());
+    tag.store(CompoundTagKeys.LOCK, Locomotive.Lock.CODEC, this.getLock());
 
-    tag.putString(CompoundTagKeys.PRIMARY_COLOR,
-        DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getSerializedName());
-    tag.putString(CompoundTagKeys.SECONDARY_COLOR,
-        DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getSerializedName());
+    tag.store(CompoundTagKeys.PRIMARY_COLOR, DyeColor.CODEC,
+        DyeColor.byId(this.entityData.get(PRIMARY_COLOR)));
+    tag.store(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC,
+        DyeColor.byId(this.entityData.get(SECONDARY_COLOR)));
 
     tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, this.whistlePitch);
 
     tag.putInt(CompoundTagKeys.FUEL, this.fuel);
 
     tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
-    this.getOwner().ifPresent(owner -> tag.put(CompoundTagKeys.OWNER,
-        ExtraCodecs.GAME_PROFILE.encode(owner, NbtOps.INSTANCE, new CompoundTag()).getOrThrow()));
+    this.getOwner().ifPresent(owner -> {
+      tag.store(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, owner);
+    });
   }
 
   @Override
   public void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
 
-    this.flipped = tag.getBoolean(CompoundTagKeys.FLIPPED);
+    this.flipped = tag.getBoolean(CompoundTagKeys.FLIPPED).orElse(false);
 
-    this.setDestination(tag.getString(CompoundTagKeys.DEST));
+    this.setDestination(tag.getString(CompoundTagKeys.DEST).orElse(""));
 
-    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
-    this.setSpeed(Speed.fromName(tag.getString(CompoundTagKeys.SPEED)));
-    this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
+    this.setMode(tag.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.IDLE));
+    this.setSpeed(tag.read(CompoundTagKeys.SPEED, Speed.CODEC).orElse(Speed.NORMAL));
+    this.setLock(tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED));
 
-    this.setPrimaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR),
-            this.getDefaultPrimaryColor()));
-    this.setSecondaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR),
-            this.getDefaultSecondaryColor()));
+    this.setPrimaryColor(tag.read(CompoundTagKeys.PRIMARY_COLOR, DyeColor.CODEC)
+        .orElse(this.getDefaultPrimaryColor()));
+    this.setPrimaryColor(tag.read(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC)
+        .orElse(this.getDefaultSecondaryColor()));
 
-    this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
+    this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH).orElse(getNewWhistlePitch());
 
-    this.fuel = tag.getInt(CompoundTagKeys.FUEL);
+    this.fuel = tag.getInt(CompoundTagKeys.FUEL).orElse(0);
 
-    if (tag.contains(CompoundTagKeys.REVERSE, Tag.TAG_BYTE)) {
-      this.entityData.set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
-    }
-    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
-      this.setOwner(ExtraCodecs.GAME_PROFILE
-          .parse(NbtOps.INSTANCE, tag.getCompound(CompoundTagKeys.OWNER)).getOrThrow());
-    } else {
-      this.setOwner(null);
-    }
+    this.entityData.set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE).orElse(false));
+    this.setOwner(tag.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null));
   }
 
   public static void applyAction(Player player, AbstractMinecart minecart, boolean single,
@@ -841,10 +831,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     public Component getDisplayName() {
       return Component.translatable(this.translationKey);
     }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, IDLE);
-    }
   }
 
   /**
@@ -888,10 +874,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     public Speed shiftDown() {
       return values()[this.ordinal() + shiftDown];
     }
-
-    public static Speed fromName(String name) {
-      return CODEC.byName(name, NORMAL);
-    }
   }
 
   public enum Lock implements ButtonState<Lock>, StringRepresentable {
@@ -931,10 +913,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
     }
   }
 }

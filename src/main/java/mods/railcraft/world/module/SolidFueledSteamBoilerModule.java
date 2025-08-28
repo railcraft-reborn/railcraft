@@ -46,7 +46,6 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
     });
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
     if (!this.provider.isFormed()) {

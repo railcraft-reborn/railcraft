@@ -27,7 +27,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
  * <p>
  * This interface exists mainly to enforce a consistent naming scheme on these functions.
  */
-public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T> {
+public interface ContainerManipulator<T extends SlotAccessor> {
 
   static <T extends SlotAccessor> ContainerManipulator<T> empty() {
     return Stream::empty;
@@ -84,8 +84,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
 
   Stream<T> stream();
 
-  @Override
-  default Iterator<T> iterator() {
+  default Iterator<T> containerIterator() {
     return this.stream().iterator();
   }
 
@@ -351,10 +350,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
         .orElse(0.0D);
   }
 
-  /**
-   * @see Container#calcRedstoneFromInventory(IInventory)
-   */
-  default int calcRedstone() {
+  default int getRedstoneSignal() {
     double average = this.calculateFullness();
     return Mth.floor(average * 14.0F) + (this.hasNoItems() ? 0 : 1);
   }

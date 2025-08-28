@@ -32,16 +32,14 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
     level.updateNeighbourForOutputSignal(pos, this);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     this.registerNode(state, level, pos);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+  protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
       boolean isMoving) {
     super.onPlace(state, level, pos, oldState, isMoving);
     if (!state.is(oldState.getBlock())) {
@@ -49,14 +47,11 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean isMoving) {
-    super.onRemove(state, level, pos, oldState, isMoving);
-    if (!state.is(oldState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
-    }
+  protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos,
+      boolean movedByPiston) {
+    super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+    this.deregisterNode(level, pos);
   }
 
   @Override

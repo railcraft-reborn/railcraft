@@ -1,10 +1,9 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import mods.railcraft.Translations;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.ChatFormatting;
@@ -19,10 +18,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -34,15 +33,15 @@ import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CrowbarItem extends DiggerItem implements Crowbar {
+public class CrowbarItem extends Item implements Crowbar {
 
   private static final int BOOST_DAMAGE = 1;
   private final Set<Class<? extends Block>> shiftRotations =
       Set.of(LeverBlock.class, ButtonBlock.class, ChestBlock.class);
   private final Set<Class<? extends Block>> bannedRotations = Set.of(BaseRailBlock.class);
 
-  public CrowbarItem(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
-    super(material, RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR, attackDamage, attackSpeed, properties);
+  public CrowbarItem(Properties properties) {
+    super(properties);
   }
 
   @Override
@@ -115,12 +114,11 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
    * ev. They just raise the damage on the stack.
    */
   @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     if (attacker instanceof ServerPlayer player) {
       stack.hurtAndBreak(2, player.serverLevel(), attacker,
           item -> attacker.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
     }
-    return true;
   }
 
   @Override
@@ -164,9 +162,9 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines,
-      TooltipFlag flag) {
-    lines.add(Component.translatable(Translations.Tips.CROWBAR_DESC)
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component.translatable(Translations.Tips.CROWBAR_DESC)
         .withStyle(ChatFormatting.ITALIC));
   }
 

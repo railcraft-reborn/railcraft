@@ -116,7 +116,7 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState state, Mirror mirror) {
+  protected BlockState mirror(BlockState state, Mirror mirror) {
     return state.rotate(mirror.getRotation(state.getValue(FACING)));
   }
 

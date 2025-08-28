@@ -1,113 +1,15 @@
 package mods.railcraft.data.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.api.track.ArrowDirection;
-import mods.railcraft.client.color.item.LocomotiveColor;
-import mods.railcraft.data.RailcraftBlockFamilies;
-import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import mods.railcraft.world.item.LocomotiveItem;
-import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
-import mods.railcraft.world.level.block.ChimneyBlock;
-import mods.railcraft.world.level.block.CrusherMultiblockBlock;
-import mods.railcraft.world.level.block.DecorativeBlock;
-import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
-import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
-import mods.railcraft.world.level.block.LogBookBlock;
-import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.block.SteamOvenBlock;
-import mods.railcraft.world.level.block.SteamTurbineBlock;
-import mods.railcraft.world.level.block.charge.BatteryBlock;
-import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
-import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
-import mods.railcraft.world.level.block.charge.FrameBlock;
-import mods.railcraft.world.level.block.detector.DetectorBlock;
-import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
-import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
-import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
-import mods.railcraft.world.level.block.post.Column;
-import mods.railcraft.world.level.block.post.Connection;
-import mods.railcraft.world.level.block.post.PostBlock;
-import mods.railcraft.world.level.block.signal.DualSignalBlock;
-import mods.railcraft.world.level.block.signal.SignalBoxBlock;
-import mods.railcraft.world.level.block.signal.SingleSignalBlock;
-import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
-import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
-import mods.railcraft.world.level.block.tank.BaseTankBlock;
-import mods.railcraft.world.level.block.tank.TankValveBlock;
-import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
-import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
-import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import mods.railcraft.world.level.block.track.TrackBlock;
-import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
-import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
-import mods.railcraft.world.level.block.track.actuator.SwitchTrackRouterBlock;
-import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LockingMode;
-import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.OneWayTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
-import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
-import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
-import net.minecraft.Util;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.blockstates.Condition;
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
-import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.PropertyDispatch;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.client.renderer.item.BlockModelWrapper;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class RailcraftModelProvider extends ModelProvider {
 
@@ -122,6 +24,7 @@ public class RailcraftModelProvider extends ModelProvider {
 
   @Override
   protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+/*
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LABEL.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LAMP.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TURBINE_ROTOR.get(), ModelTemplates.FLAT_ITEM);
@@ -613,12 +516,12 @@ public class RailcraftModelProvider extends ModelProvider {
                 new LocomotiveColor(1)
             )
         )
-    );
+    );*/
   }
-
+/*
   private void generateFirestone(ItemModelGenerators itemModels, Item item) {
     var rl = itemModels.generateLayeredItem(item,
-        modLocation("item/firestone"), TextureMapping.getItemTexture(item));
+        modLocation("item/refined_firestone"), TextureMapping.getItemTexture(item));
     itemModels.itemModelOutput.accept(item, ItemModelUtils.plainModel(rl));
   }
 
@@ -2785,7 +2688,7 @@ public class RailcraftModelProvider extends ModelProvider {
       }
     }
   }
-
+*/
   @Override
   protected Stream<? extends Holder<Block>> getKnownBlocks() {
     return Stream.empty();

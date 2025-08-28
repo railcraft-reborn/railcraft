@@ -135,8 +135,8 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.progress = tag.getInt(CompoundTagKeys.PROGRESS);
-    this.processing = tag.getBoolean(CompoundTagKeys.PROCESSING);
+    this.progress = tag.getInt(CompoundTagKeys.PROGRESS).orElse(0);
+    this.processing = tag.getBoolean(CompoundTagKeys.PROCESSING).orElse(false);
   }
 
   @Override

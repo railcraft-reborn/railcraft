@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -15,8 +14,6 @@ import mods.railcraft.world.module.ModuleDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.network.connection.ConnectionType;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
     implements NetworkSerializable, Ownable, BlockEntityLike, BlockModuleProvider {
@@ -54,8 +52,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public final CompoundTag getUpdateTag(HolderLookup.Provider provider) {
     var tag = super.getUpdateTag(provider);
+    if (this.level == null)
+      return tag;
+
     var packetBuffer = new RegistryFriendlyByteBuf(
-        new FriendlyByteBuf(Unpooled.buffer()), level.registryAccess());
+        new FriendlyByteBuf(Unpooled.buffer()), level.registryAccess(), ConnectionType.OTHER);
     this.writeToBuf(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
@@ -65,9 +66,14 @@ public abstract class RailcraftBlockEntity extends BlockEntity
 
   @Override
   public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider provider) {
-    byte[] bytes = tag.getByteArray(CompoundTagKeys.SYNC);
-    this.readFromBuf(new RegistryFriendlyByteBuf(
-        new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)), level.registryAccess()));
+    if (this.level == null) {
+      return;
+    }
+    tag.getByteArray(CompoundTagKeys.SYNC).ifPresent(bytes -> {
+      this.readFromBuf(new RegistryFriendlyByteBuf(
+          new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)), level.registryAccess(),
+          ConnectionType.OTHER));
+    });
   }
 
   @Override
@@ -104,9 +110,10 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return this.getBlockPos();
   }
 
+  @Nullable
   @Override
   public Level level() {
-    return this.getLevel();
+    return this.level;
   }
 
   @Override
@@ -141,11 +148,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return Optional.ofNullable(this.owner);
   }
 
-  public final boolean isOwner(@NotNull GameProfile gameProfile) {
+  public final boolean isOwner(GameProfile gameProfile) {
     return gameProfile.equals(this.owner);
   }
 
-  public final boolean isOwnerOrOperator(@NotNull GameProfile gameProfile) {
+  public final boolean isOwnerOrOperator(GameProfile gameProfile) {
     return this.isOwner(gameProfile) || (this.level instanceof ServerLevel serverLevel
         && serverLevel.getServer().getPlayerList().isOp(gameProfile));
   }
@@ -153,32 +160,24 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    if (this.owner != null) {
-      tag.put(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE
-          .encode(this.owner, NbtOps.INSTANCE, new CompoundTag()).getOrThrow());
-    }
+    tag.storeNullable(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, this.owner);
     if (this.customName != null) {
       tag.putString(CompoundTagKeys.CUSTOM_NAME,
           Component.Serializer.toJson(this.customName, provider));
     }
-
     tag.put(CompoundTagKeys.MODULES, this.moduleDispatcher.serializeNBT(provider));
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
-      this.owner = ExtraCodecs.GAME_PROFILE
-          .parse(NbtOps.INSTANCE, tag.getCompound(CompoundTagKeys.OWNER))
-          .getOrThrow();
-    }
-    if (tag.contains(CompoundTagKeys.CUSTOM_NAME, Tag.TAG_STRING)) {
-      this.customName =
-          Component.Serializer.fromJson(tag.getString(CompoundTagKeys.CUSTOM_NAME), provider);
-    }
-
-    this.moduleDispatcher.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.MODULES));
+    this.owner = tag.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null);
+    tag.getString(CompoundTagKeys.CUSTOM_NAME).ifPresent(name -> {
+      this.customName = Component.Serializer.fromJson(name, provider);
+    });
+    tag.getCompound(CompoundTagKeys.MODULES).ifPresent(value -> {
+      this.moduleDispatcher.deserializeNBT(provider, value);
+    });
   }
 
   @Override

@@ -2,6 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -41,6 +42,8 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     this.routingDetector = menu.getRoutingDetector();
 
     this.registerWidgetRenderer(new WidgetRenderer<>(menu.getErrorWidget()) {
+
+      @Nullable
       @Override
       public List<Component> getTooltip() {
         return menu.getRoutingDetector().logicError()

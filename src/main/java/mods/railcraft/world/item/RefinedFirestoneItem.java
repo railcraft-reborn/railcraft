@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -87,15 +88,15 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemStack, TooltipContext context,
-      List<Component> lines, TooltipFlag adv) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     MutableComponent component;
-    if (itemStack.getDamageValue() >= itemStack.getMaxDamage() - 5) {
+    if (stack.getDamageValue() >= stack.getMaxDamage() - 5) {
       component = Component.translatable(Tips.FIRESTONE_EMPTY);
     } else {
       component = Component.translatable(Tips.FIRESTONE_CHARGED);
     }
-    lines.add(component.withStyle(ChatFormatting.GRAY));
+    tooltipAdder.accept(component.withStyle(ChatFormatting.GRAY));
   }
 
   @Override

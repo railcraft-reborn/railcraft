@@ -20,7 +20,7 @@ public abstract class DisposableBatteryBlock extends BatteryBlock implements Jei
   protected abstract DeferredHolder<Block, EmptyBatteryBlock> getBatteryBlockEmpty();
 
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     Charge.distribution.network(level).access(pos).storage().ifPresent(storage -> {
       if (storage.getEnergyStored() <= 0)

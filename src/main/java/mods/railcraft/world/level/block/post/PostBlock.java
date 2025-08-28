@@ -241,20 +241,18 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState blockState) {
+  protected boolean propagatesSkylightDown(BlockState blockState) {
     return !blockState.getValue(WATERLOGGED);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public FluidState getFluidState(BlockState blockState) {
+  protected FluidState getFluidState(BlockState blockState) {
     return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
         : super.getFluidState(blockState);
   }
 
-
   @Override
-  public boolean isPathfindable(BlockState state, PathComputationType pathType) {
+  protected boolean isPathfindable(BlockState state, PathComputationType pathType) {
     return false;
   }
 
@@ -278,18 +276,16 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState blockState, Mirror mirror) {
-    switch (mirror) {
-      case LEFT_RIGHT:
-        return blockState.setValue(NORTH, blockState.getValue(SOUTH)).setValue(SOUTH,
-            blockState.getValue(NORTH));
-      case FRONT_BACK:
-        return blockState.setValue(EAST, blockState.getValue(WEST)).setValue(WEST,
-            blockState.getValue(EAST));
-      default:
-        return super.mirror(blockState, mirror);
-    }
+  protected BlockState mirror(BlockState blockState, Mirror mirror) {
+    return switch (mirror) {
+      case LEFT_RIGHT -> blockState
+          .setValue(NORTH, blockState.getValue(SOUTH))
+          .setValue(SOUTH, blockState.getValue(NORTH));
+      case FRONT_BACK -> blockState
+          .setValue(EAST, blockState.getValue(WEST))
+          .setValue(WEST, blockState.getValue(EAST));
+      default -> super.mirror(blockState, mirror);
+    };
   }
 }

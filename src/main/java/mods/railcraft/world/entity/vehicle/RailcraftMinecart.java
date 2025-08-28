@@ -97,13 +97,13 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString(CompoundTagKeys.SEASON, this.getSeason().getSerializedName());
+    tag.store(CompoundTagKeys.SEASON, Season.CODEC, this.getSeason());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setSeason(Season.fromName(tag.getString(CompoundTagKeys.SEASON)));
+    this.setSeason(tag.read(CompoundTagKeys.SEASON, Season.CODEC).orElse(Season.DEFAULT));
   }
 
   @Override

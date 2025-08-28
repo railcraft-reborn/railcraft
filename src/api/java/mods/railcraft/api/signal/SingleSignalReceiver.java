@@ -10,8 +10,6 @@ import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -75,7 +73,8 @@ public class SingleSignalReceiver
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.primarySignalClient.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT));
+    this.primarySignalClient.deserializeNBT(provider,
+        tag.getCompound(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT).orElse(new CompoundTag()));
   }
 
   @Override
@@ -177,16 +176,14 @@ public class SingleSignalReceiver
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
       var tag = new CompoundTag();
       if (this.signalControllerPos != null) {
-        tag.put(CompoundTagKeys.SIGNAL_CONTROLLER_POS, NbtUtils.writeBlockPos(this.signalControllerPos));
+        tag.storeNullable(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC, this.signalControllerPos);
       }
       return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-      if (tag.contains(CompoundTagKeys.SIGNAL_CONTROLLER_POS, Tag.TAG_COMPOUND)) {
-        this.signalControllerPos = NbtUtils.readBlockPos(tag,CompoundTagKeys.SIGNAL_CONTROLLER_POS).orElse(null);
-      }
+      this.signalControllerPos = tag.read(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC).orElse(null);
     }
   }
 }

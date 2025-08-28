@@ -1,22 +1,16 @@
 package mods.railcraft.world.level.block;
 
-import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -52,7 +46,7 @@ public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
   }
 
   @Override
-  public RenderShape getRenderShape(BlockState blockState) {
+  protected RenderShape getRenderShape(BlockState blockState) {
     return RenderShape.MODEL;
   }
 
@@ -81,7 +75,7 @@ public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
   }
 
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
       Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     if (!level.isClientSide()) {
       var powered = blockState.getValue(POWERED);
@@ -91,28 +85,6 @@ public class FeedStationBlock extends BaseEntityBlock implements JeiSearchable {
             Block.UPDATE_CLIENTS);
       }
     }
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean isMoving) {
-    if (!state.is(newState.getBlock())
-        && level.getBlockEntity(pos) instanceof FeedStationBlockEntity feedStation) {
-      Containers.dropContents(level, pos, feedStation);
-      level.updateNeighbourForOutputSignal(pos, this);
-    }
-    super.onRemove(state, level, pos, newState, isMoving);
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-      TooltipFlag flag) {
-    super.appendHoverText(stack, context, tooltip, flag);
-    tooltip
-        .add(Component.translatable(Translations.Tips.FEED_STATION).withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISABLE)
-        .withStyle(ChatFormatting.RED));
   }
 
   @Override

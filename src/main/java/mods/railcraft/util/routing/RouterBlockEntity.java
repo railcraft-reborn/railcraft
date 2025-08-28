@@ -60,7 +60,7 @@ public interface RouterBlockEntity extends MenuProvider, ForwardingContainer {
     PUBLIC("public"),
     PRIVATE("private");
 
-    private static final StringRepresentable.EnumCodec<Railway> CODEC =
+    public static final StringRepresentable.EnumCodec<Railway> CODEC =
         StringRepresentable.fromEnum(Railway::values);
 
     private final String name;
@@ -88,10 +88,6 @@ public interface RouterBlockEntity extends MenuProvider, ForwardingContainer {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Railway fromName(String name) {
-      return CODEC.byName(name, PUBLIC);
     }
   }
 }

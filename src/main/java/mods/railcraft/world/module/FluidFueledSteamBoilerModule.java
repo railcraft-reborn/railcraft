@@ -41,7 +41,6 @@ public class FluidFueledSteamBoilerModule
         ProcessType.DRAIN_ONLY, this.fuelProcessState);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
     if (!this.provider.isFormed()) {

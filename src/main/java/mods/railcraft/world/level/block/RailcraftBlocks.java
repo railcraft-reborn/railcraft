@@ -58,13 +58,9 @@ import mods.railcraft.world.level.block.tank.SteelTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.SteelTankValveBlock;
 import mods.railcraft.world.level.block.tank.SteelTankWallBlock;
 import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
-import mods.railcraft.world.level.block.track.ElectricTrackBlock;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
-import mods.railcraft.world.level.block.track.HighSpeedElectricTrackBlock;
-import mods.railcraft.world.level.block.track.HighSpeedTrackBlock;
-import mods.railcraft.world.level.block.track.ReinforcedTrackBlock;
-import mods.railcraft.world.level.block.track.StrapIronTrackBlock;
+import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackMotorBlock;
@@ -697,8 +693,9 @@ public class RailcraftBlocks {
           properties -> new RoutingTrackBlock(TrackTypes.ABANDONED,
               RailcraftBlockProperties.standardTrack(properties)));
 
-  public static final DeferredBlock<ElectricTrackBlock> ELECTRIC_TRACK =
-      deferredRegister.registerBlock("electric_track", ElectricTrackBlock::new,
+  public static final DeferredBlock<TrackBlock> ELECTRIC_TRACK =
+      deferredRegister.registerBlock("electric_track",
+          properties -> new TrackBlock(TrackTypes.ELECTRIC, properties),
           RailcraftBlockProperties.electricTrack(BlockBehaviour.Properties.of()));
 
   public static final DeferredBlock<LockingTrackBlock> ELECTRIC_LOCKING_TRACK =
@@ -800,8 +797,9 @@ public class RailcraftBlocks {
           properties -> new RoutingTrackBlock(TrackTypes.ELECTRIC,
               RailcraftBlockProperties.electricTrack(properties)));
 
-  public static final DeferredBlock<HighSpeedTrackBlock> HIGH_SPEED_TRACK =
-      deferredRegister.registerBlock("high_speed_track", HighSpeedTrackBlock::new,
+  public static final DeferredBlock<TrackBlock> HIGH_SPEED_TRACK =
+      deferredRegister.registerBlock("high_speed_track",
+          properties -> new TrackBlock(TrackTypes.HIGH_SPEED, properties),
           RailcraftBlockProperties.standardTrack(BlockBehaviour.Properties.of()));
 
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_TRANSITION_TRACK =
@@ -859,8 +857,9 @@ public class RailcraftBlocks {
           properties -> new ThrottleTrackBlock(TrackTypes.HIGH_SPEED,
               RailcraftBlockProperties.standardTrack(properties)));
 
-  public static final DeferredBlock<HighSpeedElectricTrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
-      deferredRegister.registerBlock("high_speed_electric_track", HighSpeedElectricTrackBlock::new,
+  public static final DeferredBlock<TrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
+      deferredRegister.registerBlock("high_speed_electric_track",
+          properties -> new TrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC, properties),
           RailcraftBlockProperties.electricTrack(BlockBehaviour.Properties.of()));
 
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
@@ -1018,8 +1017,9 @@ public class RailcraftBlocks {
           properties -> new RoutingTrackBlock(TrackTypes.IRON,
               RailcraftBlockProperties.standardTrack(properties)));
 
-  public static final DeferredBlock<ReinforcedTrackBlock> REINFORCED_TRACK =
-      deferredRegister.registerBlock("reinforced_track", ReinforcedTrackBlock::new,
+  public static final DeferredBlock<TrackBlock> REINFORCED_TRACK =
+      deferredRegister.registerBlock("reinforced_track",
+          properties -> new TrackBlock(TrackTypes.REINFORCED, properties),
           RailcraftBlockProperties.reinforcedTrack(BlockBehaviour.Properties.of()));
 
   public static final DeferredBlock<LockingTrackBlock> REINFORCED_LOCKING_TRACK =
@@ -1122,8 +1122,9 @@ public class RailcraftBlocks {
           properties -> new RoutingTrackBlock(TrackTypes.REINFORCED,
               RailcraftBlockProperties.reinforcedTrack(properties)));
 
-  public static final DeferredBlock<StrapIronTrackBlock> STRAP_IRON_TRACK =
-      deferredRegister.registerBlock("strap_iron_track", StrapIronTrackBlock::new,
+  public static final DeferredBlock<TrackBlock> STRAP_IRON_TRACK =
+      deferredRegister.registerBlock("strap_iron_track",
+          properties -> new TrackBlock(TrackTypes.STRAP_IRON, properties),
           RailcraftBlockProperties.standardTrack(BlockBehaviour.Properties.of()));
 
   public static final DeferredBlock<LockingTrackBlock> STRAP_IRON_LOCKING_TRACK =
@@ -1301,9 +1302,9 @@ public class RailcraftBlocks {
                   .noLootTable()
                   .sound(SoundType.EMPTY)));
 
-  public static final DeferredBlock<CrushedObsidian> CRUSHED_OBSIDIAN =
+  public static final DeferredBlock<Block> CRUSHED_OBSIDIAN =
       deferredRegister.registerBlock("crushed_obsidian",
-          properties -> new CrushedObsidian(properties
+          properties -> new Block(properties
               .mapColor(MapColor.COLOR_BLACK)
               .isValidSpawn(RailcraftBlocks::never)
               .requiresCorrectToolForDrops()

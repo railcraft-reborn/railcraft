@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.material.steam;
 
+import java.util.Collections;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Floats;
@@ -14,7 +15,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 /**
@@ -40,19 +40,12 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   private int ticksPerCycle = 16;
   @Nullable
   private Runnable changeListener;
+  @Nullable
   private FuelProvider fuelProvider;
 
   public SteamBoiler(StandardTank waterTank, StandardTank steamTank) {
     this.waterTank = waterTank;
     this.steamTank = steamTank;
-  }
-
-  public IFluidTank getWaterTank() {
-    return this.waterTank;
-  }
-
-  public IFluidTank getSteamTank() {
-    return this.steamTank;
   }
 
   /**
@@ -76,14 +69,12 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     return resource;
   }
 
-  public SteamBoiler setFuelProvider(FuelProvider fuelProvider) {
+  public void setFuelProvider(FuelProvider fuelProvider) {
     this.fuelProvider = fuelProvider;
-    return this;
   }
 
-  public SteamBoiler setChangeListener(@Nullable Runnable changeListener) {
+  public void setChangeListener(@Nullable Runnable changeListener) {
     this.changeListener = changeListener;
-    return this;
   }
 
   public SteamBoiler setTicksPerCycle(int ticks) {
@@ -100,10 +91,9 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     return this.maxTemperature;
   }
 
-  public SteamBoiler setMaxTemperature(float maxTemperature) {
+  public void setMaxTemperature(float maxTemperature) {
     this.maxTemperature = maxTemperature;
     this.temperatureGauge.refresh();
-    return this;
   }
 
   public float getHeatStep() {
@@ -274,10 +264,10 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE));
-    this.setMaxTemperature(tag.getFloat(CompoundTagKeys.MAX_TEMPERATURE));
-    this.setBurnTime(tag.getFloat(CompoundTagKeys.BURN_TIME));
-    this.setCurrentItemBurnTime(tag.getFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME));
+    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE).orElse(SteamConstants.COLD_TEMP));
+    this.setMaxTemperature(tag.getFloat(CompoundTagKeys.MAX_TEMPERATURE).orElse(SteamConstants.MAX_HEAT_LOW));
+    this.setBurnTime(tag.getFloat(CompoundTagKeys.BURN_TIME).orElse(0F));
+    this.setCurrentItemBurnTime(tag.getFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME).orElse(0F));
   }
 
   public Gauge getTemperatureGauge() {
@@ -288,22 +278,21 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     return this.currentItemBurnTime;
   }
 
-  public float setCurrentItemBurnTime(float currentItemBurnTime) {
+  public void setCurrentItemBurnTime(float currentItemBurnTime) {
     this.currentItemBurnTime = currentItemBurnTime;
-    return currentItemBurnTime;
   }
 
   public float getBurnTime() {
     return this.burnTime;
   }
 
-  public float setBurnTime(float burnTime) {
+  public void setBurnTime(float burnTime) {
     this.burnTime = burnTime;
-    return burnTime;
   }
 
   private class TemperatureGauge implements Gauge {
 
+    @Nullable
     private List<Component> tooltip;
 
     @Override
@@ -314,7 +303,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
     @Override
     public List<Component> getTooltip() {
-      return this.tooltip;
+      return this.tooltip == null ? Collections.emptyList() : this.tooltip;
     }
 
     @Override

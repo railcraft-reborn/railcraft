@@ -226,7 +226,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.pipeLength = tag.getFloat(CompoundTagKeys.PIPE_LENGTH);
+    this.pipeLength = tag.getFloat(CompoundTagKeys.PIPE_LENGTH).orElse(0F);
   }
 
   @Override

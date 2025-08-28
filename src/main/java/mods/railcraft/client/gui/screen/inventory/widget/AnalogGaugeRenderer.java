@@ -1,12 +1,9 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
@@ -37,10 +34,6 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     // set the needle angle between 30° (= 0%) and 150° (= 100%)
     float angle = (120 * value + 30) * Mth.DEG_TO_RAD;
 
-    var tesselator = Tesselator.getInstance();
-
-    var buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
     float cosA = Mth.cos(angle);
     float sinA = Mth.sin(angle);
 
@@ -69,20 +62,20 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     float by = gy + this.widget.h;
 
     var matrix = guiGraphics.pose().last().pose();
-    buffer
+    var vertexConsumer =
+        Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.guiOverlay());
+    vertexConsumer
         .addVertex(matrix, bx - baseOffset, by, z)
         .setColor(red, green, blue, alpha);
-    buffer
+    vertexConsumer
         .addVertex(matrix, bx + baseOffset, by, z)
         .setColor(red, green, blue, alpha);
-    buffer
+    vertexConsumer
         .addVertex(matrix, bx - glx + gwx, by - (gly + gwy), z)
         .setColor(red, green, blue, alpha);
-    buffer
+    vertexConsumer
         .addVertex(matrix, bx - glx - gwx, by - (gly - gwy), z)
         .setColor(red, green, blue, alpha);
-
-    BufferUploader.drawWithShader(buffer.buildOrThrow());
 
     guiGraphics.blit(RenderType::guiTextured, widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
         this.widget.ov, 4, 3, 256, 256);

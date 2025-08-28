@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -76,6 +77,14 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   public SteamTurbineModule getSteamTurbineModule() {
     return this.module;
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    if (this.level instanceof ServerLevel serverLevel) {
+      ((SteamTurbineBlock) state.getBlock()).deregisterNode(serverLevel, pos);
+    }
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,

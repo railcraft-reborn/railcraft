@@ -50,7 +50,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
     this.signalReceiver.destroy();
@@ -138,10 +138,12 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
-    this.signalReceiver
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
+    tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER).ifPresent(compoundTag -> {
+      this.signalReceiver.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
     implements BlockEntityRenderer<T> {
@@ -26,7 +27,7 @@ public class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity>
   @Override
   public void render(T blockEntity, float partialTick,
       PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
-      int packedOverlay) {
+      int packedOverlay, Vec3 vec3) {
     interiorModel.setAll(interiorModel.new Face()
         .setSprite(Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS)
             .apply(INTERIOR_TEXTURE_LOCATION)));

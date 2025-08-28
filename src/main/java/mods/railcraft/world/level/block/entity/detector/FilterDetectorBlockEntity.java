@@ -8,7 +8,6 @@ import mods.railcraft.util.container.AdvancedContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +35,9 @@ public abstract class FilterDetectorBlockEntity extends DetectorBlockEntity
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.invFilters.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
+    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(containerTag -> {
+      this.invFilters.fromTag(containerTag, provider);
+    });
   }
 
   @Override

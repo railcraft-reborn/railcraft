@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
 import mods.railcraft.network.to_server.UpdateAuraByKeyMessage;
@@ -19,19 +19,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
-public class GogglesItem extends ArmorItem {
+public class GogglesItem extends Item {
 
-  public GogglesItem(ArmorMaterial material, ArmorType type, Properties properties) {
-    super(material, type, properties);
+  public GogglesItem(Properties properties) {
+    super(properties);
   }
 
   public static Aura getAura(ItemStack itemStack) {
@@ -85,10 +84,10 @@ public class GogglesItem extends ArmorItem {
   }
 
   @Override
-  public void appendHoverText(ItemStack itemStack, TooltipContext context,
-      List<Component> lines, TooltipFlag adv) {
-    lines.add(getDescriptionText(getAura(itemStack).getDisplayName(), true));
-    lines.add(Component.translatable(Translations.Tips.GOGGLES_DESC)
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(getDescriptionText(getAura(stack).getDisplayName(), true));
+    tooltipAdder.accept(Component.translatable(Translations.Tips.GOGGLES_DESC)
         .withStyle(ChatFormatting.GRAY));
   }
 

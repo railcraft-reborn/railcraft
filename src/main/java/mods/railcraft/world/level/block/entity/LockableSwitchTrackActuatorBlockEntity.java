@@ -48,13 +48,13 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
+    tag.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lock = Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
+    this.lock = tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
   }
 
   @Override
@@ -74,7 +74,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     UNLOCKED("unlocked", ButtonTexture.UNLOCKED_BUTTON),
     LOCKED("locked", ButtonTexture.LOCKED_BUTTON);
 
-    private static final StringRepresentable.EnumCodec<Lock> CODEC =
+    public static final StringRepresentable.EnumCodec<Lock> CODEC =
         StringRepresentable.fromEnum(Lock::values);
 
     private final String name;
@@ -103,10 +103,6 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
     }
   }
 }

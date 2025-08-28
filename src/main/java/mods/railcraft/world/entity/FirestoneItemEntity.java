@@ -77,17 +77,14 @@ public class FirestoneItemEntity extends ItemEntity {
         if (blockEntity instanceof RitualBlockEntity fireEntity) {
           var firestone = getItem();
           fireEntity.setCharge(firestone.getMaxDamage() - firestone.getDamageValue());
-          if (firestone.has(DataComponents.CUSTOM_NAME))
+          if (firestone.has(DataComponents.CUSTOM_NAME)) {
             fireEntity.setItemName(firestone.getDisplayName());
+          }
           this.kill(serverLevel);
           return;
         }
       }
     }
-  }
-
-  public boolean isRefined() {
-    return this.refined;
   }
 
   public void setRefined(boolean refined) {
@@ -103,6 +100,6 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void readAdditionalSaveData(CompoundTag compound) {
     super.readAdditionalSaveData(compound);
-    this.refined = compound.getBoolean(CompoundTagKeys.REFINED);
+    this.refined = compound.getBoolean(CompoundTagKeys.REFINED).orElse(false);
   }
 }

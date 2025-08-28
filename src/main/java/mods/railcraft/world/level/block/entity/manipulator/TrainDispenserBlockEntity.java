@@ -16,7 +16,6 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -129,8 +128,9 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.invPattern.fromTag(
-        tag.getList(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, Tag.TAG_COMPOUND), provider);
+    tag.getList(CompoundTagKeys.TRAIN_DISPENSER_FILTERS).ifPresent(listTag -> {
+      this.invPattern.fromTag(listTag, provider);
+    });
   }
 
   @Nullable

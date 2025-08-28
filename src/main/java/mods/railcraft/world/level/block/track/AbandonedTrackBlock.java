@@ -1,14 +1,6 @@
 package mods.railcraft.world.level.block.track;
 
-import java.util.List;
-import mods.railcraft.Translations;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -42,16 +34,5 @@ public class AbandonedTrackBlock extends TrackBlock {
         .anyMatch(s -> context.getLevel().getBlockState(context.getClickedPos().relative(s))
             .is(Blocks.TALL_GRASS));
     return super.getStateForPlacement(context).setValue(GRASS, grass);
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context,
-      List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Translations.Tips.DANGER)
-        .append(CommonComponents.SPACE)
-        .append(Component.translatable(Translations.Tips.DERAILMENT_RISK))
-        .withStyle(ChatFormatting.BLUE));
-    tooltip.add(Component.translatable(Translations.Tips.ABANDONED_TRACK)
-        .withStyle(ChatFormatting.GRAY));
   }
 }

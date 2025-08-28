@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
@@ -106,7 +104,7 @@ public final class FluidTools {
     DRAINING("draining"),
     RESET("reset");
 
-    private static final StringRepresentable.EnumCodec<ProcessState> CODEC =
+    public static final StringRepresentable.EnumCodec<ProcessState> CODEC =
         StringRepresentable.fromEnum(ProcessState::values);
 
     private final String name;
@@ -118,14 +116,6 @@ public final class FluidTools {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static ProcessState fromName(String name) {
-      return CODEC.byName(name, ProcessState.RESET);
-    }
-
-    public static ProcessState fromTag(CompoundTag tag) {
-      return fromName(tag.getString(CompoundTagKeys.PROCESS_STATE));
     }
   }
 

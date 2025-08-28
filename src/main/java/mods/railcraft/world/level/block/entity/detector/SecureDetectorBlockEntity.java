@@ -41,13 +41,13 @@ public class SecureDetectorBlockEntity extends DetectorBlockEntity implements Lo
   @Override
   public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
+    tag.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lock = Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
+    this.lock = tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
   }
 
   @Override

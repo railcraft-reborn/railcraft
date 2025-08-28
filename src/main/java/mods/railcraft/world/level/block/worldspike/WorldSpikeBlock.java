@@ -46,13 +46,8 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
     }
   }
 
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean movedByPiston) {
-    super.onRemove(state, level, pos, oldState, movedByPiston);
-    if (level instanceof ServerLevel serverLevel && !state.is(oldState.getBlock())) {
-      this.forceChunk(serverLevel, pos, false);
-    }
+  public void removeChunks(ServerLevel serverLevel, BlockPos pos) {
+    this.forceChunk(serverLevel, pos, false);
   }
 
   private void forceChunk(ServerLevel serverLevel, BlockPos pos, boolean add) {

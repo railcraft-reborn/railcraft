@@ -10,7 +10,7 @@ import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
@@ -22,10 +22,6 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
 
   public ForceTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.FORCE_TRACK.get(), blockPos, blockState);
-  }
-
-  public void blockRemoved() {
-    this.emitter.clearTracks(this.getBlockPos());
   }
 
   public void neighborChanged() {
@@ -44,25 +40,38 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   @Override
   public void onLoad() {
     super.onLoad();
-    this.emitter = this.emitterPos == null
-        ? null
-        : this.level
-            .getBlockEntity(this.emitterPos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
-            .orElse(null);
+    if (this.emitterPos == null) {
+      this.emitter = null;
+      return;
+    }
+    this.emitter = this.level
+        .getBlockEntity(this.emitterPos, RailcraftBlockEntityTypes.FORCE_TRACK_EMITTER.get())
+        .orElse(null);
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    if (this.emitter != null) {
+      this.emitter.clearTracks(this.getBlockPos());
+    }
+
+    if (this.level instanceof ServerLevel serverLevel) {
+      var block = (ForceTrackBlock) state.getBlock();
+      if (block.getTrackType().isElectric()) {
+        block.deregisterNode(serverLevel, pos);
+      }
+    }
   }
 
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    if (this.emitterPos != null) {
-      tag.put(CompoundTagKeys.EMITTER_POS, NbtUtils.writeBlockPos(this.emitterPos));
-    }
+    tag.storeNullable(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC, this.emitterPos);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    if (tag.contains(CompoundTagKeys.EMITTER_POS)) {
-      this.emitterPos = NbtUtils.readBlockPos(tag, CompoundTagKeys.EMITTER_POS).orElse(null);
-    }
+    this.emitterPos = tag.read(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC).orElse(null);
   }
 }

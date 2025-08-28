@@ -831,7 +831,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putInt(CompoundTagKeys.FACING, getFacing().get3DDataValue());
+    tag.store(CompoundTagKeys.FACING, Direction.CODEC, getFacing());
     tag.putInt(CompoundTagKeys.DELAY, getDelay());
     tag.putBoolean(CompoundTagKeys.ACTIVE, isActive());
     tag.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
@@ -841,11 +841,11 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    setFacing(Direction.from3DDataValue(tag.getInt(CompoundTagKeys.FACING)));
-    setDelay(tag.getInt(CompoundTagKeys.DELAY));
-    setActive(tag.getBoolean(CompoundTagKeys.ACTIVE));
-    setBurnTime(tag.getInt(CompoundTagKeys.BURN_TIME));
-    setFuel(tag.getInt(CompoundTagKeys.FUEL));
+    setFacing(tag.read(CompoundTagKeys.FACING, Direction.CODEC).orElse(Direction.SOUTH));
+    setDelay(tag.getInt(CompoundTagKeys.DELAY).orElse(0));
+    setActive(tag.getBoolean(CompoundTagKeys.ACTIVE).orElse(false));
+    setBurnTime(tag.getInt(CompoundTagKeys.BURN_TIME).orElse(0));
+    setFuel(tag.getInt(CompoundTagKeys.FUEL).orElse(0));
   }
 
   protected int getDelay() {

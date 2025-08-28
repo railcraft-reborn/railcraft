@@ -66,7 +66,7 @@ public class ChimneyBlockEntity extends RailcraftBlockEntity {
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.color = tag.getInt(CompoundTagKeys.COLOR);
+    this.color = tag.getInt(CompoundTagKeys.COLOR).orElse(DyeColor.BLACK.getFireworkColor());
   }
 
   @Override

@@ -18,6 +18,7 @@ import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -44,7 +45,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
   }
@@ -71,16 +72,17 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putUUID(CompoundTagKeys.TOKEN_RING_ID, this.ringId);
+    tag.store(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC, this.ringId);
     tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.ringId = tag.getUUID(CompoundTagKeys.TOKEN_RING_ID);
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+    this.ringId = tag.read(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC).orElse(UUID.randomUUID());
+    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

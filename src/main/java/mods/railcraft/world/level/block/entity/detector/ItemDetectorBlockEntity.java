@@ -60,7 +60,7 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
                 return Redstone.SIGNAL_MAX;
               continue;
             case ANALOG:
-              return containerManipulator.calcRedstone();
+              return containerManipulator.getRedstoneSignal();
           }
         }
 
@@ -110,15 +110,17 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.primaryMode = PrimaryMode.fromName(tag.getString(CompoundTagKeys.PRIMARY_MODE));
-    this.filterMode = FilterMode.fromName(tag.getString(CompoundTagKeys.FILTER_MODE));
+    this.primaryMode = tag.read(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC)
+        .orElse(PrimaryMode.ANYTHING);
+    this.filterMode = tag.read(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC)
+        .orElse(FilterMode.AT_LEAST);
   }
 
   @Override
   public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.PRIMARY_MODE, this.primaryMode.getSerializedName());
-    tag.putString(CompoundTagKeys.FILTER_MODE, this.filterMode.getSerializedName());
+    tag.store(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC, this.primaryMode);
+    tag.store(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC, this.filterMode);
   }
 
   @Override
@@ -192,10 +194,6 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     public String getSerializedName() {
       return this.name;
     }
-
-    public static PrimaryMode fromName(String name) {
-      return CODEC.byName(name, ANYTHING);
-    }
   }
 
   public enum FilterMode implements StringRepresentable {
@@ -230,10 +228,6 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static FilterMode fromName(String name) {
-      return CODEC.byName(name, AT_LEAST);
     }
   }
 }

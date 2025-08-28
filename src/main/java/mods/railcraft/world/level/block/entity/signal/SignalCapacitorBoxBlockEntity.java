@@ -133,18 +133,17 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     super.saveAdditional(tag, provider);
     tag.putShort(CompoundTagKeys.TICKS_POWERED, this.ticksPowered);
     tag.putShort(CompoundTagKeys.TICKS_TO_POWER, this.ticksToPower);
-    tag.putString(CompoundTagKeys.SIGNAL_ASPECT, this.signalAspect.getSerializedName());
-    tag.putString(CompoundTagKeys.MODE, this.mode.getSerializedName());
+    tag.store(CompoundTagKeys.SIGNAL_ASPECT, SignalAspect.CODEC, this.signalAspect);
+    tag.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.ticksPowered = tag.getShort(CompoundTagKeys.TICKS_POWERED);
-    this.ticksToPower = tag.getShort(CompoundTagKeys.TICKS_TO_POWER);
-    this.signalAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.SIGNAL_ASPECT)).orElse(SignalAspect.OFF);
-    this.mode = Mode.fromName(tag.getString(CompoundTagKeys.MODE));
+    this.ticksPowered = tag.getShort(CompoundTagKeys.TICKS_POWERED).orElse((short) 0);
+    this.ticksToPower = tag.getShort(CompoundTagKeys.TICKS_TO_POWER).orElse((short) 0);
+    this.signalAspect = tag.read(CompoundTagKeys.SIGNAL_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.OFF);
+    this.mode = tag.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.RISING_EDGE);
   }
 
   @Override
@@ -215,10 +214,6 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     @Override
     public Mode next() {
       return EnumUtil.next(this, values());
-    }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, RISING_EDGE);
     }
   }
 }

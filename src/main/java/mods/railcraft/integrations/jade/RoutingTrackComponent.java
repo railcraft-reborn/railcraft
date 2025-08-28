@@ -26,11 +26,11 @@ class RoutingTrackComponent implements IBlockComponentProvider,
   public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
     if (accessor.getBlock() instanceof RoutingTrackBlock) {
       var tag = accessor.getServerData();
-      if (tag.contains(CompoundTagKeys.DESTINATION)) {
-        tooltip.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST)
-            .append(CommonComponents.SPACE)
-            .append(tag.getString(CompoundTagKeys.DESTINATION)));
-      }
+      tag.getString(CompoundTagKeys.DESTINATION).ifPresent(
+          dest -> tooltip.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST)
+              .append(CommonComponents.SPACE)
+              .append(dest))
+      );
       tooltip.remove(JadeIds.UNIVERSAL_ITEM_STORAGE);
     }
   }

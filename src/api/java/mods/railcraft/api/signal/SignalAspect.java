@@ -6,7 +6,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
-import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
@@ -47,7 +46,7 @@ public enum SignalAspect implements StringRepresentable {
    */
   OFF("off", 0);
 
-  private static final StringRepresentable.EnumCodec<SignalAspect> CODEC =
+  public static final StringRepresentable.EnumCodec<SignalAspect> CODEC =
       StringRepresentable.fromEnum(SignalAspect::values);
 
   private final String name;
@@ -192,9 +191,5 @@ public enum SignalAspect implements StringRepresentable {
       return first;
     }
     return second;
-  }
-
-  public static Optional<SignalAspect> fromName(String name) {
-    return Optional.ofNullable(CODEC.byName(name));
   }
 }

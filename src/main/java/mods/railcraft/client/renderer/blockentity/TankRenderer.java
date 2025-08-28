@@ -25,7 +25,7 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
 
   @Override
   public void render(TankBlockEntity blockEntity, float partialTicks, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
     var consumer = bufferSource.getBuffer(Sheets.cutoutBlockSheet());
     var maxY = blockEntity.getMaxY();
 

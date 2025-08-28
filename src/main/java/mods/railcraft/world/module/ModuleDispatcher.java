@@ -74,10 +74,11 @@ public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<C
       return;
     }
     this.moduleByName.forEach((name, module) -> {
-      var moduleTag = tag.getCompound(name);
-      if (!moduleTag.isEmpty()) {
-        module.deserializeNBT(provider, moduleTag);
-      }
+      tag.getCompound(name).ifPresent(moduleTag -> {
+        if (!moduleTag.isEmpty()) {
+          module.deserializeNBT(provider, moduleTag);
+        }
+      });
     });
   }
 }

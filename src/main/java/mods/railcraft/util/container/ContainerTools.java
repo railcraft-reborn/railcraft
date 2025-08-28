@@ -75,12 +75,13 @@ public abstract class ContainerTools {
 
   public static void readContainer(Container container, ListTag tag, HolderLookup.Provider provider) {
     for (byte i = 0; i < tag.size(); i++) {
-      var slotTag = tag.getCompound(i);
-      int slot = slotTag.getByte(CompoundTagKeys.INDEX);
-      if (slot >= 0 && slot < container.getContainerSize()) {
-        ItemStack.parse(provider, slotTag)
-            .ifPresent(itemStack -> container.setItem(slot, itemStack));
-      }
+      var slotTag = tag.getCompound(i).orElseThrow();
+      slotTag.getByte(CompoundTagKeys.INDEX).ifPresent(slot -> {
+        if (slot >= 0 && slot < container.getContainerSize()) {
+          ItemStack.parse(provider, slotTag)
+              .ifPresent(itemStack -> container.setItem(slot, itemStack));
+        }
+      });
     }
   }
 

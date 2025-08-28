@@ -191,8 +191,8 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.burnTime = tag.getInt(CompoundTagKeys.BURN_TIME);
-    this.currentItemBurnTime = tag.getInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME);
+    this.burnTime = tag.getInt(CompoundTagKeys.BURN_TIME).orElse(0);
+    this.currentItemBurnTime = tag.getInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME).orElse(0);
   }
 
   @Override

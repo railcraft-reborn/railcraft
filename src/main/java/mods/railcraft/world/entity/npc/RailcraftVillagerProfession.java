@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.neoforged.bus.api.IEventBus;
@@ -16,13 +17,13 @@ public class RailcraftVillagerProfession {
       DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION, RailcraftConstants.ID);
 
   public static final DeferredHolder<VillagerProfession, VillagerProfession> TRACKMAN = deferredRegister
-      .register("trackman", () -> new VillagerProfession("trackman",
+      .register("trackman", () -> new VillagerProfession(Component.literal("trackman"),
           holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey()),
           holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey()),
           ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_ARMORER));
 
   public static final DeferredHolder<VillagerProfession, VillagerProfession> CARTMAN = deferredRegister
-      .register("cartman", () -> new VillagerProfession("cartman",
+      .register("cartman", () -> new VillagerProfession(Component.literal("cartman"),
           holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey()),
           holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey()),
           ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_ARMORER));

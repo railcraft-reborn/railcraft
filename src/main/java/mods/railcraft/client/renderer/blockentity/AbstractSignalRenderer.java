@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity>
     implements BlockEntityRenderer<T> {
@@ -32,7 +33,7 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
 
   @Override
   public void render(T blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
 
     SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, bufferSource);
 

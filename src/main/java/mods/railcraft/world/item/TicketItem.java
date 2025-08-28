@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.item.component.TooltipDisplay;
 
 public class TicketItem extends Item {
 
@@ -37,33 +38,28 @@ public class TicketItem extends Item {
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list,
-      TooltipFlag flag) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     if (!stack.has(RailcraftDataComponents.TICKET)) {
-      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK)
+      tooltipAdder.accept(Component.translatable(Translations.Tips.ROUTING_TICKET_BLANK)
           .withStyle(ChatFormatting.GRAY));
       return;
     }
     var owner = getOwner(stack);
     if (owner != null) {
-      list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER)
+      tooltipAdder.accept(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER)
           .withStyle(ChatFormatting.AQUA)
           .append(CommonComponents.SPACE)
           .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
     }
 
     String dest = getDestination(stack);
-    list.add(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST)
+    tooltipAdder.accept(Component.translatable(Translations.Tips.ROUTING_TICKET_DEST)
         .withStyle(ChatFormatting.AQUA)
         .append(CommonComponents.SPACE)
         .append((dest.isEmpty()
             ? Component.translatable(Translations.Tips.NONE)
             : Component.literal(dest)).withStyle(ChatFormatting.GRAY)));
-  }
-
-  @Override
-  public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-    return false;
   }
 
   public static ItemStack copyTicket(ItemStack source) {

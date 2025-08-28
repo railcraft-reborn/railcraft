@@ -1,25 +1,18 @@
 package mods.railcraft.world.level.block;
 
-import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
-import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.module.SteamTurbineModule;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -90,7 +83,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
     Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 50);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos,
       RandomSource random) {
@@ -98,23 +90,12 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
     this.registerNode(blockState, level, blockPos);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState oldState,
       boolean moved) {
     super.onPlace(blockState, level, blockPos, oldState, moved);
     if (!blockState.is(oldState.getBlock())) {
       this.registerNode(blockState, (ServerLevel) level, blockPos);
-    }
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
-      boolean moved) {
-    super.onRemove(blockState, level, blockPos, newState, moved);
-    if (!blockState.is(newState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, blockPos);
     }
   }
 
@@ -126,20 +107,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   @Override
   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
     return Charge.distribution.network((ServerLevel) level).access(pos).getComparatorOutput();
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context,
-      List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, context, tooltip, flag);
-    tooltip.add(Component.translatable(Translations.Tips.MULTIBLOCK3X2X2)
-        .withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_1)
-        .withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_2)
-        .withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.STEAM_TURBINE_DESC_3)
-        .withStyle(ChatFormatting.GRAY));
   }
 
   public enum Type implements StringRepresentable {

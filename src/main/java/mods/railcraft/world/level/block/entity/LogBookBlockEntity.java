@@ -20,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -89,19 +88,19 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
 
     var monthAgo = LocalDate.now().minusMonths(1);
 
-    ListTag logList = tag.getList(CompoundTagKeys.ENTRIES, Tag.TAG_COMPOUND);
+    var logList = tag.getList(CompoundTagKeys.ENTRIES).orElse(new ListTag(0));
     for (int i = 0; i < logList.size(); i++) {
-      var compound = logList.getCompound(i);
-      var date = LocalDate.parse(compound.getString(CompoundTagKeys.DATE));
+      var compound = logList.getCompound(i).orElseThrow();
       try {
+        var date = LocalDate.parse(compound.getString(CompoundTagKeys.DATE).orElse(""));
         if (date.isBefore(monthAgo)) {
           continue;
         }
-        var playerList = compound.getList(CompoundTagKeys.PLAYERS, Tag.TAG_COMPOUND);
+        var playerList = compound.getList(CompoundTagKeys.PLAYERS).orElse(new ListTag(0));
         var players = new HashSet<String>();
         for (int j = 0; j < playerList.size(); j++) {
-          var playerCompound = playerList.getCompound(i);
-          players.add(playerCompound.getString("player"));
+          var playerCompound = playerList.getCompound(i).orElseThrow();
+          players.add(playerCompound.getString("player").orElseThrow());
         }
         log.putAll(date, players);
       } catch (DateTimeParseException ignored) {
@@ -147,6 +146,8 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
     log.clear();
-    log.putAll(convertLogFromTag(tag.getCompound(CompoundTagKeys.LOG)));
+    tag.getCompound(CompoundTagKeys.LOG).ifPresent(list -> {
+      log.putAll(convertLogFromTag(list));
+    });
   }
 }

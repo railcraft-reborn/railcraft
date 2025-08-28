@@ -13,7 +13,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -49,7 +48,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
   }
@@ -130,7 +129,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     var aspectsTag = new ListTag();
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
       var nbt = new CompoundTag();
-      nbt.putString(CompoundTagKeys.NAME, entry.getKey().getSerializedName());
+      nbt.store(CompoundTagKeys.NAME, SignalAspect.CODEC, entry.getKey());
       nbt.putByteArray(CompoundTagKeys.SIGNALS, entry.getValue().toByteArray());
       aspectsTag.add(nbt);
     }
@@ -142,18 +141,19 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.inputSignal = tag.getInt(CompoundTagKeys.INPUT_SIGNAL);
+    this.inputSignal = tag.getInt(CompoundTagKeys.INPUT_SIGNAL).orElse(0);
 
-    var aspectsTag = tag.getList(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS, Tag.TAG_COMPOUND);
+    var aspectsTag = tag.getList(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS).orElse(new ListTag());
     for (var nbt : aspectsTag) {
       var compoundNbt = (CompoundTag) nbt;
       this.signalAspectTriggerSignals.put(
-          SignalAspect.fromName(compoundNbt.getString(CompoundTagKeys.NAME)).get(),
-          BitSet.valueOf(compoundNbt.getByteArray(CompoundTagKeys.SIGNALS)));
+          compoundNbt.read(CompoundTagKeys.NAME, SignalAspect.CODEC).orElseThrow(),
+          BitSet.valueOf(compoundNbt.getByteArray(CompoundTagKeys.SIGNALS).orElseThrow()));
     }
 
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

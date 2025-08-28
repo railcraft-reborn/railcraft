@@ -21,7 +21,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -257,14 +256,17 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.TRANSFER_MODE, this.transferMode.getSerializedName());
+    tag.store(CompoundTagKeys.TRANSFER_MODE, TransferMode.CODEC, this.transferMode);
     tag.put(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters().createTag(provider));
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.transferMode = TransferMode.fromName(tag.getString(CompoundTagKeys.TRANSFER_MODE));
-    this.getItemFilters().fromTag(tag.getList(CompoundTagKeys.ITEM_FILTERS, Tag.TAG_COMPOUND), provider);
+    this.transferMode =
+        tag.read(CompoundTagKeys.TRANSFER_MODE, TransferMode.CODEC).orElse(TransferMode.ALL);
+    tag.getList(CompoundTagKeys.ITEM_FILTERS).ifPresent(listTag -> {
+      this.getItemFilters().fromTag(listTag, provider);
+    });
   }
 }

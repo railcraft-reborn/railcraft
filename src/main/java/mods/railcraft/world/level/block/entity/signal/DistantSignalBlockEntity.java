@@ -29,7 +29,13 @@ public class DistantSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  public void blockRemoved() {
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.blockRemoved();
+  }
+
+  private void blockRemoved() {
     this.signalReceiver.destroy();
   }
 
@@ -52,7 +58,9 @@ public class DistantSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.signalReceiver.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+    tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER).ifPresent(compoundTag -> {
+      this.signalReceiver.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

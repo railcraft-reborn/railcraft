@@ -56,11 +56,12 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, ListTag tanksTag) {
     for (int i = 0; i < tanksTag.size(); i++) {
-      var tag = tanksTag.getCompound(i);
-      int index = tag.getByte(CompoundTagKeys.INDEX);
-      if (index >= 0 && index < this.tanks.size()) {
-        this.tanks.get(index).readFromNBT(provider, tag);
-      }
+      var tag = tanksTag.getCompound(i).orElse(new CompoundTag());
+      tag.getByte(CompoundTagKeys.INDEX).ifPresent(index -> {
+        if (index >= 0 && index < this.tanks.size()) {
+          this.tanks.get(index).readFromNBT(provider, tag);
+        }
+      });
     }
   }
 

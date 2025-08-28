@@ -1,56 +1,49 @@
 package mods.railcraft.charge;
 
+import java.util.List;
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public final class ChargeSavedData extends SavedData {
 
   private static final int ABSENT_VALUE = -1;
 
-  private static final String DATA_TAG_PREFIX = "railcraft.charge.";
+  private static final SavedDataType<ChargeSavedData> TYPE = new SavedDataType<>(
+      "railcraft.charge.distribution",
+      ChargeSavedData::new,
+      __ -> RecordCodecBuilder.create(instance -> instance.group(
+          Codec.pair(
+              BlockPos.CODEC.fieldOf(CompoundTagKeys.POS).codec(),
+              ExtraCodecs.NON_NEGATIVE_INT.fieldOf(CompoundTagKeys.VALUE).codec()
+          ).listOf().fieldOf(CompoundTagKeys.BATTERIES).forGetter(data -> from(data.chargeLevels))
+      ).apply(instance, ChargeSavedData::new)));
+
   private final Object2IntMap<BlockPos> chargeLevels =
       Util.make(new Object2IntOpenHashMap<>(), map -> map.defaultReturnValue(ABSENT_VALUE));
 
-  public static ChargeSavedData getFor(Charge network, ServerLevel level) {
-    return level.getDataStorage()
-        .computeIfAbsent(new SavedData.Factory<>(ChargeSavedData::new, (tag, provider) -> {
-          var manager = new ChargeSavedData();
-          manager.load(tag);
-          return manager;
-        }), DATA_TAG_PREFIX + network.getSerializedName());
+  private ChargeSavedData(Context context) {
   }
 
-  @Override
-  public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
-    var batteriesTag = new ListTag();
-    for (var entry : this.chargeLevels.object2IntEntrySet()) {
-      var entryTag = new CompoundTag();
-      entryTag.put(CompoundTagKeys.POS, NbtUtils.writeBlockPos(entry.getKey()));
-      entryTag.putInt(CompoundTagKeys.VALUE, entry.getIntValue());
-      batteriesTag.add(entryTag);
+  private ChargeSavedData(List<Pair<BlockPos, Integer>> batteries) {
+    for (var battery : batteries) {
+      this.chargeLevels.put(battery.getFirst(), battery.getSecond().intValue());
     }
-    tag.put(CompoundTagKeys.BATTERIES, batteriesTag);
-    return tag;
   }
 
-  private void load(CompoundTag tag) {
-    var batteriesTag = tag.getList(CompoundTagKeys.BATTERIES, Tag.TAG_COMPOUND);
-    for (int i = 0; i < batteriesTag.size(); i++) {
-      var entryTag = batteriesTag.getCompound(i);
-      NbtUtils.readBlockPos(entryTag, CompoundTagKeys.POS)
-          .ifPresent(pos -> this.chargeLevels.put(pos, entryTag.getInt(CompoundTagKeys.VALUE)));
-    }
+  private static List<Pair<BlockPos, Integer>> from(Object2IntMap<BlockPos> chargeLevels) {
+    return chargeLevels.object2IntEntrySet().stream()
+        .map(x -> new Pair<>(x.getKey(), x.getIntValue()))
+        .toList();
   }
 
   public void initBattery(ChargeStorageBlockImpl battery) {
@@ -68,5 +61,9 @@ public final class ChargeSavedData extends SavedData {
     if (this.chargeLevels.removeInt(pos) != ABSENT_VALUE) {
       this.setDirty();
     }
+  }
+
+  public static ChargeSavedData getFor(ServerLevel level) {
+    return level.getDataStorage().computeIfAbsent(TYPE);
   }
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -31,7 +32,9 @@ public class CreosoteLiquidBlock extends LiquidBlock {
   }
 
   @Override
-  public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+      InsideBlockEffectApplier effectApplier) {
+    super.entityInside(state, level, pos, entity, effectApplier);
     if (entity instanceof LivingEntity living) {
       var potion = RailcraftMobEffects.CREOSOTE;
       if (!living.hasEffect(potion)) {

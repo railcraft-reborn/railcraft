@@ -135,6 +135,11 @@ public final class CompoundTagKeys {
   public static final String VALUE = "value";
   public static final String WATER_TANK = "waterTank";
   public static final String WHISTLE_PITCH = "whistlePitch";
+  public static final String IS_RECHARGEABLE = "isRechargeable";
+  public static final String CAPACITY = "capacity";
+  public static final String MAX_DRAW = "maxDraw";
+  public static final String LOSS = "loss";
+  public static final String EFFICIENCY = "efficiency";
 
   private CompoundTagKeys() {
   }

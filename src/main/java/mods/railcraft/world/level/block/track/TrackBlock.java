@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -83,9 +84,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.trackType.get().getSpikeMaulVariants();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     if (this.getTrackType().isElectric()) {
       this.registerNode(state, level, pos);
@@ -135,11 +135,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
-      boolean moved) {
-    super.onRemove(blockState, level, pos, newBlockState, moved);
-    if (this.getTrackType().isElectric() && !blockState.is(newBlockState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
+  protected void affectNeighborsAfterRemoval(BlockState blockState, ServerLevel level,
+      BlockPos pos, boolean movedByPiston) {
+    super.affectNeighborsAfterRemoval(blockState, level, pos, movedByPiston);
+    if (this.getTrackType().isElectric()) {
+      this.deregisterNode(level, pos);
     }
   }
 
@@ -220,7 +220,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+      InsideBlockEffectApplier effectApplier) {
     if (level instanceof ServerLevel serverLevel) {
       this.getTrackType().getEventHandler().entityInside(serverLevel, pos, state, entity);
     }
@@ -248,14 +249,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
       CollisionContext context) {
     RailShape railShape = blockState.is(this) ? blockState.getValue(this.getShapeProperty()) : null;
-    return railShape != null && railShape.isSlope() ? HALF_BLOCK_AABB : FLAT_AABB;
+    return railShape != null && railShape.isSlope() ? SHAPE_SLOPE : SHAPE_FLAT;
   }
 
   /**
    * @see net.minecraft.world.level.block.RailBlock#rotate(BlockState, Rotation)
    */
   @Override
-  public BlockState rotate(BlockState state, Rotation rot) {
+  protected BlockState rotate(BlockState state, Rotation rot) {
     switch (rot) {
       case CLOCKWISE_180:
         switch (state.getValue(getShapeProperty())) {
@@ -333,9 +334,8 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   /**
    * @see net.minecraft.world.level.block.RailBlock#mirror(BlockState, Mirror)
    */
-  @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState state, Mirror mirror) {
+  protected BlockState mirror(BlockState state, Mirror mirror) {
     Property<RailShape> shape = getShapeProperty();
     RailShape railshape = state.getValue(shape);
 

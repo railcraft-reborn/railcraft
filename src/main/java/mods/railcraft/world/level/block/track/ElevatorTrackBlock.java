@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -94,7 +95,6 @@ public class ElevatorTrackBlock extends Block {
     return this.canAttachTo(world, pos.relative(direction.getOpposite()), direction);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
       ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
@@ -142,7 +142,7 @@ public class ElevatorTrackBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState blockState, Mirror mirror) {
+  protected BlockState mirror(BlockState blockState, Mirror mirror) {
     return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
   }
 
@@ -173,9 +173,8 @@ public class ElevatorTrackBlock extends Block {
       level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
       @Nullable Orientation orientation, boolean something) {
     super.neighborChanged(blockState, level, pos, neighborBlock, orientation, something);
     boolean powered = getPowered(blockState);
@@ -184,11 +183,12 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entityIn) {
-    entityIn.fallDistance = 0;
-    if (level.isClientSide() || !(entityIn instanceof AbstractMinecart))
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+      InsideBlockEffectApplier effectApplier) {
+    entity.fallDistance = 0;
+    if (level.isClientSide() || !(entity instanceof AbstractMinecart abstractMinecart))
       return;
-    minecartInteraction(level, (AbstractMinecart) entityIn, pos);
+    minecartInteraction(level, abstractMinecart, pos);
   }
 
   protected boolean determinePowered(Level level, BlockPos pos, BlockState state) {
@@ -255,7 +255,7 @@ public class ElevatorTrackBlock extends Block {
   }
 
   private void holdPosition(BlockState state, AbstractMinecart cart, BlockPos pos) {
-    cart.moveTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
+    cart.snapTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
         getCartRotation(state, cart), 0);
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(1, 0, 1));
   }

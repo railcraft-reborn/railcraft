@@ -12,7 +12,6 @@ import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -58,10 +57,13 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.invResult.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
-    ContainerTools.readContainer(this.craftMatrix,
-        tag.getList(CompoundTagKeys.CRAFT_MATRIX, Tag.TAG_COMPOUND), provider);
-    this.progress = tag.getInt(CompoundTagKeys.PROGRESS);
+    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
+      this.invResult.fromTag(listTag, provider);
+    });
+    tag.getList(CompoundTagKeys.CRAFT_MATRIX).ifPresent(listTag -> {
+      ContainerTools.readContainer(this.craftMatrix, listTag, provider);
+    });
+    this.progress = tag.getInt(CompoundTagKeys.PROGRESS).orElse(0);
   }
 
   @Override

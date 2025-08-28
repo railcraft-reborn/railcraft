@@ -15,7 +15,6 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -78,9 +77,7 @@ public class TankMinecart extends FilteredMinecart
 
   private void tankChanged() {
     var tag = new CompoundTag();
-    tag.put(CompoundTagKeys.TANK, FluidStack.OPTIONAL_CODEC
-        .encode(this.tank.getFluid(), NbtOps.INSTANCE, new CompoundTag())
-        .getOrThrow());
+    tag.store(CompoundTagKeys.TANK, FluidStack.OPTIONAL_CODEC, this.tank.getFluid());
     this.entityData.set(FLUID_STACK, tag);
   }
 
@@ -88,9 +85,9 @@ public class TankMinecart extends FilteredMinecart
   public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
     super.onSyncedDataUpdated(key);
     if (key.equals(FLUID_STACK)) {
-      var fluidStack = FluidStack.OPTIONAL_CODEC
-          .parse(NbtOps.INSTANCE, this.entityData.get(FLUID_STACK).get(CompoundTagKeys.TANK))
-          .getOrThrow();
+      var fluidStack = this.entityData.get(FLUID_STACK)
+          .read(CompoundTagKeys.TANK, FluidStack.OPTIONAL_CODEC)
+          .orElseThrow();
       this.tank.setFluid(fluidStack);
     }
   }
@@ -143,15 +140,18 @@ public class TankMinecart extends FilteredMinecart
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.processState = FluidTools.ProcessState.fromTag(tag);
-    this.tank.readFromNBT(this.registryAccess(), tag.getCompound(CompoundTagKeys.TANK));
+    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
+    tag.getCompound(CompoundTagKeys.TANK).ifPresent(compoundTag -> {
+      this.tank.readFromNBT(this.registryAccess(), compoundTag);
+    });
     this.tankChanged();
   }
 
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
+    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
     var tankTag = new CompoundTag();
     this.tank.writeToNBT(this.registryAccess(), tankTag);
     tag.put(CompoundTagKeys.TANK, tankTag);

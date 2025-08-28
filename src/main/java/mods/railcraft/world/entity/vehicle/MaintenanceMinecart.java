@@ -103,13 +103,13 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   protected void addAdditionalSaveData(CompoundTag tag) {
     super.addAdditionalSaveData(tag);
-    tag.putString(CompoundTagKeys.MODE, this.mode().getSerializedName());
+    tag.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode());
   }
 
   @Override
   protected void readAdditionalSaveData(CompoundTag tag) {
     super.readAdditionalSaveData(tag);
-    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
+    this.setMode(tag.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.ON));
   }
 
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
@@ -184,10 +184,6 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, ON);
     }
   }
 }

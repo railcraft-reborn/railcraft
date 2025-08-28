@@ -46,14 +46,14 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
   @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.LOCK, this.lock.getSerializedName());
+    tag.store(CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC, this.lock);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lock =
-        LockableSwitchTrackActuatorBlockEntity.Lock.fromName(tag.getString(CompoundTagKeys.LOCK));
+    this.lock = tag.read( CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC)
+            .orElse(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED);
   }
 
   @Override

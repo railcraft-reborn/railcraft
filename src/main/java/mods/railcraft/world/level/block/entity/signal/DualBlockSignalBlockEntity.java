@@ -29,7 +29,7 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
     }
   }
 
-  public void blockRemoved() {
+  protected void blockRemoved() {
     this.signalReceiver.destroy();
   }
 
@@ -58,7 +58,9 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
   @Override
   public void loadAdditional( CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional( tag, provider);
-    this.signalReceiver.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+    tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER).ifPresent(compoundTag -> {
+      this.signalReceiver.deserializeNBT(provider, compoundTag);
+    });
   }
 
   @Override

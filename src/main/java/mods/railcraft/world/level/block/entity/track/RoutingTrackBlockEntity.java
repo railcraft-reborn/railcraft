@@ -8,12 +8,14 @@ import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.world.inventory.RoutingTrackMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +43,18 @@ public class RoutingTrackBlockEntity extends LockableTrackBlockEntity implements
   }
 
   @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
+    if (this.level instanceof ServerLevel serverLevel) {
+      var block = (RoutingTrackBlock) state.getBlock();
+      if (block.getTrackType().isElectric()) {
+        block.deregisterNode(serverLevel, pos);
+      }
+    }
+  }
+
+  @Override
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
     tag.put(CompoundTagKeys.CONTAINER, this.container.createTag(provider));
@@ -49,7 +63,9 @@ public class RoutingTrackBlockEntity extends LockableTrackBlockEntity implements
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
+    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
+      this.container.fromTag(listTag, provider);
+    });
   }
 
   @Override

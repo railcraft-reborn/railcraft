@@ -70,7 +70,7 @@ public class ChargeNetworkImpl implements Charge.Network {
   public ChargeNetworkImpl(Charge network, ServerLevel level) {
     this.network = network;
     this.level = level;
-    this.chargeSavedData = ChargeSavedData.getFor(network, level);
+    this.chargeSavedData = ChargeSavedData.getFor(level);
   }
 
   public void tick() {

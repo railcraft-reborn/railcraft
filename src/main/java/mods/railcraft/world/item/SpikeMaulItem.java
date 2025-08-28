@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 import mods.railcraft.Translations.Tips;
@@ -12,6 +13,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +29,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.Weapon;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.LevelReader;
@@ -39,6 +43,7 @@ public class SpikeMaulItem extends Item {
   public SpikeMaulItem(float attackDamage, float attackSpeed, ToolMaterial material, Properties properties) {
     super(properties
         .durability(material.durability())
+        .component(DataComponents.WEAPON, new Weapon(1, Weapon.AXE_DISABLES_BLOCKING_FOR_SECONDS))
         .attributes(
             ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
@@ -128,14 +133,8 @@ public class SpikeMaulItem extends Item {
   }
 
   @Override
-  public boolean canDisableShield(ItemStack itemStack, ItemStack shieldStack, LivingEntity entity,
-      LivingEntity attacker) {
-    return true;
-  }
-
-  @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> components, TooltipFlag isAdvanced) {
-    components.add(Component.translatable(Tips.SPIKE_MAUL).withStyle(ChatFormatting.GRAY));
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component.translatable(Tips.SPIKE_MAUL).withStyle(ChatFormatting.GRAY));
   }
 }

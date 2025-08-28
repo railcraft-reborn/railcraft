@@ -103,15 +103,17 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public CompoundTag serializeNBT(HolderLookup.Provider provider) {
     var tag = super.serializeNBT(provider);
     tag.put(CompoundTagKeys.TANK, this.tank.writeToNBT(provider, new CompoundTag()));
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
+    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
+    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
     return tag;
   }
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.tank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.TANK));
-    this.processState = FluidTools.ProcessState.fromTag(tag);
+    this.tank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.TANK).orElse(new CompoundTag()));
+    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
   }
 
   @Override

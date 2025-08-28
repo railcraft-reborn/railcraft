@@ -267,7 +267,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    if (tag.getBoolean(CompoundTagKeys.MASTER)) {
+    if (tag.getBoolean(CompoundTagKeys.MASTER).orElse(false)) {
       this.enqueueEvaluation();
     }
   }

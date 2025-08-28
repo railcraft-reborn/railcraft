@@ -16,6 +16,7 @@ import mods.railcraft.world.signal.SimpleTokenRing;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -55,7 +56,13 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  public void blockRemoved() {
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.blockRemoved();
+  }
+
+  protected void blockRemoved() {
     this.signalController.destroy();
     if (!this.level.isClientSide()) {
       this.signalNetwork().removePeer(this.getBlockPos());
@@ -100,14 +107,16 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
     tag.put(CompoundTagKeys.NETWORK, this.signalController.serializeNBT(provider));
-    tag.putUUID(CompoundTagKeys.TOKEN_RING_ID, this.ringId);
+    tag.store(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC, this.ringId);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.signalController.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.NETWORK));
-    this.ringId = tag.getUUID(CompoundTagKeys.TOKEN_RING_ID);
+    tag.getCompound(CompoundTagKeys.NETWORK).ifPresent(compoundTag -> {
+      this.signalController.deserializeNBT(provider, compoundTag);
+    });
+    this.ringId = tag.read(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC).orElse(UUID.randomUUID());
   }
 
   @Override

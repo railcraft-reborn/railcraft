@@ -1,6 +1,5 @@
 package mods.railcraft.api.carts;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -70,6 +69,9 @@ public interface Train {
     IDLE("idle"),
     NORMAL("normal");
 
+    public static final StringRepresentable.EnumCodec<State> CODEC =
+        StringRepresentable.fromEnum(State::values);
+
     private final String name;
 
     State(String name) {
@@ -83,10 +85,6 @@ public interface Train {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Optional<State> fromName(String name) {
-      return Arrays.stream(values()).filter(state -> state.name.equals(name)).findAny();
     }
   }
 }

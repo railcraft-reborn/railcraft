@@ -45,7 +45,7 @@ public class ReversibleOutfittedTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
-  public BlockState rotate(BlockState blockState, Rotation rotation) {
+  protected BlockState rotate(BlockState blockState, Rotation rotation) {
     return rotation == Rotation.CLOCKWISE_180 ? blockState.cycle(REVERSED) : blockState;
   }
 

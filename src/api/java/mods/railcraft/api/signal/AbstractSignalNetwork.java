@@ -20,9 +20,6 @@ import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -140,24 +137,15 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
 
   @Override
   public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var peersTag = new ListTag();
-    for (var peer : this.peers) {
-      var posTag = new CompoundTag();
-      posTag.put(CompoundTagKeys.POS, NbtUtils.writeBlockPos(peer));
-      peersTag.add(posTag);
-    }
     var tag = new CompoundTag();
-    tag.put(CompoundTagKeys.PEER_POS, peersTag);
+    tag.store(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf(), new ArrayList<>(this.peers));
     return tag;
   }
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    var peersTag = tag.getList(CompoundTagKeys.PEER_POS, Tag.TAG_COMPOUND);
-    peersTag.stream()
-        .map(CompoundTag.class::cast)
-        .map(posTag -> NbtUtils.readBlockPos(posTag, CompoundTagKeys.POS).orElseThrow())
-        .forEach(this.peers::add);
+    this.peers.addAll(
+        tag.read(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf()).orElse(new ArrayList<>()));
   }
 
   @Override

@@ -132,9 +132,18 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     this.removeTrack(toRemove);
   }
 
-  public void clearTracks() {
+  private void clearTracks() {
     this.clearTracks(this.getBlockPos().above()
         .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState())));
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.clearTracks();
+    if (level instanceof ServerLevel serverLevel) {
+      ((ForceTrackEmitterBlock) state.getBlock()).deregisterNode(serverLevel, pos);
+    }
   }
 
   public void clearTracks(BlockPos startPos) {
@@ -214,13 +223,13 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.saveAdditional(tag, provider);
     tag.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
-    tag.putString(CompoundTagKeys.STATE, this.stateInstance.state().getSerializedName());
+    tag.store(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC, this.stateInstance.state());
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT);
-    ForceTrackEmitterState.fromName(tag.getString(CompoundTagKeys.STATE))
+    this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT).orElse(0);
+    tag.read(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC)
         .ifPresent(this::loadState);
   }
 }

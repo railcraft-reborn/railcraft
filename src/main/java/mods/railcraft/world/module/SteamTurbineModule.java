@@ -10,7 +10,6 @@ import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
@@ -112,12 +111,13 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
     super.deserializeNBT(provider, tag);
-    this.steamTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.STEAM_TANK));
-    this.waterTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.WATER_TANK));
-    this.rotorContainer
-        .fromTag(tag.getList(CompoundTagKeys.ROTOR_CONTAINER, Tag.TAG_COMPOUND), provider);
-    this.energy = tag.getInt(CompoundTagKeys.ENERGY);
-    this.operatingRatio = tag.getFloat(CompoundTagKeys.OPERATING_RATIO);
+    this.steamTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.STEAM_TANK).orElse(new CompoundTag()));
+    this.waterTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.WATER_TANK).orElse(new CompoundTag()));
+    tag.getList(CompoundTagKeys.ROTOR_CONTAINER).ifPresent(rotorContainer -> {
+      this.rotorContainer.fromTag(rotorContainer, provider);
+    });
+    this.energy = tag.getInt(CompoundTagKeys.ENERGY).orElse(0);
+    this.operatingRatio = tag.getFloat(CompoundTagKeys.OPERATING_RATIO).orElse(0F);
   }
 
   private static ItemStack useRotor(ServerLevel level, ItemStack stack) {

@@ -76,6 +76,6 @@ public class HoldingLockingProfile implements LockingModeController {
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.launchForward = tag.getBoolean(CompoundTagKeys.LAUNCH_FORWARD);
+    this.launchForward = tag.getBoolean(CompoundTagKeys.LAUNCH_FORWARD).orElse(true);
   }
 }

@@ -18,6 +18,7 @@ import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -254,31 +255,29 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     tag.putBoolean(CompoundTagKeys.TRAIN_LEAVING, this.trainLeaving);
     tag.putInt(CompoundTagKeys.TRAIN_DELAY, this.trainDelay);
     if (this.prevCart != null) {
-      tag.putUUID(CompoundTagKeys.PREV_CART_ID, this.prevCart.getUUID());
+      tag.store(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC, this.prevCart.getUUID());
     }
     if (this.currentCart != null) {
-      tag.putUUID(CompoundTagKeys.CURRENT_CART_ID, this.currentCart.getUUID());
+      tag.store(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC, this.currentCart.getUUID());
     }
-    tag.putUUID(CompoundTagKeys.LOCK_ID, this.lockId);
+    tag.store(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC, this.lockId);
   }
 
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lockingModeController =
-        LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
-    this.lockingModeController.deserializeNBT(provider,
-        tag.getCompound(CompoundTagKeys.LOCKING_MODE_CONTROLLER));
-    this.locked = tag.getBoolean(CompoundTagKeys.LOCKED);
-    this.trainLeaving = tag.getBoolean(CompoundTagKeys.TRAIN_LEAVING);
-    this.trainDelay = tag.getInt(CompoundTagKeys.TRAIN_DELAY);
-    if (tag.hasUUID(CompoundTagKeys.PREV_CART_ID)) {
-      this.prevCartId = tag.getUUID(CompoundTagKeys.PREV_CART_ID);
-    }
-    if (tag.hasUUID(CompoundTagKeys.CURRENT_CART_ID)) {
-      this.currentCartId = tag.getUUID(CompoundTagKeys.CURRENT_CART_ID);
-    }
-    this.lockId = tag.getUUID(CompoundTagKeys.LOCK_ID);
+    this.lockingModeController = LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
+    tag.getCompound(CompoundTagKeys.LOCKING_MODE_CONTROLLER).ifPresent(controllerTag -> {
+      this.lockingModeController.deserializeNBT(provider, controllerTag);
+    });
+    this.locked = tag.getBoolean(CompoundTagKeys.LOCKED).orElse(false);
+    this.trainLeaving = tag.getBoolean(CompoundTagKeys.TRAIN_LEAVING).orElse(false);
+    this.trainDelay = tag.getInt(CompoundTagKeys.TRAIN_DELAY).orElse(0);
+    tag.read(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC)
+        .ifPresent(uuid -> this.prevCartId = uuid);
+    tag.read(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC)
+        .ifPresent(uuid -> this.currentCartId = uuid);
+    this.lockId = tag.read(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC).orElseThrow();
   }
 
   @Override

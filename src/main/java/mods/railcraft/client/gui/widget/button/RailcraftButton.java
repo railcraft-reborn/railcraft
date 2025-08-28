@@ -2,7 +2,6 @@ package mods.railcraft.client.gui.widget.button;
 
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.blaze3d.systems.RenderSystem;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,6 +10,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class RailcraftButton extends Button {
@@ -38,14 +38,9 @@ public class RailcraftButton extends Button {
   }
 
   @Override
-  public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
-    RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-    RenderSystem.setShaderColor(1, 1, 1, this.alpha);
     int i = this.getYImage(this.isHoveredOrFocused());
-    RenderSystem.enableBlend();
-    RenderSystem.defaultBlendFunc();
-    RenderSystem.enableDepthTest();
 
     int xOffset = this.texturePosition.x();
     int yOffset = this.texturePosition.y();
@@ -53,10 +48,10 @@ public class RailcraftButton extends Button {
     int w = this.texturePosition.width();
 
     guiGraphics.blit(RenderType::guiTextured, WIDGETS_LOCATION, this.getX(), this.getY(), xOffset,
-        yOffset + i * h, this.width / 2, h, 256, 256);
+        yOffset + i * h, this.width / 2, h, 256, 256, ARGB.white(this.alpha));
     guiGraphics.blit(RenderType::guiTextured, WIDGETS_LOCATION, this.getX() + this.width / 2,
         this.getY(), xOffset + w - this.width / 2, yOffset + i * h,
-        this.width / 2, h, 256, 256);
+        this.width / 2, h, 256, 256, ARGB.white(this.alpha));
     int j = getFGColor();
     guiGraphics.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2,
         this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);

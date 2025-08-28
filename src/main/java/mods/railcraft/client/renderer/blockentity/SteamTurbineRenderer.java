@@ -9,12 +9,13 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlockEntity> {
 
   @Override
   public void render(SteamTurbineBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
     var membership = blockEntity.getUnresolvedMembership().orElse(null);
     if (membership == null || membership.patternElement().marker() != 'W') {
       // not a gauge block

@@ -160,6 +160,9 @@ dependencies {
     //localRuntime "curse.maven:sodium-394468:6173749"
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
+
+    //implementation "curse.maven:edivadlib-638508:6617587"
+    //implementation "curse.maven:solargeneration-336538:6622004"
 }
 
 test {
@@ -184,9 +187,15 @@ spotless {
   }
 }
 
-tasks.register('generatePackageInfos', Task) {
+tasks.register('generatePackageInfos') {
+  def srcDir = layout.projectDirectory.dir("src/main/java")
+  def javaFiles = project.fileTree(srcDir) { include '**/*.java' }
+
+  inputs.dir(srcDir)
+  outputs.upToDateWhen { false }
+
   doLast {
-    fileTree('src/main/java').each { javaFile ->
+    javaFiles.each { javaFile ->
       def packageInfoFile = new File(javaFile.parent, 'package-info.java')
       if (!packageInfoFile.exists()) {
         def pkgName = javaFile.toString().replaceAll(Matcher.quoteReplacement(File.separator), '/')

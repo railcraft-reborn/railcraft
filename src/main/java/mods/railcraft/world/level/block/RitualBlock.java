@@ -69,9 +69,8 @@ public class RitualBlock extends BaseEntityBlock {
     return RefinedFirestoneItem.getItemCharged();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+  protected List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
     var drops = new ArrayList<ItemStack>();
     var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
     if (blockEntity instanceof RitualBlockEntity firestone) {

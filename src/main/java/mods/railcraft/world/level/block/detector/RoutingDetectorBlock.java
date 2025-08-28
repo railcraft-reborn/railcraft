@@ -6,7 +6,6 @@ import mods.railcraft.world.level.block.entity.detector.DetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -49,20 +48,8 @@ public class RoutingDetectorBlock extends DetectorBlock {
     return InteractionResult.SUCCESS;
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean isMoving) {
-    if (!state.is(newState.getBlock())
-        && level.getBlockEntity(pos) instanceof RoutingDetectorBlockEntity routingDetector) {
-      Containers.dropContents(level, pos, routingDetector);
-      level.updateNeighbourForOutputSignal(pos, this);
-    }
-    super.onRemove(state, level, pos, newState, isMoving);
-  }
-
-  @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
       Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     level.getBlockEntity(blockPos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
         .ifPresent(RoutingDetectorBlockEntity::neighborChanged);

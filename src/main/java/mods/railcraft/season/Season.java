@@ -39,8 +39,4 @@ public enum Season implements StringRepresentable {
   public Season getNext() {
     return EnumUtil.next(this, values());
   }
-
-  public static Season fromName(String name) {
-    return CODEC.byName(name, DEFAULT);
-  }
 }

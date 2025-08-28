@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -11,10 +12,8 @@ import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -163,24 +162,19 @@ public final class TrainImpl implements Train {
   }
 
   static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
-    var id = tag.getUUID(CompoundTagKeys.ID);
+    var id = tag.read(CompoundTagKeys.ID, UUIDUtil.CODEC).orElseThrow();
     var train = new TrainImpl(id, minecart);
-    State.fromName(tag.getString(CompoundTagKeys.STATE)).ifPresent(train::setState);
-    tag.getList(CompoundTagKeys.LOCKS, Tag.TAG_INT_ARRAY).stream()
-        .map(NbtUtils::loadUUID)
-        .forEach(train::addLock);
+    tag.read(CompoundTagKeys.STATE, State.CODEC).ifPresent(train::setState);
+    tag.read(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf())
+        .ifPresent(train.locks::addAll);
     return train;
   }
 
   CompoundTag toTag() {
     var tag = new CompoundTag();
-    tag.putUUID(CompoundTagKeys.ID, this.id);
-    tag.putString(CompoundTagKeys.STATE, this.state.getSerializedName());
-    var locksTag = new ListTag();
-    for (var uuid : this.locks) {
-      locksTag.add(NbtUtils.createUUID(uuid));
-    }
-    tag.put(CompoundTagKeys.LOCKS, locksTag);
+    tag.store(CompoundTagKeys.ID, UUIDUtil.CODEC, this.id);
+    tag.store(CompoundTagKeys.STATE, State.CODEC, this.state);
+    tag.store(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.locks));
     return tag;
   }
 }

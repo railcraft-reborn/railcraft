@@ -102,7 +102,7 @@ public final class MinecartUtil {
       if (entity instanceof ServerPlayer player) {
         player.setPos(x, y, z);
       } else {
-        entity.moveTo(x, y, z, entity.getYRot(), entity.getXRot());
+        entity.snapTo(x, y, z, entity.getYRot(), entity.getXRot());
       }
     }
   }

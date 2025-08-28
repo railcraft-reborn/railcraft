@@ -90,4 +90,10 @@ public class RailcraftDataComponents {
           builder
               .persistent(SimpleFluidContent.CODEC)
               .networkSynchronized(SimpleFluidContent.STREAM_CODEC));
+
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<BatteryComponent>> BATTERY =
+      deferredRegister.registerComponentType("battery", builder ->
+          builder
+              .persistent(BatteryComponent.CODEC)
+              .networkSynchronized(BatteryComponent.STREAM_CODEC));
 }
