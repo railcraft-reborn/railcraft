@@ -54,7 +54,7 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
     this.tooltip = new ArrayList<>();
 
-    var baseRate = RailcraftConfig.SERVER.waterCollectionRate.get();
+    int baseRate = RailcraftConfig.SERVER.waterCollectionRate.get();
 
     this.tooltip.addAll(this.tank.getTooltip());
     this.tooltip.add(Component.empty());

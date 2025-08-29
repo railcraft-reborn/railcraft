@@ -10,15 +10,10 @@ import mods.railcraft.charge.ChargeCartStorageImpl;
 import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
-import mods.railcraft.data.RailcraftBlockTagsProvider;
-import mods.railcraft.data.RailcraftDamageTypeTagsProvider;
 import mods.railcraft.data.RailcraftDataMapProvider;
 import mods.railcraft.data.RailcraftDatapackProvider;
-import mods.railcraft.data.RailcraftFluidTagsProvider;
-import mods.railcraft.data.RailcraftItemTagsProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftParticleProvider;
-import mods.railcraft.data.RailcraftPoiTypeTagsProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
 import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
@@ -30,6 +25,11 @@ import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
 import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
+import mods.railcraft.data.tags.RailcraftBlockTagsProvider;
+import mods.railcraft.data.tags.RailcraftDamageTypeTagsProvider;
+import mods.railcraft.data.tags.RailcraftFluidTagsProvider;
+import mods.railcraft.data.tags.RailcraftItemTagsProvider;
+import mods.railcraft.data.tags.RailcraftPoiTypeTagsProvider;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
@@ -106,6 +106,7 @@ import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -421,5 +422,13 @@ public class Railcraft {
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
     event.getLevel().gameEvent(null, RailcraftGameEvents.NEIGHBOR_NOTIFY, event.getPos());
+  }
+
+  @SubscribeEvent
+  public void handleDatapackSync(OnDatapackSyncEvent event) {
+    event.sendRecipes(RailcraftRecipeTypes.BLASTING.get());
+    event.sendRecipes(RailcraftRecipeTypes.ROLLING.get());
+    event.sendRecipes(RailcraftRecipeTypes.CRUSHING.get());
+    event.sendRecipes(RailcraftRecipeTypes.COKING.get());
   }
 }

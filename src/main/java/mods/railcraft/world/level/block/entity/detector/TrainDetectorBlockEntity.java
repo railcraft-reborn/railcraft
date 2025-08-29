@@ -5,12 +5,12 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TrainDetectorBlockEntity extends DetectorBlockEntity {
 
@@ -35,15 +35,16 @@ public class TrainDetectorBlockEntity extends DetectorBlockEntity {
     return 4;
   }
 
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.trainSize = tag.getInt(CompoundTagKeys.TRAIN_SIZE).orElse(5);
+  @Override
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.trainSize = input.getIntOr(CompoundTagKeys.TRAIN_SIZE, 5);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.TRAIN_SIZE, this.trainSize);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.TRAIN_SIZE, this.trainSize);
   }
 
   @Override

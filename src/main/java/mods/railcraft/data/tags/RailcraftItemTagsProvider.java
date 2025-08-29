@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.tags;
 
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -6,21 +6,19 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 
-public class RailcraftItemTagsProvider extends ItemTagsProvider {
+public class RailcraftItemTagsProvider extends BlockTagCopyingItemTagProvider {
 
   public RailcraftItemTagsProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> registries,
-      CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider) {
-    super(packOutput, registries, blockTagProvider, RailcraftConstants.ID);
+      CompletableFuture<TagLookup<Block>> blockTags) {
+    super(packOutput, registries, blockTags, RailcraftConstants.ID);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   protected void addTags(HolderLookup.Provider registries) {
     this.tag(Tags.Items.INGOTS)

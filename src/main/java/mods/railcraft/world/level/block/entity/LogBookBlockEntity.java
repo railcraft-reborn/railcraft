@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,17 +12,18 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.network.to_client.OpenLogBookScreen;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class LogBookBlockEntity extends RailcraftBlockEntity {
@@ -59,56 +59,6 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
     }
   }
 
-  public static CompoundTag convertLogToTag(Multimap<LocalDate, String> log) {
-    var tag = new CompoundTag();
-    var monthAgo = LocalDate.now().minusMonths(1);
-
-    var logList = new ListTag();
-    for (var entry : log.asMap().entrySet()) {
-      if (entry.getKey().isBefore(monthAgo)) {
-        continue;
-      }
-      var dateEntry = new CompoundTag();
-      var players = new ListTag();
-      for (var player : entry.getValue()) {
-        var playerTag = new CompoundTag();
-        playerTag.putString("player", player);
-        players.add(playerTag);
-      }
-      dateEntry.putString(CompoundTagKeys.DATE, entry.getKey().toString());
-      dateEntry.put(CompoundTagKeys.PLAYERS, players);
-      logList.add(dateEntry);
-    }
-    tag.put(CompoundTagKeys.ENTRIES, logList);
-    return tag;
-  }
-
-  public static Multimap<LocalDate, String> convertLogFromTag(CompoundTag tag) {
-    Multimap<LocalDate, String> log = HashMultimap.create();
-
-    var monthAgo = LocalDate.now().minusMonths(1);
-
-    var logList = tag.getList(CompoundTagKeys.ENTRIES).orElse(new ListTag(0));
-    for (int i = 0; i < logList.size(); i++) {
-      var compound = logList.getCompound(i).orElseThrow();
-      try {
-        var date = LocalDate.parse(compound.getString(CompoundTagKeys.DATE).orElse(""));
-        if (date.isBefore(monthAgo)) {
-          continue;
-        }
-        var playerList = compound.getList(CompoundTagKeys.PLAYERS).orElse(new ListTag(0));
-        var players = new HashSet<String>();
-        for (int j = 0; j < playerList.size(); j++) {
-          var playerCompound = playerList.getCompound(i).orElseThrow();
-          players.add(playerCompound.getString("player").orElseThrow());
-        }
-        log.putAll(date, players);
-      } catch (DateTimeParseException ignored) {
-      }
-    }
-    return log;
-  }
-
   public void use(ServerPlayer player) {
     PacketDistributor.sendToPlayer(player, new OpenLogBookScreen(getPages(this.log)));
   }
@@ -137,17 +87,52 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.LOG, convertLogToTag(log));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.LOG, DateEntry.CODEC.listOf(), convertMapToLog(this.log));
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     log.clear();
-    tag.getCompound(CompoundTagKeys.LOG).ifPresent(list -> {
-      log.putAll(convertLogFromTag(list));
-    });
+    input.read(CompoundTagKeys.LOG, DateEntry.CODEC.listOf())
+        .ifPresent(dateEntries -> {
+          log.putAll(convertLogToMap(dateEntries));
+        });
+  }
+
+  private static List<DateEntry> convertMapToLog(Multimap<LocalDate, String> log) {
+    var monthAgo = LocalDate.now().minusMonths(1);
+    return log.asMap().entrySet().stream()
+        .filter(entry -> !entry.getKey().isBefore(monthAgo))
+        .map((entry) -> {
+          var date = entry.getKey().toString();
+          var players = new ArrayList<>(entry.getValue());
+          return new DateEntry(date, players);
+        })
+        .toList();
+  }
+
+  private static Multimap<LocalDate, String> convertLogToMap(List<DateEntry> dateEntries) {
+    Multimap<LocalDate, String> log = HashMultimap.create();
+    var monthAgo = LocalDate.now().minusMonths(1);
+    for (var dateEntry : dateEntries) {
+      var date = LocalDate.parse(dateEntry.date);
+      if (date.isBefore(monthAgo)) {
+        continue;
+      }
+      var players = new HashSet<>(dateEntry.players);
+      log.putAll(date, players);
+    }
+    return log;
+  }
+
+  private record DateEntry(String date, List<String> players) {
+    public static final Codec<DateEntry> CODEC = RecordCodecBuilder.create(instance ->
+        instance.group(
+            Codec.STRING.fieldOf(CompoundTagKeys.DATE).forGetter(DateEntry::date),
+            Codec.STRING.listOf().fieldOf(CompoundTagKeys.PLAYERS).forGetter(DateEntry::players)
+        ).apply(instance, DateEntry::new));
   }
 }

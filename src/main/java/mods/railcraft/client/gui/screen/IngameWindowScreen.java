@@ -4,7 +4,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -43,25 +43,23 @@ public class IngameWindowScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    guiGraphics.blit(RenderType::guiTextured, this.backgroundTexture, centredX, centredY, 0, 0,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.backgroundTexture, centredX, centredY, 0, 0,
         this.windowWidth, this.windowHeight, 256, 256);
     var poseStack = guiGraphics.pose();
-    poseStack.pushPose();
-    poseStack.translate(centredX, centredY, 0);
+    poseStack.pushMatrix();
+    poseStack.translate(centredX, centredY);
     GuiUtil.drawCenteredString(guiGraphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
     this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
-    poseStack.popPose();
+    poseStack.popMatrix();
     for(var renderable : this.renderables) {
       renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
   }
 
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
-      float partialTicks) {}
-
+  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+  }
 
   @Override
   public void tick() {

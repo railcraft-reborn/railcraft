@@ -8,12 +8,12 @@ import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
 
@@ -72,7 +72,7 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   }
 
   private void sendAttributes() {
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetItemDetectorMessage(this.itemDetector.getBlockPos(),
             this.itemDetector.getPrimaryMode(), this.itemDetector.getFilterMode()));
   }
@@ -105,7 +105,7 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
       var slot = this.menu.slots.get(slotNum);
       int displayX = slot.x;
       int displayY = slot.y;
-      guiGraphics.fill(RenderType.guiOverlay(), displayX, displayY,
+      guiGraphics.fill(RenderPipelines.GUI_TEXTURED, displayX, displayY,
           displayX + 16, displayY + 16, color);
     }
   }

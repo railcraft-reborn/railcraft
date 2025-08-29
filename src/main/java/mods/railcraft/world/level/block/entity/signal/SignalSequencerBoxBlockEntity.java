@@ -9,14 +9,14 @@ import mods.railcraft.util.RedstoneUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
@@ -130,19 +130,19 @@ public class SignalSequencerBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.OUTPUT_DIRECTION, Direction.CODEC, this.outputDirection);
-    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
-    tag.putBoolean(CompoundTagKeys.NEIGHBOR_SIGNAL, this.neighborSignal);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.OUTPUT_DIRECTION, Direction.CODEC, this.outputDirection);
+    output.putBoolean(CompoundTagKeys.POWERED, this.powered);
+    output.putBoolean(CompoundTagKeys.NEIGHBOR_SIGNAL, this.neighborSignal);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.outputDirection = tag.read(CompoundTagKeys.OUTPUT_DIRECTION, Direction.CODEC).orElse(Direction.NORTH);
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED).orElse(false);
-    this.neighborSignal = tag.getBoolean(CompoundTagKeys.NEIGHBOR_SIGNAL).orElse(false);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.outputDirection = input.read(CompoundTagKeys.OUTPUT_DIRECTION, Direction.CODEC).orElse(Direction.NORTH);
+    this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
+    this.neighborSignal = input.getBooleanOr(CompoundTagKeys.NEIGHBOR_SIGNAL, false);
   }
 
   @Override

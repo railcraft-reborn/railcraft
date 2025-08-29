@@ -8,14 +8,14 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 public class SingleSignalReceiver
-    implements SignalReceiver, INBTSerializable<CompoundTag>, NetworkSerializable {
+    implements SignalReceiver, ValueIOSerializable, NetworkSerializable {
 
   private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -65,16 +65,13 @@ public class SingleSignalReceiver
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-    tag.put(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT, this.primarySignalClient.serializeNBT(provider));
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    valueOutput.putChild(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT, this.primarySignalClient);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.primarySignalClient.deserializeNBT(provider,
-        tag.getCompound(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT).orElse(new CompoundTag()));
+  public void deserialize(ValueInput valueInput) {
+    this.primarySignalClient.deserialize(valueInput.childOrEmpty(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT));
   }
 
   @Override
@@ -91,7 +88,7 @@ public class SingleSignalReceiver
     this.syncListener.run();
   }
 
-  protected class SignalClient implements INBTSerializable<CompoundTag> {
+  protected class SignalClient implements ValueIOSerializable {
 
     @Nullable
     private final Consumer<SignalAspect> signalAspectListener;
@@ -173,17 +170,14 @@ public class SingleSignalReceiver
     }
 
     @Override
-    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-      var tag = new CompoundTag();
-      if (this.signalControllerPos != null) {
-        tag.storeNullable(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC, this.signalControllerPos);
-      }
-      return tag;
+    public void serialize(ValueOutput valueOutput) {
+      valueOutput.storeNullable(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC, this.signalControllerPos);
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-      this.signalControllerPos = tag.read(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC).orElse(null);
+    public void deserialize(ValueInput valueInput) {
+      this.signalControllerPos =
+          valueInput.read(CompoundTagKeys.SIGNAL_CONTROLLER_POS, BlockPos.CODEC).orElse(null);
     }
   }
 }

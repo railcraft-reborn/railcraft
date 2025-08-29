@@ -2,7 +2,9 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.primitives.Bytes;
 import com.mojang.authlib.GameProfile;
+import com.mojang.serialization.Codec;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -27,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.connection.ConnectionType;
 
 public abstract class RailcraftBlockEntity extends BlockEntity
@@ -52,11 +56,12 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public final CompoundTag getUpdateTag(HolderLookup.Provider provider) {
     var tag = super.getUpdateTag(provider);
-    if (this.level == null)
+    if (this.level == null) {
       return tag;
+    }
 
-    var packetBuffer = new RegistryFriendlyByteBuf(
-        new FriendlyByteBuf(Unpooled.buffer()), level.registryAccess(), ConnectionType.OTHER);
+    var friendlyBuf = new FriendlyByteBuf(Unpooled.buffer());
+    var packetBuffer = new RegistryFriendlyByteBuf(friendlyBuf, level.registryAccess(), ConnectionType.OTHER);
     this.writeToBuf(packetBuffer);
     byte[] syncData = new byte[packetBuffer.readableBytes()];
     packetBuffer.readBytes(syncData);
@@ -65,21 +70,21 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider provider) {
+  public void handleUpdateTag(ValueInput input) {
     if (this.level == null) {
       return;
     }
-    tag.getByteArray(CompoundTagKeys.SYNC).ifPresent(bytes -> {
-      this.readFromBuf(new RegistryFriendlyByteBuf(
-          new FriendlyByteBuf(Unpooled.wrappedBuffer(bytes)), level.registryAccess(),
-          ConnectionType.OTHER));
+    input.read(CompoundTagKeys.SYNC, Codec.BYTE.listOf()).ifPresent(bytes -> {
+      var syncData = Bytes.toArray(bytes);
+      var friendlyBuf = new FriendlyByteBuf(Unpooled.wrappedBuffer(syncData));
+      var packetBuffer = new RegistryFriendlyByteBuf(friendlyBuf, level.registryAccess(), ConnectionType.OTHER);
+      this.readFromBuf(packetBuffer);
     });
   }
 
   @Override
-  public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet,
-      HolderLookup.Provider provider) {
-    this.handleUpdateTag(packet.getTag(), provider);
+  public void onDataPacket(Connection net, ValueInput valueInput) {
+    this.handleUpdateTag(valueInput);
   }
 
   @Override
@@ -158,26 +163,19 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.storeNullable(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, this.owner);
-    if (this.customName != null) {
-      tag.putString(CompoundTagKeys.CUSTOM_NAME,
-          Component.Serializer.toJson(this.customName, provider));
-    }
-    tag.put(CompoundTagKeys.MODULES, this.moduleDispatcher.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.storeNullable(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, this.owner);
+    output.storeNullable(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC, this.customName);
+    output.putChild(CompoundTagKeys.MODULES, this.moduleDispatcher);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.owner = tag.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null);
-    tag.getString(CompoundTagKeys.CUSTOM_NAME).ifPresent(name -> {
-      this.customName = Component.Serializer.fromJson(name, provider);
-    });
-    tag.getCompound(CompoundTagKeys.MODULES).ifPresent(value -> {
-      this.moduleDispatcher.deserializeNBT(provider, value);
-    });
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.owner = input.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null);
+    this.customName = input.read(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC).orElse(null);
+    this.moduleDispatcher.deserialize(input.childOrEmpty(CompoundTagKeys.MODULES));
   }
 
   @Override

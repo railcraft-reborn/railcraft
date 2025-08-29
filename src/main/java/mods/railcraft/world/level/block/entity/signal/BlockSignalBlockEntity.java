@@ -8,12 +8,12 @@ import mods.railcraft.api.signal.SimpleSignalController;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
     implements SignalControllerEntity, BlockSignalEntity {
@@ -59,21 +59,17 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal.serializeNBT(provider));
-    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal);
+    output.putChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getCompound(CompoundTagKeys.BLOCK_SIGNAL).ifPresent(compoundTag -> {
-      this.blockSignal.deserializeNBT(provider, compoundTag);
-    });
-    tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER).ifPresent(compoundTag -> {
-      this.signalController.deserializeNBT(provider, compoundTag);
-    });
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.blockSignal.deserialize(input.childOrEmpty(CompoundTagKeys.BLOCK_SIGNAL));
+    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
   }
 
   @Override

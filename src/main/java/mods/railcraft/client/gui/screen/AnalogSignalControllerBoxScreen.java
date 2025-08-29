@@ -9,7 +9,7 @@ import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
 
@@ -117,7 +117,7 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
         this.parseRegex(this.textFields.get(entry.getKey()).getValue(), entry.getValue());
       }
       this.signalBox.setSignalAspectTriggerSignals(this.signalAspectTriggerSignals);
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetAnalogSignalControllerBoxMessage(this.signalBox.getBlockPos(),
               this.signalAspectTriggerSignals));
     }

@@ -30,6 +30,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
@@ -138,23 +140,19 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
-    tag.getCompound(CompoundTagKeys.TANK).ifPresent(compoundTag -> {
-      this.tank.readFromNBT(this.registryAccess(), compoundTag);
-    });
+    this.tank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK));
     this.tankChanged();
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
-    var tankTag = new CompoundTag();
-    this.tank.writeToNBT(this.registryAccess(), tankTag);
-    tag.put(CompoundTagKeys.TANK, tankTag);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
+    valueOutput.putChild(CompoundTagKeys.TANK, this.tank);
   }
 
   public boolean isFilling() {

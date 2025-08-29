@@ -18,9 +18,7 @@ import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -28,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class SwitchTrackBlockEntity extends BlockEntity {
 
@@ -240,33 +240,33 @@ public abstract class SwitchTrackBlockEntity extends BlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putByte(CompoundTagKeys.SPRUNG, this.sprung);
-    tag.putByte(CompoundTagKeys.LOCKED, this.locked);
-    tag.store(CompoundTagKeys.SPRINGING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.springingCarts));
-    tag.store(CompoundTagKeys.LOCKING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.lockingCarts));
-    tag.store(CompoundTagKeys.DECIDING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.decidingCarts));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putByte(CompoundTagKeys.SPRUNG, this.sprung);
+    output.putByte(CompoundTagKeys.LOCKED, this.locked);
+    output.store(CompoundTagKeys.SPRINGING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.springingCarts));
+    output.store(CompoundTagKeys.LOCKING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.lockingCarts));
+    output.store(CompoundTagKeys.DECIDING_CARTS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.decidingCarts));
     if (this.currentCart != null) {
-      tag.store(CompoundTagKeys.CURRENT_CART, UUIDUtil.CODEC, this.currentCart.entity().getUUID());
+      output.store(CompoundTagKeys.CURRENT_CART, UUIDUtil.CODEC, this.currentCart.entity().getUUID());
     }
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.sprung = tag.getByte(CompoundTagKeys.SPRUNG).orElse((byte) 0);
-    this.locked = tag.getByte(CompoundTagKeys.LOCKED).orElse((byte) 0);
-    this.springingCarts = tag.read(CompoundTagKeys.SPRINGING_CARTS, UUIDUtil.CODEC.listOf())
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.sprung = input.getByteOr(CompoundTagKeys.SPRUNG, (byte) 0);
+    this.locked = input.getByteOr(CompoundTagKeys.LOCKED, (byte) 0);
+    this.springingCarts = input.read(CompoundTagKeys.SPRINGING_CARTS, UUIDUtil.CODEC.listOf())
         .map(HashSet::new)
         .orElse(new HashSet<>());
-    this.lockingCarts = tag.read(CompoundTagKeys.LOCKING_CARTS, UUIDUtil.CODEC.listOf())
+    this.lockingCarts = input.read(CompoundTagKeys.LOCKING_CARTS, UUIDUtil.CODEC.listOf())
         .map(HashSet::new)
         .orElse(new HashSet<>());
-    this.decidingCarts = tag.read(CompoundTagKeys.DECIDING_CARTS, UUIDUtil.CODEC.listOf())
+    this.decidingCarts = input.read(CompoundTagKeys.DECIDING_CARTS, UUIDUtil.CODEC.listOf())
         .map(HashSet::new)
         .orElse(new HashSet<>());
-    this.unresolvedCurrentCart = tag.read(CompoundTagKeys.CURRENT_CART, UUIDUtil.CODEC)
+    this.unresolvedCurrentCart = input.read(CompoundTagKeys.CURRENT_CART, UUIDUtil.CODEC)
         .orElse(null);
   }
 

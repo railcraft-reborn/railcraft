@@ -16,7 +16,6 @@ import mods.railcraft.world.item.component.LocomotiveEnergyComponent;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,6 +31,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
@@ -178,15 +179,15 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.cartStorage.receiveEnergy(tag.getInt(CompoundTagKeys.ENERGY).orElse(0), false);
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.cartStorage.receiveEnergy(valueInput.getIntOr(CompoundTagKeys.ENERGY, 0), false);
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
   }
 
   @Override

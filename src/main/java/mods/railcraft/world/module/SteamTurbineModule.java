@@ -8,13 +8,13 @@ import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -98,26 +98,23 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.STEAM_TANK, this.steamTank.writeToNBT(provider, new CompoundTag()));
-    tag.put(CompoundTagKeys.WATER_TANK, this.waterTank.writeToNBT(provider, new CompoundTag()));
-    tag.put(CompoundTagKeys.ROTOR_CONTAINER, this.rotorContainer.createTag(provider));
-    tag.putInt(CompoundTagKeys.ENERGY, this.energy);
-    tag.putFloat(CompoundTagKeys.OPERATING_RATIO, this.operatingRatio);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.STEAM_TANK, this.steamTank);
+    valueOutput.putChild(CompoundTagKeys.WATER_TANK, this.waterTank);
+    valueOutput.putChild(CompoundTagKeys.ROTOR_CONTAINER, this.rotorContainer);
+    valueOutput.putInt(CompoundTagKeys.ENERGY, this.energy);
+    valueOutput.putFloat(CompoundTagKeys.OPERATING_RATIO, this.operatingRatio);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.steamTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.STEAM_TANK).orElse(new CompoundTag()));
-    this.waterTank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.WATER_TANK).orElse(new CompoundTag()));
-    tag.getList(CompoundTagKeys.ROTOR_CONTAINER).ifPresent(rotorContainer -> {
-      this.rotorContainer.fromTag(rotorContainer, provider);
-    });
-    this.energy = tag.getInt(CompoundTagKeys.ENERGY).orElse(0);
-    this.operatingRatio = tag.getFloat(CompoundTagKeys.OPERATING_RATIO).orElse(0F);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.steamTank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.STEAM_TANK));
+    this.waterTank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.WATER_TANK));
+    this.rotorContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.ROTOR_CONTAINER));
+    this.energy = valueInput.getIntOr(CompoundTagKeys.ENERGY, 0);
+    this.operatingRatio = valueInput.getFloatOr(CompoundTagKeys.OPERATING_RATIO, 0);
   }
 
   private static ItemStack useRotor(ServerLevel level, ItemStack stack) {

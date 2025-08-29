@@ -13,8 +13,6 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements MenuProvider {
@@ -136,23 +136,19 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CART_FILTER, this.cartFilter.createTag(provider));
-    tag.put(CompoundTagKeys.ITEM_FILTER, this.itemFilter.createTag(provider));
-    tag.putInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP, this.ticksSinceLastDrop);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CART_FILTER, this.cartFilter);
+    output.putChild(CompoundTagKeys.ITEM_FILTER, this.itemFilter);
+    output.putInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP, this.ticksSinceLastDrop);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getList(CompoundTagKeys.CART_FILTER).ifPresent(listTag -> {
-      this.cartFilter.fromTag(listTag, provider);
-    });
-    tag.getList(CompoundTagKeys.ITEM_FILTER).ifPresent(listTag -> {
-      this.itemFilter.fromTag(listTag, provider);
-    });
-    this.ticksSinceLastDrop = tag.getInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP).orElse(0);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.cartFilter.deserialize(input.childOrEmpty(CompoundTagKeys.CART_FILTER));
+    this.itemFilter.deserialize(input.childOrEmpty(CompoundTagKeys.ITEM_FILTER));
+    this.ticksSinceLastDrop = input.getIntOr(CompoundTagKeys.TICKS_SINCE_LAST_DROP, 0);
   }
 
   @Nullable

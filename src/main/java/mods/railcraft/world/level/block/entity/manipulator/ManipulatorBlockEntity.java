@@ -20,8 +20,6 @@ import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -34,6 +32,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
@@ -273,21 +273,19 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC, this.redstoneMode);
-    tag.put(CompoundTagKeys.CART_FILTERS, this.getCartFilters().createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC, this.redstoneMode);
+    output.putChild(CompoundTagKeys.CART_FILTERS, this.getCartFilters());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
     this.redstoneMode =
-        tag.read(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC).orElse(RedstoneMode.COMPLETE);
-    tag.getList(CompoundTagKeys.CART_FILTERS).ifPresent(listTag -> {
-      this.getCartFilters().fromTag(listTag, provider);
-    });
+        input.read(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC).orElse(RedstoneMode.COMPLETE);
+    this.getCartFilters().deserialize(input.childOrEmpty(CompoundTagKeys.CART_FILTERS));
   }
 
   public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {

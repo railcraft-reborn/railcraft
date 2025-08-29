@@ -4,8 +4,6 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.ChimneyParticleOptions;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -13,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ChimneyBlockEntity extends RailcraftBlockEntity {
 
@@ -64,15 +64,15 @@ public class ChimneyBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.color = tag.getInt(CompoundTagKeys.COLOR).orElse(DyeColor.BLACK.getFireworkColor());
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.color = input.getInt(CompoundTagKeys.COLOR).orElse(DyeColor.BLACK.getFireworkColor());
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.COLOR, this.color);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.COLOR, this.color);
   }
 
   @Override

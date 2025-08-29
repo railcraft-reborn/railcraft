@@ -9,18 +9,17 @@ import java.util.function.BiFunction;
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
+public class TankManager implements IFluidHandler, ValueIOSerializable {
 
   public static final TankManager EMPTY = new TankManager(List.of());
 
@@ -41,28 +40,24 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   }
 
   @Override
-  public ListTag serializeNBT(HolderLookup.Provider provider) {
-    var tanksTag = new ListTag();
-    for (byte i = 0; i < this.tanks.size(); i++) {
-      var tank = this.tanks.get(i);
-      var tankTag = new CompoundTag();
-      tankTag.putByte(CompoundTagKeys.INDEX, i);
-      tank.writeToNBT(provider, tankTag);
-      tanksTag.add(tankTag);
+  public void serialize(ValueOutput valueOutput) {
+    var list = valueOutput.childrenList(CompoundTagKeys.TANK);
+    for (int i = 0; i < this.tanks.size(); i++) {
+      var tankOutput = list.addChild();
+      tankOutput.putInt(CompoundTagKeys.INDEX, i);
+      this.tanks.get(i).serialize(tankOutput);
     }
-    return tanksTag;
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, ListTag tanksTag) {
-    for (int i = 0; i < tanksTag.size(); i++) {
-      var tag = tanksTag.getCompound(i).orElse(new CompoundTag());
-      tag.getByte(CompoundTagKeys.INDEX).ifPresent(index -> {
-        if (index >= 0 && index < this.tanks.size()) {
-          this.tanks.get(index).readFromNBT(provider, tag);
-        }
-      });
-    }
+  public void deserialize(ValueInput valueInput) {
+    var list = valueInput.childrenListOrEmpty(CompoundTagKeys.TANK);
+    list.forEach(input -> {
+      var index = input.getIntOr(CompoundTagKeys.INDEX, -1);
+      if (index >= 0 && index < this.tanks.size()) {
+        this.tanks.get(index).deserialize(input);
+      }
+    });
   }
 
   public void writePacketData(RegistryFriendlyByteBuf data) {

@@ -12,7 +12,6 @@ import mods.railcraft.season.Season;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -30,6 +29,8 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
@@ -95,15 +96,15 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.store(CompoundTagKeys.SEASON, Season.CODEC, this.getSeason());
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.SEASON, Season.CODEC, this.getSeason());
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.setSeason(tag.read(CompoundTagKeys.SEASON, Season.CODEC).orElse(Season.DEFAULT));
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.setSeason(valueInput.read(CompoundTagKeys.SEASON, Season.CODEC).orElse(Season.DEFAULT));
   }
 
   @Override

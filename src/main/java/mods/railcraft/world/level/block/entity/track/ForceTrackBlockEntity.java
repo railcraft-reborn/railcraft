@@ -8,10 +8,10 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
 
@@ -65,13 +65,14 @@ public final class ForceTrackBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.storeNullable(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC, this.emitterPos);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.storeNullable(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC, this.emitterPos);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    this.emitterPos = tag.read(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC).orElse(null);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.emitterPos = input.read(CompoundTagKeys.EMITTER_POS, BlockPos.CODEC).orElse(null);
   }
 }

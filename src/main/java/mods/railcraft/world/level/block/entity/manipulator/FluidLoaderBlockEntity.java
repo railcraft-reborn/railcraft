@@ -14,12 +14,12 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -218,15 +218,15 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putFloat(CompoundTagKeys.PIPE_LENGTH, this.pipeLength);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putFloat(CompoundTagKeys.PIPE_LENGTH, this.pipeLength);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.pipeLength = tag.getFloat(CompoundTagKeys.PIPE_LENGTH).orElse(0F);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.pipeLength = input.getFloatOr(CompoundTagKeys.PIPE_LENGTH, 0);
   }
 
   @Override

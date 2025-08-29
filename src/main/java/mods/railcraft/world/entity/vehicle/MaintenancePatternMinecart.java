@@ -5,12 +5,13 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
@@ -70,16 +71,14 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.put(CompoundTagKeys.PATTERN, this.patternContainer.createTag(this.registryAccess()));
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.PATTERN, this.patternContainer);
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    tag.getList(CompoundTagKeys.PATTERN).ifPresent(listTag -> {
-      this.patternContainer.fromTag(listTag, this.registryAccess());
-    });
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.patternContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.PATTERN));
   }
 }

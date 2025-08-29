@@ -30,7 +30,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -56,6 +55,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
@@ -721,7 +722,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
 
     if (!RailcraftConfig.SERVER.boreDestroysBlocks.get()
-        && fakePlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        && fakePlayer.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState
           .getDrops(new LootParams.Builder((ServerLevel) this.level())
               .withParameter(LootContextParams.TOOL, head)
@@ -748,7 +749,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
     LevelUtil.setAir(this.level(), targetPos);
 
-    head.hurtAndBreak(1, fakePlayer.serverLevel(), fakePlayer, __ -> {
+    head.hurtAndBreak(1, fakePlayer.level(), fakePlayer, __ -> {
       this.setItem(0, ItemStack.EMPTY);
     });
 
@@ -829,23 +830,23 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.store(CompoundTagKeys.FACING, Direction.CODEC, getFacing());
-    tag.putInt(CompoundTagKeys.DELAY, getDelay());
-    tag.putBoolean(CompoundTagKeys.ACTIVE, isActive());
-    tag.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
-    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.FACING, Direction.CODEC, getFacing());
+    valueOutput.putInt(CompoundTagKeys.DELAY, getDelay());
+    valueOutput.putBoolean(CompoundTagKeys.ACTIVE, isActive());
+    valueOutput.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
+    valueOutput.putInt(CompoundTagKeys.FUEL, this.fuel);
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    setFacing(tag.read(CompoundTagKeys.FACING, Direction.CODEC).orElse(Direction.SOUTH));
-    setDelay(tag.getInt(CompoundTagKeys.DELAY).orElse(0));
-    setActive(tag.getBoolean(CompoundTagKeys.ACTIVE).orElse(false));
-    setBurnTime(tag.getInt(CompoundTagKeys.BURN_TIME).orElse(0));
-    setFuel(tag.getInt(CompoundTagKeys.FUEL).orElse(0));
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    setFacing(valueInput.read(CompoundTagKeys.FACING, Direction.CODEC).orElse(Direction.SOUTH));
+    setDelay(valueInput.getIntOr(CompoundTagKeys.DELAY, 0));
+    setActive(valueInput.getBooleanOr(CompoundTagKeys.ACTIVE, false));
+    setBurnTime(valueInput.getIntOr(CompoundTagKeys.BURN_TIME, 0));
+    setFuel(valueInput.getIntOr(CompoundTagKeys.FUEL, 0));
   }
 
   protected int getDelay() {

@@ -25,7 +25,7 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
     }
     var newStack = new AtomicReference<>(itemStack.copyWithCount(1));
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
-      newStack.get().hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
+      newStack.get().hurtAndBreak(1, serverPlayer.level(), serverPlayer,
           __ -> newStack.set(ItemStack.EMPTY));
     }
     return newStack.get();

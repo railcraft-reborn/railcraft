@@ -3,10 +3,10 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ForwardingContainer;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class ContainerModule<T extends ModuleProvider> extends BaseModule<T>
     implements ForwardingContainer {
@@ -28,18 +28,16 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
     return this.container;
   }
 
+
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag(provider));
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.CONTAINER, this.container);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
-      this.container.fromTag(listTag, provider);
-    });
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.container.deserialize(valueInput.childOrEmpty(CompoundTagKeys.CONTAINER));
   }
 }

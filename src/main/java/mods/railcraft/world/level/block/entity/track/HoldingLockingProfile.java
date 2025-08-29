@@ -6,10 +6,10 @@ import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class HoldingLockingProfile implements LockingModeController {
@@ -68,14 +68,12 @@ public class HoldingLockingProfile implements LockingModeController {
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    CompoundTag tag = new CompoundTag();
-    tag.putBoolean(CompoundTagKeys.LAUNCH_FORWARD, this.launchForward);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    valueOutput.putBoolean(CompoundTagKeys.LAUNCH_FORWARD, this.launchForward);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.launchForward = tag.getBoolean(CompoundTagKeys.LAUNCH_FORWARD).orElse(true);
+  public void deserialize(ValueInput valueInput) {
+    this.launchForward = valueInput.getBooleanOr(CompoundTagKeys.LAUNCH_FORWARD, true);
   }
 }

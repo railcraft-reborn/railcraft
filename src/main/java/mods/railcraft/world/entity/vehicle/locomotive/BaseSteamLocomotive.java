@@ -17,7 +17,6 @@ import mods.railcraft.world.level.material.steam.SteamBoiler;
 import mods.railcraft.world.level.material.steam.SteamConstants;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,6 +29,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -222,23 +223,19 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.put(CompoundTagKeys.TANK_MANAGER, this.getTankManager().serializeNBT(this.registryAccess()));
-    tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT(this.registryAccess()));
-    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueOutput.putChild(CompoundTagKeys.BOILER, this.boiler);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    tag.getList(CompoundTagKeys.TANK_MANAGER).ifPresent(listTag -> {
-      this.getTankManager().deserializeNBT(this.registryAccess(), listTag);
-    });
-    tag.getCompound(CompoundTagKeys.BOILER).ifPresent(compoundTag -> {
-      this.boiler.deserializeNBT(this.registryAccess(), compoundTag);
-    });
-    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.tankManager.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
+    this.boiler.deserialize(valueInput.childOrEmpty(CompoundTagKeys.BOILER));
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }
 

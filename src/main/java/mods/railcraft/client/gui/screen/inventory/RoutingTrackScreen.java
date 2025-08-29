@@ -16,7 +16,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
 
@@ -83,7 +83,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
     if (!this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetRoutingTrackMessage(this.routingBlockEntity.getBlockPos(),
             this.lockButton.getState()));
   }

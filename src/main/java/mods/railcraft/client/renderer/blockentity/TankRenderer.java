@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public class TankRenderer implements BlockEntityRenderer<TankBlockEntity> {
 
   @Override
-  public boolean shouldRenderOffScreen(TankBlockEntity blockEntity) {
+  public boolean shouldRenderOffScreen() {
     return true;
   }
 

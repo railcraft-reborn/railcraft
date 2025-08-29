@@ -1,9 +1,9 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.CompoundTagKeys;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class CrafterModule<T extends ModuleProvider> extends ContainerModule<T> {
 
@@ -125,18 +125,17 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
   protected abstract boolean craftAndPush();
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.putInt(CompoundTagKeys.PROGRESS, this.progress);
-    tag.putBoolean(CompoundTagKeys.PROCESSING, this.processing);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putInt(CompoundTagKeys.PROGRESS, this.progress);
+    valueOutput.putBoolean(CompoundTagKeys.PROCESSING, this.processing);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.progress = tag.getInt(CompoundTagKeys.PROGRESS).orElse(0);
-    this.processing = tag.getBoolean(CompoundTagKeys.PROCESSING).orElse(false);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.progress = valueInput.getIntOr(CompoundTagKeys.PROGRESS, 0);
+    this.processing = valueInput.getBooleanOr(CompoundTagKeys.PROCESSING, false);
   }
 
   @Override

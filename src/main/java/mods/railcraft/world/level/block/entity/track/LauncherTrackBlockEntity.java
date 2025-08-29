@@ -9,13 +9,13 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
 
@@ -57,15 +57,15 @@ public class LauncherTrackBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putByte(CompoundTagKeys.LAUNCH_FORCE, this.launchForce);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putByte(CompoundTagKeys.LAUNCH_FORCE, this.launchForce);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.launchForce = tag.getByte(CompoundTagKeys.LAUNCH_FORCE).orElse((byte) 5);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.launchForce = input.getByteOr(CompoundTagKeys.LAUNCH_FORCE, (byte) 5);
   }
 
   @Override

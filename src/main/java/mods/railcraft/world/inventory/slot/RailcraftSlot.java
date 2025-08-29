@@ -3,7 +3,7 @@ package mods.railcraft.world.inventory.slot;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public class RailcraftSlot extends Slot {
 
   @Nullable
-  protected List<Component> tooltip;
+  protected List<ClientTooltipComponent> tooltip;
   private boolean phantom;
   protected boolean canAdjustPhantom = true;
   protected boolean canShift = true;
@@ -37,14 +37,14 @@ public class RailcraftSlot extends Slot {
    * @return the toolTips
    */
   @Nullable
-  public List<Component> getTooltip() {
+  public List<ClientTooltipComponent> getTooltip() {
     return tooltip;
   }
 
   /**
    * @param tooltip the tooltips to set
    */
-  public void setTooltip(@Nullable List<Component> tooltip) {
+  public void setTooltip(@Nullable List<ClientTooltipComponent> tooltip) {
     this.tooltip = tooltip;
   }
 

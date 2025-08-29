@@ -13,8 +13,6 @@ import mods.railcraft.util.fluids.AdvancedFluidHandler;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
@@ -24,6 +22,8 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -103,15 +103,15 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.mode = tag.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.VOID);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.mode = input.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.VOID);
   }
 
   @Override

@@ -2,7 +2,6 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -15,10 +14,11 @@ import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEnti
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMenu> {
 
@@ -43,18 +43,17 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
 
     this.registerWidgetRenderer(new WidgetRenderer<>(menu.getErrorWidget()) {
 
-      @Nullable
       @Override
-      public List<Component> getTooltip() {
+      public List<ClientTooltipComponent> getTooltip() {
         return menu.getRoutingDetector().logicError()
             .map(RoutingLogicException::getTooltip)
-            .orElse(null);
+            .orElse(List.of());
       }
 
       @Override
       public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
           int centreY, int mouseX, int mouseY) {
-        if (this.getTooltip() != null) {
+        if (!this.getTooltip().isEmpty()) {
           super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
         }
       }
@@ -140,7 +139,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (!this.routingDetector.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetRoutingDetectorMessage(this.routingDetector.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }

@@ -13,8 +13,9 @@ import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -161,20 +162,18 @@ public final class TrainImpl implements Train {
     return String.format("Train{id=%s}", this.id);
   }
 
-  static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
-    var id = tag.read(CompoundTagKeys.ID, UUIDUtil.CODEC).orElseThrow();
+  static TrainImpl deserialize(ValueInput input, RollingStockImpl minecart) {
+    var id = input.read(CompoundTagKeys.ID, UUIDUtil.CODEC).orElseThrow();
     var train = new TrainImpl(id, minecart);
-    tag.read(CompoundTagKeys.STATE, State.CODEC).ifPresent(train::setState);
-    tag.read(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf())
+    input.read(CompoundTagKeys.STATE, State.CODEC).ifPresent(train::setState);
+    input.read(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf())
         .ifPresent(train.locks::addAll);
     return train;
   }
 
-  CompoundTag toTag() {
-    var tag = new CompoundTag();
-    tag.store(CompoundTagKeys.ID, UUIDUtil.CODEC, this.id);
-    tag.store(CompoundTagKeys.STATE, State.CODEC, this.state);
-    tag.store(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.locks));
-    return tag;
+  void serialize(ValueOutput valueOutput) {
+    valueOutput.store(CompoundTagKeys.ID, UUIDUtil.CODEC, this.id);
+    valueOutput.store(CompoundTagKeys.STATE, State.CODEC, this.state);
+    valueOutput.store(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.locks));
   }
 }

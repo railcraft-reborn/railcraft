@@ -10,7 +10,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SignalCapacitorBoxScreen extends IngameWindowScreen {
 
@@ -82,7 +82,7 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetSignalCapacitorBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getTicksToPower(), this.modeButton.getState()));
   }

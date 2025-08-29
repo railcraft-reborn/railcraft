@@ -12,15 +12,16 @@ import mods.railcraft.world.item.RefinedFirestoneItem;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class RitualBlockEntity extends RailcraftBlockEntity {
@@ -189,23 +190,18 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putShort(CompoundTagKeys.CHARGE, (short) this.charge);
-    tag.putByte(CompoundTagKeys.REBUILD_DELAY, (byte) this.rebuildDelay);
-    if (this.itemName != null) {
-      tag.putString(CompoundTagKeys.ITEM_NAME,
-          Component.Serializer.toJson(this.itemName, provider));
-    }
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putShort(CompoundTagKeys.CHARGE, (short) this.charge);
+    output.putByte(CompoundTagKeys.REBUILD_DELAY, (byte) this.rebuildDelay);
+    output.storeNullable(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC, this.itemName);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.charge = tag.getShort(CompoundTagKeys.CHARGE).orElse((short) 0);
-    this.rebuildDelay = tag.getByte(CompoundTagKeys.REBUILD_DELAY).orElse((byte) 0);
-    tag.getString(CompoundTagKeys.ITEM_NAME).ifPresent(name -> {
-      this.itemName = Component.Serializer.fromJson(name, provider);
-    });
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.charge = input.getShortOr(CompoundTagKeys.CHARGE, (short) 0);
+    this.rebuildDelay = input.getByteOr(CompoundTagKeys.REBUILD_DELAY, (byte) 0);
+    this.itemName = input.read(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC).orElse(null);
   }
 }

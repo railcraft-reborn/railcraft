@@ -11,8 +11,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +23,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -149,24 +149,20 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
-    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT(provider));
-    tag.put(CompoundTagKeys.INV_FILTER, this.getFluidFilter().createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
+    output.putChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    output.putChild(CompoundTagKeys.INV_FILTER, this.getFluidFilter());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.processState = input.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
-    tag.getList(CompoundTagKeys.TANK_MANAGER).ifPresent(listTag -> {
-      this.tankManager.deserializeNBT(provider, listTag);
-    });
-    tag.getList(CompoundTagKeys.INV_FILTER).ifPresent(listTag -> {
-      this.getFluidFilter().fromTag(listTag, provider);
-    });
+    this.tankManager.deserialize(input.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
+    this.getFluidFilter().deserialize(input.childOrEmpty(CompoundTagKeys.INV_FILTER));
   }
 
   @Override

@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GoldenTicketScreen extends IngameWindowScreen {
 
@@ -97,12 +97,12 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
       var poseStack = guiGraphics.pose();
-      poseStack.pushPose();
+      poseStack.pushMatrix();
       {
-        poseStack.scale(2, 2, 2);
+        poseStack.scale(2, 2);
         guiGraphics.drawCenteredString(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
       }
-      poseStack.popPose();
+      poseStack.popMatrix();
       guiGraphics.drawString(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
           45, TEXT_COLOR, false);
       guiGraphics.drawString(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
@@ -122,7 +122,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
         this.minecraft.player.getGameProfile());
     if (success) {
-      PacketDistributor.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
+      ClientPacketDistributor.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
     }
   }
 }

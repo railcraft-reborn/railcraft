@@ -12,11 +12,11 @@ import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.api.track.SwitchActuator;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBlockEntity
     implements SignalReceiverEntity, SwitchActuator {
@@ -77,23 +77,21 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT(provider));
-    tag.store(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf(), new ArrayList<>(this.actionSignalAspects));
-    tag.putBoolean(CompoundTagKeys.REDSTONE_TRIGGERED, this.redstoneTriggered);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
+    output.store(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf(), new ArrayList<>(this.actionSignalAspects));
+    output.putBoolean(CompoundTagKeys.REDSTONE_TRIGGERED, this.redstoneTriggered);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER).ifPresent(compoundTag -> {
-      this.signalReceiver.deserializeNBT(provider, compoundTag);
-    });
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.signalReceiver.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_RECEIVER));
     this.actionSignalAspects.clear();
-    tag.read(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf())
+    input.read(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf())
         .ifPresent(this.actionSignalAspects::addAll);
-    this.redstoneTriggered = tag.getBoolean(CompoundTagKeys.REDSTONE_TRIGGERED).orElse(false);
+    this.redstoneTriggered = input.getBooleanOr(CompoundTagKeys.REDSTONE_TRIGGERED, false);
   }
 
   @Override

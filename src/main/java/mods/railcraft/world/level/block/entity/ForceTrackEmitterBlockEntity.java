@@ -11,8 +11,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +20,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -220,16 +220,16 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
-    tag.store(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC, this.stateInstance.state());
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
+    output.store(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC, this.stateInstance.state());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT).orElse(0);
-    tag.read(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC)
-        .ifPresent(this::loadState);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.trackCount = input.getIntOr(CompoundTagKeys.TRACK_COUNT, 0);
+    input.read(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC).ifPresent(this::loadState);
   }
 }

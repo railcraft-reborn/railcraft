@@ -8,13 +8,13 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements Lockable {
@@ -45,16 +45,15 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.lock =
-        tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.lock = input.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
   }
 
   @Override

@@ -1,11 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
 import mods.railcraft.gui.widget.Widget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 
 public class WidgetRenderer<T extends Widget> {
@@ -28,12 +27,11 @@ public class WidgetRenderer<T extends Widget> {
 
   public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
       int mouseX, int mouseY) {
-    guiGraphics.blit(RenderType::guiTextured, widgetLocation, centreX + this.widget.x, centreY + this.widget.y,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.x, centreY + this.widget.y,
         this.widget.u, this.widget.v, this.widget.w, this.widget.h, 256, 256);
   }
 
-  @Nullable
-  public List<Component> getTooltip() {
-    return null;
+  public List<ClientTooltipComponent> getTooltip() {
+    return List.of();
   }
 }

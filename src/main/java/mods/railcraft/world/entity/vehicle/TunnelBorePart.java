@@ -1,12 +1,14 @@
 package mods.railcraft.world.entity.vehicle;
 
-import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.entity.PartEntity;
 
 public class TunnelBorePart extends PartEntity<TunnelBore> {
@@ -52,13 +54,13 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {}
+  protected void readAdditionalSaveData(ValueInput valueInput) {}
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {}
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {}
 
   @Override
-  public boolean canBeCollidedWith() {
+  public boolean canBeCollidedWith(@Nullable Entity entity) {
     return true;
   }
 

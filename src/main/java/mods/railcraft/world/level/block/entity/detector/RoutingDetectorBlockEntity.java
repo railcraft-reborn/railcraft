@@ -19,8 +19,6 @@ import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -30,6 +28,8 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implements
     ContainerManipulator<ModifiableSlotAccessor>, RouterBlockEntity {
@@ -109,21 +109,19 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
-      this.container.fromTag(listTag, provider);
-    });
-    this.railway = tag.read(CompoundTagKeys.RAILWAY, Railway.CODEC).orElse(Railway.PUBLIC);
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED).orElse(false);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.container.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    this.railway = input.read(CompoundTagKeys.RAILWAY, Railway.CODEC).orElse(Railway.PUBLIC);
+    this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag(provider));
-    tag.store(CompoundTagKeys.RAILWAY, Railway.CODEC, this.railway);
-    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CONTAINER, this.container);
+    output.store(CompoundTagKeys.RAILWAY, Railway.CODEC, this.railway);
+    output.putBoolean(CompoundTagKeys.POWERED, this.powered);
   }
 
   @Override

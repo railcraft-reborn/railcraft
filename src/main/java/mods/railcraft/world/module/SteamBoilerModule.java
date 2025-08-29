@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
@@ -11,11 +10,11 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -34,7 +33,6 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final SteamBoiler boiler;
 
   private final IItemHandler itemHandler = new InvWrapper(this) {
-    @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
       if (slot != SLOT_LIQUID_OUTPUT)
@@ -157,24 +155,19 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT(provider));
-    tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT(provider));
-    tag.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueOutput.putChild(CompoundTagKeys.BOILER, this.boiler);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    tag.getList(CompoundTagKeys.TANK_MANAGER).ifPresent(tanksTag -> {
-      this.tankManager.deserializeNBT(provider, tanksTag);
-    });
-    tag.getCompound(CompoundTagKeys.BOILER).ifPresent(boilerTag -> {
-      this.boiler.deserializeNBT(provider, boilerTag);
-    });
-    this.processState = tag.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.tankManager.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
+    this.boiler.deserialize(valueInput.childOrEmpty(CompoundTagKeys.BOILER));
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }
 }

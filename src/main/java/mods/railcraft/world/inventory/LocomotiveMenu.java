@@ -7,6 +7,7 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.inventory.slot.UnmodifiableSlot;
 import mods.railcraft.world.item.TicketItem;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +29,8 @@ public abstract class LocomotiveMenu<T extends Locomotive> extends RailcraftMenu
     this.locomotive = locomotive;
     var slotTicket = new ItemFilterSlot(TicketItem.FILTER, locomotive,
         locomotive.getContainerSize() - 2, 116, guiHeight - 111).setStackLimit(1);
-    slotTicket.setTooltip(Collections.singletonList(
-            Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET)));
+    slotTicket.setTooltip(Collections.singletonList(ClientTooltipComponent.create(
+        Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET).getVisualOrderText())));
     this.addSlot(slotTicket);
     // TODO: make some way to clear this?
     this.addSlot(

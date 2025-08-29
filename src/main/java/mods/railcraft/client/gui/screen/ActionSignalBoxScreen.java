@@ -14,7 +14,7 @@ import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEnti
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {
 
@@ -120,7 +120,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetActionSignalBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));

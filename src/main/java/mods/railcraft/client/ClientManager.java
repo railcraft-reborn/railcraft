@@ -1,7 +1,7 @@
 package mods.railcraft.client;
 
 import java.net.URI;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import mods.railcraft.Railcraft;
@@ -57,6 +57,7 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
+import mods.railcraft.integrations.jei.JeiRecipeSync;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
@@ -64,6 +65,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
+import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
@@ -75,8 +77,8 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.FogParameters;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.fog.FogData;
+import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -98,6 +100,7 @@ import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -106,9 +109,9 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
@@ -299,7 +302,6 @@ public class ClientManager {
       }
 
       @Override
-      @NotNull
       public Vector4f modifyFogColor(Camera camera, float partialTick,
           ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
         var x = Integer.parseInt("6A", 16) / 255f;
@@ -309,10 +311,10 @@ public class ClientManager {
       }
 
       @Override
-      public FogParameters modifyFogRender(Camera camera, FogRenderer.FogMode mode,
-          float renderDistance, float partialTick, FogParameters fogParameters) {
-        return new FogParameters(0, 3f, fogParameters.shape(),
-            fogParameters.red(), fogParameters.green(), fogParameters.blue(), fogParameters.alpha());
+      public void modifyFogRender(Camera camera, @Nullable FogEnvironment environment,
+          float renderDistance, float partialTick, FogData fogData) {
+        fogData.renderDistanceStart = 0;
+        fogData.renderDistanceEnd = 3f;
       }
     }, RailcraftFluidTypes.CREOSOTE.get());
   }
@@ -329,16 +331,15 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-      shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
-          event.getPartialTick().getGameTimeDeltaPartialTick(false));
-    }
+  static void handleRenderWorldLast(RenderLevelStageEvent.AfterEntities event) {
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
+        event.getPartialTick().getGameTimeDeltaPartialTick(false));
   }
 
   @SubscribeEvent
   static void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
     shuntingAuraRenderer.clearCarts();
+    JeiRecipeSync.clearAll();
   }
 
   @SuppressWarnings("unused")
@@ -398,6 +399,18 @@ public class ClientManager {
   }
 
   @SubscribeEvent
+  static void handleRecipesReceived(RecipesReceivedEvent event) {
+    JeiRecipeSync.setBlastFurnaceRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.BLASTING.get()));
+    JeiRecipeSync.setRollingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.ROLLING.get()));
+    JeiRecipeSync.setCokingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.COKING.get()));
+    JeiRecipeSync.setCrushingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.CRUSHING.get()));
+  }
+
+  @SubscribeEvent
   static void handleKeyInput(InputEvent.Key event) {
     var player = Minecraft.getInstance().player;
     if (player == null) {
@@ -415,23 +428,23 @@ public class ClientManager {
       return;
     }
     if (KeyBinding.REVERSE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.REVERSE));
     }
     if (KeyBinding.FASTER.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.FASTER));
     }
     if (KeyBinding.SLOWER.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.SLOWER));
     }
     if (KeyBinding.MODE_CHANGE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.MODE_CHANGE));
     }
     if (KeyBinding.WHISTLE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.WHISTLE));
     }
   }

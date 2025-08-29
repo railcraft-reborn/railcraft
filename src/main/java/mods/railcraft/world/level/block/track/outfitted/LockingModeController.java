@@ -1,11 +1,11 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public interface LockingModeController extends INBTSerializable<CompoundTag> {
+public interface LockingModeController extends ValueIOSerializable {
 
   default void locked(AbstractMinecart cart) {}
 
@@ -13,9 +13,9 @@ public interface LockingModeController extends INBTSerializable<CompoundTag> {
 
   default void released(AbstractMinecart cart) {}
 
-  default CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    return new CompoundTag();
-  }
+  @Override
+  default void serialize(ValueOutput valueOutput) {}
 
-  default void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {}
+  @Override
+  default void deserialize(ValueInput valueInput) {}
 }

@@ -75,7 +75,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     newStack.setCount(1);
     var res = new AtomicReference<>(newStack);
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
-      newStack.hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
+      newStack.hurtAndBreak(1, serverPlayer.level(), serverPlayer,
           __ -> res.set(ItemStack.EMPTY));
     }
     return res.get();

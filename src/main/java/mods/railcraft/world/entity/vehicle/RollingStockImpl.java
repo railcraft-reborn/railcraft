@@ -21,20 +21,20 @@ import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
+public class RollingStockImpl implements RollingStock, ValueIOSerializable {
 
   private static final double LINK_DRAG = 0.95;
   private static final float MAX_DISTANCE = 8F;
@@ -681,55 +681,53 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-
+  public void serialize(ValueOutput valueOutput) {
     if (this.train != null) {
-      tag.put(CompoundTagKeys.TRAIN, this.train.toTag());
+      //TODO: TEST
+      this.train.serialize(valueOutput.child(CompoundTagKeys.TRAIN));
     }
 
     if (this.unresolvedBackLink != null) {
-      tag.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.unresolvedBackLink);
+      valueOutput.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.unresolvedBackLink);
     } else if (this.backLink != null) {
-      tag.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.backLink.entity().getUUID());
+      valueOutput.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.backLink.entity().getUUID());
     }
 
     if (this.unresolvedFrontLink != null) {
-      tag.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.unresolvedFrontLink);
+      valueOutput.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.unresolvedFrontLink);
     } else if (this.frontLink != null) {
-      tag.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.frontLink.entity().getUUID());
+      valueOutput.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.frontLink.entity().getUUID());
     }
 
-    tag.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
-    tag.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
+    valueOutput.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
+    valueOutput.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
 
-    tag.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
-    tag.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
-    tag.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
-    tag.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
-    tag.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
-    tag.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
-    return tag;
+    valueOutput.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
+    valueOutput.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
+    valueOutput.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
+    valueOutput.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
+    valueOutput.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
+    valueOutput.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+  public void deserialize(ValueInput valueInput) {
     this.train = null;
-    tag.getCompound(CompoundTagKeys.TRAIN).ifPresent(train -> {
-      this.train = TrainImpl.fromTag(train, this);
+    valueInput.child(CompoundTagKeys.TRAIN).ifPresent(train -> {
+      this.train = TrainImpl.deserialize(train, this);
     });
 
-    this.unresolvedBackLink = tag.read(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC).orElse(null);
-    this.unresolvedFrontLink = tag.read(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC).orElse(null);
+    this.unresolvedBackLink = valueInput.read(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC).orElse(null);
+    this.unresolvedFrontLink = valueInput.read(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC).orElse(null);
 
-    this.backAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED).orElse(false);
-    this.frontAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED).orElse(false);
+    this.backAutoLinkEnabled = valueInput.getBooleanOr(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, false);
+    this.frontAutoLinkEnabled = valueInput.getBooleanOr(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, false);
 
-    this.launchState = tag.read(CompoundTagKeys.LAUNCH_STATE, LaunchState.CODEC).orElse(LaunchState.LANDED);
-    this.elevatorRemainingTicks = tag.getInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS).orElse(0);
-    this.preventMountRemainingTicks = tag.getInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS).orElse(0);
-    this.derailedRemainingTicks = tag.getInt(CompoundTagKeys.DERAILED_REMAINING_TICKS).orElse(0);
-    this.explosionPending = tag.getBoolean(CompoundTagKeys.EXPLOSION_PENDING).orElse(false);
-    this.highSpeed = tag.getBoolean(CompoundTagKeys.HIGH_SPEED).orElse(false);
+    this.launchState = valueInput.read(CompoundTagKeys.LAUNCH_STATE, LaunchState.CODEC).orElse(LaunchState.LANDED);
+    this.elevatorRemainingTicks = valueInput.getIntOr(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, 0);
+    this.preventMountRemainingTicks = valueInput.getIntOr(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, 0);
+    this.derailedRemainingTicks = valueInput.getIntOr(CompoundTagKeys.DERAILED_REMAINING_TICKS, 0);
+    this.explosionPending = valueInput.getBooleanOr(CompoundTagKeys.EXPLOSION_PENDING, false);
+    this.highSpeed = valueInput.getBooleanOr(CompoundTagKeys.HIGH_SPEED, false);
   }
 }

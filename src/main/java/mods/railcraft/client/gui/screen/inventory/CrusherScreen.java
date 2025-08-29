@@ -4,7 +4,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.CrusherMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,7 +31,7 @@ public class CrusherScreen extends RailcraftMenuScreen<CrusherMenu> {
     var logic = this.menu.getCrusher().getCrusherModule();
     if (logic.getProgress() > 0) {
       var progressPercent = (int) (logic.getProgressPercent() * 29 + 1);
-      guiGraphics.blit(RenderType::guiTextured,
+      guiGraphics.blit(RenderPipelines.GUI_TEXTURED,
           WIDGETS_TEXTURE, x + 73, y + 20, 176, 0, progressPercent, 38, 256, 256);
     }
   }

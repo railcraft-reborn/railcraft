@@ -5,15 +5,14 @@ import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +23,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
@@ -47,23 +48,26 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.invResult.createTag(provider));
-    tag.put(CompoundTagKeys.CRAFT_MATRIX, ContainerTools.writeContainer(craftMatrix, provider));
-    tag.putInt(CompoundTagKeys.PROGRESS, this.progress);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CONTAINER, this.invResult);
+    ContainerHelper.saveAllItems(output.child(CompoundTagKeys.CRAFT_MATRIX),
+        NonNullList.copyOf(this.craftMatrix.getItems()), false);
+    output.putInt(CompoundTagKeys.PROGRESS, this.progress);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getList(CompoundTagKeys.CONTAINER).ifPresent(listTag -> {
-      this.invResult.fromTag(listTag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.invResult.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.child(CompoundTagKeys.CRAFT_MATRIX).ifPresent(input1 -> {
+      var tempItems = NonNullList.withSize(this.craftMatrix.getContainerSize(), ItemStack.EMPTY);
+      ContainerHelper.loadAllItems(input1, tempItems);
+      for (int i = 0; i < tempItems.size(); i++) {
+        this.craftMatrix.setItem(i, tempItems.get(i));
+      }
     });
-    tag.getList(CompoundTagKeys.CRAFT_MATRIX).ifPresent(listTag -> {
-      ContainerTools.readContainer(this.craftMatrix, listTag, provider);
-    });
-    this.progress = tag.getInt(CompoundTagKeys.PROGRESS).orElse(0);
+    this.progress = input.getIntOr(CompoundTagKeys.PROGRESS, 0);
   }
 
   @Override

@@ -1,13 +1,20 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2f;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.render.state.GuiElementRenderState;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
@@ -17,7 +24,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
   }
 
   @Override
-  public List<Component> getTooltip() {
+  public List<ClientTooltipComponent> getTooltip() {
     return this.widget.getGauge().getTooltip();
   }
 
@@ -49,35 +56,71 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     float baseOffset = 1.0F / sinA * halfWidth;
 
     // set the needle color to dark-ish red
-    int red = 100;
-    int green = 0;
-    int blue = 0;
-    int alpha = 255;
+    var color = ARGB.color(255, 100, 0, 0);
 
-    float z = 0;
     float gx = centreX + this.widget.x;
     float gy = centreY + this.widget.y - 1;
 
     float bx = gx + this.widget.w * 0.5F;
     float by = gy + this.widget.h;
 
-    var matrix = guiGraphics.pose().last().pose();
-    var vertexConsumer =
-        Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.guiOverlay());
-    vertexConsumer
-        .addVertex(matrix, bx - baseOffset, by, z)
-        .setColor(red, green, blue, alpha);
-    vertexConsumer
-        .addVertex(matrix, bx + baseOffset, by, z)
-        .setColor(red, green, blue, alpha);
-    vertexConsumer
-        .addVertex(matrix, bx - glx + gwx, by - (gly + gwy), z)
-        .setColor(red, green, blue, alpha);
-    vertexConsumer
-        .addVertex(matrix, bx - glx - gwx, by - (gly - gwy), z)
-        .setColor(red, green, blue, alpha);
+    guiGraphics.submitGuiElementRenderState(new GuiElementRenderState() {
 
-    guiGraphics.blit(RenderType::guiTextured, widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
+      private final Matrix3x2f pose = new Matrix3x2f(guiGraphics.pose());
+      @Nullable
+      private final ScreenRectangle scissorArea = guiGraphics.peekScissorStack();
+
+      @Override
+      @Nullable
+      public ScreenRectangle bounds() {
+        var rectangle = new ScreenRectangle(
+            (int) (bx - baseOffset),
+            (int) ((int) by - (gly + gwy)),
+            2 * (int)baseOffset,
+            2 * (int)gwy
+        );
+
+        rectangle = rectangle.transformMaxBounds(this.pose);
+
+        return this.scissorArea != null
+            ? this.scissorArea.intersection(rectangle)
+            : rectangle;
+      }
+
+      @Override
+      @Nullable
+      public ScreenRectangle scissorArea() {
+        return this.scissorArea;
+      }
+
+      @Override
+      public RenderPipeline pipeline() {
+        return RenderPipelines.GUI;
+      }
+
+      @Override
+      public TextureSetup textureSetup() {
+        return TextureSetup.noTexture();
+      }
+
+      @Override
+      public void buildVertices(VertexConsumer vertexConsumer, float z) {
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - baseOffset, by, z)
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx + baseOffset, by, z)
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - glx + gwx, by - (gly + gwy), z)
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - glx - gwx, by - (gly - gwy), z)
+            .setColor(color);
+      }
+    });
+
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
         this.widget.ov, 4, 3, 256, 256);
   }
 }

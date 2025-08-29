@@ -18,12 +18,12 @@ import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 /**
  *
@@ -32,7 +32,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
  * @param <T>
  */
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
-    implements SignalNetwork<T>, INBTSerializable<CompoundTag>, NetworkSerializable {
+    implements SignalNetwork<T>, ValueIOSerializable, NetworkSerializable {
 
   protected static final RandomSource RANDOM = RandomSource.create();
 
@@ -136,16 +136,14 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-    tag.store(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf(), new ArrayList<>(this.peers));
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    valueOutput.store(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf(), new ArrayList<>(this.peers));
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+  public void deserialize(ValueInput valueInput) {
     this.peers.addAll(
-        tag.read(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf()).orElse(new ArrayList<>()));
+        valueInput.read(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf()).orElse(new ArrayList<>()));
   }
 
   @Override

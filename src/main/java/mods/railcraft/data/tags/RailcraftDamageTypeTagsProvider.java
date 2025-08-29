@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.tags;
 
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -18,10 +18,10 @@ public class RailcraftDamageTypeTagsProvider extends DamageTypeTagsProvider {
   @Override
   protected void addTags(HolderLookup.Provider registries) {
     this.tag(DamageTypeTags.BYPASSES_ARMOR)
-        .addOptional(RailcraftDamageType.BORE.location())
-        .addOptional(RailcraftDamageType.ELECTRIC.location())
-        .addOptional(RailcraftDamageType.TRACK_ELECTRIC.location())
-        .addOptional(RailcraftDamageType.TRAIN.location())
-        .addOptional(RailcraftDamageType.CREOSOTE.location());
+        .addOptional(RailcraftDamageType.BORE)
+        .addOptional(RailcraftDamageType.ELECTRIC)
+        .addOptional(RailcraftDamageType.TRACK_ELECTRIC)
+        .addOptional(RailcraftDamageType.TRAIN)
+        .addOptional(RailcraftDamageType.CREOSOTE);
   }
 }

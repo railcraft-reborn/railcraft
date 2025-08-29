@@ -17,14 +17,14 @@ import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
@@ -248,36 +248,34 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.LOCKING_MODE_CONTROLLER, this.lockingModeController.serializeNBT(provider));
-    tag.putBoolean(CompoundTagKeys.LOCKED, this.locked);
-    tag.putBoolean(CompoundTagKeys.TRAIN_LEAVING, this.trainLeaving);
-    tag.putInt(CompoundTagKeys.TRAIN_DELAY, this.trainDelay);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.LOCKING_MODE_CONTROLLER, this.lockingModeController);
+    output.putBoolean(CompoundTagKeys.LOCKED, this.locked);
+    output.putBoolean(CompoundTagKeys.TRAIN_LEAVING, this.trainLeaving);
+    output.putInt(CompoundTagKeys.TRAIN_DELAY, this.trainDelay);
     if (this.prevCart != null) {
-      tag.store(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC, this.prevCart.getUUID());
+      output.store(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC, this.prevCart.getUUID());
     }
     if (this.currentCart != null) {
-      tag.store(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC, this.currentCart.getUUID());
+      output.store(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC, this.currentCart.getUUID());
     }
-    tag.store(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC, this.lockId);
+    output.store(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC, this.lockId);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     this.lockingModeController = LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
-    tag.getCompound(CompoundTagKeys.LOCKING_MODE_CONTROLLER).ifPresent(controllerTag -> {
-      this.lockingModeController.deserializeNBT(provider, controllerTag);
-    });
-    this.locked = tag.getBoolean(CompoundTagKeys.LOCKED).orElse(false);
-    this.trainLeaving = tag.getBoolean(CompoundTagKeys.TRAIN_LEAVING).orElse(false);
-    this.trainDelay = tag.getInt(CompoundTagKeys.TRAIN_DELAY).orElse(0);
-    tag.read(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC)
+    this.lockingModeController.deserialize(input.childOrEmpty(CompoundTagKeys.LOCKING_MODE_CONTROLLER));
+    this.locked = input.getBooleanOr(CompoundTagKeys.LOCKED, false);
+    this.trainLeaving = input.getBooleanOr(CompoundTagKeys.TRAIN_LEAVING, false);
+    this.trainDelay = input.getIntOr(CompoundTagKeys.TRAIN_DELAY, 0);
+    input.read(CompoundTagKeys.PREV_CART_ID, UUIDUtil.CODEC)
         .ifPresent(uuid -> this.prevCartId = uuid);
-    tag.read(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC)
+    input.read(CompoundTagKeys.CURRENT_CART_ID, UUIDUtil.CODEC)
         .ifPresent(uuid -> this.currentCartId = uuid);
-    this.lockId = tag.read(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC).orElseThrow();
+    this.lockId = input.read(CompoundTagKeys.LOCK_ID, UUIDUtil.CODEC).orElseThrow();
   }
 
   @Override

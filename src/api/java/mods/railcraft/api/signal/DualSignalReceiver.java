@@ -4,10 +4,10 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.core.CompoundTagKeys;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class DualSignalReceiver extends SingleSignalReceiver {
 
@@ -78,17 +78,15 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT, this.secondarySignalClient.serializeNBT(provider));
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT, this.secondarySignalClient);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.secondarySignalClient.deserializeNBT(provider,
-        tag.getCompound(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT).orElse(new CompoundTag()));
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.secondarySignalClient.deserialize(valueInput.childOrEmpty(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT));
   }
 
   @Override

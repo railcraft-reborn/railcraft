@@ -7,11 +7,11 @@ import mods.railcraft.api.core.Lockable;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity implements Lockable {
 
@@ -44,16 +44,16 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC, this.lock);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC, this.lock);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.lock = tag.read( CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC)
-            .orElse(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.lock = input.read( CompoundTagKeys.LOCK, LockableSwitchTrackActuatorBlockEntity.Lock.CODEC)
+        .orElse(LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED);
   }
 
   @Override

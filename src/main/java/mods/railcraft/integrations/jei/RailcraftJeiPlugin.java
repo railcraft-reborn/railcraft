@@ -1,9 +1,7 @@
 package mods.railcraft.integrations.jei;
 
-import org.jetbrains.annotations.Nullable;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -35,7 +33,6 @@ import mods.railcraft.world.inventory.SteamOvenMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
-import mods.railcraft.world.item.crafting.RollingRecipe;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
@@ -53,8 +50,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class RailcraftJeiPlugin implements IModPlugin {
 
   public static final int TEXT_COLOR = 0xFF808080;
-  @Nullable
-  private IRecipeCategory<RecipeHolder<RollingRecipe>> rollingCategory;
 
   @Override
   public ResourceLocation getPluginUid() {
@@ -64,7 +59,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
   @Override
   public void registerCategories(IRecipeCategoryRegistration registration) {
     var guiHelper = registration.getJeiHelpers().getGuiHelper();
-    registration.addRecipeCategories(rollingCategory = new RollingRecipeCategory(guiHelper));
+    registration.addRecipeCategories(new RollingRecipeCategory(guiHelper));
     registration.addRecipeCategories(new CokeOvenRecipeCategory(guiHelper));
     registration.addRecipeCategories(new BlastFurnaceRecipeCategory(guiHelper));
     registration.addRecipeCategories(new CrusherRecipeCategory(guiHelper));
@@ -108,20 +103,14 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
-    /*var recipeManager = Minecraft.getInstance().level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        JeiRecipeSync.getRollingRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.COKE_OVEN,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        JeiRecipeSync.getCokingRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.BLAST_FURNACE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()).stream()
-            .map(RecipeHolder::value).toList());
+        JeiRecipeSync.getBlastFurnaceRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.CRUSHER,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()).stream()
-            .map(RecipeHolder::value).toList());
-*/
+        JeiRecipeSync.getCrushingRecipes().stream().toList());
 
     registration.addRecipes(RecipeTypes.SOLID_BOILER, SolidBoilerRecipeCategory.getBoilerRecipes());
     registration.addRecipes(RecipeTypes.FLUID_BOILER, FluidBoilerRecipeCategory.getBoilerRecipes());

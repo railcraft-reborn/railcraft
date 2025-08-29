@@ -11,9 +11,7 @@ import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
@@ -25,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements MenuProvider {
 
@@ -122,17 +122,17 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
-    tag.putInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, this.timeSinceLastSpawn);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putBoolean(CompoundTagKeys.POWERED, this.powered);
+    output.putInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, this.timeSinceLastSpawn);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED).orElse(false);
-    this.timeSinceLastSpawn = tag.getInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN).orElse(0);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
+    this.timeSinceLastSpawn = input.getIntOr(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, 0);
   }
 
   @Override

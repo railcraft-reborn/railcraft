@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class TrainDetectorScreen extends IngameWindowScreen {
 
@@ -45,7 +45,7 @@ public class TrainDetectorScreen extends IngameWindowScreen {
     var size = Mth.clamp(trainDetector.getTrainSize() + incrementAmount, 1, 100);
     if (this.trainDetector.getTrainSize() != size) {
       this.trainDetector.setTrainSize(size);
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetTrainDetectorMessage(this.trainDetector.getBlockPos(),
               this.trainDetector.getTrainSize()));
     }

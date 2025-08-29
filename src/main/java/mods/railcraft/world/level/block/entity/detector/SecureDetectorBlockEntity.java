@@ -6,11 +6,11 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity.Lock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SecureDetectorBlockEntity extends DetectorBlockEntity implements Lockable {
 
@@ -39,15 +39,15 @@ public class SecureDetectorBlockEntity extends DetectorBlockEntity implements Lo
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.LOCK, Lock.CODEC, this.lock);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.lock = tag.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.lock = input.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED);
   }
 
   @Override

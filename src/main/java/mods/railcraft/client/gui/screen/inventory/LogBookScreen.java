@@ -15,7 +15,7 @@ import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -128,7 +128,7 @@ public class LogBookScreen extends Screen {
     this.renderTransparentBackground(guiGraphics);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(RenderType::guiTextured, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
         IMAGE_HEIGHT, 256, 256);
   }
 

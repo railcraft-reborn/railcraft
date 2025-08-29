@@ -17,7 +17,7 @@ public final class CompoundTagKeys {
   public static final String BLOCK_SIGNAL = "blockSignal";
   public static final String BOILER = "boiler";
   public static final String BURN_TIME = "burnTime";
-  public static final String CART = "cart";
+  public static final String CAPACITY = "capacity";
   public static final String CARTS = "carts";
   public static final String CART_FILTER = "cartFilter";
   public static final String CART_FILTERS = "cartFilters";
@@ -36,6 +36,7 @@ public final class CompoundTagKeys {
   public static final String DERAILED_REMAINING_TICKS = "derailedRemainingTicks";
   public static final String DEST = "dest";
   public static final String DESTINATION = "destination";
+  public static final String EFFICIENCY = "efficiency";
   public static final String ELEVATOR_REMAINING_TICKS = "elevatorRemainingTicks";
   public static final String EMITTER_POS = "emitterPos";
   public static final String ENERGY = "energy";
@@ -54,6 +55,7 @@ public final class CompoundTagKeys {
   public static final String INDEX = "index";
   public static final String INPUT_SIGNAL = "inputSignal";
   public static final String INV_FILTER = "invFilter";
+  public static final String IS_RECHARGEABLE = "isRechargeable";
   public static final String ITEM_FILTER = "itemFilter";
   public static final String ITEM_FILTERS = "itemFilters";
   public static final String ITEM_NAME = "itemName";
@@ -67,7 +69,9 @@ public final class CompoundTagKeys {
   public static final String LOCKS = "locks";
   public static final String LOCK_ID = "lockId";
   public static final String LOG = "log";
+  public static final String LOSS = "loss";
   public static final String MASTER = "master";
+  public static final String MAX_DRAW = "maxDraw";
   public static final String MAX_TEMPERATURE = "maxTemperature";
   public static final String MODE = "mode";
   public static final String MODULES = "modules";
@@ -80,6 +84,7 @@ public final class CompoundTagKeys {
   public static final String PATTERN = "pattern";
   public static final String PEER_POS = "peerPos";
   public static final String PIPE_LENGTH = "pipeLength";
+  public static final String PLAYER = "player";
   public static final String PLAYERS = "players";
   public static final String POS = "pos";
   public static final String POWERED = "powered";
@@ -135,11 +140,6 @@ public final class CompoundTagKeys {
   public static final String VALUE = "value";
   public static final String WATER_TANK = "waterTank";
   public static final String WHISTLE_PITCH = "whistlePitch";
-  public static final String IS_RECHARGEABLE = "isRechargeable";
-  public static final String CAPACITY = "capacity";
-  public static final String MAX_DRAW = "maxDraw";
-  public static final String LOSS = "loss";
-  public static final String EFFICIENCY = "efficiency";
 
   private CompoundTagKeys() {
   }

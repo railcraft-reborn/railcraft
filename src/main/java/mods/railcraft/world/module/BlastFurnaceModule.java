@@ -8,12 +8,12 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
@@ -46,7 +46,6 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
     itemHandler = new InvWrapper(this) {
       @Override
-      @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
           return ItemStack.EMPTY;
@@ -55,7 +54,6 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
       }
 
       @Override
-      @NotNull
       public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
         if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
           return super.insertItem(slot, stack, simulate);
@@ -181,18 +179,17 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.putInt(CompoundTagKeys.BURN_TIME, this.burnTime);
-    tag.putInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putInt(CompoundTagKeys.BURN_TIME, this.burnTime);
+    valueOutput.putInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.burnTime = tag.getInt(CompoundTagKeys.BURN_TIME).orElse(0);
-    this.currentItemBurnTime = tag.getInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME).orElse(0);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.burnTime = valueInput.getIntOr(CompoundTagKeys.BURN_TIME, 0);
+    this.currentItemBurnTime = valueInput.getIntOr(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, 0);
   }
 
   @Override

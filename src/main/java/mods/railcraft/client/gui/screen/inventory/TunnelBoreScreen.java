@@ -5,7 +5,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TunnelBoreMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,7 +49,7 @@ public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
     if (this.menu.getTunnelBore().getFuel() > 0) {
       int burnProgress = this.menu.getTunnelBore().getBurnProgressScaled(12);
-      guiGraphics.blit(RenderType::guiTextured, WIDGETS_LOCATION, centredX + 44,
+      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_LOCATION, centredX + 44,
           (centredY + 48) - burnProgress, 176, 12 - burnProgress, 14, burnProgress + 2, 256, 256);
     }
   }

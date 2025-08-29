@@ -2,13 +2,14 @@ package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class FilteredMinecart extends RailcraftMinecart {
 
@@ -33,18 +34,16 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    tag.getList(CompoundTagKeys.FILTER).ifPresent(listTag -> {
-      this.filterContainer.fromTag(listTag, this.registryAccess());
-    });
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.filterContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.FILTER));
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.put(CompoundTagKeys.FILTER, this.filterContainer.createTag(this.registryAccess()));
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.FILTER, this.filterContainer);
   }
 
   public boolean hasFilter() {

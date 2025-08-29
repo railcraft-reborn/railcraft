@@ -14,8 +14,6 @@ import mods.railcraft.world.inventory.TrainDispenserMenu;
 import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
 
@@ -120,17 +120,15 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern.createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    tag.getList(CompoundTagKeys.TRAIN_DISPENSER_FILTERS).ifPresent(listTag -> {
-      this.invPattern.fromTag(listTag, provider);
-    });
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.invPattern.deserialize(input.childOrEmpty(CompoundTagKeys.TRAIN_DISPENSER_FILTERS));
   }
 
   @Nullable

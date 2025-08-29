@@ -15,8 +15,6 @@ import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.MultiblockBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +23,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M>, M>
     extends RailcraftBlockEntity implements MenuProvider {
@@ -265,17 +265,17 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    if (tag.getBoolean(CompoundTagKeys.MASTER).orElse(false)) {
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    if (input.getBooleanOr(CompoundTagKeys.MASTER, false)) {
       this.enqueueEvaluation();
     }
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putBoolean(CompoundTagKeys.MASTER, this.membership != null && this.membership.master() == this);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putBoolean(CompoundTagKeys.MASTER, this.membership != null && this.membership.master() == this);
   }
 
   @Override

@@ -11,8 +11,6 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
@@ -22,6 +20,8 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
@@ -108,19 +108,19 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.primaryMode = tag.read(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC)
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.primaryMode = input.read(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC)
         .orElse(PrimaryMode.ANYTHING);
-    this.filterMode = tag.read(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC)
+    this.filterMode = input.read(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC)
         .orElse(FilterMode.AT_LEAST);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.store(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC, this.primaryMode);
-    tag.store(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC, this.filterMode);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC, this.primaryMode);
+    output.store(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC, this.filterMode);
   }
 
   @Override

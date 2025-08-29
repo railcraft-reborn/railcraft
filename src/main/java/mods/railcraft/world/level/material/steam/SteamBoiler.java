@@ -10,17 +10,18 @@ import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.material.FuelProvider;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
  */
-public class SteamBoiler implements INBTSerializable<CompoundTag> {
+public class SteamBoiler implements ValueIOSerializable {
 
   private final Gauge temperatureGauge = new TemperatureGauge();
 
@@ -253,21 +254,19 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-    tag.putFloat(CompoundTagKeys.TEMPERATURE, this.temperature);
-    tag.putFloat(CompoundTagKeys.MAX_TEMPERATURE, this.maxTemperature);
-    tag.putFloat(CompoundTagKeys.BURN_TIME, this.burnTime);
-    tag.putFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    valueOutput.putFloat(CompoundTagKeys.TEMPERATURE, this.temperature);
+    valueOutput.putFloat(CompoundTagKeys.MAX_TEMPERATURE, this.maxTemperature);
+    valueOutput.putFloat(CompoundTagKeys.BURN_TIME, this.burnTime);
+    valueOutput.putFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE).orElse(SteamConstants.COLD_TEMP));
-    this.setMaxTemperature(tag.getFloat(CompoundTagKeys.MAX_TEMPERATURE).orElse(SteamConstants.MAX_HEAT_LOW));
-    this.setBurnTime(tag.getFloat(CompoundTagKeys.BURN_TIME).orElse(0F));
-    this.setCurrentItemBurnTime(tag.getFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME).orElse(0F));
+  public void deserialize(ValueInput valueInput) {
+    this.setTemperature(valueInput.getFloatOr(CompoundTagKeys.TEMPERATURE, SteamConstants.COLD_TEMP));
+    this.setMaxTemperature(valueInput.getFloatOr(CompoundTagKeys.MAX_TEMPERATURE, SteamConstants.MAX_HEAT_LOW));
+    this.setBurnTime(valueInput.getFloatOr(CompoundTagKeys.BURN_TIME, 0));
+    this.setCurrentItemBurnTime(valueInput.getFloatOr(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, 0));
   }
 
   public Gauge getTemperatureGauge() {
@@ -293,16 +292,17 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   private class TemperatureGauge implements Gauge {
 
     @Nullable
-    private List<Component> tooltip;
+    private List<ClientTooltipComponent> tooltip;
 
     @Override
     public void refresh() {
-      this.tooltip = List.of(
-          Component.literal(String.format("%.0f°C", SteamBoiler.this.getTemperature())));
+      this.tooltip = List.of(ClientTooltipComponent.create(
+          Component.literal(String.format("%.0f°C", SteamBoiler.this.getTemperature()))
+              .getVisualOrderText()));
     }
 
     @Override
-    public List<Component> getTooltip() {
+    public List<ClientTooltipComponent> getTooltip() {
       return this.tooltip == null ? Collections.emptyList() : this.tooltip;
     }
 

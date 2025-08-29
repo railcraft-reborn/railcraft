@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.widget.button;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.PageButton;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 
 public class RailcraftPageButton extends PageButton {
@@ -29,7 +29,7 @@ public class RailcraftPageButton extends PageButton {
       j += 13;
     }
 
-    guiGraphics.blit(RenderType::guiTextured, this.atlasLocation, this.getX(), this.getY(), i, j,
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, this.atlasLocation, this.getX(), this.getY(), i, j,
         23, 13, 256, 256);
   }
 }

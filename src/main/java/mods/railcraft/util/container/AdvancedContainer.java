@@ -3,21 +3,21 @@ package mods.railcraft.util.container;
 import java.util.List;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
-import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.module.ModuleProvider;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 /**
  * An extension of {@link SimpleContainer} with callback support, implementation of
@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
  * @author Sm0keySa1m0n
  */
 public class AdvancedContainer extends SimpleContainer
-    implements ContainerManipulator<ModifiableSlotAccessor> {
+    implements ContainerManipulator<ModifiableSlotAccessor>, ValueIOSerializable {
 
   private final List<ModifiableSlotAccessor> slots;
 
@@ -95,37 +95,6 @@ public class AdvancedContainer extends SimpleContainer
     }
   }
 
-  @Override
-  public void fromTag(ListTag tag, HolderLookup.Provider provider) {
-    tag.compoundStream()
-        .map(compoundTag -> {
-          var slot = compoundTag.getInt(CompoundTagKeys.INDEX);
-          var itemStack = ItemStack.parse(provider, compoundTag);
-          return new Pair<>(slot, itemStack);
-        })
-        .forEach(pair -> {
-          var slot = pair.getFirst();
-          var itemStack = pair.getSecond();
-          if (slot.isPresent() && itemStack.isPresent()) {
-            this.setItem(slot.get(), itemStack.get());
-          }
-        });
-  }
-
-  @Override
-  public ListTag createTag(HolderLookup.Provider provider) {
-    var listTag = new ListTag();
-    for (int i = 0; i < this.getContainerSize(); ++i) {
-      var itemStack = this.getItem(i);
-      if (!itemStack.isEmpty()) {
-        var slotTag = new CompoundTag();
-        slotTag.putInt(CompoundTagKeys.INDEX, i);
-        listTag.add(itemStack.save(provider, slotTag));
-      }
-    }
-    return listTag;
-  }
-
   public static AdvancedContainer copyOf(Container original) {
     var copy = new AdvancedContainer(original.getContainerSize());
     for (int i = 0; i < original.getContainerSize(); i++) {
@@ -135,6 +104,20 @@ public class AdvancedContainer extends SimpleContainer
       }
     }
     return copy;
+  }
+
+  @Override
+  public void serialize(ValueOutput valueOutput) {
+    ContainerHelper.saveAllItems(valueOutput, this.getItems(), false);
+  }
+
+  @Override
+  public void deserialize(ValueInput valueInput) {
+    var tempItems = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+    ContainerHelper.loadAllItems(valueInput, tempItems);
+    for (int i = 0; i < tempItems.size(); i++) {
+      this.setItem(i, tempItems.get(i));
+    }
   }
 
   public interface Listener extends ContainerListener {

@@ -3,12 +3,12 @@ package mods.railcraft.client.gui.screen.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.glfw.GLFW;
-import com.mojang.blaze3d.systems.RenderSystem;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,14 +36,18 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     var left = this.leftPos;
     var top = this.topPos;
 
-    RenderSystem.setShaderColor(1, 1, 1, 1);
-
     if (this.menu.getCarried().isEmpty()) {
       for (var renderer : this.widgetRenderers) {
         if (!renderer.widget.hidden) {
           var tooltip = renderer.getTooltip();
-          if (tooltip != null && renderer.isMouseOver(mouseX - left, mouseY - top)) {
-            guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+          if (!tooltip.isEmpty() && renderer.isMouseOver(mouseX - left, mouseY - top)) {
+            guiGraphics.renderTooltip(
+                this.font,
+                tooltip,
+                mouseX,
+                mouseY,
+                DefaultTooltipPositioner.INSTANCE,
+                null);
           }
         }
       }
@@ -52,7 +56,13 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
         if (slot instanceof RailcraftSlot railcraftSlot && slot.getItem().isEmpty()) {
           var tooltip = railcraftSlot.getTooltip();
           if (tooltip != null && this.isMouseOverSlot(slot, mouseX, mouseY)) {
-            guiGraphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+            guiGraphics.renderTooltip(
+                this.font,
+                tooltip,
+                mouseX,
+                mouseY,
+                DefaultTooltipPositioner.INSTANCE,
+                null);
           }
         }
       }
@@ -68,7 +78,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     int x = (this.width - this.getXSize()) / 2;
     int y = (this.height - this.getYSize()) / 2;
 
-    guiGraphics.blit(RenderType::guiTextured, getWidgetsTexture(), x, y, 0, 0, this.getXSize(),
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, getWidgetsTexture(), x, y, 0, 0, this.getXSize(),
         this.getYSize(), 256, 256);
 
     int relativeMouseX = mouseX - this.leftPos;

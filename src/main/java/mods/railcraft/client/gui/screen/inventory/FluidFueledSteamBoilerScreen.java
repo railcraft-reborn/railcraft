@@ -5,7 +5,7 @@ import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.FluidFueledSteamBoilerMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,7 +36,7 @@ public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFuele
     int y = (this.height - this.getYSize()) / 2;
     if (this.menu.getModule().getBoiler().hasFuel()) {
       int scale = this.menu.getModule().getBoiler().getBurnProgressScaled(12);
-      guiGraphics.blit(RenderType::guiTextured, WIDGETS_LOCATION, x + 62, y + 50 - scale, 176,
+      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_LOCATION, x + 62, y + 50 - scale, 176,
           59 - scale, 14, scale + 2, 256, 256);
     }
   }

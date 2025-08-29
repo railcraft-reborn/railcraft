@@ -1,4 +1,4 @@
-package mods.railcraft.data;
+package mods.railcraft.data.tags;
 
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;

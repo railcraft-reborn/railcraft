@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import mods.railcraft.api.core.NetworkSerializable;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<CompoundTag> {
+public class ModuleDispatcher implements NetworkSerializable, ValueIOSerializable {
 
   private final Map<String, Module> moduleByName = new HashMap<>();
   private final Map<Class<?>, Module> moduleByType = new HashMap<>();
@@ -62,23 +62,12 @@ public class ModuleDispatcher implements NetworkSerializable, INBTSerializable<C
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-    this.moduleByName.forEach((name, module) -> tag.put(name, module.serializeNBT(provider)));
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    this.moduleByName.forEach(valueOutput::putChild);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    if (tag.isEmpty()) {
-      return;
-    }
-    this.moduleByName.forEach((name, module) -> {
-      tag.getCompound(name).ifPresent(moduleTag -> {
-        if (!moduleTag.isEmpty()) {
-          module.deserializeNBT(provider, moduleTag);
-        }
-      });
-    });
+  public void deserialize(ValueInput valueInput) {
+    this.moduleByName.forEach((name, module) -> valueInput.child(name).ifPresent(module::deserialize));
   }
 }
