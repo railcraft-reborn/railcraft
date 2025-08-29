@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/high_speed_electric_track_outfitted",
-        "y": 0
+        "model": "railcraft:block/high_speed_electric_track_outfitted"
       },
       "when": {
         "shape": "north_south"
@@ -20,8 +19,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/high_speed_electric_track_outfitted_raised_ne",
-        "y": 0
+        "model": "railcraft:block/high_speed_electric_track_outfitted_raised_ne"
       },
       "when": {
         "shape": "ascending_north"
@@ -29,8 +27,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/high_speed_electric_track_outfitted_raised_sw",
-        "y": 0
+        "model": "railcraft:block/high_speed_electric_track_outfitted_raised_sw"
       },
       "when": {
         "shape": "ascending_south"
@@ -56,8 +53,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track"
       },
       "when": {
         "AND": [
@@ -90,8 +86,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track_raised_ne",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track_raised_ne"
       },
       "when": {
         "AND": [
@@ -107,8 +102,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track_raised_sw",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track_raised_sw"
       },
       "when": {
         "AND": [
@@ -158,8 +152,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track_on",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track_on"
       },
       "when": {
         "AND": [
@@ -192,8 +185,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track_on_raised_ne",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track_on_raised_ne"
       },
       "when": {
         "AND": [
@@ -209,8 +201,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track/detector_track_on_raised_sw",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track/detector_track_on_raised_sw"
       },
       "when": {
         "AND": [
@@ -260,8 +251,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel"
       },
       "when": {
         "AND": [
@@ -294,8 +284,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_raised_ne",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_raised_ne"
       },
       "when": {
         "AND": [
@@ -311,8 +300,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_raised_sw",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_raised_sw"
       },
       "when": {
         "AND": [
@@ -362,8 +350,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on"
       },
       "when": {
         "AND": [
@@ -396,8 +383,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on_raised_ne",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on_raised_ne"
       },
       "when": {
         "AND": [
@@ -413,8 +399,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on_raised_sw",
-        "y": 0
+        "model": "railcraft:block/track_template/detector_track_travel/detector_track_travel_on_raised_sw"
       },
       "when": {
         "AND": [

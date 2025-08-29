@@ -1,27 +1,22 @@
 {
   "variants": {
     "rotated=false,type=bottom_left": {
-      "model": "railcraft:block/steam_turbine_bottom_left",
-      "y": 0
+      "model": "railcraft:block/steam_turbine_bottom_left"
     },
     "rotated=false,type=bottom_right": {
-      "model": "railcraft:block/steam_turbine_bottom_right",
-      "y": 0
+      "model": "railcraft:block/steam_turbine_bottom_right"
     },
     "rotated=false,type=none": {
       "model": "railcraft:block/steam_turbine_side"
     },
     "rotated=false,type=top_left": {
-      "model": "railcraft:block/steam_turbine_top_left",
-      "y": 0
+      "model": "railcraft:block/steam_turbine_top_left"
     },
     "rotated=false,type=top_right": {
-      "model": "railcraft:block/steam_turbine_top_right",
-      "y": 0
+      "model": "railcraft:block/steam_turbine_top_right"
     },
     "rotated=false,type=window": {
-      "model": "railcraft:block/steam_turbine_window",
-      "y": 0
+      "model": "railcraft:block/steam_turbine_window"
     },
     "rotated=true,type=bottom_left": {
       "model": "railcraft:block/steam_turbine_bottom_left",

@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/abandoned_track_outfitted",
-        "y": 0
+        "model": "railcraft:block/abandoned_track_outfitted"
       },
       "when": {
         "shape": "north_south"
@@ -20,8 +19,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/one_way_track/one_way_track",
-        "y": 0
+        "model": "railcraft:block/track_template/one_way_track/one_way_track"
       },
       "when": {
         "AND": [
@@ -54,8 +52,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/one_way_track/one_way_track_on",
-        "y": 0
+        "model": "railcraft:block/track_template/one_way_track/one_way_track_on"
       },
       "when": {
         "AND": [

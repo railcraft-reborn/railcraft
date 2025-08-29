@@ -24,13 +24,9 @@
       "when": {
         "AND": [
           {
-            "one_way": "true"
-          },
-          {
+            "one_way": "true",
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
           }
         ]
       }
@@ -43,13 +39,9 @@
       "when": {
         "AND": [
           {
-            "one_way": "true"
-          },
-          {
+            "one_way": "true",
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
           }
         ]
       }
@@ -62,13 +54,9 @@
       "when": {
         "AND": [
           {
-            "one_way": "true"
-          },
-          {
+            "one_way": "true",
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
           }
         ]
       }
@@ -81,13 +69,9 @@
       "when": {
         "AND": [
           {
-            "one_way": "true"
-          },
-          {
+            "one_way": "true",
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
           }
         ]
       }
@@ -100,16 +84,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "false",
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -121,16 +99,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "false",
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -143,16 +115,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "false",
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -165,16 +131,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "false",
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -187,16 +147,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "true",
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -208,16 +162,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "true",
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -230,16 +178,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "true",
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -252,16 +194,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "false",
+            "open": "true",
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "false"
           }
         ]
       }
@@ -274,16 +210,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "false",
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -295,16 +225,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "false",
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -317,16 +241,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "false",
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -339,16 +257,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "false",
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "false"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -361,16 +273,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "true",
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -382,16 +288,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "true",
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -404,16 +304,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "true",
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }
@@ -426,16 +320,10 @@
       "when": {
         "AND": [
           {
+            "in_wall": "true",
+            "open": "true",
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
-          },
-          {
-            "open": "true"
-          },
-          {
-            "in_wall": "true"
           }
         ]
       }

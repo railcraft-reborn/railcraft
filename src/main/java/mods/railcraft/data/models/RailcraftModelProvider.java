@@ -1,15 +1,127 @@
 package mods.railcraft.data.models;
 
+import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_FACING;
+import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING;
+import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT;
+import static net.minecraft.client.data.models.BlockModelGenerators.UV_LOCK;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_180;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_270;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_90;
+import static net.minecraft.client.data.models.BlockModelGenerators.condition;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainModel;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
+
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
+import org.jetbrains.annotations.Nullable;
+import com.mojang.math.Quadrant;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.api.track.ArrowDirection;
+import mods.railcraft.client.color.item.LocomotiveColor;
+import mods.railcraft.data.RailcraftBlockFamilies;
+import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
+import mods.railcraft.world.item.LocomotiveItem;
+import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.ChimneyBlock;
+import mods.railcraft.world.level.block.CrusherMultiblockBlock;
+import mods.railcraft.world.level.block.DecorativeBlock;
+import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
+import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
+import mods.railcraft.world.level.block.LogBookBlock;
+import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamOvenBlock;
+import mods.railcraft.world.level.block.SteamTurbineBlock;
+import mods.railcraft.world.level.block.charge.BatteryBlock;
+import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
+import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
+import mods.railcraft.world.level.block.charge.FrameBlock;
+import mods.railcraft.world.level.block.detector.DetectorBlock;
+import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
+import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
+import mods.railcraft.world.level.block.post.Column;
+import mods.railcraft.world.level.block.post.Connection;
+import mods.railcraft.world.level.block.post.PostBlock;
+import mods.railcraft.world.level.block.signal.DualSignalBlock;
+import mods.railcraft.world.level.block.signal.SignalBoxBlock;
+import mods.railcraft.world.level.block.signal.SingleSignalBlock;
+import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
+import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
+import mods.railcraft.world.level.block.tank.BaseTankBlock;
+import mods.railcraft.world.level.block.tank.TankValveBlock;
+import mods.railcraft.world.level.block.track.AbandonedTrackBlock;
+import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
+import mods.railcraft.world.level.block.track.ForceTrackBlock;
+import mods.railcraft.world.level.block.track.TrackBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackLeverBlock;
+import mods.railcraft.world.level.block.track.actuator.SwitchTrackRouterBlock;
+import mods.railcraft.world.level.block.track.outfitted.ActivatorTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.GatedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.JunctionTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.LockingMode;
+import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.LocomotiveTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.OneWayTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.PoweredOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ReversibleOutfittedTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.SwitchTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.ThrottleTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TransitionTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
+import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
+import net.minecraft.Util;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.ConditionBuilder;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
+import net.minecraft.client.renderer.block.model.multipart.Condition;
+import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.Weighted;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class RailcraftModelProvider extends ModelProvider {
 
@@ -24,7 +136,6 @@ public class RailcraftModelProvider extends ModelProvider {
 
   @Override
   protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-/*
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LABEL.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LAMP.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TURBINE_ROTOR.get(), ModelTemplates.FLAT_ITEM);
@@ -516,9 +627,9 @@ public class RailcraftModelProvider extends ModelProvider {
                 new LocomotiveColor(1)
             )
         )
-    );*/
+    );
   }
-/*
+
   private void generateFirestone(ItemModelGenerators itemModels, Item item) {
     var rl = itemModels.generateLayeredItem(item,
         modLocation("item/refined_firestone"), TextureMapping.getItemTexture(item));
@@ -548,23 +659,14 @@ public class RailcraftModelProvider extends ModelProvider {
             tm.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_bottom")))
         .createWithSuffix(block, "_bottom", blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
-            .with(
-                PropertyDispatch.property(AbstractStrengthenedGlassBlock.TYPE)
-                    .select(AbstractStrengthenedGlassBlock.Type.SINGLE,
-                        Variant.variant().with(VariantProperties.MODEL, singleModel))
-                    .select(
-                        AbstractStrengthenedGlassBlock.Type.TOP,
-                        Variant.variant().with(VariantProperties.MODEL, topModel))
-                    .select(
-                        AbstractStrengthenedGlassBlock.Type.CENTER,
-                        Variant.variant().with(VariantProperties.MODEL, centerModel))
-                    .select(
-                        AbstractStrengthenedGlassBlock.Type.BOTTOM,
-                        Variant.variant().with(VariantProperties.MODEL, bottomModel))
-            )
-    );
+    blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+        .with(
+            PropertyDispatch.initial(AbstractStrengthenedGlassBlock.TYPE)
+                .select(AbstractStrengthenedGlassBlock.Type.SINGLE, plainVariant(singleModel))
+                .select(AbstractStrengthenedGlassBlock.Type.TOP, plainVariant(topModel))
+                .select(AbstractStrengthenedGlassBlock.Type.CENTER, plainVariant(centerModel))
+                .select(AbstractStrengthenedGlassBlock.Type.BOTTOM, plainVariant(bottomModel))
+        ));
     blockModels.registerSimpleItemModel(block, singleModel);
   }
 
@@ -593,19 +695,13 @@ public class RailcraftModelProvider extends ModelProvider {
     var horizontalModel = ModelTemplates.CUBE
         .createWithSuffix(block, "_horizontal", tmHorizontal, blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
-            .with(
-                PropertyDispatch.property(BlockStateProperties.AXIS)
-                    .select(Direction.Axis.Y,
-                        Variant.variant().with(VariantProperties.MODEL, verticalModel))
-                    .select(Direction.Axis.Z,
-                        Variant.variant().with(VariantProperties.MODEL, horizontalModel))
-                    .select(Direction.Axis.X,
-                        Variant.variant().with(VariantProperties.MODEL, horizontalModel)
-                            .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            )
-    );
+    blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+        .with(
+            PropertyDispatch.initial(BlockStateProperties.AXIS)
+                .select(Direction.Axis.Y, plainVariant(verticalModel))
+                .select(Direction.Axis.Z, plainVariant(horizontalModel))
+                .select(Direction.Axis.X, plainVariant(horizontalModel).with(Y_ROT_90))
+        ));
     blockModels.registerSimpleItemModel(block, verticalModel);
   }
 
@@ -616,7 +712,8 @@ public class RailcraftModelProvider extends ModelProvider {
 
     var model = ModelTemplates.CUBE_COLUMN.create(block, tm, blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -654,56 +751,26 @@ public class RailcraftModelProvider extends ModelProvider {
 
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(block)
-            .with(
-                Condition.condition().term(PostBlock.COLUMN, Column.PLATFORM),
-                Variant.variant().with(VariantProperties.MODEL, platformModel))
-            .with(
-                Condition.condition().term(PostBlock.COLUMN, Column.TOP),
-                Variant.variant().with(VariantProperties.MODEL, topColumnModel))
-            .with(
-                Condition.condition().term(PostBlock.COLUMN, Column.SMALL),
-                Variant.variant().with(VariantProperties.MODEL, smallColumnModel))
-            .with(
-                Condition.condition().term(PostBlock.COLUMN, Column.FULL),
-                Variant.variant().with(VariantProperties.MODEL, fullColumnModel))
-            .with(
-                Condition.condition().term(PostBlock.NORTH, Connection.SINGLE),
-                Variant.variant().with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition().term(PostBlock.NORTH, Connection.DOUBLE),
-                Variant.variant().with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true))
-            .with(
-                Condition.condition().term(PostBlock.SOUTH, Connection.SINGLE),
-                Variant.variant().with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(PostBlock.SOUTH, Connection.DOUBLE),
-                Variant.variant().with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(PostBlock.EAST, Connection.SINGLE),
-                Variant.variant().with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(PostBlock.EAST, Connection.DOUBLE),
-                Variant.variant().with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(PostBlock.WEST, Connection.SINGLE),
-                Variant.variant().with(VariantProperties.MODEL, singleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .with(
-                Condition.condition().term(PostBlock.WEST, Connection.DOUBLE),
-                Variant.variant().with(VariantProperties.MODEL, doubleConnectionModel)
-                    .with(VariantProperties.UV_LOCK, true)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .with(condition().term(PostBlock.COLUMN, Column.PLATFORM), plainVariant(platformModel))
+            .with(condition().term(PostBlock.COLUMN, Column.TOP), plainVariant(topColumnModel))
+            .with(condition().term(PostBlock.COLUMN, Column.SMALL), plainVariant(smallColumnModel))
+            .with(condition().term(PostBlock.COLUMN, Column.FULL), plainVariant(fullColumnModel))
+            .with(condition().term(PostBlock.NORTH, Connection.SINGLE),
+                plainVariant(singleConnectionModel).with(UV_LOCK))
+            .with(condition().term(PostBlock.NORTH, Connection.DOUBLE),
+                plainVariant(doubleConnectionModel).with(UV_LOCK))
+            .with(condition().term(PostBlock.SOUTH, Connection.SINGLE),
+                plainVariant(singleConnectionModel).with(UV_LOCK).with(Y_ROT_180))
+            .with(condition().term(PostBlock.SOUTH, Connection.DOUBLE),
+                plainVariant(doubleConnectionModel).with(UV_LOCK).with(Y_ROT_180))
+            .with(condition().term(PostBlock.EAST, Connection.SINGLE),
+                plainVariant(singleConnectionModel).with(UV_LOCK).with(Y_ROT_90))
+            .with(condition().term(PostBlock.EAST, Connection.DOUBLE),
+                plainVariant(doubleConnectionModel).with(UV_LOCK).with(Y_ROT_90))
+            .with(condition().term(PostBlock.WEST, Connection.SINGLE),
+                plainVariant(singleConnectionModel).with(UV_LOCK).with(Y_ROT_270))
+            .with(condition().term(PostBlock.WEST, Connection.DOUBLE),
+                plainVariant(doubleConnectionModel).with(UV_LOCK).with(Y_ROT_270))
     );
     blockModels.registerSimpleItemModel(block, inventoryModel);
   }
@@ -720,7 +787,8 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.TOP, topTexture))
         .create(block, blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -740,10 +808,10 @@ public class RailcraftModelProvider extends ModelProvider {
             blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.POWERED,
-                poweredModel, model))
-            .with(BlockModelGenerators.createFacingDispatch()));
+                plainVariant(poweredModel), plainVariant(model)))
+            .with(ROTATION_FACING));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -756,24 +824,14 @@ public class RailcraftModelProvider extends ModelProvider {
 
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(signalBlock)
-            .with(
-                Condition.condition().term(SignalBoxBlock.CAP, true),
-                Variant.variant().with(VariantProperties.MODEL, signalBoxCapModel))
-            .with(
-                Condition.condition().term(SignalBoxBlock.NORTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalBoxConnectorModel))
-            .with(
-                Condition.condition().term(SignalBoxBlock.EAST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalBoxConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(SignalBoxBlock.SOUTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalBoxConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(SignalBoxBlock.WEST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalBoxConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .with(condition().term(SignalBoxBlock.CAP, true), plainVariant(signalBoxCapModel))
+            .with(condition().term(SignalBoxBlock.NORTH, true), plainVariant(signalBoxConnectorModel))
+            .with(condition().term(SignalBoxBlock.EAST, true),
+                plainVariant(signalBoxConnectorModel).with(Y_ROT_90))
+            .with(condition().term(SignalBoxBlock.SOUTH, true),
+                plainVariant(signalBoxConnectorModel).with(Y_ROT_180))
+            .with(condition().term(SignalBoxBlock.WEST, true),
+                plainVariant(signalBoxConnectorModel).with(Y_ROT_270))
     );
     blockModels.registerSimpleItemModel(signalBlock, model);
   }
@@ -788,39 +846,22 @@ public class RailcraftModelProvider extends ModelProvider {
 
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(signalBlock)
-            .with(
-                Condition.condition().term(SingleSignalBlock.DOWN, true),
-                Variant.variant().with(VariantProperties.MODEL, signalPostModel))
-            .with(
-                Condition.condition().term(SingleSignalBlock.FACING, Direction.NORTH),
-                Variant.variant().with(VariantProperties.MODEL, signalModel))
-            .with(
-                Condition.condition().term(SingleSignalBlock.FACING, Direction.EAST),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(SingleSignalBlock.FACING, Direction.SOUTH),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(SingleSignalBlock.FACING, Direction.WEST),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .with(
-                Condition.condition().term(SingleSignalBlock.NORTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .with(
-                Condition.condition().term(SingleSignalBlock.EAST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel))
-            .with(
-                Condition.condition().term(SingleSignalBlock.SOUTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(SingleSignalBlock.WEST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .with(condition().term(SingleSignalBlock.DOWN, true), plainVariant(signalPostModel))
+            .with(condition().term(SingleSignalBlock.FACING, Direction.NORTH), plainVariant(signalModel))
+            .with(condition().term(SingleSignalBlock.FACING, Direction.EAST),
+                plainVariant(signalModel).with(Y_ROT_90))
+            .with(condition().term(SingleSignalBlock.FACING, Direction.SOUTH),
+                plainVariant(signalModel).with(Y_ROT_180))
+            .with(condition().term(SingleSignalBlock.FACING, Direction.WEST),
+                plainVariant(signalModel).with(Y_ROT_270))
+            .with(condition().term(SingleSignalBlock.NORTH, true),
+                plainVariant(signalConnectorModel).with(Y_ROT_270))
+            .with(condition().term(SingleSignalBlock.EAST, true),
+                plainVariant(signalConnectorModel))
+            .with(condition().term(SingleSignalBlock.SOUTH, true),
+                plainVariant(signalConnectorModel).with(Y_ROT_90))
+            .with(condition().term(SingleSignalBlock.WEST, true),
+                plainVariant(signalConnectorModel).with(Y_ROT_180))
     );
     blockModels.registerSimpleItemModel(signalBlock, signalInventory);
   }
@@ -837,36 +878,14 @@ public class RailcraftModelProvider extends ModelProvider {
 
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(signalBlock)
-            .with(
-                Condition.condition().term(DualSignalBlock.FACING, Direction.NORTH),
-                Variant.variant().with(VariantProperties.MODEL, signalModel))
-            .with(
-                Condition.condition().term(DualSignalBlock.FACING, Direction.EAST),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(DualSignalBlock.FACING, Direction.SOUTH),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(DualSignalBlock.FACING, Direction.WEST),
-                Variant.variant().with(VariantProperties.MODEL, signalModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .with(
-                Condition.condition().term(DualSignalBlock.NORTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-            .with(
-                Condition.condition().term(DualSignalBlock.EAST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel))
-            .with(
-                Condition.condition().term(DualSignalBlock.SOUTH, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(DualSignalBlock.WEST, true),
-                Variant.variant().with(VariantProperties.MODEL, signalConnectorModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .with(condition().term(DualSignalBlock.FACING, Direction.NORTH), plainVariant(signalModel))
+            .with(condition().term(DualSignalBlock.FACING, Direction.EAST), plainVariant(signalModel).with(Y_ROT_90))
+            .with(condition().term(DualSignalBlock.FACING, Direction.SOUTH), plainVariant(signalModel).with(Y_ROT_180))
+            .with(condition().term(DualSignalBlock.FACING, Direction.WEST), plainVariant(signalModel).with(Y_ROT_270))
+            .with(condition().term(DualSignalBlock.NORTH, true), plainVariant(signalConnectorModel).with(Y_ROT_270))
+            .with(condition().term(DualSignalBlock.EAST, true), plainVariant(signalConnectorModel))
+            .with(condition().term(DualSignalBlock.SOUTH, true), plainVariant(signalConnectorModel).with(Y_ROT_90))
+            .with(condition().term(DualSignalBlock.WEST, true), plainVariant(signalConnectorModel).with(Y_ROT_180))
     );
   }
 
@@ -878,14 +897,14 @@ public class RailcraftModelProvider extends ModelProvider {
 
     var builder = MultiPartGenerator.multiPart(block);
     var arrowDirectionMap =
-        Util.make(new EnumMap<ArrowDirection, VariantProperties.Rotation>(ArrowDirection.class),
+        Util.make(new EnumMap<ArrowDirection, Quadrant>(ArrowDirection.class),
             x -> {
-              x.put(ArrowDirection.NORTH, VariantProperties.Rotation.R0);
-              x.put(ArrowDirection.EAST, VariantProperties.Rotation.R90);
-              x.put(ArrowDirection.SOUTH, VariantProperties.Rotation.R180);
-              x.put(ArrowDirection.WEST, VariantProperties.Rotation.R270);
-              x.put(ArrowDirection.NORTH_SOUTH, VariantProperties.Rotation.R0);
-              x.put(ArrowDirection.EAST_WEST, VariantProperties.Rotation.R90);
+              x.put(ArrowDirection.NORTH, Quadrant.R0);
+              x.put(ArrowDirection.EAST, Quadrant.R90);
+              x.put(ArrowDirection.SOUTH, Quadrant.R180);
+              x.put(ArrowDirection.WEST, Quadrant.R270);
+              x.put(ArrowDirection.NORTH_SOUTH, Quadrant.R0);
+              x.put(ArrowDirection.EAST_WEST, Quadrant.R90);
             });
 
     for (var arrow : ArrowDirection.values()) {
@@ -898,16 +917,11 @@ public class RailcraftModelProvider extends ModelProvider {
         modelWhite = flagWhiteModel;
       }
       builder
+          .with(condition().term(SwitchTrackLeverBlock.RED_ARROW_DIRECTION, arrow),
+              plainVariant(modelRed).with(v -> v.withYRot(arrowDirectionMap.get(arrow))))
           .with(
-              Condition.condition().term(SwitchTrackLeverBlock.RED_ARROW_DIRECTION, arrow),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, modelRed)
-                  .with(VariantProperties.Y_ROT, arrowDirectionMap.get(arrow)))
-          .with(
-              Condition.condition().term(SwitchTrackLeverBlock.WHITE_ARROW_DIRECTION, arrow),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, modelWhite)
-                  .with(VariantProperties.Y_ROT, arrowDirectionMap.get(arrow)));
+              condition().term(SwitchTrackLeverBlock.WHITE_ARROW_DIRECTION, arrow),
+              plainVariant(modelWhite).with(v -> v.withYRot(arrowDirectionMap.get(arrow))));
     }
     return builder;
   }
@@ -922,11 +936,11 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.registerSimpleItemModel(block, switchTrackInventory);
 
     var directionMap = Util.make(
-        new EnumMap<Direction, VariantProperties.Rotation>(Direction.class), x -> {
-          x.put(Direction.NORTH, VariantProperties.Rotation.R0);
-          x.put(Direction.EAST, VariantProperties.Rotation.R90);
-          x.put(Direction.SOUTH, VariantProperties.Rotation.R180);
-          x.put(Direction.WEST, VariantProperties.Rotation.R270);
+        new EnumMap<Direction, Quadrant>(Direction.class), x -> {
+          x.put(Direction.NORTH, Quadrant.R0);
+          x.put(Direction.EAST, Quadrant.R90);
+          x.put(Direction.SOUTH, Quadrant.R180);
+          x.put(Direction.WEST, Quadrant.R270);
         });
 
     var builder = this.createSwitchTrackActuatorBlockCommon(block);
@@ -934,25 +948,28 @@ public class RailcraftModelProvider extends ModelProvider {
       var rot = directionMap.get(direction);
 
       builder
+          .with(condition().term(SwitchTrackLeverBlock.FACING, direction),
+              plainVariant(switchTrackActuatorModel).with(v -> v.withYRot(rot)))
           .with(
-              Condition.condition().term(SwitchTrackLeverBlock.FACING, direction),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, switchTrackActuatorModel)
-                  .with(VariantProperties.Y_ROT, rot))
+              new CombinedCondition(
+                  CombinedCondition.Operation.AND,
+                  List.of(
+                      condition().term(SwitchTrackLeverBlock.FACING, direction)
+                          .term(SwitchTrackLeverBlock.SWITCHED, true)
+                          .build()
+                  )
+              ),
+              plainVariant(switchTrackActuatorLeverOnModel).with(v -> v.withYRot(rot)))
           .with(
-              Condition.and(
-                  Condition.condition().term(SwitchTrackLeverBlock.FACING, direction),
-                  Condition.condition().term(SwitchTrackLeverBlock.SWITCHED, true)),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, switchTrackActuatorLeverOnModel)
-                  .with(VariantProperties.Y_ROT, rot))
-          .with(
-              Condition.and(
-                  Condition.condition().term(SwitchTrackLeverBlock.FACING, direction),
-                  Condition.condition().term(SwitchTrackLeverBlock.SWITCHED, false)),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, switchTrackActuatorLeverOffModel)
-                  .with(VariantProperties.Y_ROT, rot));
+              new CombinedCondition(
+                  CombinedCondition.Operation.AND,
+                  List.of(
+                      condition().term(SwitchTrackLeverBlock.FACING, direction)
+                          .term(SwitchTrackLeverBlock.SWITCHED, false)
+                          .build()
+                  )
+              ),
+              plainVariant(switchTrackActuatorLeverOffModel).with(v -> v.withYRot(rot)));
     }
     blockModels.blockStateOutput.accept(builder);
   }
@@ -968,11 +985,11 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.registerSimpleItemModel(block, switchTrackInventory);
 
     var directionMap = Util.make(
-        new EnumMap<Direction, VariantProperties.Rotation>(Direction.class), x -> {
-          x.put(Direction.NORTH, VariantProperties.Rotation.R0);
-          x.put(Direction.EAST, VariantProperties.Rotation.R90);
-          x.put(Direction.SOUTH, VariantProperties.Rotation.R180);
-          x.put(Direction.WEST, VariantProperties.Rotation.R270);
+        new EnumMap<Direction, Quadrant>(Direction.class), x -> {
+          x.put(Direction.NORTH, Quadrant.R0);
+          x.put(Direction.EAST, Quadrant.R90);
+          x.put(Direction.SOUTH, Quadrant.R180);
+          x.put(Direction.WEST, Quadrant.R270);
         });
 
     var builder = this.createSwitchTrackActuatorBlockCommon(block);
@@ -981,11 +998,8 @@ public class RailcraftModelProvider extends ModelProvider {
       var model = isRouter ? switchTrackActuatorRouter : switchTrackActuator;
 
       builder
-          .with(
-              Condition.condition().term(SwitchTrackLeverBlock.FACING, direction),
-              Variant.variant()
-                  .with(VariantProperties.MODEL, model)
-                  .with(VariantProperties.Y_ROT, rot));
+          .with(condition().term(SwitchTrackLeverBlock.FACING, direction),
+              plainVariant(model).with(v -> v.withYRot(rot)));
     }
     blockModels.blockStateOutput.accept(builder);
   }
@@ -995,8 +1009,8 @@ public class RailcraftModelProvider extends ModelProvider {
         .create(block, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        BlockModelGenerators.createSimpleBlock(block, model)
-            .with(BlockModelGenerators.createHorizontalFacingDispatchAlt()));
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model))
+            .with(ROTATION_HORIZONTAL_FACING_ALT));
   }
 
   private void createSteamOven(BlockModelGenerators blockModels, SteamOvenBlock block) {
@@ -1035,22 +1049,16 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.FRONT, topRightTexture)
             .put(TextureSlot.TOP, topTexture), blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
-            .with(
-                PropertyDispatch.property(SteamOvenBlock.TYPE)
-                    .select(SteamOvenBlock.Type.DEFAULT,
-                        Variant.variant().with(VariantProperties.MODEL, defaultModel))
-                    .select(SteamOvenBlock.Type.DOOR_TOP_LEFT,
-                        Variant.variant().with(VariantProperties.MODEL, topLeftModel))
-                    .select(SteamOvenBlock.Type.DOOR_TOP_RIGHT,
-                        Variant.variant().with(VariantProperties.MODEL, topRightModel))
-                    .select(SteamOvenBlock.Type.DOOR_BOTTOM_LEFT,
-                        Variant.variant().with(VariantProperties.MODEL, bottomLeftModel))
-                    .select(SteamOvenBlock.Type.DOOR_BOTTOM_RIGHT,
-                        Variant.variant().with(VariantProperties.MODEL, bottomRightModel))
-            ).with(BlockModelGenerators.createHorizontalFacingDispatch())
-    );
+    blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+        .with(
+            PropertyDispatch.initial(SteamOvenBlock.TYPE)
+                .select(SteamOvenBlock.Type.DEFAULT, plainVariant(defaultModel))
+                .select(SteamOvenBlock.Type.DOOR_TOP_LEFT, plainVariant(topLeftModel))
+                .select(SteamOvenBlock.Type.DOOR_TOP_RIGHT, plainVariant(topRightModel))
+                .select(SteamOvenBlock.Type.DOOR_BOTTOM_LEFT, plainVariant(bottomLeftModel))
+                .select(SteamOvenBlock.Type.DOOR_BOTTOM_RIGHT, plainVariant(bottomRightModel))
+        )
+        .with(ROTATION_HORIZONTAL_FACING));
     blockModels.registerSimpleItemModel(block, defaultModel);
   }
 
@@ -1072,9 +1080,9 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.TOP, topPoweredTexture), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(BlockModelGenerators
-                .createBooleanModelDispatch(FrameBlock.POWERED, modelPowered, model)));
+                .createBooleanModelDispatch(FrameBlock.POWERED, plainVariant(modelPowered), plainVariant(model))));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1082,19 +1090,17 @@ public class RailcraftModelProvider extends ModelProvider {
     var model = RailcraftModelTemplates.LOGBOOK_TEMPLATE_PROVIDER
         .create(block, blockModels.modelOutput);
 
-    var variant = new Variant();
-    variant.with(VariantProperties.MODEL, model);
-
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block, variant)
-            .with(BlockModelGenerators.createHorizontalFacingDispatch()));
+        MultiVariantGenerator.dispatch(block, plainVariant(model))
+            .with(ROTATION_HORIZONTAL_FACING));
     blockModels.registerSimpleItemModel(block, model);
   }
 
   private void createChimneyBlock(BlockModelGenerators blockModels, ChimneyBlock block) {
     var model = RailcraftModelTemplates.CHIMNEY_TEMPLATE_PROVIDER
         .create(block, blockModels.modelOutput);
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1107,7 +1113,8 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.SIDE, sideTexture)
             .put(TextureSlot.TOP, topTexture)
             .put(TextureSlot.BOTTOM, topTexture), blockModels.modelOutput);
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1126,9 +1133,9 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.END, endTexture), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
-            .with(BlockModelGenerators.createBooleanModelDispatch(FireboxBlock.LIT, litModel,
-                model)));
+        MultiVariantGenerator.dispatch(block)
+            .with(BlockModelGenerators.createBooleanModelDispatch(FireboxBlock.LIT,
+                plainVariant(litModel), plainVariant(model))));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1151,10 +1158,9 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.TOP, blockTexture), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(FurnaceMultiblockBlock.WINDOW,
-                        FurnaceMultiblockBlock.LIT)
+                PropertyDispatch.initial(FurnaceMultiblockBlock.WINDOW, FurnaceMultiblockBlock.LIT)
                     .generate((window, lit) -> {
                       ResourceLocation model;
                       if (!window) {
@@ -1164,7 +1170,7 @@ public class RailcraftModelProvider extends ModelProvider {
                       } else {
                         model = windowModel;
                       }
-                      return Variant.variant().with(VariantProperties.MODEL, model);
+                      return plainVariant(model);
                     })
             ));
     blockModels.registerSimpleItemModel(block, bricksModel);
@@ -1201,19 +1207,20 @@ public class RailcraftModelProvider extends ModelProvider {
         });
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(CrusherMultiblockBlock.TYPE,
+                PropertyDispatch.initial(CrusherMultiblockBlock.TYPE,
                         CrusherMultiblockBlock.ROTATED, CrusherMultiblockBlock.OUTPUT)
                     .generate((type, rotated, output) -> {
                       if (output) {
-                        return Variant.variant().with(VariantProperties.MODEL, outputModel);
+                        return plainVariant(outputModel);
                       } else if (type.equals(CrusherMultiblockBlock.Type.NONE)) {
-                        return Variant.variant().with(VariantProperties.MODEL, baseModel);
+                        return plainVariant(baseModel);
                       } else {
-                        return Variant.variant().with(VariantProperties.MODEL, modelMap.get(type))
-                            .with(VariantProperties.Y_ROT, rotated ? VariantProperties.Rotation.R90
-                                : VariantProperties.Rotation.R0);
+                        if (rotated) {
+                          return plainVariant(modelMap.get(type)).with(Y_ROT_90);
+                        }
+                        return plainVariant(modelMap.get(type));
                       }
                     })
             ));
@@ -1249,22 +1256,21 @@ public class RailcraftModelProvider extends ModelProvider {
         .create(block, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.property(SteamBoilerTankBlock.CONNECTION_TYPE)
-                    .generate((type) -> Variant.variant()
-                        .with(VariantProperties.MODEL, switch (type) {
-                          case ALL -> allModel;
-                          case NONE -> model;
-                          case NORTH_EAST -> northEastModel;
-                          case SOUTH_EAST -> southEastModel;
-                          case SOUTH_WEST -> southWestModel;
-                          case NORTH_WEST -> northWestModel;
-                          case NORTH_SOUTH_EAST -> northSouthEastModel;
-                          case SOUTH_EAST_WEST -> southEastWestModel;
-                          case NORTH_EAST_WEST -> northEastWestModel;
-                          case NORTH_SOUTH_WEST -> northSouthWestModel;
-                        }))
+                PropertyDispatch.initial(SteamBoilerTankBlock.CONNECTION_TYPE)
+                    .generate((type) -> plainVariant(switch (type) {
+                      case ALL -> allModel;
+                      case NONE -> model;
+                      case NORTH_EAST -> northEastModel;
+                      case SOUTH_EAST -> southEastModel;
+                      case SOUTH_WEST -> southWestModel;
+                      case NORTH_WEST -> northWestModel;
+                      case NORTH_SOUTH_EAST -> northSouthEastModel;
+                      case SOUTH_EAST_WEST -> southEastWestModel;
+                      case NORTH_EAST_WEST -> northEastWestModel;
+                      case NORTH_SOUTH_WEST -> northSouthWestModel;
+                    }))
             ));
     blockModels.registerSimpleItemModel(block, model);
   }
@@ -1294,16 +1300,16 @@ public class RailcraftModelProvider extends ModelProvider {
         });
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(SteamTurbineBlock.TYPE, SteamTurbineBlock.ROTATED)
+                PropertyDispatch.initial(SteamTurbineBlock.TYPE, SteamTurbineBlock.ROTATED)
                     .generate((type, rotated) -> {
                       if (type == SteamTurbineBlock.Type.NONE) {
-                        return Variant.variant().with(VariantProperties.MODEL, noneVariant);
+                        return plainVariant(noneVariant);
+                      } else if (rotated) {
+                        return plainVariant(modelMap.get(type)).with(Y_ROT_90);
                       } else {
-                        return Variant.variant().with(VariantProperties.MODEL, modelMap.get(type))
-                            .with(VariantProperties.Y_ROT, rotated ?
-                                VariantProperties.Rotation.R90 : VariantProperties.Rotation.R0);
+                        return plainVariant(modelMap.get(type));
                       }
                     })
             )
@@ -1330,7 +1336,8 @@ public class RailcraftModelProvider extends ModelProvider {
   private void createRechargeableBattery(BlockModelGenerators blockModels, BatteryBlock block) {
     var model = RailcraftModelTemplates.BATTERY_TEMPLATE_PROVIDER
         .create(block, blockModels.modelOutput);
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1352,7 +1359,7 @@ public class RailcraftModelProvider extends ModelProvider {
         .create(emptyBattery, tm, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        BlockModelGenerators.createSimpleBlock(emptyBattery, model));
+        BlockModelGenerators.createSimpleBlock(emptyBattery, plainVariant(model)));
     blockModels.registerSimpleItemModel(emptyBattery, model);
   }
 
@@ -1392,10 +1399,10 @@ public class RailcraftModelProvider extends ModelProvider {
         .createWithSuffix(block, "_powered", tmPowered, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
                 BlockModelGenerators.createBooleanModelDispatch(ForceTrackEmitterBlock.POWERED,
-                    modelPowered, modelUnpowered)));
+                    plainVariant(modelPowered), plainVariant(modelUnpowered))));
     blockModels.registerSimpleItemModel(block, modelUnpowered);
   }
 
@@ -1408,15 +1415,12 @@ public class RailcraftModelProvider extends ModelProvider {
             blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.property(ForceTrackBlock.SHAPE)
-                    .select(RailShape.NORTH_SOUTH,
-                        Variant.variant().with(VariantProperties.MODEL, model))
-                    .select(RailShape.EAST_WEST,
-                        Variant.variant().with(VariantProperties.MODEL, model)
-                            .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-                    )));
+                PropertyDispatch.initial(ForceTrackBlock.SHAPE)
+                    .select(RailShape.NORTH_SOUTH, plainVariant(model))
+                    .select(RailShape.EAST_WEST, plainVariant(model).with(Y_ROT_90))
+            ));
   }
 
   private void createElevatorTrack(BlockModelGenerators blockModels, ElevatorTrackBlock block) {
@@ -1433,19 +1437,18 @@ public class RailcraftModelProvider extends ModelProvider {
             blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(ElevatorTrackBlock.POWERED, ElevatorTrackBlock.FACING)
+                PropertyDispatch.initial(ElevatorTrackBlock.POWERED, ElevatorTrackBlock.FACING)
                     .generate((powered, facing) -> {
                       var yRot = switch (facing) {
-                        case SOUTH -> VariantProperties.Rotation.R180;
-                        case EAST -> VariantProperties.Rotation.R90;
-                        case WEST -> VariantProperties.Rotation.R270;
-                        default -> VariantProperties.Rotation.R0;
+                        case SOUTH -> Quadrant.R180;
+                        case EAST -> Quadrant.R90;
+                        case WEST -> Quadrant.R270;
+                        default -> Quadrant.R0;
                       };
-                      return Variant.variant()
-                          .with(VariantProperties.MODEL, powered ? activeModel : model)
-                          .with(VariantProperties.Y_ROT, yRot);
+                      return plainVariant(powered ? activeModel : model)
+                          .with(v -> v.withYRot(yRot));
                     })
             )
     );
@@ -1459,7 +1462,8 @@ public class RailcraftModelProvider extends ModelProvider {
         .extend().renderType(CUTOUT).build()
         .create(block, tm, blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
 
     var side = modLocation("block/fluid_manipulator_side_inventory");
     var bottom = TextureMapping.getBlockTexture(block, "_bottom");
@@ -1478,7 +1482,8 @@ public class RailcraftModelProvider extends ModelProvider {
     var tm = TextureMapping.cubeBottomTop(block);
     var model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, tm, blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1487,12 +1492,8 @@ public class RailcraftModelProvider extends ModelProvider {
     var tm = TextureMapping.orientableCubeOnlyTop(block);
     var model = ModelTemplates.CUBE_ORIENTABLE.create(block, tm, blockModels.modelOutput);
 
-    var variant = new Variant();
-    variant.with(VariantProperties.MODEL, model);
-
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block, variant)
-            .with(BlockModelGenerators.createFacingDispatch()));
+        MultiVariantGenerator.dispatch(block, plainVariant(model)).with(ROTATION_FACING));
     blockModels.registerSimpleItemModel(block, model);
   }
 
@@ -1545,50 +1546,36 @@ public class RailcraftModelProvider extends ModelProvider {
 
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(block)
+            .with(condition().term(AbandonedTrackBlock.GRASS, true),
+                plainVariant(mcLocation("block/short_grass")))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH),
+                new MultiVariant(WeightedList.of(
+                    new Weighted<>(plainModel(flatModel0), 1),
+                    new Weighted<>(plainModel(flatModel1), 1)
+                )))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST),
+                new MultiVariant(WeightedList.of(
+                    new Weighted<>(plainModel(flatModel0), 1),
+                    new Weighted<>(plainModel(flatModel1), 1)
+                )).with(Y_ROT_90))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_EAST),
+                plainVariant(raisedNorthEastModel).with(Y_ROT_90))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_WEST),
+                plainVariant(raisedSouthWestModel).with(Y_ROT_90))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_NORTH),
+                plainVariant(raisedNorthEastModel))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_SOUTH),
+                plainVariant(raisedSouthWestModel))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_EAST),
+                plainVariant(cornerModel))
+            .with(condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_WEST),
+                plainVariant(cornerModel).with(Y_ROT_90))
             .with(
-                Condition.condition().term(AbandonedTrackBlock.GRASS, true),
-                Variant.variant().with(VariantProperties.MODEL, mcLocation("block/short_grass")))
+                condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_WEST),
+                plainVariant(cornerModel).with(Y_ROT_180))
             .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH),
-                List.of(
-                    Variant.variant().with(VariantProperties.MODEL, flatModel0),
-                    Variant.variant().with(VariantProperties.MODEL, flatModel1)))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST),
-                List.of(
-                    Variant.variant().with(VariantProperties.MODEL, flatModel0)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90),
-                    Variant.variant().with(VariantProperties.MODEL, flatModel1)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_EAST),
-                Variant.variant().with(VariantProperties.MODEL, raisedNorthEastModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_WEST),
-                Variant.variant().with(VariantProperties.MODEL, raisedSouthWestModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_NORTH),
-                Variant.variant().with(VariantProperties.MODEL, raisedNorthEastModel))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.ASCENDING_SOUTH),
-                Variant.variant().with(VariantProperties.MODEL, raisedSouthWestModel))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_EAST),
-                Variant.variant().with(VariantProperties.MODEL, cornerModel))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.SOUTH_WEST),
-                Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_WEST),
-                Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-            .with(
-                Condition.condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST),
-                Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+                condition().term(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_EAST),
+                plainVariant(cornerModel).with(Y_ROT_270))
     );
     blockModels.registerSimpleFlatItemModel(block, "_0");
   }
@@ -1632,26 +1619,19 @@ public class RailcraftModelProvider extends ModelProvider {
         .create(block, textureMapping, blockModels.modelOutput);
     blockModels.registerSimpleFlatItemModel(block);
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
-            .with(
-                PropertyDispatch.property(BlockStateProperties.RAIL_SHAPE)
-                    .select(RailShape.NORTH_SOUTH, Variant.variant()
-                        .with(VariantProperties.MODEL, flatModel))
-                    .select(RailShape.EAST_WEST, Variant.variant().with(VariantProperties.MODEL, flatModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                    .select(RailShape.ASCENDING_EAST, Variant.variant().with(VariantProperties.MODEL, raisedNorthEastModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                    .select(RailShape.ASCENDING_WEST, Variant.variant().with(VariantProperties.MODEL, raisedSouthWestModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                    .select(RailShape.ASCENDING_NORTH, Variant.variant().with(VariantProperties.MODEL, raisedNorthEastModel))
-                    .select(RailShape.ASCENDING_SOUTH, Variant.variant().with(VariantProperties.MODEL, raisedSouthWestModel))
-                    .select(RailShape.SOUTH_EAST, Variant.variant().with(VariantProperties.MODEL, cornerModel))
-                    .select(RailShape.SOUTH_WEST, Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-                    .select(RailShape.NORTH_WEST, Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-                    .select(RailShape.NORTH_EAST, Variant.variant().with(VariantProperties.MODEL, cornerModel)
-                        .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))));
+        MultiVariantGenerator.dispatch(block).with(
+            PropertyDispatch.initial(BlockStateProperties.RAIL_SHAPE)
+                .select(RailShape.NORTH_SOUTH, plainVariant(flatModel))
+                .select(RailShape.EAST_WEST, plainVariant(flatModel).with(Y_ROT_90))
+                .select(RailShape.ASCENDING_EAST, plainVariant(raisedNorthEastModel).with(Y_ROT_90))
+                .select(RailShape.ASCENDING_WEST, plainVariant(raisedSouthWestModel).with(Y_ROT_90))
+                .select(RailShape.ASCENDING_NORTH, plainVariant(raisedNorthEastModel))
+                .select(RailShape.ASCENDING_SOUTH, plainVariant(raisedSouthWestModel))
+                .select(RailShape.SOUTH_EAST, plainVariant(cornerModel))
+                .select(RailShape.SOUTH_WEST, plainVariant(cornerModel).with(Y_ROT_90))
+                .select(RailShape.NORTH_WEST, plainVariant(cornerModel).with(Y_ROT_180))
+                .select(RailShape.NORTH_EAST, plainVariant(cornerModel).with(Y_ROT_270)))
+    );
   }
 
   private void createOutfittedTracks(BlockModelGenerators blockModels,
@@ -1907,27 +1887,27 @@ public class RailcraftModelProvider extends ModelProvider {
 
     if (reversible) {
       trackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition()
+          condition()
               .term(ReversibleOutfittedTrackBlock.REVERSED, false)
               .term(PoweredOutfittedTrackBlock.POWERED, false));
       activeTrackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition()
+          condition()
               .term(ReversibleOutfittedTrackBlock.REVERSED, false)
               .term(PoweredOutfittedTrackBlock.POWERED, true));
 
       trackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-          Condition.condition()
+          condition()
               .term(ReversibleOutfittedTrackBlock.REVERSED, true)
               .term(PoweredOutfittedTrackBlock.POWERED, false));
       activeTrackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, true,
-          Condition.condition()
+          condition()
               .term(ReversibleOutfittedTrackBlock.REVERSED, true)
               .term(PoweredOutfittedTrackBlock.POWERED, true));
     } else {
       trackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, false));
+          condition().term(PoweredOutfittedTrackBlock.POWERED, false));
       activeTrackKitModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, allowedOnSlopes, false,
-          Condition.condition().term(PoweredOutfittedTrackBlock.POWERED, true));
+          condition().term(PoweredOutfittedTrackBlock.POWERED, true));
     }
     blockModels.blockStateOutput.accept(multiPartGenerator);
     blockModels.registerSimpleFlatItemModel(block.asItem());
@@ -1941,31 +1921,31 @@ public class RailcraftModelProvider extends ModelProvider {
     trackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, false);
 
     detectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
             .term(DetectorTrackBlock.POWERED, false));
 
     activeDetectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.BI_DIRECTIONAL)
             .term(DetectorTrackBlock.POWERED, true));
 
     travelDetectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
             .term(DetectorTrackBlock.POWERED, false));
 
     activeTravelDetectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL)
             .term(DetectorTrackBlock.POWERED, true));
 
     travelDetectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, true,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
             .term(DetectorTrackBlock.POWERED, false));
     activeTravelDetectorTrackModels.apply(multiPartGenerator, DetectorTrackBlock.SHAPE, true, true,
-        Condition.condition()
+        condition()
             .term(DetectorTrackBlock.MODE, DetectorTrackBlock.Mode.TRAVEL_REVERSED)
             .term(DetectorTrackBlock.POWERED, true));
     blockModels.blockStateOutput.accept(multiPartGenerator);
@@ -1998,11 +1978,11 @@ public class RailcraftModelProvider extends ModelProvider {
       Locomotive.Mode locomotiveMode, StraightTrackModelSet model,
       StraightTrackModelSet poweredModel) {
     model.apply(multiPartGenerator, LocomotiveTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(LocomotiveTrackBlock.LOCOMOTIVE_MODE, locomotiveMode)
             .term(LocomotiveTrackBlock.POWERED, false));
     poweredModel.apply(multiPartGenerator, LocomotiveTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(LocomotiveTrackBlock.LOCOMOTIVE_MODE, locomotiveMode)
             .term(LocomotiveTrackBlock.POWERED, true));
   }
@@ -2013,19 +1993,19 @@ public class RailcraftModelProvider extends ModelProvider {
     trackModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, true, false);
 
     controlTrackModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(PoweredOutfittedTrackBlock.POWERED, false)
             .term(ControlTrackBlock.REVERSED, false));
     controlTrackModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(PoweredOutfittedTrackBlock.POWERED, true)
             .term(ControlTrackBlock.REVERSED, true));
     controlTrackModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, true, true,
-        Condition.condition()
+        condition()
             .term(PoweredOutfittedTrackBlock.POWERED, true)
             .term(ControlTrackBlock.REVERSED, false));
     controlTrackModels.apply(multiPartGenerator, OutfittedTrackBlock.SHAPE, true, true,
-        Condition.condition()
+        condition()
             .term(PoweredOutfittedTrackBlock.POWERED, false)
             .term(ControlTrackBlock.REVERSED, true));
 
@@ -2041,50 +2021,54 @@ public class RailcraftModelProvider extends ModelProvider {
     var openWallGateModel = ModelLocationUtils.getModelLocation(Blocks.OAK_FENCE_GATE, "_wall_open");
 
     var multiPartGenerator = MultiPartGenerator.multiPart(block)
+        .with(condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
+            plainVariant(trackModels.flatModel()))
+        .with(condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
+            plainVariant(trackModels.flatModel()).with(Y_ROT_90))
         .with(
-            Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant().with(VariantProperties.MODEL, trackModels.flatModel())
-        )
-        .with(
-            Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant().with(VariantProperties.MODEL, trackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        )
-        .with(
-            Condition.and(
-                Condition.condition().term(GatedTrackBlock.ONE_WAY, true),
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(GatedTrackBlock.ONE_WAY, true)
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, controlTrackModels.flatModel())
-        )
+            plainVariant(controlTrackModels.flatModel()))
         .with(
-            Condition.and(
-                Condition.condition().term(GatedTrackBlock.ONE_WAY, true),
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(GatedTrackBlock.ONE_WAY, true)
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-        )
+            plainVariant(controlTrackModels.flatModel()).with(Y_ROT_180))
         .with(
-            Condition.and(
-                Condition.condition().term(GatedTrackBlock.ONE_WAY, true),
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(GatedTrackBlock.ONE_WAY, true)
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        )
+            plainVariant(controlTrackModels.flatModel()).with(Y_ROT_90))
         .with(
-            Condition.and(
-                Condition.condition().term(GatedTrackBlock.ONE_WAY, true),
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(GatedTrackBlock.ONE_WAY, true)
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, controlTrackModels.flatModel())
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-        );
+            plainVariant(controlTrackModels.flatModel()).with(Y_ROT_270));
 
     this.addGateVariants(multiPartGenerator, false, false, closedGateModel);
     this.addGateVariants(multiPartGenerator, true, false, openGateModel);
@@ -2099,44 +2083,53 @@ public class RailcraftModelProvider extends ModelProvider {
       ResourceLocation model) {
     multiPartGenerator
         .with(
-            Condition.and(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false),
-                Condition.condition().term(GatedTrackBlock.OPEN, open),
-                Condition.condition().term(GatedTrackBlock.IN_WALL, inWall)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                        .term(GatedTrackBlock.OPEN, open)
+                        .term(GatedTrackBlock.IN_WALL, inWall)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-        )
+            plainVariant(model).with(Y_ROT_180))
         .with(
-            Condition.and(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true),
-                Condition.condition().term(GatedTrackBlock.OPEN, open),
-                Condition.condition().term(GatedTrackBlock.IN_WALL, inWall)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                        .term(GatedTrackBlock.OPEN, open)
+                        .term(GatedTrackBlock.IN_WALL, inWall)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-        )
+            plainVariant(model))
         .with(
-            Condition.and(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false),
-                Condition.condition().term(GatedTrackBlock.OPEN, open),
-                Condition.condition().term(GatedTrackBlock.IN_WALL, inWall)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                        .term(GatedTrackBlock.OPEN, open)
+                        .term(GatedTrackBlock.IN_WALL, inWall)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-        )
+            plainVariant(model).with(Y_ROT_270))
         .with(
-            Condition.and(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true),
-                Condition.condition().term(GatedTrackBlock.OPEN, open),
-                Condition.condition().term(GatedTrackBlock.IN_WALL, inWall)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                        .term(GatedTrackBlock.OPEN, open)
+                        .term(GatedTrackBlock.IN_WALL, inWall)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
+            plainVariant(model).with(Y_ROT_90));
   }
 
   private void createCouplerTrack(BlockModelGenerators blockModels,
@@ -2150,27 +2143,27 @@ public class RailcraftModelProvider extends ModelProvider {
     trackModels.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false);
 
     couplerTrackCoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
             .term(CouplerTrackBlock.POWERED, false));
     activeCouplerTrackCoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.COUPLER)
             .term(CouplerTrackBlock.POWERED, true));
     couplerTrackDecoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
             .term(CouplerTrackBlock.POWERED, false));
     activeCouplerTrackDecoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.DECOUPLER)
             .term(CouplerTrackBlock.POWERED, true));
     couplerTrackAutoCoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
             .term(CouplerTrackBlock.POWERED, false));
     activeCouplerTrackAutoCoupler.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(CouplerTrackBlock.MODE, CouplerTrackBlockEntity.Mode.AUTO_COUPLER)
             .term(CouplerTrackBlock.POWERED, true));
 
@@ -2186,19 +2179,19 @@ public class RailcraftModelProvider extends ModelProvider {
     trackModels.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false);
 
     disembarkingTrackLeft.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DisembarkingTrackBlock.MIRRORED, false)
             .term(PoweredOutfittedTrackBlock.POWERED, false));
     activeDisembarkingTrackLeft.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DisembarkingTrackBlock.MIRRORED, false)
             .term(PoweredOutfittedTrackBlock.POWERED, true));
     disembarkingTrackRight.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DisembarkingTrackBlock.MIRRORED, true)
             .term(PoweredOutfittedTrackBlock.POWERED, false));
     activeDisembarkingTrackRight.apply(multiPartGenerator, CouplerTrackBlock.SHAPE, true, false,
-        Condition.condition()
+        condition()
             .term(DisembarkingTrackBlock.MIRRORED, true)
             .term(PoweredOutfittedTrackBlock.POWERED, true));
 
@@ -2244,14 +2237,11 @@ public class RailcraftModelProvider extends ModelProvider {
 
     var multiPartGenerator = MultiPartGenerator.multiPart(block)
         .with(
-            Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant().with(VariantProperties.MODEL, trackModel)
-        )
+            condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
+            plainVariant(trackModel))
         .with(
-            Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant().with(VariantProperties.MODEL, trackModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
+            condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
+            plainVariant(trackModel).with(Y_ROT_90));
 
     this.addLockingMode(LockingMode.LOCKDOWN, lockdownModel, activeLockdownModel, multiPartGenerator);
     this.addLockingMode(LockingMode.TRAIN_LOCKDOWN, trainLockdownModel, activeTrainLockdownModel,
@@ -2275,39 +2265,49 @@ public class RailcraftModelProvider extends ModelProvider {
       ResourceLocation poweredModel, MultiPartGenerator multiPartGenerator) {
     multiPartGenerator
         .with(
-            Condition.and(
-                Condition.condition().term(LockingTrackBlock.LOCKING_MODE, lockingMode),
-                Condition.condition().term(LockingTrackBlock.POWERED, false),
-                Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
+                        .term(LockingTrackBlock.POWERED, false)
+                        .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-        )
+            plainVariant(model))
         .with(
-            Condition.and(
-                Condition.condition().term(LockingTrackBlock.LOCKING_MODE, lockingMode),
-                Condition.condition().term(LockingTrackBlock.POWERED, true),
-                Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
+                        .term(LockingTrackBlock.POWERED, true)
+                        .term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, poweredModel)
-        )
+            plainVariant(poweredModel))
         .with(
-            Condition.and(
-                Condition.condition().term(LockingTrackBlock.LOCKING_MODE, lockingMode),
-                Condition.condition().term(LockingTrackBlock.POWERED, false),
-                Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
+                        .term(LockingTrackBlock.POWERED, false)
+                        .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        )
+            plainVariant(model).with(Y_ROT_90))
         .with(
-            Condition.and(
-                Condition.condition().term(LockingTrackBlock.LOCKING_MODE, lockingMode),
-                Condition.condition().term(LockingTrackBlock.POWERED, true),
-                Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(LockingTrackBlock.LOCKING_MODE, lockingMode)
+                        .term(LockingTrackBlock.POWERED, true)
+                        .term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, poweredModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
+            plainVariant(poweredModel).with(Y_ROT_90));
   }
 
   private void createThrottleTrack(BlockModelGenerators blockModels, ThrottleTrackBlock block,
@@ -2351,14 +2351,11 @@ public class RailcraftModelProvider extends ModelProvider {
 
     var multiPartGenerator = MultiPartGenerator.multiPart(block)
         .with(
-            Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-            Variant.variant().with(VariantProperties.MODEL, trackModel)
-        )
+            condition().term(LockingTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
+            plainVariant(trackModel))
         .with(
-            Condition.condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
-            Variant.variant().with(VariantProperties.MODEL, trackModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
+            condition().term(LockingTrackBlock.SHAPE, RailShape.EAST_WEST),
+            plainVariant(trackModel).with(Y_ROT_90));
 
     this.addSpeedMode(Locomotive.Speed.SLOWEST, speed1, activeSpeed1, false, multiPartGenerator);
     this.addSpeedMode(Locomotive.Speed.SLOWER, speed2, activeSpeed2, false, multiPartGenerator);
@@ -2378,43 +2375,53 @@ public class RailcraftModelProvider extends ModelProvider {
       ResourceLocation poweredModel, boolean reverse, MultiPartGenerator multiPartGenerator) {
     multiPartGenerator
         .with(
-            Condition.and(
-                Condition.condition().term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed),
-                Condition.condition().term(ThrottleTrackBlock.REVERSE, reverse),
-                Condition.condition().term(ThrottleTrackBlock.POWERED, false),
-                Condition.condition().term(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+                        .term(ThrottleTrackBlock.REVERSE, reverse)
+                        .term(ThrottleTrackBlock.POWERED, false)
+                        .term(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-        )
+            plainVariant(model))
         .with(
-            Condition.and(
-                Condition.condition().term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed),
-                Condition.condition().term(ThrottleTrackBlock.REVERSE, reverse),
-                Condition.condition().term(ThrottleTrackBlock.POWERED, true),
-                Condition.condition().term(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+                        .term(ThrottleTrackBlock.REVERSE, reverse)
+                        .term(ThrottleTrackBlock.POWERED, true)
+                        .term(ThrottleTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, poweredModel)
-        )
+            plainVariant(poweredModel))
         .with(
-            Condition.and(
-                Condition.condition().term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed),
-                Condition.condition().term(ThrottleTrackBlock.REVERSE, reverse),
-                Condition.condition().term(ThrottleTrackBlock.POWERED, false),
-                Condition.condition().term(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+                        .term(ThrottleTrackBlock.REVERSE, reverse)
+                        .term(ThrottleTrackBlock.POWERED, false)
+                        .term(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, model)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        )
+            plainVariant(model).with(Y_ROT_90))
         .with(
-            Condition.and(
-                Condition.condition().term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed),
-                Condition.condition().term(ThrottleTrackBlock.REVERSE, reverse),
-                Condition.condition().term(ThrottleTrackBlock.POWERED, true),
-                Condition.condition().term(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST)
+            new CombinedCondition(
+                CombinedCondition.Operation.AND,
+                List.of(
+                    condition()
+                        .term(ThrottleTrackBlock.LOCOMOTIVE_SPEED, speed)
+                        .term(ThrottleTrackBlock.REVERSE, reverse)
+                        .term(ThrottleTrackBlock.POWERED, true)
+                        .term(ThrottleTrackBlock.SHAPE, RailShape.EAST_WEST)
+                        .build())
             ),
-            Variant.variant().with(VariantProperties.MODEL, poweredModel)
-                .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-        );
+            plainVariant(poweredModel).with(Y_ROT_90));
   }
 
   private void createBufferStopTrack(BlockModelGenerators blockModels, BufferStopTrackBlock block,
@@ -2424,39 +2431,51 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.blockStateOutput.accept(
         MultiPartGenerator.multiPart(block)
             .with(
-                Condition.and(
-                    Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                    Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                new CombinedCondition(
+                    CombinedCondition.Operation.AND,
+                    List.of(
+                        condition()
+                            .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                            .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                            .build())
                 ),
-                Variant.variant().with(VariantProperties.MODEL, bufferStop))
+                plainVariant(bufferStop))
             .with(
-                Condition.and(
-                    Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                    Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                new CombinedCondition(
+                    CombinedCondition.Operation.AND,
+                    List.of(
+                        condition()
+                            .term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH)
+                            .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                            .build())
                 ),
-                Variant.variant().with(VariantProperties.MODEL, bufferStop)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+                plainVariant(bufferStop).with(Y_ROT_180))
             .with(
-                Condition.and(
-                    Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                    Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                new CombinedCondition(
+                    CombinedCondition.Operation.AND,
+                    List.of(
+                        condition()
+                            .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                            .term(ReversibleOutfittedTrackBlock.REVERSED, false)
+                            .build())
                 ),
-                Variant.variant().with(VariantProperties.MODEL, bufferStop)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                plainVariant(bufferStop).with(Y_ROT_90))
             .with(
-                Condition.and(
-                    Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                    Condition.condition().term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                new CombinedCondition(
+                    CombinedCondition.Operation.AND,
+                    List.of(
+                        condition()
+                            .term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST)
+                            .term(ReversibleOutfittedTrackBlock.REVERSED, true)
+                            .build())
                 ),
-                Variant.variant().with(VariantProperties.MODEL, bufferStop)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+                plainVariant(bufferStop).with(Y_ROT_270))
             .with(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
-                Variant.variant().with(VariantProperties.MODEL, trackModel))
+                condition().term(OutfittedTrackBlock.SHAPE, RailShape.NORTH_SOUTH),
+                plainVariant(trackModel))
             .with(
-                Condition.condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
-                Variant.variant().with(VariantProperties.MODEL, trackModel)
-                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+                condition().term(OutfittedTrackBlock.SHAPE, RailShape.EAST_WEST),
+                plainVariant(trackModel).with(Y_ROT_90))
     );
     blockModels.registerSimpleFlatItemModel(block.asItem());
   }
@@ -2485,62 +2504,50 @@ public class RailcraftModelProvider extends ModelProvider {
             TextureMapping.singleSlot(TextureSlot.RAIL, southSwitchedTexture), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
+                PropertyDispatch.initial(SwitchTrackBlock.SHAPE,
                         ReversibleOutfittedTrackBlock.REVERSED,
                         TurnoutTrackBlock.MIRRORED, SwitchTrackBlock.SWITCHED)
                     .generate((shape, reversed, mirrored, switched) -> {
                       if (shape == RailShape.NORTH_SOUTH) {
                         if (!reversed && !mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northModel);
+                          return plainVariant(northModel);
                         } else if (!reversed && !mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northSwitchedModel);
+                          return plainVariant(northSwitchedModel);
                         } else if (reversed && !mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180);
+                          return plainVariant(northModel).with(Y_ROT_180);
                         } else if (reversed && !mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180);
+                          return plainVariant(northSwitchedModel).with(Y_ROT_180);
                         } else if (!reversed && mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180);
+                          return plainVariant(southModel).with(Y_ROT_180);
                         } else if (!reversed && mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180);
+                          return plainVariant(southSwitchedModel).with(Y_ROT_180);
                         } else if (reversed && mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southModel);
+                          return plainVariant(southModel);
                         } else {
-                          return Variant.variant().with(VariantProperties.MODEL, southSwitchedModel);
+                          return plainVariant(southSwitchedModel);
                         }
                       } else if (shape == RailShape.EAST_WEST) {
                         if (!reversed && !mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                          return plainVariant(northModel).with(Y_ROT_90);
                         } else if (!reversed && !mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                          return plainVariant(northSwitchedModel).with(Y_ROT_90);
                         } else if (reversed && !mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270);
+                          return plainVariant(northModel).with(Y_ROT_270);
                         } else if (reversed && !mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, northSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270);
+                          return plainVariant(northSwitchedModel).with(Y_ROT_270);
                         } else if (!reversed && mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270);
+                          return plainVariant(southModel).with(Y_ROT_270);
                         } else if (!reversed && mirrored && switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270);
+                          return plainVariant(southSwitchedModel).with(Y_ROT_270);
                         } else if (reversed && mirrored && !switched) {
-                          return Variant.variant().with(VariantProperties.MODEL, southModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                          return plainVariant(southModel).with(Y_ROT_90);
                         } else {
-                          return Variant.variant().with(VariantProperties.MODEL, southSwitchedModel)
-                              .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
+                          return plainVariant(southSwitchedModel).with(Y_ROT_90);
                         }
                       }
-                      return Variant.variant();
+                      throw new RuntimeException();
                     })
             )
     );
@@ -2571,24 +2578,17 @@ public class RailcraftModelProvider extends ModelProvider {
             TextureMapping.singleSlot(TextureSlot.RAIL, westSwitchedTexture), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
-        MultiVariantGenerator.multiVariant(block)
+        MultiVariantGenerator.dispatch(block)
             .with(
-                PropertyDispatch.properties(SwitchTrackBlock.SHAPE,
+                PropertyDispatch.initial(SwitchTrackBlock.SHAPE,
                         ReversibleOutfittedTrackBlock.REVERSED, SwitchTrackBlock.SWITCHED)
                     .generate((shape, reversed, switched) -> {
                       var facing = ReversibleOutfittedTrackBlock.getDirection(shape, reversed);
                       return switch (facing) {
-                        case NORTH -> Variant.variant()
-                            .with(VariantProperties.MODEL, switched ? eastSwitchedModel : eastModel)
-                            .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
-                        case SOUTH -> Variant.variant()
-                            .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel)
-                            .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90);
-                        case EAST -> Variant.variant()
-                            .with(VariantProperties.MODEL, switched ? westSwitchedModel : westModel);
-                        case WEST -> Variant.variant()
-                            .with(VariantProperties.MODEL, switched ? eastSwitchedModel :
-                                eastModel);
+                        case NORTH -> plainVariant(switched ? eastSwitchedModel : eastModel).with(Y_ROT_90);
+                        case SOUTH -> plainVariant(switched ? westSwitchedModel : westModel).with(Y_ROT_90);
+                        case EAST -> plainVariant(switched ? westSwitchedModel : westModel);
+                        case WEST -> plainVariant(switched ? eastSwitchedModel : eastModel);
                         default -> throw new UnsupportedOperationException();
                       };
                     })
@@ -2602,7 +2602,8 @@ public class RailcraftModelProvider extends ModelProvider {
         .extend().renderType(CUTOUT).build()
         .create(block, TextureMapping.rail(block), blockModels.modelOutput);
 
-    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, model));
+    blockModels.blockStateOutput.accept(
+        BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleFlatItemModel(block);
   }
 
@@ -2611,84 +2612,76 @@ public class RailcraftModelProvider extends ModelProvider {
       ResourceLocation raisedNorthEastModel,
       ResourceLocation raisedSouthWestModel) {
 
-    private Condition merge(Condition base, Condition... conditions) {
-      if (conditions.length == 0) {
-        return base;
+    private static Condition merge(ConditionBuilder base, @Nullable ConditionBuilder other) {
+      if (other == null) {
+        return base.build();
       }
-      var all = new ArrayList<Condition>();
-      all.add(base);
-      Collections.addAll(all, conditions);
-      return Condition.and(all.toArray(Condition[]::new));
+      return new CombinedCondition(
+          CombinedCondition.Operation.AND,
+          List.of(
+          base.build(),
+          other.build()
+          )
+      );
     }
 
     private void apply(MultiPartGenerator builder, Property<RailShape> shapeProperty,
-        boolean includeRaised, boolean reversed, Condition... conditions) {
+        boolean includeRaised, boolean reversed) {
+      this.apply(builder, shapeProperty, includeRaised, reversed, null);
+    }
+
+    private void apply(MultiPartGenerator builder, Property<RailShape> shapeProperty,
+        boolean includeRaised, boolean reversed, @Nullable ConditionBuilder conditionBuilder) {
       builder
           .with(
               merge(
-                  Condition.condition().term(shapeProperty, RailShape.NORTH_SOUTH),
-                  conditions
+                  condition().term(shapeProperty, RailShape.NORTH_SOUTH),
+                  conditionBuilder
               ),
-              Variant.variant().with(VariantProperties.MODEL, this.flatModel)
-                  .with(VariantProperties.Y_ROT, reversed ?
-                      VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0)
-          )
+              plainVariant(this.flatModel)
+                  .with(v -> v.withYRot(reversed ? Quadrant.R180 : Quadrant.R0)))
           .with(
               merge(
-                  Condition.condition().term(shapeProperty, RailShape.EAST_WEST),
-                  conditions
+                  condition().term(shapeProperty, RailShape.EAST_WEST),
+                  conditionBuilder
               ),
-              Variant.variant().with(VariantProperties.MODEL, this.flatModel)
-                  .with(VariantProperties.Y_ROT, reversed ?
-                      VariantProperties.Rotation.R270 : VariantProperties.Rotation.R90)
-          );
+              plainVariant(this.flatModel)
+                  .with(v -> v.withYRot(reversed ? Quadrant.R270 : Quadrant.R90)));
 
       if (includeRaised) {
         builder
             .with(
                 merge(
-                    Condition.condition().term(shapeProperty, RailShape.ASCENDING_NORTH),
-                    conditions
+                    condition().term(shapeProperty, RailShape.ASCENDING_NORTH),
+                    conditionBuilder
                 ),
-                Variant.variant().with(VariantProperties.MODEL, reversed ?
-                        this.raisedSouthWestModel : this.raisedNorthEastModel)
-                    .with(VariantProperties.Y_ROT, reversed ?
-                        VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0)
-            )
+                plainVariant(reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
+                    .with(v -> v.withYRot(reversed ? Quadrant.R180 : Quadrant.R0)))
             .with(
                 merge(
-                    Condition.condition().term(shapeProperty, RailShape.ASCENDING_SOUTH),
-                    conditions
+                    condition().term(shapeProperty, RailShape.ASCENDING_SOUTH),
+                    conditionBuilder
                 ),
-                Variant.variant().with(VariantProperties.MODEL, reversed ?
-                        this.raisedNorthEastModel : this.raisedSouthWestModel)
-                    .with(VariantProperties.Y_ROT, reversed ?
-                        VariantProperties.Rotation.R180 : VariantProperties.Rotation.R0)
-            )
+                plainVariant(reversed ? this.raisedNorthEastModel : this.raisedSouthWestModel)
+                    .with(v -> v.withYRot(reversed ? Quadrant.R180 : Quadrant.R0)))
             .with(
                 merge(
-                    Condition.condition().term(shapeProperty, RailShape.ASCENDING_EAST),
-                    conditions
+                    condition().term(shapeProperty, RailShape.ASCENDING_EAST),
+                    conditionBuilder
                 ),
-                Variant.variant().with(VariantProperties.MODEL, reversed ?
-                        this.raisedSouthWestModel : this.raisedNorthEastModel)
-                    .with(VariantProperties.Y_ROT, reversed ?
-                        VariantProperties.Rotation.R270 : VariantProperties.Rotation.R90)
-            )
+                plainVariant(reversed ? this.raisedSouthWestModel : this.raisedNorthEastModel)
+                    .with(v -> v.withYRot(reversed ? Quadrant.R270 : Quadrant.R90)))
             .with(
                 merge(
-                    Condition.condition().term(shapeProperty, RailShape.ASCENDING_WEST),
-                    conditions
+                    condition().term(shapeProperty, RailShape.ASCENDING_WEST),
+                    conditionBuilder
                 ),
-                Variant.variant().with(VariantProperties.MODEL, reversed ?
-                        this.raisedNorthEastModel : this.raisedSouthWestModel)
-                    .with(VariantProperties.Y_ROT, reversed ?
-                        VariantProperties.Rotation.R270 : VariantProperties.Rotation.R90)
-            );
+                plainVariant(reversed ? this.raisedNorthEastModel : this.raisedSouthWestModel)
+                    .with(v -> v.withYRot(reversed ? Quadrant.R270 : Quadrant.R90)));
       }
     }
   }
-*/
+
   @Override
   protected Stream<? extends Holder<Block>> getKnownBlocks() {
     return Stream.empty();

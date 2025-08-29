@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_red",
-        "y": 0
+        "model": "railcraft:block/switch_track_actuator_flag_red"
       },
       "when": {
         "red_flag": "north"
@@ -11,8 +10,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_white",
-        "y": 0
+        "model": "railcraft:block/switch_track_actuator_flag_white"
       },
       "when": {
         "white_flag": "north"
@@ -74,8 +72,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_neutral_red",
-        "y": 0
+        "model": "railcraft:block/switch_track_actuator_flag_neutral_red"
       },
       "when": {
         "red_flag": "north_south"
@@ -83,8 +80,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_flag_neutral_white",
-        "y": 0
+        "model": "railcraft:block/switch_track_actuator_flag_neutral_white"
       },
       "when": {
         "white_flag": "north_south"
@@ -110,8 +106,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/switch_track_actuator_router",
-        "y": 0
+        "model": "railcraft:block/switch_track_actuator_router"
       },
       "when": {
         "facing": "north"

@@ -24,15 +24,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "false",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -45,15 +39,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "true",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -67,15 +55,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "false",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -89,15 +71,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "true",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -110,15 +86,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "false",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -131,15 +101,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "true",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -153,15 +117,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "false",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -175,15 +133,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "true",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -196,15 +148,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "false",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -217,15 +163,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "true",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -239,15 +179,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "false",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -261,15 +195,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "true",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -282,15 +210,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "false",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -303,15 +225,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "true",
+            "reverse": "false",
             "shape": "north_south"
           }
         ]
@@ -325,15 +241,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "false",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -347,15 +257,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "false"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "true",
+            "reverse": "false",
             "shape": "east_west"
           }
         ]
@@ -368,15 +272,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "false",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -389,15 +287,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "true",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -411,15 +303,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "false",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -433,15 +319,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slowest"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slowest",
+            "powered": "true",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -454,15 +334,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "false",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -475,15 +349,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "true",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -497,15 +365,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "false",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -519,15 +381,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "slower"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "slower",
+            "powered": "true",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -540,15 +396,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "false",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -561,15 +411,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "true",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -583,15 +427,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "false",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -605,15 +443,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "normal"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "normal",
+            "powered": "true",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -626,15 +458,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "false",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -647,15 +473,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "true",
+            "reverse": "true",
             "shape": "north_south"
           }
         ]
@@ -669,15 +489,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "false",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]
@@ -691,15 +505,9 @@
       "when": {
         "AND": [
           {
-            "locomotive_speed": "max"
-          },
-          {
-            "reverse": "true"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locomotive_speed": "max",
+            "powered": "true",
+            "reverse": "true",
             "shape": "east_west"
           }
         ]

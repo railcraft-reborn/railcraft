@@ -2,8 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "railcraft:block/strap_iron_track_outfitted",
-        "y": 0
+        "model": "railcraft:block/strap_iron_track_outfitted"
       },
       "when": {
         "shape": "north_south"
@@ -20,8 +19,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/launcher_track/launcher_track",
-        "y": 0
+        "model": "railcraft:block/track_template/launcher_track/launcher_track"
       },
       "when": {
         "AND": [
@@ -52,8 +50,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/track_template/launcher_track/launcher_track_on",
-        "y": 0
+        "model": "railcraft:block/track_template/launcher_track/launcher_track_on"
       },
       "when": {
         "AND": [

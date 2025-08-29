@@ -7,10 +7,8 @@
       "when": {
         "AND": [
           {
+            "reversed": "false",
             "shape": "north_south"
-          },
-          {
-            "reversed": "false"
           }
         ]
       }
@@ -23,10 +21,8 @@
       "when": {
         "AND": [
           {
+            "reversed": "true",
             "shape": "north_south"
-          },
-          {
-            "reversed": "true"
           }
         ]
       }
@@ -39,10 +35,8 @@
       "when": {
         "AND": [
           {
+            "reversed": "false",
             "shape": "east_west"
-          },
-          {
-            "reversed": "false"
           }
         ]
       }
@@ -55,10 +49,8 @@
       "when": {
         "AND": [
           {
+            "reversed": "true",
             "shape": "east_west"
-          },
-          {
-            "reversed": "true"
           }
         ]
       }

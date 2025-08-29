@@ -4,28 +4,22 @@
       "model": "railcraft:block/crusher"
     },
     "output=false,rotated=false,type=north": {
-      "model": "railcraft:block/crusher_top_north",
-      "y": 0
+      "model": "railcraft:block/crusher_top_north"
     },
     "output=false,rotated=false,type=north_east": {
-      "model": "railcraft:block/crusher_top_north_east",
-      "y": 0
+      "model": "railcraft:block/crusher_top_north_east"
     },
     "output=false,rotated=false,type=north_west": {
-      "model": "railcraft:block/crusher_top_north_west",
-      "y": 0
+      "model": "railcraft:block/crusher_top_north_west"
     },
     "output=false,rotated=false,type=south": {
-      "model": "railcraft:block/crusher_top_south",
-      "y": 0
+      "model": "railcraft:block/crusher_top_south"
     },
     "output=false,rotated=false,type=south_east": {
-      "model": "railcraft:block/crusher_top_south_east",
-      "y": 0
+      "model": "railcraft:block/crusher_top_south_east"
     },
     "output=false,rotated=false,type=south_west": {
-      "model": "railcraft:block/crusher_top_south_west",
-      "y": 0
+      "model": "railcraft:block/crusher_top_south_west"
     },
     "output=false,rotated=true,type=none": {
       "model": "railcraft:block/crusher"

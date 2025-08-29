@@ -24,12 +24,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "lockdown"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "lockdown",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -42,12 +38,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "lockdown"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "lockdown",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -61,12 +53,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "lockdown"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "lockdown",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -80,12 +68,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "lockdown"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "lockdown",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -98,12 +82,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_lockdown"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_lockdown",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -116,12 +96,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_lockdown"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_lockdown",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -135,12 +111,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_lockdown"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_lockdown",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -154,12 +126,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_lockdown"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_lockdown",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -172,12 +140,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "holding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "holding",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -190,12 +154,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "holding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "holding",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -209,12 +169,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "holding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "holding",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -228,12 +184,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "holding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "holding",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -246,12 +198,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_holding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_holding",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -264,12 +212,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_holding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_holding",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -283,12 +227,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_holding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_holding",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -302,12 +242,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_holding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_holding",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -320,12 +256,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "boarding",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -338,12 +270,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "boarding",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -357,12 +285,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "boarding",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -376,12 +300,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "boarding",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -394,12 +314,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding_reversed"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "boarding_reversed",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -412,12 +328,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding_reversed"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "boarding_reversed",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -431,12 +343,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding_reversed"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "boarding_reversed",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -450,12 +358,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "boarding_reversed"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "boarding_reversed",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -468,12 +372,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_boarding",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -486,12 +386,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_boarding",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -505,12 +401,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_boarding",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -524,12 +416,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_boarding",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
@@ -542,12 +430,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding_reversed"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_boarding_reversed",
+            "powered": "false",
             "shape": "north_south"
           }
         ]
@@ -560,12 +444,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding_reversed"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_boarding_reversed",
+            "powered": "true",
             "shape": "north_south"
           }
         ]
@@ -579,12 +459,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding_reversed"
-          },
-          {
-            "powered": "false"
-          },
-          {
+            "locking_mode": "train_boarding_reversed",
+            "powered": "false",
             "shape": "east_west"
           }
         ]
@@ -598,12 +474,8 @@
       "when": {
         "AND": [
           {
-            "locking_mode": "train_boarding_reversed"
-          },
-          {
-            "powered": "true"
-          },
-          {
+            "locking_mode": "train_boarding_reversed",
+            "powered": "true",
             "shape": "east_west"
           }
         ]
