@@ -1,6 +1,7 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
+import java.util.Objects;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -8,6 +9,7 @@ import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mods.railcraft.Translations;
@@ -18,10 +20,13 @@ import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoilerJEIRecipe> {
 
@@ -74,13 +79,19 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
-    /* FIXME
-    builder.addInputSlot(73, 4)
-        .add(NeoForgeTypes.FLUID_STACK, recipe.fuel())
+
+    var fluidBuilder = builder.addInputSlot(73, 4)
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
-        */
+
+    Objects.requireNonNull(Minecraft.getInstance().level).registryAccess()
+        .lookupOrThrow(BuiltInRegistries.FLUID.key())
+        .getOrThrow(recipe.fuel())
+        .forEach(fluid -> {
+          fluidBuilder.add(NeoForgeTypes.FLUID_STACK, new FluidStack(fluid, 1000));
+        });
+
     builder.addInputSlot(100, 4)
         .add(recipe.water(), 1000)
         .setFluidRenderer(1000, true, 16, 47)
