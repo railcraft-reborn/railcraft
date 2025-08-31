@@ -2,6 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
@@ -159,21 +160,21 @@ public class RailcraftItems {
           BLOCK_TO_BLOCK_ITEM);
 
   public static final DeferredItem<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
-      deferredRegister.registerItem("low_pressure_steam_boiler_tank", properties ->
+      customBlockItem("low_pressure_steam_boiler_tank", properties ->
           new PressureBoilerTankBlockItem(
               RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK.get(), properties));
 
   public static final DeferredItem<PressureBoilerTankBlockItem> HIGH_PRESSURE_STEAM_BOILER_TANK =
-      deferredRegister.registerItem("high_pressure_steam_boiler_tank", properties ->
+      customBlockItem("high_pressure_steam_boiler_tank", properties ->
           new PressureBoilerTankBlockItem(
               RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK.get(), properties));
 
   public static final DeferredItem<FueledFireboxBlockItem> SOLID_FUELED_FIREBOX =
-      deferredRegister.registerItem("solid_fueled_firebox", properties ->
+      customBlockItem("solid_fueled_firebox", properties ->
           new FueledFireboxBlockItem(RailcraftBlocks.SOLID_FUELED_FIREBOX.get(), properties));
 
   public static final DeferredItem<FueledFireboxBlockItem> FLUID_FUELED_FIREBOX =
-      deferredRegister.registerItem("fluid_fueled_firebox", properties ->
+      customBlockItem("fluid_fueled_firebox", properties ->
           new FueledFireboxBlockItem(RailcraftBlocks.FLUID_FUELED_FIREBOX.get(), properties));
 
   public static final DeferredItem<SignalLabelItem> SIGNAL_LABEL =
@@ -601,7 +602,7 @@ public class RailcraftItems {
               .humanoidArmor(RailcraftArmorMaterials.OVERALLS, ArmorType.LEGGINGS)));
 
   public static final DeferredItem<FirestoneOreBlockItem> FIRESTONE_ORE =
-      deferredRegister.registerItem("firestone_ore", FirestoneOreBlockItem::new);
+      customBlockItem("firestone_ore", FirestoneOreBlockItem::new);
 
   public static final DeferredItem<FirestoneItem> RAW_FIRESTONE =
       deferredRegister.registerItem("raw_firestone", properties ->
@@ -1501,10 +1502,16 @@ public class RailcraftItems {
     return deferredRegister.registerSimpleBlockItem(block);
   }
 
+  public static <I extends BlockItem> DeferredItem<I> customBlockItem(String name,
+      Function<Item.Properties, ? extends I> func) {
+    return  deferredRegister.registerItem(name, p -> func.apply(p.useBlockDescriptionPrefix()));
+  }
+
   public static <I extends BlockItem> DeferredItem<I> blockItem(
       DeferredBlock<? extends Block> block,
       BiFunction<? super Block, ? super Item.Properties, ? extends I> factory) {
     var name = block.unwrapKey().orElseThrow().location().getPath();
-    return deferredRegister.registerItem(name, props -> factory.apply(block.value(), props));
+    return deferredRegister.registerItem(name,
+        p -> factory.apply(block.value(), p.useBlockDescriptionPrefix()));
   }
 }

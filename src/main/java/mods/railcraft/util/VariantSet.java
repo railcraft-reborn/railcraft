@@ -62,8 +62,9 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
       BiFunction<Item.Properties, ? super SV, ? extends V> mapper) {
     Map<K, DeferredHolder<Item, ? extends V>> variants = new EnumMap<>(keyType);
     source.forEach((key, value) -> {
-      variants.put(key, deferredRegister.registerItem(value.getId().getPath(),
-          properties -> mapper.apply(properties, value.get())));
+      var name = value.unwrapKey().orElseThrow().location().getPath();
+      variants.put(key, deferredRegister.registerItem(name,
+          properties -> mapper.apply(properties.useBlockDescriptionPrefix(), value.get())));
     });
     return new MappedVariantSet<>(variants);
   }
