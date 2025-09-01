@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:one_way_track_active",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/one_way_track_active"
+}

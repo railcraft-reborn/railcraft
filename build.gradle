@@ -96,7 +96,9 @@ neoForge {
         clientData {
             clientData()
             gameDirectory = project.file('runs/data')
-            programArguments.addAll '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+            programArguments.addAll '--mod', 'railcraft', '--all',
+               '--output', file('src/generated/resources/').getAbsolutePath(),
+               '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
         gameTestServer {

@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:block_signal",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "spawnCart": true,
+  "structure": "railcraft:test/block_signal"
+}

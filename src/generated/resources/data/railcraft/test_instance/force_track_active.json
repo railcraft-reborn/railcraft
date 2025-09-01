@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:force_track_active",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/force_track_active"
+}

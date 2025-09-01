@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:complex_routing",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/complex_routing"
+}

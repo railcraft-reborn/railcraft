@@ -11,12 +11,13 @@ import mods.railcraft.charge.ChargeProviderImpl;
 import mods.railcraft.charge.ZapEffectProviderImpl;
 import mods.railcraft.client.ClientManager;
 import mods.railcraft.data.RailcraftDataMapProvider;
-import mods.railcraft.data.RailcraftDatapackProvider;
 import mods.railcraft.data.RailcraftLanguageProvider;
 import mods.railcraft.data.RailcraftParticleProvider;
 import mods.railcraft.data.RailcraftSoundsProvider;
 import mods.railcraft.data.RailcraftSpriteSourceProvider;
 import mods.railcraft.data.advancements.RailcraftAdvancementProvider;
+import mods.railcraft.data.gametest.RailcraftGameTestInstances;
+import mods.railcraft.data.gametest.RailcraftTestEnvironments;
 import mods.railcraft.data.loot.RailcraftLootModifierProvider;
 import mods.railcraft.data.loot.RailcraftLootTableProvider;
 import mods.railcraft.data.models.RailcraftModelProvider;
@@ -30,6 +31,11 @@ import mods.railcraft.data.tags.RailcraftDamageTypeTagsProvider;
 import mods.railcraft.data.tags.RailcraftFluidTagsProvider;
 import mods.railcraft.data.tags.RailcraftItemTagsProvider;
 import mods.railcraft.data.tags.RailcraftPoiTypeTagsProvider;
+import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
+import mods.railcraft.data.worldgen.RailcraftStructureSets;
+import mods.railcraft.data.worldgen.RailcraftStructures;
+import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
+import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
@@ -39,6 +45,7 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
+import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
@@ -53,6 +60,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.crafting.RailcraftRecipeSerializers;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
+import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
@@ -83,7 +91,9 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -119,6 +129,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
@@ -180,6 +191,7 @@ public class Railcraft {
     RailcraftAttachmentTypes.register(modEventBus);
     RailcraftDataMaps.register(modEventBus);
     RailcraftDataComponents.register(modEventBus);
+    RailcraftGameTestInstances.register(modEventBus);
   }
 
   // Mod Events
@@ -291,13 +303,22 @@ public class Railcraft {
     event.createProvider(RailcraftPoiTypeTagsProvider::new);
     event.createProvider(RailcraftLootModifierProvider::new);
     event.createProvider(RailcraftDamageTypeTagsProvider::new);
-    event.createProvider(RailcraftDatapackProvider::new);
     event.createProvider(RailcraftDataMapProvider::new);
     event.createProvider(RailcraftModelProvider::new);
     event.createProvider(RailcraftLanguageProvider::new);
     event.createProvider(RailcraftSoundsProvider::new);
     event.createProvider(RailcraftSpriteSourceProvider::new);
     event.createProvider(RailcraftParticleProvider::new);
+    event.createDatapackRegistryObjects(new RegistrySetBuilder()
+        .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
+        .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
+        .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
+        .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
+        .add(Registries.STRUCTURE, RailcraftStructures::bootstrap)
+        .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap)
+        .add(Registries.ENCHANTMENT, RailcraftEnchantments::bootstrap)
+        .add(Registries.TEST_INSTANCE, RailcraftGameTestInstances::bootstrap)
+        .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap));
   }
 
   private void registerChunkControllers(RegisterTicketControllersEvent event) {

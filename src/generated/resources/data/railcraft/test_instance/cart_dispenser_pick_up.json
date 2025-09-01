@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:cart_dispenser_pick_up",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/cart_dispenser"
+}

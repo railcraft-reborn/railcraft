@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:junction_track_west",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/junction_track"
+}

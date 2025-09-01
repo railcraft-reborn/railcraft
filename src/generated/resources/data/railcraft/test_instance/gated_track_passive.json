@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:gated_track_passive",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/gated_track_passive"
+}

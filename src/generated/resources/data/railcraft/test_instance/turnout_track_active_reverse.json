@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:turnout_track_active_reverse",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/turnout_track_active_reverse"
+}
