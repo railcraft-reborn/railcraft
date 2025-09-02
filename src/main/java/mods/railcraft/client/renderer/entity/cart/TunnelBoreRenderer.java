@@ -75,6 +75,8 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRen
   public void extractRenderState(TunnelBore entity, TunnelBoreRendererState reusedState,
       float partialTick) {
     super.extractRenderState(entity, reusedState, partialTick);
+    reusedState.xRot = entity.getXRot(partialTick);
+    reusedState.yRot = entity.getYRot(partialTick);
     reusedState.head = entity.getBoreHead();
     reusedState.rotationAngle = entity.getBoreRotationAngle();
     reusedState.isMinecartPowered = entity.isMinecartPowered();
