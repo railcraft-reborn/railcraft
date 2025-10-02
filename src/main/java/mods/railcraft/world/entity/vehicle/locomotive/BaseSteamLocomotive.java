@@ -258,9 +258,6 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
     return false;
   }
 
-  @Override
-  public void setFilling(boolean filling) {}
-
   private FluidStack checkFill(FluidStack resource) {
     return this.boiler.checkFill(resource, this::explode);
   }

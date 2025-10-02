@@ -85,6 +85,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -384,6 +385,18 @@ public class ClientManager {
                   .withClickEvent(new ClickEvent.OpenUrl(URI.create(issueUrl)))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+      event.getPlayer().displayClientMessage(message, false);
+    }
+
+    var minecartImprovedFeatureFlag =
+        event.getPlayer().level().enabledFeatures().contains(FeatureFlags.MINECART_IMPROVEMENTS);
+    if (minecartImprovedFeatureFlag) {
+      var message = CommonComponents.joinLines(
+          Component.literal("The 'Minecart Improvements' experiment is enabled.")
+              .withStyle(ChatFormatting.GOLD, ChatFormatting.UNDERLINE),
+          Component.literal("Some Railcraft features may not work as intended.")
+              .withStyle(ChatFormatting.YELLOW)
+      );
       event.getPlayer().displayClientMessage(message, false);
     }
   }

@@ -2,7 +2,9 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Axis;
 import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
 import mods.railcraft.season.Seasons;
@@ -22,6 +24,8 @@ import net.minecraft.world.phys.Vec3;
 public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S extends MinecartRenderState>
     extends EntityRenderer<T, S> {
 
+  private static final Logger LOGGER = LogUtils.getLogger();
+
   public CustomMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
   }
@@ -35,8 +39,9 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     poseStack.translate(f, f1, f2);
     if (renderState.isNewRender) {
-      throw new RuntimeException("Not supported yet");
       //newRender(renderState, poseStack);
+      LOGGER.warn("Tried to render a cart with new rendering, but that is not yet implemented");
+      this.oldRender(renderState, poseStack, multiBufferSource, packedLight);
     } else {
       this.oldRender(renderState, poseStack, multiBufferSource, packedLight);
     }
@@ -189,14 +194,4 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
 
   protected abstract void renderBody(S renderState, PoseStack poseStack,
       MultiBufferSource multiBufferSource, int packedLight, int color);
-
-  /*protected AABB getBoundingBoxForCulling(T $$0) {
-    AABB $$1 = super.getBoundingBoxForCulling($$0);
-    return $$0.hasCustomDisplay() ? $$1.inflate((double)Math.abs($$0.getDisplayOffset()) / 16.0) : $$1;
-  }
-
-  public Vec3 getRenderOffset(S $$0) {
-    Vec3 $$1 = super.getRenderOffset($$0);
-    return $$0.isNewRender && $$0.renderPos != null ? $$1.add($$0.renderPos.x - $$0.x, $$0.renderPos.y - $$0.y, $$0.renderPos.z - $$0.z) : $$1;
-  }*/
 }

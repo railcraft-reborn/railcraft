@@ -159,11 +159,6 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public boolean canProvidePulledItem(RollingStock requester, ItemStack stack) {
-    return false;
-  }
-
-  @Override
   protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
     return new SteamLocomotiveMenu(id, playerInventory, this);
   }
