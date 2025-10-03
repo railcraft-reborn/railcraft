@@ -87,7 +87,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getLock() != lock) {
       this.routingDetector.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -96,7 +96,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getRailway() != railway) {
       this.routingDetector.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -104,7 +104,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRouterBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.routingDetector.getOwnerOrThrow().getName());
+          this.routingDetector.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }
@@ -113,7 +113,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
       SwitchTrackRouterBlockEntity.Railway railway) {
     return Optional.of(Tooltip.create(switch (railway) {
       case PRIVATE -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
-          this.routingDetector.getOwnerOrThrow().getName());
+          this.routingDetector.getOwnerOrThrow().name());
       case PUBLIC -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC);
     }));
   }

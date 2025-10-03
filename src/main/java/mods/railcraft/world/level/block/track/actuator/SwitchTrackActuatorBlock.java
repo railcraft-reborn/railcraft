@@ -123,7 +123,7 @@ public class SwitchTrackActuatorBlock extends HorizontalDirectionalBlock
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
     return isSwitched(state) ? Redstone.SIGNAL_MAX : Redstone.SIGNAL_NONE;
   }
 

@@ -19,7 +19,7 @@ public enum KeyBinding {
 
   KeyBinding(String name, int keycode) {
     this.keyMapping = new KeyMapping(name, KeyConflictContext.IN_GAME,
-          InputConstants.Type.KEYSYM, keycode, Translations.KeyBinding.CATEGORY);
+          InputConstants.Type.KEYSYM, keycode, RailcraftKeyMappingCategory.DEFAULT);
   }
 
   public KeyMapping getKeyMapping() {

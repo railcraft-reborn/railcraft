@@ -31,7 +31,7 @@ public record SetRoutingTrackMessage(
   public static void handle(SetRoutingTrackMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ROUTING_TRACK.get())
         .filter(routingTrack -> routingTrack.canAccess(senderProfile))
         .ifPresent(routingTrack -> {

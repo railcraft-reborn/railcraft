@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
@@ -20,6 +19,7 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -86,7 +86,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   }
 
   @Override
-  public void setRailway(@Nullable GameProfile gameProfile) {
+  public void setRailway(@Nullable NameAndId gameProfile) {
     this.railway = gameProfile == null ? Railway.PUBLIC : Railway.PRIVATE;
     if (!this.isLocked()) {
       this.setOwner(gameProfile);

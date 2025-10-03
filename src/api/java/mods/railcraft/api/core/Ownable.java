@@ -8,7 +8,7 @@ package mods.railcraft.api.core;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.Nameable;
 
 /**
@@ -22,12 +22,12 @@ public interface Ownable extends Nameable {
   /**
    * Returns the GameProfile of the owner of the object.
    */
-  Optional<GameProfile> getOwner();
+  Optional<NameAndId> getOwner();
 
-  default GameProfile getOwnerOrThrow() {
+  default NameAndId getOwnerOrThrow() {
     return this.getOwner()
         .orElseThrow(() -> new IllegalStateException("Expected owner to be present."));
   }
 
-  void setOwner(@Nullable GameProfile owner);
+  void setOwner(@Nullable NameAndId owner);
 }

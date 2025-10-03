@@ -2,14 +2,20 @@ package mods.railcraft.client.util;
 
 import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 
 public interface LineRenderer {
 
   static LineRenderer simple(MultiBufferSource bufferSource) {
-    return new SimpleLineRenderer(bufferSource);
+    return new SimpleLineRenderer(bufferSource.getBuffer(RenderType.lines()));
+  }
+
+  static LineRenderer simple(VertexConsumer vertexConsumer) {
+    return new SimpleLineRenderer(vertexConsumer);
   }
 
   default void renderLine(PoseStack poseStack, int color, Vec3 from, Vec3 to) {

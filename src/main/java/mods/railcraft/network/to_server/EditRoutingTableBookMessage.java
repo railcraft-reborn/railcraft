@@ -39,7 +39,7 @@ public record EditRoutingTableBookMessage(
     var itemStack = player.getItemInHand(message.hand);
     if (itemStack.getItem() instanceof RoutingTableBookItem) {
       itemStack.set(RailcraftDataComponents.ROUTING_TABLE_BOOK,
-          new RoutingTableBookContent(message.pages, senderProfile.getName(), message.title));
+          new RoutingTableBookContent(message.pages, senderProfile.name(), message.title));
     }
   }
 }

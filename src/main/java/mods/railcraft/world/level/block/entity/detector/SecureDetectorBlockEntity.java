@@ -1,12 +1,12 @@
 package mods.railcraft.world.level.block.entity.detector;
 
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity.Lock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -24,7 +24,7 @@ public class SecureDetectorBlockEntity extends DetectorBlockEntity implements Lo
     return this.lock;
   }
 
-  public void setLock(@Nullable GameProfile gameProfile) {
+  public void setLock(@Nullable NameAndId gameProfile) {
     this.lock = gameProfile == null ? Lock.UNLOCKED : Lock.LOCKED;
     this.setOwner(gameProfile);
   }
@@ -34,7 +34,7 @@ public class SecureDetectorBlockEntity extends DetectorBlockEntity implements Lo
     return this.lock == Lock.LOCKED;
   }
 
-  public boolean canAccess(GameProfile gameProfile) {
+  public boolean canAccess(NameAndId gameProfile) {
     return !this.isLocked() || this.isOwnerOrOperator(gameProfile);
   }
 

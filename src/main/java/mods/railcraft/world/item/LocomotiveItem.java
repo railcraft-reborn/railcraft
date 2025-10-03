@@ -1,9 +1,9 @@
 package mods.railcraft.world.item;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;
@@ -14,6 +14,7 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,11 +35,11 @@ public class LocomotiveItem extends CartItem implements Filter {
   public void appendHoverText(ItemStack stack, TooltipContext context,
       TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     var owner = getOwner(stack);
-    if (owner != null && StringUtils.isNotBlank(owner.getName())) {
+    if (owner != null && StringUtils.isNotBlank(owner.name())) {
       tooltipAdder.accept(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_OWNER)
           .withStyle(ChatFormatting.AQUA)
           .append(CommonComponents.SPACE)
-          .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
+          .append(Component.literal(owner.name()).withStyle(ChatFormatting.GRAY)));
     }
     var color = stack.get(RailcraftDataComponents.LOCOMOTIVE_COLOR);
     if (color != null) {
@@ -60,21 +61,21 @@ public class LocomotiveItem extends CartItem implements Filter {
         new LocomotiveWhistlePitchComponent(whistlePitch));
   }
 
-  public static void setOwnerData(ItemStack stack, GameProfile owner) {
+  public static void setOwnerData(ItemStack stack, NameAndId owner) {
     stack.set(RailcraftDataComponents.LOCOMOTIVE_OWNER, new LocomotiveOwnerComponent(owner));
   }
 
   @Nullable
-  public static GameProfile getOwner(ItemStack stack) {
+  public static NameAndId getOwner(ItemStack stack) {
     if (stack.has(RailcraftDataComponents.LOCOMOTIVE_OWNER)) {
-      return stack.get(RailcraftDataComponents.LOCOMOTIVE_OWNER).owner().gameProfile();
+      return Objects.requireNonNull(stack.get(RailcraftDataComponents.LOCOMOTIVE_OWNER)).owner();
     }
     return null;
   }
 
   public static LocomotiveColorComponent getColor(ItemStack stack) {
     if (stack.has(RailcraftDataComponents.LOCOMOTIVE_COLOR)) {
-      return stack.get(RailcraftDataComponents.LOCOMOTIVE_COLOR);
+      return Objects.requireNonNull(stack.get(RailcraftDataComponents.LOCOMOTIVE_COLOR));
     }
     throw new IllegalArgumentException("locomotive_color component not found");
   }

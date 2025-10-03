@@ -47,7 +47,7 @@ public class RoutingTrackTestInstance extends GameTestInstance {
     final var dest = "HOME";
     var routingTrack = helper.getBlockEntity(ROUTING_TRACK_POS, RoutingTrackBlockEntity.class);
     var goldenTicket = new ItemStack(RailcraftItems.GOLDEN_TICKET.get());
-    TicketItem.setTicketData(goldenTicket, dest, helper.makeMockPlayer(GameType.CREATIVE).getGameProfile());
+    TicketItem.setTicketData(goldenTicket, dest, helper.makeMockPlayer(GameType.CREATIVE).nameAndId());
     routingTrack.setItem(0, goldenTicket);
 
     var train = helper.spawn(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), SPAWN_POINT);

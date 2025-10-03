@@ -5,19 +5,21 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
 public class ChimneyParticle extends BaseSmokeParticle {
 
   public ChimneyParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, int color, SpriteSet sprites) {
-    this(level, x, y, z, dx, dy, dz, 3f, color, sprites);
+      double dz, int color, TextureAtlasSprite sprite) {
+    this(level, x, y, z, dx, dy, dz, 3f, color, sprite);
   }
 
   public ChimneyParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, float scale, int color, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz, scale);
+      double dz, float scale, int color, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, scale, sprite);
     this.gravity = SMOKE_GRAVITY;
     this.rCol =
         Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + ARGB.red(color) / 255.0F, 0, 1);
@@ -26,7 +28,6 @@ public class ChimneyParticle extends BaseSmokeParticle {
     this.bCol =
         Mth.clamp((this.random.nextFloat() * 0.1f - 0.05f) + ARGB.blue(color) / 255.0F, 0, 1);
     this.lifetime = (int) ((24.0F / (this.random.nextFloat() * 0.5F + 0.2F)) * scale);
-    this.pickSprite(sprites);
   }
 
   public static class Provider implements ParticleProvider<ChimneyParticleOptions> {
@@ -39,8 +40,9 @@ public class ChimneyParticle extends BaseSmokeParticle {
 
     @Override
     public Particle createParticle(ChimneyParticleOptions options, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new ChimneyParticle(level, x, y, z, dx, dy, dz, options.color(), this.spriteSet);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new ChimneyParticle(level, x, y, z, dx, dy, dz, options.color(),
+          this.spriteSet.get(randomSource));
     }
   }
 }

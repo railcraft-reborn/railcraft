@@ -5,19 +5,20 @@ import net.minecraft.client.particle.CampfireSmokeParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 public class SteamParticle extends CampfireSmokeParticle {
 
   SteamParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz, false);
+      double dz, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, false, sprite);
     this.scale(1.7F);
     // 0.6 min (0.6-1.0), steam isn't as dark as smog
     this.rCol = this.gCol = this.bCol = (0.6f + this.random.nextFloat() * 0.4f);
     // 20 ticks (1sec) 40 tics (max)
     this.lifetime = this.random.nextInt(50) + 30;
-    this.pickSprite(sprites);
   }
 
   public static class Provider implements ParticleProvider<SimpleParticleType> {
@@ -30,8 +31,8 @@ public class SteamParticle extends CampfireSmokeParticle {
 
     @Override
     public Particle createParticle(SimpleParticleType type, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new SteamParticle(level, x, y, z, dx, dy, dz, this.spriteSet);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new SteamParticle(level, x, y, z, dx, dy, dz, this.spriteSet.get(randomSource));
     }
   }
 }

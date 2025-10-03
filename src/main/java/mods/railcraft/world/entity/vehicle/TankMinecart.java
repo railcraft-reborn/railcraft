@@ -5,6 +5,7 @@ import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
@@ -42,7 +43,7 @@ public class TankMinecart extends FilteredMinecart
   // Can't use FluidStack directly because its equals method doesn't consider amount so will never
   // sync if the amount is changed.
   private static final EntityDataAccessor<CompoundTag> FLUID_STACK =
-      SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.COMPOUND_TAG);
+      SynchedEntityData.defineId(TankMinecart.class, RailcraftDataSerializers.COMPOUND_TAG);
   private static final EntityDataAccessor<Boolean> FILLING =
       SynchedEntityData.defineId(TankMinecart.class, EntityDataSerializers.BOOLEAN);
   public static final int SLOT_INPUT = 0;

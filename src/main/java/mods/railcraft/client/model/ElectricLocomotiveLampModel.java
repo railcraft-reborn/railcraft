@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class ElectricLocomotiveLampModel extends SimpleModel {
+public class ElectricLocomotiveLampModel<S> extends SimpleModel<S> {
 
   public ElectricLocomotiveLampModel(ModelPart root) {
     super(root);

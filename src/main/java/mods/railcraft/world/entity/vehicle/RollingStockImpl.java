@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
 import org.slf4j.Logger;
-import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
@@ -23,6 +22,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -676,7 +676,7 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
   }
 
   @Override
-  public Optional<GameProfile> owner() {
+  public Optional<NameAndId> owner() {
     return this.entity() instanceof Locomotive loco ? loco.getOwner() : Optional.empty();
   }
 

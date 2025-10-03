@@ -47,7 +47,7 @@ public record SetSwitchTrackMotorMessage(
   public static void handle(SetSwitchTrackMotorMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_MOTOR.get())
         .filter(switchTrack -> switchTrack.canAccess(senderProfile))
         .ifPresent(switchTrack -> {

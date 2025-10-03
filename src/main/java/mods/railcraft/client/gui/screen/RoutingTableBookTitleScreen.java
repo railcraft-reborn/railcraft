@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -102,13 +103,13 @@ public class RoutingTableBookTitleScreen extends Screen {
   }
 
   @Override
-  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    if (this.titleBox.isFocused() && !this.titleBox.getValue().isEmpty() && (keyCode == 257 || keyCode == 335)) {
+  public boolean keyPressed(KeyEvent event) {
+    if (this.titleBox.isFocused() && !this.titleBox.getValue().isEmpty() && (event.key() == 257 || event.key() == 335)) {
       this.saveChanges();
       this.minecraft.setScreen(null);
       return true;
     } else {
-      return super.keyPressed(keyCode, scanCode, modifiers);
+      return super.keyPressed(event);
     }
   }
 

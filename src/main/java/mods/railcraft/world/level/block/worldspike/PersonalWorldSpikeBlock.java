@@ -28,7 +28,7 @@ public class PersonalWorldSpikeBlock extends WorldSpikeBlock {
       @Nullable LivingEntity placer, ItemStack stack) {
     if (level.getBlockEntity(pos) instanceof PersonalWorldSpikeBlockEntity worldSpike) {
       if (placer instanceof Player player) {
-        worldSpike.setOwner(player.getGameProfile());
+        worldSpike.setOwner(player.nameAndId());
       }
     }
   }
@@ -38,7 +38,7 @@ public class PersonalWorldSpikeBlock extends WorldSpikeBlock {
       boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof PersonalWorldSpikeBlockEntity worldSpike) {
       if (worldSpike.getOwner().isEmpty() ||
-          worldSpike.isOwnerOrOperator(player.getGameProfile())) {
+          worldSpike.isOwnerOrOperator(player.nameAndId())) {
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
       }
     }

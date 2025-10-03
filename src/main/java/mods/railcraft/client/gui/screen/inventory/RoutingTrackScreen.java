@@ -51,7 +51,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
     if (this.routingBlockEntity.getLock() != lock) {
       this.routingBlockEntity.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-              ? null : this.minecraft.player.getGameProfile());
+              ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -59,7 +59,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRouterBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.routingBlockEntity.getOwnerOrThrow().getName());
+          this.routingBlockEntity.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }

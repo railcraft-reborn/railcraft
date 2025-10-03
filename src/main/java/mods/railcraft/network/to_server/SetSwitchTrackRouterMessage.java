@@ -34,7 +34,7 @@ public record SetSwitchTrackRouterMessage(
   public static void handle(SetSwitchTrackRouterMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
         .filter(switchTrackRouter -> switchTrackRouter.canAccess(senderProfile))
         .ifPresent(switchTrackRouter -> {

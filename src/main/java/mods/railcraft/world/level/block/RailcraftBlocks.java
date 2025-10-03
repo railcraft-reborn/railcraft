@@ -576,7 +576,7 @@ public class RailcraftBlocks {
           BlockBehaviour.Properties.of()
               .sound(SoundType.GLASS)
               .instabreak()
-              .noCollission()
+              .noCollision()
               .randomTicks()
               .noLootTable());
 
@@ -1230,7 +1230,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<ElevatorTrackBlock> ELEVATOR_TRACK =
       deferredRegister.registerBlock("elevator_track",
           properties -> new ElevatorTrackBlock(properties
-              .noCollission()
+              .noCollision()
               .strength(1.05F)
               .sound(SoundType.METAL)));
 
@@ -1296,7 +1296,7 @@ public class RailcraftBlocks {
               properties
                   .mapColor(MapColor.WATER)
                   .liquid()
-                  .noCollission()
+                  .noCollision()
                   .strength(50.0F)
                   .pushReaction(PushReaction.DESTROY)
                   .noLootTable()

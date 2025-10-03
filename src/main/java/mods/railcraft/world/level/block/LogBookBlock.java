@@ -90,7 +90,7 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
       @Nullable LivingEntity placer, ItemStack stack) {
     if (level.getBlockEntity(pos) instanceof LogBookBlockEntity blockEntity) {
       if (placer instanceof Player player) {
-        blockEntity.setOwner(player.getGameProfile());
+        blockEntity.setOwner(player.nameAndId());
       }
     }
   }
@@ -100,7 +100,7 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
       boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof LogBookBlockEntity blockEntity) {
       if (blockEntity.getOwner().isEmpty() ||
-          blockEntity.isOwnerOrOperator(player.getGameProfile())) {
+          blockEntity.isOwnerOrOperator(player.nameAndId())) {
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
       }
     }

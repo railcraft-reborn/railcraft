@@ -5,7 +5,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
@@ -15,6 +14,7 @@ import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.container.ForwardingContainer;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +27,7 @@ public interface RouterBlockEntity extends MenuProvider, ForwardingContainer {
 
   Railway getRailway();
 
-  void setRailway(@Nullable GameProfile gameProfile);
+  void setRailway(@Nullable NameAndId gameProfile);
 
   Optional<Either<RoutingLogic, RoutingLogicException>> logicResult();
 

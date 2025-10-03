@@ -1,19 +1,19 @@
 package mods.railcraft.world.item;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.Translations;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.component.TicketComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.component.TooltipDisplay;
 
 public class TicketItem extends Item {
@@ -50,7 +50,7 @@ public class TicketItem extends Item {
       tooltipAdder.accept(Component.translatable(Translations.Tips.ROUTING_TICKET_ISSUER)
           .withStyle(ChatFormatting.AQUA)
           .append(CommonComponents.SPACE)
-          .append(Component.literal(owner.getName()).withStyle(ChatFormatting.GRAY)));
+          .append(Component.literal(owner.name()).withStyle(ChatFormatting.GRAY)));
     }
 
     String dest = getDestination(stack);
@@ -77,7 +77,7 @@ public class TicketItem extends Item {
     return ItemStack.EMPTY;
   }
 
-  public static boolean setTicketData(ItemStack ticket, String dest, @Nullable GameProfile owner) {
+  public static boolean setTicketData(ItemStack ticket, String dest, @Nullable NameAndId owner) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return false;
     if (dest.length() > LINE_LENGTH)
@@ -94,16 +94,16 @@ public class TicketItem extends Item {
     if (!ticket.has(RailcraftDataComponents.TICKET))
       return "";
     var ticketData = ticket.get(RailcraftDataComponents.TICKET);
-    return ticketData.destination();
+    return Objects.requireNonNull(ticketData).destination();
   }
 
   @Nullable
-  public static GameProfile getOwner(ItemStack ticket) {
+  public static NameAndId getOwner(ItemStack ticket) {
     if (ticket.isEmpty() || !(ticket.getItem() instanceof TicketItem))
       return null;
     if (!ticket.has(RailcraftDataComponents.TICKET))
       return null;
     var ticketData = ticket.get(RailcraftDataComponents.TICKET);
-    return ticketData.owner().map(ResolvableProfile::gameProfile).orElse(null);
+    return Objects.requireNonNull(ticketData).owner().orElse(null);
   }
 }

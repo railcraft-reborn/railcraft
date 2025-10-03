@@ -20,7 +20,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -121,7 +120,7 @@ public class SpikeMaulItem extends Item {
           (ServerPlayer) player, heldStack, serverLevel, blockPos);
 
       heldStack.hurtAndBreak(1, serverLevel, player,
-          item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+          item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     }
     return InteractionResult.SUCCESS;
   }

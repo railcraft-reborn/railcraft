@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TokenSignalBoxRenderer extends AbstractSignalBoxRenderer {
 
-  public static final ResourceLocation TEXTURE_LOCATION =
+  private static final ResourceLocation TEXTURE_LOCATION =
       RailcraftConstants.rl("entity/signal_box/token_signal_box");
 
   @Override

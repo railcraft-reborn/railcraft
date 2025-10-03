@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -49,8 +48,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
@@ -89,8 +88,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<String> DESTINATION =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
-  private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
-      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.OPTIONAL_GAME_PROFILE);
+  private static final EntityDataAccessor<Optional<NameAndId>> OWNER =
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.OPTIONAL_NAME_AND_ID);
 
   private static final double DRAG_FACTOR = 0.9;
   private static final float HS_FORCE_BONUS = 3.5F;
@@ -154,7 +153,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (itemStack.has(RailcraftDataComponents.LOCOMOTIVE_OWNER)) {
       var owner = itemStack.get(RailcraftDataComponents.LOCOMOTIVE_OWNER).owner();
-      this.setOwner(owner.gameProfile());
+      this.setOwner(owner);
       this.setLock(Lock.LOCKED);
     }
 
@@ -164,12 +163,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public Optional<GameProfile> getOwner() {
+  public Optional<NameAndId> getOwner() {
     return this.entityData.get(OWNER);
   }
 
   @Override
-  public void setOwner(@Nullable GameProfile owner) {
+  public void setOwner(@Nullable NameAndId owner) {
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 
@@ -204,7 +203,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
         this.whistlePitch = this.getNewWhistlePitch();
         this.whistle();
         itemStack.hurtAndBreak(1, (ServerLevel) this.level(), (ServerPlayer) player,
-            item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+            item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
       }
       return InteractionResult.SUCCESS;
     }
@@ -545,7 +544,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
         default -> 0.4F;
       };
 
-
       return new Vec3(
           Math.copySign(Math.min(Math.abs(result.x()), limit), result.x()),
           result.y(),
@@ -709,7 +707,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     valueOutput.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
     this.getOwner().ifPresent(owner -> {
-      valueOutput.store(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, owner);
+      valueOutput.store(CompoundTagKeys.OWNER, NameAndId.CODEC, owner);
     });
   }
 
@@ -735,7 +733,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.fuel = valueInput.getIntOr(CompoundTagKeys.FUEL, 0);
 
     this.entityData.set(REVERSE, valueInput.getBooleanOr(CompoundTagKeys.REVERSE, false));
-    this.setOwner(valueInput.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null));
+    this.setOwner(valueInput.read(CompoundTagKeys.OWNER, NameAndId.CODEC).orElse(null));
   }
 
   public static void applyAction(Player player, AbstractMinecart minecart, boolean single,

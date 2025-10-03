@@ -244,6 +244,7 @@ public class ClientManager {
     for (var keyBinding : KeyBinding.values()) {
       event.register(keyBinding.getKeyMapping());
     }
+    event.registerCategory(RailcraftKeyMappingCategory.DEFAULT);
   }
 
   private static void handleClientExtensions(RegisterClientExtensionsEvent event) {
@@ -366,7 +367,7 @@ public class ClientManager {
     var qualifier = modInfo.getVersion().getQualifier();
     boolean isSnapshot = qualifier != null && qualifier.equals("snapshot");
     boolean showMessageBeta = Railcraft.BETA && RailcraftConfig.CLIENT.showBetaMessage.get();
-    if (!FMLLoader.isProduction() || isSnapshot || showMessageBeta) {
+    if (!FMLLoader.getCurrent().isProduction() || isSnapshot || showMessageBeta) {
       var type = isSnapshot ? "development" : "beta";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(

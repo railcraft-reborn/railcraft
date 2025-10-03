@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -19,6 +18,7 @@ import mods.railcraft.network.to_client.OpenLogBookScreen;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,8 +49,8 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
       if (!players.isEmpty()) {
         var date = LocalDate.now();
         var isChanged = blockEntity.log.putAll(date, players.stream()
-            .map(Player::getGameProfile)
-            .map(GameProfile::getName)
+            .map(Player::nameAndId)
+            .map(NameAndId::name)
             .toList());
         if (isChanged) {
           blockEntity.setChanged();

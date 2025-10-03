@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class SignalCapacitorBoxRenderer extends AbstractSignalBoxRenderer {
 
-  public static final ResourceLocation TEXTURE_LOCATION =
+  private static final ResourceLocation TEXTURE_LOCATION =
       RailcraftConstants.rl("entity/signal_box/signal_capacitor_box");
 
   @Override

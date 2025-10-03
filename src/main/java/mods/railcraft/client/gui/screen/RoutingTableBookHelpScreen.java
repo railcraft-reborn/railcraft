@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -131,16 +132,16 @@ public class RoutingTableBookHelpScreen extends Screen {
   }
 
   @Override
-  public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    switch (keyCode) {
+  public boolean keyPressed(KeyEvent event) {
+    switch (event.key()) {
       case 266:
-        this.backButton.onPress();
+        this.backButton.onPress(event);
         return true;
       case 267:
-        this.forwardButton.onPress();
+        this.forwardButton.onPress(event);
         return true;
       default:
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
   }
 

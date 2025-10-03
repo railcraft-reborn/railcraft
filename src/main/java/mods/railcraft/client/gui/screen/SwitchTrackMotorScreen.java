@@ -84,7 +84,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (this.switchTrackMotor.getLock() != lock) {
       this.switchTrackMotor.setLock(
           lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -93,7 +93,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
       LockableSwitchTrackActuatorBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.switchTrackMotor.getOwnerOrThrow().getName());
+          this.switchTrackMotor.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }

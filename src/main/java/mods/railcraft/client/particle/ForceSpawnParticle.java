@@ -5,18 +5,20 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.RandomSource;
 
 public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
 
   private ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, int color, SpriteSet sprites) {
-    this(level, x, y, z, dx, dy, dz, color, 1, sprites);
+      double dz, int color, TextureAtlasSprite sprite) {
+    this(level, x, y, z, dx, dy, dz, color, 1, sprite);
   }
 
   public ForceSpawnParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, int color, float scale, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz, scale);
+      double dz, int color, float scale, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, scale, sprite);
     this.gravity = -0.1F;
     this.rCol = ARGB.red(color) / 255.0F;
     this.gCol = ARGB.green(color) / 255.0F;
@@ -24,7 +26,6 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
     this.lifetime = (int) (8.0F / (this.random.nextFloat() * 0.8F + 0.2F));
     this.lifetime = (int) ((float) this.lifetime * scale);
     this.hasPhysics = false;
-    this.pickSprite(sprites);
   }
 
   public static class Provider implements ParticleProvider<ForceSpawnParticleOptions> {
@@ -37,8 +38,9 @@ public class ForceSpawnParticle extends BaseShrinkingSmokeParticle {
 
     @Override
     public Particle createParticle(ForceSpawnParticleOptions options, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new ForceSpawnParticle(level, x, y, z, dx, dy, dz, options.color(), this.spriteSet);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new ForceSpawnParticle(level, x, y, z, dx, dy, dz, options.color(),
+          this.spriteSet.get(randomSource));
     }
   }
 }

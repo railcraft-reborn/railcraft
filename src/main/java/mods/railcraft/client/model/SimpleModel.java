@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class SimpleModel extends Model {
+public class SimpleModel<S> extends Model<S> {
 
   protected final ModelPart root;
 

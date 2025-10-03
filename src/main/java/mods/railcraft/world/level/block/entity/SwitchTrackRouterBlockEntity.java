@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -16,6 +15,7 @@ import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
@@ -57,7 +57,7 @@ public class SwitchTrackRouterBlockEntity extends LockableSwitchTrackActuatorBlo
   }
 
   @Override
-  public void setRailway(@Nullable GameProfile gameProfile) {
+  public void setRailway(@Nullable NameAndId gameProfile) {
     this.railway = gameProfile == null ? Railway.PUBLIC : Railway.PRIVATE;
     if (!this.isLocked()) {
       this.setOwner(gameProfile);

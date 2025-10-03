@@ -1,13 +1,13 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -27,7 +27,7 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
     return this.lock;
   }
 
-  public void setLock(@Nullable GameProfile gameProfile) {
+  public void setLock(@Nullable NameAndId gameProfile) {
     this.lock = gameProfile == null
         ? LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
         : LockableSwitchTrackActuatorBlockEntity.Lock.LOCKED;
@@ -39,7 +39,7 @@ public abstract class LockableTrackBlockEntity extends RailcraftBlockEntity impl
     return this.lock == LockableSwitchTrackActuatorBlockEntity.Lock.LOCKED;
   }
 
-  public boolean canAccess(GameProfile gameProfile) {
+  public boolean canAccess(NameAndId gameProfile) {
     return !this.isLocked() || this.isOwnerOrOperator(gameProfile);
   }
 

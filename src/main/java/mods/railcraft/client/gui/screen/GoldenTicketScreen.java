@@ -120,7 +120,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     this.dest = this.dest.trim();
     var destWithoutPrefix = this.dest.substring(PREFIX.length());
     var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
-        this.minecraft.player.getGameProfile());
+        this.minecraft.player.nameAndId());
     if (success) {
       ClientPacketDistributor.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
     }

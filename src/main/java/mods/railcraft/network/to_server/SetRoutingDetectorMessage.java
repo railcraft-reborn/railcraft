@@ -34,7 +34,7 @@ public record SetRoutingDetectorMessage(
   public static void handle(SetRoutingDetectorMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
         .filter(routingDetector -> routingDetector.canAccess(senderProfile))
         .ifPresent(routingDetector -> {

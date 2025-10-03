@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block.entity;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Bytes;
-import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.api.core.BlockEntityLike;
@@ -23,7 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,7 +38,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   protected final ModuleDispatcher moduleDispatcher = new ModuleDispatcher();
 
   @Nullable
-  private GameProfile owner;
+  private NameAndId owner;
 
   @Nullable
   private Component customName;
@@ -90,8 +89,8 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     out.writeNullable(this.owner, (friendlyByteBuf, gameProfile) -> {
-      friendlyByteBuf.writeUUID(gameProfile.getId());
-      friendlyByteBuf.writeUtf(gameProfile.getName());
+      friendlyByteBuf.writeUUID(gameProfile.id());
+      friendlyByteBuf.writeUtf(gameProfile.name());
     });
     out.writeNullable(this.customName, (friendlyByteBuf, component) ->
         ComponentSerialization.STREAM_CODEC.encode((RegistryFriendlyByteBuf) friendlyByteBuf, component));
@@ -103,7 +102,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     this.owner = in.readNullable(friendlyByteBuf -> {
       var id = friendlyByteBuf.readUUID();
       var name = friendlyByteBuf.readUtf();
-      return new GameProfile(id, name);
+      return new NameAndId(id, name);
     });
     this.customName = in.readNullable(friendlyByteBuf ->
         ComponentSerialization.STREAM_CODEC.decode((RegistryFriendlyByteBuf) friendlyByteBuf));
@@ -144,20 +143,20 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return isStillValid(this, player, 64);
   }
 
-  public final void setOwner(@Nullable GameProfile profile) {
+  public final void setOwner(@Nullable NameAndId profile) {
     this.owner = profile;
   }
 
   @Override
-  public final Optional<GameProfile> getOwner() {
+  public final Optional<NameAndId> getOwner() {
     return Optional.ofNullable(this.owner);
   }
 
-  public final boolean isOwner(GameProfile gameProfile) {
+  public final boolean isOwner(NameAndId gameProfile) {
     return gameProfile.equals(this.owner);
   }
 
-  public final boolean isOwnerOrOperator(GameProfile gameProfile) {
+  public final boolean isOwnerOrOperator(NameAndId gameProfile) {
     return this.isOwner(gameProfile) || (this.level instanceof ServerLevel serverLevel
         && serverLevel.getServer().getPlayerList().isOp(gameProfile));
   }
@@ -165,7 +164,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   protected void saveAdditional(ValueOutput output) {
     super.saveAdditional(output);
-    output.storeNullable(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE, this.owner);
+    output.storeNullable(CompoundTagKeys.OWNER, NameAndId.CODEC, this.owner);
     output.storeNullable(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC, this.customName);
     output.putChild(CompoundTagKeys.MODULES, this.moduleDispatcher);
   }
@@ -173,7 +172,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.owner = input.read(CompoundTagKeys.OWNER, ExtraCodecs.GAME_PROFILE).orElse(null);
+    this.owner = input.read(CompoundTagKeys.OWNER, NameAndId.CODEC).orElse(null);
     this.customName = input.read(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC).orElse(null);
     this.moduleDispatcher.deserialize(input.childOrEmpty(CompoundTagKeys.MODULES));
   }

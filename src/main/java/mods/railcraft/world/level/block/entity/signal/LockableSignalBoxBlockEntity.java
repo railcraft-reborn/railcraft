@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.entity.signal;
 
-import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.api.util.EnumUtil;
@@ -10,6 +9,7 @@ import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,7 +40,7 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
     return this.lock == Lock.LOCKED;
   }
 
-  public boolean canAccess(GameProfile gameProfile) {
+  public boolean canAccess(NameAndId gameProfile) {
     return !this.isLocked() || this.isOwnerOrOperator(gameProfile);
   }
 

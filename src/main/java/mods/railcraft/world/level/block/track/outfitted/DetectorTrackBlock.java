@@ -98,7 +98,7 @@ public class DetectorTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos, Direction direction) {
     if (hasAnalogOutputSignal(blockState)) {
       var carts = EntitySearcher.findMinecarts().at(pos).upTo(-0.2F).list(level);
       // TODO: getComparatorLevel, was always set to -1, so it was not used

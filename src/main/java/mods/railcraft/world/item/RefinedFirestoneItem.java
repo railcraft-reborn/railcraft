@@ -164,7 +164,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     if (level instanceof ServerLevel serverLevel && !livingEntity.fireImmune()) {
       livingEntity.igniteForSeconds(5);
       itemStack.hurtAndBreak(1, serverLevel, player,
-          item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+          item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
       level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
           SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);

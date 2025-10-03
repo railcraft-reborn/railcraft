@@ -13,6 +13,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
@@ -82,16 +83,16 @@ public class AdvancedContainer extends SimpleContainer
   }
 
   @Override
-  public void startOpen(Player player) {
+  public void startOpen(ContainerUser user) {
     if (this.listener != null) {
-      this.listener.startOpen(player);
+      this.listener.startOpen(user);
     }
   }
 
   @Override
-  public void stopOpen(Player player) {
+  public void stopOpen(ContainerUser user) {
     if (this.listener != null) {
-      this.listener.stopOpen(player);
+      this.listener.stopOpen(user);
     }
   }
 
@@ -126,9 +127,9 @@ public class AdvancedContainer extends SimpleContainer
       return true;
     }
 
-    default void startOpen(Player player) {}
+    default void startOpen(ContainerUser user) {}
 
-    default void stopOpen(Player player) {}
+    default void stopOpen(ContainerUser user) {}
   }
 
   public static class ContainerCallback implements Listener {
@@ -145,13 +146,13 @@ public class AdvancedContainer extends SimpleContainer
     }
 
     @Override
-    public void startOpen(Player player) {
-      this.container.startOpen(player);
+    public void startOpen(ContainerUser user) {
+      this.container.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-      this.container.stopOpen(player);
+    public void stopOpen(ContainerUser user) {
+      this.container.stopOpen(user);
     }
 
     @Override

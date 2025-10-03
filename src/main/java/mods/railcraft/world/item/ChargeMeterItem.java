@@ -31,7 +31,7 @@ public class ChargeMeterItem extends Item {
   @Override
   public InteractionResult useOn(UseOnContext context) {
     var level = context.getLevel();
-    if (level.isClientSide) {
+    if (level.isClientSide()) {
       return InteractionResult.PASS;
     }
     var pos = context.getClickedPos();

@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.charge;
 
 import mods.railcraft.api.charge.Charge;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -60,7 +61,7 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
     if (level instanceof ServerLevel serverLevel) {
       return Charge.distribution.network(serverLevel).access(pos).getComparatorOutput();
     }

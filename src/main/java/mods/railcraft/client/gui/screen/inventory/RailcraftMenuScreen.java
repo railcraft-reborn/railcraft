@@ -8,6 +8,7 @@ import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -102,27 +103,26 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   }
 
   @Override
-  public boolean mouseClicked(double mouseX, double mouseY, int button) {
-    double relativeMouseX = mouseX - this.leftPos;
-    double relativeMouseY = mouseY - this.topPos;
+  public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    double relativeMouseX = event.x()- this.leftPos;
+    double relativeMouseY = event.y() - this.topPos;
 
     if (this.widgetRenderers.stream()
         .filter(element -> !element.widget.hidden)
         .filter(element -> element.isMouseOver(relativeMouseX, relativeMouseY))
-        .anyMatch(element -> element.mouseClicked(relativeMouseX, relativeMouseY, button))) {
+        .anyMatch(element -> element.mouseClicked(relativeMouseX, relativeMouseY, event.button()))) {
       return true;
     }
 
-    return super.mouseClicked(mouseX, mouseY, button);
+    return super.mouseClicked(event, doubleClick);
   }
 
   @Override
-  public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX,
-      double deltaY) {
+  public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
     Slot slot = this.getSlotUnderMouse();
-    if (button == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot railcraftSlot
+    if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot railcraftSlot
         && railcraftSlot.isPhantom())
       return true;
-    return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    return super.mouseDragged(event, deltaX, deltaY);
   }
 }

@@ -30,7 +30,7 @@ public record EditTicketMessage(
 
   public static void handle(EditTicketMessage message, IPayloadContext context) {
     var player = context.player();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
 
     var itemStackToUpdate = player.getItemInHand(message.hand);
     if (itemStackToUpdate.getItem() instanceof GoldenTicketItem) {

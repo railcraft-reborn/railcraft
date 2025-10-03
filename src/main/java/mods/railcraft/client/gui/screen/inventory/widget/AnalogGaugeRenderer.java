@@ -104,18 +104,18 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
       }
 
       @Override
-      public void buildVertices(VertexConsumer vertexConsumer, float z) {
+      public void buildVertices(VertexConsumer vertexConsumer) {
         vertexConsumer
-            .addVertexWith2DPose(this.pose, bx - baseOffset, by, z)
+            .addVertexWith2DPose(this.pose, bx - baseOffset, by)
             .setColor(color);
         vertexConsumer
-            .addVertexWith2DPose(this.pose, bx + baseOffset, by, z)
+            .addVertexWith2DPose(this.pose, bx + baseOffset, by)
             .setColor(color);
         vertexConsumer
-            .addVertexWith2DPose(this.pose, bx - glx + gwx, by - (gly + gwy), z)
+            .addVertexWith2DPose(this.pose, bx - glx + gwx, by - (gly + gwy))
             .setColor(color);
         vertexConsumer
-            .addVertexWith2DPose(this.pose, bx - glx - gwx, by - (gly - gwy), z)
+            .addVertexWith2DPose(this.pose, bx - glx - gwx, by - (gly - gwy))
             .setColor(color);
       }
     });

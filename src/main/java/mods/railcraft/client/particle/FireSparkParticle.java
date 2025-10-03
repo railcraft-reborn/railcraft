@@ -4,21 +4,22 @@ import mods.railcraft.particle.FireSparkParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
-public class FireSparkParticle extends TextureSheetParticle {
+public class FireSparkParticle extends SingleQuadParticle {
 
   private final Vec3 destination;
   private final double maxHorizontalDist;
   private final float lavaParticleScale;
 
   private FireSparkParticle(ClientLevel level, double x, double y, double z, double dx,
-      double dy, double dz, FireSparkParticleOptions options, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz);
+      double dy, double dz, FireSparkParticleOptions options, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, sprite);
     this.destination = options.destination();
 
     this.maxHorizontalDist = getHorizontalDistSq(destination);
@@ -31,7 +32,6 @@ public class FireSparkParticle extends TextureSheetParticle {
     this.lavaParticleScale = quadSize;
     setLifetime(2000);
     this.hasPhysics = false;
-    this.pickSprite(sprites);
   }
 
   private double getHorizontalDistSq(Vec3 point) {
@@ -91,8 +91,8 @@ public class FireSparkParticle extends TextureSheetParticle {
   }
 
   @Override
-  public ParticleRenderType getRenderType() {
-    return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+  protected Layer getLayer() {
+    return Layer.TRANSLUCENT;
   }
 
   public static class Provider implements ParticleProvider<FireSparkParticleOptions> {
@@ -105,8 +105,8 @@ public class FireSparkParticle extends TextureSheetParticle {
 
     @Override
     public Particle createParticle(FireSparkParticleOptions options, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new FireSparkParticle(level, x, y, z, dx, dy, dz, options, this.sprites);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new FireSparkParticle(level, x, y, z, dx, dy, dz, options, this.sprites.get(randomSource));
     }
   }
 }

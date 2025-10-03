@@ -73,7 +73,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
       this.signalBox.setLock(lock);
       this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED
           ? null
-          : this.minecraft.player.getGameProfile());
+          : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -81,7 +81,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   private Optional<Tooltip> updateLockButtonTooltip(LockableSignalBoxBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.signalBox.getOwnerOrThrow().getName());
+          this.signalBox.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }

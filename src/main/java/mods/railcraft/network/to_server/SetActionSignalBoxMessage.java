@@ -43,7 +43,7 @@ public record SetActionSignalBoxMessage(
 
   public static void handle(SetActionSignalBoxMessage message, IPayloadContext context) {
     var player = context.player();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     var level = player.level();
     LevelUtil.getBlockEntity(level, message.blockPos, ActionSignalBoxBlockEntity.class)
         .filter(signalBox -> signalBox.canAccess(senderProfile))

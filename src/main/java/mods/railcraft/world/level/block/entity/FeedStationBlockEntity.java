@@ -80,7 +80,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
       var player = this.level instanceof ServerLevel serverLevel
           ? this.getOwner()
               .<Player>map(
-                  profile -> serverLevel.getServer().getPlayerList().getPlayer(profile.getId()))
+                  profile -> serverLevel.getServer().getPlayerList().getPlayer(profile.id()))
               .orElse(null)
           : null;
 

@@ -1,6 +1,5 @@
 package mods.railcraft.client.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.particle.ChunkLoaderParticleOptions;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.Camera;
@@ -8,19 +7,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
-public class ChunkLoaderParticle extends TextureSheetParticle {
+public class ChunkLoaderParticle extends SingleQuadParticle {
 
   private final Vec3 dest;
 
   private ChunkLoaderParticle(ClientLevel level, double x, double y, double z, double dx,
-      double dy, double dz, ChunkLoaderParticleOptions options, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz);
+      double dy, double dz, ChunkLoaderParticleOptions options, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, sprite);
     this.dest = options.destination();
     this.calculateVector();
     this.scale(1.2F);
@@ -31,7 +32,6 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
     this.rCol *= 0.9F;
     this.setLifetime(250);
     this.hasPhysics = false;
-    this.pickSprite(sprites);
   }
 
   private void calculateVector() {
@@ -47,11 +47,12 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
   }
 
   @Override
-  public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+  public void extract(QuadParticleRenderState state, Camera camera, float partialTicks) {
+    // TODO: Test if this works
     if (Minecraft.getInstance().player.distanceToSqr(dest) > 25600)
       return;
     if(GogglesItem.isGoggleAuraActive(GogglesItem.Aura.WORLDSPIKE)) {
-      super.render(buffer, renderInfo, partialTicks);
+      super.extract(state, camera, partialTicks);
     }
   }
 
@@ -84,8 +85,8 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
   }
 
   @Override
-  public ParticleRenderType getRenderType() {
-    return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+  protected Layer getLayer() {
+    return Layer.TRANSLUCENT;
   }
 
   public static class Provider implements ParticleProvider<ChunkLoaderParticleOptions> {
@@ -98,8 +99,8 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
 
     @Override
     public Particle createParticle(ChunkLoaderParticleOptions options, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new ChunkLoaderParticle(level, x, y, z, dx, dy, dz, options, this.sprites);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new ChunkLoaderParticle(level, x, y, z, dx, dy, dz, options, this.sprites.get(randomSource));
     }
   }
 }

@@ -112,7 +112,7 @@ public class RailcraftBlockProperties {
 
   public static BlockBehaviour.Properties standardTrack(BlockBehaviour.Properties properties) {
     return properties
-        .noCollission()
+        .noCollision()
         .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
         .sound(SoundType.METAL);
   }

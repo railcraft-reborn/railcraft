@@ -46,10 +46,10 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   private Optional<Tooltip> createLockTooltip(Locomotive.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
-          this.locomotive.getOwnerOrThrow().getName());
+          this.locomotive.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED);
       case PRIVATE -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
-          this.locomotive.getOwnerOrThrow().getName());
+          this.locomotive.getOwnerOrThrow().name());
     }));
   }
 
@@ -133,7 +133,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.locomotive.setLock(lock);
       this.locomotive.setOwner(lock == Locomotive.Lock.UNLOCKED
           ? null
-          : this.minecraft.player.getGameProfile());
+          : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }

@@ -39,11 +39,11 @@ public record SetLocomotiveMessage(
         loco.setMode(message.mode);
         loco.setSpeed(message.speed);
         loco.setReverse(message.reverse);
-        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.nameAndId())) {
           loco.setLock(message.lock);
           loco.setOwner(message.lock == Locomotive.Lock.UNLOCKED
               ? null
-              : player.getGameProfile());
+              : player.nameAndId());
         }
       });
     }

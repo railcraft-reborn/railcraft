@@ -85,7 +85,7 @@ public class CrowbarItem extends Item implements Crowbar {
         level.setBlockAndUpdate(pos, newBlockState);
         player.swing(hand);
         stack.hurtAndBreak(1, serverLevel, player,
-            item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+            item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
         return InteractionResult.SUCCESS;
       }
     }
@@ -129,7 +129,7 @@ public class CrowbarItem extends Item implements Crowbar {
   @Override
   public void onWhack(ServerPlayer player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
     crowbar.hurtAndBreak(1, player.level(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 
@@ -143,7 +143,7 @@ public class CrowbarItem extends Item implements Crowbar {
   public void onLink(ServerPlayer player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
     crowbar.hurtAndBreak(1, player.level(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 
@@ -157,7 +157,7 @@ public class CrowbarItem extends Item implements Crowbar {
   public void onBoost(ServerPlayer player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
     crowbar.hurtAndBreak(BOOST_DAMAGE, player.level(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 

@@ -125,7 +125,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   @Override
   public BlockState updateDir(Level level, BlockPos pos, BlockState state, boolean alwaysPlace) {
-    if (level.isClientSide) {
+    if (level.isClientSide()) {
       return state;
     } else {
       var railshape = state.getValue(this.getShapeProperty());
