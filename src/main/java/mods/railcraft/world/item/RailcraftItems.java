@@ -260,7 +260,7 @@ public class RailcraftItems {
 
   public static final RegistryObject<AxeItem> STEEL_AXE =
       deferredRegister.register("steel_axe",
-          () -> new AxeItem(RailcraftItemTier.STEEL, 8.0F, -3F,
+          () -> new AxeItem(RailcraftItemTier.STEEL, 5.5F, -3.0F,
               new Item.Properties()));
 
   public static final RegistryObject<HoeItem> STEEL_HOE =
