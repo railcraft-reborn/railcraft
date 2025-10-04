@@ -78,6 +78,8 @@ public class RailcraftConfig {
     public final DoubleValue fuelMultiplier;
     public final DoubleValue fuelPerSteamMultiplier;
 
+    public final DoubleValue turbinePowerMultiplier;
+
     public final IntValue cartDispenserDelay;
 
     public final BooleanValue changeDungeonLoot;
@@ -216,6 +218,14 @@ public class RailcraftConfig {
         this.fuelPerSteamMultiplier = builder
             .comment("Adjust the amount of fuel used to create steam.")
             .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
+      }
+      builder.pop();
+
+      builder.push("rf");
+      {
+        this.turbinePowerMultiplier = builder
+            .comment("Adjust the amount of RF produced in a Turbine")
+            .defineInRange("turbinePowerMultiplier", 1.0F, 0.1F, 100F);
       }
       builder.pop();
 
