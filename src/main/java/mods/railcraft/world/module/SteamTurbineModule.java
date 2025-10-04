@@ -1,7 +1,6 @@
 package mods.railcraft.world.module;
 
 import java.util.concurrent.atomic.AtomicReference;
-
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.CompoundTagKeys;

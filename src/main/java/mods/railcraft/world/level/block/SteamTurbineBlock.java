@@ -2,10 +2,9 @@ package mods.railcraft.world.level.block;
 
 import java.util.List;
 import java.util.Map;
-
-import mods.railcraft.RailcraftConfig;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;

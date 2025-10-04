@@ -2,10 +2,9 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.List;
 import java.util.function.Predicate;
-
-import mods.railcraft.RailcraftConfig;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
