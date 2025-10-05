@@ -700,7 +700,7 @@
   "jei.railcraft.desc.world_spike": "Loads a 3x3 area of chunks at world load and keeps them loaded.",
   "jei.railcraft.desc.world_spike_minecart": "Load the current chunk and the north, east, south and west chunks, and keeps them loaded.",
   "jei.railcraft.tips.crusher": "(%s%% chance)",
-  "key.railcraft.category": "Railcraft Reborn",
+  "key.category.railcraft.default": "Railcraft Reborn",
   "key.railcraft.change_aura": "Change Aura",
   "key.railcraft.loco.faster": "Increase locomotive speed",
   "key.railcraft.loco.mode": "Change locomotive mode",
