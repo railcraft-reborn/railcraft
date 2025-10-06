@@ -276,7 +276,7 @@ public class RailcraftItems {
   public static final DeferredItem<AxeItem> STEEL_AXE =
       deferredRegister.registerItem("steel_axe", properties ->
           new AxeItem(RailcraftItemTier.STEEL, properties
-              .attributes(AxeItem.createAttributes(RailcraftItemTier.STEEL, 8F, -3F))));
+              .attributes(AxeItem.createAttributes(RailcraftItemTier.STEEL, 5.5F, -3F))));
 
   public static final DeferredItem<HoeItem> STEEL_HOE =
       deferredRegister.registerItem("steel_hoe", properties ->
