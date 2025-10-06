@@ -1,4 +1,4 @@
-# Railcraft Reborn for Minecraft 1.20
+# Railcraft Reborn for Minecraft 1.20.1
 
 [![CI Build](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml)
 [![Crowdin](https://badges.crowdin.net/railcraft-reborn/localized.svg)](https://crowdin.com/project/railcraft-reborn)
@@ -7,6 +7,10 @@
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/rO6kKst6?label=Modrinth%20Downloads)](https://modrinth.com/mod/railcraft-reborn)
 
 Here you will find the source and issue tracker for the **Railcraft Reborn** project.
+
+> [!NOTE]
+> Railcraft Reborn for 1.20.1 is currently in **maintenance mode**.  
+> It will **only receive updates for bug fixes** and no new features are planned.
 
 ## What is Railcraft Reborn?
 
