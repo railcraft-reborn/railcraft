@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-01T19:25:01.222867	Tags for minecraft:block mod id railcraft
+// 1.21.1	2025-10-06T15:31:00.924019	Tags for minecraft:block mod id railcraft
 e36857f35c1bac4bde5a8450008b92cf82656216 data/c/tags/block/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/c/tags/block/ore_rates/singular.json
 135cfb50a5296d7842d36234ec1033fc2e454af4 data/c/tags/block/ores.json
@@ -15,10 +15,10 @@ cba1c5a31aa2960efa0703b2e57f8390f53d4ce6 data/c/tags/block/ores_in_ground/nether
 aefbbbc5abb467f81217a20784fffded5a4cc0df data/minecraft/tags/block/anvil.json
 491830ad886621c3a078a87ab488fd45839ad64d data/minecraft/tags/block/climbable.json
 5f095a79961790ef28559752e75223a6097fb997 data/minecraft/tags/block/mineable/axe.json
-589b299645e14011413f820dd60f304902e37889 data/minecraft/tags/block/mineable/pickaxe.json
+ec2d5c7029c4fcbbf16d7fde21141a1459b41a2b data/minecraft/tags/block/mineable/pickaxe.json
 332c14b52b24decc1c1cc905d2e32eb330f9df78 data/minecraft/tags/block/needs_diamond_tool.json
 e28c7fdf089f8fc76f9e5565d74f0293e412cfbc data/minecraft/tags/block/needs_iron_tool.json
-c30869003ceb032258a6270536518d6ba3a4b44c data/minecraft/tags/block/needs_stone_tool.json
+237240fec2e605e4f7a15845b91ff592d6d879e4 data/minecraft/tags/block/needs_stone_tool.json
 e1d606686d8d1ae939af83da8c931c49c2e9df5e data/minecraft/tags/block/rails.json
 9732f1964281f5d5e6f3d067e648bb4bfc5cbafb data/neoforge/tags/block/enderman_place_on_blacklist.json
 4276d58b0cb375037387fa9b749ae6b1e09d33c9 data/railcraft/tags/block/abandoned_track.json

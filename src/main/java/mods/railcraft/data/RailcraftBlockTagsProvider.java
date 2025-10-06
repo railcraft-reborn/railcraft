@@ -221,6 +221,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.CRUSHER.get())
         .add(RailcraftBlocks.STEAM_OVEN.get())
         .add(RailcraftBlocks.FEED_STATION.get())
+        .add(RailcraftBlocks.CHIMNEY.get())
         .add(RailcraftBlocks.LOGBOOK.get())
         .add(RailcraftBlocks.COAL_COKE_BLOCK.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
@@ -306,6 +307,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.STEAM_OVEN.get())
         .add(RailcraftBlocks.BLAST_FURNACE_BRICKS.get())
         .add(RailcraftBlocks.FEED_STATION.get())
+        .add(RailcraftBlocks.CHIMNEY.get())
         .add(RailcraftBlocks.LOGBOOK.get())
         .addTags(RailcraftTags.Blocks.LEAD_ORE,
             RailcraftTags.Blocks.NICKEL_ORE,
