@@ -8,14 +8,15 @@ import mods.railcraft.client.model.RailcraftModelLayers;
 import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
 
-  private final ElectricLocomotiveLampModel lampModel;
+  private final ElectricLocomotiveLampModel<LocomotiveRenderState> lampModel;
   private final ResourceLocation lampTextureOn;
   private final ResourceLocation lampTextureOff;
 
@@ -26,7 +27,7 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_SNOW)));
 
     this.lampModel =
-        new ElectricLocomotiveLampModel(
+        new ElectricLocomotiveLampModel<>(
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
     this.lampTextureOn =
@@ -37,19 +38,24 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
 
   @Override
   protected void renderBody(LocomotiveRenderState renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight, int color) {
-    super.renderBody(renderState, poseStack, multiBufferSource, packedLight, color);
+      SubmitNodeCollector collector, CameraRenderState cameraState, int color) {
+    super.renderBody(renderState, poseStack, collector, cameraState, color);
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     poseStack.translate(0.05F, 0, 0);
 
     boolean bright = renderState.mode == Locomotive.Mode.RUNNING;
 
-    var vertexBuilder = multiBufferSource
-        .getBuffer(this.lampModel.renderType(bright ? this.lampTextureOn : this.lampTextureOff));
-
-    this.lampModel.renderToBuffer(poseStack, vertexBuilder,
-        bright ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY, color);
+    collector.submitModel(
+        this.lampModel,
+        renderState,
+        poseStack,
+        this.lampModel.renderType(bright ? this.lampTextureOn : this.lampTextureOff),
+        bright ? RenderUtil.FULL_LIGHT : renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        0,
+        null
+    );
     poseStack.popPose();
   }
 

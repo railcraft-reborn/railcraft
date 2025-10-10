@@ -86,7 +86,7 @@ public class ShuntingAuraRenderer {
     poseStack.scale(0.025F, -0.025F, 0.025F);
     var matrix4f = poseStack.last().pose();
     font.drawInBatch(text, length, 0, 0xFFFF0000, false, matrix4f, bufferSource,
-        Font.DisplayMode.SEE_THROUGH, 0, 15728880);
+        Font.DisplayMode.NORMAL, 0, 15728880);
     poseStack.popPose();
   }
 

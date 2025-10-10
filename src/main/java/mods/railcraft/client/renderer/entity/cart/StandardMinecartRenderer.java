@@ -6,11 +6,11 @@ import mods.railcraft.client.renderer.entity.state.RailcraftMinecartRenderState;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 
 public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S extends RailcraftMinecartRenderState>
     extends CustomMinecartRenderer<T, S> {
@@ -26,24 +26,34 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
   }
 
   @Override
-  protected void renderBody(S renderState, PoseStack poseStack, MultiBufferSource multiBufferSource,
-      int packedLight, int color) {
+  protected void renderBody(S renderState, PoseStack poseStack, SubmitNodeCollector collector,
+      CameraRenderState cameraState, int color) {
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     var bodyModel = this.getBodyModel(renderState);
-    bodyModel.setupAnim(renderState);
-    var bodyVertexConsumer =
-        multiBufferSource.getBuffer(bodyModel.renderType(MINECART_TEXTURE_LOCATION));
-    bodyModel.setupAnim(renderState);
-    bodyModel.renderToBuffer(poseStack, bodyVertexConsumer, packedLight,
-        OverlayTexture.NO_OVERLAY, color);
+    collector.submitModel(
+        bodyModel,
+        renderState,
+        poseStack,
+        bodyModel.renderType(MINECART_TEXTURE_LOCATION),
+        renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        0,
+        null
+    );
 
     if (Seasons.isPolarExpress(renderState)) {
       var snowModel = this.getSnowModel(renderState);
-      var snowVertexConsumer = multiBufferSource.getBuffer(snowModel.renderType(SNOW_TEXTURE_LOCATION));
-      snowModel.setupAnim(renderState);
-      snowModel.renderToBuffer(poseStack, snowVertexConsumer, packedLight,
-          OverlayTexture.NO_OVERLAY, ARGB.color(1, 1, 1, 1));
+      collector.submitModel(
+          snowModel,
+          renderState,
+          poseStack,
+          snowModel.renderType(SNOW_TEXTURE_LOCATION),
+          renderState.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          0,
+          null
+      );
     }
     poseStack.popPose();
   }

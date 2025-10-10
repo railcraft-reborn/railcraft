@@ -1,21 +1,33 @@
 package mods.railcraft.client.renderer.blockentity;
 
+import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.renderer.RailcraftRenderTypes;
+import mods.railcraft.client.renderer.blockentity.state.SteamTurbineRenderState;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlockEntity> {
+public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlockEntity, SteamTurbineRenderState> {
 
   @Override
-  public void render(SteamTurbineBlockEntity blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
+  public SteamTurbineRenderState createRenderState() {
+    return new SteamTurbineRenderState();
+  }
+
+  @Override
+  public void extractRenderState(SteamTurbineBlockEntity  blockEntity,
+      SteamTurbineRenderState renderState, float partialTick, Vec3 cameraPos,
+      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
+
     var membership = blockEntity.getUnresolvedMembership().orElse(null);
     if (membership == null || membership.patternElement().marker() != 'W') {
       // not a gauge block
@@ -24,16 +36,6 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
 
     float xx = 0;
     float zz = 0;
-
-    float halfWidth = 0.5F * RenderUtil.PIXEL; // half width of the needle
-    float len = 0.26F; // length of the needle (along the center)
-    float zOffset = RenderUtil.SCALED_PIXEL; // offset to prevent z-fighting
-
-    // average the value over time to smooth the needle
-    float value = blockEntity.getAndSmoothGaugeValue();
-
-    // set the needle angle between 45° (= 0%) and 135° (= 100%)
-    float angle = (90 * value + 45) * Mth.DEG_TO_RAD;
 
     int fx = 0, fz = 0; // vector towards the front of the gauge
     int rx = 0, rz = 0; // vector to the right when looking at the gauge
@@ -62,19 +64,41 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
       }
     }
 
-    if (fx == 0 && fz == 0 || rx == 0 && rz == 0)
+    if (fx == 0 && fz == 0) {
       throw new IllegalStateException("can't detect gauge orientation");
+    }
 
     // fix lightmap coords to use the brightness value in front of the block, not inside it (which
     // would be just 0)
-    packedLight = LevelRenderer.getLightColor(blockEntity.getLevel(),
+    renderState.lightCoords = LevelRenderer.getLightColor(blockEntity.getLevel(),
         blockEntity.getBlockPos().offset(fx, 0, fz));
 
-    var vertexBuffer = bufferSource.getBuffer(RailcraftRenderTypes.POSITION_COLOR_LIGHTMAP);
+    renderState.gaugeValue = blockEntity.getAndSmoothGaugeValue();
+    renderState.xx = xx;
+    renderState.rx = rx;
+    renderState.fx = fx;
+    renderState.zz = zz;
+    renderState.rz = rz;
+    renderState.fz = fz;
+  }
+
+  @Override
+  public void submit(SteamTurbineRenderState state, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
+
+    float halfWidth = 0.5F * RenderUtil.PIXEL; // half width of the needle
+    float len = 0.26F; // length of the needle (along the center)
+    float zOffset = RenderUtil.SCALED_PIXEL; // offset to prevent z-fighting
+
+    // average the value over time to smooth the needle
+    float value = state.gaugeValue;
+
+    // set the needle angle between 45° (= 0%) and 135° (= 100%)
+    float angle = (90 * value + 45) * Mth.DEG_TO_RAD;
 
     poseStack.pushPose();
     // move the origin to the center of the gauge
-    poseStack.translate(xx + rx * 0.5 + fx * zOffset, 0.5, zz + rz * 0.5 + fz * zOffset);
+    poseStack.translate(state.xx + state.rx * 0.5 + state.fx * zOffset, 0.5, state.zz + state.rz * 0.5 + state.fz * zOffset);
 
     var matrix = poseStack.last().pose();
 
@@ -98,22 +122,25 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
     int blue = 0;
     int alphaOne = 255;
 
-    vertexBuffer
-        .addVertex(matrix, -rx * baseOffset, 0, -rz * baseOffset)
-        .setColor(red, green, blue, alphaOne)
-        .setLight(packedLight);
-    vertexBuffer
-        .addVertex(matrix, rx * baseOffset, 0, rz * baseOffset)
-        .setColor(red, green, blue, alphaOne)
-        .setLight(packedLight);
-    vertexBuffer
-        .addVertex(matrix, -rx * glx + rx * gwx, gly + gwy, -rz * glx + rz * gwx)
-        .setColor(red, green, blue, alphaOne)
-        .setLight(packedLight);
-    vertexBuffer
-        .addVertex(matrix, -rx * glx - rx * gwx, gly - gwy, -rz * glx - rz * gwx)
-        .setColor(red, green, blue, alphaOne)
-        .setLight(packedLight);
+    collector.submitCustomGeometry(poseStack, RailcraftRenderTypes.POSITION_COLOR_LIGHTMAP,
+        (pose, vertexConsumer) -> {
+          vertexConsumer
+              .addVertex(matrix, -state.rx * baseOffset, 0, -state.rz * baseOffset)
+              .setColor(red, green, blue, alphaOne)
+              .setLight(state.lightCoords);
+          vertexConsumer
+              .addVertex(matrix, state.rx * baseOffset, 0, state.rz * baseOffset)
+              .setColor(red, green, blue, alphaOne)
+              .setLight(state.lightCoords);
+          vertexConsumer
+              .addVertex(matrix, -state.rx * glx + state.rx * gwx, gly + gwy, -state.rz * glx + state.rz * gwx)
+              .setColor(red, green, blue, alphaOne)
+              .setLight(state.lightCoords);
+          vertexConsumer
+              .addVertex(matrix, -state.rx * glx - state.rx * gwx, gly - gwy, -state.rz * glx - state.rz * gwx)
+              .setColor(red, green, blue, alphaOne)
+              .setLight(state.lightCoords);
+    });
     poseStack.popPose();
   }
 }

@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
@@ -45,15 +46,15 @@ public class RailcraftBlockEntityRenderers {
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.FLUID_LOADER.get(),
         supply(FluidLoaderRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.FLUID_UNLOADER.get(),
-        supply(FluidManipulatorRenderer::new));
+        supply(FluidUnLoaderRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.STEAM_TURBINE.get(),
         supply(SteamTurbineRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.RITUAL.get(),
         RitualBlockRenderer::new);
   }
 
-  private static <T extends BlockEntity> BlockEntityRendererProvider<T> supply(
-      Supplier<BlockEntityRenderer<T>> supplier) {
+  private static <T extends BlockEntity, S extends BlockEntityRenderState> BlockEntityRendererProvider<T, S> supply(
+      Supplier<BlockEntityRenderer<T, S>> supplier) {
     return __ -> supplier.get();
   }
 }

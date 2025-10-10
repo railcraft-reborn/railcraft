@@ -8,9 +8,10 @@ import mods.railcraft.client.model.TunnelBoreModel;
 import mods.railcraft.client.renderer.entity.state.TunnelBoreRendererState;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -31,43 +32,51 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRen
 
   // A lot of this is copied from the minecart renderer.
   @Override
-  public void render(TunnelBoreRendererState renderState, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight) {
+  public void submit(TunnelBoreRendererState state, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
     poseStack.pushPose();
-    long i = renderState.offsetSeed;
+    long i = state.offsetSeed;
     float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f1 = (((float) (i >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     float f2 = (((float) (i >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
     poseStack.translate(f, f1, f2);
 
-    float yaw = renderState.yRot;
+    float yaw = state.yRot;
     poseStack.translate(0F, 0.375F, 0F);
     poseStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
     poseStack.mulPose(Axis.YP.rotationDegrees(90));
 
-    float roll = renderState.hurtTime;
+    float roll = state.hurtTime;
     if (roll > 0) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float)renderState.hurtDir));
+      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * state.damageTime / 10.0F * (float)state.hurtDir));
     }
 
     // float light = bore.getBrightness();
     // light = light + ((1.0f - light) * 0.4f);
 
-    boolean ghostTrain = Seasons.isGhostTrain(renderState);
+    boolean ghostTrain = Seasons.isGhostTrain(state);
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    var head = renderState.head;
+    var head = state.head;
     modelTunnelBore.setRenderBoreHead(head != null);
 
     poseStack.scale(-1, -1, 1);
 
-    this.modelTunnelBore.setBoreHeadRotation(renderState.rotationAngle);
-    this.modelTunnelBore.setBoreActive(renderState.isMinecartPowered);
-    this.modelTunnelBore.setupAnim(renderState);
+    this.modelTunnelBore.setBoreHeadRotation(state.rotationAngle);
+    this.modelTunnelBore.setBoreActive(state.isMinecartPowered);
     var textureLocation = head != null ? head.getTextureLocation() : TEXTURE;
-    var vertexBuilder = bufferSource.getBuffer(this.modelTunnelBore.renderType(textureLocation));
-    this.modelTunnelBore.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY,
-        ARGB.colorFromFloat(ghostTrain ? 0.8F : 1, colorIntensity, colorIntensity, colorIntensity));
+    collector.submitModel(
+        this.modelTunnelBore,
+        state,
+        poseStack,
+        this.modelTunnelBore.renderType(textureLocation),
+        state.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        ARGB.colorFromFloat(ghostTrain ? 0.8F : 1, colorIntensity, colorIntensity, colorIntensity),
+        null,
+        0,
+        null
+    );
     poseStack.popPose();
   }
 

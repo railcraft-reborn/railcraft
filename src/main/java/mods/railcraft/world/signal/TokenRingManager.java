@@ -16,8 +16,8 @@ import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class TokenRingManager extends SavedData {
 
-  private static final Codec<Map<UUID, TokenRingData>> MAP_CODEC =
-      Codec.unboundedMap(UUIDUtil.CODEC, TokenRingData.CODEC);
+  private static final Codec<Map<String, TokenRingData>> MAP_CODEC =
+      Codec.unboundedMap(Codec.STRING, TokenRingData.CODEC);
 
   private static final SavedDataType<TokenRingManager> TYPE = new SavedDataType<>(
       "railcraft.tokens",
@@ -33,16 +33,17 @@ public class TokenRingManager extends SavedData {
   private int clock;
 
   private TokenRingManager(Context context) {
-    this.level = context.level().getLevel();
+    this.level = context.levelOrThrow();
   }
 
-  private TokenRingManager(ServerLevel level, Map<UUID, TokenRingData> tokenRings) {
+  private TokenRingManager(ServerLevel level, Map<String, TokenRingData> tokenRings) {
     this.level = level;
     for (var entry : tokenRings.entrySet()) {
-      var tokenRing = new SimpleTokenRing(this.level, this, entry.getKey());
+      var id = UUID.fromString(entry.getKey());
+      var tokenRing = new SimpleTokenRing(this.level, this, id);
       tokenRing.loadSignals(entry.getValue().signals);
       tokenRing.loadCarts(entry.getValue().carts);
-      this.tokenRings.put(entry.getKey(), tokenRing);
+      this.tokenRings.put(id, tokenRing);
     }
   }
 
@@ -57,14 +58,14 @@ public class TokenRingManager extends SavedData {
     ).apply(instance, TokenRingData::new));
   }
 
-  private static Map<UUID, TokenRingData> from(Map<UUID, SimpleTokenRing> tokenRings) {
-    var result = new HashMap<UUID, TokenRingData>();
+  private static Map<String, TokenRingData> from(Map<UUID, SimpleTokenRing> tokenRings) {
+    var result = new HashMap<String, TokenRingData>();
     for (var entry : tokenRings.entrySet()) {
       var id = entry.getKey();
       var simpleTokenRing = entry.getValue();
       var signals = new ArrayList<>(simpleTokenRing.peers());
       var carts = new ArrayList<>(simpleTokenRing.getTrackedCarts());
-      result.put(id, new TokenRingData(id, signals, carts));
+      result.put(id.toString(), new TokenRingData(id, signals, carts));
     }
     return result;
   }

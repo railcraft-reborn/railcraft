@@ -10,9 +10,8 @@ import mods.railcraft.client.renderer.entity.state.MaintenanceMinecartRendererSt
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -32,8 +31,8 @@ public abstract class MaintenanceMinecartRenderer
   private final DeformableMinecartModel<MaintenanceMinecartRendererState> bodyModel;
   private final DeformableMinecartModel<MaintenanceMinecartRendererState> snowModel;
 
-  private final Model maintenanceModel;
-  private final Model lampModel;
+  private final MaintenanceModel<MaintenanceMinecartRendererState> maintenanceModel;
+  private final MaintenanceLampModel<MaintenanceMinecartRendererState> lampModel;
 
   public MaintenanceMinecartRenderer(EntityRendererProvider.Context context,
       ResourceLocation maintenanceTextureLocation) {
@@ -45,18 +44,24 @@ public abstract class MaintenanceMinecartRenderer
     this.snowModel =
         new DeformableMinecartModel<>(context.bakeLayer(RailcraftModelLayers.MINECART_SNOW));
     this.maintenanceModel =
-        new MaintenanceModel(context.bakeLayer(RailcraftModelLayers.MAINTENANCE));
+        new MaintenanceModel<>(context.bakeLayer(RailcraftModelLayers.MAINTENANCE));
     this.lampModel =
-        new MaintenanceLampModel(context.bakeLayer(RailcraftModelLayers.MAINTENANCE_LAMP));
+        new MaintenanceLampModel<>(context.bakeLayer(RailcraftModelLayers.MAINTENANCE_LAMP));
   }
 
   @Override
   protected void renderContents(MaintenanceMinecartRendererState renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight, int color) {
-    var maintenanceVertexConsumer =
-        multiBufferSource.getBuffer(this.maintenanceModel.renderType(this.maintenanceTextureLocation));
-    this.maintenanceModel.renderToBuffer(poseStack, maintenanceVertexConsumer, packedLight,
-        OverlayTexture.NO_OVERLAY, color);
+      SubmitNodeCollector collector, int color) {
+    collector.submitModel(
+        this.maintenanceModel,
+        renderState,
+        poseStack,
+        this.maintenanceModel.renderType(this.maintenanceTextureLocation),
+        renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        0,
+        null
+    );
 
     poseStack.pushPose();
     //poseStack.translate(-0.5F, -0.5F, -0.5F);
@@ -70,10 +75,17 @@ public abstract class MaintenanceMinecartRenderer
     } else {
       textureLocation = LAMP_OFF_TEX;
     }
-    var lampVertexConsumer =
-        multiBufferSource.getBuffer(this.lampModel.renderType(textureLocation));
-    this.lampModel.renderToBuffer(poseStack, lampVertexConsumer,
-        blinking ? RenderUtil.FULL_LIGHT : packedLight, OverlayTexture.NO_OVERLAY, color);
+
+    collector.submitModel(
+        this.lampModel,
+        renderState,
+        poseStack,
+        this.lampModel.renderType(textureLocation),
+        blinking ? RenderUtil.FULL_LIGHT : renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        0,
+        null
+    );
     poseStack.popPose();
   }
 

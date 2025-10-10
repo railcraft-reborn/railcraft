@@ -19,25 +19,29 @@ public interface LineRenderer {
   }
 
   default void renderLine(PoseStack poseStack, int color, Vec3 from, Vec3 to) {
-    this.renderLine(poseStack,
+    poseStack.pushPose();
+    this.renderLine(poseStack.last(),
         ARGB.red(color),
         ARGB.green(color),
         ARGB.blue(color),
         ARGB.alpha(color),
         (float) from.x, (float) from.y, (float) from.z,
         (float) to.x, (float) to.y, (float) to.z);
+    poseStack.popPose();
   }
 
   default void renderLine(PoseStack poseStack, int color, Vector3f from, Vector3f to) {
-    this.renderLine(poseStack,
+    poseStack.pushPose();
+    this.renderLine(poseStack.last(),
         ARGB.red(color),
         ARGB.green(color),
         ARGB.blue(color),
         ARGB.alpha(color),
         from.x, from.y, from.z,
         to.x, to.y, to.z);
+    poseStack.popPose();
   }
 
-  void renderLine(PoseStack poseStack, int r, int g, int b, int a, float x0, float y0, float z0,
+  void renderLine(PoseStack.Pose pose, int r, int g, int b, int a, float x0, float y0, float z0,
       float x1, float y1, float z1);
 }

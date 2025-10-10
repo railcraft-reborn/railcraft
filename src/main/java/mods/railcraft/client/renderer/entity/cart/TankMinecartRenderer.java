@@ -11,12 +11,12 @@ import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -28,7 +28,8 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
 
   private final LowSidesMinecartModel<TankMinecartRendererState> bodyModel;
   private final LowSidesMinecartModel<TankMinecartRendererState> snowModel;
-  private final CubeModel tankModel;
+  private final CubeModel<TankMinecartRendererState> tankModel;
+  private final ItemModelResolver itemModelResolver;
 
   public TankMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
@@ -36,25 +37,32 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART));
     this.snowModel = new LowSidesMinecartModel<>(
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART_SNOW));
-    this.tankModel = new CubeModel(RenderType::entityTranslucent,//entityTranslucentCull
+    this.tankModel = new CubeModel<>(RenderType::entityTranslucent,//entityTranslucentCull
         context.bakeLayer(RailcraftModelLayers.CUBE));
+    this.itemModelResolver = context.getItemModelResolver();
   }
 
   @Override
   protected void renderContents(TankMinecartRendererState renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight, int color) {
-    var vertexBuilder =
-        multiBufferSource.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
-    this.tankModel.renderToBuffer(poseStack, vertexBuilder, packedLight,
-        OverlayTexture.NO_OVERLAY, color);
-    this.renderTank(renderState, poseStack, multiBufferSource, packedLight);
+      SubmitNodeCollector collector, int color) {
+    collector.submitModel(
+        this.tankModel,
+        renderState,
+        poseStack,
+        this.tankModel.renderType(TANK_TEXTURE_LOCATION),
+        renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        0,
+        null
+    );
+    this.renderTank(renderState, poseStack, collector);
     if (renderState.hasFilter) {
-      this.renderFilterItem(renderState, poseStack, multiBufferSource, packedLight);
+      this.renderFilterItem(renderState, poseStack, collector);
     }
   }
 
   private void renderTank(TankMinecartRendererState renderState, PoseStack poseStack,
-      MultiBufferSource renderTypeBuffer, int packedLight) {
+      SubmitNodeCollector collector) {
     var tank = renderState.tankManager;
     var fluidStack = tank.getFluid();
     float capacity = tank.getCapacity();
@@ -73,12 +81,13 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
 
       poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
           RenderUtil.SCALED_PIXEL);
-      fluidModel.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+      fluidModel.setPackedLight(RenderUtil.calculateGlowLight(renderState.lightCoords, fluidStack));
       fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-      var builder = renderTypeBuffer.getBuffer(Sheets.cutoutBlockSheet());
-      CuboidModelRenderer.render(fluidModel, poseStack, builder,
-          RenderUtil.getColorARGB(fluidStack, level),
-          CuboidModelRenderer.FaceDisplay.FRONT, true);
+      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+        CuboidModelRenderer.render(fluidModel, pose, vertexConsumer,
+            RenderUtil.getColorARGB(fluidStack, level),
+            CuboidModelRenderer.FaceDisplay.FRONT, true);
+      });
       poseStack.popPose();
 
       if (renderState.isFilling) {
@@ -89,40 +98,38 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         var fillingFluidModel =
             FluidRenderer.getFluidModel(fluidStack, size, 1 - RenderUtil.SCALED_PIXEL, size,
                 FluidRenderer.FluidType.FLOWING);
-        fillingFluidModel.setPackedLight(RenderUtil.calculateGlowLight(packedLight, fluidStack));
+        fillingFluidModel.setPackedLight(RenderUtil.calculateGlowLight(renderState.lightCoords, fluidStack));
         fillingFluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-        CuboidModelRenderer.render(fillingFluidModel, poseStack, builder,
-            RenderUtil.getColorARGB(fluidStack, 1),
-            CuboidModelRenderer.FaceDisplay.FRONT, true);
+        collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+          CuboidModelRenderer.render(fillingFluidModel, pose, vertexConsumer,
+              RenderUtil.getColorARGB(fluidStack, 1),
+              CuboidModelRenderer.FaceDisplay.FRONT, true);
+        });
         poseStack.popPose();
       }
     }
   }
 
-  private void renderFilterItem(TankMinecartRendererState rendererState, PoseStack matrixStack,
-      MultiBufferSource renderTypeBuffer, int packedLight) {
-    matrixStack.pushPose();
-    var itemStack = rendererState.filterItem;
-    var level = Minecraft.getInstance().level;
+  private void renderFilterItem(TankMinecartRendererState rendererState, PoseStack poseStack,
+      SubmitNodeCollector collector) {
+    poseStack.pushPose();
 
     final float scale = 1.2F;
 
-    matrixStack.pushPose();
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
-    matrixStack.translate(0, -0.9F, 0.68F);
-    matrixStack.scale(scale, scale, scale);
-    Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, level, 0);
-    matrixStack.popPose();
+    poseStack.pushPose();
+    poseStack.mulPose(Axis.YP.rotationDegrees(90));
+    poseStack.translate(0, -0.9F, 0.68F);
+    poseStack.scale(scale, scale, scale);
+    rendererState.itemState.submit(poseStack, collector, rendererState.lightCoords,
+        OverlayTexture.NO_OVERLAY, 0);
+    poseStack.popPose();
 
-    matrixStack.mulPose(Axis.YN.rotationDegrees(90));
-    matrixStack.translate(0, -0.9F, 0.68F);
-    matrixStack.scale(scale, scale, scale);
-    Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, level, 0);
-    matrixStack.popPose();
+    poseStack.mulPose(Axis.YN.rotationDegrees(90));
+    poseStack.translate(0, -0.9F, 0.68F);
+    poseStack.scale(scale, scale, scale);
+    rendererState.itemState.submit(poseStack, collector, rendererState.lightCoords,
+        OverlayTexture.NO_OVERLAY, 0);
+    poseStack.popPose();
   }
 
   @Override
@@ -134,7 +141,6 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
   protected EntityModel<TankMinecartRendererState> getSnowModel(TankMinecartRendererState cart) {
     return this.snowModel;
   }
-
 
   @Override
   public TankMinecartRendererState createRenderState() {
@@ -148,6 +154,8 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
     reusedState.isFilling = entity.isFilling();
     reusedState.tankManager = entity.getTankManager();
     reusedState.hasFilter = entity.hasFilter();
-    reusedState.filterItem = entity.getFilterItem().copy();
+
+    this.itemModelResolver.updateForTopItem(reusedState.itemState, entity.getFilterItem().copy(),
+        ItemDisplayContext.GROUND, entity.level(), null, 0);
   }
 }

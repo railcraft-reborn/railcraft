@@ -3,12 +3,12 @@ package mods.railcraft.client.renderer.blockentity;
 import java.util.Collection;
 import java.util.Objects;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.api.signal.BlockSignalEntity;
 import mods.railcraft.api.signal.TokenSignalEntity;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.world.item.GogglesItem;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.util.ARGB;
@@ -18,51 +18,51 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SignalAuraRenderUtil {
 
   public static void tryRenderSignalAura(BlockEntity blockEntity,
-      PoseStack poseStack, MultiBufferSource bufferSource) {
-    var lineRenderer = LineRenderer.simple(bufferSource);
+      PoseStack.Pose pose, VertexConsumer vertexConsumer) {
+    var lineRenderer = LineRenderer.simple(vertexConsumer);
     if (blockEntity instanceof SignalControllerEntity provider) {
-      renderControllerAura(blockEntity.getBlockPos(), poseStack, lineRenderer, provider);
+      renderControllerAura(blockEntity.getBlockPos(), pose, lineRenderer, provider);
     }
     if (blockEntity instanceof BlockSignalEntity blockSignal) {
-      renderBlockSignalAura(blockEntity.getBlockPos(), poseStack, lineRenderer, blockSignal);
+      renderBlockSignalAura(blockEntity.getBlockPos(), pose, lineRenderer, blockSignal);
     } else if (blockEntity instanceof TokenSignalEntity tokenSignal) {
-      renderTokenSignalAura(blockEntity.getBlockPos(), poseStack, lineRenderer, tokenSignal);
+      renderTokenSignalAura(blockEntity.getBlockPos(), pose, lineRenderer, tokenSignal);
     }
   }
 
-  private static void renderControllerAura(BlockPos blockPos, PoseStack poseStack,
+  private static void renderControllerAura(BlockPos blockPos, PoseStack.Pose pose,
       LineRenderer lineRenderer, SignalControllerEntity provider) {
     var peers = provider.getSignalController().peers();
     if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.TUNING)) {
-      renderSignalAura(blockPos, poseStack, lineRenderer, peers, SignalAuraRenderUtil::rainbow);
+      renderSignalAura(blockPos, pose, lineRenderer, peers, SignalAuraRenderUtil::rainbow);
     } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-      renderSignalAura(blockPos, poseStack, lineRenderer, peers,
+      renderSignalAura(blockPos, pose, lineRenderer, peers,
           ColorSupplier.of(provider.getSignalController().aspect().color()));
     }
   }
 
-  private static void renderBlockSignalAura(BlockPos blockPos, PoseStack poseStack,
+  private static void renderBlockSignalAura(BlockPos blockPos, PoseStack.Pose pose,
       LineRenderer lineRenderer, BlockSignalEntity blockSignal) {
     var peers = blockSignal.signalNetwork().peers();
     if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
-      renderSignalAura(blockPos, poseStack, lineRenderer, peers, SignalAuraRenderUtil::rainbow);
+      renderSignalAura(blockPos, pose, lineRenderer, peers, SignalAuraRenderUtil::rainbow);
     } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-      renderSignalAura(blockPos, poseStack, lineRenderer, peers, ColorSupplier.CONSTANT_BLUE);
+      renderSignalAura(blockPos, pose, lineRenderer, peers, ColorSupplier.CONSTANT_BLUE);
     }
   }
 
-  private static void renderTokenSignalAura(BlockPos blockPos, PoseStack poseStack,
+  private static void renderTokenSignalAura(BlockPos blockPos, PoseStack.Pose pose,
       LineRenderer lineRenderer, TokenSignalEntity tokenSignal) {
     if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SURVEYING)) {
-      renderAuraLine(lineRenderer, poseStack, tokenSignal.ringId().hashCode(), blockPos,
+      renderAuraLine(lineRenderer, pose, tokenSignal.ringId().hashCode(), blockPos,
           tokenSignal.ringCentroidPos());
     } else if (GogglesItem.isGoggleAuraActive(GogglesItem.Aura.SIGNALLING)) {
-      renderAuraLine(lineRenderer, poseStack, DyeColor.BLUE.getFireworkColor(), blockPos,
+      renderAuraLine(lineRenderer, pose, DyeColor.BLUE.getFireworkColor(), blockPos,
           tokenSignal.ringCentroidPos());
     }
   }
 
-  private static void renderAuraLine(LineRenderer renderer, PoseStack poseStack, int color,
+  private static void renderAuraLine(LineRenderer renderer, PoseStack.Pose pose, int color,
       BlockPos source, Position target) {
     var red = ARGB.red(color);
     var green = ARGB.green(color);
@@ -72,17 +72,17 @@ public class SignalAuraRenderUtil {
     var endY = (float) (target.y() - source.getY());
     var endZ = (float) (target.z() - source.getZ());
 
-    renderer.renderLine(poseStack,
+    renderer.renderLine(pose,
         red, green, blue, 255,
         0.5F, 0.5F, 0.5F,
         endX, endY, endZ);
   }
 
-  private static void renderSignalAura(BlockPos source, PoseStack poseStack,
+  private static void renderSignalAura(BlockPos source, PoseStack.Pose pose,
       LineRenderer lineRenderer, Collection<BlockPos> endPoints, ColorSupplier colorProfile) {
     for (var target : endPoints) {
       int color = colorProfile.getColor(source, target);
-      renderAuraLine(lineRenderer, poseStack, color, source, target.getCenter());
+      renderAuraLine(lineRenderer, pose, color, source, target.getCenter());
     }
   }
 

@@ -1,9 +1,12 @@
 package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.renderer.blockentity.state.AbstractSignalRenderState;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
@@ -11,17 +14,21 @@ import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity>
-    implements BlockEntityRenderer<T> {
+public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity,
+    S extends AbstractSignalRenderState> implements BlockEntityRenderer<T, S> {
 
   private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
       SignalAspect.OFF, RailcraftConstants.rl("entity/signal_aspect/off"),
@@ -32,37 +39,48 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
   private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
 
   @Override
-  public void render(T blockEntity, float partialTick, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 vec3) {
-
-    SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, poseStack, bufferSource);
-
-    if (blockEntity.hasCustomName()) {
-      RenderUtil.renderBlockHoverText(blockEntity.getBlockPos(),
-          blockEntity.getCustomName(), poseStack, bufferSource, packedLight);
-    }
+  public void extractRenderState(T blockEntity, S renderState, float partialTick, Vec3 cameraPos,
+      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
+    renderState.customName = Optional.ofNullable(blockEntity.getCustomName());
+    renderState.blockEntity = blockEntity;
   }
 
-  protected void renderSignalAspect(PoseStack poseStack, MultiBufferSource bufferSource,
-      int packedLight, int packedOverlay, SignalAspect signalAspect, Direction direction) {
+  @Override
+  public void submit(S state, PoseStack poseStack, SubmitNodeCollector collector,
+      CameraRenderState cameraState) {
 
-    var spriteGetter = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+    collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
+      SignalAuraRenderUtil.tryRenderSignalAura(state.blockEntity, pose, vertexConsumer);
+    });
 
-    final int skyLight = LightTexture.sky(packedLight);
-    packedLight = LightTexture.pack(signalAspect.getLampLight(), skyLight);
+    state.customName.ifPresent(name -> {
+      RenderUtil.renderBlockHoverText(collector, state.blockPos, name, poseStack, state.lightCoords);
+    });
+  }
+
+  protected void renderSignalAspect(S state, PoseStack poseStack, SubmitNodeCollector collector,
+      CameraRenderState cameraState, SignalAspect signalAspect, Direction direction) {
+
+    var textureAtlas =
+        Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
+
+    final int skyLight = LightTexture.sky(state.lightCoords);
+    state.lightCoords = LightTexture.pack(signalAspect.getLampLight(), skyLight);
 
     this.signalAspectModel.clear();
-    this.signalAspectModel.setPackedLight(packedLight);
-    this.signalAspectModel.setPackedOverlay(packedOverlay);
+    this.signalAspectModel.setPackedLight(state.lightCoords);
+    this.signalAspectModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
     this.signalAspectModel.set(direction,
         this.signalAspectModel.new Face()
-            .setSprite(spriteGetter.apply(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
+            .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
             .setSize(16));
 
-    var vertexConsumer =
-        bufferSource.getBuffer(RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS));
-    CuboidModelRenderer.render(this.signalAspectModel, poseStack, vertexConsumer,
-        0xFFFFFFFF, FaceDisplay.FRONT, false);
+    collector.submitCustomGeometry(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS),
+        (pose, vertexConsumer) -> {
+      CuboidModelRenderer.render(this.signalAspectModel, pose, vertexConsumer,
+          0xFFFFFFFF, FaceDisplay.FRONT, false);
+    });
   }
 
   @Override

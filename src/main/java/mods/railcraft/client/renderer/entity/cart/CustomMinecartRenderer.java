@@ -9,10 +9,11 @@ import com.mojang.math.Axis;
 import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
 import mods.railcraft.season.Seasons;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -30,8 +31,10 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     super(context);
   }
 
-  public void render(S renderState, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-    super.render(renderState, poseStack, multiBufferSource, packedLight);
+  @Override
+  public void submit(S renderState, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
+    super.submit(renderState, poseStack, collector, cameraState);
     poseStack.pushPose();
     long i = renderState.offsetSeed;
     float f = (((float) (i >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
@@ -41,9 +44,9 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     if (renderState.isNewRender) {
       //newRender(renderState, poseStack);
       LOGGER.warn("Tried to render a cart with new rendering, but that is not yet implemented");
-      this.oldRender(renderState, poseStack, multiBufferSource, packedLight);
+      this.oldRender(renderState, poseStack, collector, cameraState);
     } else {
-      this.oldRender(renderState, poseStack, multiBufferSource, packedLight);
+      this.oldRender(renderState, poseStack, collector, cameraState);
     }
 
     float roll = renderState.hurtTime;
@@ -54,7 +57,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     boolean ghostTrain = Seasons.isGhostTrain(renderState);
     float colorIntensity = ghostTrain ? 0.5F : 1.0F;
 
-    this.renderBody(renderState, poseStack, multiBufferSource, packedLight,
+    this.renderBody(renderState, poseStack, collector, cameraState,
         ARGB.colorFromFloat(ghostTrain ? 0.8F : 1.0F,
             colorIntensity, colorIntensity, colorIntensity));
 
@@ -62,7 +65,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
       poseStack.pushPose();
       float scale = 1.1F;
       poseStack.scale(scale, scale, scale);
-      this.renderBody(renderState, poseStack, multiBufferSource, packedLight,
+      this.renderBody(renderState, poseStack, collector, cameraState,
           ARGB.colorFromFloat(0.4F, 1.0F, 1.0F, 1.0F));
       poseStack.popPose();
     }
@@ -70,8 +73,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     poseStack.popPose();
   }
 
-  private void oldRender(S renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight) {
+  private void oldRender(S renderState, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState cameraState) {
     double d0 = renderState.x;
     double d1 = renderState.y;
     double d2 = renderState.z;
@@ -116,7 +118,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     if (renderState.nameTag != null) {
       var customName = renderState.nameTag.getString();
       if (!Seasons.GHOST_TRAIN.equals(customName) && !Seasons.POLAR_EXPRESS.equals(customName)) {
-        this.renderNameTag(renderState, renderState.nameTag, poseStack, multiBufferSource, packedLight);
+        collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, renderState.nameTag,
+            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
         renderName = true;
       }
     }
@@ -130,7 +133,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
         }
         var destination = Component.literal(dest)
             .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
-        this.renderNameTag(renderState, destination, poseStack, multiBufferSource, packedLight);
+        collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, destination,
+            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
         poseStack.popPose();
       }
     }
@@ -193,5 +197,5 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
   }
 
   protected abstract void renderBody(S renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight, int color);
+      SubmitNodeCollector collector, CameraRenderState cameraState, int color);
 }

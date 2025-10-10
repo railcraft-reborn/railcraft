@@ -6,8 +6,9 @@ import mods.railcraft.client.renderer.entity.state.LocomotiveRenderState;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -42,7 +43,7 @@ public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locom
 
   @Override
   protected void renderBody(LocomotiveRenderState renderState, PoseStack poseStack,
-      MultiBufferSource multiBufferSource, int packedLight, int color) {
+      SubmitNodeCollector collector, CameraRenderState cameraState, int color) {
     poseStack.pushPose();
 
     poseStack.scale(-1, -1, 1);
@@ -51,22 +52,38 @@ public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locom
     var primaryColor = this.getPrimaryColor(renderState);
     var secondaryColor = this.getSecondaryColor(renderState);
 
-    for (int pass = 0; pass < 3; pass++) {
+    for (int pass = 0; pass <= 2; pass++) {
       var selectedColor = ARGB.color(alpha, switch (pass) {
         case 0 -> primaryColor;
         case 1 -> secondaryColor;
         default -> 1;
       });
       this.model.setupAnim(renderState);
-      var vertexBuilder = multiBufferSource.getBuffer(this.model.renderType(this.textures[pass]));
-      this.model.renderToBuffer(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, selectedColor);
+
+      collector.submitModel(
+          model,
+          renderState,
+          poseStack,
+          this.model.renderType(this.textures[pass]),
+          renderState.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          selectedColor,
+          null,
+          0,
+          null);
     }
 
     if (Seasons.isPolarExpress(renderState)) {
-      this.snowLayer.setupAnim(renderState);
-      var vertexBuilder = multiBufferSource.getBuffer(this.snowLayer.renderType(this.textures[3]));
-      this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
-          OverlayTexture.NO_OVERLAY, ARGB.color(1, 1, 1, 1));
+      collector.submitModel(
+          this.snowLayer,
+          renderState,
+          poseStack,
+          this.snowLayer.renderType(this.textures[3]),
+          renderState.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          0,
+          null
+      );
     }
     poseStack.popPose();
   }
