@@ -252,14 +252,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FRAME.get())
         .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
         .add(RailcraftBlocks.WORLD_SPIKE.get())
-        .addTags(RailcraftTags.Blocks.LEAD_ORE,
-            RailcraftTags.Blocks.NICKEL_ORE,
-            RailcraftTags.Blocks.SILVER_ORE,
-            RailcraftTags.Blocks.SULFUR_ORE,
-            RailcraftTags.Blocks.TIN_ORE,
-            RailcraftTags.Blocks.ZINC_ORE,
-            RailcraftTags.Blocks.SALTPETER_ORE,
-            RailcraftTags.Blocks.POST,
+        .add(RailcraftBlocks.LEAD_ORE.get(), RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())
+        .add(RailcraftBlocks.NICKEL_ORE.get(), RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
+        .add(RailcraftBlocks.SILVER_ORE.get(), RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
+        .add(RailcraftBlocks.SULFUR_ORE.get(), RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get())
+        .add(RailcraftBlocks.TIN_ORE.get(), RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
+        .add(RailcraftBlocks.ZINC_ORE.get(), RailcraftBlocks.DEEPSLATE_ZINC_ORE.get())
+        .add(RailcraftBlocks.SALTPETER_ORE.get())
+        .addTags(RailcraftTags.Blocks.POST,
             RailcraftTags.Blocks.STRENGTHENED_GLASS,
             RailcraftTags.Blocks.IRON_TANK_GAUGE,
             RailcraftTags.Blocks.IRON_TANK_VALVE,
@@ -309,14 +309,14 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FEED_STATION.get())
         .add(RailcraftBlocks.CHIMNEY.get())
         .add(RailcraftBlocks.LOGBOOK.get())
-        .addTags(RailcraftTags.Blocks.LEAD_ORE,
-            RailcraftTags.Blocks.NICKEL_ORE,
-            RailcraftTags.Blocks.SILVER_ORE,
-            RailcraftTags.Blocks.SULFUR_ORE,
-            RailcraftTags.Blocks.TIN_ORE,
-            RailcraftTags.Blocks.ZINC_ORE,
-            RailcraftTags.Blocks.SALTPETER_ORE,
-            RailcraftTags.Blocks.POST,
+        .add(RailcraftBlocks.LEAD_ORE.get(), RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())
+        .add(RailcraftBlocks.NICKEL_ORE.get(), RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
+        .add(RailcraftBlocks.SILVER_ORE.get(), RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
+        .add(RailcraftBlocks.SULFUR_ORE.get(), RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get())
+        .add(RailcraftBlocks.TIN_ORE.get(), RailcraftBlocks.DEEPSLATE_TIN_ORE.get())
+        .add(RailcraftBlocks.ZINC_ORE.get(), RailcraftBlocks.DEEPSLATE_ZINC_ORE.get())
+        .add(RailcraftBlocks.SALTPETER_ORE.get())
+        .addTags(RailcraftTags.Blocks.POST,
             RailcraftTags.Blocks.STRENGTHENED_GLASS,
             RailcraftTags.Blocks.IRON_TANK_GAUGE,
             RailcraftTags.Blocks.IRON_TANK_VALVE,
