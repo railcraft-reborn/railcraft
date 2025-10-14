@@ -207,6 +207,9 @@ public class RailcraftConfig {
         this.lossMultiplier = builder
             .comment("Adjust the losses for the Charge network")
             .defineInRange("lossMultiplier", 1.0D, 0.2D, 10.0D);
+        this.turbinePowerMultiplier = builder
+            .comment("Adjust the amount of power produced in a Turbine")
+            .defineInRange("turbinePowerMultiplier", 1.0F, 0.1F, 100F);
       }
       builder.pop();
 
@@ -218,14 +221,6 @@ public class RailcraftConfig {
         this.fuelPerSteamMultiplier = builder
             .comment("Adjust the amount of fuel used to create steam.")
             .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
-      }
-      builder.pop();
-
-      builder.push("rf");
-      {
-        this.turbinePowerMultiplier = builder
-            .comment("Adjust the amount of RF produced in a Turbine")
-            .defineInRange("turbinePowerMultiplier", 1.0F, 0.1F, 100F);
       }
       builder.pop();
 

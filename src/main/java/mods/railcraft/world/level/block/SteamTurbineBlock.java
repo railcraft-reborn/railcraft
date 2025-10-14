@@ -81,8 +81,8 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
       ServerLevel level, BlockPos pos) {
     return Spec.make(Charge.distribution, ChargeBlock.ConnectType.BLOCK, 0,
       new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
-        (int) (SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get()),
-        (int) (SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get()),
+          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
+          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
         1));
   }
 
