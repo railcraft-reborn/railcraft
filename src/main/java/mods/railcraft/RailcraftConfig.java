@@ -79,6 +79,7 @@ public class RailcraftConfig {
     public final DoubleValue fuelPerSteamMultiplier;
 
     public final DoubleValue turbinePowerMultiplier;
+    public final DoubleValue turbineEnergyOutputRateMultiplier;
 
     public final IntValue cartDispenserDelay;
 
@@ -210,6 +211,9 @@ public class RailcraftConfig {
         this.turbinePowerMultiplier = builder
             .comment("Adjust the amount of power produced in a Turbine")
             .defineInRange("turbinePowerMultiplier", 1.0F, 0.1F, 100F);
+        this.turbineEnergyOutputRateMultiplier = builder
+            .comment("Adjust the amount of energy output rate in a Turbine")
+            .defineInRange("turbineEnergyPowerRateMultiplier", 1.0F, 0.1F, 100F);
       }
       builder.pop();
 

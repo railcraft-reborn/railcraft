@@ -94,7 +94,8 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
               || !tank.getMembership().equals(blockEntity.getMembership());
 
           EnergyUtil.pushToSides(level, blockPos, master.getEnergyStorage(),
-                  (int) (ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbinePowerMultiplier.get()), filter, Direction.values());
+              ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get().intValue(), filter,
+              Direction.values());
 
           var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
               Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
