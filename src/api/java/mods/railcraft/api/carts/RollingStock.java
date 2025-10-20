@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
@@ -26,8 +25,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 /**
  * Main capability for all things minecart/locomotive related.
@@ -210,27 +211,27 @@ public interface RollingStock {
     Spliterator<RollingStock> spliterator =
         new Spliterators.AbstractSpliterator<>(Long.MAX_VALUE,
             Spliterator.ORDERED | Spliterator.IMMUTABLE) {
+      @Nullable
+      private RollingStock current = RollingStock.this;
 
-          private RollingStock current = RollingStock.this;
+      @Override
+      public boolean tryAdvance(Consumer<? super RollingStock> action) {
+        Objects.requireNonNull(action);
 
-          @Override
-          public boolean tryAdvance(Consumer<? super RollingStock> action) {
-            Objects.requireNonNull(action);
+        if (this.current == null) {
+          return false;
+        }
 
-            if (this.current == null) {
-              return false;
-            }
+        this.current = this.current.linkAt(side).orElse(null);
+        if (this.current == null) {
+          return false;
+        }
 
-            this.current = this.current.linkAt(side).orElse(null);
-            if (this.current == null) {
-              return false;
-            }
+        action.accept(this.current);
 
-            action.accept(this.current);
-
-            return true;
-          }
-        };
+        return true;
+      }
+    };
     return StreamSupport.stream(spliterator, false);
   }
 
@@ -241,7 +242,7 @@ public interface RollingStock {
   @Nullable
   Train train();
 
-  default boolean isSameTrainAs(@NotNull RollingStock rollingStock) {
+  default boolean isSameTrainAs(RollingStock rollingStock) {
     Objects.requireNonNull(rollingStock, "rollingStock cannot be null.");
     return this.train() == rollingStock.train();
   }
@@ -251,7 +252,7 @@ public interface RollingStock {
    *
    * @param itemStack - the {@link ItemStack} to be pushed
    * @return the remaining {@link ItemStack}, or {@link ItemStack#EMPTY} if all items were pushed
-   * @see {@link ItemTransferHandler}
+   * @see ItemTransferHandler
    */
   default ItemStack pushItem(ItemStack itemStack) {
     for (var side : Side.values()) {
@@ -260,7 +261,7 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         var adaptor =
-            Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY, null))
+            Optional.ofNullable(cart.getCapability(Capabilities.Item.ENTITY, null))
                 .map(ContainerManipulator::of)
                 .orElse(null);
         if (adaptor != null && this.canAcceptPushedItem(cart, itemStack)) {
@@ -290,7 +291,7 @@ public interface RollingStock {
    *
    * @param filter - a {@link Predicate} to filter the pulled item
    * @return the resulting {@link ItemStack} or {@link ItemStack#EMPTY} if not found
-   * @see {@link ItemTransferHandler}
+   * @see ItemTransferHandler
    */
   default ItemStack pullItem(Predicate<ItemStack> filter) {
     for (var side : Side.values()) {
@@ -299,7 +300,7 @@ public interface RollingStock {
       SlotAccessor result = null;
       for (var target : targets) {
         var cart = target.entity();
-        var slot = Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
+        var slot = Optional.ofNullable(cart.getCapability(Capabilities.Item.ENTITY))
             .map(ContainerManipulator::of)
             .flatMap(manipulator -> manipulator.findFirstExtractable(
                 filter.and(stack -> this.canProvidePulledItem(cart, stack))))
@@ -356,7 +357,7 @@ public interface RollingStock {
    *
    * @param fluidStack - the {@link FluidStack} to be pushed
    * @return the remaining {@link FluidStack}, or {@link FluidStack#EMPTY} if all fluid was pushed
-   * @see {@link FluidTransferHandler}
+   * @see FluidTransferHandler
    */
   default FluidStack pushFluid(FluidStack fluidStack) {
     var remainder = fluidStack.copy();
@@ -365,10 +366,13 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canAcceptPushedFluid(cart, remainder)) {
-          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
+          var fluidHandler = cart.getCapability(Capabilities.Fluid.ENTITY, null);
           if (fluidHandler != null) {
-            var filled = fluidHandler.fill(remainder, IFluidHandler.FluidAction.EXECUTE);
-            remainder.setAmount(remainder.getAmount() - filled);
+            try (var tx = Transaction.openRoot()) {
+              var filled = fluidHandler.insert(FluidResource.of(remainder), remainder.getAmount(), tx);
+              remainder.setAmount(remainder.getAmount() - filled);
+              tx.commit();
+            }
           }
         }
         if (remainder.isEmpty() || blocksFluidRequests(cart, remainder)) {
@@ -394,7 +398,7 @@ public interface RollingStock {
    *
    * @param fluidStack - the {@link FluidStack} to pull
    * @return the resulting {@link FluidStack} or {@link FluidStack#EMPTY} if not found
-   * @see {@link FluidTransferHandler}
+   * @see FluidTransferHandler
    */
   default FluidStack pullFluid(FluidStack fluidStack) {
     if (fluidStack.isEmpty()) {
@@ -406,11 +410,14 @@ public interface RollingStock {
       for (var target : targets) {
         var cart = target.entity();
         if (this.canProvidePulledFluid(cart, fluidStack)) {
-          var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
+          var fluidHandler = cart.getCapability(Capabilities.Fluid.ENTITY, null);
           if (fluidHandler != null) {
-            var drained = fluidHandler.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-            if (!drained.isEmpty()) {
-              return drained;
+            try (var tx = Transaction.openRoot()) {
+              var extracted = fluidHandler.extract(FluidResource.of(fluidStack), fluidStack.getAmount(), tx);
+              if (extracted != 0) {
+                tx.commit();
+                return new FluidStack(fluidStack.getFluid(), extracted);
+              }
             }
           }
         }
@@ -496,23 +503,23 @@ public interface RollingStock {
   private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {
     return cart instanceof ItemTransferHandler handler
         ? !handler.canPassItemRequests(stack)
-        : Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
-            .map(IItemHandler::getSlots)
+        : Optional.ofNullable(cart.getCapability(Capabilities.Item.ENTITY))
+            .map(ResourceHandler::size)
             .orElse(0) < MAX_BLOCKING_ITEM_SLOTS;
   }
 
   private static boolean blocksFluidRequests(AbstractMinecart cart, FluidStack fluid) {
     return cart instanceof FluidTransferHandler fluidMinecart
         ? !fluidMinecart.canPassFluidRequests(fluid)
-        : Optional.ofNullable(cart.getCapability(Capabilities.FluidHandler.ENTITY, null))
+        : Optional.ofNullable(cart.getCapability(Capabilities.Fluid.ENTITY, null))
             .map(fluidHandler -> !hasMatchingTank(fluidHandler, fluid))
             .orElse(true);
   }
 
-  private static boolean hasMatchingTank(IFluidHandler handler, FluidStack fluid) {
-    for (int i = 0; i < handler.getTanks(); i++) {
-      if (handler.getTankCapacity(i) >= MAX_BLOCKING_TANK_CAPACITY) {
-        var tankFluid = handler.getFluidInTank(i);
+  private static boolean hasMatchingTank(ResourceHandler<FluidResource> handler, FluidStack fluid) {
+    for (int i = 0; i < handler.size(); i++) {
+      if (handler.getCapacityAsInt(i, FluidResource.EMPTY) >= MAX_BLOCKING_TANK_CAPACITY) {
+        var tankFluid = FluidUtil.getStack(handler, i);
         if (tankFluid.isEmpty() || FluidStack.isSameFluidSameComponents(tankFluid, fluid)) {
           return true;
         }

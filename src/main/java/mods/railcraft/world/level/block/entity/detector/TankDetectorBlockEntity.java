@@ -26,8 +26,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
 
@@ -38,24 +38,28 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   public FluidStack getFilterFluid() {
-    return FluidUtil.getFluidContained(this.invFilters.getItem(0)).orElse(FluidStack.EMPTY);
+    var item = this.invFilters.getItem(0);
+    if (item.isEmpty()) {
+      return FluidStack.EMPTY;
+    }
+    return FluidUtil.getFirstStackContained(item);
   }
 
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      var fluidHandler = cart.getCapability(Capabilities.FluidHandler.ENTITY, null);
+      var fluidHandler = cart.getCapability(Capabilities.Fluid.ENTITY, null);
       if (fluidHandler != null) {
         var tank = new AdvancedFluidHandler(fluidHandler);
         boolean liquidMatches = false;
         var filterFluid = this.getFilterFluid();
-        var tankLiquid = tank.drain(1, IFluidHandler.FluidAction.SIMULATE);
+        var tankLiquid = FluidUtil.getStack(tank, 0);
 
         if (filterFluid.isEmpty())
           liquidMatches = true;
         else if (FluidStack.isSameFluidSameComponents(filterFluid, tankLiquid))
           liquidMatches = true;
-        else if (tank.canPutFluid(filterFluid.copyWithAmount(1)))
+        else if (tank.canPutFluid(FluidResource.of(filterFluid), 1))
           liquidMatches = true;
         boolean quantityMatches = false;
         switch (mode) {

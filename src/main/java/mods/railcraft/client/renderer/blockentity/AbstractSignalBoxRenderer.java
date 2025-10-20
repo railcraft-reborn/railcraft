@@ -65,7 +65,7 @@ public abstract class AbstractSignalBoxRenderer
       @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.customName = Optional.ofNullable(blockEntity.getCustomName());
-    renderState.blockEntity = blockEntity;
+    renderState.level = blockEntity.getLevel();
     for (var direction : Direction.Plane.HORIZONTAL) {
       var isConnected = SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction);
       renderState.directionConnections.put(direction, isConnected);
@@ -79,7 +79,13 @@ public abstract class AbstractSignalBoxRenderer
   public void submit(AbstractSignalBoxRenderState state, PoseStack poseStack,
       SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
     collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
-      SignalAuraRenderUtil.tryRenderSignalAura(state.blockEntity, pose, vertexConsumer);
+      if (state.level != null) {
+        var blockEntity = state.level.getBlockEntity(state.blockPos);
+        if (blockEntity == null) {
+          return;
+        }
+        SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, pose, vertexConsumer);
+      }
     });
 
 

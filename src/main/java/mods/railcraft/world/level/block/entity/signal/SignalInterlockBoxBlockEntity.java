@@ -138,8 +138,8 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
-    this.signalReceiver.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_RECEIVER));
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
+    input.readChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override

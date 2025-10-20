@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ForceTrackTestInstance extends GameTestInstance {
 
@@ -27,9 +28,12 @@ public class ForceTrackTestInstance extends GameTestInstance {
     var pos =  helper.absolutePos(new BlockPos(4, 1, 2));
     helper.onEachTick(() -> {
       var energyStorage = helper.getLevel()
-          .getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
+          .getCapability(Capabilities.Energy.BLOCK, pos, null);
       if (energyStorage != null) {
-        energyStorage.receiveEnergy(10000, false);
+        try (var tx = Transaction.openRoot()) {
+          energyStorage.insert(10000, tx);
+          tx.commit();
+        }
       }
     });
 

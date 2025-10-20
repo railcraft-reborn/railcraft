@@ -18,16 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public abstract class ContainerBlockEntity extends RailcraftBlockEntity
     implements ForwardingContainer, ContainerManipulator<ModifiableSlotAccessor> {
 
   private AdvancedContainer container;
-  private IItemHandler itemHandler = new InvWrapper(this);
-  private Map<Direction, IItemHandlerModifiable> directionalItemHandlers = new EnumMap<>(Direction.class);
+  private final ResourceHandler<ItemResource> itemHandler;
+  private Map<Direction, ResourceHandler<ItemResource>> directionalItemHandlers = new EnumMap<>(Direction.class);
 
   public ContainerBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     this(type, blockPos, blockState, 0);
@@ -37,6 +37,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
       int size) {
     super(type, blockPos, blockState);
     this.container = new AdvancedContainer(size).listener((Container) this);
+    this.itemHandler = VanillaContainerWrapper.of(this);
   }
 
   protected void setContainerSize(int size) {
@@ -58,7 +59,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
     return this.container;
   }
 
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     if (side == null) {
       return this.itemHandler;
     }
@@ -69,7 +70,7 @@ public abstract class ContainerBlockEntity extends RailcraftBlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.container.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.readChild(CompoundTagKeys.CONTAINER, this.container);
   }
 
   @Override

@@ -183,7 +183,7 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
     }
 
     var train = this.train();
-    rollingStock.train().copyTo(train);
+    Objects.requireNonNull(rollingStock.train()).copyTo(Objects.requireNonNull(train));
 
     Side linkSide = null;
     for (var side : Side.values()) {
@@ -218,7 +218,7 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
     this.completeLink(rollingStock, linkSide);
     rollingStock.completeLink(this, linkSide.opposite());
 
-    train.copyTo(this.train());
+    train.copyTo(Objects.requireNonNull(this.train()));
 
     NeoForge.EVENT_BUS.post(new CartLinkEvent.Link(this, rollingStock));
     return true;
@@ -404,6 +404,7 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
     return front;
   }
 
+  @Nullable
   @Override
   public Train train() {
     return this.validateTrainOwnership() ? this.train : this.frontLink.train();
@@ -688,15 +689,15 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
     }
 
     if (this.unresolvedBackLink != null) {
-      valueOutput.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.unresolvedBackLink);
+      valueOutput.store(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.unresolvedBackLink);
     } else if (this.backLink != null) {
-      valueOutput.storeNullable(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.backLink.entity().getUUID());
+      valueOutput.store(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.backLink.entity().getUUID());
     }
 
     if (this.unresolvedFrontLink != null) {
-      valueOutput.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.unresolvedFrontLink);
+      valueOutput.store(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.unresolvedFrontLink);
     } else if (this.frontLink != null) {
-      valueOutput.storeNullable(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.frontLink.entity().getUUID());
+      valueOutput.store(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.frontLink.entity().getUUID());
     }
 
     valueOutput.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);

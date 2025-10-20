@@ -233,8 +233,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     return cart.getBoundingBox().inflate(x, MinecartHandler.COLLISION_EXPANSION, z);
   }
 
-  @Override
   @Nullable
+  @Override
   public AABB getBoundingBox(AbstractMinecart cart) {
     if (cart == null || !cart.isAlive()) {
       return null;

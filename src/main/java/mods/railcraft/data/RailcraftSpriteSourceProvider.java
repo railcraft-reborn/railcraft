@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.data.SpriteSourceProvider;
 
@@ -15,7 +16,7 @@ public class RailcraftSpriteSourceProvider extends SpriteSourceProvider {
 
   @Override
   protected void gather() {
-    atlas(SpriteSourceProvider.BLOCKS_ATLAS)
+    atlas(AtlasIds.BLOCKS)
         .addSource(new DirectoryLister("entity/signal_aspect", "entity/signal_aspect/"))
         .addSource(new DirectoryLister("entity/signal_box_aspect", "entity/signal_box_aspect/"))
         .addSource(new DirectoryLister("entity/signal_box", "entity/signal_box/"))

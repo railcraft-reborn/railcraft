@@ -87,7 +87,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.signalReceiver.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_RECEIVER));
+    input.readChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
     this.actionSignalAspects.clear();
     input.read(CompoundTagKeys.ACTION_SIGNAL_ASPECTS, SignalAspect.CODEC.listOf())
         .ifPresent(this.actionSignalAspects::addAll);

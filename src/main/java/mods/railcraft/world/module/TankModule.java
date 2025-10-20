@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
@@ -11,9 +10,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
@@ -22,14 +24,15 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public static final int SLOT_OUTPUT = 2;
   private final StandardTank tank;
 
-  private final IItemHandler itemHandler = new InvWrapper(this) {
-    @NotNull
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (slot == SLOT_OUTPUT)
-        return ItemStack.EMPTY;
-      return super.extractItem(slot, amount, simulate);
-    }
+  private final ResourceHandler<ItemResource> itemHandler =
+      new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
+        @Override
+        public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+          if (index == SLOT_OUTPUT) {
+            return 0;
+          }
+          return super.extract(index, resource, amount, transaction);
+        }
   };
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -58,14 +61,14 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidTools.isRoomInContainer(stack, this.tank.getFluid().getFluid()))
-          || FluidUtil.getFluidContained(stack).isPresent();
+          && FluidTools.isRoomInContainer(stack, this.tank.getFluidStack().getFluid()))
+          || !FluidUtil.getFirstStackContained(stack).isEmpty();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, stack);
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return this.itemHandler;
   }
 
@@ -79,7 +82,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.tank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK));
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }
@@ -88,7 +91,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     super.writeToBuf(out);
     out.writeVarInt(this.tank.getCapacity());
-    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluid());
+    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluidStack());
   }
 
   @Override

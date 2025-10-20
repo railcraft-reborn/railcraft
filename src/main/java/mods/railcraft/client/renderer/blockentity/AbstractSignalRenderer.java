@@ -43,7 +43,7 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
       @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.customName = Optional.ofNullable(blockEntity.getCustomName());
-    renderState.blockEntity = blockEntity;
+    renderState.level = blockEntity.getLevel();
   }
 
   @Override
@@ -51,7 +51,13 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
       CameraRenderState cameraState) {
 
     collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
-      SignalAuraRenderUtil.tryRenderSignalAura(state.blockEntity, pose, vertexConsumer);
+      if (state.level != null) {
+        var blockEntity = state.level.getBlockEntity(state.blockPos);
+        if (blockEntity == null) {
+          return;
+        }
+        SignalAuraRenderUtil.tryRenderSignalAura(blockEntity, pose, vertexConsumer);
+      }
     });
 
     state.customName.ifPresent(name -> {

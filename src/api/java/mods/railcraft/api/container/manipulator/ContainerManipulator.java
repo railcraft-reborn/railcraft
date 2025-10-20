@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * This interface defines the standard inventory operations.
@@ -44,15 +44,15 @@ public interface ContainerManipulator<T extends SlotAccessor> {
     return slots::stream;
   }
 
-  static ContainerManipulator<SlotAccessor> of(IItemHandler itemHandler) {
+  static ContainerManipulator<SlotAccessor> of(ResourceHandler<ItemResource> itemHandler) {
     var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
     return slots::stream;
   }
 
-  static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
+  /*static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
     var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
     return slots::stream;
-  }
+  }*/
 
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos) {
     return findAdjacent(level, blockPos, blockEntity -> true);
@@ -64,7 +64,7 @@ public interface ContainerManipulator<T extends SlotAccessor> {
         .flatMap(direction -> Stream.ofNullable(level.getBlockEntity(blockPos.relative(direction)))
             .filter(filter)
             .flatMap(blockEntity -> Optional.ofNullable(
-                level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(),
+                level.getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(),
                     direction.getOpposite()))
                 .map(ContainerManipulator::of)
                 .stream()))

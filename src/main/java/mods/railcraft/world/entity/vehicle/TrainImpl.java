@@ -10,17 +10,16 @@ import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.FunctionalUtil;
-import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.transfer.CombinedResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * @author Sm0keySa1m0n
@@ -78,26 +77,26 @@ public final class TrainImpl implements Train {
   }
 
   @Override
-  public Optional<IItemHandler> itemHandler() {
+  public Optional<ResourceHandler<ItemResource>> itemHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
+        .flatMap(cart -> Optional.ofNullable(cart.getCapability(Capabilities.Item.ENTITY))
             .stream())
-        .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
-        .toArray(IItemHandlerModifiable[]::new);
-    return cartHandlers.length == 0
-        ? Optional.empty()
-        : Optional.of(new CombinedInvWrapper(cartHandlers));
-  }
-
-  @Override
-  public Optional<IFluidHandler> fluidHandler() {
-    var cartHandlers = this.entities()
-        .flatMap(cart -> Optional.ofNullable(
-            cart.getCapability(Capabilities.FluidHandler.ENTITY, null)).stream())
+        //.flatMap(FunctionalUtil.ofType(IndexModifier.class))
         .toList();
     return cartHandlers.isEmpty()
         ? Optional.empty()
-        : Optional.of(new CompositeFluidHandler(cartHandlers));
+        : Optional.of(new CombinedResourceHandler<>(cartHandlers));
+  }
+
+  @Override
+  public Optional<ResourceHandler<FluidResource>> fluidHandler() {
+    var cartHandlers = this.entities()
+        .flatMap(cart -> Optional.ofNullable(
+            cart.getCapability(Capabilities.Fluid.ENTITY, null)).stream())
+        .toList();
+    return cartHandlers.isEmpty()
+        ? Optional.empty()
+        : Optional.of(new CombinedResourceHandler<>(cartHandlers));
   }
 
   public void refreshMaxSpeed() {

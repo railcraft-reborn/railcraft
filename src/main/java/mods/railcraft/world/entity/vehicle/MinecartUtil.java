@@ -144,23 +144,23 @@ public final class MinecartUtil {
       return null;
     }
 
-    if (level instanceof ServerLevel serverLevel) {
-      var entity = serverLevel.getEntity(id);
+    if (level instanceof ServerLevel) {
+      var entity = level.getEntity(id);
       return entity instanceof AbstractMinecart cart && entity.isAlive() ? cart : null;
     }
 
-    return getClientCartFromUUID(level, id);
+    return getClientCartFromUUID((ClientLevel) level, id);
   }
 
-  private static AbstractMinecart getClientCartFromUUID(Level level, UUID id) {
-    if (!(level instanceof ClientLevel clientLevel))
-      return null;
+  @Nullable
+  private static AbstractMinecart getClientCartFromUUID(ClientLevel level, UUID id) {
     // for performance reasons
     // noinspection Convert2streamapi
-    for (Entity entity : clientLevel.entitiesForRendering()) {
+    for (Entity entity : level.entitiesForRendering()) {
       if (entity instanceof AbstractMinecart abstractMinecart && entity.isAlive()
-          && entity.getUUID().equals(id))
+          && entity.getUUID().equals(id)) {
         return abstractMinecart;
+      }
     }
     return null;
   }

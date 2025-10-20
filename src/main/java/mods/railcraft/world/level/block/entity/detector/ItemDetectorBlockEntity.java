@@ -36,10 +36,10 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+      var itemHandler = cart.getCapability(Capabilities.Item.ENTITY);
       if (itemHandler != null) {
         var containerManipulator = ContainerManipulator.of(itemHandler);
-        if (itemHandler.getSlots() > 0) {
+        if (itemHandler.size() > 0) {
           switch (primaryMode) {
             case ANYTHING:
               return Redstone.SIGNAL_MAX;

@@ -51,7 +51,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
           0xFFFFFFFF, CuboidModelRenderer.FaceDisplay.FRONT, true);
     });
 
-    var fluidStack = state.tank.getFluid();
+    var fluidStack = state.tank.getFluidStack();
     if (fluidStack.getAmount() > 0) {
       float capacity = state.tank.getCapacity();
       var level = Math.min(fluidStack.getAmount() / capacity , 1);

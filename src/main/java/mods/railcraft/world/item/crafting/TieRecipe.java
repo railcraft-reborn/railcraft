@@ -13,7 +13,9 @@ import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public abstract class TieRecipe extends CustomRecipe {
 
@@ -43,8 +45,8 @@ public abstract class TieRecipe extends CustomRecipe {
     if (item.isEmpty()) {
       return false;
     }
-    var cap = item.getCapability(Capabilities.FluidHandler.ITEM);
-    if (cap == null || !cap.getFluidInTank(0).is(this.fluidTag)) {
+    var cap = item.getCapability(Capabilities.Fluid.ITEM, null);
+    if (cap == null || !FluidUtil.getStack(cap, 0).is(this.fluidTag)) {
       return false;
     }
 
@@ -58,9 +60,9 @@ public abstract class TieRecipe extends CustomRecipe {
   @Override
   public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
     var fluidHandler = Objects.requireNonNull(
-        craftingInput.getItem(1).getCapability(Capabilities.FluidHandler.ITEM));
+        craftingInput.getItem(1).getCapability(Capabilities.Fluid.ITEM, null));
 
-    if (fluidHandler.getFluidInTank(0).getAmount() >= 1000) {
+    if (fluidHandler.getAmountAsInt(0) >= 1000) {
       return result.copy();
     }
     return ItemStack.EMPTY;
@@ -73,12 +75,21 @@ public abstract class TieRecipe extends CustomRecipe {
       ItemStack item = input.getItem(i);
       if (!item.getCraftingRemainder().isEmpty()) {
         remainingItems.set(i, item.getCraftingRemainder());
-      } else if (item.getCapability(Capabilities.FluidHandler.ITEM) != null) {
-        var fluidHandler = Objects.requireNonNull(item.getCapability(Capabilities.FluidHandler.ITEM));
-        if (fluidHandler.drain(1000, IFluidHandler.FluidAction.SIMULATE).getAmount() == 1000) {
-          fluidHandler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+      } else {
+        var itemAccess = ItemAccess.forStack(item);
+        var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+        if (cap != null) {
+          try (var tx = Transaction.openRoot()) {
+            var resource = cap.getResource(0);
+            if (!resource.isEmpty()) {
+              var extracted = cap.extract(resource, 1000, tx);
+              if (extracted == 1000) {
+                tx.commit();
+              }
+            }
+          }
+          remainingItems.set(i, item.copy());
         }
-        remainingItems.set(i, item.copy());
       }
     }
     return remainingItems;

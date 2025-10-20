@@ -3,9 +3,9 @@ package mods.railcraft.api.charge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
-public interface ChargeCartStorage extends IEnergyStorage {
+public interface ChargeCartStorage extends EnergyHandler {
 
   /**
    * Returns the per-tick loss of charge in the cart battery.

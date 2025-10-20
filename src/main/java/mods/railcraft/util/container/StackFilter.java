@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
@@ -39,8 +40,8 @@ public enum StackFilter implements Predicate<ItemStack> {
   @SuppressWarnings("deprecation")
   BALLAST(itemStack -> ContainerTools.getBlockFromStack(itemStack)
       .builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
-  FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(Capabilities.FluidHandler.ITEM) != null),
+  FLUID_CONTAINER(itemStack -> ItemAccess.forStack(itemStack)
+      .getCapability(Capabilities.Fluid.ITEM) != null),
   FEED(itemStack -> itemStack.is(Tags.Items.ANIMAL_FOODS)
       || ContainerTools.getBlockFromStack(itemStack) instanceof StemBlock),
   CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()

@@ -307,36 +307,41 @@ public class RailcraftBlocks {
           RailcraftBlockProperties.steelAnvil());
 
   public static final DeferredBlock<Block> STEEL_BLOCK =
-      deferredRegister.registerSimpleBlock("steel_block", RailcraftBlockProperties.ingotBlock());
+      deferredRegister.registerSimpleBlock("steel_block", RailcraftBlockProperties::ingotBlock);
 
   public static final DeferredBlock<Block> BRASS_BLOCK =
-      deferredRegister.registerSimpleBlock("brass_block", RailcraftBlockProperties.ingotBlock()
+      deferredRegister.registerSimpleBlock("brass_block", properties ->
+          RailcraftBlockProperties.ingotBlock(properties)
               .strength(3.0F, 6.0F));
 
   public static final DeferredBlock<Block> BRONZE_BLOCK =
-      deferredRegister.registerSimpleBlock("bronze_block", RailcraftBlockProperties.ingotBlock());
+      deferredRegister.registerSimpleBlock("bronze_block", RailcraftBlockProperties::ingotBlock);
 
   public static final DeferredBlock<Block> INVAR_BLOCK =
-      deferredRegister.registerSimpleBlock("invar_block", RailcraftBlockProperties.ingotBlock());
+      deferredRegister.registerSimpleBlock("invar_block", RailcraftBlockProperties::ingotBlock);
 
   public static final DeferredBlock<Block> LEAD_BLOCK =
-      deferredRegister.registerSimpleBlock("lead_block", RailcraftBlockProperties.ingotBlock()
+      deferredRegister.registerSimpleBlock("lead_block", properties ->
+          RailcraftBlockProperties.ingotBlock(properties)
               .strength(5.0F, 6.0F));
 
   public static final DeferredBlock<Block> NICKEL_BLOCK =
-      deferredRegister.registerSimpleBlock("nickel_block", RailcraftBlockProperties.ingotBlock()
+      deferredRegister.registerSimpleBlock("nickel_block", properties ->
+          RailcraftBlockProperties.ingotBlock(properties)
               .strength(5.0F, 6.0F));
 
   public static final DeferredBlock<Block> SILVER_BLOCK =
-      deferredRegister.registerSimpleBlock("silver_block", RailcraftBlockProperties.ingotBlock()
+      deferredRegister.registerSimpleBlock("silver_block", properties ->
+          RailcraftBlockProperties.ingotBlock(properties)
           .strength(3.0F, 6.0F));
 
   public static final DeferredBlock<Block> TIN_BLOCK =
-      deferredRegister.registerSimpleBlock("tin_block", RailcraftBlockProperties.ingotBlock()
+      deferredRegister.registerSimpleBlock("tin_block", properties ->
+          RailcraftBlockProperties.ingotBlock(properties)
           .strength(3.0F, 6.0F));
 
   public static final DeferredBlock<Block> ZINC_BLOCK =
-      deferredRegister.registerSimpleBlock("zinc_block", RailcraftBlockProperties.ingotBlock());
+      deferredRegister.registerSimpleBlock("zinc_block", RailcraftBlockProperties::ingotBlock);
 
   public static final DeferredBlock<Block> LEAD_ORE =
       deferredRegister.registerBlock("lead_ore",
@@ -573,7 +578,7 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<ForceTrackBlock> FORCE_TRACK =
       deferredRegister.registerBlock("force_track", ForceTrackBlock::new,
-          BlockBehaviour.Properties.of()
+          properties -> properties
               .sound(SoundType.GLASS)
               .instabreak()
               .noCollision()
@@ -582,7 +587,7 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<ForceTrackEmitterBlock> FORCE_TRACK_EMITTER =
       deferredRegister.registerBlock("force_track_emitter", ForceTrackEmitterBlock::new,
-          BlockBehaviour.Properties.of()
+          properties -> properties
               .mapColor(MapColor.METAL)
               .requiresCorrectToolForDrops()
               .strength(1.5F, 6)
@@ -591,7 +596,7 @@ public class RailcraftBlocks {
 
   public static final DeferredBlock<AbandonedTrackBlock> ABANDONED_TRACK =
       deferredRegister.registerBlock("abandoned_track", AbandonedTrackBlock::new,
-          RailcraftBlockProperties.standardTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::standardTrack);
 
   public static final DeferredBlock<LockingTrackBlock> ABANDONED_LOCKING_TRACK =
       deferredRegister.registerBlock("abandoned_locking_track",
@@ -696,7 +701,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TrackBlock> ELECTRIC_TRACK =
       deferredRegister.registerBlock("electric_track",
           properties -> new TrackBlock(TrackTypes.ELECTRIC, properties),
-          RailcraftBlockProperties.electricTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::electricTrack);
 
   public static final DeferredBlock<LockingTrackBlock> ELECTRIC_LOCKING_TRACK =
       deferredRegister.registerBlock("electric_locking_track",
@@ -800,7 +805,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TrackBlock> HIGH_SPEED_TRACK =
       deferredRegister.registerBlock("high_speed_track",
           properties -> new TrackBlock(TrackTypes.HIGH_SPEED, properties),
-          RailcraftBlockProperties.standardTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::standardTrack);
 
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_TRANSITION_TRACK =
       deferredRegister.registerBlock("high_speed_transition_track",
@@ -860,7 +865,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.registerBlock("high_speed_electric_track",
           properties -> new TrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC, properties),
-          RailcraftBlockProperties.electricTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::electricTrack);
 
   public static final DeferredBlock<TransitionTrackBlock> HIGH_SPEED_ELECTRIC_TRANSITION_TRACK =
       deferredRegister.registerBlock("high_speed_electric_transition_track",
@@ -1020,7 +1025,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TrackBlock> REINFORCED_TRACK =
       deferredRegister.registerBlock("reinforced_track",
           properties -> new TrackBlock(TrackTypes.REINFORCED, properties),
-          RailcraftBlockProperties.reinforcedTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::reinforcedTrack);
 
   public static final DeferredBlock<LockingTrackBlock> REINFORCED_LOCKING_TRACK =
       deferredRegister.registerBlock("reinforced_locking_track",
@@ -1125,7 +1130,7 @@ public class RailcraftBlocks {
   public static final DeferredBlock<TrackBlock> STRAP_IRON_TRACK =
       deferredRegister.registerBlock("strap_iron_track",
           properties -> new TrackBlock(TrackTypes.STRAP_IRON, properties),
-          RailcraftBlockProperties.standardTrack(BlockBehaviour.Properties.of()));
+          RailcraftBlockProperties::standardTrack);
 
   public static final DeferredBlock<LockingTrackBlock> STRAP_IRON_LOCKING_TRACK =
       deferredRegister.registerBlock("strap_iron_locking_track",

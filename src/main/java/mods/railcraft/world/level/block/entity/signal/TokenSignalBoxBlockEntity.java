@@ -80,7 +80,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
     this.ringId = input.read(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC).orElse(UUID.randomUUID());
-    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

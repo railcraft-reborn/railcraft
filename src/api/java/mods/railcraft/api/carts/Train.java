@@ -6,8 +6,9 @@ import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * @author Sm0keySa1m0n
@@ -59,9 +60,9 @@ public interface Train {
     return this.state() == State.IDLE || this.isLocked();
   }
 
-  Optional<IItemHandler> itemHandler();
+  Optional<ResourceHandler<ItemResource>> itemHandler();
 
-  Optional<IFluidHandler> fluidHandler();
+  Optional<ResourceHandler<FluidResource>> fluidHandler();
 
   enum State implements StringRepresentable {
 

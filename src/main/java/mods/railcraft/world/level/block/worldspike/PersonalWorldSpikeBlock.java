@@ -35,11 +35,11 @@ public class PersonalWorldSpikeBlock extends WorldSpikeBlock {
 
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-      boolean willHarvest, FluidState fluid) {
+      ItemStack toolStack, boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof PersonalWorldSpikeBlockEntity worldSpike) {
       if (worldSpike.getOwner().isEmpty() ||
           worldSpike.isOwnerOrOperator(player.nameAndId())) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
       }
     }
     return false;

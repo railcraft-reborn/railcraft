@@ -49,7 +49,7 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity, TankBl
   @Override
   public void submit(TankBlockRenderState state, PoseStack poseStack,
       SubmitNodeCollector collector, CameraRenderState cameraState) {
-    var fluidStack = state.tank.getFluid();
+    var fluidStack = state.tank.getFluidStack();
     if (fluidStack.isEmpty()) {
       return;
     }

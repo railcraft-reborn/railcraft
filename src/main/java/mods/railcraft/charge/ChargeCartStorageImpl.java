@@ -10,15 +10,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartStorage {
+public class ChargeCartStorageImpl extends SimpleEnergyHandler implements ChargeCartStorage {
 
   protected static final Random RANDOM = new Random();
   private static final int DRAW_INTERVAL = 8;
   protected final int lossPerTick;
   protected double draw, chargeDrawnThisTick;
   protected int drewFromTrack, clock = RANDOM.nextInt(0, DRAW_INTERVAL);
+
+  private final ChargeDrawnThisTickJournal chargeDrawnThisTickJournal = new ChargeDrawnThisTickJournal();
 
   public ChargeCartStorageImpl(int capacity) {
     this(capacity, 0);
@@ -63,10 +68,14 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
       RollingStock.getOrThrow(owner).train().entities()
           .filter(x -> x instanceof EnergyMinecart)
           .flatMap(c -> Optional.ofNullable(
-              c.getCapability(Capabilities.EnergyStorage.ENTITY, null)).stream())
+              c.getCapability(Capabilities.Energy.ENTITY, null)).stream())
           .findAny()
-          .ifPresent(
-              energyStorage -> energy += energyStorage.extractEnergy(capacity - energy, false));
+          .ifPresent(energyStorage -> {
+            try (var tx = Transaction.openRoot()) {
+              energy += energyStorage.extract(capacity - energy, tx);
+              tx.commit();
+            }
+          });
     }
   }
 
@@ -85,9 +94,10 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
   }
 
   @Override
-  public int extractEnergy(int maxExtract, boolean simulate) {
-    int extracted = super.extractEnergy(maxExtract, simulate);
-    if (!simulate) {
+  public int extract(int amount, TransactionContext transaction) {
+    int extracted = super.extract(amount, transaction);
+    if (extracted > 0) {
+      chargeDrawnThisTickJournal.updateSnapshots(transaction);
       this.chargeDrawnThisTick += extracted;
     }
     return extracted;
@@ -95,5 +105,17 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   private boolean needsCharging() {
     return this.energy < this.capacity;
+  }
+
+  private class ChargeDrawnThisTickJournal extends SnapshotJournal<Double> {
+    @Override
+    protected Double createSnapshot() {
+      return chargeDrawnThisTick;
+    }
+
+    @Override
+    protected void revertToSnapshot(Double snapshot) {
+      chargeDrawnThisTick = snapshot;
+    }
   }
 }

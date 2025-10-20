@@ -32,7 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public abstract class BaseSteamLocomotive extends Locomotive implements FluidTransferHandler {
 
@@ -50,14 +51,14 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   protected final StandardTank waterTank =
       StandardTank.ofBuckets(6)
-          .fillProcessor(this::checkFill)
+          .fillProcessor((originalState) -> this.boiler.checkFill(originalState, this::explode))
           .filter(FluidTags.WATER);
 
   protected final StandardTank steamTank =
       StandardTank.ofBuckets(16)
           .filter(RailcraftTags.Fluids.STEAM)
-          .disableDrain()
-          .disableFill();
+          .disableExtract()
+          .disableInsert();
 
   private final SteamBoiler boiler = new SteamBoiler(this.waterTank, this.steamTank)
       .setEfficiencyModifier(RailcraftConfig.SERVER.fuelPerSteamMultiplier.get())
@@ -202,7 +203,13 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   private void ventSteam() {
-    this.steamTank.internalDrain(4, IFluidHandler.FluidAction.EXECUTE);
+    try (var tx = Transaction.openRoot()) {
+      var resource = this.steamTank.getResource(0);
+      if (!resource.isEmpty()) {
+        this.steamTank.internalExtract(resource, 4, tx);
+        tx.commit();
+      }
+    }
   }
 
   public SteamBoiler boiler() {
@@ -211,15 +218,18 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
   @Override
   public int retrieveFuel() {
-    var steam = this.steamTank.getFluid();
-    if (steam == FluidStack.EMPTY) {
+    try (var tx = Transaction.openRoot()) {
+      var steam = this.steamTank.getFluidStack();
+      if (steam.isEmpty()) {
+        return 0;
+      }
+      if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
+        this.steamTank.internalExtract(FluidResource.of(steam), SteamConstants.STEAM_PER_UNIT_WATER, tx);
+        tx.commit();
+        return FUEL_PER_REQUEST;
+      }
       return 0;
     }
-    if (steam.getAmount() >= this.steamTank.getCapacity() / 2) {
-      this.steamTank.internalDrain(SteamConstants.STEAM_PER_UNIT_WATER, IFluidHandler.FluidAction.EXECUTE);
-      return FUEL_PER_REQUEST;
-    }
-    return 0;
   }
 
   @Override
@@ -233,8 +243,8 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   protected void readAdditionalSaveData(ValueInput valueInput) {
     super.readAdditionalSaveData(valueInput);
-    this.tankManager.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
-    this.boiler.deserialize(valueInput.childOrEmpty(CompoundTagKeys.BOILER));
+    valueInput.readChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueInput.readChild(CompoundTagKeys.BOILER, this.boiler);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }
@@ -256,9 +266,5 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   public boolean canProvidePulledFluid(RollingStock requester, FluidStack fluid) {
     return false;
-  }
-
-  private FluidStack checkFill(FluidStack resource) {
-    return this.boiler.checkFill(resource, this::explode);
   }
 }

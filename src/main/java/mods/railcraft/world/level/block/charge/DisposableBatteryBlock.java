@@ -23,7 +23,7 @@ public abstract class DisposableBatteryBlock extends BatteryBlock implements Jei
   protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     Charge.distribution.network(level).access(pos).storage().ifPresent(storage -> {
-      if (storage.getEnergyStored() <= 0)
+      if (storage.getAmountAsInt() <= 0)
         level.setBlockAndUpdate(pos, this.getBatteryBlockEmpty().get().defaultBlockState());
     });
   }

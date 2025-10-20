@@ -147,7 +147,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
       var signals = input1.read(CompoundTagKeys.SIGNALS, ExtraCodecs.BIT_SET).orElseThrow();
       this.signalAspectTriggerSignals.put(name, signals);
     });
-    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

@@ -33,7 +33,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
@@ -98,8 +99,11 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
 
   @Override
   public int retrieveFuel() {
-    if (this.cartStorage.getEnergyStored() > CHARGE_USE_PER_REQUEST) {
-      this.cartStorage.extractEnergy(CHARGE_USE_PER_REQUEST, false);
+    if (this.cartStorage.getAmountAsInt() > CHARGE_USE_PER_REQUEST) {
+      try (var tx = Transaction.openRoot()) {
+        this.cartStorage.extract(CHARGE_USE_PER_REQUEST, tx);
+        tx.commit();
+      }
       return ACTUAL_FUEL_GAIN_PER_REQUEST;
     }
     return 0;
@@ -167,35 +171,34 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   private float getCharge() {
-    return (float) this.cartStorage.getEnergyStored() / (float) this.cartStorage.getMaxEnergyStored();
+    return (float) this.cartStorage.getAmountAsInt() / (float) this.cartStorage.getCapacityAsInt();
   }
 
   public float getLightLevel() {
     return this.entityData.get(LIGHT_LEVEL);
   }
 
-  public IEnergyStorage getBatteryCart() {
+  public EnergyHandler getBatteryCart() {
     return this.cartStorage;
   }
 
   @Override
   protected void readAdditionalSaveData(ValueInput valueInput) {
     super.readAdditionalSaveData(valueInput);
-    this.cartStorage.receiveEnergy(valueInput.getIntOr(CompoundTagKeys.ENERGY, 0), false);
+    this.cartStorage.set(valueInput.getIntOr(CompoundTagKeys.ENERGY, 0));
   }
 
   @Override
   protected void addAdditionalSaveData(ValueOutput valueOutput) {
     super.addAdditionalSaveData(valueOutput);
-    valueOutput.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getEnergyStored());
+    valueOutput.putInt(CompoundTagKeys.ENERGY, this.cartStorage.getAmountAsInt());
   }
 
   @Override
   protected void loadFromItemStack(ItemStack itemStack) {
     super.loadFromItemStack(itemStack);
     if (itemStack.has(RailcraftDataComponents.LOCOMOTIVE_ENERGY)) {
-      this.cartStorage.receiveEnergy(
-          itemStack.get(RailcraftDataComponents.LOCOMOTIVE_ENERGY).energy(), false);
+      this.cartStorage.set(itemStack.get(RailcraftDataComponents.LOCOMOTIVE_ENERGY).energy());
     }
   }
 
@@ -203,7 +206,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
     itemStack.set(RailcraftDataComponents.LOCOMOTIVE_ENERGY,
-        new LocomotiveEnergyComponent(this.cartStorage.getEnergyStored()));
+        new LocomotiveEnergyComponent(this.cartStorage.getAmountAsInt()));
     return itemStack;
   }
 

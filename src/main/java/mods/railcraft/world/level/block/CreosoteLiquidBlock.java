@@ -33,8 +33,8 @@ public class CreosoteLiquidBlock extends LiquidBlock {
 
   @Override
   protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
-      InsideBlockEffectApplier effectApplier) {
-    super.entityInside(state, level, pos, entity, effectApplier);
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
+    super.entityInside(state, level, pos, entity, effectApplier, isInside);
     if (entity instanceof LivingEntity living) {
       var potion = RailcraftMobEffects.CREOSOTE;
       if (!living.hasEffect(potion)) {

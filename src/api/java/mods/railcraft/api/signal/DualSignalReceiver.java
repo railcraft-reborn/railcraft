@@ -86,7 +86,7 @@ public class DualSignalReceiver extends SingleSignalReceiver {
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.secondarySignalClient.deserialize(valueInput.childOrEmpty(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT));
+    valueInput.readChild(CompoundTagKeys.SECONDARY_SIGNAL_CLIENT, this.secondarySignalClient);
   }
 
   @Override

@@ -3,9 +3,10 @@ package mods.railcraft.util;
 import java.util.Optional;
 import java.util.function.Supplier;
 import mods.railcraft.api.charge.ChargeStorage;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class ForwardingEnergyStorage implements IEnergyStorage {
+public class ForwardingEnergyStorage implements EnergyHandler {
 
   private final Supplier<Optional<? extends ChargeStorage>> delegate;
 
@@ -14,32 +15,22 @@ public class ForwardingEnergyStorage implements IEnergyStorage {
   }
 
   @Override
-  public int receiveEnergy(int maxReceive, boolean simulate) {
-    return this.delegate.get().map(x -> x.receiveEnergy(maxReceive, simulate)).orElse(0);
+  public int insert(int amount, TransactionContext transaction) {
+    return this.delegate.get().map(x -> x.insert(amount, transaction)).orElse(0);
   }
 
   @Override
-  public int extractEnergy(int maxExtract, boolean simulate) {
-    return this.delegate.get().map(x -> x.extractEnergy(maxExtract, simulate)).orElse(0);
+  public int extract(int amount, TransactionContext transaction) {
+    return this.delegate.get().map(x -> x.extract(amount, transaction)).orElse(0);
   }
 
   @Override
-  public int getEnergyStored() {
-    return this.delegate.get().map(IEnergyStorage::getEnergyStored).orElse(0);
+  public long getAmountAsLong() {
+    return this.delegate.get().map(EnergyHandler::getAmountAsLong).orElse(0L);
   }
 
   @Override
-  public int getMaxEnergyStored() {
-    return this.delegate.get().map(IEnergyStorage::getMaxEnergyStored).orElse(0);
-  }
-
-  @Override
-  public boolean canExtract() {
-    return this.delegate.get().map(IEnergyStorage::canExtract).orElse(false);
-  }
-
-  @Override
-  public boolean canReceive() {
-    return this.delegate.get().map(IEnergyStorage::canReceive).orElse(false);
+  public long getCapacityAsLong() {
+    return this.delegate.get().map(EnergyHandler::getCapacityAsLong).orElse(0L);
   }
 }

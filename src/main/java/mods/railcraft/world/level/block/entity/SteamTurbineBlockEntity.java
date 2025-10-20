@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.List;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.base.Predicates;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
@@ -28,9 +29,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
@@ -107,7 +109,8 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
           var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
               Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
           for (var neighbor : neighbors) {
-            FluidUtil.tryFluidTransfer(neighbor, master.getFluidHandler(), WATER_OUTPUT_RATE, true);
+            ResourceHandlerUtil.move(master.getFluidHandler(), neighbor, Predicates.alwaysTrue(),
+                WATER_OUTPUT_RATE, null);
           }
         });
 
@@ -144,7 +147,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   }
 
   @Nullable
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
     return masterModule
@@ -153,7 +156,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   }
 
   @Nullable
-  public IEnergyStorage getEnergyCap(@Nullable Direction side) {
+  public EnergyHandler getEnergyCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
     return masterModule

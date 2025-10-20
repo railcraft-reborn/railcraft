@@ -267,7 +267,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
     this.lockingModeController = LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
-    this.lockingModeController.deserialize(input.childOrEmpty(CompoundTagKeys.LOCKING_MODE_CONTROLLER));
+    input.readChild(CompoundTagKeys.LOCKING_MODE_CONTROLLER, this.lockingModeController);
     this.locked = input.getBooleanOr(CompoundTagKeys.LOCKED, false);
     this.trainLeaving = input.getBooleanOr(CompoundTagKeys.TRAIN_LEAVING, false);
     this.trainDelay = input.getIntOr(CompoundTagKeys.TRAIN_DELAY, 0);

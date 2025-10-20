@@ -98,10 +98,12 @@ public class LevelUtil {
     var blockEntity = level.getBlockEntity(pos);
 
     var event = NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player));
-    if (event.isCanceled())
+    if (event.isCanceled()) {
       return false;
+    }
 
-    if (!blockState.onDestroyedByPlayer(level, pos, player, dropBlock, level.getFluidState(pos))) {
+    if (!blockState.onDestroyedByPlayer(level, pos, player, player.getMainHandItem().copy(),
+        dropBlock, level.getFluidState(pos))) {
       return false;
     }
 

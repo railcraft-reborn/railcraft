@@ -97,11 +97,11 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
 
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-      boolean willHarvest, FluidState fluid) {
+      ItemStack toolStack, boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof LogBookBlockEntity blockEntity) {
       if (blockEntity.getOwner().isEmpty() ||
           blockEntity.isOwnerOrOperator(player.nameAndId())) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
       }
     }
     return false;

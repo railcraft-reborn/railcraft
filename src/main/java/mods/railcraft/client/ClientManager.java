@@ -256,7 +256,7 @@ public class ClientManager {
       }
 
       @Override
-      public boolean addHitEffects(BlockState state, Level level, HitResult result,
+      public boolean addHitEffects(BlockState state, Level level, @Nullable HitResult result,
           ParticleEngine particleEngine) {
         return true;
       }
@@ -334,8 +334,8 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent.AfterEntities event) {
-    shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
-        event.getPartialTick().getGameTimeDeltaPartialTick(false));
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getLevelRenderState().cameraRenderState,
+        Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
   }
 
   @SubscribeEvent
@@ -353,7 +353,7 @@ public class ClientManager {
 
     if (versionStatus.shouldDraw()) {
       var newVersion = result.target().toString();
-      var modUrl = modInfo.getModURL().get().toString();
+      var modUrl = modInfo.getModURL().orElseThrow().toString();
       var message = Component.literal(RailcraftConstants.NAME + ": ").withStyle(ChatFormatting.GREEN)
           .append(Component.literal(
               "A new version (%s) is available to download.".formatted(newVersion))

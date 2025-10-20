@@ -8,16 +8,16 @@ import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.steam.FluidFuelProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class FluidFueledSteamBoilerModule
     extends SteamBoilerModule<FluidFueledSteamBoilerBlockEntity> {
 
   protected final StandardTank fuelTank = StandardTank.ofBuckets(16)
-      .disableDrain()
-      .setValidator(fluidStack -> !fluidStack.isEmpty()
-          && FuelUtil.getFuelValue(fluidStack) > 0);
+      .disableExtract()
+      .setValidator(fluidResource -> !fluidResource.isEmpty()
+          && FuelUtil.getFuelValue(fluidResource) > 0);
 
   private FluidTools.ProcessState fuelProcessState = FluidTools.ProcessState.RESET;
 
@@ -48,11 +48,11 @@ public class FluidFueledSteamBoilerModule
     }
 
     if (slot == SLOT_LIQUID_INPUT) {
-      var fluid = FluidUtil.getFluidContained(itemStack).orElse(FluidStack.EMPTY);
+      var fluid = FluidUtil.getFirstStackContained(itemStack);
       if (fluid.isEmpty()) {
         return false;
       }
-      return fluid.is(FluidTags.WATER) || FuelUtil.getFuelValue(fluid) > 0;
+      return fluid.is(FluidTags.WATER) || FuelUtil.getFuelValue(FluidResource.of(fluid)) > 0;
     }
 
     return false;

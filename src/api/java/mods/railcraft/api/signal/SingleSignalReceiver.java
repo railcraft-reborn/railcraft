@@ -71,7 +71,7 @@ public class SingleSignalReceiver
 
   @Override
   public void deserialize(ValueInput valueInput) {
-    this.primarySignalClient.deserialize(valueInput.childOrEmpty(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT));
+    valueInput.readChild(CompoundTagKeys.PRIMARY_SIGNAL_CLIENT, this.primarySignalClient);
   }
 
   @Override

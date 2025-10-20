@@ -38,6 +38,6 @@ public abstract class ContainerModule<T extends ModuleProvider> extends BaseModu
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.container.deserialize(valueInput.childOrEmpty(CompoundTagKeys.CONTAINER));
+    valueInput.readChild(CompoundTagKeys.CONTAINER, this.container);
   }
 }

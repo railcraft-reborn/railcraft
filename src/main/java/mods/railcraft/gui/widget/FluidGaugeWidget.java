@@ -27,13 +27,13 @@ public class FluidGaugeWidget extends Widget {
     syncCounter++;
     return (syncCounter % 16) == 0
         || (!this.lastSyncedFluidStack.isEmpty()
-            && !FluidStack.matches(this.lastSyncedFluidStack, tank.getFluid()));
+            && !FluidStack.matches(this.lastSyncedFluidStack, tank.getFluidStack()));
   }
 
   @Override
   public void writeToBuf(ServerPlayer player, RegistryFriendlyByteBuf data) {
     super.writeToBuf(player, data);
-    var fluidStack = tank.getFluid();
+    var fluidStack = tank.getFluidStack();
     this.lastSyncedFluidStack = fluidStack.copy();
     data.writeInt(tank.getCapacity());
     FluidStack.OPTIONAL_STREAM_CODEC.encode(data, fluidStack);

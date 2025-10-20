@@ -34,8 +34,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class TankMinecart extends FilteredMinecart
     implements WorldlyContainer, FluidTransferHandler {
@@ -50,14 +50,12 @@ public class TankMinecart extends FilteredMinecart
   public static final int SLOT_PROCESSING = 1;
   public static final int SLOT_OUTPUT = 2;
   private static final int[] SLOTS = ContainerTools.buildSlotArray(0, 3);
-  private final StandardTank tank =
-      StandardTank
-          .ofBuckets(RailcraftConfig.SERVER.tankCartFluidCapacity.get())
-          .changeCallback(this::tankChanged)
-          .setValidator(fluidStack ->
-              this.getFilterFluid()
-                  .map(x -> FluidStack.isSameFluidSameComponents(x, fluidStack))
-                  .orElse(true));
+  private final StandardTank tank = StandardTank
+      .ofBuckets(RailcraftConfig.SERVER.tankCartFluidCapacity.get())
+      .changeCallback(this::tankChanged)
+      .setValidator(fluidStack -> this.getFilterFluid()
+          .map(fluidStack::matches)
+          .orElse(true));
   private final ContainerMapper invLiquids = ContainerMapper.make(this).ignoreItemChecks();
   private int fluidProcessingTimer;
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
@@ -80,7 +78,7 @@ public class TankMinecart extends FilteredMinecart
 
   private void tankChanged() {
     var tag = new CompoundTag();
-    tag.store(CompoundTagKeys.TANK, FluidStack.OPTIONAL_CODEC, this.tank.getFluid());
+    tag.store(CompoundTagKeys.TANK, FluidStack.OPTIONAL_CODEC, this.tank.getFluidStack());
     this.entityData.set(FLUID_STACK, tag);
   }
 
@@ -145,7 +143,7 @@ public class TankMinecart extends FilteredMinecart
     super.readAdditionalSaveData(valueInput);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
-    this.tank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK));
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
     this.tankChanged();
   }
 
@@ -166,7 +164,10 @@ public class TankMinecart extends FilteredMinecart
   }
 
   public Optional<FluidStack> getFilterFluid() {
-    return FluidUtil.getFluidContained(this.getFilterItem());
+    if (this.getFilterItem().isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(FluidUtil.getFirstStackContained(this.getFilterItem()));
   }
 
   public Container getInvLiquids() {
@@ -197,7 +198,7 @@ public class TankMinecart extends FilteredMinecart
   public boolean canPassFluidRequests(FluidStack fluid) {
     return this.getFilterFluid()
         .map(filter -> FluidStack.isSameFluidSameComponents(filter, fluid))
-        .orElseGet(() -> this.tank.isEmpty() || FluidStack.isSameFluidSameComponents(this.tank.getFluid(), fluid));
+        .orElseGet(() -> this.tank.isEmpty() || FluidStack.isSameFluidSameComponents(this.tank.getFluidStack(), fluid));
   }
 
   @Override
@@ -214,7 +215,7 @@ public class TankMinecart extends FilteredMinecart
   public ItemStack getPickResult() {
     var itemStack = super.getPickResult();
     if (!this.tank.isEmpty()) {
-      itemStack.set(RailcraftDataComponents.FLUID, SimpleFluidContent.copyOf(this.tank.getFluid()));
+      itemStack.set(RailcraftDataComponents.FLUID, SimpleFluidContent.copyOf(this.tank.getFluidStack()));
     }
     return itemStack;
   }

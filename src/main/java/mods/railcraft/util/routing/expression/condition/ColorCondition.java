@@ -1,6 +1,7 @@
 package mods.railcraft.util.routing.expression.condition;
 
 import java.util.Locale;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.util.routing.RoutingLogicException;
@@ -28,6 +29,7 @@ public class ColorCondition {
     };
   }
 
+  @Nullable
   private static DyeColor parseColor(String name) throws RoutingLogicException {
     if ("Any".equals(name) || "*".equals(name)) {
       return null;

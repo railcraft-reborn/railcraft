@@ -15,9 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.IFluidTank;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
@@ -35,22 +36,22 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private float operatingRatio;
   private int energy;
 
-  private final IFluidHandler fluidHandler = new FluidHandler();
+  private final ResourceHandler<FluidResource> fluidHandler = new FluidHandler();
 
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
     this.rotorContainer.listener(this.provider);
     this.steamTank = StandardTank.ofBuckets(4)
         .filter(RailcraftTags.Fluids.STEAM)
-        .disableDrain()
+        .disableExtract()
         .changeCallback(provider::setChanged);
     this.waterTank = StandardTank.ofBuckets(4)
         .filter(FluidTags.WATER)
-        .disableFill()
+        .disableInsert()
         .changeCallback(provider::setChanged);
   }
 
-  public IFluidHandler getFluidHandler() {
+  public ResourceHandler<FluidResource> getFluidHandler() {
     return this.fluidHandler;
   }
 
@@ -58,16 +59,19 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   public void serverTick() {
     super.serverTick();
     var addedEnergy = false;
-    if (this.energy < CHARGE_OUTPUT) {
-      var steam = this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.SIMULATE);
-      if (steam.getAmount() >= STEAM_USAGE) {
-        var rotorStack = this.rotorContainer.getItem(0);
-        if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
-          addedEnergy = true;
-          this.energy += CHARGE_OUTPUT;
-          this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.EXECUTE);
-          this.waterTank.internalFill(new FluidStack(Fluids.WATER, 2), IFluidHandler.FluidAction.EXECUTE);
-          this.rotorContainer.setItem(0, useRotor((ServerLevel) this.provider.level(), rotorStack));
+    if (this.energy < CHARGE_OUTPUT && !this.steamTank.getFluidStack().isEmpty()) {
+      try (var tx = Transaction.openRoot()) {
+        var steamExtracted =
+            this.steamTank.internalExtract(this.steamTank.getResource(0), STEAM_USAGE, tx);
+        if (steamExtracted >= STEAM_USAGE) {
+          var rotorStack = this.rotorContainer.getItem(0);
+          if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
+            addedEnergy = true;
+            this.energy += CHARGE_OUTPUT;
+            this.waterTank.internalInsert(FluidResource.of(Fluids.WATER), 2, tx);
+            tx.commit();
+            this.rotorContainer.setItem(0, useRotor((ServerLevel) this.provider.level(), rotorStack));
+          }
         }
       }
     }
@@ -77,8 +81,11 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
     var chargeStorage = this.storage().get();
     if (!chargeStorage.isFull()) {
-      chargeStorage.receiveEnergy(this.energy, false);
-      this.energy = 0;
+      try (var tx = Transaction.openRoot()) {
+        chargeStorage.insert(this.energy, tx);
+        tx.commit();
+        this.energy = 0;
+      }
     }
   }
 
@@ -110,9 +117,9 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.steamTank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.STEAM_TANK));
-    this.waterTank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.WATER_TANK));
-    this.rotorContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.ROTOR_CONTAINER));
+    valueInput.readChild(CompoundTagKeys.STEAM_TANK, this.steamTank);
+    valueInput.readChild(CompoundTagKeys.WATER_TANK, this.waterTank);
+    valueInput.readChild(CompoundTagKeys.ROTOR_CONTAINER, this.rotorContainer);
     this.energy = valueInput.getIntOr(CompoundTagKeys.ENERGY, 0);
     this.operatingRatio = valueInput.getFloatOr(CompoundTagKeys.OPERATING_RATIO, 0);
   }
@@ -128,45 +135,45 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     }
   }
 
-  public class FluidHandler implements IFluidHandler {
+  private class FluidHandler implements ResourceHandler<FluidResource> {
 
     @Override
-    public int getTanks() {
+    public int size() {
       return 2;
     }
 
-    private IFluidTank getTank(int tank) {
-      return tank == 0 ? SteamTurbineModule.this.steamTank : SteamTurbineModule.this.waterTank;
+    private StandardTank getTank(int index) {
+      return index == 0 ? SteamTurbineModule.this.steamTank : SteamTurbineModule.this.waterTank;
     }
 
     @Override
-    public FluidStack getFluidInTank(int tank) {
-      return this.getTank(tank).getFluid();
+    public FluidResource getResource(int index) {
+      return this.getTank(index).getResource(0);
     }
 
     @Override
-    public int getTankCapacity(int tank) {
-      return this.getTank(tank).getCapacity();
+    public long getAmountAsLong(int index) {
+      return this.getTank(index).getAmountAsLong(0);
     }
 
     @Override
-    public boolean isFluidValid(int tank, FluidStack stack) {
-      return this.getTank(tank).isFluidValid(stack);
+    public long getCapacityAsLong(int index, FluidResource resource) {
+      return this.getTank(index).getCapacityAsLong(0, resource);
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
-      return SteamTurbineModule.this.steamTank.fill(resource, action);
+    public boolean isValid(int index, FluidResource resource) {
+      return this.getTank(index).isValid(0, resource);
     }
 
     @Override
-    public FluidStack drain(FluidStack resource, FluidAction action) {
-      return SteamTurbineModule.this.waterTank.drain(resource, action);
+    public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+      return SteamTurbineModule.this.steamTank.insert(index, resource, amount, transaction);
     }
 
     @Override
-    public FluidStack drain(int maxDrain, FluidAction action) {
-      return SteamTurbineModule.this.waterTank.drain(maxDrain, action);
+    public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+      return SteamTurbineModule.this.waterTank.extract(index, resource, amount, transaction);
     }
   }
 }

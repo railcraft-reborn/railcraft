@@ -21,8 +21,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEntity, Void> {
 
@@ -138,7 +139,7 @@ public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEn
   }
 
   @Nullable
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamOvenBlockEntity::getSteamOvenModule);
     return masterModule
@@ -147,7 +148,7 @@ public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEn
   }
 
   @Nullable
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(SteamOvenBlockEntity::getSteamOvenModule);
     return masterModule

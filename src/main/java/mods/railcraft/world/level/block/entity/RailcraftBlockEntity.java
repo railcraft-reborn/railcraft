@@ -174,7 +174,7 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     super.loadAdditional(input);
     this.owner = input.read(CompoundTagKeys.OWNER, NameAndId.CODEC).orElse(null);
     this.customName = input.read(CompoundTagKeys.CUSTOM_NAME, ComponentSerialization.CODEC).orElse(null);
-    this.moduleDispatcher.deserialize(input.childOrEmpty(CompoundTagKeys.MODULES));
+    input.readChild(CompoundTagKeys.MODULES, this.moduleDispatcher);
   }
 
   @Override

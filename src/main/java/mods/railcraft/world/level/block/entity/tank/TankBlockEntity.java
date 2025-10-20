@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
@@ -37,8 +38,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
@@ -52,7 +55,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private int maxY;
   private int maxZ;
 
-  private IFluidHandler fluidHandler;
+  @Nullable
+  private ResourceHandler<FluidResource> fluidHandler;
 
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern<Void>> patterns) {
@@ -71,7 +75,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
               || !tank.getMembership().equals(this.getMembership()),
           Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
       for (var neighbor : neighbors) {
-        FluidUtil.tryFluidTransfer(neighbor, this.fluidHandler, FLOW_RATE, true);
+        ResourceHandlerUtil.move(this.fluidHandler, neighbor, Predicates.alwaysTrue(), FLOW_RATE, null);
       }
     }
   }
@@ -91,7 +95,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.setChanged();
     this.syncToClient();
 
-    var fluidStack = this.module.getTank().getFluid();
+    var fluidStack = this.module.getTank().getFluidStack();
     var fluidType = this.module.getTank().getFluidType();
     var light = fluidType.getLightLevel(fluidStack);
     if (light != this.lastLight) {
@@ -128,7 +132,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
   @Override
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand, this.module.getTank())
+    return FluidUtil.interactWithFluidHandler(player, hand, null, this.module.getTank())
         ? InteractionResult.CONSUME
         : super.use(player, hand);
   }
@@ -175,7 +179,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.fluidHandler;
   }
 

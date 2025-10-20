@@ -10,15 +10,17 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
@@ -32,13 +34,15 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
 
   protected final SteamBoiler boiler;
 
-  private final IItemHandler itemHandler = new InvWrapper(this) {
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (slot != SLOT_LIQUID_OUTPUT)
-        return ItemStack.EMPTY;
-      return super.extractItem(slot, amount, simulate);
-    }
+  private final ResourceHandler<ItemResource> itemHandler =
+      new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
+        @Override
+        public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+          if (index != SLOT_LIQUID_INPUT) {
+            return 0;
+          }
+          return super.extract(index, resource, amount, transaction);
+        }
   };
 
   protected final TankManager tankManager = new TankManager();
@@ -68,8 +72,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     this.tankManager.add(this.waterTank);
     this.tankManager.add(this.steamTank);
 
-    this.waterTank.disableDrain();
-    this.steamTank.disableFill();
+    this.waterTank.disableExtract();
+    this.steamTank.disableInsert();
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank);
     this.boiler.setChangeListener(provider::syncToClient);
@@ -87,7 +91,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     return this.tankManager;
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return this.itemHandler;
   }
 
@@ -99,8 +103,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     this.boiler.setTicksPerCycle(metadata.ticksPerCycle());
   }
 
-  private FluidStack checkFill(FluidStack fluidStack) {
-    return this.boiler.checkFill(fluidStack, () -> this.explode = true);
+  private void checkFill(FluidStack waterOriginalState) {
+    this.boiler.checkFill(waterOriginalState, () -> this.explode = true);
   }
 
   public SteamBoiler getBoiler() {
@@ -165,8 +169,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.tankManager.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
-    this.boiler.deserialize(valueInput.childOrEmpty(CompoundTagKeys.BOILER));
+    valueInput.readChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueInput.readChild(CompoundTagKeys.BOILER, this.boiler);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }

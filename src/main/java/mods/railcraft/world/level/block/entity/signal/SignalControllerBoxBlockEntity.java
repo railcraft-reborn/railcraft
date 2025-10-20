@@ -125,7 +125,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
         input.read(CompoundTagKeys.DEFAULT_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.GREEN);
     this.poweredAspect =
         input.read(CompoundTagKeys.POWERED_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.RED);
-    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

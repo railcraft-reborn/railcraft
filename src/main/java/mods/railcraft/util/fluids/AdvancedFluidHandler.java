@@ -1,62 +1,67 @@
 package mods.railcraft.util.fluids;
 
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.NotNull;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class AdvancedFluidHandler implements IFluidHandler {
+public class AdvancedFluidHandler implements ResourceHandler<FluidResource> {
 
-  private final IFluidHandler fluidHandler;
+  private final ResourceHandler<FluidResource> fluidHandler;
 
-  public AdvancedFluidHandler(IFluidHandler fluidHandler) {
+  public AdvancedFluidHandler(ResourceHandler<FluidResource> fluidHandler) {
     this.fluidHandler = fluidHandler;
   }
 
   @Override
-  public int getTanks() {
-    return this.fluidHandler.getTanks();
+  public int size() {
+    return fluidHandler.size();
   }
 
   @Override
-  @NotNull
-  public FluidStack getFluidInTank(int i) {
-    return this.fluidHandler.getFluidInTank(i);
+  public FluidResource getResource(int index) {
+    return fluidHandler.getResource(index);
   }
 
   @Override
-  public int getTankCapacity(int i) {
-    return this.fluidHandler.getTankCapacity(i);
+  public long getAmountAsLong(int index) {
+    return fluidHandler.getAmountAsLong(index);
   }
 
   @Override
-  public boolean isFluidValid(int i, @NotNull FluidStack fluidStack) {
-    return this.fluidHandler.isFluidValid(i, fluidStack);
+  public long getCapacityAsLong(int index, FluidResource resource) {
+    return fluidHandler.getCapacityAsLong(index, resource);
   }
 
   @Override
-  public int fill(FluidStack fluidStack, FluidAction fluidAction) {
-    return this.fluidHandler.fill(fluidStack, fluidAction);
+  public boolean isValid(int index, FluidResource resource) {
+    return fluidHandler.isValid(index, resource);
   }
 
   @Override
-  @NotNull
-  public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-    return this.fluidHandler.drain(fluidStack, fluidAction);
+  public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+    return fluidHandler.insert(index, resource, amount, transaction);
   }
 
   @Override
-  @NotNull
-  public FluidStack drain(int i, FluidAction fluidAction) {
-    return this.fluidHandler.drain(i, fluidAction);
+  public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+    return fluidHandler.extract(index, resource, amount, transaction);
+  }
+
+  @Override
+  public int extract(FluidResource resource, int amount, TransactionContext transaction) {
+    return fluidHandler.extract(resource, amount, transaction);
   }
 
   public int getFluidQty(FluidStack fluid) {
     if (fluid.isEmpty()) {
       return 0;
     }
-    return IntStream.range(0, this.getTanks())
-        .mapToObj(this::getFluidInTank)
+    return IntStream.range(0, this.size())
+        .mapToObj(i -> FluidUtil.getStack(this, i))
         .filter(fluidStack -> FluidStack.isSameFluidSameComponents(fluidStack, fluid))
         .mapToInt(FluidStack::getAmount)
         .sum();
@@ -73,14 +78,17 @@ public class AdvancedFluidHandler implements IFluidHandler {
     if (fluid.isEmpty()) {
       return this.areTanksFull();
     }
-    int fill = this.fill(fluid.copyWithAmount(1), FluidAction.SIMULATE);
-    return fill <= 0;
+
+    try (var transaction = Transaction.openRoot()) {
+      int filled = this.insert(FluidResource.of(fluid), 1, transaction);
+      return filled <= 0;
+    }
   }
 
   public boolean areTanksFull() {
-    for (int i = 0; i < this.getTanks(); i++) {
-      var tank = this.getFluidInTank(i);
-      if (tank.isEmpty() || tank.getAmount() < this.getTankCapacity(i)) {
+    for (int i = 0; i < this.size(); i++) {
+      var tank = FluidUtil.getStack(this, i);
+      if (tank.isEmpty() || tank.getAmount() < this.getCapacityAsInt(i, FluidResource.EMPTY)) {
         return false;
       }
     }
@@ -92,8 +100,8 @@ public class AdvancedFluidHandler implements IFluidHandler {
   }
 
   public boolean isFluidInTank() {
-    for (int i = 0; i < this.getTanks(); i++) {
-      var tank = this.getFluidInTank(i);
+    for (int i = 0; i < this.size(); i++) {
+      var tank = FluidUtil.getStack(this, i);
       boolean empty = tank.isEmpty() || tank.getAmount() <= 0;
       if (!empty) {
         return true;
@@ -105,10 +113,10 @@ public class AdvancedFluidHandler implements IFluidHandler {
   public float getFluidLevel() {
     int amount = 0;
     int capacity = 0;
-    for (int i = 0; i < this.getTanks(); i++) {
-      var liquid = this.getFluidInTank(i);
+    for (int i = 0; i < this.size(); i++) {
+      var liquid = FluidUtil.getStack(this, i);
       amount += liquid.isEmpty() ? 0 : liquid.getAmount();
-      capacity += this.getTankCapacity(i);
+      capacity += this.getCapacityAsInt(i, FluidResource.EMPTY);
     }
     return capacity == 0 ? 0 : ((float) amount) / capacity;
   }
@@ -116,17 +124,22 @@ public class AdvancedFluidHandler implements IFluidHandler {
   public float getFluidLevel(FluidStack fluid) {
     int amount = 0;
     int capacity = 0;
-    for (int i = 0; i < this.getTanks(); i++) {
-      var liquid = this.getFluidInTank(i);
+    for (int i = 0; i < this.size(); i++) {
+      var liquid = FluidUtil.getStack(this, i);
       if (liquid.isEmpty() || !FluidStack.isSameFluidSameComponents(liquid, fluid))
         continue;
       amount += liquid.getAmount();
-      capacity += this.getTankCapacity(i);
+      capacity += this.getCapacityAsInt(i, FluidResource.EMPTY);
     }
     return capacity == 0 ? 0 : amount / (float) capacity;
   }
 
-  public boolean canPutFluid(FluidStack fluid) {
-    return !fluid.isEmpty() && fill(fluid, FluidAction.SIMULATE) > 0;
+  public boolean canPutFluid(FluidResource fluidResource, int amount) {
+    if (amount <= 0) {
+      return false;
+    }
+    try (var transaction = Transaction.openRoot()) {
+      return this.insert(fluidResource, amount, transaction) > 0;
+    }
   }
 }

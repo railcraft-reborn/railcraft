@@ -68,8 +68,8 @@ public class BlockSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.blockSignal.deserialize(input.childOrEmpty(CompoundTagKeys.BLOCK_SIGNAL));
-    this.signalController.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_CONTROLLER));
+    input.readChild(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal);
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

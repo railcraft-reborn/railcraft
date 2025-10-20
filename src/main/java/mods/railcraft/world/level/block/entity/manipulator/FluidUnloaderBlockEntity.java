@@ -9,9 +9,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
 
@@ -39,17 +40,17 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
 
   @Override
   protected void processCart(AbstractMinecart cart) {
-    IFluidHandler tankCart = getCartFluidHandler(cart, Direction.DOWN);
+    ResourceHandler<FluidResource> tankCart = getCartFluidHandler(cart, Direction.DOWN);
     if (tankCart != null) {
-      FluidStack moved = FluidUtil.tryFluidTransfer(tank, tankCart,
-          RailcraftConfig.SERVER.tankCartFluidTransferRate.get(), true);
-      this.setProcessing(!moved.isEmpty());
+      final var transferRate = RailcraftConfig.SERVER.tankCartFluidTransferRate.get();
+      int moved = ResourceHandlerUtil.move(tankCart, tank, __ -> true, transferRate, null);
+      this.setProcessing(moved > 0);
     }
   }
 
   @Override
   protected boolean hasWorkForCart(AbstractMinecart cart) {
-    IFluidHandler cartFluidHandler = getCartFluidHandler(cart, Direction.DOWN);
+    ResourceHandler<FluidResource> cartFluidHandler = getCartFluidHandler(cart, Direction.DOWN);
     if (cartFluidHandler == null) {
       return false;
     }
@@ -58,12 +59,14 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
       return false;
     }
 
-    if (this.getFilterFluid()
-        .map(fluid -> cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty())
-        .orElse(false)) {
-      return false;
-    }
+    try (var tx = Transaction.openRoot()){
+      if (this.getFilterFluid()
+          .map(fluid -> cartFluidHandler.extract(FluidResource.of(fluid), fluid.getAmount(), tx) == 0)
+          .orElse(false)) {
+        return false;
+      }
 
-    return !cartFluidHandler.drain(1, IFluidHandler.FluidAction.SIMULATE).isEmpty();
+      return cartFluidHandler.extract(cartFluidHandler.getResource(0), 1, tx) > 0;
+    }
   }
 }

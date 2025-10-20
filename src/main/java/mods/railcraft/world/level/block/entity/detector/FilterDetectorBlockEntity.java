@@ -35,7 +35,7 @@ public abstract class FilterDetectorBlockEntity extends DetectorBlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.invFilters.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.readChild(CompoundTagKeys.CONTAINER, this.invFilters);
   }
 
   @Override

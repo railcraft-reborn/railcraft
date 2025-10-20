@@ -63,7 +63,7 @@ public class ChargeMeterItem extends Item {
       ChargeCartStorageImpl cartStorage) {
     player.displayClientMessage(CommonComponents.joinLines(
         displayName.copy().withStyle(ChatFormatting.BLUE),
-        lineFormatter(Translations.ChargeMeter.CHARGE, cartStorage.getEnergyStored(), "FE"),
+        lineFormatter(Translations.ChargeMeter.CHARGE, cartStorage.getAmountAsInt(), "FE"),
         lineFormatter(Translations.ChargeMeter.DRAW, cartStorage.getDraw(), "FE/t"),
         lineFormatter(Translations.ChargeMeter.LOSS, cartStorage.getLosses(), "FE/t")
     ), false);

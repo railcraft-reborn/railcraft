@@ -36,8 +36,8 @@ public abstract class BatteryBlock extends ChargeBlock implements JeiSearchable 
 
   @Override
   protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
-      InsideBlockEffectApplier effectApplier) {
-    super.entityInside(state, level, pos, entity, effectApplier);
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
+    super.entityInside(state, level, pos, entity, effectApplier, isInside);
     if (level instanceof ServerLevel serverLevel) {
       Charge.distribution.network(serverLevel).access(pos)
           .zap(entity, Charge.DamageOrigin.BLOCK, 1F);

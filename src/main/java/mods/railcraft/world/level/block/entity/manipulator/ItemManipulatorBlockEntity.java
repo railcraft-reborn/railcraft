@@ -33,7 +33,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     implements MenuProvider {
@@ -139,8 +140,8 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Nullable
-  protected static IItemHandler getCartItemHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, direction);
+  protected static ResourceHandler<ItemResource> getCartItemHandler(AbstractMinecart cart, Direction direction) {
+    return cart.getCapability(Capabilities.Item.ENTITY_AUTOMATION, direction);
   }
 
   @Override
@@ -232,7 +233,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return Optional.ofNullable(getCartItemHandler(cart, this.getFacing().getOpposite()))
-        .map(inventory -> inventory.getSlots() > 0).orElse(false)
+        .map(inventory -> inventory.size() > 0).orElse(false)
         && super.canHandleCart(cart);
   }
 
@@ -265,6 +266,6 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     super.loadAdditional(input);
     this.transferMode =
         input.read(CompoundTagKeys.TRANSFER_MODE, TransferMode.CODEC).orElse(TransferMode.ALL);
-    this.getItemFilters().deserialize(input.childOrEmpty(CompoundTagKeys.ITEM_FILTERS));
+    input.readChild(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters());
   }
 }

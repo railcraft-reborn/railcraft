@@ -8,19 +8,20 @@ package mods.railcraft.api.signal;
 
 import java.util.Objects;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.base.Preconditions;
 
 public final class SignalUtil {
 
   public static int aspectUpdateInterval = 4;
 
+  @Nullable
   private static TuningAuraHandler tuningAuraHandler;
 
   private SignalUtil() {}
 
   public static TuningAuraHandler tuningAuraHandler() {
-    Objects.requireNonNull(tuningAuraHandler);
-    return tuningAuraHandler;
+    return Objects.requireNonNull(tuningAuraHandler);
   }
 
   @ApiStatus.Internal

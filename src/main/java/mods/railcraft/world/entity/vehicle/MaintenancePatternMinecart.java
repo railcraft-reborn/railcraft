@@ -79,6 +79,6 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   @Override
   protected void readAdditionalSaveData(ValueInput valueInput) {
     super.readAdditionalSaveData(valueInput);
-    this.patternContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.PATTERN));
+    valueInput.readChild(CompoundTagKeys.PATTERN, this.patternContainer);
   }
 }

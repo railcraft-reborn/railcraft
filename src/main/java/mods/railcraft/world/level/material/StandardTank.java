@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
@@ -16,47 +15,52 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.resource.Resource;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 /**
- * Our fancy type of tank. Use this preferably over forge's default one
+ * Our fancy type of tank. Use this preferably over neoforge's default one
  *
- * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank FluidTank
+ * @see net.neoforged.neoforge.transfer.fluid.FluidStacksResourceHandler FluidStacksResourceHandler
  */
-public class StandardTank extends FluidTank {
+public class StandardTank extends FluidStacksResourceHandler {
 
   @Nullable
   protected Supplier<FluidStack> filter;
+  private Predicate<FluidResource> validator;
 
   @Nullable
   private Runnable changeCallback;
+  @Nullable
+  private Consumer<FluidStack> fillProcessor;
 
-  private boolean disableDrain;
-  private boolean disableFill;
+  private boolean disableExtract;
+  private boolean disableInsert;
 
   private List<Component> tooltip;
 
-  @Nullable
-  private BiFunction<FluidStack, FluidAction, FluidStack> fillProcessor;
+  private final FluidStackJournal fluidStackJournal = new FluidStackJournal();
 
   private StandardTank(int capacity) {
-    super(capacity);
+    super(1, capacity);
     this.refreshTooltip();
+    this.validator = __ -> true;
   }
 
-  public StandardTank fillProcessor(Function<FluidStack, FluidStack> fillProcessor) {
-    return this.fillProcessor((resource, action) -> action.execute()
-        ? fillProcessor.apply(resource)
-        : resource);
-  }
-
-  public StandardTank fillProcessor(BiFunction<FluidStack, FluidAction, FluidStack> fillProcessor) {
+  /**
+   * Used to trigger explosion when inserting water into a superheated tank
+   */
+  public StandardTank fillProcessor(Consumer<FluidStack> fillProcessor) {
     this.fillProcessor = fillProcessor;
     return this;
   }
 
   public StandardTank filter(TagKey<Fluid> tag) {
-    return this.setValidator(fluidStack -> fluidStack.is(tag));
+    return this.setValidator(fluidResource -> fluidResource.is(tag));
   }
 
   public StandardTank filter(Fluid filter) {
@@ -65,96 +69,103 @@ public class StandardTank extends FluidTank {
 
   public StandardTank filter(Supplier<? extends Fluid> filter) {
     this.filter = () -> new FluidStack(filter.get(), 1);
-    return this.setValidator(fluidStack -> fluidStack.is(filter.get()));
+    return this.setValidator(fluidResource -> fluidResource.is(filter.get()));
   }
 
-  @Override
-  public StandardTank setValidator(Predicate<FluidStack> validator) {
-    super.setValidator(validator);
+  public void setCapacity(int capacity) {
+    this.capacity = capacity;
+  }
+
+  public FluidStack getFluidStack() {
+    return FluidUtil.getStack(this, 0);
+  }
+
+  public int getCapacity() {
+    return this.getCapacity(0, FluidResource.EMPTY);
+  }
+
+  public int getFluidAmount() {
+    return this.getAmountAsInt(0);
+  }
+
+  public boolean isEmpty() {
+    return this.getFluidAmount() <= 0;
+  }
+
+  public boolean isFull() {
+    return this.getFluidAmount() == this.getCapacityAsInt(0, FluidResource.EMPTY);
+  }
+
+  public int getRemainingSpace() {
+    return this.getCapacityAsInt(0, FluidResource.EMPTY) - this.getFluidAmount();
+  }
+
+  public FluidType getFluidType() {
+    return this.getFluidStack().getFluidType();
+  }
+
+  public void setFluid(FluidStack fluidStack) {
+    this.set(0, FluidResource.of(fluidStack), fluidStack.getAmount());
+  }
+
+  public StandardTank setValidator(Predicate<FluidResource> validator) {
+    this.validator = validator;
     return this;
   }
 
   @Override
-  public int fill(FluidStack resource, FluidAction action) {
-    if (this.fillProcessor != null) {
-      resource = this.fillProcessor.apply(resource, action);
-    }
-    return this.disableFill ? 0 : super.fill(resource, action);
+  public boolean isValid(int index, FluidResource resource) {
+    return this.validator.test(resource);
   }
 
   @Override
-  public FluidStack drain(FluidStack resource, FluidAction action) {
-    return this.disableDrain ? FluidStack.EMPTY : super.drain(resource, action);
+  public int insert(FluidResource resource, int amount, TransactionContext transaction) {
+    fluidStackJournal.updateSnapshots(transaction);
+    return this.disableInsert ? 0 : super.insert(resource, amount, transaction);
+  }
+
+  /**
+   * Internal fill function which IGNORES <code>disablefill</code> made by us.
+   *
+   * @see net.neoforged.neoforge.transfer.ResourceHandler#insert(Resource, int, TransactionContext)
+   */
+  public int internalInsert(FluidResource resource, int amount, TransactionContext transaction) {
+    return super.insert(resource, amount, transaction);
   }
 
   @Override
-  public FluidStack drain(int maxDrain, FluidAction action) {
-    return this.disableDrain ? FluidStack.EMPTY : super.drain(maxDrain, action);
+  public int extract(FluidResource resource, int amount, TransactionContext transaction) {
+    return this.disableExtract ? 0 : super.extract(resource, amount, transaction);
   }
 
   /**
-   * Internal fill function which IGNORES disablefill made by us.
+   * Internal drain function which IGNORES <code>disableDrain</code> made by us.
    *
-   * @param resource FluidStack representing the Fluid and maximum amount of fluid to be
-   * @param action If SIMULATE, fill will only be simulated.
-   * @return Amount of resource that was (or would have been, if simulated) filled.
-   *
-   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#fill(FluidStack, FluidAction) FluidTank#fill()
+   * @see net.neoforged.neoforge.transfer.ResourceHandler#extract(Resource, int, TransactionContext)
    */
-  public int internalFill(FluidStack resource, FluidAction action) {
-    return super.fill(resource, action);
+  public int internalExtract(FluidResource resource, int amount, TransactionContext transaction) {
+    return super.extract(resource, amount, transaction);
   }
 
   /**
-   * Internal drain function which IGNORES disableDrain made by us.
+   * Disables draining of our tank.
    *
-   * @param resource FluidStack representing the Fluid and maximum amount of fluid to be drained.
-   * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that was (or would have been, if
-   *         simulated) drained.
-   *
-   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#drain(FluidStack, FluidAction) FluidTank#drain()
+   * @see StandardTank#extract(FluidResource, int, TransactionContext) Extract Function
+   * @see StandardTank#internalExtract(FluidResource, int, TransactionContext) Bypassed extract function
    */
-  public FluidStack internalDrain(FluidStack resource, FluidAction action) {
-    return super.drain(resource, action);
-  }
-
-  /**
-   * Internal drain function which IGNORES disablefill made by us.
-   *
-   * @param maxDrain Maximum amount of fluid to drain.
-   * @param action If SIMULATE, fill will only be simulated.
-   * @return FluidStack representing the Fluid and amount that was (or would have been, if
-   *         simulated) drained.
-   * @see net.neoforged.neoforge.fluids.capability.templates.FluidTank#drain(int, FluidAction) FluidTank#drain()
-   */
-  public FluidStack internalDrain(int maxDrain, FluidAction action) {
-    return super.drain(maxDrain, action);
-  }
-
-  /**
-   * Disables draning of our tank. Blocks drain() from draining.
-   *
-   * @see StandardTank#drain(FluidStack, FluidAction)
-   *      Drain Function
-   * @see StandardTank#internalDrain(FluidStack,
-   *      FluidAction) Bypassed Drain Function
-   */
-  public StandardTank disableDrain() {
-    this.disableDrain = true;
+  public StandardTank disableExtract() {
+    this.disableExtract = true;
     return this;
   }
 
   /**
    * Disables filling of our tank.
    *
-   * @see StandardTank#fill(FluidStack, FluidAction) Fill
-   *      Function
-   * @see StandardTank#internalFill(FluidStack,
-   *      FluidAction) Bypassed Fill Function
+   * @see StandardTank#insert(FluidResource, int, TransactionContext) Insert Function
+   * @see StandardTank#internalInsert(FluidResource, int, TransactionContext) Bypassed insert Function
    */
-  public StandardTank disableFill() {
-    this.disableFill = true;
+  public StandardTank disableInsert() {
+    this.disableInsert = true;
     return this;
   }
 
@@ -163,31 +174,38 @@ public class StandardTank extends FluidTank {
     return this;
   }
 
-  public boolean isFull() {
-    return this.getFluid().getAmount() == this.getCapacity();
-  }
-
-  public int getRemainingSpace() {
-    return this.getCapacity() - this.getFluidAmount();
-  }
-
-  public FluidType getFluidType() {
-    return this.getFluid().getFluidType();
-  }
-
   @Override
-  public void setFluid(FluidStack resource) {
-    if (resource.isEmpty() || this.isFluidValid(resource)) {
-      super.setFluid(resource);
-      this.onContentsChanged();
+  public void set(int index, FluidResource resource, int amount) {
+    if (resource.isEmpty() || this.isValid(index, resource)) {
+      super.set(index, resource, amount);
     }
   }
 
   @Override
-  protected void onContentsChanged() {
+  protected void onContentsChanged(int index, FluidStack previousContents) {
     this.refreshTooltip();
     if (this.changeCallback != null) {
       this.changeCallback.run();
+    }
+  }
+
+  private class FluidStackJournal extends SnapshotJournal<FluidStack> {
+
+    @Override
+    protected FluidStack createSnapshot() {
+      return getFluidStack();
+    }
+
+    @Override
+    protected void revertToSnapshot(FluidStack snapshot) {
+      set(0, FluidResource.of(snapshot), snapshot.getAmount());
+    }
+
+    @Override
+    protected void onRootCommit(FluidStack originalState) {
+      if (fillProcessor != null) {
+        fillProcessor.accept(originalState);
+      }
     }
   }
 
@@ -198,7 +216,7 @@ public class StandardTank extends FluidTank {
   protected void refreshTooltip() {
     var tooltip = new ArrayList<Component>();
     int amount = this.getFluidAmount();
-    FluidStack fluidStack = this.getFluid();
+    FluidStack fluidStack = this.getFluidStack();
 
     if (fluidStack.isEmpty() && this.filter != null) {
       fluidStack = this.filter.get();

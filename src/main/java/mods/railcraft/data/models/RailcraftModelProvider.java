@@ -1401,8 +1401,19 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.blockStateOutput.accept(
         MultiVariantGenerator.dispatch(block)
             .with(
-                BlockModelGenerators.createBooleanModelDispatch(ForceTrackEmitterBlock.POWERED,
-                    plainVariant(modelPowered), plainVariant(modelUnpowered))));
+                PropertyDispatch.initial(ForceTrackEmitterBlock.POWERED, ForceTrackEmitterBlock.FACING)
+                    .generate((powered, facing) -> {
+                      var yRot = switch (facing) {
+                        case SOUTH -> Quadrant.R180;
+                        case EAST -> Quadrant.R90;
+                        case WEST -> Quadrant.R270;
+                        default -> Quadrant.R0;
+                      };
+                      return plainVariant(powered ? modelPowered : modelUnpowered)
+                          .with(v -> v.withYRot(yRot));
+                    })
+            )
+    );
     blockModels.registerSimpleItemModel(block, modelUnpowered);
   }
 

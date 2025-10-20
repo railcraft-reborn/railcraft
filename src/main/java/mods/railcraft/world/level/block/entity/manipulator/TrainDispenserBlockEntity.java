@@ -128,7 +128,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.invPattern.deserialize(input.childOrEmpty(CompoundTagKeys.TRAIN_DISPENSER_FILTERS));
+    input.readChild(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern);
   }
 
   @Nullable

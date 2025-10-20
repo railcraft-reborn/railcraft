@@ -221,7 +221,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   @Override
   protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
-      InsideBlockEffectApplier effectApplier) {
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
     if (level instanceof ServerLevel serverLevel) {
       this.getTrackType().getEventHandler().entityInside(serverLevel, pos, state, entity);
     }

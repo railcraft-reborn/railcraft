@@ -28,37 +28,25 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
 
   @Override
   public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
-      int centreY,
-      int mouseX, int mouseY) {
-    if (this.widget.tank == null) {
+      int centreY, int mouseX, int mouseY) {
+
+    var fluidStack = this.widget.tank.getFluidStack();
+    if (fluidStack.isEmpty()) {
       return;
     }
 
-    var fluidStack = this.widget.tank.getFluid();
-    if (fluidStack.getAmount() <= 0) {
-      return;
-    }
-
-    var fluidIcon =
-        FluidRenderer.getFluidTexture(fluidStack, FluidRenderer.FluidType.STILL);
-    if (fluidIcon == null) {
-      return;
-    }
+    var fluidIcon = FluidRenderer.getFluidTexture(fluidStack, FluidRenderer.FluidType.STILL);
 
     var scale = Math.min(fluidStack.getAmount(), this.widget.tank.getCapacity())
         / (float) this.widget.tank.getCapacity();
 
     var color = RenderUtil.getColorARGB(fluidStack);
 
-    for (var col = 0; col < this.widget.w / 16; col++) {
-      for (var row = 0; row <= this.widget.h / 16; row++) {
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, fluidIcon.atlasLocation(), centreX + this.widget.x + col * 16,
-            centreY + this.widget.y + row * 16 - 1, 0, 16, 16, color, 256, 256);
-      }
-    }
+    guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, fluidIcon, centreX + this.widget.x,
+        centreY + this.widget.y, this.widget.w, this.widget.h, color);
 
     var mask = Mth.floor(this.widget.h * scale);
-    if (mask == 0 && fluidStack.getAmount() > 0) {
+    if (mask == 0) {
       mask = 1;
     }
     guiGraphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.x,

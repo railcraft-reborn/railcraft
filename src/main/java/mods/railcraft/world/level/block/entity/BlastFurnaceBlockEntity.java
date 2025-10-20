@@ -23,7 +23,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceBlockEntity, Void> {
 
@@ -123,7 +124,7 @@ public class BlastFurnaceBlockEntity extends MultiblockBlockEntity<BlastFurnaceB
   }
 
   @Nullable
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     return this.getMasterBlockEntity()
         .map(BlastFurnaceBlockEntity::getBlastFurnaceModule)
         .map(BlastFurnaceModule::getItemHandler)

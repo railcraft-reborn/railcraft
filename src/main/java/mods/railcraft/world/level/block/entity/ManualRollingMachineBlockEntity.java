@@ -59,7 +59,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.invResult.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.readChild(CompoundTagKeys.CONTAINER, this.invResult);
     input.child(CompoundTagKeys.CRAFT_MATRIX).ifPresent(input1 -> {
       var tempItems = NonNullList.withSize(this.craftMatrix.getContainerSize(), ItemStack.EMPTY);
       ContainerHelper.loadAllItems(input1, tempItems);

@@ -6,7 +6,6 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.item;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +40,7 @@ public interface TrackPlacer {
    *        your track, use your default value.
    * @return true if successful
    */
-  default boolean placeTrack(ItemStack stack, @NotNull Player player, Level level,
+  default boolean placeTrack(ItemStack stack, Player player, Level level,
       BlockPos pos, @Nullable RailShape trackShape) {
     return stack.getItem().useOn(
         new UseOnContext(player, InteractionHand.MAIN_HAND, new BlockHitResult(Vec3.ZERO,
@@ -56,9 +55,9 @@ public interface TrackPlacer {
   Block getPlacedBlock();
 
   /**
-   * Return true if the given tile entity corresponds to this Track item.
+   * Return true if the given block entity corresponds to this Track item.
    * <p/>
-   * If the track has no tile entity, return true on null.
+   * If the track has no block entity, return true on null.
    */
-  boolean isPlacedTileEntity(ItemStack stack, @Nullable BlockEntity tile);
+  boolean isPlacedBlockEntity(ItemStack stack, @Nullable BlockEntity blockEntity);
 }

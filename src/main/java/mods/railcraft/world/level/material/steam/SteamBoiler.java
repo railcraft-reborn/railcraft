@@ -12,11 +12,13 @@ import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 /**
  * The boiler itself. Used to simulate turning water into steam.
@@ -54,20 +56,10 @@ public class SteamBoiler implements ValueIOSerializable {
    *
    * @param resource The fluidstack (should be water).
    */
-  public FluidStack checkFill(FluidStack resource, Runnable explosionCallback) {
-    if (resource.isEmpty()) {
-      return FluidStack.EMPTY;
+  public void checkFill(FluidStack waterOriginalState, Runnable explosionCallback) {
+    if (this.isSuperHeated() && waterOriginalState.isEmpty()) {
+      explosionCallback.run();
     }
-
-    if (this.isSuperHeated()) {
-      var water = this.waterTank.getFluid();
-      if (water.isEmpty()) {
-        explosionCallback.run();
-        return FluidStack.EMPTY;
-      }
-    }
-
-    return resource;
   }
 
   public void setFuelProvider(FuelProvider fuelProvider) {
@@ -237,20 +229,22 @@ public class SteamBoiler implements ValueIOSerializable {
     }
     this.partialConversions -= waterCost;
 
-    FluidStack water = this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.SIMULATE);
-    if (water.isEmpty()) {
-      return 0;
+    try (var tx = Transaction.openRoot()) {
+      int waterExtracted = this.waterTank
+          .internalExtract(FluidResource.of(Fluids.WATER), waterCost, tx);
+      if (waterExtracted == 0) {
+        return 0;
+      }
+
+      waterCost = Math.min(waterCost, waterExtracted);
+
+      var steam = new FluidStack(RailcraftFluids.STEAM.get(),
+          SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
+
+      this.steamTank.internalInsert(FluidResource.of(steam), steam.getAmount(), tx);
+      tx.commit();
+      return steam.getAmount();
     }
-
-    waterCost = Math.min(waterCost, water.getAmount());
-
-    var steam = new FluidStack(RailcraftFluids.STEAM.get(),
-        SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
-
-    this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.EXECUTE);
-    this.steamTank.internalFill(steam, IFluidHandler.FluidAction.EXECUTE);
-
-    return steam.getAmount();
   }
 
   @Override

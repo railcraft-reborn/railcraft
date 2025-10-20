@@ -12,7 +12,7 @@ public class RailcraftRenderTypes extends RenderStateShard {
       256,
       false,
       false,
-      RenderPipelines.OUTLINE_NO_CULL,
+      RenderPipelines.OUTLINE_CULL,
       RenderType.CompositeState.builder()
           .setTextureState(NO_TEXTURE)
           .setLightmapState(LIGHTMAP)

@@ -29,9 +29,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class SteamBoilerBlockEntity
     extends MultiblockBlockEntity<SteamBoilerBlockEntity, SteamBoilerBlockEntity.Metadata> {
@@ -51,8 +52,10 @@ public class SteamBoilerBlockEntity
     return patterns.build();
   });
 
-  private IFluidHandler fluidHandler;
-  private IItemHandler itemHandler;
+  @Nullable
+  private ResourceHandler<FluidResource> fluidHandler;
+  @Nullable
+  private ResourceHandler<ItemResource> itemHandler;
 
   public SteamBoilerBlockEntity(BlockPos blockPos, BlockState blockState) {
     this(RailcraftBlockEntityTypes.STEAM_BOILER.get(), blockPos, blockState);
@@ -70,17 +73,19 @@ public class SteamBoilerBlockEntity
 
   @Override
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand,
+    return FluidUtil.interactWithFluidHandler(player, hand, null,
         this.getModule(SteamBoilerModule.class).get().getTankManager())
             ? InteractionResult.CONSUME
             : super.use(player, hand);
   }
 
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     return this.itemHandler;
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.fluidHandler;
   }
 

@@ -3,7 +3,9 @@ package mods.railcraft.util.fluids;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
+import com.google.common.base.Predicates;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
@@ -23,8 +25,13 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public final class FluidTools {
 
@@ -51,47 +58,47 @@ public final class FluidTools {
    * @return TRUE if we should return success, FALSE if super must be called.
    */
   public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
-      IFluidHandler fluidHandler) {
+      ResourceHandler<FluidResource> fluidHandler) {
     return player.level().isClientSide()
         ? isFluidHandler(player.getItemInHand(hand))
-        : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
+        : FluidUtil.interactWithFluidHandler(player, hand, null, fluidHandler);
   }
 
   public static boolean isFluidHandler(ItemStack stack) {
-    return FluidUtil.getFluidHandler(stack).isPresent();
+    if (stack.isEmpty()) {
+      return false;
+    }
+    return ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM) != null;
   }
 
   public static boolean isEmptyContainer(ItemStack stack) {
-    return FluidUtil.getFluidHandler(stack)
-        .filter(item -> {
-          for (int i = 0; i < item.getTanks(); i++) {
-            if (!item.getFluidInTank(i).isEmpty()) {
-              return false;
-            }
-          }
-          return true;
-        })
-        .isPresent();
+    var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
+    Objects.requireNonNull(cap);
+    for (int i = 0; i < cap.size(); i++) {
+      if (cap.getAmountAsLong(i) > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
-    return FluidUtil.getFluidHandler(stack)
-        .filter(item -> item.fill(new FluidStack(fluid, Integer.MAX_VALUE),
-            IFluidHandler.FluidAction.SIMULATE) > 0)
-        .isPresent();
+    var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
+    Objects.requireNonNull(cap);
+    try (var tx = Transaction.openRoot()) {
+      return cap.insert(FluidResource.of(fluid), Integer.MAX_VALUE, tx) > 0;
+    }
   }
 
   public static boolean containsFluid(ItemStack stack, Fluid fluid) {
-    return FluidUtil.getFluidHandler(stack)
-        .filter(item -> {
-          for (int i = 0; i < item.getTanks(); i++) {
-            if (!item.getFluidInTank(i).getFluid().isSame(fluid)) {
-              return false;
-            }
-          }
-          return true;
-        })
-        .isPresent();
+    var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
+    Objects.requireNonNull(cap);
+    for (int i = 0; i < cap.size(); i++) {
+      if (!cap.getResource(i).is(fluid)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public enum ProcessType {
@@ -129,26 +136,29 @@ public final class FluidTools {
         .moveOneItemTo(ContainerMapper.make(container, 2, 1).ignoreItemChecks());
   }
 
-  private static ProcessState tryFill(Container container, StandardTank tank, ItemStack itemStack) {
-    var result =
-        FluidUtil.tryFillContainer(itemStack, tank, FluidType.BUCKET_VOLUME, null, true);
-    if (!result.isSuccess()) {
+  private static ProcessState tryFill(Container container, StandardTank tank, ItemAccess itemAccess) {
+    var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+    var moved = ResourceHandlerUtil.move(tank, cap, Predicates.alwaysTrue(),
+        FluidType.BUCKET_VOLUME, null);
+    if (moved == 0) {
       sendToOutput(container);
       return ProcessState.RESET;
     }
-    container.setItem(1, result.getResult());
+    var result = itemAccess.getResource().toStack(itemAccess.getAmount());
+    container.setItem(1, result);
     return ProcessState.FILLING;
   }
 
   private static ProcessState tryDrain(Container container, StandardTank tank,
-      ItemStack itemStack) {
-    var result =
-        FluidUtil.tryEmptyContainer(itemStack, tank, FluidType.BUCKET_VOLUME, null, true);
-    if (!result.isSuccess()) {
+      ItemAccess itemAccess) {
+    var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+    var moved = ResourceHandlerUtil.move(cap, tank, Predicates.alwaysTrue(),
+        FluidType.BUCKET_VOLUME, null);
+    if (moved != FluidType.BUCKET_VOLUME) {
       sendToOutput(container);
       return ProcessState.RESET;
     }
-    container.setItem(1, result.getResult());
+    container.setItem(1, itemAccess.getResource().toStack());
     return ProcessState.DRAINING;
   }
 
@@ -164,31 +174,33 @@ public final class FluidTools {
       sendToProcessing(container);
       return ProcessState.RESET;
     }
+    var itemAccess = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(container), 1);
     if (state == ProcessState.RESET) {
       if (type == ProcessType.FILL_ONLY) {
-        return tryFill(container, tank, itemStack);
+        return tryFill(container, tank, itemAccess);
       } else if (type == ProcessType.DRAIN_ONLY) {
-        return tryDrain(container, tank, itemStack);
+        return tryDrain(container, tank, itemAccess);
       } else if (type == ProcessType.FILL_THEN_DRAIN) {
-        if (FluidUtil.tryFillContainer(itemStack, tank,
-            FluidType.BUCKET_VOLUME, null, false).isSuccess()) {
-          return tryFill(container, tank, itemStack);
+        var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);
+        if (ResourceHandlerUtil.move(tank, cap, Predicates.alwaysTrue(),
+            FluidType.BUCKET_VOLUME, null) == FluidType.BUCKET_VOLUME) {
+          return tryFill(container, tank, itemAccess);
         } else {
-          return tryDrain(container, tank, itemStack);
+          return tryDrain(container, tank, itemAccess);
         }
       } else if (type == ProcessType.DRAIN_THEN_FILL) {
-        if (FluidUtil.getFluidContained(itemStack).isPresent() && !tank.isFull()) {
-          return tryDrain(container, tank, itemStack);
+        if (!FluidUtil.getFirstStackContained(itemStack).isEmpty() && !tank.isFull()) {
+          return tryDrain(container, tank, itemAccess);
         } else {
-          return tryFill(container, tank, itemStack);
+          return tryFill(container, tank, itemAccess);
         }
       }
     }
     if (state == ProcessState.FILLING) {
-      return tryFill(container, tank, itemStack);
+      return tryFill(container, tank, itemAccess);
     }
     if (state == ProcessState.DRAINING) {
-      return tryDrain(container, tank, itemStack);
+      return tryDrain(container, tank, itemAccess);
     }
     return state;
   }
@@ -208,9 +220,9 @@ public final class FluidTools {
     return state.getFluidState().getType();
   }
 
-  public static Collection<IFluidHandler> findNeighbors(Level level, BlockPos centrePos,
+  public static Collection<ResourceHandler<FluidResource>> findNeighbors(Level level, BlockPos centrePos,
       Predicate<BlockEntity> filter, Direction... directions) {
-    List<IFluidHandler> targets = new ArrayList<>();
+    List<ResourceHandler<FluidResource>> targets = new ArrayList<>();
     for (var direction : directions) {
       var blockEntity = level.getBlockEntity(centrePos.relative(direction));
       if (blockEntity == null) {
@@ -222,7 +234,7 @@ public final class FluidTools {
       if (!filter.test(blockEntity)) {
         continue;
       }
-      var cap = level.getCapability(Capabilities.FluidHandler.BLOCK,
+      var cap = level.getCapability(Capabilities.Fluid.BLOCK,
           blockEntity.getBlockPos(), direction.getOpposite());
       if (cap != null) {
         targets.add(cap);

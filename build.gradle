@@ -141,13 +141,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform("org.junit:junit-bom:$jupiter_version")
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "org.junit.jupiter:junit-jupiter:$jupiter_version"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     compileOnly "mezz.jei:jei-$minecraft_version-common-api:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-lib:$jei_version"
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
-    //localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
+    localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
 
     compileOnly "dev.emi:emi-neoforge:$emi_version+1.21:api"
     //localRuntime "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
@@ -155,15 +155,15 @@ dependencies {
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     //localRuntime "vazkii.patchouli:Patchouli:$patchouli_version"
 
-    compileOnly "curse.maven:jade-324717:$jade_id"
+    implementation "curse.maven:jade-324717:$jade_id"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 
     //localRuntime "curse.maven:sodium-394468:6173749"
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 
-    //implementation "curse.maven:edivadlib-638508:6914263"
-    //implementation "curse.maven:solargeneration-336538:6914291"
+    implementation "curse.maven:edivadlib-638508:7108943"
+    implementation "curse.maven:solargeneration-336538:7120257"
     //implementation "curse.maven:morejeiinfo-902996:6149873"
 }
 
@@ -238,7 +238,7 @@ idea {
     }
 }
 
-tasks.withType(ProcessResources).configureEach {
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
         minecraft_version       : minecraft_version,
         minecraft_version_range : minecraft_version_range,
@@ -249,11 +249,12 @@ tasks.withType(ProcessResources).configureEach {
         mod_version             : mod_version,
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 def lastCommit = providers.exec {
     commandLine 'git', 'rev-parse', 'HEAD'

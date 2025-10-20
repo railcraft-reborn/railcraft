@@ -63,7 +63,7 @@ public class RoutingTrackBlockEntity extends LockableTrackBlockEntity implements
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.container.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.readChild(CompoundTagKeys.CONTAINER, this.container);
   }
 
   @Override

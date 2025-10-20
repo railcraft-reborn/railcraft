@@ -14,6 +14,7 @@ public final class CompoundTagKeys {
   public static final String BACK_AUTO_LINK_ENABLED = "backAutoLinkEnabled";
   public static final String BACK_LINK = "backLink";
   public static final String BATTERIES = "batteries";
+  public static final String BATTERY_MINECART = "batteryMinecart";
   public static final String BLOCK_SIGNAL = "blockSignal";
   public static final String BOILER = "boiler";
   public static final String BURN_TIME = "burnTime";

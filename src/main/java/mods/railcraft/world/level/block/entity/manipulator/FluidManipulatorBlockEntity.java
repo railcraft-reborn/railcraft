@@ -27,8 +27,9 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 
 public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
@@ -51,8 +52,9 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     super(type, blockPos, blockState);
     this.setContainerSize(3);
     this.tankManager.add(this.tank);
-    this.tank.setValidator(fluidStack -> this.getFilterFluid()
-        .map(x -> FluidStack.isSameFluidSameComponents(x, fluidStack)).orElse(true));
+    this.tank.setValidator(fluidResource -> this.getFilterFluid()
+        .map(fluidResource::matches)
+        .orElse(true));
     this.tank.changeCallback(this::tankChanged);
   }
 
@@ -70,16 +72,20 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   public Optional<FluidStack> getFilterFluid() {
-    return FluidUtil.getFluidContained(this.fluidFilterContainer.getItem(0));
+    var item = this.fluidFilterContainer.getItem(0);
+    if (item.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(FluidUtil.getFirstStackContained(item));
   }
 
   public FluidStack getFluidHandled() {
-    return this.getFilterFluid().orElseGet(this.tank::getFluid);
+    return this.getFilterFluid().orElseGet(this.tank::getFluidStack);
   }
 
   @Nullable
-  protected static IFluidHandler getCartFluidHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(Capabilities.FluidHandler.ENTITY, direction);
+  protected static ResourceHandler<FluidResource> getCartFluidHandler(AbstractMinecart cart, Direction direction) {
+    return cart.getCapability(Capabilities.Fluid.ENTITY, direction);
   }
 
   public boolean use(Player player, InteractionHand hand) {
@@ -89,7 +95,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart
-        .getCapability(Capabilities.FluidHandler.ENTITY, this.getFacing().getOpposite()) != null
+        .getCapability(Capabilities.Fluid.ENTITY, this.getFacing().getOpposite()) != null
         && super.canHandleCart(cart);
   }
 
@@ -161,8 +167,8 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     super.loadAdditional(input);
     this.processState = input.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
-    this.tankManager.deserialize(input.childOrEmpty(CompoundTagKeys.TANK_MANAGER));
-    this.getFluidFilter().deserialize(input.childOrEmpty(CompoundTagKeys.INV_FILTER));
+    input.readChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    input.readChild(CompoundTagKeys.INV_FILTER, this.getFluidFilter());
   }
 
   @Override
@@ -177,7 +183,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.readPacketData(data);
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.tankManager;
   }
 }

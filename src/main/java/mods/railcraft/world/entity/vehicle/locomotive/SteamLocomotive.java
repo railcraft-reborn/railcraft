@@ -23,8 +23,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyContainer {
 
@@ -88,14 +91,17 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       var pulledWater = rollingStock.pullFluid(
           new FluidStack(Fluids.WATER, RailcraftConfig.SERVER.tankCartFluidTransferRate.get()));
       if (!pulledWater.isEmpty()) {
-        this.waterTank.fill(pulledWater, IFluidHandler.FluidAction.EXECUTE);
+        try (var tx = Transaction.openRoot()){
+          this.waterTank.insert(FluidResource.of(pulledWater), pulledWater.getAmount(), tx);
+          tx.commit();
+        }
       }
     }
   }
 
   @Override
   public boolean needsFuel() {
-    var water = this.waterTank.getFluid();
+    var water = this.waterTank.getFluidStack();
     if (water.isEmpty() || water.getAmount() < this.waterTank.getCapacity() / 3) {
       return true;
     }
@@ -113,8 +119,8 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
     return this.ticketContainer;
   }
 
-  public InvWrapper getFuelContainer() {
-    return new InvWrapper(this.allFuelContainer);
+  public ResourceHandler<ItemResource> getFuelContainer() {
+    return VanillaContainerWrapper.of(this.allFuelContainer);
   }
 
   @Override

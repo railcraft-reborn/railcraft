@@ -62,7 +62,7 @@ public class OutfittedTrackBlock extends TrackBlock {
 
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-      boolean willHarvest, FluidState fluid) {
+      ItemStack toolStack, boolean willHarvest, FluidState fluid) {
     var newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
         TrackUtil.getRailShapeRaw(state));
     boolean result = level.setBlockAndUpdate(pos, newState);

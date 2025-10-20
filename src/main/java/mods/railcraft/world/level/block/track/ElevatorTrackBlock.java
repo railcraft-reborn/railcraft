@@ -184,7 +184,7 @@ public class ElevatorTrackBlock extends Block {
 
   @Override
   protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
-      InsideBlockEffectApplier effectApplier) {
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
     entity.fallDistance = 0;
     if (level.isClientSide() || !(entity instanceof AbstractMinecart abstractMinecart))
       return;

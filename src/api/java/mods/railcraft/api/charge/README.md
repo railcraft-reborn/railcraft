@@ -14,7 +14,7 @@ Charge.distribution.network(world).access(pos).useCharge(500.0);
 
 ## General Charge Network Overview
 
-The Charge Network is unique in that component blocks aren't required to have a `net.minecraft.tileentity.TileEntity`.
+The Charge Network is unique in that component blocks aren't required to have a `net.minecraft.world.level.block.entity.BlockEntity`.
 
 This means the vast majority of the network is made up of dumb static blocks resulting in very low cpu overheard. This remains true even for very large grids. The network of grids is maintained as a separate data structure outside the world. Each grid, which is defined as a collection of connected charge blocks, only ticks its battery objects. Only blocks which store or provide Charge to the grid need battery blocks; wires, tracks and consumers do not. This means that only a small percentage of the grid is using cpu resources, while the bulk exists passively simply as means to define connectivity.
 
@@ -36,7 +36,7 @@ Charge is added to the grid by grabbing a source battery and adding Charge to th
 
 This is achieved by leveling the Charge in all the rechargeable batteries in the grid every tick. The benefit of this is that even if the grid is split apart for any reason, charge will be evenly distributed to the component parts. Batteries store their charge levels in their own NBT file alongside the world, this allows them to not rely on Tile Entities for serialization.
 
-### Continious operation
+### Continuous operation
 
 This brings us to another side effect of maintaining grids and batteries outside the world. The grid will continue to operation unhindered even if large parts of it exist in chunks that are currently not loaded. At the moment, to get this benefit the entire grid needs to be loaded at least once per restart, though not all at the same time. Research is being done on how difficult it would be to persist nodes as well as batteries. But that is an enhancement for the future.
 

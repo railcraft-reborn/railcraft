@@ -36,7 +36,8 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
     Map<K, DeferredHolder<Block, ? extends V>> variants = new EnumMap<>(keyType);
     for (var key : keyType.getEnumConstants()) {
       var name = String.format(nameTemplate, key.getSerializedName());
-      variants.put(key, deferredRegister.registerBlock(name, p -> func.apply(p, key), properties));
+      variants.put(key, deferredRegister.registerBlock(name, p -> func.apply(p, key),
+          () -> properties));
     }
     return new MappedVariantSet<>(variants);
   }
@@ -50,7 +51,7 @@ public sealed interface VariantSet<K extends Enum<K> & StringRepresentable, R, V
     Map<K, DeferredHolder<Block, ? extends V>> variants = new EnumMap<>(keyType);
     for (var key : keyType.getEnumConstants()) {
       var name = String.format(nameTemplate, key.getSerializedName());
-      variants.put(key, deferredRegister.registerBlock(name, func, properties));
+      variants.put(key, deferredRegister.registerBlock(name, func, () -> properties));
     }
     return new MappedVariantSet<>(variants);
   }

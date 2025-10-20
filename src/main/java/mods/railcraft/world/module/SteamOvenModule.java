@@ -2,7 +2,6 @@ package mods.railcraft.world.module;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
@@ -15,9 +14,12 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
 
@@ -28,7 +30,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   private static final int ITEMS_SMELTED = 9;
   protected final StandardTank steamTank;
   private final ContainerMapper inputContainer, outputContainer;
-  private final IItemHandler itemHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
 
   public SteamOvenModule(SteamOvenBlockEntity provider) {
     super(provider, 18);
@@ -36,23 +38,21 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
         .filter(RailcraftTags.Fluids.STEAM);
     this.inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
-    this.itemHandler = new InvWrapper(this) {
+    this.itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
       @Override
-      @NotNull
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot < 9) {
-          return ItemStack.EMPTY;
+      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index < 9) {
+          return 0;
         }
-        return super.extractItem(slot, amount, simulate);
+        return super.extract(index, resource, amount, transaction);
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (slot >= 9) {
-          return stack;
+      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index >= 9) {
+          return 0;
         }
-        return super.insertItem(slot, stack, simulate);
+        return super.insert(index, resource, amount, transaction);
       }
     };
   }
@@ -77,16 +77,19 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
 
   @Override
   protected boolean doProcessStep() {
-    if (!this.needFuel()) {
-      this.steamTank.drain(STEAM_PER_STEP, IFluidHandler.FluidAction.EXECUTE);
+    try (var tx = Transaction.openRoot()) {
+      var steamResource = this.steamTank.getResource(0);
+      if (steamResource.isEmpty()) {
+        return false;
+      }
+
+      var steamExtracted = this.steamTank.extract(steamResource, STEAM_PER_STEP, tx);
+      if (steamExtracted < STEAM_PER_STEP) {
+        return false;
+      }
+      tx.commit();
       return true;
     }
-    return false;
-  }
-
-  private boolean needFuel() {
-    var steam = this.steamTank.drain(STEAM_PER_STEP, IFluidHandler.FluidAction.SIMULATE);
-    return steam.getAmount() < STEAM_PER_STEP;
   }
 
   @Override
@@ -135,7 +138,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     return this.steamTank;
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return this.itemHandler;
   }
 }

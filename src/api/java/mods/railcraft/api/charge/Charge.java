@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 /**
  * The heart of the Charge system is here.
@@ -112,7 +112,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
  *
  */
 public enum Charge implements StringRepresentable,
-    IBlockCapabilityProvider<IEnergyStorage, @Nullable Direction> {
+    IBlockCapabilityProvider<EnergyHandler, @Nullable Direction> {
   /**
    * The distribution network is the charge network used by standard consumers, wires, tracks, and
    * batteries.
@@ -121,14 +121,14 @@ public enum Charge implements StringRepresentable,
    * This is the only network currently implemented and currently covers all use cases.
    */
   distribution("distribution");
-  /**
+  /*
    * The transmission network is the charge network used by low maintenance transmission lines and
    * transformers, consumers should not access this network directly.
    *
    * <h3>Not currently implemented.</h3>
    */
   // transmission("transmission"),
-  /**
+  /*
    * The rail network is the charge network used by tracks and the carts on them.
    *
    * <h3>Not currently implemented.</h3>
@@ -141,11 +141,12 @@ public enum Charge implements StringRepresentable,
    * <h3>Not currently implemented.</h3>
    */
   // catenary("catenary");
-
+  @Nullable
   private static ZapEffectProvider zapEffectProvider;
 
   private final String name;
 
+  @Nullable
   private Provider provider;
 
   Charge(String name) {
@@ -176,6 +177,7 @@ public enum Charge implements StringRepresentable,
     return this.provider.network(level);
   }
 
+  @Nullable
   @Override
   public final ChargeStorage getCapability(
       Level level,
@@ -288,7 +290,7 @@ public enum Charge implements StringRepresentable,
     /**
      * Can be returned from
      * <p>
-     * {@link net.minecraft.world.level.block.state.BlockBehaviour#getAnalogOutputSignal(BlockState, Level, BlockPos)}
+     * {@link net.minecraft.world.level.block.state.BlockBehaviour#getAnalogOutputSignal(BlockState, Level, BlockPos, Direction)}
      *
      * @return The current storage percentage of the entire grid.
      */

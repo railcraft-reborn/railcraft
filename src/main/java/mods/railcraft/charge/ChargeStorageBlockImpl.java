@@ -3,15 +3,19 @@ package mods.railcraft.charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
+import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStorage {
+public class ChargeStorageBlockImpl extends SimpleEnergyHandler implements ChargeStorage {
 
   private final BlockPos pos;
   private final Spec batterySpec;
   private StateImpl stateImpl = StateImpl.RECHARGEABLE;
   private State state = State.RECHARGEABLE;
   private int chargeDrawnThisTick;
+
+  private final ChargeDrawnJournal chargeDrawnJournal = new ChargeDrawnJournal();
 
   public ChargeStorageBlockImpl(BlockPos pos, Spec batterySpec) {
     super(batterySpec.capacity());
@@ -45,7 +49,7 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
   }
 
   @Override
-  public int getEnergyStored() {
+  public long getAmountAsLong() {
     return this.stateImpl.getEnergyStored(this);
   }
 
@@ -67,7 +71,7 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public long getCapacityAsLong() {
     return this.stateImpl.getMaxEnergyStored(this);
   }
 
@@ -77,16 +81,32 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
    * @return charge removed
    */
   @Override
-  public int extractEnergy(int maxExtract, boolean simulate) {
-    var drawn = this.stateImpl.extractEnergy(this, maxExtract, simulate);
-    if (!simulate) {
-      this.chargeDrawnThisTick += drawn;
-    }
-    return drawn;
+  public int extract(int amount, TransactionContext transaction) {
+    var extracted = this.stateImpl.extractEnergy(this, amount, transaction);
+    chargeDrawnJournal.updateSnapshots(transaction);
+    this.chargeDrawnThisTick += extracted;
+    return extracted;
   }
 
-  private int superExtractEnergy(int maxExtract, boolean simulate) {
-    return super.extractEnergy(maxExtract, simulate);
+  private class ChargeDrawnJournal extends SnapshotJournal<Integer> {
+    @Override
+    protected Integer createSnapshot() {
+      return chargeDrawnThisTick;
+    }
+
+    @Override
+    protected void revertToSnapshot(Integer snapshot) {
+      chargeDrawnThisTick = snapshot;
+    }
+  }
+
+  @Override
+  protected void onEnergyChanged(int previousAmount) {
+    super.onEnergyChanged(previousAmount);
+  }
+
+  private int superExtractEnergy(int maxExtract, TransactionContext transactionContext) {
+    return super.extract(maxExtract, transactionContext);
   }
 
   /**
@@ -97,11 +117,11 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
   @Override
   public int getAvailableCharge() {
     return Mth.clamp(this.getMaxDraw() - this.chargeDrawnThisTick, 0,
-        Mth.floor(this.getEnergyStored() * this.getEfficiency()));
+        Mth.floor(this.getAmountAsInt() * this.getEfficiency()));
   }
 
   public int getInitialCharge() {
-    return this.state == State.DISPOSABLE ? this.getMaxEnergyStored() : 0;
+    return this.state == State.DISPOSABLE ? this.getCapacityAsInt() : 0;
   }
 
   @Override
@@ -114,11 +134,11 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
     INFINITE {
       @Override
       public int getEnergyStored(ChargeStorageBlockImpl battery) {
-        return battery.getMaxEnergyStored();
+        return battery.getCapacityAsInt();
       }
 
       @Override
-      public int extractEnergy(ChargeStorageBlockImpl battery, int request, boolean simulate) {
+      public int extractEnergy(ChargeStorageBlockImpl battery, int request, TransactionContext transactionContext) {
         return request;
       }
     },
@@ -142,7 +162,7 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
       }
 
       @Override
-      public int extractEnergy(ChargeStorageBlockImpl battery, int request, boolean simulate) {
+      public int extractEnergy(ChargeStorageBlockImpl battery, int request, TransactionContext transactionContext) {
         return 0;
       }
     };
@@ -159,8 +179,8 @@ public class ChargeStorageBlockImpl extends EnergyStorage implements ChargeStora
       return battery.getBatterySpec().maxDraw();
     }
 
-    public int extractEnergy(ChargeStorageBlockImpl battery, int desiredAmount, boolean simulate) {
-      return battery.superExtractEnergy(desiredAmount, simulate);
+    public int extractEnergy(ChargeStorageBlockImpl battery, int amount, TransactionContext transactionContext) {
+      return battery.superExtractEnergy(amount, transactionContext);
     }
   }
 }

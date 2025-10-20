@@ -64,7 +64,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
   private void renderTank(TankMinecartRendererState renderState, PoseStack poseStack,
       SubmitNodeCollector collector) {
     var tank = renderState.tankManager;
-    var fluidStack = tank.getFluid();
+    var fluidStack = tank.getFluidStack();
     float capacity = tank.getCapacity();
     if (capacity > 0 && fluidStack.getAmount() > 0) {
       poseStack.pushPose();

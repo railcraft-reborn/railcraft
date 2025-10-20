@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block;
 
 import java.util.function.ToIntFunction;
+import java.util.function.UnaryOperator;
 import mods.railcraft.world.level.block.track.TrackConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -17,16 +18,16 @@ import net.minecraft.world.level.material.PushReaction;
 
 public class RailcraftBlockProperties {
 
-  public static BlockBehaviour.Properties detector() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> detector() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.STONE)
         .strength(2.0F, 4.5F)
         .requiresCorrectToolForDrops()
         .sound(SoundType.METAL);
   }
 
-  public static BlockBehaviour.Properties steamBoilerTank() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> steamBoilerTank() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.METAL)
         .strength(5.0F, 6.0F)
         .requiresCorrectToolForDrops()
@@ -34,8 +35,8 @@ public class RailcraftBlockProperties {
         .sound(SoundType.METAL);
   }
 
-  public static BlockBehaviour.Properties fueledFirebox() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> fueledFirebox() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.STONE)
         .strength(3.5F)
         .requiresCorrectToolForDrops()
@@ -43,8 +44,8 @@ public class RailcraftBlockProperties {
         .sound(SoundType.METAL);
   }
 
-  public static BlockBehaviour.Properties battery() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> battery() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.METAL)
         .strength(3F)
         .randomTicks()
@@ -52,8 +53,8 @@ public class RailcraftBlockProperties {
         .sound(SoundType.METAL);
   }
 
-  public static BlockBehaviour.Properties steelAnvil() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> steelAnvil() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.METAL)
         .pushReaction(PushReaction.BLOCK)
         .requiresCorrectToolForDrops()
@@ -61,8 +62,8 @@ public class RailcraftBlockProperties {
         .sound(SoundType.ANVIL);
   }
 
-  public static BlockBehaviour.Properties ingotBlock() {
-    return BlockBehaviour.Properties.of()
+  public static BlockBehaviour.Properties ingotBlock(BlockBehaviour.Properties properties) {
+    return properties
         .mapColor(MapColor.METAL)
         .strength(5.0F, 15.0F)
         .sound(SoundType.METAL)
@@ -86,8 +87,8 @@ public class RailcraftBlockProperties {
         .requiresCorrectToolForDrops();
   }
 
-  public static BlockBehaviour.Properties fluidManipulator() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> fluidManipulator() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.STONE)
         .strength(3.5F)
         .requiresCorrectToolForDrops()
@@ -95,16 +96,16 @@ public class RailcraftBlockProperties {
         .noOcclusion();
   }
 
-  public static BlockBehaviour.Properties manipulator() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> manipulator() {
+    return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.STONE)
         .strength(3.5F)
         .requiresCorrectToolForDrops()
         .sound(SoundType.STONE);
   }
 
-  public static BlockBehaviour.Properties railSupportBlocks() {
-    return BlockBehaviour.Properties.of()
+  public static UnaryOperator<BlockBehaviour.Properties> railSupportBlocks() {
+    return __ -> BlockBehaviour.Properties.of()
         .strength(8.0F, 50.0F)
         .sound(SoundType.METAL)
         .noOcclusion();
@@ -126,8 +127,8 @@ public class RailcraftBlockProperties {
         .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE);
   }
 
-  public static BlockBehaviour.Properties worldSpike() {
-    return BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
+  public static UnaryOperator<BlockBehaviour.Properties> worldSpike() {
+    return __ -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)
         .sound(SoundType.STONE);
   }
 

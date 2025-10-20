@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.fluids.FluidTools;
@@ -13,9 +12,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -32,34 +35,32 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private final ContainerMapper fluidContainer;
 
-  private final IItemHandler itemHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
     this.tank = StandardTank.ofBuckets(64)
-        .disableFill()
+        .disableInsert()
         .changeCallback(this::setChanged);
 
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
 
-    itemHandler = new InvWrapper(this) {
+    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
       @Override
-      @NotNull
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot == SLOT_INPUT) {
-          return ItemStack.EMPTY;
+      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index == SLOT_INPUT) {
+          return 0;
         }
-        return super.extractItem(slot, amount, simulate);
+        return super.extract(index, resource, amount, transaction);
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (slot == SLOT_INPUT) {
-          return super.insertItem(slot, stack, simulate);
+      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index == SLOT_INPUT) {
+          return super.insert(index, resource, amount, transaction);
         }
-        return stack;
+        return 0;
       }
     };
   }
@@ -82,14 +83,19 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     var output =
         this.recipe.assemble(null, this.provider.level().registryAccess());
     var fluidOutput = this.recipe.getCreosote();
-    if (this.outputContainer.canFit(output)
-        && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
-            IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {
-      this.removeItem(SLOT_INPUT, 1);
+    if (!this.outputContainer.canFit(output)) {
+      return false;
+    }
 
-      this.outputContainer.insert(output);
-      this.tank.internalFill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
-      return true;
+    try (var tx = Transaction.openRoot()) {
+      if (fluidOutput.isEmpty() ||
+          this.tank.internalInsert(FluidResource.of(fluidOutput), fluidOutput.getAmount(), tx) >= fluidOutput.getAmount()) {
+        this.removeItem(SLOT_INPUT, 1);
+
+        this.outputContainer.insert(output);
+        tx.commit();
+        return true;
+      }
     }
     return false;
   }
@@ -137,7 +143,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     } && super.canPlaceItem(slot, itemStack);
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 
@@ -151,7 +157,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.tank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK));
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }

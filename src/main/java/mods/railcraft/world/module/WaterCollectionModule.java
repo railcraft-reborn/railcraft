@@ -17,8 +17,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> {
 
@@ -57,12 +58,13 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
       var above = this.provider.blockPos().above();
       this.state = State.create(level, above);
       int rate = this.state.calculateRate(this.calculateMultiplier());
-      if (rate > 0) {
-        this.tank.fill(new FluidStack(Fluids.WATER, rate),
-            IFluidHandler.FluidAction.EXECUTE);
-      } else {
-        this.tank.drain(new FluidStack(Fluids.WATER, Math.abs(rate)),
-            IFluidHandler.FluidAction.EXECUTE);
+      try (var tx = Transaction.openRoot()){
+        if (rate > 0) {
+          this.tank.insert(FluidResource.of(Fluids.WATER), rate, tx);
+        } else {
+          this.tank.extract(FluidResource.of(Fluids.WATER), Math.abs(rate), tx);
+        }
+        tx.commit();
       }
     }
     if (this.processTicks++ >= FluidTools.BUCKET_FILL_TIME) {
@@ -76,8 +78,8 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidTools.isRoomInContainer(stack, this.tank.getFluid().getFluid()))
-          || FluidUtil.getFluidContained(stack).isPresent();
+          && FluidTools.isRoomInContainer(stack, this.tank.getFluidStack().getFluid()))
+          || !FluidUtil.getFirstStackContained(stack).isEmpty();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, stack);
@@ -109,7 +111,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   @Override
   public void deserialize(ValueInput valueInput) {
     super.deserialize(valueInput);
-    this.tank.deserialize(valueInput.childOrEmpty(CompoundTagKeys.TANK));
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
   }
@@ -118,7 +120,7 @@ public class WaterCollectionModule extends ContainerModule<BlockModuleProvider> 
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     super.writeToBuf(out);
     out.writeVarInt(this.tank.getCapacity());
-    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluid());
+    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluidStack());
   }
 
   @Override

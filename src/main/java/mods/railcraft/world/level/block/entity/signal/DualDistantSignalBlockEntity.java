@@ -73,7 +73,7 @@ public class DualDistantSignalBlockEntity extends AbstractSignalBlockEntity
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.signalReceiver.deserialize(input.childOrEmpty(CompoundTagKeys.SIGNAL_RECEIVER));
+    input.readChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override

@@ -28,8 +28,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity, Void> {
 
@@ -79,6 +81,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
       CrusherBlockEntity blockEntity) {
     blockEntity.serverTick();
     blockEntity.moduleDispatcher.serverTick();
+    var serverLevel = (ServerLevel) level;
 
     if (++blockEntity.tick % 8 == 0) {
       blockEntity.tick = 0;
@@ -86,17 +89,23 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
           .ifPresent(master -> {
             var target = blockPos.above();
             var energyCap = level
-                .getCapability(Capabilities.EnergyStorage.BLOCK, master.getBlockPos(), null);
+                .getCapability(Capabilities.Energy.BLOCK, master.getBlockPos(), null);
             EntitySearcher.findLiving()
                 .at(target)
                 .and(ModEntitySelector.KILLABLE)
                 .list(level)
                 .forEach(livingEntity -> {
-                  if (energyCap != null) {
-                    if (energyCap.getEnergyStored() >= KILLING_POWER_COST) {
-                      livingEntity.hurt(RailcraftDamageSources.crusher(level.registryAccess()), 5);
-                      energyCap.extractEnergy(KILLING_POWER_COST, false);
-                    }
+                  if (energyCap == null) {
+                    return;
+                  }
+                  if (energyCap.getAmountAsInt() < KILLING_POWER_COST) {
+                    return;
+                  }
+                  var damageSource = RailcraftDamageSources.crusher(level.registryAccess());
+                  livingEntity.hurtServer(serverLevel, damageSource, 5);
+                  try (var tx = Transaction.openRoot()) {
+                    energyCap.extract(KILLING_POWER_COST, tx);
+                    tx.commit();
                   }
                 });
           });
@@ -160,7 +169,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   }
 
   @Nullable
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
     return masterModule
@@ -169,7 +178,7 @@ public class CrusherBlockEntity extends MultiblockBlockEntity<CrusherBlockEntity
   }
 
   @Nullable
-  public IEnergyStorage getEnergyCap(@Nullable Direction side) {
+  public EnergyHandler getEnergyCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CrusherBlockEntity::getCrusherModule);
     return masterModule

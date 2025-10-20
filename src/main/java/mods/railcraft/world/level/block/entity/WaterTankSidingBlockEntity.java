@@ -20,7 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankSidingBlockEntity, Void> {
 
@@ -86,7 +87,7 @@ public class WaterTankSidingBlockEntity extends MultiblockBlockEntity<WaterTankS
   }
 
   @Nullable
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.getMasterBlockEntity()
         .map(WaterTankSidingBlockEntity::getModule)
         .map(WaterCollectionModule::getTank)

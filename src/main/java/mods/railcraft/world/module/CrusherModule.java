@@ -3,7 +3,6 @@ package mods.railcraft.world.module;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
@@ -20,9 +19,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
@@ -36,8 +39,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private final Charge network;
   private Optional<RecipeHolder<CrusherRecipe>> currentRecipe;
   private int currentSlot;
-  private final IItemHandler itemHandler;
-  private final IEnergyStorage energyHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
+  private final EnergyHandler energyHandler;
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
     super(provider, 18);
@@ -48,23 +51,21 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     currentRecipe = Optional.empty();
 
-    itemHandler = new InvWrapper(this) {
+    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
       @Override
-      @NotNull
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot < SLOT_OUTPUT) {
-          return ItemStack.EMPTY;
+      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index < SLOT_OUTPUT) {
+          return 0;
         }
-        return super.extractItem(slot, amount, simulate);
+        return super.extract(index, resource, amount, transaction);
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (slot < SLOT_OUTPUT) {
-          return super.insertItem(slot, stack, simulate);
+      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index < SLOT_OUTPUT) {
+          return super.insert(index, resource, amount, transaction);
         }
-        return stack;
+        return 0;
       }
     };
     energyHandler = new ForwardingEnergyStorage(this::storage);
@@ -84,7 +85,10 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   public void serverTick() {
     super.serverTick();
     if (!lacksRequirements()) {
-      energyHandler.extractEnergy(COST_PER_TICK, false);
+      try (var tx = Transaction.openRoot()) {
+        energyHandler.extract(COST_PER_TICK, tx);
+        tx.commit();
+      }
     }
   }
 
@@ -111,7 +115,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   @Override
   protected boolean doProcessStep() {
-    return energyHandler.getEnergyStored() > COST_PER_STEP;
+    return energyHandler.getAmountAsInt() > COST_PER_STEP;
   }
 
   @Override
@@ -182,11 +186,11 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     currentRecipe = Optional.empty();
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 
-  public IEnergyStorage getEnergyHandler() {
+  public EnergyHandler getEnergyHandler() {
     return energyHandler;
   }
 }

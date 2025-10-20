@@ -1,4 +1,4 @@
-// 1.21.9	2025-10-05T11:01:56.735709	Model Definitions - railcraft
+// 1.21.10	2025-10-20T21:27:24.599737	Model Definitions - railcraft
 7c5a756981768365f883dd089b9e88499f794819 assets/railcraft/blockstates/abandoned_activator_track.json
 99b3a68b0d35356b5d70e9d53bb03c4aea0837ff assets/railcraft/blockstates/abandoned_booster_track.json
 ca1415647ffe8f5a65a2da42cfeeee1db78a9846 assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -122,7 +122,7 @@ dfcd4322747af04dee1e0752504c83755455cd26 assets/railcraft/blockstates/fluid_fuel
 d0033564ba044554fcc76cb596c8d74885f593bb assets/railcraft/blockstates/fluid_loader.json
 c3270a2e6ac073d9c9a5484f583d9a2ff9d0072f assets/railcraft/blockstates/fluid_unloader.json
 74e9f4984b906cd933f4cf1c527b755a81c3ec04 assets/railcraft/blockstates/force_track.json
-ddb1e7e243cf6a9c4e3b0f452c0fedc0a0df5117 assets/railcraft/blockstates/force_track_emitter.json
+84d4c400fc7146d6f29d5d8b02492494fff75dec assets/railcraft/blockstates/force_track_emitter.json
 6a067aea0e87a1228abf0655f8741be5474463bd assets/railcraft/blockstates/frame.json
 d0ea4fa2d82deaa6e0deabf79a6ea400e62b05bf assets/railcraft/blockstates/gray_iron_tank_gauge.json
 f031f2e6d17f66f99ecb3666ce3eff97d36f242d assets/railcraft/blockstates/gray_iron_tank_valve.json

@@ -100,8 +100,6 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
     // move the origin to the center of the gauge
     poseStack.translate(state.xx + state.rx * 0.5 + state.fx * zOffset, 0.5, state.zz + state.rz * 0.5 + state.fz * zOffset);
 
-    var matrix = poseStack.last().pose();
-
     float cosA = Mth.cos(angle);
     float sinA = Mth.sin(angle);
 
@@ -125,20 +123,24 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
     collector.submitCustomGeometry(poseStack, RailcraftRenderTypes.POSITION_COLOR_LIGHTMAP,
         (pose, vertexConsumer) -> {
           vertexConsumer
-              .addVertex(matrix, -state.rx * baseOffset, 0, -state.rz * baseOffset)
+              .addVertex(pose, -state.rx * baseOffset, 0, -state.rz * baseOffset)
               .setColor(red, green, blue, alphaOne)
+              .setUv(0.0F, 1.0F)
               .setLight(state.lightCoords);
           vertexConsumer
-              .addVertex(matrix, state.rx * baseOffset, 0, state.rz * baseOffset)
+              .addVertex(pose, state.rx * baseOffset, 0, state.rz * baseOffset)
               .setColor(red, green, blue, alphaOne)
+              .setUv(1.0F, 1.0F)
               .setLight(state.lightCoords);
           vertexConsumer
-              .addVertex(matrix, -state.rx * glx + state.rx * gwx, gly + gwy, -state.rz * glx + state.rz * gwx)
+              .addVertex(pose, -state.rx * glx + state.rx * gwx, gly + gwy, -state.rz * glx + state.rz * gwx)
               .setColor(red, green, blue, alphaOne)
+              .setUv(1.0F, 0.0F)
               .setLight(state.lightCoords);
           vertexConsumer
-              .addVertex(matrix, -state.rx * glx - state.rx * gwx, gly - gwy, -state.rz * glx - state.rz * gwx)
+              .addVertex(pose, -state.rx * glx - state.rx * gwx, gly - gwy, -state.rz * glx - state.rz * gwx)
               .setColor(red, green, blue, alphaOne)
+              .setUv(0.0F, 0.0F)
               .setLight(state.lightCoords);
     });
     poseStack.popPose();

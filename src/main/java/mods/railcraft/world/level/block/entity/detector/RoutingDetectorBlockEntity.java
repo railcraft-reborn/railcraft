@@ -111,7 +111,7 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.container.deserialize(input.childOrEmpty(CompoundTagKeys.CONTAINER));
+    input.readChild(CompoundTagKeys.CONTAINER, this.container);
     this.railway = input.read(CompoundTagKeys.RAILWAY, Railway.CODEC).orElse(Railway.PUBLIC);
     this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
   }

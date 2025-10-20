@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
@@ -14,8 +13,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
 
@@ -26,7 +28,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   private static final int FUEL_PER_TICK = 5;
   private final ContainerMapper fuelContainer, outputContainer, slagContainer;
 
-  private final IItemHandler itemHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
 
   /**
    * The number of ticks that the furnace will keep burning
@@ -44,21 +46,21 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
 
-    itemHandler = new InvWrapper(this) {
+    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
       @Override
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
-          return ItemStack.EMPTY;
+      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index == SLOT_INPUT || index == SLOT_FUEL) {
+          return 0;
         }
-        return super.extractItem(slot, amount, simulate);
+        return super.extract(index, resource, amount, transaction);
       }
 
       @Override
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
-          return super.insertItem(slot, stack, simulate);
+      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+        if (index == SLOT_INPUT || index == SLOT_FUEL) {
+          return super.insert(index, resource, amount, transaction);
         }
-        return stack;
+        return 0;
       }
     };
   }
@@ -174,7 +176,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return this.getItemBurnTime(itemStack) > 0;
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 

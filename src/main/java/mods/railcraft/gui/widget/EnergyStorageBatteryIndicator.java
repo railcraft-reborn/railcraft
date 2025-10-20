@@ -8,22 +8,22 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 public class EnergyStorageBatteryIndicator implements Gauge {
 
   private float charge;
-  private final IEnergyStorage battery;
+  private final EnergyHandler battery;
 
   private final List<ClientTooltipComponent> tooltip = new ArrayList<>(2);
 
-  public EnergyStorageBatteryIndicator(IEnergyStorage battery) {
+  public EnergyStorageBatteryIndicator(EnergyHandler battery) {
     this.battery = battery;
   }
 
   @Override
   public void refresh() {
-    int capacity = this.battery.getMaxEnergyStored();
+    int capacity = this.battery.getCapacityAsInt();
     float chargeLevel = charge * 100.0F;
     float energyStorage = charge * capacity;
     this.tooltip.clear();
@@ -50,8 +50,8 @@ public class EnergyStorageBatteryIndicator implements Gauge {
 
   @Override
   public float getServerValue() {
-    int energyStored = this.battery.getEnergyStored();
-    int capacity = this.battery.getMaxEnergyStored();
+    int energyStored = this.battery.getAmountAsInt();
+    int capacity = this.battery.getCapacityAsInt();
     return (float) energyStored / capacity;
   }
 

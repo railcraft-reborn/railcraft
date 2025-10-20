@@ -8,6 +8,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.connection.ConnectionType;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncWidgetMessage(
@@ -34,7 +35,8 @@ public record SyncWidgetMessage(
     if (menu instanceof RailcraftMenu railcraftMenu
         && menu.containerId == message.windowId) {
       var buff = new RegistryFriendlyByteBuf(
-          new FriendlyByteBuf(Unpooled.wrappedBuffer(message.rawUpdates)), player.registryAccess());
+          new FriendlyByteBuf(Unpooled.wrappedBuffer(message.rawUpdates)),
+          player.registryAccess(), ConnectionType.OTHER);
       railcraftMenu.getWidgets().get(message.widgetId).readFromBuf(buff);
       buff.release();
     }

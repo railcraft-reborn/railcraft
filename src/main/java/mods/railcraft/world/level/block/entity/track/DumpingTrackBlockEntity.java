@@ -55,7 +55,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   private static BlockEntity getBlockEntityAround(Level level, BlockPos pos) {
     for (var direction : DIRECTION) {
       var blockEntity = level.getBlockEntity(pos.relative(direction));
-      if (blockEntity != null && level.getCapability(Capabilities.ItemHandler.BLOCK,
+      if (blockEntity != null && level.getCapability(Capabilities.Item.BLOCK,
           blockEntity.getBlockPos(), null) != null) {
         return blockEntity;
       }
@@ -101,7 +101,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
       return;
     }
 
-    var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+    var itemHandler = cart.getCapability(Capabilities.Item.ENTITY);
     if (itemHandler != null) {
       var cartInv = ContainerManipulator.of(itemHandler);
       if (!cartInv.hasItems()) {
@@ -127,7 +127,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
         return;
       }
       var itemHandlerBlockEntity = this.level
-          .getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+          .getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(), null);
       if (itemHandlerBlockEntity != null) {
         var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
         cartInv.moveOneItemStackTo(blockInv);
@@ -146,8 +146,8 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
-    this.cartFilter.deserialize(input.childOrEmpty(CompoundTagKeys.CART_FILTER));
-    this.itemFilter.deserialize(input.childOrEmpty(CompoundTagKeys.ITEM_FILTER));
+    input.readChild(CompoundTagKeys.CART_FILTER, this.cartFilter);
+    input.readChild(CompoundTagKeys.ITEM_FILTER, this.itemFilter);
     this.ticksSinceLastDrop = input.getIntOr(CompoundTagKeys.TICKS_SINCE_LAST_DROP, 0);
   }
 

@@ -19,7 +19,6 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -33,8 +32,6 @@ import net.neoforged.neoforge.common.util.ValueIOSerializable;
  */
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
     implements SignalNetwork<T>, ValueIOSerializable, NetworkSerializable {
-
-  protected static final RandomSource RANDOM = RandomSource.create();
 
   private final Class<T> peerType;
   private final int maxPeers;

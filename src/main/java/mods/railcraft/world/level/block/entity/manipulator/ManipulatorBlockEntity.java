@@ -285,7 +285,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
     this.redstoneMode =
         input.read(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC).orElse(RedstoneMode.COMPLETE);
-    this.getCartFilters().deserialize(input.childOrEmpty(CompoundTagKeys.CART_FILTERS));
+    input.readChild(CompoundTagKeys.CART_FILTERS, this.getCartFilters());
   }
 
   public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {

@@ -36,7 +36,7 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   @Override
   protected void readAdditionalSaveData(ValueInput valueInput) {
     super.readAdditionalSaveData(valueInput);
-    this.filterContainer.deserialize(valueInput.childOrEmpty(CompoundTagKeys.FILTER));
+    valueInput.readChild(CompoundTagKeys.FILTER, this.filterContainer);
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 
