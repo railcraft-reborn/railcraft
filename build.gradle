@@ -190,10 +190,15 @@ spotless {
 }
 
 tasks.register('generatePackageInfos') {
-  def srcDir = layout.projectDirectory.dir("src/main/java")
-  def javaFiles = project.fileTree(srcDir) { include '**/*.java' }
+  def srcDirs = [
+    layout.projectDirectory.dir("src/main/java"),
+    layout.projectDirectory.dir("src/api/java")
+  ]
+  def javaFiles = files(srcDirs.collect { dir ->
+    project.fileTree(dir) { include '**/*.java' }
+  })
 
-  inputs.dir(srcDir)
+  srcDirs.each { inputs.dir(it) }
   outputs.upToDateWhen { false }
 
   doLast {
