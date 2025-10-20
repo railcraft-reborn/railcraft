@@ -74,13 +74,13 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   }
 
   private void updateButtons() {
-    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile());
+    var canAccess = this.routingBlockEntity.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingBlockEntity.getLock());
   }
 
   private void sendAttributes() {
-    if (!this.routingBlockEntity.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.routingBlockEntity.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
     ClientPacketDistributor.sendToServer(

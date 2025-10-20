@@ -125,7 +125,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile());
+    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackMotor.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -138,7 +138,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.switchTrackMotor.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
     ClientPacketDistributor.sendToServer(

@@ -126,7 +126,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void updateButtons() {
-    var canAccess = this.switchTrackRouter.canAccess(this.minecraft.player.getGameProfile());
+    var canAccess = this.switchTrackRouter.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackRouter.getLock());
     this.railwayButton.active = canAccess;
@@ -134,7 +134,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackRouter.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.switchTrackRouter.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
     ClientPacketDistributor.sendToServer(

@@ -106,7 +106,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.getGameProfile());
+    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.signalBox.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -117,7 +117,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.signalBox.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
     ClientPacketDistributor.sendToServer(

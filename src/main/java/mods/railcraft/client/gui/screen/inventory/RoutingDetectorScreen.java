@@ -128,7 +128,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void updateButtons() {
-    var canAccess = this.routingDetector.canAccess(this.minecraft.player.getGameProfile());
+    var canAccess = this.routingDetector.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingDetector.getLock());
     this.railwayButton.active = canAccess;
@@ -136,7 +136,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void sendAttributes() {
-    if (!this.routingDetector.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.routingDetector.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
     ClientPacketDistributor.sendToServer(
