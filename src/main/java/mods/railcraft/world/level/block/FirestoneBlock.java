@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -70,7 +71,7 @@ public class FirestoneBlock extends Block {
   @Override
   public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
     if (entity instanceof LivingEntity livingEntity && !EnchantmentHelper.hasFrostWalker(livingEntity)) {
-      entity.hurt(level.damageSources().hotFloor(), 1.5F);
+      entity.hurt(DamageSource.HOT_FLOOR, 1.5F);
     }
     super.stepOn(level, pos, state, entity);
   }

@@ -2,7 +2,8 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.RailcraftModelLayers;
@@ -32,7 +33,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
   // A lot of this is copied from the minecart renderer.
   @Override
   public void render(TunnelBore bore, float yaw, float partialTicks,
-      PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
+                     PoseStack matrixStack, MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
     long var10 = (long) bore.getId() * 493286711L;
     var10 = var10 * var10 * 4392167121L + var10 * 98761L;
@@ -43,16 +44,18 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore> {
 
     matrixStack.translate(0F, 0.375F, 0F);
 
-    matrixStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
+    matrixStack.mulPose(new Quaternion(Vector3f.YP, 180 - yaw, true));
+    matrixStack.mulPose(new Quaternion(Vector3f.YP, 90, true));
 
     float roll = (float) bore.getHurtTime() - partialTicks;
     float damage = bore.getDamage() - partialTicks;
     if (damage < 0)
       damage = 0;
     if (roll > 0) {
-      matrixStack.mulPose(Axis.XP.rotationDegrees(
-          Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir()));
+      matrixStack.mulPose(new Quaternion(Vector3f.XP,
+          Mth.sin(roll) * roll * damage / 10.0F * (float) bore.getHurtDir(),
+          true
+      ));
     }
 
     // float light = bore.getBrightness();

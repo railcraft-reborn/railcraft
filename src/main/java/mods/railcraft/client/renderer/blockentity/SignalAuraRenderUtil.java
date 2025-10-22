@@ -14,6 +14,7 @@ import net.minecraft.core.Position;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class SignalAuraRenderUtil {
 
@@ -82,7 +83,7 @@ public class SignalAuraRenderUtil {
       LineRenderer lineRenderer, Collection<BlockPos> endPoints, ColorSupplier colorProfile) {
     for (var target : endPoints) {
       int color = colorProfile.getColor(source, target);
-      renderAuraLine(lineRenderer, poseStack, color, source, target.getCenter());
+      renderAuraLine(lineRenderer, poseStack, color, source, Vec3.atCenterOf(target));
     }
   }
 

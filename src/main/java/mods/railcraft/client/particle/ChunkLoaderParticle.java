@@ -2,6 +2,7 @@ package mods.railcraft.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.particle.ChunkLoaderParticleOptions;
+import mods.railcraft.util.MathUtil;
 import mods.railcraft.world.item.GogglesItem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -11,7 +12,6 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 public class ChunkLoaderParticle extends TextureSheetParticle {
@@ -66,7 +66,7 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
       return;
     }
 
-    if (!level.isLoaded(BlockPos.containing(dest))) {
+    if (!level.isLoaded(MathUtil.blockPosContaining(dest))) {
       this.remove();
       return;
     }
@@ -76,7 +76,7 @@ public class ChunkLoaderParticle extends TextureSheetParticle {
       return;
     }
 
-    if (this.getPos().distanceToSqr(this.dest) <= 0.5) {
+    if (new Vec3(x, y, z).distanceToSqr(this.dest) <= 0.5) {
       this.remove();
       return;
     }

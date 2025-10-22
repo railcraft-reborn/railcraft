@@ -28,7 +28,7 @@ public record SetSwitchTrackRouterAttributesMessage(
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var player = context.get().getSender();
-    var level = player.level();
+    var level = player.level;
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.SWITCH_TRACK_ROUTER.get())
         .filter(switchTrackRouter -> switchTrackRouter.canAccess(senderProfile))

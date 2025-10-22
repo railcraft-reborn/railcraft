@@ -7,6 +7,7 @@ import mods.railcraft.world.item.FirestoneItem;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
+import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
@@ -38,40 +39,42 @@ public class FirestoneItemEntity extends ItemEntity {
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       return;
     }
     if (++this.clock % 4 == 0
         && this.getItem().getItem() instanceof FirestoneItem item
         && item.spawnsFire()
-        && this.level().getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
-      FirestoneItem.trySpawnFire(this.level(), this.blockPosition(), getItem(), this.getOwner());
+        && this.level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+      var owner = Util.mapNullable(this.getOwner(), this.level::getPlayerByUUID);
+      FirestoneItem.trySpawnFire(this.level, this.blockPosition(), getItem(), owner);
     }
   }
 
   @Override
   public void lavaHurt() {
-    if (!this.refined || !this.isAlive() || this.level().isClientSide()) {
+    if (!this.refined || !this.isAlive() || this.level.isClientSide()) {
       return;
     }
     var firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
     var surface = this.blockPosition();
-    if (!this.level().getFluidState(surface).is(FluidTags.LAVA)
-        && !this.level().getFluidState(surface.above()).is(FluidTags.LAVA)) {
+    if (!this.level.getFluidState(surface).is(FluidTags.LAVA)
+        && !this.level.getFluidState(surface.above()).is(FluidTags.LAVA)) {
       return;
     }
 
     for (int i = 0; i < 10; i++) {
       surface = surface.above();
-      if (!this.level().getBlockState(surface).isAir()
-          || !this.level().getFluidState(surface.below()).is(FluidTags.LAVA)) {
+      if (!this.level.getBlockState(surface).isAir()
+          || !this.level.getFluidState(surface.below()).is(FluidTags.LAVA)) {
         continue;
       }
 
       var cracked = getItem().getItem() instanceof CrackedFirestoneItem;
-      if (LevelUtil.setBlockState(this.level(), surface,
-          firestoneBlock.setValue(RitualBlock.CRACKED, cracked), this.getOwner())) {
-        var blockEntity = this.level().getBlockEntity(surface);
+      var owner = Util.mapNullable(this.getOwner(), this.level::getPlayerByUUID);
+      if (LevelUtil.setBlockState(this.level, surface,
+          firestoneBlock.setValue(RitualBlock.CRACKED, cracked), owner)) {
+        var blockEntity = this.level.getBlockEntity(surface);
         if (blockEntity instanceof RitualBlockEntity fireEntity) {
           var firestone = getItem();
           fireEntity.setCharge(firestone.getMaxDamage() - firestone.getDamageValue());

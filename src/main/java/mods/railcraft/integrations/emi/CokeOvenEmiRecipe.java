@@ -11,7 +11,6 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,8 +27,7 @@ public class CokeOvenEmiRecipe extends BasicEmiRecipe {
     super(RailcraftEmiPlugin.COKING_CATEGORY, recipe.getId(), WIDTH, HEIGHT);
     this.recipe = recipe;
     this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
-    var level = Minecraft.getInstance().level;
-    this.outputs.add(EmiStack.of(recipe.getResultItem(level.registryAccess())));
+    this.outputs.add(EmiStack.of(recipe.getResultItem()));
   }
 
   @Override

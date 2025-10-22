@@ -1,7 +1,7 @@
 package mods.railcraft.client.util;
 
-import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
@@ -28,8 +28,8 @@ public interface LineRenderer {
         FastColor.ARGB32.green(color),
         FastColor.ARGB32.blue(color),
         FastColor.ARGB32.alpha(color),
-        from.x, from.y, from.z,
-        to.x, to.y, to.z);
+        from.x(), from.y(), from.z(),
+        to.x(), to.y(), to.z());
   }
 
   void renderLine(PoseStack poseStack, int r, int g, int b, int a, float x0, float y0, float z0,

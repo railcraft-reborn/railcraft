@@ -1,7 +1,9 @@
 package mods.railcraft.integrations.jei;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -38,7 +40,6 @@ import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -50,6 +51,10 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   public static final int TEXT_COLOR = 0xFF808080;
 
+  // In 1.19, it's impossible to get this in IVanillaCategoryExtensionRegistration
+  // So we exploit the fact that registerCategories is called before GUI helper is needed
+  private IGuiHelper guiHelperHack;
+
   @Override
   public ResourceLocation getPluginUid() {
     return RailcraftConstants.rl("jei_plugin");
@@ -58,6 +63,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
   @Override
   public void registerCategories(IRecipeCategoryRegistration registration) {
     var guiHelper = registration.getJeiHelpers().getGuiHelper();
+    guiHelperHack = guiHelper;
     registration.addRecipeCategories(new RollingRecipeCategory(guiHelper));
     registration.addRecipeCategories(new CokeOvenRecipeCategory(guiHelper));
     registration.addRecipeCategories(new BlastFurnaceRecipeCategory(guiHelper));
@@ -146,12 +152,11 @@ public class RailcraftJeiPlugin implements IModPlugin {
     craftingCategory.addCategoryExtension(CartDisassemblyRecipe.class,
         r -> new DefaultRecipeWrapper(r, true, Component.translatable(Translations.Jei.SPLIT)) {
           @Override
-          public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
-              double mouseY) {
-            super.drawInfo(recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
-            var drawable = registration.getJeiHelpers().getGuiHelper()
-                    .createDrawableItemStack(new ItemStack(Items.MINECART));
-            drawable.draw(guiGraphics, 65, 35);
+          public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX,
+                               double mouseY) {
+            super.drawInfo(recipeWidth, recipeHeight, poseStack, mouseX, mouseY);
+            var drawable = guiHelperHack.createDrawableItemStack(new ItemStack(Items.MINECART));
+            drawable.draw(poseStack, 65, 35);
           }
         });
   }

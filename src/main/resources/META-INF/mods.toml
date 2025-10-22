@@ -19,7 +19,7 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   modId = "forge"
   ordering = "AFTER"
   side = "BOTH"
-  versionRange = "${neo_version_range}"
+  versionRange = "${forge_version_range}"
 [[dependencies.railcraft]]
   mandatory = true
   modId = "minecraft"

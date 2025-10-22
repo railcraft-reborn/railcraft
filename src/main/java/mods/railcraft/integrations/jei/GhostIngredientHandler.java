@@ -15,6 +15,12 @@ public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
     implements IGhostIngredientHandler<T> {
 
   @Override
+  public <I> List<Target<I>> getTargets(T gui, I ingredient, boolean doStart) {
+    // Not called
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public <I> List<Target<I>> getTargetsTyped(T gui, ITypedIngredient<I> ingredient,
       boolean doStart) {
     var targets = new ArrayList<Target<I>>();

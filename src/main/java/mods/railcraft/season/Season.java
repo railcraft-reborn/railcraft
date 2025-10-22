@@ -1,5 +1,6 @@
 package mods.railcraft.season;
 
+import java.util.Objects;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.network.chat.Component;
@@ -36,6 +37,6 @@ public enum Season implements StringRepresentable {
   }
 
   public static Season fromName(String name) {
-    return CODEC.byName(name, DEFAULT);
+    return Objects.requireNonNullElse(CODEC.byName(name), DEFAULT);
   }
 }

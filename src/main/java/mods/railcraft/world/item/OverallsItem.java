@@ -6,6 +6,7 @@ import mods.railcraft.Translations.Tips;
 import mods.railcraft.api.charge.ChargeProtectionItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.Level;
 public class OverallsItem extends ArmorItem implements ChargeProtectionItem {
 
   public OverallsItem(Properties properties) {
-    super(RailcraftArmorMaterial.OVERALLS, Type.LEGGINGS, properties);
+    super(RailcraftArmorMaterial.OVERALLS, EquipmentSlot.LEGS, properties);
   }
 
   @Override

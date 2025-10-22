@@ -73,9 +73,9 @@ public class ChargeCartStorageImpl extends EnergyStorage implements ChargeCartSt
 
   @Override
   public void tickOnTrack(AbstractMinecart owner, BlockPos pos) {
-    if (!owner.level().isClientSide() && needsCharging()) {
+    if (!owner.level.isClientSide() && needsCharging()) {
       int drawnFromTrack = Charge.distribution
-          .network((ServerLevel) owner.level())
+          .network((ServerLevel) owner.level)
           .access(pos)
           .removeCharge(capacity - energy, false);
       if (drawnFromTrack > 0) {

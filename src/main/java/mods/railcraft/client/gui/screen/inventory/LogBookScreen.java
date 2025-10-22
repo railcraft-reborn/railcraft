@@ -7,13 +7,13 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.network.chat.CommonComponents;
@@ -108,23 +108,23 @@ public class LogBookScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(poseStack);
     this.setFocused(null);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    RenderSystem.setShaderTexture(0, BOOK_LOCATION);
+    blit(poseStack, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
 
     int l = this.font.width(this.pageMsg);
-    guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
+    this.font.draw(poseStack, this.pageMsg, xOffset - l + 225, yOffset + 15, 0);
     var displayCache = this.getDisplayCache();
     for (var lineinfo : displayCache.lines) {
-      guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
-          -16777216, false);
+      this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
     }
     this.updateButtonVisibility();
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    super.render(poseStack, mouseX, mouseY, partialTicks);
   }
 
   private DisplayCache getDisplayCache() {

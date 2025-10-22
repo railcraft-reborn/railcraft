@@ -7,6 +7,7 @@ import java.util.Set;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.FireSparkParticleOptions;
+import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.RefinedFirestoneItem;
 import net.minecraft.Util;
@@ -97,8 +98,8 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
     if (fluid.is(Fluids.LAVA)) {
       boolean placed = level.setBlockAndUpdate(lavaPos, Blocks.OBSIDIAN.defaultBlockState());
       if (placed) {
-        var startPosition = Vec3.atLowerCornerWithOffset(lavaPos, 0.5, 0.5, 0.5);
-        var endPosition = Vec3.atLowerCornerWithOffset(getBlockPos(), 0.5, 0.8, 0.5);
+        var startPosition = MathUtil.atLowerCornerWithOffset(lavaPos, 0.5, 0.5, 0.5);
+        var endPosition = MathUtil.atLowerCornerWithOffset(getBlockPos(), 0.5, 0.8, 0.5);
         fireSparkEffect(level, startPosition, endPosition);
         queueAdjacent(lavaPos);
         expandQueue();

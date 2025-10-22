@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2d;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
@@ -37,7 +36,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
 
   @Override
   public void onEntityCollision(AbstractMinecart cart, Entity other) {
-    var level = cart.level();
+    var level = cart.level;
 
     if (level.isClientSide() || cart.hasPassenger(other)
         || !other.isAlive() || !cart.isAlive()) {
@@ -110,8 +109,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
       return;
     }
 
-    var sub = new Vector2d(other.getX(), other.getZ()).sub(cart.getX(), cart.getZ());
-    var unit = sub.equals(0, 0) ? sub : sub.normalize(); //Check for NaN
+    var sub = new Vec3(other.getX(), other.getZ(), 0).subtract(cart.getX(), cart.getZ(), 0);
+    var unit = sub.equals(Vec3.ZERO) ? sub : sub.normalize(); //Check for NaN
 
     double distance = cart.distanceTo(other);
     double depth = distance - OPTIMAL_DISTANCE;
@@ -133,10 +132,10 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         impulseX *= -(1.0 + COEF_RESTITUTION);
         impulseZ *= -(1.0 + COEF_RESTITUTION);
 
-        var cartVel = new Vector2d(cart.getDeltaMovement().x(), cart.getDeltaMovement().z());
-        var otherVel = new Vector2d(other.getDeltaMovement().x(), other.getDeltaMovement().z());
+        var cartVel = new Vec3(cart.getDeltaMovement().x(), cart.getDeltaMovement().z(), 0);
+        var otherVel = new Vec3(other.getDeltaMovement().x(), other.getDeltaMovement().z(), 0);
 
-        double dot = otherVel.sub(cartVel).dot(unit);
+        double dot = otherVel.subtract(cartVel).dot(unit);
 
         impulseX *= dot;
         impulseZ *= dot;
@@ -160,12 +159,12 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
     } else {
-      var cartVel = new Vector2d(cart.getDeltaMovement().x(), cart.getDeltaMovement().z())
-          .add(forceX, forceZ);
-      var otherVel = new Vector2d(other.getDeltaMovement().x(), other.getDeltaMovement().z())
-          .sub(forceX, forceZ);
+      var cartVel = new Vec3(cart.getDeltaMovement().x(), cart.getDeltaMovement().z(), 0)
+          .add(forceX, forceZ, 0);
+      var otherVel = new Vec3(other.getDeltaMovement().x(), other.getDeltaMovement().z(), 0)
+          .subtract(forceX, forceZ, 0);
 
-      double dot = otherVel.sub(cartVel).dot(unit);
+      double dot = otherVel.subtract(cartVel).dot(unit);
 
       double dampX = COEF_DAMPING * dot * unit.x();
       double dampZ = COEF_DAMPING * dot * unit.y();

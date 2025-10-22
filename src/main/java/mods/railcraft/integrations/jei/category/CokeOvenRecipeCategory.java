@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei.category;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -18,7 +19,6 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -67,10 +67,10 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
   }
 
   @Override
-  public void draw(CokeOvenRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
+  public void draw(CokeOvenRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack,
       double mouseX, double mouseY) {
-    this.flame.draw(guiGraphics, 1, 3);
-    this.arrow.draw(guiGraphics, 19, 21);
+    this.flame.draw(poseStack, 1, 3);
+    this.arrow.draw(poseStack, 19, 21);
 
     int cookTime = recipe.getCookingTime();
     if (cookTime > 0) {
@@ -79,8 +79,8 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
           cookTimeSeconds);
       var font = Minecraft.getInstance().font;
       int stringWidth = font.width(timeString);
-      guiGraphics.drawString(font, timeString, getBackground().getWidth() - stringWidth - 80, 43,
-          RailcraftJeiPlugin.TEXT_COLOR, false);
+      font.draw(poseStack, timeString, getBackground().getWidth() - stringWidth - 80, 43,
+          RailcraftJeiPlugin.TEXT_COLOR);
     }
   }
 
@@ -92,7 +92,7 @@ public class CokeOvenRecipeCategory implements IRecipeCategory<CokeOvenRecipe> {
         .addIngredients(ingredients.get(0));
     builder
         .addSlot(RecipeIngredientRole.OUTPUT, 46, 20)
-        .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
+        .addItemStack(recipe.getResultItem());
     // Not the actual capacity, but is 10000 for a better visibility
     builder.addSlot(RecipeIngredientRole.OUTPUT, 75, 1)
         .addIngredient(ForgeTypes.FLUID_STACK, recipe.getCreosote())

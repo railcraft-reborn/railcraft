@@ -144,14 +144,14 @@ public class RefinedFirestoneItem extends FirestoneItem {
   private ItemStack cookedItem(Level level, ItemStack ingredient) {
     return level.getRecipeManager()
         .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(ingredient), level)
-        .map(x -> x.getResultItem(level.registryAccess()))
+        .map(x -> x.getResultItem())
         .orElse(ItemStack.EMPTY);
   }
 
   @Override
   public InteractionResult interactLivingEntity(ItemStack itemStack, Player player,
       LivingEntity livingEntity, InteractionHand hand) {
-    var level = player.level();
+    var level = player.level;
     if (!level.isClientSide() && !livingEntity.fireImmune()) {
       livingEntity.setSecondsOnFire(5);
       itemStack.hurtAndBreak(1, player, __ -> player.broadcastBreakEvent(hand));

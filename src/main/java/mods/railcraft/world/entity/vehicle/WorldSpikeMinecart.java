@@ -47,7 +47,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   public void tick() {
     super.tick();
 
-    if (this.level() instanceof ServerLevel serverLevel) {
+    if (this.level instanceof ServerLevel serverLevel) {
       WorldSpikeBlockEntity.spawnParticle(serverLevel, getOnPos());
       if (!this.chunkPosition().equals(this.lastChunk)) {
         var newChunkSet = new LongOpenHashSet();
@@ -83,7 +83,7 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
   @Override
   public void remove(RemovalReason reason) {
     super.remove(reason);
-    if (this.level() instanceof ServerLevel serverLevel) {
+    if (this.level instanceof ServerLevel serverLevel) {
       LOGGER.info("Minecart removed");
       for (long chunkPos : this.chunkSet) {
         int x = (int) chunkPos;

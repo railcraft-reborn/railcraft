@@ -101,7 +101,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
+    var output = this.recipe.getResultItem();
 
     if (!this.outputContainer.canFit(output)) {
       return false;

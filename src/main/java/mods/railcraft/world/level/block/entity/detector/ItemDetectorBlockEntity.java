@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.detector;
 
 import java.util.List;
+import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
@@ -194,7 +195,7 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     }
 
     public static PrimaryMode fromName(String name) {
-      return CODEC.byName(name, ANYTHING);
+      return Objects.requireNonNullElse(CODEC.byName(name), ANYTHING);
     }
   }
 
@@ -233,7 +234,7 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     }
 
     public static FilterMode fromName(String name) {
-      return CODEC.byName(name, AT_LEAST);
+      return Objects.requireNonNullElse(CODEC.byName(name), AT_LEAST);
     }
   }
 }

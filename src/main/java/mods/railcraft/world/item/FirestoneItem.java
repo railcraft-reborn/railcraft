@@ -4,8 +4,10 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.FirestoneItemEntity;
+import mods.railcraft.world.item.creativetabs.RailcraftTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -52,12 +54,16 @@ public class FirestoneItem extends Item {
     return false;
   }
 
-  public void fillItemCategory(CreativeModeTab.Output output) {
-    output.accept(new ItemStack(this));
+  @Override
+  public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
+    if (pCategory != RailcraftTabs.MAIN) {
+      return;
+    }
+    pItems.add(new ItemStack(this));
     var item = new ItemStack(this);
     if (item.isDamageableItem()) {
       item.setDamageValue(item.getMaxDamage() - 1);
-      output.accept(item);
+      pItems.add(item);
     }
   }
 
@@ -79,7 +85,7 @@ public class FirestoneItem extends Item {
         && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
-      trySpawnFire(player.level(), player.blockPosition(), stack, player);
+      trySpawnFire(player.level, player.blockPosition(), stack, player);
     }
   }
 

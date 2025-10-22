@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.Objects;
 import java.util.Optional;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -218,7 +219,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     }
 
     public static Mode fromName(String name) {
-      return CODEC.byName(name, RISING_EDGE);
+      return Objects.requireNonNullElse(CODEC.byName(name), RISING_EDGE);
     }
   }
 }

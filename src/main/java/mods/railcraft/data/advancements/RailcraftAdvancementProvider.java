@@ -1,19 +1,22 @@
 package mods.railcraft.data.advancements;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import java.util.function.Consumer;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeAdvancementProvider;
 
-public class RailcraftAdvancementProvider extends ForgeAdvancementProvider {
+public class RailcraftAdvancementProvider extends AdvancementProvider {
 
-  public RailcraftAdvancementProvider(PackOutput output,
-      CompletableFuture<HolderLookup.Provider> registries, ExistingFileHelper existingFileHelper) {
-    super(output, registries, existingFileHelper, List.of(
-        new RailcraftTrackAdvancements(),
-        new RailcraftCartAdvancements()
-    ));
+  public RailcraftAdvancementProvider(DataGenerator output,
+                                      ExistingFileHelper existingFileHelper) {
+    super(output, existingFileHelper);
+  }
+
+  @Override
+  protected void registerAdvancements(Consumer<Advancement> consumer,
+                                      ExistingFileHelper fileHelper) {
+    RailcraftCartAdvancements.registerAdvancements(consumer, fileHelper);
+    RailcraftTrackAdvancements.registerAdvancements(consumer, fileHelper);
   }
 }

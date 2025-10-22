@@ -6,7 +6,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 public class ComponentWorkshop {
 
   private static final ResourceKey<StructureProcessorList> EMPTY_PROCESSOR_LIST_KEY =
-      ResourceKey.create(Registries.PROCESSOR_LIST, new ResourceLocation("empty"));
+      ResourceKey.create(Registry.PROCESSOR_LIST_REGISTRY, new ResourceLocation("empty"));
 
   /**
    * Adds the building to the targeted pool. We will call this in addNewVillageBuilding method
@@ -51,8 +50,8 @@ public class ComponentWorkshop {
   }
 
   public static void addVillageStructures(RegistryAccess.Frozen registryAccess) {
-    var templatePoolRegistry = registryAccess.registry(Registries.TEMPLATE_POOL).orElseThrow();
-    var processorListRegistry = registryAccess.registry(Registries.PROCESSOR_LIST).orElseThrow();
+    var templatePoolRegistry = registryAccess.registry(Registry.TEMPLATE_POOL_REGISTRY).orElseThrow();
+    var processorListRegistry = registryAccess.registry(Registry.PROCESSOR_LIST_REGISTRY).orElseThrow();
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
         new ResourceLocation("village/plains/houses"),

@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block.entity.detector;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
@@ -192,7 +193,7 @@ public class TankDetectorBlockEntity extends FilterDetectorBlockEntity {
     }
 
     public static Mode fromName(String name) {
-      return CODEC.byName(name, VOID);
+      return Objects.requireNonNullElse(CODEC.byName(name), VOID);
     }
   }
 }

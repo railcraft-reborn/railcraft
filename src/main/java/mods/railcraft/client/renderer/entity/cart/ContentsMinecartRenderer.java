@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -47,7 +47,7 @@ public abstract class ContentsMinecartRenderer<T extends AbstractMinecart>
       float red, float green, float blue, float alpha) {
     var blockstate = cart.getDisplayBlockState();
     if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
-      poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+      poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
       Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockstate, poseStack,
           bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
     }

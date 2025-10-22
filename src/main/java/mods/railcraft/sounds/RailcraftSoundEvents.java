@@ -30,6 +30,6 @@ public class RailcraftSoundEvents {
 
   private static RegistryObject<SoundEvent> register(String name) {
     return deferredRegister.register(name,
-        () -> SoundEvent.createVariableRangeEvent(RailcraftConstants.rl(name)));
+        () -> new SoundEvent(RailcraftConstants.rl(name)));
   }
 }

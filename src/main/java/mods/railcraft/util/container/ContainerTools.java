@@ -56,7 +56,7 @@ public abstract class ContainerTools {
     if (filter.getItem() instanceof Filter filterItem) {
       return filterItem.matches(filter, stack);
     }
-    return ItemStack.isSameItem(stack, filter);
+    return ItemStack.isSame(stack, filter);
   }
 
   public static ListTag writeContainer(Container container) {

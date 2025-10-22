@@ -5,7 +5,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -17,12 +17,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
-  private BlastFurnaceRecipeProvider(PackOutput packOutput) {
-    super(packOutput);
+  private BlastFurnaceRecipeProvider(DataGenerator dataGenerator) {
+    super(dataGenerator);
   }
 
   @Override
-  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
   }
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {

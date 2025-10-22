@@ -1,12 +1,13 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -36,13 +37,14 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+  protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
+    super.renderBg(poseStack, partialTicks, mouseX, mouseY);
     int x = (width - this.getXSize()) / 2;
     int y = (height - this.getYSize()) / 2;
     if (this.menu.getLocomotive().boiler().hasFuel()) {
       int scale = this.menu.getLocomotive().boiler().getBurnProgressScaled(12);
-      guiGraphics.blit(TEXTURE_LOCATION, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
+      RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
+      blit(poseStack, x + 99, y + 33 - scale, 176, 59 - scale, 14, scale + 2);
     }
   }
 }

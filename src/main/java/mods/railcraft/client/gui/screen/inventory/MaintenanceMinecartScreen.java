@@ -1,7 +1,9 @@
 package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.Optional;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
+import mods.railcraft.client.gui.Tooltip;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
@@ -11,8 +13,6 @@ import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.MaintenancePatternMinecart;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -73,9 +73,9 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR, false);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR);
   }
 }

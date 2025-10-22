@@ -1,12 +1,14 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -23,9 +25,8 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
   }
 
   @Override
-  public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
-      int mouseX, int mouseY) {
-
+  public void render(ResourceLocation widgetLocation, GuiComponent guiComponent,
+                     PoseStack poseStack, int centreX, int centreY, int mouseX, int mouseY) {
     float halfWidth = 1; // half width of the needle
     float len = this.widget.h * 0.75F; // length of the needle (along the center)
 
@@ -67,7 +68,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     float bx = gx + this.widget.w * 0.5F;
     float by = gy + this.widget.h;
 
-    var matrix = guiGraphics.pose().last().pose();
+    var matrix = poseStack.last().pose();
     builder
         .vertex(matrix, bx - baseOffset, by, z)
         .color(red, green, blue, alpha)
@@ -87,7 +88,8 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
 
     tesselator.end();
 
-    guiGraphics.blit(widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
+    RenderSystem.setShaderTexture(0, widgetLocation);
+    guiComponent.blit(poseStack, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
         this.widget.ov, 4, 3);
   }
 }

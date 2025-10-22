@@ -22,7 +22,7 @@ public record SetTankDetectorAttributesMessage(
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+    var level = context.get().getSender().level;
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.TANK_DETECTOR.get())
         .ifPresent(blockEntity -> {
           blockEntity.setMode(mode);

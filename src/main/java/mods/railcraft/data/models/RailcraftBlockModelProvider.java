@@ -73,7 +73,7 @@ import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.models.blockstates.Condition;
 import net.minecraft.data.models.blockstates.Condition.CompositeCondition;
 import net.minecraft.data.models.blockstates.Condition.TerminalCondition;
@@ -156,8 +156,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
   private StraightTrackModelSet disembarkingTrackRight;
   private StraightTrackModelSet activeDisembarkingTrackRight;
 
-  public RailcraftBlockModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, RailcraftConstants.ID, fileHelper);
+  public RailcraftBlockModelProvider(DataGenerator dataGenerator, ExistingFileHelper fileHelper) {
+    super(dataGenerator, RailcraftConstants.ID, fileHelper);
   }
 
   private ResourceLocation key(Block block) {
@@ -1133,7 +1133,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .texture("side_a", sideA)
         .texture("side_b", sideB);
 
-    this.simpleBlockWithItem(battery, model);
+    this.simpleBlockItem(battery, model);
   }
 
   private void createDisposableBattery(DisposableBatteryBlock battery,
@@ -1150,7 +1150,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         .texture("side_a", sideA)
         .texture("side_b", sideB);
 
-    this.simpleBlockWithItem(emptyBattery, model);
+    this.simpleBlockItem(emptyBattery, model);
   }
 
   private void createSignalBoxBlock(SignalBoxBlock signalBlock) {

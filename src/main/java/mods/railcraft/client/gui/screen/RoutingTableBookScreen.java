@@ -9,6 +9,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import mods.railcraft.Translations;
@@ -16,6 +17,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.EditRoutingTableBookMessage;
 import net.minecraft.ChatFormatting;
@@ -24,14 +26,11 @@ import net.minecraft.Util;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.font.TextFieldHelper;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.CommonComponents;
@@ -64,11 +63,17 @@ public class RoutingTableBookScreen extends Screen {
   private final ItemStack book;
   private final InteractionHand hand;
 
-  /** Whether the book's title or contents has been modified since being opened */
+  /**
+   * Whether the book's title or contents has been modified since being opened
+   */
   private boolean isModified;
-  /** If I am changing the title of the book */
+  /**
+   * If I am changing the title of the book
+   */
   private boolean editingTitle;
-  /** Update ticks since the gui was opened */
+  /**
+   * Update ticks since the gui was opened
+   */
   private int frameTick;
   private int currentPage;
   private final List<String> pages = Lists.newArrayList();
@@ -91,7 +96,9 @@ public class RoutingTableBookScreen extends Screen {
   private DisplayCache displayCache = DisplayCache.EMPTY;
   private Component pageMsg = CommonComponents.EMPTY;
   private final Component ownerText;
-  /** If I am reading the manual */
+  /**
+   * If I am reading the manual
+   */
   private boolean readingManual;
 
   private final int numManualPages;
@@ -170,12 +177,9 @@ public class RoutingTableBookScreen extends Screen {
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
-    var layout = new LinearLayout(this.width / 2 - 100, this.height / 2 + 90, 200, 20,
-        LinearLayout.Orientation.HORIZONTAL);
-    layout.addChild(this.titleButton);
-    layout.addChild(this.helpButton);
-    layout.addChild(doneButton);
-    layout.arrangeElements();
+
+    GuiUtil.calculateHorizontalLayout(List.of(titleButton, this.helpButton, doneButton),
+        this.width / 2 - 100, this.height / 2 + 90, 200);
 
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
@@ -434,68 +438,64 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics);
+  public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    this.renderBackground(poseStack);
     this.setFocused(null);
     RenderSystem.setShaderTexture(0, BOOK_LOCATION);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    RenderSystem.setShaderTexture(0, BOOK_LOCATION);
+    blit(poseStack, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
     if (this.editingTitle) {
       boolean flag = this.frameTick / 6 % 2 == 0;
       var formattedcharsequence = FormattedCharSequence.composite(
           FormattedCharSequence.forward(this.title, Style.EMPTY),
           flag ? BLACK_CURSOR : GRAY_CURSOR);
       int l = this.font.width(EDIT_TITLE_LABEL);
-      guiGraphics.drawString(this.font, EDIT_TITLE_LABEL, xOffset + 160 - l,
-          yOffset + 34, 0, false);
+      this.font.draw(poseStack, EDIT_TITLE_LABEL, xOffset + 160 - l, yOffset + 34, 0);
       int l1 = this.font.width(formattedcharsequence);
-      guiGraphics.drawString(this.font, formattedcharsequence, xOffset + 120 - l1 / 2,
-          yOffset + 50, 0, false);
+      this.font.draw(poseStack, formattedcharsequence, xOffset + 120 - l1 / 2, yOffset + 50, 0);
       int l2 = this.font.width(this.ownerText);
-      guiGraphics.drawString(this.font, this.ownerText, xOffset + 130 - l2, yOffset + 60, 0, false);
+      this.font.draw(poseStack, this.ownerText, xOffset + 130 - l2, yOffset + 60, 0);
     } else if (this.readingManual) {
       var manualPageIndicator = Component.translatable("book.pageIndicator", this.currentPage + 1,
           this.getMaxPages());
       int l = this.font.width(manualPageIndicator);
-      guiGraphics.drawString(this.font, manualPageIndicator, xOffset - l + 225,
-          yOffset + 15, 0, false);
+      this.font.draw(poseStack, manualPageIndicator, xOffset - l + 225, yOffset + 15, 0);
       var page = Component.translatable(Translations.RoutingTable.MANUAL_PAGES.get(currentPage));
-      guiGraphics.drawWordWrap(this.font, page, xOffset + 20,
-          yOffset + 27, TEXT_WIDTH, IngameWindowScreen.TEXT_COLOR);
+      this.font.drawWordWrap(page, xOffset + 20, yOffset + 27, TEXT_WIDTH, IngameWindowScreen.TEXT_COLOR);
     } else {
       int l = this.font.width(this.pageMsg);
-      guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
+      this.font.draw(poseStack, this.pageMsg, xOffset - l + 225, yOffset + 15, 0);
       var displayCache = this.getDisplayCache();
       for (var lineinfo : displayCache.lines) {
-        guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
-            -16777216, false);
+        this.font.draw(poseStack, lineinfo.asComponent, lineinfo.x, lineinfo.y, -16777216);
       }
-      this.renderHighlight(guiGraphics, displayCache.selection);
-      this.renderCursor(guiGraphics, displayCache.cursor, displayCache.cursorAtEnd);
+      this.renderHighlight(poseStack, displayCache.selection);
+      this.renderCursor(poseStack, displayCache.cursor, displayCache.cursorAtEnd);
     }
     this.updateButtonVisibility();
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+    super.render(poseStack, mouseX, mouseY, partialTicks);
   }
 
-  private void renderCursor(GuiGraphics guiGraphics, Pos2i cursorPos, boolean isEndOfText) {
+  private void renderCursor(PoseStack poseStack, Pos2i cursorPos, boolean isEndOfText) {
     if (this.frameTick / 6 % 2 == 0) {
       cursorPos = this.convertLocalToScreen(cursorPos);
       if (!isEndOfText) {
-        guiGraphics.fill(cursorPos.x, cursorPos.y - 1, cursorPos.x + 1, cursorPos.y + 9, -16777216);
+        fill(poseStack, cursorPos.x, cursorPos.y - 1, cursorPos.x + 1, cursorPos.y + 9, -16777216);
       } else {
-        guiGraphics.drawString(this.font, "_", cursorPos.x, cursorPos.y, 0, false);
+        this.font.draw(poseStack, "_", cursorPos.x, cursorPos.y, 0);
       }
     }
   }
 
-  private void renderHighlight(GuiGraphics guiGraphics, Rect2i[] selected) {
+  private void renderHighlight(PoseStack poseStack, Rect2i[] selected) {
     for (var rect2i : selected) {
       int i = rect2i.getX();
       int j = rect2i.getY();
       int k = i + rect2i.getWidth();
       int l = j + rect2i.getHeight();
-      guiGraphics.fill(RenderType.guiTextHighlight(), i, j, k, l, -16776961);
+      fill(poseStack, i, j, k, l, 2130706687);
     }
   }
 
@@ -551,7 +551,7 @@ public class RoutingTableBookScreen extends Screen {
   }
 
   public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX,
-      double dragY) {
+                              double dragY) {
     if (super.mouseDragged(mouseX, mouseY, button, dragX, dragY)) {
       return true;
     } else {
@@ -653,7 +653,7 @@ public class RoutingTableBookScreen extends Screen {
 
 
   private Rect2i createPartialLineSelection(String input, StringSplitter splitter, int p_98122_,
-      int p_98123_, int p_98124_, int p_98125_) {
+                                            int p_98123_, int p_98124_, int p_98125_) {
     String s = input.substring(p_98125_, p_98122_);
     String s1 = input.substring(p_98125_, p_98123_);
     var corner1 = new Pos2i((int) splitter.stringWidth(s), p_98124_);
@@ -673,7 +673,7 @@ public class RoutingTableBookScreen extends Screen {
 
   static class DisplayCache {
     static final DisplayCache EMPTY = new DisplayCache("", new Pos2i(0, 0), true,
-        new int[] {0}, new LineInfo[] {new LineInfo(Style.EMPTY, "", 0, 0)}, new Rect2i[0]);
+        new int[]{0}, new LineInfo[]{new LineInfo(Style.EMPTY, "", 0, 0)}, new Rect2i[0]);
     private final String fullText;
     final Pos2i cursor;
     final boolean cursorAtEnd;
@@ -682,7 +682,7 @@ public class RoutingTableBookScreen extends Screen {
     final Rect2i[] selection;
 
     public DisplayCache(String fullText, Pos2i cursor, boolean cursorAtEnd, int[] lineStarts,
-        LineInfo[] lines, Rect2i[] selection) {
+                        LineInfo[] lines, Rect2i[] selection) {
       this.fullText = fullText;
       this.cursor = cursor;
       this.cursorAtEnd = cursorAtEnd;
@@ -745,5 +745,6 @@ public class RoutingTableBookScreen extends Screen {
     }
   }
 
-  record Pos2i(int x, int y) {}
+  record Pos2i(int x, int y) {
+  }
 }

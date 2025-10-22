@@ -3,12 +3,12 @@ package mods.railcraft.integrations.jei;
 import java.util.List;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -40,12 +40,11 @@ public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
   }
 
   @Override
-  public void drawInfo(int recipeWidth, int recipeHeight, GuiGraphics guiGraphics, double mouseX,
-      double mouseY) {
+  public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack,
+                       double mouseX, double mouseY) {
     var font = Minecraft.getInstance().font;
     int stringWidth = font.width(this.info) / 2;
-    guiGraphics.drawString(font, this.info, 82 - stringWidth, 0,
-        RailcraftJeiPlugin.TEXT_COLOR, false);
+    font.draw(poseStack, this.info, 82 - stringWidth, 0, RailcraftJeiPlugin.TEXT_COLOR);
   }
 
   @Override
@@ -55,8 +54,7 @@ public class DefaultRecipeWrapper implements ICraftingCategoryExtension {
         .map(ingredient -> List.of(ingredient.getItems()))
         .toList();
     inputs.forEach(l -> l.forEach(stackModifier));
-    var registryAccess = Minecraft.getInstance().level.registryAccess();
-    craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
+    craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem()));
     craftingGridHelper.createAndSetInputs(builder, inputs, getWidth(), getHeight());
   }
 

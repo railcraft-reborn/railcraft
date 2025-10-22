@@ -137,7 +137,7 @@ public enum StackFilter implements Predicate<ItemStack> {
         return false;
       }
       return stacks.stream().filter(toTest -> !toTest.isEmpty())
-          .noneMatch(filter -> ItemStack.isSameItem(itemStack, filter));
+          .noneMatch(filter -> ItemStack.isSame(itemStack, filter));
     };
   }
 
@@ -166,7 +166,7 @@ public enum StackFilter implements Predicate<ItemStack> {
       }
 
       var cartItem = cart.getPickResult();
-      boolean matches = ItemStack.isSameItem(cartItem, itemStack);
+      boolean matches = ItemStack.isSame(cartItem, itemStack);
 
       if (itemStack.hasCustomHoverName()) {
         return matches && itemStack.getDisplayName().getContents()

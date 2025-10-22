@@ -1,11 +1,11 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.TrackUndercutterMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,15 +25,13 @@ public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUnder
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
-        4210752, false);
-    guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
-        4210752, false);
-    guiGraphics.drawString(this.font, PATTERN, 8, 23, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, STOCK, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, UNDER, imageWidth, 23);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, SIDES, imageWidth, 65);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    this.font.draw(poseStack, this.title, this.titleLabelX, this.titleLabelY, 4210752);
+    this.font.draw(poseStack, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752);
+    this.font.draw(poseStack, PATTERN, 8, 23, IngameWindowScreen.TEXT_COLOR);
+    this.font.draw(poseStack, STOCK, 125, 21, IngameWindowScreen.TEXT_COLOR);
+    GuiUtil.drawCenteredString(poseStack, this.font, UNDER, imageWidth, 23);
+    GuiUtil.drawCenteredString(poseStack, this.font, SIDES, imageWidth, 65);
   }
 
   @Override

@@ -104,7 +104,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
           continue;
         }
         var output = getRecipe(stack)
-            .map(x -> x.getResultItem(registryAccess))
+            .map(x -> x.getResultItem())
             .orElse(ItemStack.EMPTY);
         if (!output.isEmpty() &&
             outputContainer.canFit(output) &&

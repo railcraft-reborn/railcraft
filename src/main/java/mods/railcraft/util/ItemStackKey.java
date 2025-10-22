@@ -11,7 +11,7 @@ public record ItemStackKey(ItemStack itemStack) {
       return true;
     }
     if (obj instanceof ItemStackKey other) {
-      return ItemStack.isSameItem(this.itemStack, other.itemStack);
+      return ItemStack.isSame(this.itemStack, other.itemStack);
     }
     return false;
   }

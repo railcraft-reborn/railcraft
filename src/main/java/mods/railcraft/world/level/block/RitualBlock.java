@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -67,7 +67,7 @@ public class RitualBlock extends BaseEntityBlock {
 
   @SuppressWarnings("deprecation")
   @Override
-  public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+  public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
     var drops = new ArrayList<ItemStack>();
     var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
     if (blockEntity instanceof RitualBlockEntity firestone) {

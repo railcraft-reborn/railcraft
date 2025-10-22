@@ -108,14 +108,14 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (!this.level().isClientSide()) {
+    if (!this.level.isClientSide()) {
       if (this.hasMenu()) {
         NetworkHooks.openScreen((ServerPlayer) player, this,
             data -> data.writeVarInt(this.getId()));
       }
       PiglinAi.angerNearbyPiglins(player, true);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.sidedSuccess(this.level.isClientSide());
   }
 
   protected boolean hasMenu() {
@@ -124,7 +124,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Override
   public void remove(RemovalReason reason) {
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       for (int slot = 0; slot < this.getContainerSize(); slot++) {
         this.setItem(slot, ItemStack.EMPTY);
       }
@@ -135,14 +135,14 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public final void destroy(DamageSource source) {
     this.kill();
-    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
       var itemstack = this.getPickResult().copy();
       if (this.hasCustomName()) {
         itemstack.setHoverName(this.getCustomName());
       }
       this.spawnAtLocation(itemstack);
     }
-    this.chestVehicleDestroyed(source, this.level(), this);
+    this.chestVehicleDestroyed(source, this.level, this);
   }
 
   @Override
@@ -175,7 +175,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   protected void updateTravelDirection(BlockPos pos, BlockState state) {
-    var shape = TrackUtil.getTrackDirection(this.level(), pos, state);
+    var shape = TrackUtil.getTrackDirection(this.level, pos, state);
 
     var direction = this.determineTravelDirection(shape);
     var lastDirection = this.travelDirectionHistory[1];

@@ -8,7 +8,6 @@ import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.RecipeUtil;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -45,8 +44,8 @@ public class CrusherRecipe implements Recipe<Container> {
   }
 
   @Override
-  public ItemStack assemble(Container inventory, RegistryAccess registryAccess) {
-    return this.getResultItem(registryAccess).copy();
+  public ItemStack assemble(Container inventory) {
+    return this.getResultItem().copy();
   }
 
   @Override
@@ -60,7 +59,7 @@ public class CrusherRecipe implements Recipe<Container> {
    */
   @Override
   @Deprecated()
-  public ItemStack getResultItem(RegistryAccess registryAccess) {
+  public ItemStack getResultItem() {
     return ItemStack.EMPTY;
   }
 
@@ -100,7 +99,9 @@ public class CrusherRecipe implements Recipe<Container> {
 
   public record CrusherOutput(Ingredient output, int quantity, double probability) {
     public ItemStack getOutput() {
-      return RecipeUtil.getPreferredStackbyMod(output.getItems()).copyWithCount(quantity);
+      var itemStack = RecipeUtil.getPreferredStackbyMod(output.getItems()).copy();
+      itemStack.setCount(quantity);
+      return itemStack;
     }
   }
 

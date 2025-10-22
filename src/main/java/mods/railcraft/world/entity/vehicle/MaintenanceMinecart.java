@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Objects;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -23,8 +24,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
@@ -88,7 +90,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   @Override
   public void tick() {
     super.tick();
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       return;
     }
 
@@ -123,7 +125,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
     ItemStack trackStack = getItem(slotStock);
     if (!trackStack.isEmpty()) {
-      if (TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level(), pos, railShape)) {
+      if (TrackUtil.placeRailAt(trackStack, (ServerLevel) this.level, pos, railShape)) {
         this.removeItem(slotStock, 1);
         this.blink();
         return true;
@@ -133,16 +135,16 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
-    var drops = state.getDrops(new LootParams.Builder((ServerLevel) this.level())
+    var drops = state.getDrops(new LootContext.Builder((ServerLevel) this.level)
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-        .withParameter(LootContextParams.ORIGIN, pos.getCenter()));
+        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
 
     var rollingStock = RollingStock.getOrThrow(this);
     for (var stack : drops) {
       rollingStock.offerOrDropItem(stack);
     }
     var trackShape = TrackUtil.getRailShapeRaw(state);
-    this.level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+    this.level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
     return trackShape;
   }
 
@@ -195,7 +197,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     }
 
     public static Mode fromName(String name) {
-      return CODEC.byName(name, ON);
+      return Objects.requireNonNullElse(CODEC.byName(name), ON);
     }
   }
 }

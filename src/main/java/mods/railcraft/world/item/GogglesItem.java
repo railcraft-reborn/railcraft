@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 public class GogglesItem extends ArmorItem {
 
   public GogglesItem(Properties properties) {
-    super(RailcraftArmorMaterial.GOGGLES, Type.HELMET, properties);
+    super(RailcraftArmorMaterial.GOGGLES, EquipmentSlot.HEAD, properties);
   }
 
   public static Aura getAura(ItemStack itemStack) {

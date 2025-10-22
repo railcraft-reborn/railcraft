@@ -11,7 +11,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +28,7 @@ public class BlastFurnaceEmiRecipe extends BasicEmiRecipe {
     super(RailcraftEmiPlugin.BLASTING_CATEGORY, recipe.getId(), WIDTH, HEIGHT);
     this.recipe = recipe;
     this.inputs.add(EmiIngredient.of(recipe.getIngredients().get(0)));
-    var level = Minecraft.getInstance().level;
-    this.outputs.add(EmiStack.of(recipe.getResultItem(level.registryAccess())));
+    this.outputs.add(EmiStack.of(recipe.getResultItem()));
     if (recipe.getSlagOutput() > 0) {
       this.outputs.add(EmiStack.of(
           new ItemStack(RailcraftItems.SLAG.get(), recipe.getSlagOutput())));

@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -31,7 +32,7 @@ import mods.railcraft.util.MathUtil;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.PlayerUtil;
 import mods.railcraft.util.container.ContainerTools;
-import mods.railcraft.world.damagesource.RailcraftDamageSources;
+import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import mods.railcraft.world.entity.vehicle.Directional;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
@@ -198,8 +199,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-    if (this.level().isClientSide()) {
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+    if (this.level.isClientSide()) {
+      return InteractionResult.sidedSuccess(this.level.isClientSide());
     }
 
     var itemStack = player.getItemInHand(hand);
@@ -210,12 +211,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
         itemStack.hurtAndBreak(1, (ServerPlayer) player,
             serverPlayerEntity -> player.broadcastBreakEvent(hand));
       }
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+      return InteractionResult.sidedSuccess(this.level.isClientSide());
     }
     if (this.canControl(player)) {
       return super.interact(player, hand);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.sidedSuccess(this.level.isClientSide());
   }
 
   /**
@@ -283,7 +284,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    * destination based on the ticket the user has.
    */
   public boolean setDestination(ItemStack ticket) {
-    if (!(this.level() instanceof ServerLevel serverLevel))
+    if (!(this.level instanceof ServerLevel serverLevel))
       return false;
     if (ticket.getItem() instanceof TicketItem) {
       if (this.isLocked()) {
@@ -414,13 +415,13 @@ public abstract class Locomotive extends RailcraftMinecart implements
   public boolean isIdle() {
     return !this.isShutdown()
         && (this.tempIdle > 0 || this.getMode() == Mode.IDLE
-            || !this.level().isClientSide()
+            || !this.level.isClientSide()
                 && RollingStock.getOrThrow(this).train().isIdle());
   }
 
   public boolean isShutdown() {
     return this.getMode() == Mode.SHUTDOWN
-        || !this.level().isClientSide()
+        || !this.level.isClientSide()
             && RollingStock.getOrThrow(this).train().state().isStopped();
   }
 
@@ -446,7 +447,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
    */
   public final void whistle() {
     if (this.whistleDelay <= 0) {
-      this.level().playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, this.whistlePitch);
+      this.level.playSound(null, this, this.getWhistleSound(), this.getSoundSource(), 1, this.whistlePitch);
       this.whistleDelay = WHISTLE_DELAY;
     }
   }
@@ -459,8 +460,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return;
     }
 
-    if (!(this.level() instanceof ServerLevel serverLevel)) {
-      this.clientTick(this.level());
+    if (!(this.level instanceof ServerLevel serverLevel)) {
+      this.clientTick(this.level);
     } else {
       this.serverTick(serverLevel);
     }
@@ -497,7 +498,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     double vx = this.random.nextGaussian() * 0.1;
     double vy = this.random.nextDouble() * 0.01;
     double vz = this.random.nextGaussian() * 0.1;
-    this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
+    this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, x, y, z, vx, vy, vz);
   }
 
   protected abstract Container ticketContainer();
@@ -614,7 +615,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
   @Override
   public void push(Entity entity) {
-    if (!this.level().isClientSide()) {
+    if (!this.level.isClientSide()) {
       if (!entity.isAlive()) {
         return;
       }
@@ -626,7 +627,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
           && ModEntitySelector.KILLABLE.test(entity)) {
         LivingEntity living = (LivingEntity) entity;
         if (RailcraftConfig.SERVER.locomotiveDamageMobs.get()) {
-          living.hurt(RailcraftDamageSources.train(this.level().registryAccess()),
+          living.hurt(RailcraftDamageSource.TRAIN,
               getDamageToRoadKill(living));
         }
         if (living.getHealth() > 0) {
@@ -848,7 +849,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     public static Mode fromName(String name) {
-      return CODEC.byName(name, IDLE);
+      return Objects.requireNonNullElse(CODEC.byName(name), IDLE);
     }
   }
 
@@ -895,7 +896,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     public static Speed fromName(String name) {
-      return CODEC.byName(name, NORMAL);
+      return Objects.requireNonNullElse(CODEC.byName(name), NORMAL);
     }
   }
 
@@ -937,7 +938,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
 
     public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
+      return Objects.requireNonNullElse(CODEC.byName(name), UNLOCKED);
     }
 
     public static Optional<Lock> fromNameOptional(String name) {

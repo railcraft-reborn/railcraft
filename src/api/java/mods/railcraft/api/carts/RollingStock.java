@@ -495,7 +495,7 @@ public interface RollingStock {
   AbstractMinecart entity();
 
   default Level level() {
-    return this.entity().level();
+    return this.entity().level;
   }
 
   private static boolean blocksItemRequests(AbstractMinecart cart, ItemStack stack) {

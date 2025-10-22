@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.Objects;
 import net.minecraft.util.StringRepresentable;
 
 public enum LaunchState implements StringRepresentable {
@@ -25,6 +26,6 @@ public enum LaunchState implements StringRepresentable {
   }
 
   public static LaunchState fromName(String name) {
-    return CODEC.byName(name, LANDED);
+    return Objects.requireNonNullElse(CODEC.byName(name), LANDED);
   }
 }

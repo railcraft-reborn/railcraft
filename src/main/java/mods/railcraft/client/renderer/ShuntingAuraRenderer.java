@@ -41,7 +41,7 @@ public class ShuntingAuraRenderer {
         var projectedView = mainCamera.getPosition();
         poseStack.translate(-projectedView.x, -projectedView.y, -projectedView.z);
 
-        var level = player.level();
+        var level = player.level;
         var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         for (var linkedCart : this.linkedCarts) {
           var entity = level.getEntity(linkedCart.entityId());

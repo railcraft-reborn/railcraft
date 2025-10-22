@@ -1,30 +1,25 @@
 package mods.railcraft.data;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemTagsProvider extends ItemTagsProvider {
 
-  public RailcraftItemTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
-      CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider,
-      ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, blockTagProvider, RailcraftConstants.ID, fileHelper);
+  public RailcraftItemTagsProvider(DataGenerator dataGenerator,
+                                   BlockTagsProvider blockTagProvider,
+                                   ExistingFileHelper fileHelper) {
+    super(dataGenerator, blockTagProvider, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags() {
     this.tag(RailcraftTags.Items.STEEL_INGOT)
         .add(RailcraftItems.STEEL_INGOT.get());
     this.tag(RailcraftTags.Items.TIN_INGOT)
@@ -286,13 +281,6 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.STEEL_CHESTPLATE.get());
     this.tag(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL).add(RailcraftItems.STEEL_LEGGINGS.get());
     this.tag(RailcraftTags.Items.ARMORS_BOOTS_STEEL).add(RailcraftItems.STEEL_BOOTS.get());
-
-
-    this.tag(ItemTags.AXES).add(RailcraftItems.STEEL_AXE.get());
-    this.tag(ItemTags.HOES).add(RailcraftItems.STEEL_HOE.get());
-    this.tag(ItemTags.PICKAXES).add(RailcraftItems.STEEL_PICKAXE.get());
-    this.tag(ItemTags.SHOVELS).add(RailcraftItems.STEEL_SHOVEL.get());
-    this.tag(ItemTags.SWORDS).add(RailcraftItems.STEEL_SWORD.get());
 
     this.tag(Tags.Items.ARMORS_HELMETS).addTags(RailcraftTags.Items.ARMORS_HELMETS_STEEL);
     this.tag(Tags.Items.ARMORS_CHESTPLATES).addTags(RailcraftTags.Items.ARMORS_CHESTPLATES_STEEL);

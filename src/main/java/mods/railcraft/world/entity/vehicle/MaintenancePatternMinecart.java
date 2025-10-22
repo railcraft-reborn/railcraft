@@ -54,7 +54,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
 
     var rollingStock = RollingStock.getOrThrow(this);
 
-    if (!stackStock.isEmpty() && !ItemStack.isSameItem(stackReplace, stackStock)) {
+    if (!stackStock.isEmpty() && !ItemStack.isSame(stackReplace, stackStock)) {
       rollingStock.offerOrDropItem(stackStock);
       this.setItem(slotStock, ItemStack.EMPTY);
       stackStock = ItemStack.EMPTY;
@@ -64,10 +64,12 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
       return;
     }
 
-    if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < this.getMaxStackSize())
-      this.setItem(slotStock,
-          stackReplace.copyWithCount(stackStock.getCount() + rollingStock
-              .pullItem(x -> ItemStack.isSameItem(stackReplace, x)).getCount()));
+    if (!ContainerTools.isStackFull(stackStock) && stackStock.getCount() < this.getMaxStackSize()) {
+      var itemCopy = stackReplace.copy();
+      itemCopy.setCount(stackStock.getCount() + rollingStock
+          .pullItem(x -> ItemStack.isSame(stackReplace, x)).getCount());
+      this.setItem(slotStock, itemCopy);
+    }
   }
 
   @Override

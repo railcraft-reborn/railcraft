@@ -1,5 +1,6 @@
 package mods.railcraft.client;
 
+import java.util.function.Consumer;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
@@ -68,6 +69,8 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -76,6 +79,7 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -100,6 +104,7 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
     modEventBus.addListener(ClientManager::handleKeyRegister);
+    modEventBus.addListener(ClientManager::textureStitch);
     MinecraftForge.EVENT_BUS.register(ClientManager.class);
 
     shuntingAuraRenderer = new ShuntingAuraRenderer();
@@ -166,8 +171,8 @@ public class ClientManager {
 
   private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
     event.register((stack, tintIndex) -> switch (tintIndex) {
-          case 0 -> LocomotiveItem.getPrimaryColor(stack).getMapColor().col;
-          case 1 -> LocomotiveItem.getSecondaryColor(stack).getMapColor().col;
+          case 0 -> LocomotiveItem.getPrimaryColor(stack).getMaterialColor().col;
+          case 1 -> LocomotiveItem.getSecondaryColor(stack).getMaterialColor().col;
           default -> 0xFFFFFFFF;
         },
         RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
@@ -177,11 +182,11 @@ public class ClientManager {
 
   private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
     event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
+            state.getValue(ForceTrackEmitterBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
     event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackBlock.COLOR).getMapColor().col,
+            state.getValue(ForceTrackBlock.COLOR).getMaterialColor().col,
         RailcraftBlocks.FORCE_TRACK.get());
 
     event.register((state, level, pos, tintIndex) -> level != null && pos != null
@@ -191,17 +196,13 @@ public class ClientManager {
   }
 
   private static void handleParticleRegistration(RegisterParticleProvidersEvent event) {
-    event.registerSpriteSet(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.TUNING_AURA.get(),
-        TuningAuraParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.FIRE_SPARK.get(),
-        FireSparkParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.FORCE_SPAWN.get(),
-        ForceSpawnParticle.Provider::new);
-    event.registerSpriteSet(RailcraftParticleTypes.CHUNK_LOADER.get(),
-        ChunkLoaderParticle.Provider::new);
+    event.register(RailcraftParticleTypes.STEAM.get(), SteamParticle.Provider::new);
+    event.register(RailcraftParticleTypes.SPARK.get(), SparkParticle.Provider::new);
+    event.register(RailcraftParticleTypes.PUMPKIN.get(), PumpkinParticle.Provider::new);
+    event.register(RailcraftParticleTypes.TUNING_AURA.get(), TuningAuraParticle.Provider::new);
+    event.register(RailcraftParticleTypes.FIRE_SPARK.get(), FireSparkParticle.Provider::new);
+    event.register(RailcraftParticleTypes.FORCE_SPAWN.get(), ForceSpawnParticle.Provider::new);
+    event.register(RailcraftParticleTypes.CHUNK_LOADER.get(), ChunkLoaderParticle.Provider::new);
   }
 
   private static void handleRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -218,6 +219,53 @@ public class ClientManager {
     event.register(KeyBinding.CHANGE_AURA_KEY);
   }
 
+  private static void textureStitch(TextureStitchEvent.Pre event) {
+    if (!event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
+      return;
+    }
+
+    Consumer<String> spriteAdder = path -> {
+      event.addSprite(ResourceLocation.fromNamespaceAndPath(RailcraftConstants.ID, path));
+    };
+    spriteAdder.accept("entity/signal_aspect/green");
+    spriteAdder.accept("entity/signal_aspect/off");
+    spriteAdder.accept("entity/signal_aspect/red");
+    spriteAdder.accept("entity/signal_aspect/yellow");
+
+    spriteAdder.accept("entity/signal_box_aspect/green");
+    spriteAdder.accept("entity/signal_box_aspect/off");
+    spriteAdder.accept("entity/signal_box_aspect/red");
+    spriteAdder.accept("entity/signal_box_aspect/yellow");
+
+    spriteAdder.accept("entity/signal_box/analog_signal_controller_box");
+    spriteAdder.accept("entity/signal_box/bottom");
+    spriteAdder.accept("entity/signal_box/connected_side");
+    spriteAdder.accept("entity/signal_box/side");
+    spriteAdder.accept("entity/signal_box/signal_block_relay_box");
+    spriteAdder.accept("entity/signal_box/signal_capacitor_box");
+    spriteAdder.accept("entity/signal_box/signal_controller_box");
+    spriteAdder.accept("entity/signal_box/signal_interlock_box");
+    spriteAdder.accept("entity/signal_box/signal_receiver_box");
+    spriteAdder.accept("entity/signal_box/signal_sequencer_box");
+    spriteAdder.accept("entity/signal_box/token_signal_box");
+
+    spriteAdder.accept("entity/fluid_manipulator/interior");
+
+    spriteAdder.accept("entity/fluid_loader/pipe_end");
+    spriteAdder.accept("entity/fluid_loader/pipe_side");
+
+    spriteAdder.accept("entity/minecart/energy_minecart_flux_core");
+    spriteAdder.accept("entity/minecart/energy_minecart_flux_frame");
+    spriteAdder.accept("entity/minecart/maintenance_lamp_disabled");
+    spriteAdder.accept("entity/minecart/maintenance_lamp_off");
+    spriteAdder.accept("entity/minecart/maintenance_lamp_on");
+    spriteAdder.accept("entity/minecart/tank");
+    spriteAdder.accept("entity/minecart/track_layer_contents");
+    spriteAdder.accept("entity/minecart/track_relayer_contents");
+    spriteAdder.accept("entity/minecart/track_remover_contents");
+    spriteAdder.accept("entity/minecart/track_undercutter_contents");
+  }
+
   // ================================================================================
   // Forge Events
   // ================================================================================
@@ -232,7 +280,7 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+    if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
       shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(), event.getPartialTick());
     }
   }

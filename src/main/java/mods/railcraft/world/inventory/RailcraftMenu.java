@@ -187,9 +187,9 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
         var itemstack = slot.getItem();
         if (itemstack.isEmpty() && mayPlace(slot, itemStack)) {
           if (itemStack.getCount() > slot.getMaxStackSize()) {
-            slot.setByPlayer(itemStack.split(slot.getMaxStackSize()));
+            slot.set(itemStack.split(slot.getMaxStackSize()));
           } else {
-            slot.setByPlayer(itemStack.split(itemStack.getCount()));
+            slot.set(itemStack.split(itemStack.getCount()));
           }
 
           slot.setChanged();

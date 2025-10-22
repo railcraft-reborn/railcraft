@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.gameevent;
 
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class RailcraftGameEvents {
 
   private static final DeferredRegister<GameEvent> deferredRegister =
-      DeferredRegister.create(Registries.GAME_EVENT, RailcraftConstants.ID);
+      DeferredRegister.create(Registry.GAME_EVENT.key(), RailcraftConstants.ID);
 
   public static final RegistryObject<GameEvent> NEIGHBOR_NOTIFY = register("neighbor_notify");
 

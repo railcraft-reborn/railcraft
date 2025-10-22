@@ -3,7 +3,7 @@ package mods.railcraft.data.recipes.providers;
 import java.util.function.Consumer;
 import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
@@ -12,12 +12,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class CokeOvenRecipeProvider extends RecipeProvider {
 
-  private CokeOvenRecipeProvider(PackOutput packOutput) {
-    super(packOutput);
+  private CokeOvenRecipeProvider(DataGenerator dataGenerator) {
+    super(dataGenerator);
   }
 
   @Override
-  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
   }
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {

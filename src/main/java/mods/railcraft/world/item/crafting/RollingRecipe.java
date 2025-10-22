@@ -5,7 +5,6 @@ import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -93,8 +92,8 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer inventory, RegistryAccess registryAccess) {
-    return this.getResultItem(registryAccess).copy();
+  public ItemStack assemble(CraftingContainer inventory) {
+    return this.getResultItem().copy();
   }
 
   @Override
@@ -103,7 +102,7 @@ public class RollingRecipe implements Recipe<CraftingContainer> {
   }
 
   @Override
-  public ItemStack getResultItem(RegistryAccess registryAccess) {
+  public ItemStack getResultItem() {
     return this.result;
   }
 

@@ -3,6 +3,7 @@ package mods.railcraft.util.fluids;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
@@ -55,7 +56,7 @@ public final class FluidTools {
    */
   public static boolean interactWithFluidHandler(Player player, InteractionHand hand,
       IFluidHandler fluidHandler) {
-    return player.level().isClientSide()
+    return player.level.isClientSide()
         ? isFluidHandler(player.getItemInHand(hand))
         : FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
   }
@@ -122,7 +123,7 @@ public final class FluidTools {
     }
 
     public static ProcessState fromName(String name) {
-      return CODEC.byName(name, ProcessState.RESET);
+      return Objects.requireNonNullElse(CODEC.byName(name), ProcessState.RESET);
     }
 
     public static ProcessState fromTag(CompoundTag tag) {

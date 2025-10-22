@@ -14,7 +14,7 @@ import mods.railcraft.world.level.material.steam.SteamBoiler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -146,7 +146,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     if (this.explode) {
       level.explode(null, blockPos.getX(), blockPos.getY(),
           blockPos.getZ(), 5.0F + 0.1F * metadata.tanks(),
-          Level.ExplosionInteraction.TNT);
+          Explosion.BlockInteraction.BREAK);
       this.explode = false;
       return;
     }

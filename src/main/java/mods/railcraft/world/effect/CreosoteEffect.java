@@ -1,6 +1,6 @@
 package mods.railcraft.world.effect;
 
-import mods.railcraft.world.damagesource.RailcraftDamageSources;
+import mods.railcraft.world.damagesource.RailcraftDamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,8 +15,7 @@ public class CreosoteEffect extends MobEffect {
   @Override
   public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
     if (livingEntity.getMobType().equals(MobType.ARTHROPOD)) {
-      var registryAccess = livingEntity.level().registryAccess();
-      livingEntity.hurt(RailcraftDamageSources.creosote(registryAccess),
+      livingEntity.hurt(RailcraftDamageSource.CREOSOTE,
           (float) Math.pow(1.1D, amplifier));
     }
   }

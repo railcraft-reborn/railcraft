@@ -5,7 +5,7 @@ import com.google.common.base.Suppliers;
 import mods.railcraft.tags.RailcraftTags;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
@@ -43,12 +43,13 @@ public enum RailcraftArmorMaterial implements ArmorMaterial {
   }
 
   @Override
-  public int getDurabilityForType(ArmorItem.Type type) {
-    return HEALTH_PER_SLOT[type.getSlot().getIndex()] * this.durabilityMultiplier;
+  public int getDurabilityForSlot(EquipmentSlot pSlot) {
+    return HEALTH_PER_SLOT[pSlot.getIndex()] * this.durabilityMultiplier;
   }
+
   @Override
-  public int getDefenseForType(ArmorItem.Type type) {
-    return this.slotProtections[type.getSlot().getIndex()];
+  public int getDefenseForSlot(EquipmentSlot pSlot) {
+    return this.slotProtections[pSlot.getIndex()];
   }
 
   @Override

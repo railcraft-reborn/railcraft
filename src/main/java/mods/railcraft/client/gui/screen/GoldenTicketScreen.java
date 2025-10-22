@@ -1,17 +1,19 @@
 package mods.railcraft.client.gui.screen;
 
+import java.util.List;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.EditTicketAttributeMessage;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -62,12 +64,9 @@ public class GoldenTicketScreen extends IngameWindowScreen {
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
-    var layout = new LinearLayout(this.width / 2 - 100, this.height / 2 + 75, 200, 20,
-        LinearLayout.Orientation.HORIZONTAL);
-    layout.addChild(doneButton);
-    layout.addChild(this.helpButton);
-    layout.addChild(cancelButton);
-    layout.arrangeElements();
+
+    GuiUtil.calculateHorizontalLayout(List.of(doneButton, this.helpButton, cancelButton),
+        this.width / 2 - 100, this.height / 2 + 75, 200);
 
     this.editBoxDest = new EditBox(font, this.width / 2 - (234 / 2), this.height / 2 + 23,
         234, 20, Component.empty());
@@ -77,35 +76,37 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
-      float partialTicks) {
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
+                               float partialTicks) {
     if (this.readingManual) {
       this.editBoxDest.setVisible(false);
       var about = Component.translatable(Translations.Screen.GOLDEN_TICKET_ABOUT);
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      guiGraphics.drawString(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
-          15, TEXT_COLOR, false);
+      this.font.draw(poseStack, about, this.windowWidth / 2 - this.font.width(about) / 2,
+          15, TEXT_COLOR);
 
-      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR);
+      int xOffset = (this.width - IMAGE_WIDTH) / 2;
+      int yOffset = (this.height - IMAGE_HEIGHT) / 2;
+      this.font.drawWordWrap(help, xOffset + 15, yOffset + 30, 230, TEXT_COLOR);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
           .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
       var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
-      var poseStack = guiGraphics.pose();
       poseStack.pushPose();
       {
         poseStack.scale(2, 2, 2);
-        guiGraphics.drawCenteredString(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
+        GuiComponent.drawCenteredString(poseStack, this.font, title, IMAGE_WIDTH / 4, 8,
+            TEXT_COLOR);
       }
       poseStack.popPose();
-      guiGraphics.drawString(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
-          45, TEXT_COLOR, false);
-      guiGraphics.drawString(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
-          60, TEXT_COLOR, false);
+      this.font.draw(poseStack, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
+          45, TEXT_COLOR);
+      this.font.draw(poseStack, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
+          60, TEXT_COLOR);
       this.editBoxDest.setVisible(true);
       this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
     }

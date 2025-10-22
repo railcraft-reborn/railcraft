@@ -235,7 +235,8 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     if (stack.isEmpty()) {
       return false;
     }
-    var newStack = stack.copyWithCount(1);
+    var newStack = stack.copy();
+    newStack.setCount(1);
     return this.stream().anyMatch(slot -> slot.isValid(newStack));
   }
 
@@ -361,6 +362,6 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
   static Predicate<ItemStack> anyOf(Collection<ItemStack> items) {
     return itemStack -> items.isEmpty()
         || items.stream().allMatch(ItemStack::isEmpty)
-        || items.stream().anyMatch(match -> ItemStack.isSameItem(itemStack, match));
+        || items.stream().anyMatch(match -> ItemStack.isSame(itemStack, match));
   }
 }

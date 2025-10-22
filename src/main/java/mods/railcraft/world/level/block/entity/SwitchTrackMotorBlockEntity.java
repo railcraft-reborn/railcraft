@@ -9,6 +9,7 @@ import mods.railcraft.api.signal.SignalReceiver;
 import mods.railcraft.api.signal.SingleSignalReceiver;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.api.track.SwitchActuator;
+import mods.railcraft.util.SerializationUtil;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -104,7 +105,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalReceiver.writeToBuf(data);
-    data.writeEnumSet(this.actionSignalAspects, SignalAspect.class);
+    SerializationUtil.writeEnumSet(data, this.actionSignalAspects, SignalAspect.class);
     data.writeBoolean(this.redstoneTriggered);
   }
 
@@ -113,7 +114,7 @@ public class SwitchTrackMotorBlockEntity extends LockableSwitchTrackActuatorBloc
     super.readFromBuf(data);
     this.signalReceiver.readFromBuf(data);
     this.actionSignalAspects.clear();
-    this.actionSignalAspects.addAll(data.readEnumSet(SignalAspect.class));
+    this.actionSignalAspects.addAll(SerializationUtil.readEnumSet(data, SignalAspect.class));
     this.redstoneTriggered = data.readBoolean();
   }
 }

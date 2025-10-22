@@ -1,10 +1,10 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.DumpingTrackMenu;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,9 +29,9 @@ public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, FILTERS, 250, 26);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, CARTS, 100, 35);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    GuiUtil.drawCenteredString(poseStack, this.font, FILTERS, 250, 26);
+    GuiUtil.drawCenteredString(poseStack, this.font, CARTS, 100, 35);
   }
 }

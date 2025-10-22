@@ -3,7 +3,7 @@ package mods.railcraft.data.loot;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.loot.packs.RailcraftChestLoot;
 import mods.railcraft.loot.DungeonLootModifier;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -12,8 +12,8 @@ import net.minecraftforge.common.loot.LootTableIdCondition;
 
 public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
 
-  public RailcraftLootModifierProvider(PackOutput output) {
-    super(output, RailcraftConstants.ID);
+  public RailcraftLootModifierProvider(DataGenerator dataGenerator) {
+    super(dataGenerator, RailcraftConstants.ID);
   }
 
   private void add(ResourceLocation targetLootTable, ResourceLocation customLootTable) {

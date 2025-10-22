@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -18,8 +16,8 @@ import net.minecraftforge.common.Tags;
 
 public class LocomotivePaintingRecipe extends CustomRecipe {
 
-  public LocomotivePaintingRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public LocomotivePaintingRecipe(ResourceLocation id) {
+    super(id);
   }
 
   private ItemStack getItemStackInRow(CraftingContainer container, int row) {
@@ -47,7 +45,7 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+  public ItemStack assemble(CraftingContainer container) {
     var dyePrimary = getItemStackInRow(container, 0);
     var loco = getItemStackInRow(container, 1);
     var dyeSecondary = getItemStackInRow(container, 2);
@@ -83,7 +81,7 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack getResultItem(RegistryAccess registryAccess) {
+  public ItemStack getResultItem() {
     return new ItemStack(RailcraftItems.STEAM_LOCOMOTIVE.get());
   }
 

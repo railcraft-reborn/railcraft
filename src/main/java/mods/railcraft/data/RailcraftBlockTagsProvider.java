@@ -1,28 +1,24 @@
 package mods.railcraft.data;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class RailcraftBlockTagsProvider extends BlockTagsProvider {
 
-  public RailcraftBlockTagsProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> lookupProvider,
-      ExistingFileHelper fileHelper) {
-    super(packOutput, lookupProvider, RailcraftConstants.ID, fileHelper);
+  public RailcraftBlockTagsProvider(DataGenerator dataGenerator, ExistingFileHelper fileHelper) {
+    super(dataGenerator, RailcraftConstants.ID, fileHelper);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected void addTags(HolderLookup.Provider provider) {
+  protected void addTags() {
     this.tag(RailcraftTags.Blocks.BALLAST)
         .addTag(Tags.Blocks.GRAVEL);
     this.tag(RailcraftTags.Blocks.TRACK_UNDERCUTTER_INVALID_BALLAST)
@@ -496,10 +492,10 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             BlockTags.SAPLINGS,
             BlockTags.LOGS,
             BlockTags.FLOWERS,
-            BlockTags.REPLACEABLE);
+            BlockTags.REPLACEABLE_PLANTS);
     this.tag(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS)
         .add(Blocks.TORCH)
         .addTags(BlockTags.FLOWERS,
-            BlockTags.REPLACEABLE);
+            BlockTags.REPLACEABLE_PLANTS);
   }
 }

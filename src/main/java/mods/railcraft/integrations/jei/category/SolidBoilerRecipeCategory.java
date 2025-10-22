@@ -1,6 +1,7 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -19,7 +20,6 @@ import mods.railcraft.integrations.jei.recipe.SolidBoilerJEIRecipe;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -68,15 +68,15 @@ public class SolidBoilerRecipeCategory implements IRecipeCategory<SolidBoilerJEI
   }
 
   @Override
-  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
-    this.flame.draw(guiGraphics, 46, 3);
-    this.bar.draw(guiGraphics, 24, 6);
+  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack,
+                   double mouseX, double mouseY) {
+    this.flame.draw(poseStack, 46, 3);
+    this.bar.draw(poseStack, 24, 6);
 
     var font = Minecraft.getInstance().font;
     var temp = recipe.temperature() + "°C";
-    guiGraphics.drawString(font, temp, getBackground().getWidth() - font.width(temp) - 50, 43,
-        RailcraftJeiPlugin.TEXT_COLOR, false);
+    font.draw(poseStack, temp, getBackground().getWidth() - font.width(temp) - 50, 43,
+        RailcraftJeiPlugin.TEXT_COLOR);
   }
 
   @Override

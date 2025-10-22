@@ -3,12 +3,10 @@ package mods.railcraft.world.item.crafting;
 import java.util.stream.IntStream;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -19,8 +17,8 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   private static final Ingredient SOURCE = Ingredient.of(RailcraftItems.GOLDEN_TICKET.get());
   private static final Ingredient BLANK = Ingredient.of(Items.PAPER);
 
-  public TicketDuplicateRecipe(ResourceLocation id, CraftingBookCategory category) {
-    super(id, category);
+  public TicketDuplicateRecipe(ResourceLocation id) {
+    super(id);
   }
 
   @Override
@@ -43,13 +41,13 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+  public ItemStack assemble(CraftingContainer container) {
     var source = IntStream.range(0, container.getContainerSize())
         .mapToObj(container::getItem)
         .filter(TicketDuplicateRecipe.SOURCE)
         .findFirst()
         .orElse(ItemStack.EMPTY);
-    var result = getResultItem(registryAccess);
+    var result = getResultItem();
     if (!source.isEmpty()) {
       var nbt = source.getTag();
       if (nbt != null)
@@ -67,7 +65,7 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack getResultItem(RegistryAccess registryAccess) {
+  public ItemStack getResultItem() {
     return new ItemStack(RailcraftItems.TICKET.get());
   }
 

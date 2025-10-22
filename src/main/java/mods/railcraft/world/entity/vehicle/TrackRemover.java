@@ -33,7 +33,7 @@ public class TrackRemover extends MaintenanceMinecart {
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (this.level().isClientSide()) {
+    if (this.level.isClientSide()) {
       return;
     }
 
@@ -59,12 +59,12 @@ public class TrackRemover extends MaintenanceMinecart {
     }
     if (track.distSqr(this.blockPosition()) >= 9) {
       this.tracksRemoved.add(track);
-    } else if (!BaseRailBlock.isRail(this.level(), track)) {
+    } else if (!BaseRailBlock.isRail(this.level, track)) {
       this.tracksRemoved.add(track);
-    } else if (this.level().getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get())) {
+    } else if (this.level.getBlockState(track).is(RailcraftBlocks.FORCE_TRACK.get())) {
       this.tracksRemoved.add(track);
-    } else if (EntitySearcher.findMinecarts().at(track).inflate(0.2f).list(this.level()).isEmpty()) {
-      this.removeOldTrack(track, this.level().getBlockState(track));
+    } else if (EntitySearcher.findMinecarts().at(track).inflate(0.2f).list(this.level).isEmpty()) {
+      this.removeOldTrack(track, this.level.getBlockState(track));
       this.blink();
       this.tracksRemoved.add(track);
     }

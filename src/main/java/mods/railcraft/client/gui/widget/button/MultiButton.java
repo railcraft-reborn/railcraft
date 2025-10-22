@@ -3,8 +3,8 @@ package mods.railcraft.client.gui.widget.button;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.client.gui.Tooltip;
 import mods.railcraft.gui.button.ButtonState;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {

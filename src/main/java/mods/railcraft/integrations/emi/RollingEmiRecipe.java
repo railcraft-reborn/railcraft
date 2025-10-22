@@ -7,13 +7,12 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import mods.railcraft.world.item.crafting.RollingRecipe;
-import net.minecraft.client.Minecraft;
 
 public class RollingEmiRecipe extends EmiCraftingRecipe {
 
   public RollingEmiRecipe(RollingRecipe recipe) {
     super(padIngredients(recipe),
-        EmiStack.of(recipe.getResultItem(Minecraft.getInstance().level.registryAccess())),
+        EmiStack.of(recipe.getResultItem()),
         recipe.getId(), false);
   }
 

@@ -42,7 +42,7 @@ public class CrowbarHandler {
       return InteractionResult.PASS;
     }
 
-    var level = player.level();
+    var level = player.level;
     if (!(player instanceof ServerPlayer serverPlayer)) {
       return InteractionResult.sidedSuccess(level.isClientSide());
     }

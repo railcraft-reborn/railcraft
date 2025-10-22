@@ -1,7 +1,10 @@
 package mods.railcraft.util;
 
 import java.util.Collection;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Position;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public final class MathUtil {
@@ -27,5 +30,17 @@ public final class MathUtil {
     y /= size;
     z /= size;
     return new Vec3(x, y, z);
+  }
+
+  public static BlockPos blockPosContaining(double x, double y, double z) {
+    return new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+  }
+
+  public static BlockPos blockPosContaining(Position pos) {
+    return blockPosContaining(pos.x(), pos.y(), pos.z());
+  }
+
+  public static Vec3 atLowerCornerWithOffset(Vec3i vec, double x, double y, double z) {
+    return new Vec3((double) vec.getX() + x, (double) vec.getY() + y, (double) vec.getZ() + z);
   }
 }

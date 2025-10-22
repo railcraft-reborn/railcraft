@@ -3,7 +3,7 @@ package mods.railcraft.data.models;
 import java.util.Objects;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -12,8 +12,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class RailcraftItemModelProvider extends ItemModelProvider {
 
-  public RailcraftItemModelProvider(PackOutput packOutput, ExistingFileHelper fileHelper) {
-    super(packOutput, RailcraftConstants.ID, fileHelper);
+  public RailcraftItemModelProvider(DataGenerator dataGenerator, ExistingFileHelper fileHelper) {
+    super(dataGenerator, RailcraftConstants.ID, fileHelper);
   }
 
   private ItemModelBuilder basicCustomItem(Item item, String model) {

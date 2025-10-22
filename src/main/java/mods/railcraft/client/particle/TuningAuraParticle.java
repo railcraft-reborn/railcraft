@@ -2,12 +2,12 @@ package mods.railcraft.client.particle;
 
 import mods.railcraft.api.signal.SignalUtil;
 import mods.railcraft.particle.TuningAuraParticleOptions;
+import mods.railcraft.util.MathUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 
@@ -62,13 +62,13 @@ public class TuningAuraParticle extends DimmableParticle {
       return;
     }
 
-    if (!level.isLoaded(BlockPos.containing(source)) ||
-        !level.isLoaded(BlockPos.containing(destination))) {
+    if (!level.isLoaded(MathUtil.blockPosContaining(source)) ||
+        !level.isLoaded(MathUtil.blockPosContaining(destination))) {
       this.remove();
     }
 
-    var sourceBE = level.getBlockEntity(BlockPos.containing(source));
-    var destBE = level.getBlockEntity(BlockPos.containing(source));
+    var sourceBE = level.getBlockEntity(MathUtil.blockPosContaining(source));
+    var destBE = level.getBlockEntity(MathUtil.blockPosContaining(source));
     if ((sourceBE == null || sourceBE.isRemoved()) || (destBE == null || destBE.isRemoved())) {
       this.remove();
     }

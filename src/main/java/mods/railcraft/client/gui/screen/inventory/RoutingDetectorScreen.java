@@ -2,8 +2,10 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import java.util.Optional;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.gui.Tooltip;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.network.NetworkChannel;
@@ -13,8 +15,7 @@ import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -33,7 +34,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   private int refreshTimer;
 
   public RoutingDetectorScreen(RoutingDetectorMenu menu, Inventory inventory,
-      Component title) {
+                               Component title) {
     super(menu, inventory, title);
     this.imageHeight = 158;
     this.imageWidth = 176;
@@ -49,10 +50,9 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
       }
 
       @Override
-      public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
-          int centreY, int mouseX, int mouseY) {
+      public void render(ResourceLocation widgetLocation, GuiComponent guiComponent, PoseStack poseStack, int centreX, int centreY, int mouseX, int mouseY) {
         if (this.getTooltip() != null) {
-          super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
+          super.render(widgetLocation, guiComponent, poseStack, centreX, centreY, mouseX, mouseY);
         }
       }
     });
@@ -85,7 +85,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getLock() != lock) {
       this.routingDetector.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-          ? null : this.minecraft.getUser().getGameProfile());
+              ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }
@@ -94,7 +94,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getRailway() != railway) {
       this.routingDetector.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
-          ? null : this.minecraft.getUser().getGameProfile());
+              ? null : this.minecraft.getUser().getGameProfile());
       this.sendAttributes();
     }
   }
@@ -143,8 +143,8 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
+  protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    super.renderLabels(pPoseStack, pMouseX, pMouseY);
+    this.font.draw(pPoseStack, ROUTING_TABLE, 64, 29, 4210752);
   }
 }

@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block.entity.signal;
 import java.util.EnumSet;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.util.SerializationUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -61,13 +62,13 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
   @Override
   public void writeToBuf(FriendlyByteBuf data) {
     super.writeToBuf(data);
-    data.writeEnumSet(this.actionSignalAspects, SignalAspect.class);
+    SerializationUtil.writeEnumSet(data, this.actionSignalAspects, SignalAspect.class);
   }
 
   @Override
   public void readFromBuf(FriendlyByteBuf data) {
     super.readFromBuf(data);
     this.actionSignalAspects.clear();
-    this.actionSignalAspects.addAll(data.readEnumSet(SignalAspect.class));
+    this.actionSignalAspects.addAll(SerializationUtil.readEnumSet(data, SignalAspect.class));
   }
 }

@@ -43,7 +43,6 @@ import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -204,28 +203,28 @@ public class RailcraftMenuTypes {
       Class<E> entityType, CustomMenuFactory<T, E> factory) {
     IContainerFactory<T> containerFactory = (id, inventory, packetBuffer) -> {
       int entityId = packetBuffer.readVarInt();
-      Entity entity = inventory.player.level().getEntity(entityId);
+      Entity entity = inventory.player.level.getEntity(entityId);
       if (entityType.isInstance(entity)) {
         return factory.create(id, inventory, entityType.cast(entity));
       }
       throw new IllegalStateException(
           "Cannot find entity of type %s with ID %s".formatted(entityType.getName(), entityId));
     };
-    return new MenuType<>(containerFactory, FeatureFlags.DEFAULT_FLAGS);
+    return new MenuType<>(containerFactory);
   }
 
   private static <T extends AbstractContainerMenu, E extends BlockEntity> MenuType<T>
   blockEntityMenu(Class<E> entityType, CustomMenuFactory<T, E> factory) {
     IContainerFactory<T> containerFactory =  (id, inventory, packetBuffer) -> {
       BlockPos blockPos = packetBuffer.readBlockPos();
-      BlockEntity entity = inventory.player.level().getBlockEntity(blockPos);
+      BlockEntity entity = inventory.player.level.getBlockEntity(blockPos);
       if (entityType.isInstance(entity)) {
         return factory.create(id, inventory, entityType.cast(entity));
       }
       throw new IllegalStateException(
           "Cannot find block entity of type %s at [%s]".formatted(entityType.getName(), blockPos));
     };
-    return new MenuType<>(containerFactory, FeatureFlags.DEFAULT_FLAGS);
+    return new MenuType<>(containerFactory);
   }
 
   private interface CustomMenuFactory<C extends AbstractContainerMenu, T> {

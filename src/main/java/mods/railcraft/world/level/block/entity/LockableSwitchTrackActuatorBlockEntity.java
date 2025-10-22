@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.Objects;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -105,7 +106,7 @@ public class LockableSwitchTrackActuatorBlockEntity extends RailcraftBlockEntity
     }
 
     public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
+      return Objects.requireNonNullElse(CODEC.byName(name), UNLOCKED);
     }
   }
 }

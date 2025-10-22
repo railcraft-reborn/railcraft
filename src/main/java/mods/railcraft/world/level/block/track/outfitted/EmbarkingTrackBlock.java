@@ -121,7 +121,7 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   }
 
   private static void teleportEffect(Entity entity, Vec3 destination) {
-    var level = entity.level();
+    var level = entity.level;
     if (level.isClientSide()) {
       return;
     }

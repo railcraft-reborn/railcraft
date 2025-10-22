@@ -8,7 +8,7 @@ public class Translations {
 
   public static class Tab {
 
-    public static final String RAILCRAFT = "itemGroup." + RailcraftConstants.ID;
+    public static final String RAILCRAFT = RailcraftConstants.ID;
     public static final String RAILCRAFT_OUTFITTED_TRACKS = RAILCRAFT + "_outfitted_tracks";
     public static final String RAILCRAFT_DECORATIVE_BLOCKS = RAILCRAFT + "_decorative_blocks";
   }

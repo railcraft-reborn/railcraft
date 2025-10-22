@@ -25,7 +25,7 @@ public record SetItemDetectorAttributesMessage(
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+    var level = context.get().getSender().level;
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ITEM_DETECTOR.get())
         .ifPresent(itemDetector -> {
           itemDetector.setPrimaryMode(this.primaryMode);

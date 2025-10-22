@@ -3,6 +3,7 @@ package mods.railcraft.util.routing;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
@@ -87,7 +88,7 @@ public interface RouterBlockEntity extends MenuProvider, ForwardingContainer {
     }
 
     public static Railway fromName(String name) {
-      return CODEC.byName(name, PUBLIC);
+      return Objects.requireNonNullElse(CODEC.byName(name), PUBLIC);
     }
   }
 }

@@ -20,7 +20,8 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
     if (random.nextDouble() < damageLevel * 0.0001) {
       return RailcraftItems.RAW_FIRESTONE.get().getDefaultInstance();
     }
-    var newStack = itemStack.copyWithCount(1);
+    var newStack = itemStack.copy();
+    newStack.setCount(1);
     return newStack.hurt(1, random, null) ? ItemStack.EMPTY : newStack;
   }
 }

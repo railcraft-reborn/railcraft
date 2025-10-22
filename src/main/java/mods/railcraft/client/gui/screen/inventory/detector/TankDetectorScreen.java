@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory.detector;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
@@ -10,7 +11,6 @@ import mods.railcraft.network.play.SetTankDetectorAttributesMessage;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -67,9 +67,8 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, Component.translatable(Translations.Screen.FILTER), 50,
-        29, 0x404040, false);
+  protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    super.renderLabels(poseStack, mouseX, mouseY);
+    this.font.draw(poseStack, Component.translatable(Translations.Screen.FILTER), 50, 29, 0x404040);
   }
 }

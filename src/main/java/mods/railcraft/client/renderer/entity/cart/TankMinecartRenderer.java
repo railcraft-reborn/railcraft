@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
@@ -16,10 +16,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart> {
 
@@ -41,9 +41,9 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
   }
 
   @Override
-  protected void renderContents(TankMinecart cart, float partialTicks,
-      PoseStack poseStack, MultiBufferSource renderTypeBuffer, int packedLight, float red,
-      float green, float blue, float alpha) {
+  protected void renderContents(TankMinecart cart, float partialTicks, PoseStack poseStack,
+                                MultiBufferSource renderTypeBuffer, int packedLight,
+                                float red, float green, float blue, float alpha) {
     var vertexBuilder =
         renderTypeBuffer.getBuffer(this.tankModel.renderType(TANK_TEXTURE_LOCATION));
     this.tankModel.renderToBuffer(poseStack, vertexBuilder, packedLight,
@@ -55,7 +55,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
   }
 
   private void renderTank(TankMinecart cart, float partialTicks, PoseStack poseStack,
-      MultiBufferSource renderTypeBuffer, int packedLight) {
+                          MultiBufferSource renderTypeBuffer, int packedLight) {
     var tank = cart.getTankManager();
     if (tank != null) {
       var fluidStack = tank.getFluid();
@@ -111,27 +111,27 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
   }
 
   private void renderFilterItem(TankMinecart cart, PoseStack matrixStack,
-      MultiBufferSource renderTypeBuffer, int packedLight) {
+                                MultiBufferSource renderTypeBuffer, int packedLight) {
     matrixStack.pushPose();
     var itemStack = cart.getFilterItem().copy();
 
     final float scale = 1.2F;
 
     matrixStack.pushPose();
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
+    matrixStack.mulPose(Vector3f.YP.rotationDegrees(90));
     matrixStack.translate(0, -0.9F, 0.68F);
     matrixStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
+        ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+        matrixStack, renderTypeBuffer, 0);
     matrixStack.popPose();
 
-    matrixStack.mulPose(Axis.YN.rotationDegrees(90));
+    matrixStack.mulPose(Vector3f.YN.rotationDegrees(90));
     matrixStack.translate(0, -0.9F, 0.68F);
     matrixStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
-        ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
+        ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
+        matrixStack, renderTypeBuffer, 0);
     matrixStack.popPose();
   }
 

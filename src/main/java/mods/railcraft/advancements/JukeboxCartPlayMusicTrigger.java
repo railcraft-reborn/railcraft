@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.JsonUtil;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
@@ -26,14 +26,14 @@ public class JukeboxCartPlayMusicTrigger
 
   @Override
   public JukeboxCartPlayMusicTrigger.Instance createInstance(JsonObject json,
-      ContextAwarePredicate contextAwarePredicate, DeserializationContext deserializationContext) {
+      EntityPredicate.Composite playerPredicate, DeserializationContext deserializationContext) {
     var sound = JsonUtil.getAsString(json, "music")
         .map(ResourceLocation::tryParse)
         .orElse(null);
     var cart = JsonUtil.getAsJsonObject(json, "cart")
         .map(MinecartPredicate::deserialize)
         .orElse(MinecartPredicate.ANY);
-    return new JukeboxCartPlayMusicTrigger.Instance(contextAwarePredicate, sound, cart);
+    return new JukeboxCartPlayMusicTrigger.Instance(playerPredicate, sound, cart);
   }
 
   /**
@@ -51,20 +51,20 @@ public class JukeboxCartPlayMusicTrigger
     private final ResourceLocation music;
     private final MinecartPredicate cart;
 
-    private Instance(ContextAwarePredicate contextAwarePredicate,
+    private Instance(EntityPredicate.Composite playerPredicate,
         @Nullable ResourceLocation music, MinecartPredicate cart) {
-      super(JukeboxCartPlayMusicTrigger.ID, contextAwarePredicate);
+      super(JukeboxCartPlayMusicTrigger.ID, playerPredicate);
       this.music = music;
       this.cart = cart;
     }
 
     public static JukeboxCartPlayMusicTrigger.Instance hasPlayedAnyMusic() {
-      return new JukeboxCartPlayMusicTrigger.Instance(ContextAwarePredicate.ANY,
+      return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.Composite.ANY,
           null, MinecartPredicate.ANY);
     }
 
     public static JukeboxCartPlayMusicTrigger.Instance hasPlayedMusic(ResourceLocation music) {
-      return new JukeboxCartPlayMusicTrigger.Instance(ContextAwarePredicate.ANY,
+      return new JukeboxCartPlayMusicTrigger.Instance(EntityPredicate.Composite.ANY,
           music, MinecartPredicate.ANY);
     }
 

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
+import mods.railcraft.client.gui.Tooltip;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
@@ -13,7 +14,6 @@ import mods.railcraft.network.play.SetActionSignalBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {

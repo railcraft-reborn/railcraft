@@ -1,26 +1,31 @@
 package mods.railcraft.data.worldgen;
 
+import java.util.Map;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.levelgen.structure.GeodeStructure;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.Structures;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 public class RailcraftStructures {
+  private static final DeferredRegister<Structure> STRUCTURES =
+      DeferredRegister.create(Registry.STRUCTURE_REGISTRY, RailcraftConstants.ID);
 
-  public static final ResourceKey<Structure> GEODE = ResourceKey
-      .create(Registries.STRUCTURE, RailcraftConstants.rl("geode"));
+  public static final RegistryObject<Structure> GEODE =
+      STRUCTURES.register("geode", RailcraftStructures::createGeode);
 
-  public static void bootstrap(BootstapContext<Structure> context) {
-    var holdergetter = context.lookup(Registries.BIOME);
-
-    context.register(GEODE, new GeodeStructure(Structures
-        .structure(holdergetter.getOrThrow(BiomeTags.IS_DEEP_OCEAN),
-            GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE)));
+  private static Structure createGeode() {
+    var biomes = BuiltinRegistries.BIOME.getOrCreateTag(BiomeTags.IS_DEEP_OCEAN);
+    return new GeodeStructure(new Structure.StructureSettings(
+        biomes,
+        Map.of(),
+        GenerationStep.Decoration.SURFACE_STRUCTURES,
+        TerrainAdjustment.NONE
+    ));
   }
 }

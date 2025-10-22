@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -119,6 +120,11 @@ public class TrackKitItem extends Item {
     public Properties setAllowedOnSlopes(boolean allowedOnSlopes) {
       this.allowedOnSlopes = allowedOnSlopes;
       return this;
+    }
+
+    @Override
+    public Properties tab(CreativeModeTab pCategory) {
+      return (Properties) super.tab(pCategory);
     }
   }
 }

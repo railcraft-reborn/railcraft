@@ -109,9 +109,8 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -156,8 +155,7 @@ public class RailcraftBlocks {
           .register("post", RailcraftBlocks::buildPost);
 
   private static StrengthenedGlassBlock buildStrengthenedGlass() {
-    return new StrengthenedGlassBlock(BlockBehaviour.Properties.of()
-        .instrument(NoteBlockInstrument.HAT)
+    return new StrengthenedGlassBlock(BlockBehaviour.Properties.of(Material.GLASS)
         .sound(SoundType.GLASS)
         .noOcclusion()
         .strength(1.0F, 5.0F)
@@ -169,8 +167,7 @@ public class RailcraftBlocks {
   }
 
   private static IronTankGaugeBlock buildIronTankGauge() {
-    return new IronTankGaugeBlock(BlockBehaviour.Properties.of()
-        .instrument(NoteBlockInstrument.HAT)
+    return new IronTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
         .sound(SoundType.GLASS)
         .noOcclusion()
         .strength(1.0F, 5.0F)
@@ -183,8 +180,7 @@ public class RailcraftBlocks {
   }
 
   private static IronTankValveBlock buildIronTankValve() {
-    return new IronTankValveBlock(BlockBehaviour.Properties.of()
-        .mapColor(MapColor.METAL)
+    return new IronTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
         .strength(1.0F, 5.0F)
@@ -193,8 +189,7 @@ public class RailcraftBlocks {
   }
 
   private static IronTankWallBlock buildIronTankWall() {
-    return new IronTankWallBlock(BlockBehaviour.Properties.of()
-        .mapColor(MapColor.METAL)
+    return new IronTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
         .strength(1.0F, 5.0F)
@@ -203,8 +198,7 @@ public class RailcraftBlocks {
   }
 
   private static SteelTankGaugeBlock buildSteelTankGauge() {
-    return new SteelTankGaugeBlock(BlockBehaviour.Properties.of()
-        .instrument(NoteBlockInstrument.HAT)
+    return new SteelTankGaugeBlock(BlockBehaviour.Properties.of(Material.GLASS)
         .sound(SoundType.GLASS)
         .noOcclusion()
         .strength(1.5F, 6.0F)
@@ -217,8 +211,7 @@ public class RailcraftBlocks {
   }
 
   private static SteelTankValveBlock buildSteelTankValve() {
-    return new SteelTankValveBlock(BlockBehaviour.Properties.of()
-        .mapColor(MapColor.METAL)
+    return new SteelTankValveBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
         .strength(1.5F, 6.0F)
@@ -227,8 +220,7 @@ public class RailcraftBlocks {
   }
 
   private static SteelTankWallBlock buildSteelTankWall() {
-    return new SteelTankWallBlock(BlockBehaviour.Properties.of()
-        .mapColor(MapColor.METAL)
+    return new SteelTankWallBlock(BlockBehaviour.Properties.of(Material.METAL)
         .sound(SoundType.METAL)
         .noOcclusion()
         .strength(1.5F, 6.0F)
@@ -237,8 +229,7 @@ public class RailcraftBlocks {
   }
 
   private static PostBlock buildPost() {
-    return new PostBlock(BlockBehaviour.Properties.of()
-        .mapColor(MapColor.METAL)
+    return new PostBlock(BlockBehaviour.Properties.of(Material.METAL)
         .strength(2.0F, 3.0F)
         .requiresCorrectToolForDrops()
         .sound(SoundType.METAL));
@@ -246,8 +237,8 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SteamBoilerTankBlock> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.register("low_pressure_steam_boiler_tank",
-          () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new SteamBoilerTankBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .color(MaterialColor.METAL)
               .strength(5.0F, 6.0F)
               .requiresCorrectToolForDrops()
               .noOcclusion()
@@ -260,8 +251,8 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SolidFueledFireboxBlock> SOLID_FUELED_FIREBOX =
       deferredRegister.register("solid_fueled_firebox",
-          () -> new SolidFueledFireboxBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new SolidFueledFireboxBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .color(MaterialColor.STONE)
               .strength(3.5F)
               .requiresCorrectToolForDrops()
               .lightLevel(litBlockEmission(13))
@@ -274,8 +265,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SteamTurbineBlock> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",
-          () -> new SteamTurbineBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new SteamTurbineBlock(BlockBehaviour.Properties.of(Material.METAL)
               .strength(3.5F)
               .requiresCorrectToolForDrops()
               .randomTicks()
@@ -283,16 +273,14 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<WaterTankSiding> WATER_TANK_SIDING =
       deferredRegister.register("water_tank_siding",
-          () -> new WaterTankSiding(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.WOOD)
+          () -> new WaterTankSiding(BlockBehaviour.Properties.of(Material.WOOD)
               .strength(2.0F, 3.0F)
               .sound(SoundType.WOOD)
               .requiresCorrectToolForDrops()));
 
   public static final RegistryObject<BlastFurnaceBricksBlock> BLAST_FURNACE_BRICKS =
       deferredRegister.register("blast_furnace_bricks",
-          () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new BlastFurnaceBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(3.5F)
               .requiresCorrectToolForDrops()
               .lightLevel(litBlockEmission(13))
@@ -301,8 +289,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<FeedStationBlock> FEED_STATION =
       deferredRegister.register("feed_station",
           () -> new FeedStationBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.WOOD)
+              BlockBehaviour.Properties.of(Material.WOOD)
                   .strength(1F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
@@ -310,8 +297,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<LogBookBlock> LOGBOOK =
       deferredRegister.register("logbook",
           () -> new LogBookBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.WOOD)
+              BlockBehaviour.Properties.of(Material.WOOD)
                   .strength(3F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
@@ -319,8 +305,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<FrameBlock> FRAME =
       deferredRegister.register("frame",
           () -> new FrameBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.METAL)
+              BlockBehaviour.Properties.of(Material.METAL)
                   .strength(3F)
                   .randomTicks()
                   .requiresCorrectToolForDrops()
@@ -330,8 +315,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<NickelZincBatteryBlock> NICKEL_ZINC_BATTERY =
       deferredRegister.register("nickel_zinc_battery",
           () -> new NickelZincBatteryBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.METAL)
+              BlockBehaviour.Properties.of(Material.METAL)
                   .strength(3F)
                   .randomTicks()
                   .requiresCorrectToolForDrops()
@@ -365,9 +349,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<AnvilBlock> STEEL_ANVIL =
       deferredRegister.register("steel_anvil",
           () -> new AnvilBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.METAL)
-                  .pushReaction(PushReaction.BLOCK)
+              BlockBehaviour.Properties.of(Material.HEAVY_METAL, MaterialColor.METAL)
                   .requiresCorrectToolForDrops()
                   .strength(5.0F, 2000.0F)
                   .sound(SoundType.ANVIL)));
@@ -382,8 +364,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> STEEL_BLOCK =
       deferredRegister.register("steel_block",
-          () -> new Block(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
               .strength(5.0F, 15.0F)
               .sound(SoundType.METAL)
               .requiresCorrectToolForDrops()));
@@ -425,16 +406,14 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> LEAD_ORE =
       deferredRegister.register("lead_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
-              .instrument(NoteBlockInstrument.BASEDRUM)
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(3.0F, 3.0F)
               .requiresCorrectToolForDrops()));
 
   public static final RegistryObject<Block> DEEPSLATE_LEAD_ORE =
       deferredRegister.register("deepslate_lead_ore",
           () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(LEAD_ORE.get())
-              .mapColor(MapColor.DEEPSLATE)
+              .color(MaterialColor.DEEPSLATE)
               .strength(4.5F, 3.0F)
               .sound(SoundType.DEEPSLATE)));
 
@@ -482,25 +461,21 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<Block> SALTPETER_ORE =
       deferredRegister.register("saltpeter_ore",
-          () -> new DropExperienceBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.SAND)
-              .instrument(NoteBlockInstrument.SNARE)
+          () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.SAND)
               .requiresCorrectToolForDrops()
               .strength(0.8F)
               .sound(SoundType.SAND), UniformInt.of(2, 5)));
 
   public static final RegistryObject<Block> COAL_COKE_BLOCK =
       deferredRegister.register("coal_coke_block",
-          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_BLACK)
-              .instrument(NoteBlockInstrument.BASEDRUM)
+          () -> new CoalCokeBlock(5, 300, BlockBehaviour.Properties.of(Material.STONE)
+              .color(MaterialColor.COLOR_BLACK)
               .strength(5.0F, 10.0F)
               .sound(SoundType.STONE)));
 
   public static final RegistryObject<FluidLoaderBlock> FLUID_LOADER =
       deferredRegister.register("fluid_loader",
-          () -> new FluidLoaderBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new FluidLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(3.5F)
               .requiresCorrectToolForDrops()
               .sound(SoundType.STONE)
@@ -512,8 +487,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<AdvancedItemLoaderBlock> ADVANCED_ITEM_LOADER =
       deferredRegister.register("advanced_item_loader",
-          () -> new AdvancedItemLoaderBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new AdvancedItemLoaderBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(3.5F)
               .requiresCorrectToolForDrops()
               .sound(SoundType.STONE)));
@@ -543,8 +517,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<AdvancedDetectorBlock> ADVANCED_DETECTOR =
       deferredRegister.register("advanced_detector",
-          () -> new AdvancedDetectorBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new AdvancedDetectorBlock(BlockBehaviour.Properties.of(Material.STONE)
               .strength(2.0F, 4.5F)
               .requiresCorrectToolForDrops()
               .sound(SoundType.METAL)));
@@ -603,7 +576,8 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<SwitchTrackLeverBlock> SWITCH_TRACK_LEVER =
       deferredRegister.register("switch_track_lever",
-          () -> new SwitchTrackLeverBlock(BlockBehaviour.Properties.of()
+          () -> new SwitchTrackLeverBlock(BlockBehaviour.Properties.of(Material.METAL)
+              .color(MaterialColor.NONE)
               .strength(8.0F, 50.0F)
               .sound(SoundType.METAL)
               .noOcclusion()));
@@ -690,7 +664,8 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ForceTrackBlock> FORCE_TRACK =
       deferredRegister.register("force_track",
-          () -> new ForceTrackBlock(BlockBehaviour.Properties.of()
+          () -> new ForceTrackBlock(BlockBehaviour.Properties.of(Material.GLASS)
+              .color(MaterialColor.NONE)
               .sound(SoundType.GLASS)
               .instabreak()
               .noCollission()
@@ -699,8 +674,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ForceTrackEmitterBlock> FORCE_TRACK_EMITTER =
       deferredRegister.register("force_track_emitter",
-          () -> new ForceTrackEmitterBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new ForceTrackEmitterBlock(BlockBehaviour.Properties.of(Material.METAL)
               .requiresCorrectToolForDrops()
               .strength(1.5F, 6)
               .sound(SoundType.METAL)
@@ -708,7 +682,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<AbandonedTrackBlock> ABANDONED_TRACK =
       deferredRegister.register("abandoned_track",
-          () -> new AbandonedTrackBlock(BlockBehaviour.Properties.of()
+          () -> new AbandonedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
               .sound(SoundType.METAL)));
@@ -815,7 +789,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ElectricTrackBlock> ELECTRIC_TRACK =
       deferredRegister.register("electric_track",
-          () -> new ElectricTrackBlock(BlockBehaviour.Properties.of()
+          () -> new ElectricTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .randomTicks()
               .noCollission()
               .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
@@ -922,7 +896,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<HighSpeedTrackBlock> HIGH_SPEED_TRACK =
       deferredRegister.register("high_speed_track",
-          () -> new HighSpeedTrackBlock(BlockBehaviour.Properties.of()
+          () -> new HighSpeedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
               .sound(SoundType.METAL)));
@@ -984,7 +958,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<HighSpeedElectricTrackBlock> HIGH_SPEED_ELECTRIC_TRACK =
       deferredRegister.register("high_speed_electric_track",
-          () -> new HighSpeedElectricTrackBlock(BlockBehaviour.Properties.of()
+          () -> new HighSpeedElectricTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .randomTicks()
               .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
@@ -1048,7 +1022,7 @@ public class RailcraftBlocks {
   public static final RegistryObject<LockingTrackBlock> IRON_LOCKING_TRACK =
       deferredRegister.register("iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.IRON,
-              BlockBehaviour.Properties.of()
+              BlockBehaviour.Properties.of(Material.DECORATION)
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
@@ -1150,7 +1124,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ReinforcedTrackBlock> REINFORCED_TRACK =
       deferredRegister.register("reinforced_track",
-          () -> new ReinforcedTrackBlock(BlockBehaviour.Properties.of()
+          () -> new ReinforcedTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .strength(TrackConstants.HARDNESS, TrackConstants.REINFORCED_RESISTANCE)
               .sound(SoundType.METAL)));
@@ -1257,7 +1231,7 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<StrapIronTrackBlock> STRAP_IRON_TRACK =
       deferredRegister.register("strap_iron_track",
-          () -> new StrapIronTrackBlock(BlockBehaviour.Properties.of()
+          () -> new StrapIronTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
               .sound(SoundType.METAL)));
@@ -1364,45 +1338,40 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<ElevatorTrackBlock> ELEVATOR_TRACK =
       deferredRegister.register("elevator_track",
-          () -> new ElevatorTrackBlock(BlockBehaviour.Properties.of()
+          () -> new ElevatorTrackBlock(BlockBehaviour.Properties.of(Material.DECORATION)
               .noCollission()
               .strength(1.05F)
               .sound(SoundType.METAL)));
 
   public static final RegistryObject<FirestoneBlock> FIRESTONE_ORE =
       deferredRegister.register("firestone_ore",
-          () -> new FirestoneBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new FirestoneBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(__ -> 15)
               .strength(3, 5)));
 
   public static final RegistryObject<RitualBlock> RITUAL =
       deferredRegister.register("ritual",
-          () -> new RitualBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new RitualBlock(BlockBehaviour.Properties.of(Material.STONE)
               .lightLevel(__ -> 1)
               .noOcclusion()
               .noLootTable()));
 
   public static final RegistryObject<ManualRollingMachineBlock> MANUAL_ROLLING_MACHINE =
       deferredRegister.register("manual_rolling_machine",
-          () -> new ManualRollingMachineBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.WOOD)
+          () -> new ManualRollingMachineBlock(BlockBehaviour.Properties.of(Material.WOOD)
               .sound(SoundType.WOOD)
               .strength(2.5F)));
 
   public static final RegistryObject<PoweredRollingMachineBlock> POWERED_ROLLING_MACHINE =
       deferredRegister.register("powered_rolling_machine",
-          () -> new PoweredRollingMachineBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new PoweredRollingMachineBlock(BlockBehaviour.Properties.of(Material.METAL)
               .sound(SoundType.METAL)
               .strength(3.0F)
               .randomTicks()));
 
   public static final RegistryObject<CrusherMultiblockBlock> CRUSHER =
       deferredRegister.register("crusher",
-          () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.METAL)
+          () -> new CrusherMultiblockBlock(BlockBehaviour.Properties.of(Material.METAL)
               .requiresCorrectToolForDrops()
               .randomTicks()
               .strength(3.5F)
@@ -1410,16 +1379,14 @@ public class RailcraftBlocks {
 
   public static final RegistryObject<CokeOvenBricksBlock> COKE_OVEN_BRICKS =
       deferredRegister.register("coke_oven_bricks",
-          () -> new CokeOvenBricksBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new CokeOvenBricksBlock(BlockBehaviour.Properties.of(Material.STONE)
               .sound(SoundType.STONE)
               .lightLevel(litBlockEmission(13))
               .strength(2F, 6.0F)));
 
   public static final RegistryObject<SteamOvenBlock> STEAM_OVEN =
       deferredRegister.register("steam_oven",
-          () -> new SteamOvenBlock(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.STONE)
+          () -> new SteamOvenBlock(BlockBehaviour.Properties.of(Material.STONE)
               .requiresCorrectToolForDrops()
               .sound(SoundType.STONE)
               .strength(3.5F)));
@@ -1427,19 +1394,15 @@ public class RailcraftBlocks {
   public static final RegistryObject<CreosoteLiquidBlock> CREOSOTE =
       deferredRegister.register("creosote",
           () -> new CreosoteLiquidBlock(
-              BlockBehaviour.Properties.of()
-                  .mapColor(MapColor.WATER)
-                  .liquid()
+              BlockBehaviour.Properties.of(Material.WATER)
                   .noCollission()
                   .strength(50.0F)
-                  .pushReaction(PushReaction.DESTROY)
-                  .noLootTable()
-                  .sound(SoundType.EMPTY)));
+                  .noLootTable()));
 
   public static final RegistryObject<CrushedObsidian> CRUSHED_OBSIDIAN =
       deferredRegister.register("crushed_obsidian",
-          () -> new CrushedObsidian(BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_BLACK)
+          () -> new CrushedObsidian(BlockBehaviour.Properties.of(Material.STONE)
+              .color(MaterialColor.COLOR_BLACK)
               .requiresCorrectToolForDrops()
               .strength(50, 1200)));
 

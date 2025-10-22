@@ -6,7 +6,7 @@ import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.data.recipes.patterns.RollingRecipePattern;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -17,12 +17,12 @@ import net.minecraftforge.common.Tags;
 
 public class RollingRecipeProvider extends RecipeProvider {
 
-  private RollingRecipeProvider(PackOutput packOutput) {
-    super(packOutput);
+  private RollingRecipeProvider(DataGenerator dataGenerator) {
+    super(dataGenerator);
   }
 
   @Override
-  protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+  protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
   }
 
   public static void genRecipes(Consumer<FinishedRecipe> consumer) {

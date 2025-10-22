@@ -1,12 +1,12 @@
 package mods.railcraft.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetSignalControllerBoxAttributesMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -28,36 +28,36 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   public void init() {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    this.addRenderableWidget(Button
-        .builder(Component.literal("<"), __ -> this.defaultAspect = this.defaultAspect.previous())
-        .bounds(centredX + 10, centredY + 25, 30, 20)
-        .build());
-    this.addRenderableWidget(Button
-        .builder(Component.literal(">"), __ -> this.defaultAspect = this.defaultAspect.next())
-        .bounds(centredX + 135, centredY + 25, 30, 20)
-        .build());
-    this.addRenderableWidget(Button
-        .builder(Component.literal("<"), __ -> this.poweredAspect = this.poweredAspect.previous())
-        .bounds(centredX + 10, centredY + 60, 30, 20)
-        .build());
-    this.addRenderableWidget(Button
-        .builder(Component.literal(">"), __ -> this.poweredAspect = this.poweredAspect.next())
-        .bounds(centredX + 135, centredY + 60, 30, 20)
-        .build());
+    this.addRenderableWidget(new Button(
+        centredX + 10, centredY + 25, 30, 20,
+        Component.literal("<"),
+        __ -> this.defaultAspect = this.defaultAspect.previous()));
+    this.addRenderableWidget(new Button(
+        centredX + 135, centredY + 25, 30, 20,
+        Component.literal(">"),
+        __ -> this.defaultAspect = this.defaultAspect.next()));
+    this.addRenderableWidget(new Button(
+        centredX + 10, centredY + 60, 30, 20,
+        Component.literal("<"),
+        __ -> this.poweredAspect = this.poweredAspect.previous()));
+    this.addRenderableWidget(new Button(
+        centredX + 135, centredY + 60, 30, 20,
+        Component.literal(">"),
+        __ -> this.poweredAspect = this.poweredAspect.next()));
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
-      float partialTicks) {
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+  protected void renderContent(PoseStack poseStack, int mouseX, int mouseY,
+                               float partialTicks) {
+    GuiUtil.drawCenteredString(poseStack, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT),
         this.windowWidth, 25);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(poseStack, this.font,
         this.defaultAspect.getDisplayName(), this.windowWidth, 35);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(poseStack, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED),
         this.windowWidth, 60);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(poseStack, this.font,
         this.poweredAspect.getDisplayName(), this.windowWidth, 70);
   }
 

@@ -1,15 +1,19 @@
 package mods.railcraft.client.gui.widget.button;
 
+import java.util.List;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.gui.Tooltip;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
 public class RailcraftButton extends Button {
@@ -18,15 +22,19 @@ public class RailcraftButton extends Button {
       RailcraftConstants.rl("textures/gui/widgets.png");
 
   private TexturePosition texturePosition;
+  private Tooltip tooltip;
 
   protected RailcraftButton(AbstractBuilder<?, ?> builder) {
-    super(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress,
-        builder.createNarration);
+    super(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress);
     this.texturePosition = builder.texturePosition;
   }
 
   public void setTexturePosition(TexturePosition texturePosition) {
     this.texturePosition = texturePosition;
+  }
+
+  public void setTooltip(Tooltip tooltip) {
+    this.tooltip = tooltip;
   }
 
   protected int getYImage(boolean hovered) {
@@ -37,7 +45,7 @@ public class RailcraftButton extends Button {
   }
 
   @Override
-  public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
     RenderSystem.setShaderColor(1, 1, 1, this.alpha);
@@ -51,22 +59,39 @@ public class RailcraftButton extends Button {
     int h = this.texturePosition.height();
     int w = this.texturePosition.width();
 
-    guiGraphics.blit(WIDGETS_LOCATION, this.getX(), this.getY(), xOffset, yOffset + i * h, this.width / 2, h);
-    guiGraphics.blit(WIDGETS_LOCATION, this.getX() + this.width / 2, this.getY(),
+    RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
+    blit(poseStack, this.x, this.y, xOffset, yOffset + i * h, this.width / 2, h);
+    blit(poseStack, this.x + this.width / 2, this.y,
         xOffset + w - this.width / 2,
         yOffset + i * h, this.width / 2, h);
     int j = getFGColor();
-    guiGraphics.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2,
-        this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
+    GuiComponent.drawCenteredString(poseStack, font, this.getMessage(), this.x + this.width / 2,
+        this.y + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
+
+    if (this.isHoveredOrFocused()) {
+      this.renderToolTip(poseStack, mouseX, mouseY);
+    }
+  }
+
+  @Override
+  public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY) {
+    if (tooltip == null) {
+      return;
+    }
+    Screen screen = Minecraft.getInstance().screen;
+    if (screen != null) {
+      List<FormattedCharSequence> text = tooltip.toCharSequence(screen);
+      screen.renderTooltip(poseStack, text, mouseX, mouseY);
+    }
   }
 
   public static Builder builder(Component message, OnPress onPress,
-      TexturePosition texturePosition) {
+                                TexturePosition texturePosition) {
     return new Builder(message, onPress, texturePosition);
   }
 
   public static Builder builder(String translationKey, OnPress onPress,
-      TexturePosition texturePosition) {
+                                TexturePosition texturePosition) {
     return new Builder(Component.translatable(translationKey), onPress, texturePosition);
   }
 
@@ -92,10 +117,9 @@ public class RailcraftButton extends Button {
     private int y;
     private int width = 150;
     private int height = 20;
-    private CreateNarration createNarration = DEFAULT_NARRATION;
 
     public AbstractBuilder(Function<SELF, T> factory, Component message, OnPress onPress,
-        TexturePosition texturePosition) {
+                           TexturePosition texturePosition) {
       this.factory = factory;
       this.message = message;
       this.onPress = onPress;
@@ -125,11 +149,6 @@ public class RailcraftButton extends Button {
 
     public SELF tooltip(@Nullable Tooltip tooltip) {
       this.tooltip = tooltip;
-      return this.self();
-    }
-
-    public SELF createNarration(CreateNarration createNarration) {
-      this.createNarration = createNarration;
       return this.self();
     }
 

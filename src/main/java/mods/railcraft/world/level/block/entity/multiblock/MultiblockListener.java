@@ -7,7 +7,6 @@ import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import net.minecraft.world.level.gameevent.PositionSource;
-import net.minecraft.world.phys.Vec3;
 
 public class MultiblockListener implements GameEventListener {
 
@@ -40,9 +39,8 @@ public class MultiblockListener implements GameEventListener {
   }
 
   @Override
-  public boolean handleGameEvent(ServerLevel serverLevel, GameEvent gameEvent,
-      GameEvent.Context context, Vec3 source) {
-    if (gameEvent.equals(RailcraftGameEvents.NEIGHBOR_NOTIFY.get())) {
+  public boolean handleGameEvent(ServerLevel pLevel, GameEvent.Message pEventMessage) {
+    if (pEventMessage.gameEvent().equals(RailcraftGameEvents.NEIGHBOR_NOTIFY.get())) {
       // Can't check immediately as these events are fired before the blocks are actually changed.
       this.blockEntity.enqueueEvaluation();
     }

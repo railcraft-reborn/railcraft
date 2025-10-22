@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -19,8 +18,8 @@ public class PatchouliBookCrafting extends ShapelessRecipe {
   private static final String NBT_VAL = "railcraft:guide_book";
   private static Item GUIDE_BOOK;
 
-  public PatchouliBookCrafting(ResourceLocation id, CraftingBookCategory category) {
-    super(id, "", category, makeGuideBook(), NonNullList.of(Ingredient.EMPTY,
+  public PatchouliBookCrafting(ResourceLocation id) {
+    super(id, "", makeGuideBook(), NonNullList.of(Ingredient.EMPTY,
         Ingredient.of(Items.BOOK), Ingredient.of(RailcraftItems.IRON_CROWBAR.get())));
   }
 

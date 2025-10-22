@@ -4,7 +4,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,43 +27,42 @@ public class RailcraftRecipeSerializers {
   public static final RegistryObject<RecipeSerializer<?>> CRUSHER =
       deferredRegister.register("crusher", CrusherRecipe.Serializer::new);
 
-  public static final RegistryObject<RecipeSerializer<TicketDuplicateRecipe>> TICKET_DUPLICATE =
+  public static final RegistryObject<SimpleRecipeSerializer<TicketDuplicateRecipe>> TICKET_DUPLICATE =
       deferredRegister.register("ticket_duplicate",
-          () -> new SimpleCraftingRecipeSerializer<>(TicketDuplicateRecipe::new));
+          () -> new SimpleRecipeSerializer<>(TicketDuplicateRecipe::new));
 
-  public static final RegistryObject<RecipeSerializer<LocomotivePaintingRecipe>> LOCOMOTIVE_PAINTING =
+  public static final RegistryObject<SimpleRecipeSerializer<LocomotivePaintingRecipe>> LOCOMOTIVE_PAINTING =
       deferredRegister.register("locomotive_painting",
-          () -> new SimpleCraftingRecipeSerializer<>(LocomotivePaintingRecipe::new));
+          () -> new SimpleRecipeSerializer<>(LocomotivePaintingRecipe::new));
 
-  public static final RegistryObject<RecipeSerializer<RotorRepairRecipe>> ROTOR_REPAIR =
+  public static final RegistryObject<SimpleRecipeSerializer<RotorRepairRecipe>> ROTOR_REPAIR =
       deferredRegister.register("rotor_repair",
-          () -> new SimpleCraftingRecipeSerializer<>(RotorRepairRecipe::new));
+          () -> new SimpleRecipeSerializer<>(RotorRepairRecipe::new));
 
-  public static final RegistryObject<RecipeSerializer<CartDisassemblyRecipe>> CHEST_MINECART_DISASSEMBLY =
+  public static final RegistryObject<SimpleRecipeSerializer<CartDisassemblyRecipe>> CHEST_MINECART_DISASSEMBLY =
       deferredRegister.register("chest_minecart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>((resourceLocation, craftingBookCategory) ->
-              new CartDisassemblyRecipe(resourceLocation, Items.CHEST_MINECART, Items.CHEST,
-                  craftingBookCategory) {
+          () -> new SimpleRecipeSerializer<>((resourceLocation) ->
+              new CartDisassemblyRecipe(resourceLocation, Items.CHEST_MINECART, Items.CHEST) {
                 @Override
                 public RecipeSerializer<?> getSerializer() {
                   return CHEST_MINECART_DISASSEMBLY.get();
                 }
               }));
 
-  public static final RegistryObject<RecipeSerializer<CartDisassemblyRecipe>> WORLDSPIKE_MINECART_DISASSEMBLY =
+  public static final RegistryObject<SimpleRecipeSerializer<CartDisassemblyRecipe>> WORLDSPIKE_MINECART_DISASSEMBLY =
       deferredRegister.register("worldspike_minecart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>((resourceLocation, craftingBookCategory) ->
+          () -> new SimpleRecipeSerializer<>((resourceLocation) ->
               new CartDisassemblyRecipe(resourceLocation, RailcraftItems.WORLD_SPIKE_MINECART.get(),
-                  RailcraftItems.WORLD_SPIKE.get(), craftingBookCategory) {
+                  RailcraftItems.WORLD_SPIKE.get()) {
                 @Override
                 public RecipeSerializer<?> getSerializer() {
                   return WORLDSPIKE_MINECART_DISASSEMBLY.get();
                 }
               }));
 
-  public static final RegistryObject<SimpleCraftingRecipeSerializer<PatchouliBookCrafting>> PATCHOULI_BOOK_CRAFTING =
+  public static final RegistryObject<SimpleRecipeSerializer<PatchouliBookCrafting>> PATCHOULI_BOOK_CRAFTING =
       deferredRegister.register("patchouli_book_crafting",
-          () -> new SimpleCraftingRecipeSerializer<>(PatchouliBookCrafting::new));
+          () -> new SimpleRecipeSerializer<>(PatchouliBookCrafting::new));
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);

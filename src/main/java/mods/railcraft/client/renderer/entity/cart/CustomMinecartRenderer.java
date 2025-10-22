@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import org.apache.commons.lang3.StringUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import mods.railcraft.api.carts.Routable;
 import mods.railcraft.season.Seasons;
 import mods.railcraft.world.entity.vehicle.Directional;
@@ -102,15 +102,15 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       }
     }
 
-    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
-    poseStack.mulPose(Axis.ZP.rotationDegrees(-pitch));
+    poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yaw));
+    poseStack.mulPose(Vector3f.ZP.rotationDegrees(-pitch));
 
     float roll = (float) cart.getHurtTime() - partialTicks;
     float damage = cart.getDamage() - partialTicks;
     if (damage < 0)
       damage = 0;
     if (roll > 0) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(
+      poseStack.mulPose(Vector3f.XP.rotationDegrees(
           Mth.sin(roll) * roll * damage / 10.0F * (float) cart.getHurtDir()));
     }
 

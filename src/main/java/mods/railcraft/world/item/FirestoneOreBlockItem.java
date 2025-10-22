@@ -27,7 +27,7 @@ public class FirestoneOreBlockItem extends BlockItem {
         && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
-      FirestoneItem.trySpawnFire(player.level(), player.blockPosition(), stack, player);
+      FirestoneItem.trySpawnFire(player.level, player.blockPosition(), stack, player);
     }
   }
 

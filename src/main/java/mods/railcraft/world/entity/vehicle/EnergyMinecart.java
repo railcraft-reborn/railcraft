@@ -53,9 +53,9 @@ public class EnergyMinecart extends RailcraftMinecart {
   @Override
   protected void moveAlongTrack(BlockPos pos, BlockState state) {
     super.moveAlongTrack(pos, state);
-    if (!this.level().isClientSide) {
+    if (!this.level.isClientSide) {
       int drawnFromTrack = Charge.distribution
-          .network((ServerLevel) this.level())
+          .network((ServerLevel) this.level)
           .access(this.blockPosition())
           .removeCharge(this.energyStorage.getMaxEnergyStored() - this.energyStorage.getEnergyStored(), false);
       this.energyStorage.receiveEnergy(drawnFromTrack, false);

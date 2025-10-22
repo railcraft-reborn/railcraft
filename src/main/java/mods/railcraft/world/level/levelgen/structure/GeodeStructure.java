@@ -14,7 +14,7 @@ public class GeodeStructure extends Structure {
   }
 
   @Override
-  protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+  public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
     int x = context.chunkPos().getBlockX(9);
     int z = context.chunkPos().getBlockZ(9);
 

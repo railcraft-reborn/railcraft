@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
+import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -10,6 +11,7 @@ import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
@@ -17,7 +19,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.TransientCraftingContainer;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -116,7 +118,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       var recipe = blockEntity.currentRecipe.get();
       if (blockEntity.progress >= recipe.getProcessTime()) {
         blockEntity.isWorking = false;
-        var result = recipe.assemble(blockEntity.craftMatrix, level.registryAccess());
+        var result = recipe.assemble(blockEntity.craftMatrix);
         if (blockEntity.invResult.canFit(result)) {
           blockEntity.craftMatrix.getItems().forEach(x -> x.shrink(1));
           blockEntity.invResult.insert(result);
@@ -150,7 +152,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
         var stackB = this.craftMatrix.getItem(j);
         if (stackB.isEmpty())
           continue;
-        if (ItemStack.isSameItem(stackA, stackB))
+        if (ItemStack.isSame(stackA, stackB))
           if (stackA.getCount() > stackB.getCount() + 1) {
             stackA.shrink(1);
             stackB.grow(1);
@@ -183,7 +185,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return new ManualRollingMachineMenu(containerId, inventory, this);
   }
 
-  public static class RollingCraftingContainer extends TransientCraftingContainer {
+  public static class RollingCraftingContainer extends CraftingContainer {
 
     private RollingCraftingContainer(FakeRollingContainer menu, int width, int height) {
       super(menu, width, height);
@@ -196,6 +198,14 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       if (!stack.isStackable())
         return false;
       return !getItem(index).isEmpty();
+    }
+
+    public List<ItemStack> getItems() {
+      NonNullList<ItemStack> items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+      for (int i = 0; i < this.getContainerSize(); i++) {
+        items.set(i, this.getItem(i));
+      }
+      return items;
     }
   }
 

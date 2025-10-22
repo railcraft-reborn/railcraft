@@ -18,7 +18,7 @@ public record SetTrainDetectorAttributesMessage(BlockPos blockPos, int trainSize
   }
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
-    var level = context.get().getSender().level();
+    var level = context.get().getSender().level;
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.TRAIN_DETECTOR.get())
         .ifPresent(trainDetector -> {
           trainDetector.setTrainSize(this.trainSize);

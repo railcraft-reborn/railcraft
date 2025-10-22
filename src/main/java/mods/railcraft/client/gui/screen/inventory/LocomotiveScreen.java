@@ -1,14 +1,17 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
+import mods.railcraft.client.gui.Tooltip;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.ToggleButton;
+import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.NetworkChannel;
 import mods.railcraft.network.play.SetLocomotiveAttributesMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -16,8 +19,6 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -60,10 +61,6 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     var centreX = (this.width - this.getXSize()) / 2;
     var centreY = (this.height - this.getYSize()) / 2;
 
-    var modeLayout =
-        new LinearLayout(centreX + 4, centreY + this.getYSize() - 129, this.imageWidth - 10, 16,
-            LinearLayout.Orientation.HORIZONTAL);
-
     // Mode buttons
     for (var mode : this.locomotive.getSupportedModes()) {
       var tooltip = Component.translatable(Translations.makeKey("screen",
@@ -73,13 +70,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           .size(54, 16)
           .tooltip(Tooltip.create(tooltip))
           .build());
-      modeLayout.addChild(button);
       this.modeButtons.put(mode, button);
     }
-    modeLayout.arrangeElements();
 
-    var speedLayout = new LinearLayout(centreX + 4, centreY + this.getYSize() - 112, 105, 16,
-        LinearLayout.Orientation.HORIZONTAL);
+    GuiUtil.calculateHorizontalLayout(this.modeButtons.values(),
+        centreX + 4, centreY + this.getYSize() - 129, this.imageWidth - 10);
 
     // Reverse button
     this.reverseButton = this.addRenderableWidget(ToggleButton
@@ -88,7 +83,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
         .size(12, 16)
         .toggled(this.locomotive.isReverse())
         .build());
-    speedLayout.addChild(this.reverseButton);
+    var speedLayout = new ArrayList<Button>();
+    speedLayout.add(this.reverseButton);
 
     // Speed buttons
     for (var speed : Speed.values()) {
@@ -99,10 +95,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
           .size(4 + speed.getLevel() * 6, 16)
           .build());
       button.active = this.locomotive.getSpeed() == speed;
-      speedLayout.addChild(button);
+      speedLayout.add(button);
       this.speedButtons.put(speed, button);
     }
-    speedLayout.arrangeElements();
+    GuiUtil.calculateHorizontalLayout(speedLayout,
+        centreX + 4, centreY + this.getYSize() - 112, 105);
 
     // Lock button
     this.lockButton = this.addRenderableWidget(

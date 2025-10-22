@@ -28,7 +28,7 @@ public record SetRoutingDetectorAttributesMessage(
 
   public boolean handle(Supplier<NetworkEvent.Context> context) {
     var player = context.get().getSender();
-    var level = player.level();
+    var level = player.level;
     var senderProfile = player.getGameProfile();
     level.getBlockEntity(this.blockPos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
         .filter(routingDetector -> routingDetector.canAccess(senderProfile))

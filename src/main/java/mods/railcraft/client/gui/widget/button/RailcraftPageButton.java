@@ -1,6 +1,7 @@
 package mods.railcraft.client.gui.widget.button;
 
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.resources.ResourceLocation;
 
@@ -17,7 +18,7 @@ public class RailcraftPageButton extends PageButton {
   }
 
   @Override
-  public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
     int i = 0;
     int j = 192;
     if (this.isHoveredOrFocused()) {
@@ -28,6 +29,7 @@ public class RailcraftPageButton extends PageButton {
       j += 13;
     }
 
-    guiGraphics.blit(this.atlasLocation, this.getX(), this.getY(), i, j, 23, 13);
+    RenderSystem.setShaderTexture(0, atlasLocation);
+    blit(poseStack, this.x, this.y, i, j, 23, 13);
   }
 }

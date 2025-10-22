@@ -1,5 +1,6 @@
 package mods.railcraft.world.level.block.entity.signal;
 
+import java.util.Objects;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.Lockable;
@@ -104,7 +105,7 @@ public abstract class LockableSignalBoxBlockEntity extends AbstractSignalBoxBloc
     }
 
     public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
+      return Objects.requireNonNullElse(CODEC.byName(name), UNLOCKED);
     }
   }
 }

@@ -19,7 +19,7 @@ public record SetMaintenanceMinecartAttributesMessage(int entityId, MaintenanceM
 
   public boolean handle(Supplier<NetworkEvent.Context> ctx) {
     var player = ctx.get().getSender();
-    var entity = player.level().getEntity(this.entityId);
+    var entity = player.level.getEntity(this.entityId);
     if (entity instanceof MaintenanceMinecart minecart) {
       minecart.setMode(this.mode);
     }
