@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemUtil;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ItemHandlerSlotAccessor<T extends ResourceHandler<ItemResource>> implements SlotAccessor {
 
@@ -24,8 +25,14 @@ public class ItemHandlerSlotAccessor<T extends ResourceHandler<ItemResource>> im
 
   @Override
   public ItemStack extract(int amount, boolean simulate) {
-    return ItemStack.EMPTY;
-    //return this.itemHandler.extractItem(this.index, amount, simulate);
+    try (var tx = Transaction.openRoot()){
+      var resource = this.itemHandler.getResource(this.index);
+      var extracted = this.itemHandler.extract(this.index, resource, amount, tx);
+      if (!simulate) {
+        tx.commit();
+      }
+      return resource.toStack(extracted);
+    }
   }
 
   @Override
