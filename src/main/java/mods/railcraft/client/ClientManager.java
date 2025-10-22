@@ -71,6 +71,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
@@ -95,7 +96,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.VersionChecker;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -367,7 +367,7 @@ public class ClientManager {
     var qualifier = modInfo.getVersion().getQualifier();
     boolean isSnapshot = qualifier != null && qualifier.equals("snapshot");
     boolean showMessageBeta = Railcraft.BETA && RailcraftConfig.CLIENT.showBetaMessage.get();
-    if (!FMLLoader.getCurrent().isProduction() || isSnapshot || showMessageBeta) {
+    if (SharedConstants.IS_RUNNING_IN_IDE || isSnapshot || showMessageBeta) {
       var type = isSnapshot ? "development" : "beta";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
