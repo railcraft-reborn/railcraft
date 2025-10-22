@@ -113,7 +113,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
       if (this.hasMenu()) {
         serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));
       }
-      PiglinAi.angerNearbyPiglins((ServerLevel) serverPlayer.level(), player, true);
+      PiglinAi.angerNearbyPiglins(serverPlayer.level(), player, true);
     }
     return InteractionResult.SUCCESS;
   }

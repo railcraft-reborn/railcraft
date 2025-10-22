@@ -53,6 +53,8 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         this.lampModel.renderType(bright ? this.lampTextureOn : this.lampTextureOff),
         bright ? RenderUtil.FULL_LIGHT : renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
+        color,
+        null,
         0,
         null
     );

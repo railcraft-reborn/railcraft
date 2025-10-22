@@ -11,10 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CubeModel<S> extends SimpleModel<S> {
 
-  public CubeModel(ModelPart root) {
-    super(root);
-  }
-
   public CubeModel(Function<ResourceLocation, RenderType> renderTypeFactory, ModelPart root) {
     super(renderTypeFactory, root);
   }

@@ -725,7 +725,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     this.setPrimaryColor(valueInput.read(CompoundTagKeys.PRIMARY_COLOR, DyeColor.CODEC)
         .orElse(this.getDefaultPrimaryColor()));
-    this.setPrimaryColor(valueInput.read(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC)
+    this.setSecondaryColor(valueInput.read(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC)
         .orElse(this.getDefaultSecondaryColor()));
 
     this.whistlePitch = valueInput.getFloatOr(CompoundTagKeys.WHISTLE_PITCH, getNewWhistlePitch());

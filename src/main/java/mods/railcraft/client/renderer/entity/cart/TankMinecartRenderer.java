@@ -37,7 +37,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART));
     this.snowModel = new LowSidesMinecartModel<>(
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART_SNOW));
-    this.tankModel = new CubeModel<>(RenderType::entityTranslucent,//entityTranslucentCull
+    this.tankModel = new CubeModel<>(RenderType::entityTranslucent,
         context.bakeLayer(RailcraftModelLayers.CUBE));
     this.itemModelResolver = context.getItemModelResolver();
   }
@@ -52,6 +52,8 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         this.tankModel.renderType(TANK_TEXTURE_LOCATION),
         renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
+        color,
+        null,
         0,
         null
     );
@@ -79,8 +81,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
           1 - (RenderUtil.SCALED_PIXEL * 2),
           FluidRenderer.FluidType.STILL);
 
-      poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL,
-          RenderUtil.SCALED_PIXEL);
+      poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL);
       fluidModel.setPackedLight(RenderUtil.calculateGlowLight(renderState.lightCoords, fluidStack));
       fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
       collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {

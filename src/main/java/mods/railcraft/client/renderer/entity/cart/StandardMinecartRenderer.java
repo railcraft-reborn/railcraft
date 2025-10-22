@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 
 public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S extends RailcraftMinecartRenderState>
     extends CustomMinecartRenderer<T, S> {
@@ -31,6 +32,7 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
     var bodyModel = this.getBodyModel(renderState);
+    bodyModel.setupAnim(renderState);
     collector.submitModel(
         bodyModel,
         renderState,
@@ -38,12 +40,15 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
         bodyModel.renderType(MINECART_TEXTURE_LOCATION),
         renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
+        color,
+        null,
         0,
         null
     );
 
     if (Seasons.isPolarExpress(renderState)) {
       var snowModel = this.getSnowModel(renderState);
+      snowModel.setupAnim(renderState);
       collector.submitModel(
           snowModel,
           renderState,
@@ -51,6 +56,8 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
           snowModel.renderType(SNOW_TEXTURE_LOCATION),
           renderState.lightCoords,
           OverlayTexture.NO_OVERLAY,
+          ARGB.color(1, 1, 1, 1),
+          null,
           0,
           null
       );

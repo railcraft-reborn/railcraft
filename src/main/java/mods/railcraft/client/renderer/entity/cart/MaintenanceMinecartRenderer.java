@@ -59,6 +59,8 @@ public abstract class MaintenanceMinecartRenderer
         this.maintenanceModel.renderType(this.maintenanceTextureLocation),
         renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
+        color,
+        null,
         0,
         null
     );
@@ -83,6 +85,8 @@ public abstract class MaintenanceMinecartRenderer
         this.lampModel.renderType(textureLocation),
         blinking ? RenderUtil.FULL_LIGHT : renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
+        color,
+        null,
         0,
         null
     );
