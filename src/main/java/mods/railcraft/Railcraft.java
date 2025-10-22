@@ -135,7 +135,7 @@ import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
 
-  public static final boolean BETA = true;
+  public static final boolean BETA = false;
   public static final TicketController CHUNK_CONTROLLER =
       new TicketController(RailcraftConstants.rl("ticket_controller"),
           new WorldSpikeBlockEntity.RailcraftValidationTicket());
