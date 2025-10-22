@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Set;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.charge.ChargeCartStorageImpl;
@@ -36,7 +37,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
-public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
+public class ElectricLocomotive extends Locomotive implements WorldlyContainer, CartAdvanceable {
 
   // as of 2021 all the numbers have been increased due to RF/FE usage
   private static final int ACTUAL_FUEL_GAIN_PER_REQUEST = SharedConstants.TICKS_PER_SECOND; // the original value
@@ -160,9 +161,14 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
+  public void advanceOnTrack(ServerLevel serverLevel) {
+    this.cartStorage.tickOnTrack(this, this.getCurrentBlockPosOrRailBelow());
+  }
+
+  @Override
   protected void moveAlongTrack(ServerLevel serverLevel) {
     super.moveAlongTrack(serverLevel);
-    this.cartStorage.tickOnTrack(this, this.getCurrentBlockPosOrRailBelow());
+    this.advanceOnTrack(serverLevel);
   }
 
   @Override

@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.HashSet;
 import java.util.Set;
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 
-public class TrackRemover extends MaintenanceMinecart {
+public class TrackRemover extends MaintenanceMinecart implements CartAdvanceable {
 
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
@@ -30,13 +31,8 @@ public class TrackRemover extends MaintenanceMinecart {
   }
 
   @Override
-  protected void moveAlongTrack(ServerLevel serverLevel) {
-    super.moveAlongTrack(serverLevel);
-    if (this.level().isClientSide()) {
-      return;
-    }
-
-    for (BlockPos track : this.tracksBehind) {
+  public void advanceOnTrack(ServerLevel serverLevel) {
+    for (var track : this.tracksBehind) {
       if (track.equals(this.blockPosition())) {
         continue;
       }
@@ -46,6 +42,12 @@ public class TrackRemover extends MaintenanceMinecart {
     this.tracksRemoved.clear();
 
     this.addTravelledTrack(this.blockPosition());
+  }
+
+  @Override
+  protected void moveAlongTrack(ServerLevel serverLevel) {
+    super.moveAlongTrack(serverLevel);
+    this.advanceOnTrack(serverLevel);
   }
 
   private void addTravelledTrack(BlockPos pos) {

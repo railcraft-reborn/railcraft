@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -26,7 +27,7 @@ import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class EnergyMinecart extends RailcraftMinecart {
+public class EnergyMinecart extends RailcraftMinecart implements CartAdvanceable {
 
   public static final int MAX_CHARGE = 50000;
   private static final EntityDataAccessor<Integer> ENERGY =
@@ -49,18 +50,21 @@ public class EnergyMinecart extends RailcraftMinecart {
   }
 
   @Override
+  public void advanceOnTrack(ServerLevel serverLevel) {
+    int drawnFromTrack = Charge.distribution
+        .network(serverLevel)
+        .access(this.blockPosition())
+        .removeCharge(this.energyStorage.getCapacityAsInt() - this.energyStorage.getAmountAsInt(), false);
+    try (var tx = Transaction.openRoot()) {
+      this.energyStorage.insert(drawnFromTrack, tx);
+      tx.commit();
+    }
+  }
+
+  @Override
   protected void moveAlongTrack(ServerLevel serverLevel) {
     super.moveAlongTrack(serverLevel);
-    if (!this.level().isClientSide()) {
-      int drawnFromTrack = Charge.distribution
-          .network((ServerLevel) this.level())
-          .access(this.blockPosition())
-          .removeCharge(this.energyStorage.getCapacityAsInt() - this.energyStorage.getAmountAsInt(), false);
-      try (var tx = Transaction.openRoot()) {
-        this.energyStorage.insert(drawnFromTrack, tx);
-        tx.commit();
-      }
-    }
+    this.advanceOnTrack(serverLevel);
   }
 
   @Override

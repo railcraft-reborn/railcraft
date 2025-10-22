@@ -9,6 +9,7 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Season;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
+import net.minecraft.world.entity.vehicle.OldMinecartBehavior;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
@@ -259,5 +261,15 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return MinecartUtil.isInRangeToRenderDist(this, distance);
+  }
+
+  @Override
+  protected void moveAlongTrack(ServerLevel level) {
+    super.moveAlongTrack(level);
+    if (SharedConstants.IS_RUNNING_IN_IDE) {
+      if (this.getBehavior() instanceof OldMinecartBehavior) {
+        throw new RuntimeException();
+      }
+    }
   }
 }

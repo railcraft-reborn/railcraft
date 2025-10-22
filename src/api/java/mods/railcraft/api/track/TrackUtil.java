@@ -197,8 +197,8 @@ public final class TrackUtil {
     if (block instanceof BaseRailBlock railBlock) {
       return railBlock;
     }
-    throw new IllegalArgumentException(BuiltInRegistries.BLOCK.getKey(block)
-        + " is not a rail block.");
+    throw new IllegalArgumentException("%s is not a rail block."
+        .formatted(BuiltInRegistries.BLOCK.getKey(block)));
   }
 
   public static boolean setRailShape(Level level, BlockPos pos, RailShape railShape) {

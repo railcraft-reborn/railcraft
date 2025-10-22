@@ -3,6 +3,7 @@ package mods.railcraft.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import com.mojang.datafixers.util.Pair;
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -69,18 +70,18 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     double d1 = this.minecart.getY();
     double d2 = this.minecart.getZ();
     Vec3 vec3 = self().getPos(d0, d1, d2);
-    d1 = (double)blockpos.getY();
+    d1 = blockpos.getY();
     boolean flag = false;
     boolean flag1 = false;
     Block var14 = blockstate.getBlock();
     if (var14 instanceof PoweredRailBlock poweredRail) {
       if (!poweredRail.isActivatorRail()) {
-        flag = (Boolean)blockstate.getValue(PoweredRailBlock.POWERED);
+        flag = blockstate.getValue(PoweredRailBlock.POWERED);
         flag1 = !flag;
       }
     }
 
-    double d3 = (double)0.0078125F;
+    double d3 = 0.0078125F;
     if (this.minecart.isInWater()) {
       d3 *= 0.2;
     }
@@ -89,28 +90,28 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     RailShape railshape = ((BaseRailBlock)blockstate.getBlock()).getRailDirection(blockstate, this.level(), blockpos, this.minecart);
     switch (railshape) {
       case ASCENDING_EAST:
-        this.setDeltaMovement(vec31.add(-d3, (double)0.0F, (double)0.0F));
+        this.setDeltaMovement(vec31.add(-d3, 0.0F, 0.0F));
         ++d1;
         break;
       case ASCENDING_WEST:
-        this.setDeltaMovement(vec31.add(d3, (double)0.0F, (double)0.0F));
+        this.setDeltaMovement(vec31.add(d3, 0.0F, 0.0F));
         ++d1;
         break;
       case ASCENDING_NORTH:
-        this.setDeltaMovement(vec31.add((double)0.0F, (double)0.0F, d3));
+        this.setDeltaMovement(vec31.add(0.0F, 0.0F, d3));
         ++d1;
         break;
       case ASCENDING_SOUTH:
-        this.setDeltaMovement(vec31.add((double)0.0F, (double)0.0F, -d3));
+        this.setDeltaMovement(vec31.add(0.0F, 0.0F, -d3));
         ++d1;
     }
 
     vec31 = this.getDeltaMovement();
     Pair<Vec3i, Vec3i> pair = AbstractMinecart.exits(railshape);
-    Vec3i vec3i = (Vec3i)pair.getFirst();
-    Vec3i vec3i1 = (Vec3i)pair.getSecond();
-    double d4 = (double)(vec3i1.getX() - vec3i.getX());
-    double d5 = (double)(vec3i1.getZ() - vec3i.getZ());
+    Vec3i vec3i = pair.getFirst();
+    Vec3i vec3i1 = pair.getSecond();
+    double d4 = vec3i1.getX() - vec3i.getX();
+    double d5 = vec3i1.getZ() - vec3i.getZ();
     double d6 = Math.sqrt(d4 * d4 + d5 * d5);
     double d7 = vec31.x * d4 + vec31.z * d5;
     if (d7 < (double)0.0F) {
@@ -118,7 +119,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       d5 = -d5;
     }
 
-    double d8 = Math.min((double)2.0F, vec31.horizontalDistance());
+    double d8 = Math.min(2.0F, vec31.horizontalDistance());
     vec31 = new Vec3(d8 * d4 / d6, vec31.y, d8 * d5 / d6);
     this.setDeltaMovement(vec31);
     Entity entity = this.minecart.getFirstPassenger();
@@ -134,7 +135,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       Vec3 vec35 = vec32.normalize();
       double d22 = this.getDeltaMovement().horizontalDistanceSqr();
       if (vec35.lengthSqr() > (double)0.0F && d22 < 0.01) {
-        this.setDeltaMovement(this.getDeltaMovement().add(vec32.x * 0.001, (double)0.0F, vec32.z * 0.001));
+        this.setDeltaMovement(this.getDeltaMovement().add(vec32.x * 0.001, 0.0F, vec32.z * 0.001));
         flag1 = false;
       }
     }
@@ -237,6 +238,9 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       }
     }
 
+    if (this.minecart instanceof CartAdvanceable cartAdvanceable) {
+      cartAdvanceable.advanceOnTrack(serverLevel);
+    }
   }
 
   private BlockPos getCurrentRailPosition(AbstractMinecart minecart, ServerLevel level) {
