@@ -49,11 +49,6 @@ public interface ContainerManipulator<T extends SlotAccessor> {
     return slots::stream;
   }
 
-  /*static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
-    var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
-    return slots::stream;
-  }*/
-
   static ContainerManipulator<?> findAdjacent(Level level, BlockPos blockPos) {
     return findAdjacent(level, blockPos, blockEntity -> true);
   }

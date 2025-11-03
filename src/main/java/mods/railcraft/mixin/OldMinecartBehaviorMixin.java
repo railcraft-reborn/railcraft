@@ -2,6 +2,7 @@ package mods.railcraft.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
 import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
@@ -42,11 +43,12 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     return getCustomMaxSpeed(level);
   }*/
 
-  private double getCustomMaxSpeed(ServerLevel level) {
+  @Unique
+  private double railcraft$getCustomMaxSpeed(ServerLevel level) {
     if (!minecart.getData(RailcraftAttachmentTypes.CAN_USE_RAIL)) {
       return self().getMaxSpeed(level);
     } else {
-      BlockPos pos = this.getCurrentRailPosition(minecart, level);
+      BlockPos pos = this.railcraft$getCurrentRailPosition(minecart, level);
       BlockState state = level.getBlockState(pos);
       if (!state.is(BlockTags.RAILS)) {
         return self().getMaxSpeed(level);
@@ -140,12 +142,12 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       }
     }
 
-    if (flag1 && this.minecart.getData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS)) { //RAILCRAFT PATCH
+    if (flag1 && this.railcraft$shouldDoRailFunctions()) { //RAILCRAFT PATCH
       double d20 = this.getDeltaMovement().horizontalDistance();
       if (d20 < 0.03) {
         this.setDeltaMovement(Vec3.ZERO);
       } else {
-        this.setDeltaMovement(this.getDeltaMovement().multiply((double)0.5F, (double)0.0F, (double)0.5F));
+        this.setDeltaMovement(this.getDeltaMovement().multiply(0.5F, 0.0F, 0.5F));
       }
     }
 
@@ -170,10 +172,10 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     d2 = d9 + d5 * d12;
     this.setPos(d0, d1, d2);
     double d23 = this.minecart.isVehicle() ? (double)0.75F : (double)1.0F;
-    double d24 = this.getCustomMaxSpeed(serverLevel); //RAILCRAFT PATCH
+    double d24 = this.railcraft$getCustomMaxSpeed(serverLevel); //RAILCRAFT PATCH
     vec31 = this.getDeltaMovement();
     this.minecart.move(
-        MoverType.SELF, new Vec3(Mth.clamp(d23 * vec31.x, -d24, d24), (double)0.0F, Mth.clamp(d23 * vec31.z, -d24, d24)));
+        MoverType.SELF, new Vec3(Mth.clamp(d23 * vec31.x, -d24, d24), 0.0F, Mth.clamp(d23 * vec31.z, -d24, d24)));
     if (vec3i.getY() != 0 && Mth.floor(this.minecart.getX()) - blockpos.getX() == vec3i.getX() && Mth.floor(this.minecart.getZ()) - blockpos.getZ() == vec3i.getZ()) {
       this.setPos(this.minecart.getX(), this.minecart.getY() + (double)vec3i.getY(), this.minecart.getZ());
     } else if (vec3i1.getY() != 0 && Mth.floor(this.minecart.getX()) - blockpos.getX() == vec3i1.getX() && Mth.floor(this.minecart.getZ()) - blockpos.getZ() == vec3i1.getZ()) {
@@ -187,7 +189,7 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       Vec3 vec34 = this.getDeltaMovement();
       double d16 = vec34.horizontalDistance();
       if (d16 > (double)0.0F) {
-        this.setDeltaMovement(vec34.multiply((d16 + d15) / d16, (double)1.0F, (d16 + d15) / d16));
+        this.setDeltaMovement(vec34.multiply((d16 + d15) / d16, 1.0F, (d16 + d15) / d16));
       }
 
       this.setPos(this.minecart.getX(), vec33.y, this.minecart.getZ());
@@ -201,17 +203,16 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       this.setDeltaMovement(d25 * (double)(j - blockpos.getX()), vec36.y, d25 * (double)(i - blockpos.getZ()));
     }
 
-    if (this.minecart.getData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS)) { //RAILCRAFT PATCH
+    if (this.railcraft$shouldDoRailFunctions()) { //RAILCRAFT PATCH
       BaseRailBlock baserailblock = (BaseRailBlock) blockstate.getBlock(); //RAILCRAFT PATCH
       baserailblock.onMinecartPass(blockstate, level(), blockpos, this.minecart); //RAILCRAFT PATCH
     } //RAILCRAFT PATCH
 
-    if (flag && this.minecart.getData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS)) { //RAILCRAFT PATCH
+    if (flag && this.railcraft$shouldDoRailFunctions()) { //RAILCRAFT PATCH
       Vec3 vec37 = this.getDeltaMovement();
       double d26 = vec37.horizontalDistance();
       if (d26 > 0.01) {
-        double d17 = 0.06;
-        this.setDeltaMovement(vec37.add(vec37.x / d26 * 0.06, (double)0.0F, vec37.z / d26 * 0.06));
+        this.setDeltaMovement(vec37.add(vec37.x / d26 * 0.06, 0.0F, vec37.z / d26 * 0.06));
       } else {
         Vec3 vec38 = this.getDeltaMovement();
         double d18 = vec38.x;
@@ -243,7 +244,13 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     }
   }
 
-  private BlockPos getCurrentRailPosition(AbstractMinecart minecart, ServerLevel level) {
+  @Unique
+  private boolean railcraft$shouldDoRailFunctions() {
+    return this.minecart.getData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS);
+  }
+
+  @Unique
+  private BlockPos railcraft$getCurrentRailPosition(AbstractMinecart minecart, ServerLevel level) {
     int x = Mth.floor(minecart.getX());
     int y = Mth.floor(minecart.getY());
     int z = Mth.floor(minecart.getZ());

@@ -54,22 +54,4 @@ public class ItemHandlerSlotAccessor<T extends ResourceHandler<ItemResource>> im
     return IntStream.range(0, itemHandler.size())
         .mapToObj(i -> new ItemHandlerSlotAccessor<>(itemHandler, i));
   }
-
-  /*public static Stream<ModifiableSlotAccessor> createSlots(IItemHandlerModifiable itemHandler) {
-    return IntStream.range(0, itemHandler.getSlots())
-        .mapToObj(i -> new Modifiable(itemHandler, i));
-  }
-
-  /*private static class Modifiable extends ItemHandlerSlotAccessor<IItemHandlerModifiable>
-      implements ModifiableSlotAccessor {
-
-    private Modifiable(IItemHandlerModifiable itemHandler, int index) {
-      super(itemHandler, index);
-    }
-
-    @Override
-    public void setItem(ItemStack stack) {
-      this.itemHandler.setStackInSlot(this.index, stack);
-    }
-  }*/
 }
