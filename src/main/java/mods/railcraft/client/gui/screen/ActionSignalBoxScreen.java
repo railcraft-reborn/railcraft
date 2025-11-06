@@ -56,14 +56,13 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void addSignalAspectButton(SignalAspect signalAspect, int x, int y, int width) {
-    var actionSignalAspects = this.signalBox.getActionSignalAspects();
     var button = this.addRenderableWidget(ToggleButton
         .toggleBuilder(
             signalAspect.getDisplayName(),
             btn -> ((ToggleButton) btn).setToggled(this.toggleSignalAspect(signalAspect)),
             ButtonTexture.LARGE_BUTTON)
         .bounds(x, y, width, 20)
-        .toggled(actionSignalAspects.contains(signalAspect))
+        .toggled(this.signalBox.isActionSignalAspect(signalAspect))
         .build());
     this.signalAspectButtons.put(signalAspect, button);
   }
@@ -88,8 +87,8 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
 
   private boolean toggleSignalAspect(SignalAspect signalAspect) {
     boolean toggled = false;
-    if (!this.signalBox.getActionSignalAspects().remove(signalAspect)) {
-      this.signalBox.getActionSignalAspects().add(signalAspect);
+    if (!this.signalBox.removeActionSignalAspect(signalAspect)) {
+      this.signalBox.addActionSignalAspect(signalAspect);
       toggled = true;
     }
     this.sendAttributes();
@@ -111,8 +110,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
     this.lockButton.setState(this.signalBox.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
       button.active = canAccess;
-      button.setToggled(
-          this.signalBox.getActionSignalAspects().contains(signalAspect));
+      button.setToggled(this.signalBox.isActionSignalAspect(signalAspect));
     });
   }
 

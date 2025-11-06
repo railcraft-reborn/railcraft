@@ -39,11 +39,9 @@ public class RailcraftButton extends Button {
   @Override
   public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
-    RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-    RenderSystem.setShaderColor(1, 1, 1, this.alpha);
+    guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
     int i = this.getYImage(this.isHoveredOrFocused());
     RenderSystem.enableBlend();
-    RenderSystem.defaultBlendFunc();
     RenderSystem.enableDepthTest();
 
     int xOffset = this.texturePosition.x();
@@ -56,6 +54,7 @@ public class RailcraftButton extends Button {
         xOffset + w - this.width / 2,
         yOffset + i * h, this.width / 2, h);
     int j = getFGColor();
+    guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
     guiGraphics.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2,
         this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
   }
