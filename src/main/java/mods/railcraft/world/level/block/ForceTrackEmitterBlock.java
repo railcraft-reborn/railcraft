@@ -89,7 +89,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     return CHARGE_SPECS;
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
@@ -169,7 +168,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
       BlockPos changedPos, boolean something) {
@@ -193,7 +191,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
         .ifPresent(ForceTrackEmitterBlockEntity::checkSignal);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
       boolean moved) {

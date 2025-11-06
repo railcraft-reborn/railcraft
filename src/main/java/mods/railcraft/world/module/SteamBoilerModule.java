@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
@@ -35,7 +34,6 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final SteamBoiler boiler;
 
   private final IItemHandler itemHandler = new InvWrapper(this) {
-    @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
       if (slot != SLOT_LIQUID_OUTPUT)
