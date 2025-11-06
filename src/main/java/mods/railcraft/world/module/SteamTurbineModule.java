@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import java.util.concurrent.atomic.AtomicReference;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
@@ -59,13 +60,13 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   public void serverTick() {
     super.serverTick();
     var addedEnergy = false;
-    if (this.energy < CHARGE_OUTPUT) {
+    if (this.energy < (CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue())) {
       var steam = this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.SIMULATE);
       if (steam.getAmount() >= STEAM_USAGE) {
         var rotorStack = this.rotorContainer.getItem(0);
         if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
           addedEnergy = true;
-          this.energy += CHARGE_OUTPUT;
+          this.energy += CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue();
           this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.EXECUTE);
           this.waterTank.internalFill(new FluidStack(Fluids.WATER, 2), IFluidHandler.FluidAction.EXECUTE);
           this.rotorContainer.setItem(0, useRotor((ServerLevel) this.provider.level(), rotorStack));
