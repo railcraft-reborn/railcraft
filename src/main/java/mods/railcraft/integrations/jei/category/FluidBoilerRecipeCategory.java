@@ -16,6 +16,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
+import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FluidBoilerRecipeCategory implements IRecipeCategory<FluidBoilerJEIRecipe> {
 
@@ -93,11 +95,14 @@ public class FluidBoilerRecipeCategory implements IRecipeCategory<FluidBoilerJEI
   }
 
   public static List<FluidBoilerJEIRecipe> getBoilerRecipes() {
-    // Not the actual capacity, but is 10000 for a better visibility
-    return List.of(
-        new FluidBoilerJEIRecipe(new FluidStack(RailcraftFluids.CREOSOTE.get(), 10_000),
+    return ForgeRegistries.FLUIDS.tags()
+        .getTag(RailcraftTags.Fluids.CREOSOTE)
+        .stream()
+        .map(fluid -> new FluidBoilerJEIRecipe(
+            new FluidStack(fluid, 10_000),
             new FluidStack(Fluids.WATER, 10_000),
-            new FluidStack(RailcraftFluids.STEAM.get(), 10_000), 100)
-    );
+            new FluidStack(RailcraftFluids.STEAM.get(), 10_000),
+            100))
+        .toList();
   }
 }
