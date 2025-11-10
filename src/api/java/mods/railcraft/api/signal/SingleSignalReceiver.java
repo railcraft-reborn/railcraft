@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -184,8 +183,8 @@ public class SingleSignalReceiver
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-      if (tag.contains(CompoundTagKeys.SIGNAL_CONTROLLER_POS, Tag.TAG_COMPOUND)) {
-        this.signalControllerPos = NbtUtils.readBlockPos(tag,CompoundTagKeys.SIGNAL_CONTROLLER_POS).orElse(null);
+      if (tag.contains(CompoundTagKeys.SIGNAL_CONTROLLER_POS)) {
+        this.signalControllerPos = NbtUtils.readBlockPos(tag, CompoundTagKeys.SIGNAL_CONTROLLER_POS).orElse(null);
       }
     }
   }
