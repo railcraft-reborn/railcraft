@@ -43,6 +43,7 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   private int charge;
 
   private int rebuildDelay;
+  @Nullable
   private Component itemName;
   private int tick = 0;
 
