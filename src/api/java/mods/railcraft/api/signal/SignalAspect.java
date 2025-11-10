@@ -47,6 +47,7 @@ public enum SignalAspect implements StringRepresentable {
    */
   OFF("off", 0);
 
+  @SuppressWarnings("deprecation")
   private static final StringRepresentable.EnumCodec<SignalAspect> CODEC =
       StringRepresentable.fromEnum(SignalAspect::values);
 

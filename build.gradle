@@ -229,7 +229,7 @@ idea {
     }
 }
 
-tasks.withType(ProcessResources).configureEach {
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
     var replaceProperties = [
         minecraft_version       : minecraft_version,
         minecraft_version_range : minecraft_version_range,
@@ -240,11 +240,12 @@ tasks.withType(ProcessResources).configureEach {
         mod_version             : mod_version,
     ]
     inputs.properties replaceProperties
-
-    filesMatching(['META-INF/neoforge.mods.toml']) {
-        expand replaceProperties
-    }
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
 }
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
 
 def lastCommit = providers.exec {
     commandLine 'git', 'rev-parse', 'HEAD'
