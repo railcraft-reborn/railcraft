@@ -56,7 +56,7 @@ public class DualBlockSignalBlockEntity extends BlockSignalBlockEntity
 
   @Override
   public void load( CompoundTag tag) {
-    super.load( tag);
+    super.load(tag);
     this.signalReceiver.deserializeNBT(tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
   }
 
