@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import com.google.common.base.Predicates;
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -104,7 +105,8 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
               || !tank.getMembership().equals(blockEntity.getMembership());
 
           EnergyUtil.pushToSides(level, blockPos, master.getEnergyStorage(),
-              ENERGY_OUTPUT_RATE, filter, Direction.values());
+              ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get().intValue(), filter,
+              Direction.values());
 
           var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
               Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);

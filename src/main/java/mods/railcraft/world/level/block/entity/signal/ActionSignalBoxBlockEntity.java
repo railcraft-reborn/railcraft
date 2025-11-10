@@ -24,18 +24,21 @@ public abstract class ActionSignalBoxBlockEntity extends LockableSignalBoxBlockE
     return this.actionSignalAspects;
   }
 
-  protected final boolean isActionSignalAspect(SignalAspect signalAspect) {
+  public final boolean isActionSignalAspect(SignalAspect signalAspect) {
     return this.actionSignalAspects.contains(signalAspect);
   }
 
-  protected final void addActionSignalAspect(SignalAspect signalAspect) {
+  public final void addActionSignalAspect(SignalAspect signalAspect) {
     this.actionSignalAspects.add(signalAspect);
     this.setChanged();
   }
 
-  protected final void removeActionSignalAspect(SignalAspect signalAspect) {
-    this.actionSignalAspects.remove(signalAspect);
-    this.setChanged();
+  public final boolean removeActionSignalAspect(SignalAspect signalAspect) {
+    boolean value = this.actionSignalAspects.remove(signalAspect);
+    if (value) {
+      this.setChanged();
+    }
+    return value;
   }
 
   @Override
