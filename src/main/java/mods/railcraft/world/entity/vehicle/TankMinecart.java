@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
@@ -185,7 +186,7 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
     return this.canPlaceItem(slot, stack);
   }
 

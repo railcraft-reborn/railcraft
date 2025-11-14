@@ -1185,6 +1185,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildCartsVariant() {
+    shaped(RecipeCategory.MISC, RailcraftItems.CARGO_MINECART.get())
+        .pattern("a")
+        .pattern("b")
+        .define('a', Items.BARREL)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(Items.BARREL), has(Items.BARREL))
+        .save(output);
+
     shaped(RecipeCategory.MISC, RailcraftItems.TANK_MINECART.get())
         .pattern("a")
         .pattern("b")

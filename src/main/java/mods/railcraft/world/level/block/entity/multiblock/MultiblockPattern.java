@@ -86,6 +86,7 @@ public class MultiblockPattern<T> {
     return this.xSize * this.ySize * this.zSize;
   }
 
+  @Nullable
   public T getMetadata() {
     return this.metadata;
   }

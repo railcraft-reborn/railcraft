@@ -1,6 +1,7 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Set;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
@@ -95,7 +96,7 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
     return canPlaceItem(slot, stack);
   }
 

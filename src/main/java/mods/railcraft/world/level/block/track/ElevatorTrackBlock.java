@@ -166,8 +166,8 @@ public class ElevatorTrackBlock extends Block {
   }
 
   @Override
-  public void setPlacedBy(Level level, BlockPos pos, BlockState blockState, LivingEntity placer,
-      ItemStack stack) {
+  public void setPlacedBy(Level level, BlockPos pos, BlockState blockState,
+      @Nullable LivingEntity placer, ItemStack stack) {
     boolean powered = getPowered(blockState);
     if (powered != this.determinePowered(level, pos, blockState))
       level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));

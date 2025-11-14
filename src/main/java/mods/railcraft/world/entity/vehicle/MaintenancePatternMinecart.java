@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -43,7 +44,7 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
     return canPlaceItem(slot, stack);
   }
 

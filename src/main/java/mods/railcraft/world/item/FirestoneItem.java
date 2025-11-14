@@ -1,7 +1,6 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -41,7 +40,6 @@ public class FirestoneItem extends Item {
   }
 
   @Override
-  @NotNull
   public FirestoneItemEntity createEntity(Level level, Entity entity, ItemStack itemStack) {
     return createEntityItem(level, entity, itemStack);
   }
@@ -60,7 +58,6 @@ public class FirestoneItem extends Item {
     }
   }
 
-  @NotNull
   public static FirestoneItemEntity createEntityItem(Level level, Entity entity,
       ItemStack itemStack) {
     var firestone = new FirestoneItemEntity(level, entity.position(), itemStack);

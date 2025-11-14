@@ -6,6 +6,7 @@ import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
+import mods.railcraft.world.entity.vehicle.CargoMinecart;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
@@ -532,6 +533,10 @@ public class RailcraftItems {
           new TrackUndercutterCartItem(properties
               .rarity(Rarity.UNCOMMON)
               .stacksTo(1)));
+
+  public static final DeferredItem<CartItem> CARGO_MINECART =
+      deferredRegister.register("cargo_minecart",
+          () -> new CartItem(CargoMinecart::new, new Item.Properties().stacksTo(1)));
 
   public static final DeferredItem<CartItem> TANK_MINECART =
       deferredRegister.registerItem("tank_minecart",

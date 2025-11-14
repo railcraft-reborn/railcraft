@@ -136,7 +136,7 @@ public class ElectricLocomotive extends Locomotive implements WorldlyContainer, 
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
     return this.canPlaceItem(slot, stack);
   }
 

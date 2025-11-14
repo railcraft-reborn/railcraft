@@ -131,6 +131,7 @@ import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
@@ -204,6 +205,10 @@ public class Railcraft {
               : null);
     }
 
+    event.registerEntity(Capabilities.Item.ENTITY,
+        RailcraftEntityTypes.CARGO_MINECART.get(), (e, side) -> VanillaContainerWrapper.of(e));
+    event.registerEntity(Capabilities.Item.ENTITY_AUTOMATION,
+        RailcraftEntityTypes.CARGO_MINECART.get(), (e, side) -> VanillaContainerWrapper.of(e));
     event.registerEntity(Capabilities.Fluid.ENTITY,
         RailcraftEntityTypes.TANK_MINECART.get(), (e, side) -> e.getTankManager());
     event.registerEntity(Capabilities.Energy.ENTITY,
@@ -212,6 +217,8 @@ public class Railcraft {
         RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), (e, side) -> e.getBatteryCart());
     event.registerEntity(Capabilities.Fluid.ENTITY,
         RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getTankManager());
+    event.registerEntity(Capabilities.Item.ENTITY,
+        RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getFuelContainer());
     event.registerEntity(Capabilities.Item.ENTITY_AUTOMATION,
         RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getFuelContainer());
 

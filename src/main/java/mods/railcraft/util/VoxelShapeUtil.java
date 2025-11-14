@@ -38,8 +38,7 @@ public class VoxelShapeUtil {
   public static Map<Direction, VoxelShape> createDirectionalShapes(double minX, double minY,
       double minZ, double maxX, double maxY, double maxZ, Direction... directions) {
     Map<Direction, VoxelShape> connectionShapes = new EnumMap<>(Direction.class);
-    for (int i = 0; i < directions.length; ++i) {
-      var direction = directions[i];
+    for (Direction direction : directions) {
       connectionShapes.put(direction, Block.box(
           Math.min(minX, 8.0D + direction.getStepX() * 8.0D),
           Math.min(minY, 8.0D + direction.getStepY() * 8.0D),

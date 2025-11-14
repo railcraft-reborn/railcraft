@@ -2,7 +2,6 @@ package mods.railcraft.world.item;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
@@ -148,7 +147,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
     return InteractionResult.SUCCESS;
   }
 
-  @NotNull
   private ItemStack cookedItem(ServerLevel level, ItemStack ingredient) {
     var input = new SingleRecipeInput(ingredient);
     return level.recipeAccess()
@@ -174,7 +172,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  @NotNull
   public FirestoneItemEntity createEntity(Level level, Entity entity, ItemStack itemStack) {
     var firestone = super.createEntity(level, entity, itemStack);
     firestone.setRefined(true);

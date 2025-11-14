@@ -222,6 +222,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD, "Bronze Tunnel Bore Head");
     this.addItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, "Steel Tunnel Bore Head");
     this.addItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, "Diamond Tunnel Bore Head");
+    this.addItem(RailcraftItems.CARGO_MINECART, "Cargo Minecart");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
     this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
@@ -366,6 +367,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void entityTranslations() {
+    this.addEntityType(RailcraftEntityTypes.CARGO_MINECART, "Cargo Minecart");
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
     this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");

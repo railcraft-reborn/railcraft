@@ -29,6 +29,7 @@ import net.neoforged.neoforge.transfer.access.ItemAccess;
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
+  ALL(__ -> true),
   FUEL(itemStack -> Minecraft.getInstance().level.fuelValues().isFuel(itemStack)),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
