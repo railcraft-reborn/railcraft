@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
@@ -141,11 +140,11 @@ public abstract class RailcraftBlockEntity extends BlockEntity
     return Optional.ofNullable(this.owner);
   }
 
-  public final boolean isOwner(@NotNull GameProfile gameProfile) {
+  public final boolean isOwner(GameProfile gameProfile) {
     return gameProfile.equals(this.owner);
   }
 
-  public final boolean isOwnerOrOperator(@NotNull GameProfile gameProfile) {
+  public final boolean isOwnerOrOperator(GameProfile gameProfile) {
     return this.isOwner(gameProfile) || (this.level instanceof ServerLevel serverLevel
         && serverLevel.getServer().getPlayerList().isOp(gameProfile));
   }

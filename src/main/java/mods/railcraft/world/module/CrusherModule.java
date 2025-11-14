@@ -3,7 +3,6 @@ package mods.railcraft.world.module;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
@@ -50,7 +49,6 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
     itemHandler = new InvWrapper(this) {
       @Override
-      @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot < SLOT_OUTPUT) {
           return ItemStack.EMPTY;
@@ -59,8 +57,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot < SLOT_OUTPUT) {
           return super.insertItem(slot, stack, simulate);
         }

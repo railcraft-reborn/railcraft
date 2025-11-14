@@ -1,7 +1,6 @@
 package mods.railcraft.data.worldgen.placements;
 
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import net.minecraft.core.Holder;
@@ -133,14 +132,12 @@ public class RailcraftOrePlacements {
                 BiomeFilter.biome())));
   }
 
-  @NotNull
   private static ResourceKey<PlacedFeature> createKey(String name) {
     return ResourceKey.create(Registries.PLACED_FEATURE, RailcraftConstants.rl(name));
   }
 
-  @NotNull
   private static Holder.Reference<ConfiguredFeature<?, ?>> getConfiguredFeature(
-      @NotNull BootstrapContext<PlacedFeature> context,
+      BootstrapContext<PlacedFeature> context,
       ResourceKey<ConfiguredFeature<?, ?>> resourceKey) {
     return context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(resourceKey);
   }

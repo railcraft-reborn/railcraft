@@ -1,7 +1,6 @@
 package mods.railcraft.util.fluids;
 
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.NotNull;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -19,7 +18,6 @@ public class AdvancedFluidHandler implements IFluidHandler {
   }
 
   @Override
-  @NotNull
   public FluidStack getFluidInTank(int i) {
     return this.fluidHandler.getFluidInTank(i);
   }
@@ -30,7 +28,7 @@ public class AdvancedFluidHandler implements IFluidHandler {
   }
 
   @Override
-  public boolean isFluidValid(int i, @NotNull FluidStack fluidStack) {
+  public boolean isFluidValid(int i, FluidStack fluidStack) {
     return this.fluidHandler.isFluidValid(i, fluidStack);
   }
 
@@ -40,13 +38,11 @@ public class AdvancedFluidHandler implements IFluidHandler {
   }
 
   @Override
-  @NotNull
   public FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
     return this.fluidHandler.drain(fluidStack, fluidAction);
   }
 
   @Override
-  @NotNull
   public FluidStack drain(int i, FluidAction fluidAction) {
     return this.fluidHandler.drain(i, fluidAction);
   }

@@ -2,6 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.world.item.Item;
@@ -33,7 +34,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   }
 
   @Override
-  public RecipeBuilder group(String group) {
+  public RecipeBuilder group(@Nullable String group) {
     throw new IllegalStateException("Group not allow");
   }
 

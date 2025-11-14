@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.fluids.FluidTools;
@@ -45,7 +44,6 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
     itemHandler = new InvWrapper(this) {
       @Override
-      @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot == SLOT_INPUT) {
           return ItemStack.EMPTY;
@@ -54,8 +52,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot == SLOT_INPUT) {
           return super.insertItem(slot, stack, simulate);
         }

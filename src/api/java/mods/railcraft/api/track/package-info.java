@@ -1,14 +1,8 @@
-/*------------------------------------------------------------------------------
- Copyright (c) Railcraft Reborn, 2023+
-
- This work (the API) is licensed under the "MIT" License,
- see LICENSE.md for details.
- -----------------------------------------------------------------------------*/
-
-
+@FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package mods.railcraft.api.track;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

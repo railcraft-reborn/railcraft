@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -84,7 +84,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public final int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
+  public final int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
     return itemStack.getDamageValue() < itemStack.getMaxDamage() ? this.heat : 0;
   }
 
@@ -149,7 +149,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
     return InteractionResult.sidedSuccess(level.isClientSide());
   }
 
-  @NotNull
   private ItemStack cookedItem(Level level, ItemStack ingredient) {
     return level.getRecipeManager()
         .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(ingredient), level)
@@ -174,7 +173,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  @NotNull
   public FirestoneItemEntity createEntity(Level level, Entity entity, ItemStack itemStack) {
     var firestone = super.createEntity(level, entity, itemStack);
     firestone.setRefined(true);

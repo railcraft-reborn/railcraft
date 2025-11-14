@@ -2,7 +2,6 @@ package mods.railcraft.world.module;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
@@ -37,7 +36,6 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     this.itemHandler = new InvWrapper(this) {
       @Override
-      @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot < 9) {
           return ItemStack.EMPTY;
@@ -46,8 +44,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot >= 9) {
           return stack;
         }

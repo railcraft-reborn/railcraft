@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.authlib.GameProfile;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
@@ -241,7 +240,7 @@ public interface RollingStock {
   @Nullable
   Train train();
 
-  default boolean isSameTrainAs(@NotNull RollingStock rollingStock) {
+  default boolean isSameTrainAs(RollingStock rollingStock) {
     Objects.requireNonNull(rollingStock, "rollingStock cannot be null.");
     return this.train() == rollingStock.train();
   }

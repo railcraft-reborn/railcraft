@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
@@ -46,7 +45,6 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
     itemHandler = new InvWrapper(this) {
       @Override
-      @NotNull
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
         if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
           return ItemStack.EMPTY;
@@ -55,8 +53,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
       }
 
       @Override
-      @NotNull
-      public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
           return super.insertItem(slot, stack, simulate);
         }

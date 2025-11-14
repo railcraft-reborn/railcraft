@@ -1,6 +1,5 @@
 package mods.railcraft.util.container;
 
-import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
@@ -17,7 +16,7 @@ public class CombinedInvWrapper implements IItemHandlerModifiable {
   }
 
   @Override
-  public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+  public void setStackInSlot(int slot, ItemStack stack) {
     if (slot < this.inputInv.getSlots()) {
       this.inputInv.setStackInSlot(slot, stack);
     }
@@ -29,7 +28,6 @@ public class CombinedInvWrapper implements IItemHandlerModifiable {
   }
 
   @Override
-  @NotNull
   public ItemStack getStackInSlot(int slot) {
     if (slot < this.inputInv.getSlots()) {
       return this.inputInv.getStackInSlot(slot);
@@ -39,8 +37,7 @@ public class CombinedInvWrapper implements IItemHandlerModifiable {
   }
 
   @Override
-  @NotNull
-  public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+  public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
     if (slot >= this.inputInv.getSlots()) {
       return stack;
     }
@@ -48,7 +45,6 @@ public class CombinedInvWrapper implements IItemHandlerModifiable {
   }
 
   @Override
-  @NotNull
   public ItemStack extractItem(int slot, int amount, boolean simulate) {
     if (slot < this.inputInv.getSlots()) {
       return ItemStack.EMPTY;
@@ -66,7 +62,7 @@ public class CombinedInvWrapper implements IItemHandlerModifiable {
   }
 
   @Override
-  public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+  public boolean isItemValid(int slot, ItemStack stack) {
     if (slot < this.inputInv.getSlots()) {
       return this.inputInv.isItemValid(slot, stack);
     } else {

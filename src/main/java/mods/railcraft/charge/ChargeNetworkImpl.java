@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.CheckForNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import com.google.common.collect.ForwardingCollection;
@@ -270,7 +271,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     @Override
-    public boolean remove(Object object) {
+    public boolean remove(@CheckForNull Object object) {
       throw new UnsupportedOperationException();
     }
 

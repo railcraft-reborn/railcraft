@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;
@@ -128,7 +129,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+  public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
     return canPlaceItem(slot, stack);
   }
 

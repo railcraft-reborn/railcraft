@@ -33,9 +33,7 @@ public enum SpeedController implements TrackType.EventHandler {
     }
 
     @Override
-    @Nullable
-    // FIXME: Client and Server sync is not maintained here. Could result in strange
-    // behavior.
+    // FIXME: Client and Server sync is not maintained here. Could result in strange behavior.
     public Optional<RailShape> getRailShapeOverride(BlockGetter level, BlockPos pos,
         BlockState state,
         @Nullable AbstractMinecart cart) {

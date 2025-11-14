@@ -135,7 +135,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, Direction direction) {
+  public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
     return this.canPlaceItem(index, itemStackIn);
   }
 

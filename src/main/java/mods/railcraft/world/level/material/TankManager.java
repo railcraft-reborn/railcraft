@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -98,7 +97,6 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
         .orElse(FluidStack.EMPTY);
   }
 
-  @NotNull
   @Override
   public FluidStack drain(int maxDrain, FluidAction doDrain) {
     return this.tanks.stream()

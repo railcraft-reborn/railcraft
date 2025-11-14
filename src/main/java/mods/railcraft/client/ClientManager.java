@@ -1,6 +1,5 @@
 package mods.railcraft.client;
 
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -308,7 +307,6 @@ public class ClientManager {
       }
 
       @Override
-      @NotNull
       public Vector3f modifyFogColor(Camera camera, float partialTick,
           ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
         var x = Integer.parseInt("6A", 16) / 255f;

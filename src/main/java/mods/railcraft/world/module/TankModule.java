@@ -1,6 +1,5 @@
 package mods.railcraft.world.module;
 
-import org.jetbrains.annotations.NotNull;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
@@ -23,7 +22,6 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   private final StandardTank tank;
 
   private final IItemHandler itemHandler = new InvWrapper(this) {
-    @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
       if (slot == SLOT_OUTPUT)
