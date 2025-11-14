@@ -1,4 +1,4 @@
-// 1.21.10	2025-10-20T21:27:24.599737	Model Definitions - railcraft
+// 1.21.10	2025-11-14T15:40:04.273959	Model Definitions - railcraft
 7c5a756981768365f883dd089b9e88499f794819 assets/railcraft/blockstates/abandoned_activator_track.json
 99b3a68b0d35356b5d70e9d53bb03c4aea0837ff assets/railcraft/blockstates/abandoned_booster_track.json
 ca1415647ffe8f5a65a2da42cfeeee1db78a9846 assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -453,6 +453,7 @@ a4506b8d307ae5b29ac581c64797fa7c18acd1da assets/railcraft/items/brown_steel_tank
 afdceebac10ff80169c7d4a391bf9775c90be67e assets/railcraft/items/buffer_stop_track_kit.json
 c75f9af96f2536abae019d871f392951ee792d3f assets/railcraft/items/bushing_gear.json
 624ab17c73ad17d171be8174f389d0e2df76f4ee assets/railcraft/items/carbon_electrode.json
+3e9d376e3240616370ac90991cf057b468bc3e92 assets/railcraft/items/cargo_minecart.json
 0eaca1a1a0c403766bd9d13486f3018c279a781b assets/railcraft/items/cart_dispenser.json
 552f404b652840d705b99dae539e6ef22d0aa18e assets/railcraft/items/charcoal_dust.json
 14d0b7f0c85aa89064062d7510f31ba7f29ebbd6 assets/railcraft/items/charge_coil.json
@@ -1631,6 +1632,7 @@ b11c82dbe18806a4c3634ece13fd12ce97bbb9e3 assets/railcraft/models/item/bronze_pla
 205dfeca5c3b7e254ce261f895478fed0fbce6f6 assets/railcraft/models/item/buffer_stop_track_kit.json
 1c4dcf99a8bb33a1f0f5e7df9c92dfac3c783e58 assets/railcraft/models/item/bushing_gear.json
 5fe026f023c54d2f56719260eb0e673515710337 assets/railcraft/models/item/carbon_electrode.json
+7dcee9022b304c87f66f102f6015c9779392f2c6 assets/railcraft/models/item/cargo_minecart.json
 b78986baf137bb0e6a9dc922d8b54caf71abb12b assets/railcraft/models/item/charcoal_dust.json
 32227b01f19ae25a4cee098cdc48b2747f2e68d0 assets/railcraft/models/item/charge_coil.json
 293bf4189f82fe7a715912c7387048b0cf84d636 assets/railcraft/models/item/charge_meter.json

@@ -149,6 +149,7 @@ public class RailcraftModelProvider extends ModelProvider {
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get(),
         ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.CARGO_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TANK_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ENERGY_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.WORLD_SPIKE_MINECART.get(),
