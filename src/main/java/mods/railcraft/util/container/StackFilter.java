@@ -27,6 +27,7 @@ import net.neoforged.neoforge.common.Tags;
  */
 public enum StackFilter implements Predicate<ItemStack> {
 
+  ALL(__ -> true),
   FUEL(itemStack -> itemStack.getBurnTime(null) > 0),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
@@ -42,10 +43,13 @@ public enum StackFilter implements Predicate<ItemStack> {
       .getCapability(Capabilities.FluidHandler.ITEM) != null),
   FEED(itemStack -> itemStack.is(Tags.Items.ANIMAL_FOODS)
       || ContainerTools.getBlockFromStack(itemStack) instanceof StemBlock),
-  CARGO(itemStack -> (RailcraftConfig.SERVER.chestAllowFluids.get()
-      || !FluidTools.isFluidHandler(itemStack))
-      && !RailcraftConfig.SERVER.cargoBlacklist.get()
-          .contains(BuiltInRegistries.ITEM.getKey(itemStack.getItem()).toString())),
+  CARGO(itemStack -> {
+    if (!RailcraftConfig.SERVER.chestAllowFluids.get() && FluidTools.isFluidHandler(itemStack)) {
+      return false;
+    }
+    return !RailcraftConfig.SERVER.cargoBlacklist.get()
+        .contains(BuiltInRegistries.ITEM.getKey(itemStack.getItem()).toString());
+  }),
   DYES(itemStack -> itemStack.is(Tags.Items.DYES)),
   RAW_METAL(itemStack -> itemStack.is(RailcraftTags.Items.METAL));
 

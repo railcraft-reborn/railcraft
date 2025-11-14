@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-17T16:22:58.898566	Loot Tables
+// 1.21.1	2025-11-14T12:17:13.485486	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_table/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_table/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_table/blocks/abandoned_buffer_stop_track.json
@@ -349,6 +349,6 @@ b1b2714acc6af2efe2affa6856defb7227dd373b data/railcraft/loot_table/blocks/zinc_c
 a13f93f3c50608b209969417cc6c481e9f443984 data/railcraft/loot_table/blocks/zinc_ore.json
 43c75c86fa54a44bebde000d8b982095bc11dc76 data/railcraft/loot_table/blocks/zinc_silver_battery.json
 81591871229b3580504f18c6ed771b2d3a2c8ca2 data/railcraft/loot_table/blocks/zinc_silver_battery_empty.json
-8589632f349035e61d4ed970ae4692ca0be332f4 data/railcraft/loot_table/chests/abandoned_mineshaft.json
-ff0813cd33b72edcbb7a6d82ffe32baf965320c0 data/railcraft/loot_table/chests/component_workshop.json
+e3522c05a5c878c3e199ccc74eb5ea7ae52ac0fe data/railcraft/loot_table/chests/abandoned_mineshaft.json
+5b287e081b547567b4b0b2aaf8fd35ced26df5cd data/railcraft/loot_table/chests/component_workshop.json
 a78cb1a415cbae033d4bcb67e04f365878f9e017 data/railcraft/loot_table/chests/simple_dungeon.json

@@ -98,29 +98,29 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart>
     }
   }
 
-  private void renderFilterItem(TankMinecart cart, PoseStack matrixStack,
+  private void renderFilterItem(TankMinecart cart, PoseStack poseStack,
       MultiBufferSource renderTypeBuffer, int packedLight) {
-    matrixStack.pushPose();
+    poseStack.pushPose();
     var itemStack = cart.getFilterItem().copy();
 
     final float scale = 1.2F;
 
-    matrixStack.pushPose();
-    matrixStack.mulPose(Axis.YP.rotationDegrees(90));
-    matrixStack.translate(0, -0.9F, 0.68F);
-    matrixStack.scale(scale, scale, scale);
+    poseStack.pushPose();
+    poseStack.mulPose(Axis.YP.rotationDegrees(90));
+    poseStack.translate(0, -0.9F, 0.68F);
+    poseStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
         ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
-    matrixStack.popPose();
+        poseStack, renderTypeBuffer, cart.level(), 0);
+    poseStack.popPose();
 
-    matrixStack.mulPose(Axis.YN.rotationDegrees(90));
-    matrixStack.translate(0, -0.9F, 0.68F);
-    matrixStack.scale(scale, scale, scale);
+    poseStack.mulPose(Axis.YN.rotationDegrees(90));
+    poseStack.translate(0, -0.9F, 0.68F);
+    poseStack.scale(scale, scale, scale);
     Minecraft.getInstance().getItemRenderer().renderStatic(itemStack,
         ItemDisplayContext.GROUND, packedLight, OverlayTexture.NO_OVERLAY,
-        matrixStack, renderTypeBuffer, cart.level(), 0);
-    matrixStack.popPose();
+        poseStack, renderTypeBuffer, cart.level(), 0);
+    poseStack.popPose();
   }
 
   @Override

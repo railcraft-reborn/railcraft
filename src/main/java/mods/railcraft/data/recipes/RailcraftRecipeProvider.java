@@ -1201,6 +1201,14 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
   }
 
   private void buildCartsVariant(RecipeOutput recipeOutput) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.CARGO_MINECART.get())
+        .pattern("a")
+        .pattern("b")
+        .define('a', Items.BARREL)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(Items.BARREL), has(Items.BARREL))
+        .save(recipeOutput);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TANK_MINECART.get())
         .pattern("a")
         .pattern("b")

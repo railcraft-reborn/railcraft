@@ -457,6 +457,7 @@ public class RailcraftCreativeModeTabs {
 
     var addAfterChestMinecart = List.of(
         Items.CHEST_MINECART,
+        RailcraftItems.CARGO_MINECART.get(),
         RailcraftItems.TANK_MINECART.get(),
         RailcraftItems.ENERGY_MINECART.get());
 
