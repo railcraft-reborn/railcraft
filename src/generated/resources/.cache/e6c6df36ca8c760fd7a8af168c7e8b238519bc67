@@ -1,4 +1,4 @@
-// 1.21.10	2025-10-20T21:26:29.742906	RailcraftRecipeProvider
+// 1.21.10	2025-11-14T15:40:04.280599	RailcraftRecipeProvider
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -145,6 +145,7 @@ e6ec01b50c15d697189f38e966e756807b989629 data/railcraft/advancement/recipes/misc
 efded49156a310e9f5bfc92dcd18369d7204fc49 data/railcraft/advancement/recipes/misc/buffer_stop_track_kit.json
 7cff90b3c956f6543e96f24d2e45ff3a863d11e5 data/railcraft/advancement/recipes/misc/bushing_gear_brass.json
 0dccfadc29c9821501f6e082806a8709ff56cf3e data/railcraft/advancement/recipes/misc/bushing_gear_bronze.json
+f74f809a3f5a1f527ee982669805d3ca4747439c data/railcraft/advancement/recipes/misc/cargo_minecart.json
 a76a472d736bad560f101f5043784ccea1196acd data/railcraft/advancement/recipes/misc/cart_dispenser.json
 cd61719f12a2a07746cd800d2e5a9a802f1b743d data/railcraft/advancement/recipes/misc/charge_coil.json
 00d68bae58bb851b2e7d60d7a46321b8617ff72f data/railcraft/advancement/recipes/misc/charge_meter.json
@@ -634,6 +635,7 @@ df80dbacc5051db97671be9d85b68ab65157c487 data/railcraft/recipe/brown_steel_tank_
 52a58d9a69f08d3a6820991305851c7473a0a328 data/railcraft/recipe/buffer_stop_track_kit.json
 293a45439ee0c86d0dbbafc9c80d63079192ec9e data/railcraft/recipe/bushing_gear_brass.json
 6ffae19c909789983bb7f50f2628010026de008f data/railcraft/recipe/bushing_gear_bronze.json
+83af2a1124e3386ae3c0380714e48039ad16b9dc data/railcraft/recipe/cargo_minecart.json
 6e9bc49eb95cd4b8951e32737404e7991c0e5976 data/railcraft/recipe/cart_dispenser.json
 75f4f6e07d59f765e8dda4156346ca339cb67b74 data/railcraft/recipe/charge_coil.json
 980291a19e496237cbf1a6adf73afca5954e2051 data/railcraft/recipe/charge_meter.json

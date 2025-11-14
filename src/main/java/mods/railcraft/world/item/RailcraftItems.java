@@ -535,8 +535,8 @@ public class RailcraftItems {
               .stacksTo(1)));
 
   public static final DeferredItem<CartItem> CARGO_MINECART =
-      deferredRegister.register("cargo_minecart",
-          () -> new CartItem(CargoMinecart::new, new Item.Properties().stacksTo(1)));
+      deferredRegister.registerItem("cargo_minecart",
+          properties -> new CartItem(CargoMinecart::new, properties.stacksTo(1)));
 
   public static final DeferredItem<CartItem> TANK_MINECART =
       deferredRegister.registerItem("tank_minecart",
