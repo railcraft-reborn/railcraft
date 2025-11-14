@@ -12,8 +12,7 @@ public class TankMinecartScreen extends RailcraftMenuScreen<TankMinecartMenu> {
   private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
       RailcraftConstants.rl("textures/gui/container/tank_minecart.png");
 
-  public TankMinecartScreen(TankMinecartMenu menu, Inventory inventory,
-      Component title) {
+  public TankMinecartScreen(TankMinecartMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
     this.registerWidgetRenderer(new FluidGaugeRenderer(menu.getFluidGauge()));
   }

@@ -1,5 +1,6 @@
 package mods.railcraft.client.renderer.entity;
 
+import mods.railcraft.client.renderer.entity.cart.CargoMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.EnergyMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.SteamLocomotiveRenderer;
@@ -17,6 +18,8 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 public class RailcraftEntityRenderers {
 
   public static void register(EntityRenderersEvent.RegisterRenderers event) {
+    event.registerEntityRenderer(RailcraftEntityTypes.CARGO_MINECART.get(),
+        CargoMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TANK_MINECART.get(),
         TankMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.ENERGY_MINECART.get(),

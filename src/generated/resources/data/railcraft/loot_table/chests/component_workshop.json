@@ -65,6 +65,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "railcraft:cargo_minecart",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:furnace_minecart"
         },
         {
