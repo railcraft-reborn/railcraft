@@ -31,22 +31,22 @@ public class CuboidModelRenderer {
 
   private CuboidModelRenderer() {}
 
-  public static void render(CuboidModel model, PoseStack matrix, VertexConsumer buffer, int argb,
+  public static void render(CuboidModel model, PoseStack poseStack, VertexConsumer buffer, int argb,
       FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
     Arrays.fill(combinedARGB, argb);
-    render(model, matrix, buffer, combinedARGB, faceDisplay, fakeDisableDiffuse);
+    render(model, poseStack, buffer, combinedARGB, faceDisplay, fakeDisableDiffuse);
   }
 
   /**
    * @implNote Based off of Tinker's
    */
-  public static void render(CuboidModel model, PoseStack matrix, VertexConsumer buffer,
+  public static void render(CuboidModel model, PoseStack poseStack, VertexConsumer buffer,
       int[] colors, FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
     float xShift = Mth.floor(model.getMinX());
     float yShift = Mth.floor(model.getMinY());
     float zShift = Mth.floor(model.getMinZ());
-    matrix.pushPose();
-    matrix.translate(xShift, yShift, zShift);
+    poseStack.pushPose();
+    poseStack.translate(xShift, yShift, zShift);
     float minX = model.getMinX() - xShift;
     float minY = model.getMinY() - yShift;
     float minZ = model.getMinZ() - zShift;
@@ -59,8 +59,8 @@ public class CuboidModelRenderer {
     float[] xBounds = getBlockBounds(xDelta, minX, maxX);
     float[] yBounds = getBlockBounds(yDelta, minY, maxY);
     float[] zBounds = getBlockBounds(zDelta, minZ, maxZ);
-    PoseStack.Pose lastMatrix = matrix.last();
-    Matrix4f matrix4f = lastMatrix.pose();
+    PoseStack.Pose pose = poseStack.last();
+    Matrix4f matrix4f = pose.pose();
     Vector3f normal = fakeDisableDiffuse ? NORMAL : YP;
     Vector3f from = new Vector3f();
     Vector3f to = new Vector3f();
@@ -81,22 +81,22 @@ public class CuboidModelRenderer {
           // Set bounds
           from.x = xBounds[x];
           to.x = xBounds[x + 1];
-          putTexturedQuad(buffer, matrix4f, lastMatrix, westSprite, from, to, Direction.WEST,
+          putTexturedQuad(buffer, matrix4f, pose, westSprite, from, to, Direction.WEST,
               colors, faceDisplay, normal);
-          putTexturedQuad(buffer, matrix4f, lastMatrix, eastSprite, from, to, Direction.EAST,
+          putTexturedQuad(buffer, matrix4f, pose, eastSprite, from, to, Direction.EAST,
               colors, faceDisplay, normal);
-          putTexturedQuad(buffer, matrix4f, lastMatrix, northSprite, from, to, Direction.NORTH,
+          putTexturedQuad(buffer, matrix4f, pose, northSprite, from, to, Direction.NORTH,
               colors, faceDisplay, normal);
-          putTexturedQuad(buffer, matrix4f, lastMatrix, southSprite, from, to, Direction.SOUTH,
+          putTexturedQuad(buffer, matrix4f, pose, southSprite, from, to, Direction.SOUTH,
               colors, faceDisplay, normal);
-          putTexturedQuad(buffer, matrix4f, lastMatrix, upSprite, from, to, Direction.UP, colors,
+          putTexturedQuad(buffer, matrix4f, pose, upSprite, from, to, Direction.UP, colors,
               faceDisplay, normal);
-          putTexturedQuad(buffer, matrix4f, lastMatrix, downSprite, from, to, Direction.DOWN,
+          putTexturedQuad(buffer, matrix4f, pose, downSprite, from, to, Direction.DOWN,
               colors, faceDisplay, normal);
         }
       }
     }
-    matrix.popPose();
+    poseStack.popPose();
   }
 
   /**
