@@ -179,6 +179,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.WORLD_SPIKE, "Worldspike");
     this.addBlock(RailcraftBlocks.PERSONAL_WORLD_SPIKE, "Personal Worldspike");
 
+    this.addBlock(RailcraftBlocks.VOID_CHEST, "Void Chest");
+
     this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");

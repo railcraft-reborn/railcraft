@@ -278,6 +278,8 @@ public class Railcraft {
       RailcraftCreativeModeTabs.addToolsAndUtilities(event);
     } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
       RailcraftCreativeModeTabs.addCombat(event);
+    } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+      RailcraftCreativeModeTabs.addFunctionalBlocks(event);
     }
   }
 

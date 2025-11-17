@@ -1427,6 +1427,9 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> PERSONAL_WORLD_SPIKE =
       blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
 
+  public static final DeferredItem<BlockItem> VOID_CHEST =
+      blockItem(RailcraftBlocks.VOID_CHEST);
+
   private static DeferredItem<Item> registerBasic(String name) {
     return deferredRegister.registerSimpleItem(name);
   }

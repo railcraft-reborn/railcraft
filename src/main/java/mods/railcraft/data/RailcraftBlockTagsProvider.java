@@ -252,6 +252,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FRAME.get())
         .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
         .add(RailcraftBlocks.WORLD_SPIKE.get())
+        .add(RailcraftBlocks.VOID_CHEST.get())
         .add(RailcraftBlocks.LEAD_ORE.get(), RailcraftBlocks.DEEPSLATE_LEAD_ORE.get())
         .add(RailcraftBlocks.NICKEL_ORE.get(), RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get())
         .add(RailcraftBlocks.SILVER_ORE.get(), RailcraftBlocks.DEEPSLATE_SILVER_ORE.get())
@@ -282,7 +283,8 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.FIRESTONE_ORE.get())
         .add(RailcraftBlocks.CRUSHED_OBSIDIAN.get())
         .add(RailcraftBlocks.WORLD_SPIKE.get())
-        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
+        .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
+        .add(RailcraftBlocks.VOID_CHEST.get());
 
     this.tag(BlockTags.NEEDS_IRON_TOOL)
         .add(RailcraftBlocks.STEEL_BLOCK.get())

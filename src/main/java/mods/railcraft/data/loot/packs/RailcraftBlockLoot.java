@@ -387,6 +387,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.BLAST_FURNACE_BRICKS.get());
     this.dropSelf(RailcraftBlocks.WORLD_SPIKE.get());
     this.dropSelf(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
+    this.dropSelf(RailcraftBlocks.VOID_CHEST.get());
   }
 
   protected LootTable.Builder createOreDrop(Block block, Item item, int min, int max) {

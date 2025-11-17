@@ -550,6 +550,13 @@ public class RailcraftCreativeModeTabs {
     addItemsToTab(addAfterIronBoots, event);
   }
 
+  public static void addFunctionalBlocks(BuildCreativeModeTabContentsEvent event) {
+    event.insertAfter(
+        new ItemStack(Items.CHEST),
+        new ItemStack(RailcraftItems.VOID_CHEST.get()),
+        DEFAULT_VISIBILITY);
+  }
+
   private static void addItemsToTab(List<Item> list, BuildCreativeModeTabContentsEvent event) {
     for (int i = 1; i < list.size(); i++) {
       event.insertAfter(

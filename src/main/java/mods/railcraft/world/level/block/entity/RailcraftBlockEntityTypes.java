@@ -461,6 +461,12 @@ public class RailcraftBlockEntityTypes {
               .of(PersonalWorldSpikeBlockEntity::new, RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
               .build(null));
 
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VoidChestBlockEntity>> VOID_CHEST =
+      deferredRegister.register("void_chest",
+          () -> BlockEntityType.Builder
+              .of(VoidChestBlockEntity::new, RailcraftBlocks.VOID_CHEST.get())
+              .build(null));
+
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
       deferredRegister.register("locking_track",
           () -> BlockEntityType.Builder

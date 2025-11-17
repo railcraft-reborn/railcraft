@@ -1595,6 +1595,15 @@ public class RailcraftBlocks {
       deferredRegister.register("personal_world_spike",
           () -> new PersonalWorldSpikeBlock(BlockBehaviour.Properties.ofFullCopy(WORLD_SPIKE.get())));
 
+  public static final DeferredBlock<VoidChestBlock> VOID_CHEST =
+      deferredRegister.register("void_chest",
+          () -> new VoidChestBlock(BlockBehaviour.Properties.of()
+              .mapColor(MapColor.METAL)
+              .sound(SoundType.METAL)
+              .requiresCorrectToolForDrops()
+              .strength(50, 1200)
+              .randomTicks()));
+
   private static ToIntFunction<BlockState> litBlockEmission(int light) {
     return blockState -> blockState.getValue(BlockStateProperties.LIT) ? light : 0;
   }
