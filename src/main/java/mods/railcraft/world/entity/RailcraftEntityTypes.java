@@ -9,6 +9,7 @@ import mods.railcraft.world.entity.vehicle.TrackRelayer;
 import mods.railcraft.world.entity.vehicle.TrackRemover;
 import mods.railcraft.world.entity.vehicle.TrackUndercutter;
 import mods.railcraft.world.entity.vehicle.TunnelBore;
+import mods.railcraft.world.entity.vehicle.VoidChestMinecart;
 import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
@@ -53,6 +54,15 @@ public class RailcraftEntityTypes {
           () -> create("energy_minecart",
               EntityType.Builder
                   .<EnergyMinecart>of(EnergyMinecart::new, MobCategory.MISC)
+                  .clientTrackingRange(256)
+                  .updateInterval(2)
+                  .sized(0.98F, 0.7F)));
+
+  public static final DeferredHolder<EntityType<?>, EntityType<VoidChestMinecart>> VOID_CHEST_MINECART =
+      deferredRegister.register("void_chest_minecart",
+          () -> create("void_chest_minecart",
+              EntityType.Builder
+                  .<VoidChestMinecart>of(VoidChestMinecart::new, MobCategory.MISC)
                   .clientTrackingRange(256)
                   .updateInterval(2)
                   .sized(0.98F, 0.7F)));

@@ -7,6 +7,7 @@ import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.CargoMinecart;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.VoidChestMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -492,6 +493,10 @@ public class RailcraftItems {
   public static final DeferredItem<CartItem> ENERGY_MINECART =
       deferredRegister.register("energy_minecart",
           () -> new CartItem(EnergyMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final DeferredItem<CartItem> VOID_CHEST_MINECART =
+      deferredRegister.register("void_chest_minecart",
+          () -> new CartItem(VoidChestMinecart::new, new Item.Properties().stacksTo(1)));
 
   public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
       deferredRegister.register("world_spike_minecart",

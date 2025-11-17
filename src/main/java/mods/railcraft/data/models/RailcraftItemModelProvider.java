@@ -51,6 +51,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     this.basicItem(RailcraftItems.CARGO_MINECART.get());
     this.basicItem(RailcraftItems.TANK_MINECART.get());
     this.basicItem(RailcraftItems.ENERGY_MINECART.get());
+    this.basicItem(RailcraftItems.VOID_CHEST_MINECART.get());
     this.basicItem(RailcraftItems.WORLD_SPIKE_MINECART.get());
     this.basicItem(RailcraftItems.TRACK_LAYER.get());
     this.basicItem(RailcraftItems.TRACK_RELAYER.get());

@@ -18,6 +18,7 @@ import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.VoidChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import mods.railcraft.world.level.block.DecorativeBlock;
@@ -1249,6 +1250,14 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
             has(RailcraftItems.LEAD_INGOT.get()))
         .save(recipeOutput);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.VOID_CHEST_MINECART)
+        .pattern("a")
+        .pattern("b")
+        .define('a', RailcraftItems.VOID_CHEST)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.VOID_CHEST), has(RailcraftItems.VOID_CHEST))
+        .save(recipeOutput);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART)
         .pattern("a")
         .pattern("b")
@@ -1299,6 +1308,8 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .save(recipeOutput, "chest_minecart_disassembly");
     RailcraftSpecialRecipeBuilder.special(WorldSpikeMinecartDisassemblyRecipe::new)
         .save(recipeOutput, "worldspike_minecart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(VoidChestMinecartDisassemblyRecipe::new)
+        .save(recipeOutput, "void_chest_minecart_disassembly");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")

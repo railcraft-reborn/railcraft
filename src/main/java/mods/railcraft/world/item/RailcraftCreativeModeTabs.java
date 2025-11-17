@@ -460,7 +460,8 @@ public class RailcraftCreativeModeTabs {
         Items.CHEST_MINECART,
         RailcraftItems.CARGO_MINECART.get(),
         RailcraftItems.TANK_MINECART.get(),
-        RailcraftItems.ENERGY_MINECART.get());
+        RailcraftItems.ENERGY_MINECART.get(),
+        RailcraftItems.VOID_CHEST_MINECART.get());
 
     var addAfterIronHoe = List.of(
         Items.IRON_HOE,

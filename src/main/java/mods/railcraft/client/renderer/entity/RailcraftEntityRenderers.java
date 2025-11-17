@@ -10,6 +10,7 @@ import mods.railcraft.client.renderer.entity.cart.TrackRelayerMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackRemoverMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TrackUndercutterMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.TunnelBoreRenderer;
+import mods.railcraft.client.renderer.entity.cart.VoidChestMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.WorldSpikeMinecartRenderer;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
@@ -24,6 +25,8 @@ public class RailcraftEntityRenderers {
         TankMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.ENERGY_MINECART.get(),
         EnergyMinecartRenderer::new);
+    event.registerEntityRenderer(RailcraftEntityTypes.VOID_CHEST_MINECART.get(),
+        VoidChestMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.WORLD_SPIKE.get(),
         WorldSpikeMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TRACK_LAYER.get(),

@@ -196,6 +196,10 @@ public class Railcraft {
         RailcraftEntityTypes.TANK_MINECART.get(), (e, side) -> e.getTankManager());
     event.registerEntity(Capabilities.EnergyStorage.ENTITY,
         RailcraftEntityTypes.ENERGY_MINECART.get(), (e, side) -> e.getBatteryCart());
+    event.registerEntity(Capabilities.ItemHandler.ENTITY,
+        RailcraftEntityTypes.VOID_CHEST_MINECART.get(), (e, side) -> new InvWrapper(e));
+    event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION,
+        RailcraftEntityTypes.VOID_CHEST_MINECART.get(), (e, side) -> new InvWrapper(e));
     event.registerEntity(Capabilities.EnergyStorage.ENTITY,
         RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), (e, side) -> e.getBatteryCart());
     event.registerEntity(Capabilities.FluidHandler.ENTITY,

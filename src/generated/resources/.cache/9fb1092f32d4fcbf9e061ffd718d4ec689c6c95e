@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-17T16:59:03.500842	Recipes
+// 1.21.1	2025-11-17T17:54:44.063516	Recipes
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -555,6 +555,7 @@ d6706576a2149421f6920c67cc05f3809766ecc7 data/railcraft/advancement/recipes/misc
 23de2f14b2618c83eee13b7226362e3db42ccbde data/railcraft/advancement/recipes/misc/turbine_rotor.json
 978a25ede389e77130e6628eaab9031337a9af47 data/railcraft/advancement/recipes/misc/villager_detector.json
 4eed62d35b38b2a1dfdfab9c6145022d8dd16836 data/railcraft/advancement/recipes/misc/void_chest.json
+0c5ea74bd7da747faf17ff2f378472c545d5928a data/railcraft/advancement/recipes/misc/void_chest_minecart.json
 d3c3a6a87f9285a78c515a3061c377a6ad5a217a data/railcraft/advancement/recipes/misc/void_dust.json
 45d99961cfd72f0fc6243cb8f1966f8c2d1feae9 data/railcraft/advancement/recipes/misc/water_tank_siding.json
 e221e6955efc0bc96632b41dbd0b27dfd4b11e6a data/railcraft/advancement/recipes/misc/whistle_track_kit.json
@@ -1220,6 +1221,8 @@ f7aefbf6fb3ff9e7ce47309a846e755ef6d24610 data/railcraft/recipe/turbine_disk.json
 4739a7e4b4b0ff6d3b88210793bc2b8eb5a37696 data/railcraft/recipe/turbine_rotor.json
 89293dbc321e1b22bfaca9a1ee15f9d3ba052868 data/railcraft/recipe/villager_detector.json
 4e8da71da2549413e1d90c4ab85290cc5865f980 data/railcraft/recipe/void_chest.json
+922073c4552b37f6a291abb42686342e039ca8bc data/railcraft/recipe/void_chest_minecart.json
+06d50d16b3f3300f245a6548902de74836485de1 data/railcraft/recipe/void_chest_minecart_disassembly.json
 802884d9841656489659705d5946135d0d003dfd data/railcraft/recipe/void_dust.json
 4986672c3143b9a38d18b6f51d9e983fd462c504 data/railcraft/recipe/water_tank_siding.json
 50557f2453dca5112956cf5aca534ba4b1d71a4a data/railcraft/recipe/whistle_track_kit.json

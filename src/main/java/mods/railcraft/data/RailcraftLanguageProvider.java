@@ -227,6 +227,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CARGO_MINECART, "Cargo Minecart");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
     this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
+    this.addItem(RailcraftItems.VOID_CHEST_MINECART, "Minecart with Void Chest");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
@@ -373,6 +374,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.CARGO_MINECART, "Cargo Minecart");
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
     this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
+    this.addEntityType(RailcraftEntityTypes.VOID_CHEST_MINECART, "Minecart with Void Chest");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
