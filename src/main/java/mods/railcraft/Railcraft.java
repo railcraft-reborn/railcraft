@@ -59,6 +59,7 @@ import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.VoidChestBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
@@ -261,6 +262,9 @@ public class Railcraft {
         RailcraftBlockEntityTypes.ITEM_LOADER.get(), ItemLoaderBlockEntity::getItemCap);
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
+
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.VOID_CHEST.get(), VoidChestBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.FluidHandler.ITEM,
         (stack, ctx) -> new FluidBucketWrapper(stack), RailcraftItems.CREOSOTE_BUCKET);
