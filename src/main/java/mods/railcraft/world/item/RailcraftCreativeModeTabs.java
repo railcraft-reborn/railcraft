@@ -163,6 +163,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ENDER_DUST.get());
             output.accept(RailcraftItems.SULFUR_DUST.get());
             output.accept(RailcraftItems.OBSIDIAN_DUST.get());
+            output.accept(RailcraftItems.VOID_DUST.get());
 
             output.accept(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get());
             output.accept(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get());

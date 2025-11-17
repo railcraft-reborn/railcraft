@@ -323,6 +323,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
     this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
     this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");
+    this.addItem(RailcraftItems.VOID_DUST, "Void Dust");
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");

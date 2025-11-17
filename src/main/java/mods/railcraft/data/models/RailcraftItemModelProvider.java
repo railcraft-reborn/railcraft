@@ -149,6 +149,7 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     this.basicItem(RailcraftItems.ENDER_DUST.get());
     this.basicItem(RailcraftItems.SULFUR_DUST.get());
     this.basicItem(RailcraftItems.OBSIDIAN_DUST.get());
+    this.basicItem(RailcraftItems.VOID_DUST.get());
     this.basicItem(RailcraftItems.TRACK_PARTS.get());
     this.basicItem(RailcraftItems.TRANSITION_TRACK_KIT.get());
     this.basicItem(RailcraftItems.LOCKING_TRACK_KIT.get());

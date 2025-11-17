@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-14T14:30:01.706416	Recipes
+// 1.21.1	2025-11-17T16:59:03.500842	Recipes
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -554,6 +554,8 @@ d6706576a2149421f6920c67cc05f3809766ecc7 data/railcraft/advancement/recipes/misc
 5d51d66a4e4f8bf558cd97b104347941de2b1856 data/railcraft/advancement/recipes/misc/turbine_disk.json
 23de2f14b2618c83eee13b7226362e3db42ccbde data/railcraft/advancement/recipes/misc/turbine_rotor.json
 978a25ede389e77130e6628eaab9031337a9af47 data/railcraft/advancement/recipes/misc/villager_detector.json
+4eed62d35b38b2a1dfdfab9c6145022d8dd16836 data/railcraft/advancement/recipes/misc/void_chest.json
+d3c3a6a87f9285a78c515a3061c377a6ad5a217a data/railcraft/advancement/recipes/misc/void_dust.json
 45d99961cfd72f0fc6243cb8f1966f8c2d1feae9 data/railcraft/advancement/recipes/misc/water_tank_siding.json
 e221e6955efc0bc96632b41dbd0b27dfd4b11e6a data/railcraft/advancement/recipes/misc/whistle_track_kit.json
 eb8fb37c01188099abca08cd178c5ec4cc53e8f2 data/railcraft/advancement/recipes/misc/whistle_tuner.json
@@ -1217,6 +1219,8 @@ c2b3cc4e13e8031fd69d26616f8c81987031e583 data/railcraft/recipe/train_detector.js
 f7aefbf6fb3ff9e7ce47309a846e755ef6d24610 data/railcraft/recipe/turbine_disk.json
 4739a7e4b4b0ff6d3b88210793bc2b8eb5a37696 data/railcraft/recipe/turbine_rotor.json
 89293dbc321e1b22bfaca9a1ee15f9d3ba052868 data/railcraft/recipe/villager_detector.json
+4e8da71da2549413e1d90c4ab85290cc5865f980 data/railcraft/recipe/void_chest.json
+802884d9841656489659705d5946135d0d003dfd data/railcraft/recipe/void_dust.json
 4986672c3143b9a38d18b6f51d9e983fd462c504 data/railcraft/recipe/water_tank_siding.json
 50557f2453dca5112956cf5aca534ba4b1d71a4a data/railcraft/recipe/whistle_track_kit.json
 e65774137664ea0e951f214640e38fd20cc77b76 data/railcraft/recipe/whistle_tuner.json

@@ -1194,6 +1194,26 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .unlockedBy(getHasName(RailcraftItems.SULFUR_DUST.get()),
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(recipeOutput);
+    ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, RailcraftItems.VOID_DUST, 3)
+        .requires(RailcraftTags.Items.COAL_DUST)
+        .requires(RailcraftTags.Items.ENDER_DUST)
+        .requires(RailcraftTags.Items.OBSIDIAN_DUST)
+        .unlockedBy(getHasName(RailcraftItems.COAL_DUST.get()),
+            has(RailcraftTags.Items.COAL_DUST))
+        .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
+            has(RailcraftTags.Items.ENDER_DUST))
+        .unlockedBy(getHasName(RailcraftItems.OBSIDIAN_DUST.get()),
+            has(RailcraftTags.Items.OBSIDIAN_DUST))
+        .save(recipeOutput);
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.VOID_CHEST)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.OBSIDIAN)
+        .define('b', RailcraftItems.VOID_DUST)
+        .unlockedBy(getHasName(Items.OBSIDIAN), has(Items.OBSIDIAN))
+        .unlockedBy(getHasName(RailcraftItems.VOID_DUST), has(RailcraftItems.VOID_DUST))
+        .save(recipeOutput);
 
     RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
         .save(recipeOutput

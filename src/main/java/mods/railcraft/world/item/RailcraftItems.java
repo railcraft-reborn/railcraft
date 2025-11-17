@@ -1254,6 +1254,7 @@ public class RailcraftItems {
   public static final DeferredItem<Item> ENDER_DUST = registerBasic("ender_dust");
   public static final DeferredItem<Item> SULFUR_DUST = registerBasic("sulfur_dust");
   public static final DeferredItem<Item> OBSIDIAN_DUST = registerBasic("obsidian_dust");
+  public static final DeferredItem<Item> VOID_DUST = registerBasic("void_dust");
 
   public static final DeferredItem<Item> STEEL_NUGGET = registerBasic("steel_nugget");
   public static final DeferredItem<Item> TIN_NUGGET = registerBasic("tin_nugget");
