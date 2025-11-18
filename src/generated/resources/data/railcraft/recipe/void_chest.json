@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "item": "minecraft:obsidian"
+    },
+    "b": {
+      "item": "railcraft:void_dust"
+    }
+  },
+  "pattern": [
+    "aaa",
+    "aba",
+    "aaa"
+  ],
+  "result": {
+    "count": 1,
+    "id": "railcraft:void_chest"
+  }
+}

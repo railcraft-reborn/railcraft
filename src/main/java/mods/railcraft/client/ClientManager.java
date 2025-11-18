@@ -58,6 +58,7 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
+import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.integrations.jei.JeiRecipeSync;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
@@ -65,6 +66,7 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
+import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -110,6 +112,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
@@ -263,6 +266,13 @@ public class ClientManager {
         return true;
       }
     }, RailcraftBlocks.RITUAL.get());
+    event.registerItem(new IClientItemExtensions() {
+
+      @Override
+      public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+        return new VoidChestItemRenderer();
+      }
+    }, RailcraftItems.VOID_CHEST.asItem());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
       private static final ResourceLocation STILL_TEXTURE =
@@ -283,7 +293,6 @@ public class ClientManager {
         return STILL_TEXTURE;
       }
     }, RailcraftFluidTypes.STEAM.get());
-
     event.registerFluidType(new IClientFluidTypeExtensions() {
       private static final ResourceLocation STILL_TEXTURE =
           ResourceLocation.withDefaultNamespace("block/water_still");

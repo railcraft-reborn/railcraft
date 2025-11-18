@@ -51,6 +51,8 @@ public class RailcraftBlockEntityRenderers {
         supply(SteamTurbineRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.RITUAL.get(),
         RitualBlockRenderer::new);
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.VOID_CHEST.get(),
+        VoidChestRenderer::new);
   }
 
   private static <T extends BlockEntity, S extends BlockEntityRenderState> BlockEntityRendererProvider<T, S> supply(

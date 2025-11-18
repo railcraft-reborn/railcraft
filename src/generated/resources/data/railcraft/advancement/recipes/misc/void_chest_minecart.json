@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:void_chest_minecart"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_void_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "railcraft:void_chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_void_chest"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:void_chest_minecart"
+    ]
+  }
+}

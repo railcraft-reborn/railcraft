@@ -71,6 +71,7 @@ import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
+import mods.railcraft.world.level.block.entity.VoidChestBlockEntity;
 import mods.railcraft.world.level.block.entity.WaterTankSidingBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
@@ -213,6 +214,10 @@ public class Railcraft {
         RailcraftEntityTypes.TANK_MINECART.get(), (e, side) -> e.getTankManager());
     event.registerEntity(Capabilities.Energy.ENTITY,
         RailcraftEntityTypes.ENERGY_MINECART.get(), (e, side) -> e.getBatteryCart());
+    event.registerEntity(Capabilities.Item.ENTITY,
+        RailcraftEntityTypes.VOID_CHEST_MINECART.get(), (e, side) -> VanillaContainerWrapper.of(e));
+    event.registerEntity(Capabilities.Item.ENTITY_AUTOMATION,
+        RailcraftEntityTypes.VOID_CHEST_MINECART.get(), (e, side) -> VanillaContainerWrapper.of(e));
     event.registerEntity(Capabilities.Energy.ENTITY,
         RailcraftEntityTypes.ELECTRIC_LOCOMOTIVE.get(), (e, side) -> e.getBatteryCart());
     event.registerEntity(Capabilities.Fluid.ENTITY,
@@ -277,6 +282,8 @@ public class Railcraft {
 
     event.registerItem(Capabilities.Fluid.ITEM,
         (stack, ctx) -> new BucketResourceHandler(Objects.requireNonNull(ctx)), RailcraftItems.CREOSOTE_BUCKET);
+    event.registerBlockEntity(Capabilities.Item.BLOCK,
+        RailcraftBlockEntityTypes.VOID_CHEST.get(), VoidChestBlockEntity::getItemCap);
 
     event.registerBlock(Capabilities.Energy.BLOCK, Charge.distribution,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get(),
@@ -295,6 +302,8 @@ public class Railcraft {
       RailcraftCreativeModeTabs.addToolsAndUtilities(event);
     } else if (event.getTabKey() == CreativeModeTabs.COMBAT) {
       RailcraftCreativeModeTabs.addCombat(event);
+    } else if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+      RailcraftCreativeModeTabs.addFunctionalBlocks(event);
     }
   }
 

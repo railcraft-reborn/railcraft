@@ -9,6 +9,7 @@ import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.CargoMinecart;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
+import mods.railcraft.world.entity.vehicle.VoidChestMinecart;
 import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
@@ -545,6 +546,10 @@ public class RailcraftItems {
   public static final DeferredItem<CartItem> ENERGY_MINECART =
       deferredRegister.registerItem("energy_minecart",
           properties -> new CartItem(EnergyMinecart::new, properties.stacksTo(1)));
+
+  public static final DeferredItem<CartItem> VOID_CHEST_MINECART =
+      deferredRegister.register("void_chest_minecart",
+          () -> new CartItem(VoidChestMinecart::new, new Item.Properties().stacksTo(1)));
 
   public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
       deferredRegister.registerItem("world_spike_minecart",
@@ -1326,6 +1331,7 @@ public class RailcraftItems {
   public static final DeferredItem<Item> ENDER_DUST = registerBasic("ender_dust");
   public static final DeferredItem<Item> SULFUR_DUST = registerBasic("sulfur_dust");
   public static final DeferredItem<Item> OBSIDIAN_DUST = registerBasic("obsidian_dust");
+  public static final DeferredItem<Item> VOID_DUST = registerBasic("void_dust");
 
   public static final DeferredItem<Item> STEEL_NUGGET = registerBasic("steel_nugget");
   public static final DeferredItem<Item> TIN_NUGGET = registerBasic("tin_nugget");
@@ -1498,6 +1504,9 @@ public class RailcraftItems {
 
   public static final DeferredItem<BlockItem> PERSONAL_WORLD_SPIKE =
       blockItem(RailcraftBlocks.PERSONAL_WORLD_SPIKE);
+
+  public static final DeferredItem<BlockItem> VOID_CHEST =
+      blockItem(RailcraftBlocks.VOID_CHEST);
 
   private static DeferredItem<Item> registerBasic(String name) {
     return deferredRegister.registerSimpleItem(name);

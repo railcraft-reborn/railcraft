@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:dusts/coal"
+    },
+    {
+      "tag": "c:dusts/ender_pearl"
+    },
+    {
+      "tag": "c:dusts/obsidian"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "railcraft:void_dust"
+  }
+}

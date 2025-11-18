@@ -46,6 +46,10 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("worldspike_minecart_disassembly",
           () -> new CustomRecipe.Serializer<>(WorldSpikeMinecartDisassemblyRecipe::new));
 
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> VOID_CHEST_MINECART_DISASSEMBLY =
+      deferredRegister.register("void_chest_minecart_disassembly",
+          () -> new CustomRecipe.Serializer<>(VoidChestMinecartDisassemblyRecipe::new));
+
   public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessRecipe>> PATCHOULI_BOOK_CRAFTING =
       deferredRegister.register("patchouli_book_crafting",
           () -> new CustomRecipe.Serializer<>(PatchouliBookCrafting::new));

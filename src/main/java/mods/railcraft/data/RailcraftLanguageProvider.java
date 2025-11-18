@@ -179,6 +179,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.WORLD_SPIKE, "Worldspike");
     this.addBlock(RailcraftBlocks.PERSONAL_WORLD_SPIKE, "Personal Worldspike");
 
+    this.addBlock(RailcraftBlocks.VOID_CHEST, "Void Chest");
+
     this.addBlock(RailcraftBlocks.FRAME, "Frame");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
@@ -225,6 +227,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.CARGO_MINECART, "Cargo Minecart");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
     this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
+    this.addItem(RailcraftItems.VOID_CHEST_MINECART, "Minecart with Void Chest");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
@@ -321,6 +324,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.ENDER_DUST, "Ender Dust");
     this.addItem(RailcraftItems.SULFUR_DUST, "Sulfur Dust");
     this.addItem(RailcraftItems.OBSIDIAN_DUST, "Obsidian Dust");
+    this.addItem(RailcraftItems.VOID_DUST, "Void Dust");
     this.addItem(RailcraftItems.CONTROLLER_CIRCUIT, "Controller Circuit");
     this.addItem(RailcraftItems.RECEIVER_CIRCUIT, "Receiver Circuit");
     this.addItem(RailcraftItems.SIGNAL_CIRCUIT, "Signal Circuit");
@@ -370,6 +374,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.CARGO_MINECART, "Cargo Minecart");
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
     this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
+    this.addEntityType(RailcraftEntityTypes.VOID_CHEST_MINECART, "Minecart with Void Chest");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");

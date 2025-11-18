@@ -13,6 +13,7 @@ import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
+import mods.railcraft.world.item.crafting.VoidChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import mods.railcraft.world.level.block.DecorativeBlock;
@@ -1179,6 +1180,27 @@ public class RailcraftRecipeProvider extends RecipeProvider {
             has(RailcraftTags.Items.SULFUR_DUST))
         .save(output);
 
+    shapeless(RecipeCategory.MISC, RailcraftItems.VOID_DUST, 3)
+        .requires(RailcraftTags.Items.COAL_DUST)
+        .requires(RailcraftTags.Items.ENDER_DUST)
+        .requires(RailcraftTags.Items.OBSIDIAN_DUST)
+        .unlockedBy(getHasName(RailcraftItems.COAL_DUST.get()),
+            has(RailcraftTags.Items.COAL_DUST))
+        .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
+            has(RailcraftTags.Items.ENDER_DUST))
+        .unlockedBy(getHasName(RailcraftItems.OBSIDIAN_DUST.get()),
+            has(RailcraftTags.Items.OBSIDIAN_DUST))
+        .save(output);
+    shaped(RecipeCategory.MISC, RailcraftItems.VOID_CHEST)
+        .pattern("aaa")
+        .pattern("aba")
+        .pattern("aaa")
+        .define('a', Items.OBSIDIAN)
+        .define('b', RailcraftItems.VOID_DUST)
+        .unlockedBy(getHasName(Items.OBSIDIAN), has(Items.OBSIDIAN))
+        .unlockedBy(getHasName(RailcraftItems.VOID_DUST), has(RailcraftItems.VOID_DUST))
+        .save(output);
+
     //TODO: Restore
     /*RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
         .save(output.withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");*/
@@ -1211,6 +1233,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('c', Items.MINECART)
         .unlockedBy(getHasName(RailcraftItems.LEAD_INGOT.get()),
             has(RailcraftItems.LEAD_INGOT.get()))
+        .save(output);
+
+    shaped(RecipeCategory.MISC, RailcraftItems.VOID_CHEST_MINECART)
+        .pattern("a")
+        .pattern("b")
+        .define('a', RailcraftItems.VOID_CHEST)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(RailcraftItems.VOID_CHEST), has(RailcraftItems.VOID_CHEST))
         .save(output);
 
     shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART)
@@ -1263,6 +1293,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(output, "chest_minecart_disassembly");
     RailcraftSpecialRecipeBuilder.special(WorldSpikeMinecartDisassemblyRecipe::new)
         .save(output, "worldspike_minecart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(VoidChestMinecartDisassemblyRecipe::new)
+        .save(output, "void_chest_minecart_disassembly");
 
     shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")

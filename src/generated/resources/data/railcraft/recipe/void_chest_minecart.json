@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": "minecraft:barrel",
-    "b": "minecraft:minecart"
+    "a": {
+      "item": "railcraft:void_chest"
+    },
+    "b": {
+      "item": "minecraft:minecart"
+    }
   },
   "pattern": [
     "a",
@@ -11,6 +15,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "railcraft:cargo_minecart"
+    "id": "railcraft:void_chest_minecart"
   }
 }

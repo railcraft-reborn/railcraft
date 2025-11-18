@@ -163,6 +163,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.ENDER_DUST.get());
             output.accept(RailcraftItems.SULFUR_DUST.get());
             output.accept(RailcraftItems.OBSIDIAN_DUST.get());
+            output.accept(RailcraftItems.VOID_DUST.get());
 
             output.accept(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get());
             output.accept(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get());
@@ -459,7 +460,8 @@ public class RailcraftCreativeModeTabs {
         Items.CHEST_MINECART,
         RailcraftItems.CARGO_MINECART.get(),
         RailcraftItems.TANK_MINECART.get(),
-        RailcraftItems.ENERGY_MINECART.get());
+        RailcraftItems.ENERGY_MINECART.get(),
+        RailcraftItems.VOID_CHEST_MINECART.get());
 
     var addAfterIronHoe = List.of(
         Items.IRON_HOE,
@@ -548,6 +550,13 @@ public class RailcraftCreativeModeTabs {
         RailcraftItems.STEEL_LEGGINGS.get(),
         RailcraftItems.STEEL_BOOTS.get());
     addItemsToTab(addAfterIronBoots, event);
+  }
+
+  public static void addFunctionalBlocks(BuildCreativeModeTabContentsEvent event) {
+    event.insertAfter(
+        new ItemStack(Items.CHEST),
+        new ItemStack(RailcraftItems.VOID_CHEST.get()),
+        DEFAULT_VISIBILITY);
   }
 
   private static void addItemsToTab(List<Item> list, BuildCreativeModeTabContentsEvent event) {
