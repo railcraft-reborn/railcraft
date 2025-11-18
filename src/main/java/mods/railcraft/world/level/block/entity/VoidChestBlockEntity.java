@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,11 +9,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
@@ -24,7 +21,6 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
     MenuProvider {
 
   private static final int EVENT_SET_OPEN_COUNT = 1;
-  private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
   private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
     @Override
     protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -107,10 +103,9 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
   }
 
   public static int getOpenCount(BlockGetter level, BlockPos pos) {
-    BlockState blockstate = level.getBlockState(pos);
+    var blockstate = level.getBlockState(pos);
     if (blockstate.hasBlockEntity()) {
-      BlockEntity blockentity = level.getBlockEntity(pos);
-      if (blockentity instanceof VoidChestBlockEntity voidChestBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof VoidChestBlockEntity voidChestBlockEntity) {
         return voidChestBlockEntity.openersCounter.getOpenerCount();
       }
     }
