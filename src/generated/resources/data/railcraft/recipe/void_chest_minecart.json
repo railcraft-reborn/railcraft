@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:void_chest"
-    },
-    "b": {
-      "item": "minecraft:minecart"
-    }
+    "a": "railcraft:void_chest",
+    "b": "minecraft:minecart"
   },
   "pattern": [
     "a",

@@ -548,8 +548,8 @@ public class RailcraftItems {
           properties -> new CartItem(EnergyMinecart::new, properties.stacksTo(1)));
 
   public static final DeferredItem<CartItem> VOID_CHEST_MINECART =
-      deferredRegister.register("void_chest_minecart",
-          () -> new CartItem(VoidChestMinecart::new, new Item.Properties().stacksTo(1)));
+      deferredRegister.registerItem("void_chest_minecart",
+          properties -> new CartItem(VoidChestMinecart::new, properties.stacksTo(1)));
 
   public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
       deferredRegister.registerItem("world_spike_minecart",

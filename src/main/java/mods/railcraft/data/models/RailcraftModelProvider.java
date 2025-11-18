@@ -21,6 +21,8 @@ import com.mojang.math.Quadrant;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.client.color.item.LocomotiveColor;
+import mods.railcraft.client.renderer.blockentity.VoidChestRenderer;
+import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.data.RailcraftBlockFamilies;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.item.LocomotiveItem;
@@ -152,6 +154,7 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.CARGO_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TANK_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ENERGY_MINECART.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.VOID_CHEST_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.WORLD_SPIKE_MINECART.get(),
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TRACK_LAYER.get(), ModelTemplates.FLAT_ITEM);
@@ -252,6 +255,7 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.ENDER_DUST.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.SULFUR_DUST.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.OBSIDIAN_DUST.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.VOID_DUST.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TRACK_PARTS.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TRANSITION_TRACK_KIT.get(),
         ModelTemplates.FLAT_ITEM);
@@ -358,6 +362,8 @@ public class RailcraftModelProvider extends ModelProvider {
     this.createChimneyBlock(blockModels, RailcraftBlocks.CHIMNEY.get());
     this.createWorldSpikeBlock(blockModels, RailcraftBlocks.WORLD_SPIKE.get());
     this.createWorldSpikeBlock(blockModels, RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
+
+    this.createChests(blockModels, itemModels);
 
     this.createFirebox(blockModels, RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
     this.createFirebox(blockModels, RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
@@ -1117,6 +1123,22 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.blockStateOutput.accept(
         BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
     blockModels.registerSimpleItemModel(block, model);
+  }
+
+  private void createChests(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+    createChest(blockModels, itemModels, RailcraftBlocks.VOID_CHEST.get(),
+        Blocks.OBSIDIAN, VoidChestRenderer.VOID_CHEST.texture());
+  }
+
+  private void createChest(BlockModelGenerators blockModels, ItemModelGenerators itemModels,
+      Block chestBlock, Block particleBlock, ResourceLocation texture) {
+    blockModels.createParticleOnlyBlock(chestBlock, particleBlock);
+    var chestItem = chestBlock.asItem();
+    var resourceLocation = ModelTemplates.CHEST_INVENTORY
+        .create(chestItem, TextureMapping.particle(particleBlock), blockModels.modelOutput);
+    var unbaked =
+        ItemModelUtils.specialModel(resourceLocation, new VoidChestItemRenderer.Unbaked(texture));
+    itemModels.itemModelOutput.accept(chestItem, unbaked);
   }
 
   private void createFirebox(BlockModelGenerators blockModels, FireboxBlock block) {

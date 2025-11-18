@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:obsidian"
-    },
-    "b": {
-      "item": "railcraft:void_dust"
-    }
+    "a": "minecraft:obsidian",
+    "b": "railcraft:void_dust"
   },
   "pattern": [
     "aaa",

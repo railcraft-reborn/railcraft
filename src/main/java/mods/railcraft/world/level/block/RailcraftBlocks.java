@@ -89,6 +89,7 @@ import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.PersonalWorldSpikeBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
@@ -1412,8 +1413,9 @@ public class RailcraftBlocks {
           RailcraftBlockProperties.worldSpike());
 
   public static final DeferredBlock<VoidChestBlock> VOID_CHEST =
-      deferredRegister.register("void_chest",
-          () -> new VoidChestBlock(BlockBehaviour.Properties.of()
+      deferredRegister.registerBlock("void_chest",
+          properties -> new VoidChestBlock(SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE,
+              properties
               .mapColor(MapColor.METAL)
               .sound(SoundType.METAL)
               .requiresCorrectToolForDrops()

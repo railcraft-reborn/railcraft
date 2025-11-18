@@ -1,4 +1,4 @@
-// 1.21.10	2025-11-14T15:40:04.280599	RailcraftRecipeProvider
+// 1.21.10	2025-11-18T11:34:14.707099	RailcraftRecipeProvider
 880902358e9080f4dacc6209cc212af527fd250d data/minecraft/advancement/recipes/misc/gunpowder.json
 a2bb90ba3405540cd1d5f9ebd56e3e9a414b903b data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_deepslate_lead_ore.json
 a9fb3f1e0ef2641d91709ce3fda5abfe1aa1d8f7 data/minecraft/advancement/recipes/misc/lead_ingot_from_blasting_lead_ore.json
@@ -525,6 +525,9 @@ d6706576a2149421f6920c67cc05f3809766ecc7 data/railcraft/advancement/recipes/misc
 5d51d66a4e4f8bf558cd97b104347941de2b1856 data/railcraft/advancement/recipes/misc/turbine_disk.json
 23de2f14b2618c83eee13b7226362e3db42ccbde data/railcraft/advancement/recipes/misc/turbine_rotor.json
 978a25ede389e77130e6628eaab9031337a9af47 data/railcraft/advancement/recipes/misc/villager_detector.json
+4eed62d35b38b2a1dfdfab9c6145022d8dd16836 data/railcraft/advancement/recipes/misc/void_chest.json
+0c5ea74bd7da747faf17ff2f378472c545d5928a data/railcraft/advancement/recipes/misc/void_chest_minecart.json
+d3c3a6a87f9285a78c515a3061c377a6ad5a217a data/railcraft/advancement/recipes/misc/void_dust.json
 45d99961cfd72f0fc6243cb8f1966f8c2d1feae9 data/railcraft/advancement/recipes/misc/water_tank_siding.json
 e221e6955efc0bc96632b41dbd0b27dfd4b11e6a data/railcraft/advancement/recipes/misc/whistle_track_kit.json
 eb8fb37c01188099abca08cd178c5ec4cc53e8f2 data/railcraft/advancement/recipes/misc/whistle_tuner.json
@@ -1022,6 +1025,10 @@ c4deffb28956e5eba2d9b580ddb067de3285ecbc data/railcraft/recipe/train_dispenser.j
 f5e5021c6203c894d72478617108708317ef4b62 data/railcraft/recipe/turbine_disk.json
 a21887ffb18f303126d3fe7d21d46e04a799307b data/railcraft/recipe/turbine_rotor.json
 b4b649f586a956cb658ff38e51ce93ee90968c64 data/railcraft/recipe/villager_detector.json
+7c2ef776b66b209c44b47e4a48db8fdfccb90327 data/railcraft/recipe/void_chest.json
+d0a1b9fb61e79b7515dde4e434bbe1287c6dfbc8 data/railcraft/recipe/void_chest_minecart.json
+06d50d16b3f3300f245a6548902de74836485de1 data/railcraft/recipe/void_chest_minecart_disassembly.json
+54f77b8cfd1d45dac9d5ee2e33634b7e70566a6c data/railcraft/recipe/void_dust.json
 6538c6d681ca6da594b327f3687bba95fc80a3f3 data/railcraft/recipe/water_tank_siding.json
 b1945a8afee20dbac93bd9b34b863774e5e59855 data/railcraft/recipe/whistle_track_kit.json
 c6247e06b81dd3ad1cb1438f35f3a3ef2a0b9267 data/railcraft/recipe/whistle_tuner.json

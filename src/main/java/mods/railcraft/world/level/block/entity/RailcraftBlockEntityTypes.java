@@ -343,9 +343,7 @@ public class RailcraftBlockEntityTypes {
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VoidChestBlockEntity>> VOID_CHEST =
       deferredRegister.register("void_chest",
-          () -> BlockEntityType.Builder
-              .of(VoidChestBlockEntity::new, RailcraftBlocks.VOID_CHEST.get())
-              .build(null));
+          () -> new BlockEntityType<>(VoidChestBlockEntity::new, RailcraftBlocks.VOID_CHEST.get()));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LockingTrackBlockEntity>> LOCKING_TRACK =
       deferredRegister.register("locking_track",

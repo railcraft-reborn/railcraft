@@ -1,4 +1,4 @@
-// 1.21.10	2025-11-14T15:40:04.273959	Model Definitions - railcraft
+// 1.21.10	2025-11-18T12:18:48.184524	Model Definitions - railcraft
 7c5a756981768365f883dd089b9e88499f794819 assets/railcraft/blockstates/abandoned_activator_track.json
 99b3a68b0d35356b5d70e9d53bb03c4aea0837ff assets/railcraft/blockstates/abandoned_booster_track.json
 ca1415647ffe8f5a65a2da42cfeeee1db78a9846 assets/railcraft/blockstates/abandoned_buffer_stop_track.json
@@ -347,6 +347,7 @@ ee2ff4d0b75d7082106e68fd3209393c895c985a assets/railcraft/blockstates/token_sign
 0b8565f2ab97b6076d1b6234b054f69351bd3b1f assets/railcraft/blockstates/train_detector.json
 8d13abe1a4ad112f7ee0941c24b0dbfa573c63b8 assets/railcraft/blockstates/train_dispenser.json
 1d4543b16d54b9317dfaf5248db4f3ff36dd2756 assets/railcraft/blockstates/villager_detector.json
+efaf40a972db9a5f70f20a87f0b75727248489c8 assets/railcraft/blockstates/void_chest.json
 f1343f56bc730afeb0e07c25cf7481d8da0109f0 assets/railcraft/blockstates/water_tank_siding.json
 a1bb3d06c181aeb7bdb17556a59a1c1a7422b17c assets/railcraft/blockstates/white_iron_tank_gauge.json
 4a2a0bb4dc6fd13d286ac7ed1f5308a371a6576b assets/railcraft/blockstates/white_iron_tank_valve.json
@@ -868,6 +869,9 @@ e9b025627ea5d5df7a5ee2a92a56cd2672bfdd3a assets/railcraft/items/tunnel_bore.json
 2a89952d02bf50f31abc4cc05c3dab2ce623ef0c assets/railcraft/items/turbine_disk.json
 f72e6128e20e8fa24023225605763d476d03ebe1 assets/railcraft/items/turbine_rotor.json
 f8b6555391d50075610efd204f40657275605240 assets/railcraft/items/villager_detector.json
+57ce2cdefc128d128d38c889969fac91a56cd08c assets/railcraft/items/void_chest.json
+983d0fa6e46f7b3e962355dc96adedf550cf8923 assets/railcraft/items/void_chest_minecart.json
+33c26122b4d642972ee0fe950358e714421bbc60 assets/railcraft/items/void_dust.json
 8c2341c6aaff981e5c3d3826dc86b9e521e044d8 assets/railcraft/items/water_tank_siding.json
 de6090ac63af1a433ec486e7de2acad3f0148f62 assets/railcraft/items/whistle_track_kit.json
 5ae2298bdeb58a3429f8fa76d68b8cd583dce7a4 assets/railcraft/items/whistle_tuner.json
@@ -1535,6 +1539,7 @@ b78ce1f19d3abb96849a6fdfeeb28704e3db9133 assets/railcraft/models/block/train_det
 f1c073e28513202bc01623d0bcae2ee6168021d6 assets/railcraft/models/block/train_dispenser.json
 e10ee3bf3409905c3559fd1c97c75d8dea10a45f assets/railcraft/models/block/villager_detector.json
 8a343f27c1bdbf83526ffe027f6124ee252691cc assets/railcraft/models/block/villager_detector_powered.json
+25214ab70520dd96ab8ba81322f3017330bf6837 assets/railcraft/models/block/void_chest.json
 9682635f9ff1e0c89e6db1e2832086f379a2574e assets/railcraft/models/block/water_tank_siding.json
 b54bc7d1605853c9dc5e4aba0a9b215e2ef800ff assets/railcraft/models/block/white_iron_tank_gauge_bottom.json
 dd1ba194d375e1a758c37843987203038c954c63 assets/railcraft/models/block/white_iron_tank_gauge_center.json
@@ -1872,6 +1877,9 @@ b8ee3f30a0947add5c16ac4e9642896b7513f0a1 assets/railcraft/models/item/transition
 96b6d43295f0885600b2862daabd7ce152d679fc assets/railcraft/models/item/turbine_blade.json
 1661dbebd2453a40e97b9ebad718687bd3cdae08 assets/railcraft/models/item/turbine_disk.json
 e8838ab9c684e06d9c5aa4afb22d1fef73808f4f assets/railcraft/models/item/turbine_rotor.json
+e7a11368537d7afe885a6bba32574f8b7140b38e assets/railcraft/models/item/void_chest.json
+b2beb01079e1829717c882ac62861908ed12efc7 assets/railcraft/models/item/void_chest_minecart.json
+c9d53c7269e637f16a227814f9e13f6e3008ea33 assets/railcraft/models/item/void_dust.json
 f149bdfae1a9848b1a630636285872e23dddab3b assets/railcraft/models/item/whistle_track_kit.json
 3ea3596bd7cb8e4018f134c86a7c89d67b20ed5d assets/railcraft/models/item/whistle_tuner.json
 a23458d7b292eebb148578f4372e3980f19f31ee assets/railcraft/models/item/wooden_rail.json

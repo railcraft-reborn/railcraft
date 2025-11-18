@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "railcraft:item/void_chest",
+    "model": {
+      "type": "railcraft:void_chest",
+      "texture": "railcraft:entity/chest/void_chest"
+    }
+  }
+}

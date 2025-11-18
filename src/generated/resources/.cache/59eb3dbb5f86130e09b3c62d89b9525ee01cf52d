@@ -1,4 +1,4 @@
-// 1.21.10	2025-11-14T15:40:04.271983	Loot Tables
+// 1.21.10	2025-11-18T11:34:14.6908	Loot Tables
 2368bf4f9231f79e11c75fe244dd7a820a896d65 data/railcraft/loot_table/blocks/abandoned_activator_track.json
 9097789b3b5eebaff6d62020fecf494c96348ac7 data/railcraft/loot_table/blocks/abandoned_booster_track.json
 fbbe6fc8014502014e25452e15f95dc665234e15 data/railcraft/loot_table/blocks/abandoned_buffer_stop_track.json
@@ -325,6 +325,7 @@ a639d4ae402239e032b0a88fa5f6af423e74126a data/railcraft/loot_table/blocks/token_
 2adf1cbb7e19024acc14d175adf0840cd3568b5d data/railcraft/loot_table/blocks/train_detector.json
 347796f5cc6052c63015bed05a51d6e53e15be72 data/railcraft/loot_table/blocks/train_dispenser.json
 92c234b45ca75a24f9c056fbbd724b78d202a87e data/railcraft/loot_table/blocks/villager_detector.json
+772f83c460fe1bc29771532fa99f75389b76c9f4 data/railcraft/loot_table/blocks/void_chest.json
 498d4d07fe2785491db07862f86e1c5eb589b64f data/railcraft/loot_table/blocks/water_tank_siding.json
 4126f7f75bd3a4936a12001b8d3f39402278b931 data/railcraft/loot_table/blocks/white_iron_tank_gauge.json
 31e5b70609109177f601d35551a37bfc4b712961 data/railcraft/loot_table/blocks/white_iron_tank_valve.json

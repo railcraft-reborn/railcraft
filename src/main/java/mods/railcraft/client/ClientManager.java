@@ -57,6 +57,7 @@ import mods.railcraft.client.particle.SteamParticle;
 import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
+import mods.railcraft.client.renderer.blockentity.VoidChestRenderer;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.integrations.jei.JeiRecipeSync;
@@ -66,7 +67,6 @@ import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
-import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
@@ -109,10 +109,11 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialBlockModelRendererEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
@@ -133,6 +134,8 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
     modEventBus.addListener(ClientManager::handleKeyRegister);
     modEventBus.addListener(ClientManager::handleClientExtensions);
+    modEventBus.addListener(ClientManager::handleSpecialRenderers);
+    modEventBus.addListener(ClientManager::handleSpecialBlockRenderers);
     NeoForge.EVENT_BUS.register(ClientManager.class);
 
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
@@ -266,13 +269,6 @@ public class ClientManager {
         return true;
       }
     }, RailcraftBlocks.RITUAL.get());
-    event.registerItem(new IClientItemExtensions() {
-
-      @Override
-      public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-        return new VoidChestItemRenderer();
-      }
-    }, RailcraftItems.VOID_CHEST.asItem());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
       private static final ResourceLocation STILL_TEXTURE =
@@ -330,6 +326,15 @@ public class ClientManager {
         fogData.renderDistanceEnd = 3f;
       }
     }, RailcraftFluidTypes.CREOSOTE.get());
+  }
+
+  private static void handleSpecialRenderers(RegisterSpecialModelRendererEvent event) {
+    event.register(RailcraftConstants.rl("void_chest"), VoidChestItemRenderer.Unbaked.MAP_CODEC);
+  }
+
+  private static void handleSpecialBlockRenderers(RegisterSpecialBlockModelRendererEvent event) {
+    event.register(RailcraftBlocks.VOID_CHEST.get(), new VoidChestItemRenderer.Unbaked(
+            VoidChestRenderer.VOID_CHEST.texture()));
   }
 
   // ================================================================================

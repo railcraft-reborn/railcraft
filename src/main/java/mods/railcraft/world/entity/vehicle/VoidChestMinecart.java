@@ -5,6 +5,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -27,8 +28,8 @@ public class VoidChestMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  public VoidChestMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(itemStack, RailcraftEntityTypes.VOID_CHEST_MINECART.get(), x, y, z, level);
+  public VoidChestMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.VOID_CHEST_MINECART.get(), level, x, y, z);
   }
 
   @Override
@@ -73,8 +74,8 @@ public class VoidChestMinecart extends RailcraftMinecart {
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
     var result = this.interactWithContainerVehicle(player);
-    if (result.consumesAction()) {
-      PiglinAi.angerNearbyPiglins(player, true);
+    if (result.consumesAction() && player.level() instanceof ServerLevel level) {
+      PiglinAi.angerNearbyPiglins(level, player, true);
     }
     return result;
   }

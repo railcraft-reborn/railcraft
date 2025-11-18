@@ -2,6 +2,7 @@ package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class VoidChestMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
@@ -11,7 +12,7 @@ public class VoidChestMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
   }
 
   @Override
-  public RecipeSerializer<?> getSerializer() {
+  public RecipeSerializer<? extends CustomRecipe> getSerializer() {
     return RailcraftRecipeSerializers.VOID_CHEST_MINECART_DISASSEMBLY.get();
   }
 }
