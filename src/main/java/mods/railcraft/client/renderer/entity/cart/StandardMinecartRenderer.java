@@ -56,7 +56,7 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
           snowModel.renderType(SNOW_TEXTURE_LOCATION),
           renderState.lightCoords,
           OverlayTexture.NO_OVERLAY,
-          ARGB.color(1, 1, 1, 1),
+          ARGB.colorFromFloat(1, 1, 1, 1),
           null,
           0,
           null
