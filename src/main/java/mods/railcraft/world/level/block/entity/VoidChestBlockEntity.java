@@ -13,7 +13,6 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
@@ -107,10 +106,9 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
   }
 
   public static int getOpenCount(BlockGetter level, BlockPos pos) {
-    BlockState blockstate = level.getBlockState(pos);
+    var blockstate = level.getBlockState(pos);
     if (blockstate.hasBlockEntity()) {
-      BlockEntity blockentity = level.getBlockEntity(pos);
-      if (blockentity instanceof VoidChestBlockEntity voidChestBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof VoidChestBlockEntity voidChestBlockEntity) {
         return voidChestBlockEntity.openersCounter.getOpenerCount();
       }
     }

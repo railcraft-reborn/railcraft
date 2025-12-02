@@ -243,7 +243,6 @@ public class RailcraftConfig {
     public final BooleanValue seasonsEnabled;
     public final IntValue christmas;
     public final IntValue halloween;
-    public final IntValue harvest;
 
     private Common(ModConfigSpec.Builder builder) {
       this.seasonsEnabled = builder
@@ -257,10 +256,6 @@ public class RailcraftConfig {
       this.halloween = builder
           .comment("Controls whether Halloween mode is (0) enabled, (1) forced, or (2) disabled")
           .defineInRange("halloween", 0, 0, 2);
-
-      this.harvest = builder
-          .comment("Controls whether Harvest mode is (0) enabled, (1) forced, or (2) disabled")
-          .defineInRange("harvest", 0, 0, 2);
     }
   }
 
