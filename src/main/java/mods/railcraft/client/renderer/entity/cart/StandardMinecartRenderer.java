@@ -41,7 +41,7 @@ public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
       var snowVertexConsumer = bufferSource.getBuffer(snowModel.renderType(SNOW_TEXTURE_LOCATION));
       snowModel.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       snowModel.renderToBuffer(poseStack, snowVertexConsumer, packedLight,
-          OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(1, 1, 1, 1));
+          OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1, 1, 1, 1));
     }
     poseStack.popPose();
   }

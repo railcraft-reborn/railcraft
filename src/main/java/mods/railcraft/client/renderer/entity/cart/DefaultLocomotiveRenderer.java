@@ -65,7 +65,7 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
       this.snowLayer.setupAnim(cart, 0, 0, -0.1F, 0, 0);
       var vertexBuilder = renderTypeBuffer.getBuffer(this.snowLayer.renderType(this.textures[3]));
       this.snowLayer.renderToBuffer(poseStack, vertexBuilder, packedLight,
-          OverlayTexture.NO_OVERLAY, FastColor.ARGB32.color(1, 1, 1, 1));
+          OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1, 1, 1, 1));
     }
     poseStack.popPose();
   }
