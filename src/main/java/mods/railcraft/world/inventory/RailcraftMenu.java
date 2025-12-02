@@ -3,6 +3,7 @@ package mods.railcraft.world.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import org.jetbrains.annotations.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.to_client.SyncWidgetMessage;
@@ -26,7 +27,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  protected RailcraftMenu(MenuType<?> type, int id, Player player, Predicate<Player> validator) {
+  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
+      Predicate<Player> validator) {
     super(type, id);
     this.player = player;
     this.validator = validator;

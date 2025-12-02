@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,10 +14,13 @@ import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import net.minecraft.SharedConstants;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -171,5 +175,14 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     this.lockButton.active = !locomotive.isLocked()
         || locomotive.getOwnerOrThrow().equals(this.minecraft.player.getGameProfile());
     this.lockButton.setState(locomotive.getLock());
+  }
+
+  @Override
+  protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+    super.renderTooltip(guiGraphics, x, y);
+    if (this.hoveredSlot instanceof ItemFilterSlot slotTicket && !slotTicket.hasItem()) {
+      slotTicket.setTooltip(Collections.singletonList(ClientTooltipComponent.create(
+          Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET).getVisualOrderText())));
+    }
   }
 }
