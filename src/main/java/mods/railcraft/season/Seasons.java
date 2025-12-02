@@ -8,7 +8,6 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class Seasons {
 
-  private static final boolean HARVEST;
   private static final boolean HALLOWEEN;
   private static final boolean CHRISTMAS;
   public static final String GHOST_TRAIN = "Ghost Train";
@@ -26,12 +25,6 @@ public final class Seasons {
         default -> (month == Month.DECEMBER) || (month == Month.JANUARY);
       };
 
-      HARVEST = switch (RailcraftConfig.COMMON.harvest.get()) {
-        case 1 -> true;
-        case 2 -> false;
-        default -> (month == Month.OCTOBER) || (month == Month.NOVEMBER);
-      };
-
       HALLOWEEN = switch (RailcraftConfig.COMMON.halloween.get()) {
         case 1 -> true;
         case 2 -> false;
@@ -39,7 +32,6 @@ public final class Seasons {
             || (month == Month.NOVEMBER && day <= 10);
       };
     } else {
-      HARVEST = false;
       HALLOWEEN = false;
       CHRISTMAS = false;
     }
