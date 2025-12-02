@@ -54,8 +54,6 @@ public final class Seasons {
 
   /**
    * Clientside only.
-   *
-   * @param cart The cart.
    */
   public static boolean isGhostTrain(MinecartRenderState state) {
     Season season = getSeason(state);
@@ -81,7 +79,7 @@ public final class Seasons {
    */
   public static boolean isPolarExpress(AbstractMinecart cart) {
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
-    var level = Minecraft.getInstance().level;
+    var level = cart.level();
     return isPolarExpress(season, cart.getCustomName(), level, cart.blockPosition());
   }
 
