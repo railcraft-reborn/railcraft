@@ -158,9 +158,9 @@ dependencies {
 
     localRuntime "curse.maven:mekanism-268560:6895130"//mekanism
     localRuntime "curse.maven:mekanism-268567:6895134"//mekanism-tools
-    localRuntime "curse.maven:sodium-394468:6173749"
-    localRuntime "curse.maven:sodium-options-api-1103431:6100815"
-    localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
+    //localRuntime "curse.maven:sodium-394468:6173749"
+    //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
+    //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 }
 
 test {
@@ -285,10 +285,7 @@ tasks.register('apiJar', Jar) {
     manifest.from(jar.manifest)
 }
 
-artifacts {
-    archives jar
-    archives apiJar
-}
+assemble.dependsOn(jar, apiJar)
 
 tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo.set(projectDir.absolutePath.toString())
