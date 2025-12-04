@@ -12,6 +12,7 @@ import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -53,8 +54,6 @@ public class SteamBoiler implements ValueIOSerializable {
 
   /**
    * Callback for adding water.
-   *
-   * @param resource The fluidstack (should be water).
    */
   public void checkFill(FluidStack waterOriginalState, Runnable explosionCallback) {
     if (this.isSuperHeated() && waterOriginalState.isEmpty()) {
@@ -161,11 +160,11 @@ public class SteamBoiler implements ValueIOSerializable {
     return scale;
   }
 
-  private boolean addFuel() {
+  private boolean addFuel(Level level) {
     if (this.fuelProvider == null) {
       return false;
     }
-    float fuel = this.fuelProvider.consumeFuel();
+    float fuel = this.fuelProvider.consumeFuel(level);
     if (fuel <= 0) {
       return false;
     }
@@ -183,18 +182,18 @@ public class SteamBoiler implements ValueIOSerializable {
     fuel += SteamConstants.FUEL_PRESSURE_INEFFICIENCY
         * (this.getMaxTemperature() / SteamConstants.MAX_HEAT_HIGH);
     fuel *= numTanks;
-    fuel *= this.efficiencyModifier;
+    fuel *= (float) this.efficiencyModifier;
     fuel *= RailcraftConfig.SERVER.fuelPerSteamMultiplier.get();
     return fuel;
   }
 
-  public void tick(int numTanks) {
+  public void tick(Level level, int numTanks) {
     this.burnCycle++;
     if (this.burnCycle >= this.ticksPerCycle) {
       this.burnCycle = 0;
       float fuelNeeded = this.getFuelPerCycle(numTanks);
       while (this.getBurnTime() < fuelNeeded) {
-        boolean addedFuel = addFuel();
+        boolean addedFuel = addFuel(level);
         if (!addedFuel) {
           break;
         }

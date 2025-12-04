@@ -125,7 +125,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
 
     if (this.steamTank.getRemainingSpace() >= SteamConstants.STEAM_PER_UNIT_WATER
         || this.isShutdown()) {
-      this.boiler.tick(1);
+      this.boiler.tick(level, 1);
 
       this.setSmoking(this.boiler.isBurning());
 

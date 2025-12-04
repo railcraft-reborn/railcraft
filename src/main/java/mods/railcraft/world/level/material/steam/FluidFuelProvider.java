@@ -3,6 +3,7 @@ package mods.railcraft.world.level.material.steam;
 import mods.railcraft.util.FuelUtil;
 import mods.railcraft.world.level.material.FuelProvider;
 import mods.railcraft.world.level.material.StandardTank;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -21,7 +22,7 @@ public class FluidFuelProvider implements FuelProvider {
   }
 
   @Override
-  public float consumeFuel() {
+  public float consumeFuel(Level level) {
     try (var tx = Transaction.openRoot()) {
       var fuelResource = this.fuelTank.getResource(0);
       if (fuelResource.isEmpty()) {

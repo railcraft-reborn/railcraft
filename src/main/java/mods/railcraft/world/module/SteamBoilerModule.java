@@ -145,7 +145,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
       return;
     }
 
-    this.boiler.tick(metadata.tanks());
+    this.boiler.tick(level, metadata.tanks());
 
     if (this.processTicks++ >= FluidTools.BUCKET_FILL_TIME) {
       this.processTicks = 0;
