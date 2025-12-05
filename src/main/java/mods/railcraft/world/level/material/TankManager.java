@@ -119,7 +119,7 @@ public class TankManager implements ResourceHandler<FluidResource>, ValueIOSeria
 
   @Override
   public FluidResource getResource(int index) {
-    return this.tanks.get(1).getResource(0);
+    return this.tanks.get(index).getResource(0);
   }
 
   @Override
