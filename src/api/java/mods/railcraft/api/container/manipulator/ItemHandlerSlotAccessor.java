@@ -27,6 +27,9 @@ public class ItemHandlerSlotAccessor<T extends ResourceHandler<ItemResource>> im
   public ItemStack extract(int amount, boolean simulate) {
     try (var tx = Transaction.openRoot()){
       var resource = this.itemHandler.getResource(this.index);
+      if (resource.isEmpty()) {
+        return ItemStack.EMPTY;
+      }
       var extracted = this.itemHandler.extract(this.index, resource, amount, tx);
       if (!simulate) {
         tx.commit();

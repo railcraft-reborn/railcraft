@@ -246,7 +246,7 @@ public interface ContainerManipulator<T extends SlotAccessor> {
 
   default Optional<T> findFirstExtractable(Predicate<ItemStack> filter) {
     return this.stream()
-        .filter(slot -> slot.matches(filter) && !slot.simulateExtract().isEmpty())
+        .filter(slot -> slot.hasItem() && slot.matches(filter) && !slot.simulateExtract().isEmpty())
         .findFirst();
   }
 
