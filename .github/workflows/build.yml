@@ -4,9 +4,11 @@ on:
   push:
     branches:
     - 1.21.x
+    - 1.21.10
   pull_request:
     branches:
     - 1.21.x
+    - 1.21.10
   workflow_dispatch:
 
 jobs:
