@@ -73,7 +73,9 @@ public final class FluidTools {
 
   public static boolean isEmptyContainer(ItemStack stack) {
     var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
-    Objects.requireNonNull(cap);
+    if (cap == null) {
+      return false;
+    }
     for (int i = 0; i < cap.size(); i++) {
       if (cap.getAmountAsLong(i) > 0) {
         return false;
