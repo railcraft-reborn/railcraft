@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.connection.ConnectionType;
 
 public abstract class RailcraftMenu extends AbstractContainerMenu {
 
@@ -78,7 +79,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private void sendWidgetPacket(ServerPlayer player, Widget widget) {
     if (widget.requiresSync(player)) {
       var byteBuf = new RegistryFriendlyByteBuf(
-          new FriendlyByteBuf(Unpooled.buffer()), player.registryAccess());
+          new FriendlyByteBuf(Unpooled.buffer()), player.registryAccess(), ConnectionType.OTHER);
       try {
         widget.writeToBuf(player, byteBuf);
         var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf.array());
