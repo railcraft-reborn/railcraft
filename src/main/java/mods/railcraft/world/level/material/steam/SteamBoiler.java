@@ -155,9 +155,7 @@ public class SteamBoiler implements ValueIOSerializable {
       return 0;
     }
     int scale = (int) ((this.getBurnTime() / this.getCurrentItemBurnTime()) * i);
-    scale = Math.max(0, scale);
-    scale = Math.min(i, scale);
-    return scale;
+    return Math.clamp(scale, 0, i);
   }
 
   private boolean addFuel(Level level) {

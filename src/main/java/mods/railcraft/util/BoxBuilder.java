@@ -1,7 +1,5 @@
 package mods.railcraft.util;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -10,8 +8,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BoxBuilder {
 
   public static final AABB FULL_BOX = create().box().build();

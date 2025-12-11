@@ -3,7 +3,6 @@ package mods.railcraft.client.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -27,12 +26,10 @@ public class FluidRenderer {
 
   public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack, FluidType type) {
     var fluid = fluidStack.getFluid();
-    ResourceLocation spriteLocation;
-    if (type == FluidType.STILL) {
-      spriteLocation = IClientFluidTypeExtensions.of(fluid).getStillTexture(fluidStack);
-    } else {
-      spriteLocation = IClientFluidTypeExtensions.of(fluid).getFlowingTexture(fluidStack);
-    }
+    var spriteLocation = switch (type) {
+      case STILL -> IClientFluidTypeExtensions.of(fluid).getStillTexture(fluidStack);
+      case FLOWING -> IClientFluidTypeExtensions.of(fluid).getFlowingTexture(fluidStack);
+    };
     return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(spriteLocation);
   }
 

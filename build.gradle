@@ -289,10 +289,7 @@ tasks.register('apiJar', Jar) {
     manifest.from(jar.manifest)
 }
 
-artifacts {
-    archives jar
-    archives apiJar
-}
+assemble.dependsOn(jar, apiJar)
 
 tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo.set(projectDir.absolutePath.toString())
