@@ -16,7 +16,7 @@ public record SetItemDetectorMessage(
     ItemDetectorBlockEntity.FilterMode filterMode) implements CustomPacketPayload {
 
   public static final Type<SetItemDetectorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_item_detector"));
+      new Type<>(RailcraftConstants.id("set_item_detector"));
 
   public static final StreamCodec<FriendlyByteBuf, SetItemDetectorMessage> STREAM_CODEC =
       StreamCodec.composite(

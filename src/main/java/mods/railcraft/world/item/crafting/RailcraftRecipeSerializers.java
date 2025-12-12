@@ -4,7 +4,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -50,9 +49,9 @@ public class RailcraftRecipeSerializers {
       deferredRegister.register("void_chest_minecart_disassembly",
           () -> new CustomRecipe.Serializer<>(VoidChestMinecartDisassemblyRecipe::new));
 
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessRecipe>> PATCHOULI_BOOK_CRAFTING =
-      deferredRegister.register("patchouli_book_crafting",
-          () -> new CustomRecipe.Serializer<>(PatchouliBookCrafting::new));
+//  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessRecipe>> PATCHOULI_BOOK_CRAFTING =
+//      deferredRegister.register("patchouli_book_crafting",
+//          () -> new CustomRecipe.Serializer<>(PatchouliBookCrafting::new));
 
   public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WoodenTieRecipe>> WOODEN_TIE =
       deferredRegister.register("wooden_tie",

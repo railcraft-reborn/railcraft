@@ -9,7 +9,7 @@ package mods.railcraft.api.charge;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -48,9 +48,7 @@ public interface ChargeBlock {
    * Most blocks don't need to touch this, but Multi-blocks may want to redirect to the master
    * block.
    */
-  @Nullable
-  default Charge.Access getMeterAccess(Charge network, BlockState state, ServerLevel level,
-      BlockPos pos) {
+  default Charge.@Nullable Access getMeterAccess(Charge network, BlockState state, ServerLevel level, BlockPos pos) {
     return network.network(level).access(pos);
   }
 
@@ -96,8 +94,7 @@ public interface ChargeBlock {
    *        0.01. Generators 0. Consumers 0.1.
    * @param storageSpec - the storage specification for our block. Storage is optional.
    */
-  record Spec(ConnectType connectType, float losses,
-      @Nullable ChargeStorage.Spec storageSpec) {
+  record Spec(ConnectType connectType, float losses, ChargeStorage.@Nullable Spec storageSpec) {
 
     /**
      * Helper method for ChargeSpec map construction.
@@ -110,7 +107,7 @@ public interface ChargeBlock {
      * Helper method for ChargeSpec map construction.
      */
     public static Map<Charge, Spec> make(Charge network, ConnectType connectType,
-        float losses, @Nullable ChargeStorage.Spec storageSpec) {
+        float losses, ChargeStorage.@Nullable Spec storageSpec) {
       return Map.of(network, new Spec(connectType, losses, storageSpec));
     }
 

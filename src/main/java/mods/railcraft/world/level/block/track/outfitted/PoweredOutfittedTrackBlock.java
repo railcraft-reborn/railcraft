@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.track.PoweredTrack;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;

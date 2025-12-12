@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 public enum EmptyLockingProfile implements LockingModeController {
 

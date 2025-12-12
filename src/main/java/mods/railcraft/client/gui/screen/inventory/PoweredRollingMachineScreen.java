@@ -6,13 +6,13 @@ import mods.railcraft.world.inventory.PoweredRollingMachineMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PoweredRollingMachineScreen extends RailcraftMenuScreen<PoweredRollingMachineMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/powered_rolling_machine.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/powered_rolling_machine.png");
 
   public PoweredRollingMachineScreen(PoweredRollingMachineMenu menu, Inventory inventory,
       Component title) {
@@ -21,7 +21,7 @@ public class PoweredRollingMachineScreen extends RailcraftMenuScreen<PoweredRoll
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 

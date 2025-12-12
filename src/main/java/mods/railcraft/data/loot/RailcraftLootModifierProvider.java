@@ -6,8 +6,8 @@ import mods.railcraft.data.loot.packs.RailcraftChestLoot;
 import mods.railcraft.loot.DungeonLootModifier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -31,11 +31,11 @@ public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
   }
 
   private void add(ResourceKey<LootTable> targetLootTable, ResourceKey<LootTable> customLootTable) {
-    this.add(targetLootTable.location().getPath(),
-        new DungeonLootModifier(getCondition(targetLootTable.location()), customLootTable));
+    this.add(targetLootTable.identifier().getPath(),
+        new DungeonLootModifier(getCondition(targetLootTable.identifier()), customLootTable));
   }
 
-  private LootItemCondition[] getCondition(ResourceLocation lootTable) {
+  private LootItemCondition[] getCondition(Identifier lootTable) {
     var condition = LootTableIdCondition.builder(lootTable);
     return new LootItemCondition[]{condition.build()};
   }

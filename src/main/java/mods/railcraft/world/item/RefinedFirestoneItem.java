@@ -2,7 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;

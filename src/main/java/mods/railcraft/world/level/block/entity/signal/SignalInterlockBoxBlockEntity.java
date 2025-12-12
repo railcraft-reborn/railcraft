@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;

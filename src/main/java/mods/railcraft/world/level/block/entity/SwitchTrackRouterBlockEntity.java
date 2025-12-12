@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;

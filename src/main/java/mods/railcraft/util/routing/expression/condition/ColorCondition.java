@@ -1,7 +1,7 @@
 package mods.railcraft.util.routing.expression.condition;
 
 import java.util.Locale;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.Paintable;
 import mods.railcraft.util.routing.RoutingLogicException;

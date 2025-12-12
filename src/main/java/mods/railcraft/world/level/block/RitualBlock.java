@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.item.RailcraftItems;

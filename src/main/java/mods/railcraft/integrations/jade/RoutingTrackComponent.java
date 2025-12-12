@@ -6,7 +6,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.track.outfitted.RoutingTrackBlock;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -35,7 +35,7 @@ class RoutingTrackComponent implements IBlockComponentProvider {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return RailcraftConstants.rl("track_component");
+  public Identifier getUid() {
+    return RailcraftConstants.id("track_component");
   }
 }

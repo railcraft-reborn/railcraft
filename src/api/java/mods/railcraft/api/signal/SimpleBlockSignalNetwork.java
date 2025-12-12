@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.track.TrackScanUtil;
@@ -20,7 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 
@@ -194,8 +194,7 @@ public class SimpleBlockSignalNetwork extends BlockEntitySignalNetwork<BlockSign
         peer.signalNetwork().aspectExcluding(this.blockPos()));
   }
 
-  @Nullable
-  private TrackScanUtil.Result getOrCreateTrackScan(BlockPos otherTrack) {
+  private TrackScanUtil.@Nullable Result getOrCreateTrackScan(BlockPos otherTrack) {
     var result = this.trackScans.get(otherTrack);
     if (result == null) {
       var trackPos = this.trackLocator.trackPos();

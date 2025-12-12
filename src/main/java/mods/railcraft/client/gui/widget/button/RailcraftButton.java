@@ -1,7 +1,7 @@
 package mods.railcraft.client.gui.widget.button;
 
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,14 +9,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class RailcraftButton extends Button {
 
-  private static final ResourceLocation WIDGETS_LOCATION =
-      RailcraftConstants.rl("textures/gui/widgets.png");
+  private static final Identifier WIDGETS_LOCATION =
+      RailcraftConstants.id("textures/gui/widgets.png");
 
   private TexturePosition texturePosition;
 
@@ -38,7 +38,7 @@ public class RailcraftButton extends Button {
   }
 
   @Override
-  protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     int i = this.getYImage(this.isHoveredOrFocused());
 

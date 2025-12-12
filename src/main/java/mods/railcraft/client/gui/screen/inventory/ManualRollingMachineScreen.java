@@ -5,13 +5,13 @@ import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollingMachineMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/manual_rolling_machine.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/manual_rolling_machine.png");
 
   public ManualRollingMachineScreen(ManualRollingMachineMenu menu, Inventory inventory,
       Component title) {
@@ -19,7 +19,7 @@ public class ManualRollingMachineScreen extends RailcraftMenuScreen<ManualRollin
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 

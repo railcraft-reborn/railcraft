@@ -99,8 +99,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -139,7 +139,7 @@ public class Railcraft {
 
   public static final boolean BETA = true;
   public static final TicketController CHUNK_CONTROLLER =
-      new TicketController(RailcraftConstants.rl("ticket_controller"),
+      new TicketController(RailcraftConstants.id("ticket_controller"),
           new WorldSpikeBlockEntity.RailcraftValidationTicket());
 
   static {

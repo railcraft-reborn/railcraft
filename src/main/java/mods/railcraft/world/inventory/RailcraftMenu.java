@@ -3,7 +3,7 @@ package mods.railcraft.world.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.to_client.SyncWidgetMessage;

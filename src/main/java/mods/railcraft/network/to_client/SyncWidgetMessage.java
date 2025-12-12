@@ -15,7 +15,7 @@ public record SyncWidgetMessage(
     int windowId, byte widgetId, byte[] rawUpdates) implements CustomPacketPayload {
 
   public static final Type<SyncWidgetMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("sync_widget"));
+      new Type<>(RailcraftConstants.id("sync_widget"));
 
   public static final StreamCodec<FriendlyByteBuf, SyncWidgetMessage> STREAM_CODEC =
       StreamCodec.composite(

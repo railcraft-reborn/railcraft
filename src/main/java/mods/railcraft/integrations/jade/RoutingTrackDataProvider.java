@@ -6,7 +6,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.TooltipPosition;
@@ -30,7 +30,7 @@ class RoutingTrackDataProvider implements IServerDataProvider<BlockAccessor> {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return RailcraftConstants.rl("track_component");
+  public Identifier getUid() {
+    return RailcraftConstants.id("track_component");
   }
 }

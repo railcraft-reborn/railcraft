@@ -2,7 +2,7 @@ package mods.railcraft.world.item.tunnelbore;
 
 import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ToolMaterial;
@@ -11,12 +11,12 @@ public class TunnelBoreHeadItem extends Item implements TunnelBoreHead {
 
   /*private static final Set<ItemAbility> TOOL_ACTIONS =
       Set.of(ItemAbilities.AXE_DIG, ItemAbilities.PICKAXE_DIG, ItemAbilities.SHOVEL_DIG);*/
-  private final ResourceLocation textureLocation;
+  private final Identifier textureLocation;
 
   public TunnelBoreHeadItem(ToolMaterial material, String tierName, Properties properties) {
     super(material.applyToolProperties(properties, BlockTags.MINEABLE_WITH_PICKAXE, 1.0F, 1, 0));
     this.textureLocation =
-        RailcraftConstants.rl("textures/entity/tunnel_bore/%s_tunnel_bore.png".formatted(tierName));
+        RailcraftConstants.id("textures/entity/tunnel_bore/%s_tunnel_bore.png".formatted(tierName));
   }
 
   //TODO: Check
@@ -27,7 +27,7 @@ public class TunnelBoreHeadItem extends Item implements TunnelBoreHead {
   }*/
 
   @Override
-  public ResourceLocation getTextureLocation() {
+  public Identifier getTextureLocation() {
     return this.textureLocation;
   }
 }

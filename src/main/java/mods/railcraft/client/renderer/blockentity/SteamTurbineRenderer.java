@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.renderer.RailcraftRenderTypes;
 import mods.railcraft.client.renderer.blockentity.state.SteamTurbineRenderState;
@@ -25,7 +25,7 @@ public class SteamTurbineRenderer implements BlockEntityRenderer<SteamTurbineBlo
   @Override
   public void extractRenderState(SteamTurbineBlockEntity  blockEntity,
       SteamTurbineRenderState renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
 
     var membership = blockEntity.getUnresolvedMembership().orElse(null);

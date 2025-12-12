@@ -5,7 +5,7 @@ import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
@@ -45,11 +45,11 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   @Override
   public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> resourceKey) {
-    var path = resourceKey.location().getPath();
-    var customResourceLocation = RailcraftConstants.rl("blast_furnace/" + path);
-    var customResourceKey = ResourceKey.create(resourceKey.registryKey(), customResourceLocation);
+    var path = resourceKey.identifier().getPath();
+    var customIdentifier = RailcraftConstants.id("blast_furnace/" + path);
+    var customResourceKey = ResourceKey.create(resourceKey.registryKey(), customIdentifier);
 
-    var advancementId = customResourceLocation.withPrefix("recipes/");
+    var advancementId = customIdentifier.withPrefix("recipes/");
 
     var builder = recipeOutput.advancement()
         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceKey))

@@ -15,7 +15,7 @@ import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -24,8 +24,8 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
   private static final int WIDTH = 144;
   private static final int HEIGHT = 54;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/crusher.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/crusher.png");
 
   private final IDrawable background, arrow;
 

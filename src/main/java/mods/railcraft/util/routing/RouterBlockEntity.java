@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.Translations;
 import mods.railcraft.api.util.EnumUtil;

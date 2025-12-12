@@ -2,7 +2,7 @@ package mods.railcraft.util.routing;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 
 public class RoutingStatementParser {

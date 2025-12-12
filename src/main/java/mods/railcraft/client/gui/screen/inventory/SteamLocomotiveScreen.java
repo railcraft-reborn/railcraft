@@ -9,13 +9,13 @@ import mods.railcraft.world.inventory.SteamLocomotiveMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu> {
 
-  private static final ResourceLocation TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/steam_locomotive.png");
+  private static final Identifier TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/steam_locomotive.png");
 
   public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv, Component title) {
     super(menu, inv, title, "steam");
@@ -32,7 +32,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return TEXTURE_LOCATION;
   }
 

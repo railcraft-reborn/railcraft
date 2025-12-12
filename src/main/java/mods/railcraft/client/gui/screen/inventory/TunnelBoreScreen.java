@@ -7,13 +7,13 @@ import mods.railcraft.world.inventory.TunnelBoreMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
 
-  private static final ResourceLocation WIDGETS_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/tunnel_bore.png");
+  private static final Identifier WIDGETS_LOCATION =
+      RailcraftConstants.id("textures/gui/container/tunnel_bore.png");
 
   private static final Component HEAD =
       Component.translatable(Translations.Screen.TUNNEL_BORE_HEAD);
@@ -55,7 +55,7 @@ public class TunnelBoreScreen extends RailcraftMenuScreen<TunnelBoreMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_LOCATION;
   }
 }

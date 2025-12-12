@@ -2,8 +2,8 @@ package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -26,12 +26,12 @@ public class RailcraftEnchantments {
   public static final ResourceKey<Enchantment> SMACK = createKey("smack");
 
   private static ResourceKey<Enchantment> createKey(String name) {
-    return ResourceKey.create(Registries.ENCHANTMENT, RailcraftConstants.rl(name));
+    return ResourceKey.create(Registries.ENCHANTMENT, RailcraftConstants.id(name));
   }
 
   private static void register(BootstrapContext<Enchantment> context,
       ResourceKey<Enchantment> enchantment, Enchantment.Builder builder) {
-    context.register(enchantment, builder.build(enchantment.location()));
+    context.register(enchantment, builder.build(enchantment.identifier()));
   }
 
   private static Enchantment.Builder customDamageEnchantment(HolderGetter<Item> items,

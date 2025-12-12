@@ -2,23 +2,18 @@ package mods.railcraft.client.renderer;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
-public class RailcraftRenderTypes extends RenderStateShard {
+public class RailcraftRenderTypes {
+
+  private static final RenderSetup POSITION_COLOR_LIGHTMAP_SETUP =
+      RenderSetup.builder(RenderPipelines.OUTLINE_CULL)
+          .useLightmap()
+          .bufferSize(256)
+          .createRenderSetup();
 
   public static final RenderType POSITION_COLOR_LIGHTMAP = RenderType.create(
-      RailcraftConstants.rl("leash").toString(),
-      256,
-      false,
-      false,
-      RenderPipelines.OUTLINE_CULL,
-      RenderType.CompositeState.builder()
-          .setTextureState(NO_TEXTURE)
-          .setLightmapState(LIGHTMAP)
-          .createCompositeState(false));
-
-  private RailcraftRenderTypes(String name, Runnable setupState, Runnable clearState) {
-    super(name, setupState, clearState);
-  }
+      RailcraftConstants.id("leash").toString(),
+      POSITION_COLOR_LIGHTMAP_SETUP);
 }

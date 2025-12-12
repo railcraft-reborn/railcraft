@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity.tank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;

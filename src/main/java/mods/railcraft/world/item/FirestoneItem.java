@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.entity.FirestoneItemEntity;
 import net.minecraft.ChatFormatting;
@@ -17,9 +17,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.gamerules.GameRules;
 
 public class FirestoneItem extends Item {
 
@@ -71,14 +71,15 @@ public class FirestoneItem extends Item {
   public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity,
       @Nullable EquipmentSlot slot) {
     if (this.spawnsFire
-        && level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+        && level.getGameRules().get(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER) != 0
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
       trySpawnFire(level, player.blockPosition(), stack, player);
     }
   }
 
-  public static boolean trySpawnFire(ServerLevel level, BlockPos pos, ItemStack stack, Entity entity) {
+  public static boolean trySpawnFire(ServerLevel level, BlockPos pos, ItemStack stack,
+      @Nullable Entity entity) {
     boolean spawnedFire = false;
     for (int i = 0; i < stack.getCount(); i++) {
       spawnedFire |= spawnFire(level, pos);

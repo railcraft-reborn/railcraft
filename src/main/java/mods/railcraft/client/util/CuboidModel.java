@@ -1,7 +1,7 @@
 package mods.railcraft.client.util;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 

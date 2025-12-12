@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.manipulator;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;

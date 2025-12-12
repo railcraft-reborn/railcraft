@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.signal;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.util.EnumUtil;
 import net.minecraft.ChatFormatting;

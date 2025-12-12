@@ -105,6 +105,6 @@ public class RailcraftBiomeModifiers {
   }
 
   private static ResourceKey<BiomeModifier> createKey(String name) {
-    return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftConstants.rl(name));
+    return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftConstants.id(name));
   }
 }

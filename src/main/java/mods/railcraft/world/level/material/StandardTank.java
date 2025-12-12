@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.item.ItemResource;

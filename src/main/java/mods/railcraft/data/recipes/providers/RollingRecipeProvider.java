@@ -92,15 +92,15 @@ public class RollingRecipeProvider extends RecipeProvider {
         .pattern("aa ")
         .pattern("a  ")
         .define(this.items, 'a', RailcraftTags.Items.BRONZE_NUGGET)
-        .save(output, RailcraftConstants.rl(name + "_bronze_nugget"));
+        .save(output, RailcraftConstants.id(name + "_bronze_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("aa")
         .define(this.items, 'a', Tags.Items.NUGGETS_IRON)
-        .save(output, RailcraftConstants.rl(name + "_iron_nugget"));
+        .save(output, RailcraftConstants.id(name + "_iron_nugget"));
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("a")
         .define(this.items, 'a', RailcraftTags.Items.STEEL_NUGGET)
-        .save(output, RailcraftConstants.rl(name + "_steel_nugget"));
+        .save(output, RailcraftConstants.id(name + "_steel_nugget"));
   }
 
   private void buildRebars() {

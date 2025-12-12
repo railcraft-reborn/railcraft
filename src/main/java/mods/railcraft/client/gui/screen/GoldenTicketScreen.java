@@ -13,15 +13,15 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GoldenTicketScreen extends IngameWindowScreen {
 
-  private static final ResourceLocation TICKET_LOCATION =
-      RailcraftConstants.rl("textures/gui/item/golden_ticket.png");
+  private static final Identifier TICKET_LOCATION =
+      RailcraftConstants.id("textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
   private static final String PREFIX = "Dest=";

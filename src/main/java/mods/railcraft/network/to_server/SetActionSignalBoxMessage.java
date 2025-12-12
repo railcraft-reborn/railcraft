@@ -18,7 +18,7 @@ public record SetActionSignalBoxMessage(
     LockableSignalBoxBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final Type<SetActionSignalBoxMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_action_signal_box"));
+      new Type<>(RailcraftConstants.id("set_action_signal_box"));
 
   public static final StreamCodec<FriendlyByteBuf, SetActionSignalBoxMessage> STREAM_CODEC =
       CustomPacketPayload.codec(SetActionSignalBoxMessage::write, SetActionSignalBoxMessage::read);

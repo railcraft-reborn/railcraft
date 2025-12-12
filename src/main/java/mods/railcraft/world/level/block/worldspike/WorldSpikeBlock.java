@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.worldspike;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;

@@ -21,7 +21,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -30,8 +30,8 @@ public class SolidBoilerRecipeCategory extends AbstractRecipeCategory<SolidBoile
   public static final int WIDTH = 117;
   public static final int HEIGHT = 54;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/solid_fueled_steam_boiler.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/solid_fueled_steam_boiler.png");
 
   private final IDrawable tankBackground, tankOverlay, heatBackground, heatOverlay, flame;
 

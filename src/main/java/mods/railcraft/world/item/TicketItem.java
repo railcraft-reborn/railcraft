@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.item.component.TicketComponent;

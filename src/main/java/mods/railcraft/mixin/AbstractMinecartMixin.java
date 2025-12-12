@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(value = AbstractMinecart.class)
@@ -25,7 +25,7 @@ public class AbstractMinecartMixin {
 
   @Redirect(method = "comeOffTrack",
       at = @At(value = "INVOKE",
-          target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D"))
+          target = "Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D"))
   private double railcraft$bypassgetMaxSpeed(AbstractMinecart minecart, ServerLevel level) {
     if (minecart.onGround()) {
       return minecart.getBehavior().getMaxSpeed(level);
@@ -38,7 +38,7 @@ public class AbstractMinecartMixin {
 
   @Inject(method = "comeOffTrack",
       at = @At(value = "INVOKE",
-          target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"))
+          target = "Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"))
   private void railcraft$beforeMove(ServerLevel level, CallbackInfo ci) {
     float maxSpeedAirVertical = self().getData(RailcraftAttachmentTypes.MAX_SPEED_AIR_VERTICAL);
 

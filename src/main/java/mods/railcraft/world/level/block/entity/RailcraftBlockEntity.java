@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.primitives.Bytes;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.Unpooled;

@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -18,7 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -58,7 +58,7 @@ public interface RollingStock {
   int MAX_BLOCKING_TANK_CAPACITY = 8 * FluidType.BUCKET_VOLUME;
 
   EntityCapability<RollingStock, Void> CAPABILITY =
-      EntityCapability.createVoid(RailcraftConstants.rl("rolling_stock"), RollingStock.class);
+      EntityCapability.createVoid(RailcraftConstants.id("rolling_stock"), RollingStock.class);
 
   static RollingStock getOrThrow(AbstractMinecart minecart) {
     return Optional.ofNullable(minecart.getCapability(CAPABILITY))

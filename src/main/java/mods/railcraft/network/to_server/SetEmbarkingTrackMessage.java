@@ -13,7 +13,7 @@ public record SetEmbarkingTrackMessage(
     BlockPos blockPos, int radius) implements CustomPacketPayload {
 
   public static final Type<SetEmbarkingTrackMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_embarking_track"));
+      new Type<>(RailcraftConstants.id("set_embarking_track"));
 
   public static final StreamCodec<FriendlyByteBuf, SetEmbarkingTrackMessage> STREAM_CODEC =
       StreamCodec.composite(

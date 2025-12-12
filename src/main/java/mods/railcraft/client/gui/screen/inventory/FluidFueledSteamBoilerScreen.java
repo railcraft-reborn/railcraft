@@ -7,13 +7,13 @@ import mods.railcraft.world.inventory.FluidFueledSteamBoilerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFueledSteamBoilerMenu> {
 
-  private static final ResourceLocation WIDGETS_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
+  private static final Identifier WIDGETS_LOCATION =
+      RailcraftConstants.id("textures/gui/container/fluid_fueled_steam_boiler.png");
 
   public FluidFueledSteamBoilerScreen(FluidFueledSteamBoilerMenu menu, Inventory inventory,
       Component title) {
@@ -25,7 +25,7 @@ public class FluidFueledSteamBoilerScreen extends RailcraftMenuScreen<FluidFuele
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_LOCATION;
   }
 

@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.track;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 /**
  * Any rail tile entity that can completely halt all cart movement should implement this interface.

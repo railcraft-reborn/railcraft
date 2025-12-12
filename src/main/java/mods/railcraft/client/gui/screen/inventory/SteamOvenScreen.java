@@ -7,13 +7,13 @@ import mods.railcraft.world.module.SteamOvenModule;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SteamOvenScreen extends RailcraftMenuScreen<SteamOvenMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/steam_oven.png");
+  private static final Identifier WIDGETS_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/steam_oven.png");
   private final SteamOvenModule steamOvenModule;
 
   public SteamOvenScreen(SteamOvenMenu menu, Inventory inventory, Component title) {
@@ -35,7 +35,7 @@ public class SteamOvenScreen extends RailcraftMenuScreen<SteamOvenMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE;
   }
 }

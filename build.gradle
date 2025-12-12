@@ -61,7 +61,10 @@ sourceSets {
 }
 
 neoForge {
-    version = project.neo_version
+    enable {
+        version = project.neo_version
+        disableRecompilation = System.getenv("CI") == "true"
+    }
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -162,8 +165,8 @@ dependencies {
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 
-    implementation "curse.maven:edivadlib-638508:7108943"
-    implementation "curse.maven:solargeneration-336538:7120257"
+    //implementation "curse.maven:edivadlib-638508:7108943"
+    //implementation "curse.maven:solargeneration-336538:7120257"
     //implementation "curse.maven:morejeiinfo-902996:6149873"
 }
 
@@ -211,14 +214,10 @@ tasks.register('generatePackageInfos') {
         pkgName = pkgName.replaceAll('/', '.')
 
         def pkgInfoText = """
-            |@FieldsAreNonnullByDefault
-            |@MethodsReturnNonnullByDefault
-            |@ParametersAreNonnullByDefault
+            |@NullMarked
             |package $pkgName;
             |
-            |import javax.annotation.ParametersAreNonnullByDefault;
-            |import net.minecraft.FieldsAreNonnullByDefault;
-            |import net.minecraft.MethodsReturnNonnullByDefault;
+            |import org.jspecify.annotations.NullMarked;
         """.stripMargin().trim()
 
         packageInfoFile.text = pkgInfoText

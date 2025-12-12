@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record UpdateAuraByKeyMessage(GogglesItem.Aura aura) implements CustomPacketPayload {
 
   public static final Type<UpdateAuraByKeyMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("update_aura_by_key"));
+      new Type<>(RailcraftConstants.id("update_aura_by_key"));
 
   public static final StreamCodec<FriendlyByteBuf, UpdateAuraByKeyMessage> STREAM_CODEC =
       StreamCodec.composite(

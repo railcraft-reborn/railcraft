@@ -1,20 +1,20 @@
 package mods.railcraft.client.renderer.item;
 
-import java.util.Set;
-import org.joml.Vector3f;
+import java.util.function.Consumer;
+import org.joml.Vector3fc;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.client.renderer.blockentity.VoidChestRenderer;
-import net.minecraft.client.model.ChestModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.object.chest.ChestModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.resources.model.MaterialSet;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 
 public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
@@ -37,7 +37,7 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
         this.model,
         this.openness,
         poseStack,
-        VoidChestRenderer.VOID_CHEST.renderType(RenderType::entityCutout),
+        VoidChestRenderer.VOID_CHEST.renderType(RenderTypes::entityCutout),
         packedLight,
         packedOverlay,
         -1,
@@ -48,17 +48,17 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
   }
 
   @Override
-  public void getExtents(Set<Vector3f> output) {
+  public void getExtents(Consumer<Vector3fc> consumer) {
     PoseStack posestack = new PoseStack();
     this.model.setupAnim(this.openness);
-    this.model.root().getExtentsForGui(posestack, output);
+    this.model.root().getExtentsForGui(posestack, consumer);
   }
 
-  public record Unbaked(ResourceLocation texture, float openness) implements SpecialModelRenderer.Unbaked {
+  public record Unbaked(Identifier texture, float openness) implements SpecialModelRenderer.Unbaked {
 
     public static final MapCodec<VoidChestItemRenderer.Unbaked> MAP_CODEC =
         RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("texture").forGetter(VoidChestItemRenderer.Unbaked::texture),
+            Identifier.CODEC.fieldOf("texture").forGetter(VoidChestItemRenderer.Unbaked::texture),
             Codec.FLOAT.optionalFieldOf("openness", 0.0F).forGetter(VoidChestItemRenderer.Unbaked::openness)
         ).apply(instance, VoidChestItemRenderer.Unbaked::new)
     );
@@ -68,8 +68,8 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
       return MAP_CODEC;
     }
 
-    public Unbaked(ResourceLocation resourceLocation) {
-      this(resourceLocation, 0.0F);
+    public Unbaked(Identifier identifier) {
+      this(identifier, 0.0F);
     }
 
     @Override

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.Objects;
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SimpleSignalController;

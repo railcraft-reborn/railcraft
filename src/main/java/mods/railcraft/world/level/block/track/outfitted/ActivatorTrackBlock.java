@@ -3,7 +3,8 @@ package mods.railcraft.world.level.block.track.outfitted;
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -18,8 +19,10 @@ public class ActivatorTrackBlock extends PoweredOutfittedTrackBlock {
   @Override
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
-    cart.activateMinecart(pos.getX(), pos.getY(), pos.getZ(),
-        this.isPowered(blockState, level, pos));
+    if (level instanceof ServerLevel serverLevel) {
+      cart.activateMinecart(serverLevel, pos.getX(), pos.getY(), pos.getZ(),
+          this.isPowered(blockState, level, pos));
+    }
   }
 
   @Override

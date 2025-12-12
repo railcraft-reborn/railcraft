@@ -2,7 +2,7 @@ package mods.railcraft.gui.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.charge.ChargeNetworkImpl;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

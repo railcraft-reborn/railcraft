@@ -9,7 +9,7 @@ package mods.railcraft.api.charge;
 import java.util.Objects;
 import java.util.Optional;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

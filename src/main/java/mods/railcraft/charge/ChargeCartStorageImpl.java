@@ -8,7 +8,7 @@ import mods.railcraft.api.charge.ChargeCartStorage;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.energy.SimpleEnergyHandler;
 import net.neoforged.neoforge.transfer.transaction.SnapshotJournal;

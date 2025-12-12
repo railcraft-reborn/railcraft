@@ -140,6 +140,6 @@ public class RailcraftOreFeatures {
   }
 
   private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-    return ResourceKey.create(Registries.CONFIGURED_FEATURE, RailcraftConstants.rl(name));
+    return ResourceKey.create(Registries.CONFIGURED_FEATURE, RailcraftConstants.id(name));
   }
 }

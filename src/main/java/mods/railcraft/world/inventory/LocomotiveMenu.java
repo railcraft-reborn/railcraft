@@ -1,6 +1,6 @@
 package mods.railcraft.world.inventory;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.inventory.slot.UnmodifiableSlot;

@@ -18,7 +18,7 @@ public record SetSwitchTrackMotorMessage(
     LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final Type<SetSwitchTrackMotorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_switch_track_motor"));
+      new Type<>(RailcraftConstants.id("set_switch_track_motor"));
 
   public static final StreamCodec<FriendlyByteBuf, SetSwitchTrackMotorMessage> STREAM_CODEC =
       CustomPacketPayload.codec(SetSwitchTrackMotorMessage::write, SetSwitchTrackMotorMessage::read);

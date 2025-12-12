@@ -11,14 +11,14 @@ import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockE
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/item_manipulator.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);
@@ -75,7 +75,7 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

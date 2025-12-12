@@ -12,11 +12,11 @@ import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
 class RailcraftCartAdvancements implements AdvancementSubProvider {
@@ -28,12 +28,12 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             RailcraftItems.DIAMOND_CROWBAR.get(),
             Component.translatable(Translations.Advancement.Carts.ROOT),
             Component.translatable(Translations.Advancement.Carts.ROOT_DESC),
-            ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
+            Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
             AdvancementType.TASK,
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, RailcraftConstants.rl("carts/root"));
+        .save(consumer, RailcraftConstants.id("carts/root"));
 
     Advancement.Builder.advancement()
         .display(
@@ -45,7 +45,7 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.hasLinked())
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/link_carts"));
+        .save(consumer, RailcraftConstants.id("carts/link_carts"));
 
     Advancement.Builder.advancement()
         .display(
@@ -57,7 +57,7 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.onSeasonSet())
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/seasons"));
+        .save(consumer, RailcraftConstants.id("carts/seasons"));
 
     var rcLocomotive = Advancement.Builder.advancement()
         .display(
@@ -70,7 +70,7 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(root)
-        .save(consumer, RailcraftConstants.rl("carts/locomotive"));
+        .save(consumer, RailcraftConstants.id("carts/locomotive"));
 
     Advancement.Builder.advancement()
         .display(
@@ -82,7 +82,7 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/bed_cart"));
+        .save(consumer, RailcraftConstants.id("carts/bed_cart"));
 
     Advancement.Builder.advancement()
         .display(
@@ -94,7 +94,7 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/jukebox_cart"));
+        .save(consumer, RailcraftConstants.id("carts/jukebox_cart"));
 
     Advancement.Builder.advancement()
         .display(
@@ -106,6 +106,6 @@ class RailcraftCartAdvancements implements AdvancementSubProvider {
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.rl("carts/surprise"));
+        .save(consumer, RailcraftConstants.id("carts/surprise"));
   }
 }

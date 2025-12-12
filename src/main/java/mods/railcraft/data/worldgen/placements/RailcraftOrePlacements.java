@@ -133,7 +133,7 @@ public class RailcraftOrePlacements {
   }
 
   private static ResourceKey<PlacedFeature> createKey(String name) {
-    return ResourceKey.create(Registries.PLACED_FEATURE, RailcraftConstants.rl(name));
+    return ResourceKey.create(Registries.PLACED_FEATURE, RailcraftConstants.id(name));
   }
 
   private static Holder.Reference<ConfiguredFeature<?, ?>> getConfiguredFeature(

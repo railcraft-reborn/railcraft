@@ -11,7 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -101,8 +101,8 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
         .save(output, getRailcraftBlastingRecipeName(item).toString());
   }
 
-  private static ResourceLocation getRailcraftBlastingRecipeName(ItemLike item) {
+  private static Identifier getRailcraftBlastingRecipeName(ItemLike item) {
     var tag = BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
-    return RailcraftConstants.rl("blasting_" + tag);
+    return RailcraftConstants.id("blasting_" + tag);
   }
 }

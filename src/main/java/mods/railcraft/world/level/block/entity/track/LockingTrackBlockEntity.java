@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -19,7 +19,7 @@ import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;

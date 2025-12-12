@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -22,22 +24,21 @@ public class TokenRingManager extends SavedData {
   private static final SavedDataType<TokenRingManager> TYPE = new SavedDataType<>(
       "railcraft.tokens",
       TokenRingManager::new,
-      ctx -> RecordCodecBuilder.create(instance -> instance.group(
-          RecordCodecBuilder.point(ctx.levelOrThrow()),
+      serverLevel -> RecordCodecBuilder.create(instance -> instance.group(
           MAP_CODEC.fieldOf(CompoundTagKeys.TOKEN_RINGS).forGetter(manager -> from(manager.tokenRings))
-      ).apply(instance, TokenRingManager::new))
+      ).apply(instance, tokenRings -> new TokenRingManager(serverLevel, tokenRings)))
   );
 
   private final ServerLevel level;
   private final Map<UUID, SimpleTokenRing> tokenRings = new HashMap<>();
   private int clock;
 
-  private TokenRingManager(Context context) {
-    this.level = context.levelOrThrow();
+  private TokenRingManager(@Nullable ServerLevel level) {
+    this.level = Objects.requireNonNull(level, "level");
   }
 
-  private TokenRingManager(ServerLevel level, Map<String, TokenRingData> tokenRings) {
-    this.level = level;
+  private TokenRingManager(@Nullable ServerLevel level, Map<String, TokenRingData> tokenRings) {
+    this.level = Objects.requireNonNull(level, "level");
     for (var entry : tokenRings.entrySet()) {
       var id = UUID.fromString(entry.getKey());
       var tokenRing = new SimpleTokenRing(this.level, this, id);

@@ -10,17 +10,17 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
 public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S extends RailcraftMinecartRenderState>
     extends CustomMinecartRenderer<T, S> {
 
-  public static final ResourceLocation SNOW_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/carts/cart_snow.png");
+  public static final Identifier SNOW_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/carts/cart_snow.png");
 
-  public static final ResourceLocation MINECART_TEXTURE_LOCATION =
-      ResourceLocation.withDefaultNamespace("textures/entity/minecart.png");
+  public static final Identifier MINECART_TEXTURE_LOCATION =
+      Identifier.withDefaultNamespace("textures/entity/minecart.png");
 
   public StandardMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);

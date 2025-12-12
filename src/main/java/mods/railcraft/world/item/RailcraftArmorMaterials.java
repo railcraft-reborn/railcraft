@@ -15,15 +15,15 @@ public interface RailcraftArmorMaterials {
 
   ArmorMaterial OVERALLS = new ArmorMaterial(5, makeDefense(1, 2, 3, 1, 3), 8,
       SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0, Tags.Items.DYED_BLUE,
-      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.rl("overalls")));
+      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.id("overalls")));
 
   ArmorMaterial GOGGLES = new ArmorMaterial(5, makeDefense(1, 2, 3, 1, 3), 8,
       SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0, RailcraftTags.Items.STEEL_INGOT,
-      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.rl("goggles")));
+      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.id("goggles")));
 
   ArmorMaterial STEEL = new ArmorMaterial(15, makeDefense(2, 5, 6, 2, 5), 8,
       SoundEvents.ARMOR_EQUIP_IRON, 0.8F, 0, RailcraftTags.Items.STEEL_INGOT,
-      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.rl("steel")));
+      ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.id("steel")));
 
   private static Map<ArmorType, Integer> makeDefense(int boots, int leggings, int chestplate, int helmet, int body) {
     return Maps.newEnumMap(Map.of(

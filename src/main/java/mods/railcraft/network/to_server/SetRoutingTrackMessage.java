@@ -15,7 +15,7 @@ public record SetRoutingTrackMessage(
     LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final CustomPacketPayload.Type<SetRoutingTrackMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_routing_track"));
+      new Type<>(RailcraftConstants.id("set_routing_track"));
 
   public static final StreamCodec<FriendlyByteBuf, SetRoutingTrackMessage> STREAM_CODEC =
       StreamCodec.composite(

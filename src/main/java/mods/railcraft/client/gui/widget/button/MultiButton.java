@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.widget.button;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.input.InputWithModifiers;

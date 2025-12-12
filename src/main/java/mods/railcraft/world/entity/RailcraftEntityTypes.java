@@ -160,6 +160,6 @@ public class RailcraftEntityTypes {
 
   private static <T extends Entity> EntityType<T> create(String registryName,
       EntityType.Builder<T> builder) {
-    return builder.build(ResourceKey.create(Registries.ENTITY_TYPE, RailcraftConstants.rl(registryName)));
+    return builder.build(ResourceKey.create(Registries.ENTITY_TYPE, RailcraftConstants.id(registryName)));
   }
 }

@@ -11,14 +11,14 @@ import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/tank_detector.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/tank_detector.png");
   private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
   private final TankDetectorBlockEntity tankDetectorBlockEntity;
   private MultiButton<TankDetectorBlockEntity.Mode> mode;
@@ -32,7 +32,7 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 

@@ -1,16 +1,17 @@
 package mods.railcraft.charge;
 
 import java.util.List;
+import org.jspecify.annotations.Nullable;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.api.core.CompoundTagKeys;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
@@ -31,7 +32,7 @@ public final class ChargeSavedData extends SavedData {
   private final Object2IntMap<BlockPos> chargeLevels =
       Util.make(new Object2IntOpenHashMap<>(), map -> map.defaultReturnValue(ABSENT_VALUE));
 
-  private ChargeSavedData(Context context) {
+  private ChargeSavedData(@Nullable ServerLevel level) {
   }
 
   private ChargeSavedData(List<Pair<BlockPos, Integer>> batteries) {

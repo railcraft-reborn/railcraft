@@ -98,6 +98,6 @@ public class CrusherRecipeBuilder {
     recipeOutput
         .withConditions(conditions.toArray(ICondition[]::new))
         .accept(ResourceKey.create(Registries.RECIPE,
-            RailcraftConstants.rl("crusher/crushing_" + path)), recipe, null);
+            RailcraftConstants.id("crusher/crushing_" + path)), recipe, null);
   }
 }

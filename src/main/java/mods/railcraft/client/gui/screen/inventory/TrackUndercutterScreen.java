@@ -7,13 +7,13 @@ import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.TrackUndercutterMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUndercutterMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/track_undercutter.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/track_undercutter.png");
 
   private static final Component UNDER = Component.translatable(Translations.Screen.UNDER);
   private static final Component SIDES = Component.translatable(Translations.Screen.SIDES);
@@ -37,7 +37,7 @@ public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUnder
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

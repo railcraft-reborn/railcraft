@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;

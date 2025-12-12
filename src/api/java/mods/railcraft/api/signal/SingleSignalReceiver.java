@@ -1,7 +1,7 @@
 package mods.railcraft.api.signal;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.core.CompoundTagKeys;

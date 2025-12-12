@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.math.Quadrant;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.ArrowDirection;
@@ -89,7 +89,6 @@ import mods.railcraft.world.level.block.track.outfitted.TurnoutTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WhistleTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.WyeTrackBlock;
 import mods.railcraft.world.level.block.worldspike.WorldSpikeBlock;
-import net.minecraft.Util;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -113,7 +112,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.DyeColor;
@@ -915,7 +915,7 @@ public class RailcraftModelProvider extends ModelProvider {
             });
 
     for (var arrow : ArrowDirection.values()) {
-      ResourceLocation modelRed, modelWhite;
+      Identifier modelRed, modelWhite;
       if (arrow == ArrowDirection.NORTH_SOUTH || arrow == ArrowDirection.EAST_WEST) {
         modelRed = flagNeutralRedModel;
         modelWhite = flagNeutralWhiteModel;
@@ -1131,13 +1131,13 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void createChest(BlockModelGenerators blockModels, ItemModelGenerators itemModels,
-      Block chestBlock, Block particleBlock, ResourceLocation texture) {
+      Block chestBlock, Block particleBlock, Identifier texture) {
     blockModels.createParticleOnlyBlock(chestBlock, particleBlock);
     var chestItem = chestBlock.asItem();
-    var resourceLocation = ModelTemplates.CHEST_INVENTORY
+    var Identifier = ModelTemplates.CHEST_INVENTORY
         .create(chestItem, TextureMapping.particle(particleBlock), blockModels.modelOutput);
     var unbaked =
-        ItemModelUtils.specialModel(resourceLocation, new VoidChestItemRenderer.Unbaked(texture));
+        ItemModelUtils.specialModel(Identifier, new VoidChestItemRenderer.Unbaked(texture));
     itemModels.itemModelOutput.accept(chestItem, unbaked);
   }
 
@@ -1185,7 +1185,7 @@ public class RailcraftModelProvider extends ModelProvider {
             .with(
                 PropertyDispatch.initial(FurnaceMultiblockBlock.WINDOW, FurnaceMultiblockBlock.LIT)
                     .generate((window, lit) -> {
-                      ResourceLocation model;
+                      Identifier model;
                       if (!window) {
                         model = bricksModel;
                       } else if (lit) {
@@ -1215,7 +1215,7 @@ public class RailcraftModelProvider extends ModelProvider {
             .put(TextureSlot.BOTTOM, bottomTexture)
             .put(TextureSlot.TOP, topTexture), blockModels.modelOutput);
 
-    var modelMap = new HashMap<CrusherMultiblockBlock.Type, ResourceLocation>();
+    var modelMap = new HashMap<CrusherMultiblockBlock.Type, Identifier>();
     CrusherMultiblockBlock.TYPE.getAllValues()
         .forEach(type -> {
           if (modelMap.containsKey(type.value())) {
@@ -1309,7 +1309,7 @@ public class RailcraftModelProvider extends ModelProvider {
         createWithOverride(block, "_side",
             TextureMapping.singleSlot(TextureSlot.ALL, sideTexture), blockModels.modelOutput);
 
-    var modelMap = new HashMap<SteamTurbineBlock.Type, ResourceLocation>();
+    var modelMap = new HashMap<SteamTurbineBlock.Type, Identifier>();
     SteamTurbineBlock.TYPE.getAllValues()
         .forEach(type -> {
           if (modelMap.containsKey(type.value()) || type.value()
@@ -1339,8 +1339,8 @@ public class RailcraftModelProvider extends ModelProvider {
     );
   }
 
-  private ResourceLocation createSteamTurbineModel(BlockModelGenerators blockModels, Block block,
-      ResourceLocation sideTexture, String suffix, boolean rotated) {
+  private Identifier createSteamTurbineModel(BlockModelGenerators blockModels, Block block,
+      Identifier sideTexture, String suffix, boolean rotated) {
     var frontTexture = TextureMapping.getBlockTexture(block, suffix);
 
     var tm = new TextureMapping()
@@ -1885,7 +1885,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private StraightTrackModelSet createOutfittedTrackModelSet(BlockModelGenerators blockModels, Block block) {
-    if (BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(ResourceLocation.DEFAULT_NAMESPACE)) {
+    if (BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
       return this.createTrackModelSet(RailcraftModelTemplates.TrackType.RAIL_OUTFITTED);
     } else {
       return this.createTrackModelSet(blockModels, block);
@@ -2114,7 +2114,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void addGateVariants(MultiPartGenerator multiPartGenerator, boolean open, boolean inWall,
-      ResourceLocation model) {
+      Identifier model) {
     multiPartGenerator
         .with(
             new CombinedCondition(
@@ -2234,7 +2234,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void createLockingTrack(BlockModelGenerators blockModels, LockingTrackBlock block,
-      ResourceLocation trackModel) {
+      Identifier trackModel) {
     var lockdownModel =
         RailcraftModelTemplates.LOCKING_TRACK_PROVIDER.LOCKDOWN.getModel();
     var trainLockdownModel =
@@ -2295,8 +2295,8 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.registerSimpleFlatItemModel(block.asItem());
   }
 
-  private void addLockingMode(LockingMode lockingMode, ResourceLocation model,
-      ResourceLocation poweredModel, MultiPartGenerator multiPartGenerator) {
+  private void addLockingMode(LockingMode lockingMode, Identifier model,
+      Identifier poweredModel, MultiPartGenerator multiPartGenerator) {
     multiPartGenerator
         .with(
             new CombinedCondition(
@@ -2345,7 +2345,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void createThrottleTrack(BlockModelGenerators blockModels, ThrottleTrackBlock block,
-      ResourceLocation trackModel) {
+      Identifier trackModel) {
 
     var speed1 =
         RailcraftModelTemplates.THROTTLE_TRACK_PROVIDER.THROTTLE_TRACK_1.getModel(false, false);
@@ -2405,8 +2405,8 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.registerSimpleFlatItemModel(block.asItem());
   }
 
-  private void addSpeedMode(Locomotive.Speed speed, ResourceLocation model,
-      ResourceLocation poweredModel, boolean reverse, MultiPartGenerator multiPartGenerator) {
+  private void addSpeedMode(Locomotive.Speed speed, Identifier model,
+      Identifier poweredModel, boolean reverse, MultiPartGenerator multiPartGenerator) {
     multiPartGenerator
         .with(
             new CombinedCondition(
@@ -2459,7 +2459,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void createBufferStopTrack(BlockModelGenerators blockModels, BufferStopTrackBlock block,
-      ResourceLocation trackModel) {
+      Identifier trackModel) {
     var bufferStop = modLocation("block/buffer_stop");
 
     blockModels.blockStateOutput.accept(
@@ -2642,9 +2642,9 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private record StraightTrackModelSet(
-      ResourceLocation flatModel,
-      ResourceLocation raisedNorthEastModel,
-      ResourceLocation raisedSouthWestModel) {
+      Identifier flatModel,
+      Identifier raisedNorthEastModel,
+      Identifier raisedSouthWestModel) {
 
     private static Condition merge(ConditionBuilder base, @Nullable ConditionBuilder other) {
       if (other == null) {

@@ -9,7 +9,7 @@
 //import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 //import net.minecraft.client.Minecraft;
 //import net.minecraft.network.chat.Component;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.ItemStack;
 //import net.minecraft.world.item.crafting.CustomRecipe;
 //
@@ -18,16 +18,16 @@
 //  private final Component info;
 //  private Consumer<ItemStack> stackModifier;
 //
-//  public DefaultRecipeWrapper(CustomRecipe customRecipe, ResourceLocation id, boolean shapeless) {
+//  public DefaultRecipeWrapper(CustomRecipe customRecipe, Identifier id, boolean shapeless) {
 //    this(getInputs(customRecipe), getOutput(customRecipe), id, shapeless, Component.empty());
 //  }
 //
-//  public DefaultRecipeWrapper(CustomRecipe customRecipe, ResourceLocation id, boolean shapeless,
+//  public DefaultRecipeWrapper(CustomRecipe customRecipe, Identifier id, boolean shapeless,
 //      Component info) {
 //    this(getInputs(customRecipe), getOutput(customRecipe), id, shapeless, info);
 //  }
 //
-//  public DefaultRecipeWrapper(List<EmiIngredient> input, EmiStack output, ResourceLocation id,
+//  public DefaultRecipeWrapper(List<EmiIngredient> input, EmiStack output, Identifier id,
 //      boolean shapeless, Component info) {
 //    super(input, output, id, shapeless);
 //    this.info = info;

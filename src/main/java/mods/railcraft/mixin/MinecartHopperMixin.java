@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
-import net.minecraft.world.entity.vehicle.MinecartHopper;
+import net.minecraft.world.entity.vehicle.minecart.MinecartHopper;
 
 @Mixin(value = MinecartHopper.class)
 public class MinecartHopperMixin {

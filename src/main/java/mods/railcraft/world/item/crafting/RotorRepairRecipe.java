@@ -1,7 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;

@@ -3,7 +3,7 @@ package mods.railcraft.world.module;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;

@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;

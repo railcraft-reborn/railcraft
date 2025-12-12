@@ -1,19 +1,19 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.renderer.blockentity.state.VoidChestRenderState;
 import mods.railcraft.world.level.block.entity.VoidChestBlockEntity;
-import net.minecraft.client.model.ChestModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.object.chest.ChestModel;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
@@ -28,7 +28,7 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
     VoidChestRenderState> {
 
   public static final Material VOID_CHEST =
-      new Material(Sheets.CHEST_SHEET, RailcraftConstants.rl("entity/chest/void_chest"));
+      new Material(Sheets.CHEST_SHEET, RailcraftConstants.id("entity/chest/void_chest"));
 
   private final MaterialSet materials;
   private final ChestModel singleModel;
@@ -46,7 +46,7 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
   @Override
   public void extractRenderState(VoidChestBlockEntity blockEntity, VoidChestRenderState renderState,
       float partialTick, Vec3 cameraPosition,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick,
         cameraPosition, breakProgress);
 
@@ -69,7 +69,7 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
     lidAngle = 1.0F - lidAngle;
     lidAngle = 1.0F - lidAngle * lidAngle * lidAngle;
 
-    var rendertype = VOID_CHEST.renderType(RenderType::entityCutout);
+    var rendertype = VOID_CHEST.renderType(RenderTypes::entityCutout);
     nodeCollector.submitModel(
         this.singleModel,
         lidAngle,

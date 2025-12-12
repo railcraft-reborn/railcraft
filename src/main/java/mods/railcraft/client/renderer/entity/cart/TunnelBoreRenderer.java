@@ -13,14 +13,14 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRendererState> {
 
-  private static final ResourceLocation TEXTURE =
-      RailcraftConstants.rl("textures/entity/tunnel_bore/tunnel_bore.png");
+  private static final Identifier TEXTURE =
+      RailcraftConstants.id("textures/entity/tunnel_bore/tunnel_bore.png");
 
   protected TunnelBoreModel modelTunnelBore;
 

@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
@@ -27,7 +27,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
   }
 
   @Override
-  public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
+  public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX,
       int centreY, int mouseX, int mouseY) {
 
     var fluidStack = this.widget.tank.getFluidStack();

@@ -4,7 +4,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -28,7 +28,7 @@ class SwitchTrackComponent implements IBlockComponentProvider {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return RailcraftConstants.rl("switch_track");
+  public Identifier getUid() {
+    return RailcraftConstants.id("switch_track");
   }
 }

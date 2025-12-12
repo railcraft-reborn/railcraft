@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -17,7 +17,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;

@@ -6,13 +6,13 @@ import mods.railcraft.client.gui.screen.inventory.widget.AnalogGaugeRenderer;
 import mods.railcraft.world.inventory.SteamTurbineMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/steam_turbine.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/steam_turbine.png");
 
   public SteamTurbineScreen(SteamTurbineMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
@@ -24,7 +24,7 @@ public class SteamTurbineScreen extends RailcraftMenuScreen<SteamTurbineMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 

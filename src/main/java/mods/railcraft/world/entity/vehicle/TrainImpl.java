@@ -12,7 +12,7 @@ import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.FunctionalUtil;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;

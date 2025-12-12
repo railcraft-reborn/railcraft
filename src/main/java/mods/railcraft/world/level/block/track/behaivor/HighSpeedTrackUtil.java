@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
@@ -10,7 +10,7 @@ import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.track.actuator;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.SwitchTrackLeverBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

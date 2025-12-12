@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.renderer.blockentity.state.TankBlockRenderState;
 import mods.railcraft.client.util.CuboidModelRenderer;
@@ -36,7 +36,7 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity, TankBl
   @Override
   public void extractRenderState(TankBlockEntity blockEntity,
       TankBlockRenderState renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
 
     final float twoPixels = RenderUtil.SCALED_PIXEL * 2.0F;

@@ -3,7 +3,7 @@ package mods.railcraft.world.item;
 import java.util.Objects;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.item.Filter;
 import mods.railcraft.api.item.MinecartFactory;

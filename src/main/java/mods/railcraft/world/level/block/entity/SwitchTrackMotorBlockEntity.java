@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;

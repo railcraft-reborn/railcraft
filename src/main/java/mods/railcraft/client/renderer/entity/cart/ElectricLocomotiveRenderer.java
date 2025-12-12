@@ -12,13 +12,13 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
 
   private final ElectricLocomotiveLampModel<LocomotiveRenderState> lampModel;
-  private final ResourceLocation lampTextureOn;
-  private final ResourceLocation lampTextureOff;
+  private final Identifier lampTextureOn;
+  private final Identifier lampTextureOff;
 
   public ElectricLocomotiveRenderer(EntityRendererProvider.Context context) {
     super(context, "electric",
@@ -31,9 +31,9 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
             context.bakeLayer(RailcraftModelLayers.ELECTRIC_LOCOMOTIVE_LAMP));
 
     this.lampTextureOn =
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/lamp_on.png");
     this.lampTextureOff =
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/lamp_off.png");
   }
 
   @Override

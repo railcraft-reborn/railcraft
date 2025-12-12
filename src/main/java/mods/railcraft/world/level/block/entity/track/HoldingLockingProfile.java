@@ -6,7 +6,7 @@ import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;

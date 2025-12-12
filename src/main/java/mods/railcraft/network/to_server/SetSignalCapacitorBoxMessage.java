@@ -16,7 +16,7 @@ public record SetSignalCapacitorBoxMessage(
     SignalCapacitorBoxBlockEntity.Mode mode) implements CustomPacketPayload {
 
   public static final Type<SetSignalCapacitorBoxMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_signal_capacitor_box"));
+      new Type<>(RailcraftConstants.id("set_signal_capacitor_box"));
 
   public static final StreamCodec<FriendlyByteBuf, SetSignalCapacitorBoxMessage> STREAM_CODEC =
       StreamCodec.composite(

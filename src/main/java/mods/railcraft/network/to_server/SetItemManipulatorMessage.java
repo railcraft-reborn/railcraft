@@ -17,7 +17,7 @@ public record SetItemManipulatorMessage(
     ManipulatorBlockEntity.TransferMode transferMode) implements CustomPacketPayload {
 
   public static final Type<SetItemManipulatorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_item_manipulator"));
+      new Type<>(RailcraftConstants.id("set_item_manipulator"));
 
   public static final StreamCodec<FriendlyByteBuf, SetItemManipulatorMessage> STREAM_CODEC =
       StreamCodec.composite(

@@ -4,7 +4,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -35,7 +35,7 @@ class LocomotiveComponent implements IEntityComponentProvider {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return RailcraftConstants.rl("locomotive");
+  public Identifier getUid() {
+    return RailcraftConstants.id("locomotive");
   }
 }

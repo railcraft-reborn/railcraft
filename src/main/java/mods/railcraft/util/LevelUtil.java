@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,12 +11,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.event.EventHooks;
@@ -62,12 +62,11 @@ public class LevelUtil {
   }
 
   public static boolean destroyBlock(ServerLevel level, BlockPos pos) {
-    return level.destroyBlock(pos, level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+    return level.destroyBlock(pos, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
   public static boolean destroyBlock(ServerLevel level, BlockPos pos, @Nullable Player actor) {
-    return destroyBlock(level, pos, actor,
-        level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+    return destroyBlock(level, pos, actor, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
   public static boolean destroyBlock(Level level, BlockPos pos, @Nullable Player actor,
@@ -85,8 +84,7 @@ public class LevelUtil {
 
   public static boolean playerRemoveBlock(ServerLevel level, BlockPos pos,
       @Nullable Player player) {
-    return playerRemoveBlock(level, pos, player,
-        level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+    return playerRemoveBlock(level, pos, player, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
   public static boolean playerRemoveBlock(Level level, BlockPos pos, @Nullable Player player,

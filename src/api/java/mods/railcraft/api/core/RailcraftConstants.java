@@ -8,7 +8,7 @@ package mods.railcraft.api.core;
 
 import java.util.UUID;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class RailcraftConstants {
 
@@ -24,8 +24,8 @@ public final class RailcraftConstants {
   private RailcraftConstants() {
   }
 
-  public static ResourceLocation rl(String path) {
-    return ResourceLocation.fromNamespaceAndPath(ID, path);
+  public static Identifier id(String path) {
+    return Identifier.fromNamespaceAndPath(ID, path);
   }
 
   public static String makeTranslationKey(String type, String name) {

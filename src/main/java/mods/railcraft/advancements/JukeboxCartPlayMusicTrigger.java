@@ -4,12 +4,12 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 public class JukeboxCartPlayMusicTrigger
     extends SimpleCriterionTrigger<JukeboxCartPlayMusicTrigger.TriggerInstance> {
@@ -17,8 +17,7 @@ public class JukeboxCartPlayMusicTrigger
   /**
    * Invoked when the user plays music on a cart.
    */
-  public void trigger(ServerPlayer playerEntity, AbstractMinecart cart,
-      ResourceLocation music) {
+  public void trigger(ServerPlayer playerEntity, AbstractMinecart cart, Identifier music) {
     this.trigger(playerEntity,
         criterionInstance -> criterionInstance.matches(playerEntity, cart, music));
   }
@@ -28,7 +27,7 @@ public class JukeboxCartPlayMusicTrigger
         new TriggerInstance(Optional.empty(), Optional.empty(), Optional.empty()));
   }
 
-  public static Criterion<TriggerInstance> hasPlayedMusic(Optional<ResourceLocation> music) {
+  public static Criterion<TriggerInstance> hasPlayedMusic(Optional<Identifier> music) {
     return RailcraftCriteriaTriggers.JUKEBOX_CART_MUSIC_PLAY.createCriterion(
         new TriggerInstance(Optional.empty(), music, Optional.empty()));
   }
@@ -40,20 +39,20 @@ public class JukeboxCartPlayMusicTrigger
 
   public record TriggerInstance(
       Optional<ContextAwarePredicate> player,
-      Optional<ResourceLocation> music,
+      Optional<Identifier> music,
       Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
             EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
                 .forGetter(TriggerInstance::player),
-            ResourceLocation.CODEC.optionalFieldOf("music")
+            Identifier.CODEC.optionalFieldOf("music")
                 .forGetter(TriggerInstance::music),
             MinecartPredicate.CODEC.optionalFieldOf("cart")
                 .forGetter(TriggerInstance::cart)
         ).apply(instance, TriggerInstance::new));
 
-    public boolean matches(ServerPlayer player, AbstractMinecart cart, ResourceLocation music) {
+    public boolean matches(ServerPlayer player, AbstractMinecart cart, Identifier music) {
       if (this.music.isPresent() && !this.music.get().equals(music)) {
         return false;
       }

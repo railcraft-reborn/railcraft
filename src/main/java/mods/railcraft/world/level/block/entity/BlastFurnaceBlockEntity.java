@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
@@ -11,11 +11,11 @@ import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.module.BlastFurnaceModule;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Util;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

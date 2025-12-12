@@ -13,8 +13,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
@@ -47,7 +47,7 @@ public class FirestoneItemEntity extends ItemEntity {
     if (++this.clock % 4 == 0
         && this.getItem().getItem() instanceof FirestoneItem item
         && item.spawnsFire()
-        && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+        && serverLevel.getGameRules().get(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER) != 0) {
       FirestoneItem.trySpawnFire(serverLevel, this.blockPosition(), getItem(), this.getOwner());
     }
   }

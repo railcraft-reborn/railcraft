@@ -13,7 +13,7 @@ public record SetMaintenanceMinecartMessage(
     int entityId, MaintenanceMinecart.Mode mode) implements CustomPacketPayload {
 
   public static final Type<SetMaintenanceMinecartMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_maintenance_minecart"));
+      new Type<>(RailcraftConstants.id("set_maintenance_minecart"));
 
   public static final StreamCodec<FriendlyByteBuf, SetMaintenanceMinecartMessage> STREAM_CODEC =
       StreamCodec.composite(

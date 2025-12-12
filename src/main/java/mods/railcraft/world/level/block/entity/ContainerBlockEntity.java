@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;

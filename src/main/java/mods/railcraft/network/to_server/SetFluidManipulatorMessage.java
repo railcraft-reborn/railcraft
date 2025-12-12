@@ -16,7 +16,7 @@ public record SetFluidManipulatorMessage(
     ManipulatorBlockEntity.RedstoneMode redstoneMode) implements CustomPacketPayload {
 
   public static final Type<SetFluidManipulatorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_fluid_manipulator"));
+      new Type<>(RailcraftConstants.id("set_fluid_manipulator"));
 
   public static final StreamCodec<FriendlyByteBuf, SetFluidManipulatorMessage> STREAM_CODEC =
       StreamCodec.composite(

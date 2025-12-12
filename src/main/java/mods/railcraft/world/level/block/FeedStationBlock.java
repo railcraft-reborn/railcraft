@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;

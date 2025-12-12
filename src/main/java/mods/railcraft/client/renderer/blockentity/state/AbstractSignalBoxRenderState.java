@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity.state;
 
 import java.util.HashMap;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.signal.SignalAspect;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;

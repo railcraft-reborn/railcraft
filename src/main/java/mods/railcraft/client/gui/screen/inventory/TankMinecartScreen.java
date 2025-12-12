@@ -4,13 +4,13 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.TankMinecartMenu;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TankMinecartScreen extends RailcraftMenuScreen<TankMinecartMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/tank_minecart.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/tank_minecart.png");
 
   public TankMinecartScreen(TankMinecartMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
@@ -18,7 +18,7 @@ public class TankMinecartScreen extends RailcraftMenuScreen<TankMinecartMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

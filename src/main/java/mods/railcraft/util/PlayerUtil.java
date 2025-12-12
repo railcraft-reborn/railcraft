@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 public final class PlayerUtil {
 
   public static boolean isOwnerOrOp(NameAndId owner, Player player) {
-    return player.nameAndId().equals(owner) || player.hasPermissions(Commands.LEVEL_GAMEMASTERS);
+    return player.nameAndId().equals(owner) || Commands.LEVEL_GAMEMASTERS.check(player.permissions());
   }
 
   public static boolean doesItemBlockActivation(Player player, InteractionHand hand) {

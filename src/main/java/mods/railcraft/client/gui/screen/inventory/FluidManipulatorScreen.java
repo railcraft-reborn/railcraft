@@ -5,14 +5,14 @@ import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.network.to_server.SetFluidManipulatorMessage;
 import mods.railcraft.world.inventory.FluidManipulatorMenu;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/fluid_manipulator.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/fluid_manipulator.png");
 
   public FluidManipulatorScreen(FluidManipulatorMenu menu, Inventory inventory,
       Component title) {
@@ -27,7 +27,7 @@ public class FluidManipulatorScreen extends ManipulatorScreen<FluidManipulatorMe
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

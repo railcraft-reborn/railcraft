@@ -22,11 +22,11 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
   // If you change the name, remember to regenerate the chest inside the structure
   // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}
   private static final ResourceKey<LootTable> COMPONENT_WORKSHOP =
-      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.rl("chests/component_workshop"));
+      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.id("chests/component_workshop"));
   public static final ResourceKey<LootTable> ABANDONED_MINESHAFT =
-      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.rl("chests/abandoned_mineshaft"));
+      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.id("chests/abandoned_mineshaft"));
   public static final ResourceKey<LootTable> SIMPLE_DUNGEON =
-      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.rl("chests/simple_dungeon"));
+      ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.id("chests/simple_dungeon"));
 
   @Override
   public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {

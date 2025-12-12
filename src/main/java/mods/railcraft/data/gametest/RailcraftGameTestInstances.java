@@ -154,7 +154,7 @@ public class RailcraftGameTestInstances {
       String path, String template,
       Function<TestData<Holder<TestEnvironmentDefinition>>, T> factory) {
     bootstrap.register(
-        ResourceKey.create(Registries.TEST_INSTANCE, RailcraftConstants.rl(path)),
+        ResourceKey.create(Registries.TEST_INSTANCE, RailcraftConstants.id(path)),
         factory.apply(getDefaultTestData(bootstrap, template))
     );
   }
@@ -164,7 +164,7 @@ public class RailcraftGameTestInstances {
     var environments = bootstrap.lookup(Registries.TEST_ENVIRONMENT);
     return new TestData<>(
         environments.getOrThrow(RailcraftTestEnvironments.DEFAULT),
-        RailcraftConstants.rl("test/" + template),
+        RailcraftConstants.id("test/" + template),
         400,
         0,
         true,

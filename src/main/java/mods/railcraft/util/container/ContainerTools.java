@@ -2,7 +2,7 @@ package mods.railcraft.util.container;
 
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

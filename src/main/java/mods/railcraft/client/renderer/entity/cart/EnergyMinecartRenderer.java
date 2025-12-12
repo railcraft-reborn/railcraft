@@ -10,21 +10,21 @@ import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinecart, RailcraftMinecartRenderState> {
 
-  private static final ResourceLocation FRAME =
-      RailcraftConstants.rl("entity/minecart/energy_minecart_flux_frame");
+  private static final Identifier FRAME =
+      RailcraftConstants.id("entity/minecart/energy_minecart_flux_frame");
 
-  private static final ResourceLocation CORE =
-      RailcraftConstants.rl("entity/minecart/energy_minecart_flux_core");
+  private static final Identifier CORE =
+      RailcraftConstants.id("entity/minecart/energy_minecart_flux_core");
 
   private static final float PIXEL_OFFSET = 0.5F / 16F;
 
@@ -66,7 +66,7 @@ public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinec
     CORE_MODEL.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
     poseStack.pushPose();
-    collector.submitCustomGeometry(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS),
+    collector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS),
         (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(FRAME_MODEL, pose, vertexConsumer, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);

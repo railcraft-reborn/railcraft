@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;

@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.api.signal.entity.SignalReceiverEntity;

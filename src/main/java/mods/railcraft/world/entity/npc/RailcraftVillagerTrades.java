@@ -6,13 +6,14 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -185,7 +186,8 @@ public class RailcraftVillagerTrades {
       this.enchanter = DEFAULT_ENCHANTER;
     }
 
-    public MerchantOffer getOffer(Entity trader, RandomSource random) {
+    @Override
+    public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       var sellStack = prepareStack(random, sale);
       var buyStack1 = prepareStack(random, offers[0]);
       var buyStack2 = Optional.ofNullable(offers.length >= 2 ? prepareStack(random, offers[1]) : null);
@@ -226,7 +228,7 @@ public class RailcraftVillagerTrades {
 
     @Nullable
     @Override
-    public MerchantOffer getOffer(Entity trader, RandomSource random) {
+    public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       if (TRACK_KITS.isEmpty()) {
         return null;
       }
@@ -278,7 +280,7 @@ public class RailcraftVillagerTrades {
 
     @Nullable
     @Override
-    public MerchantOffer getOffer(Entity trader, RandomSource random) {
+    public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       if (current.isEmpty()) {
         return null;
       }

@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.item.ActivationBlockingItem;

@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
@@ -15,39 +15,39 @@ import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEnti
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSignalBoxRenderer
     implements BlockEntityRenderer<AbstractSignalBoxBlockEntity, AbstractSignalBoxRenderState> {
 
-  private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, RailcraftConstants.rl("entity/signal_box_aspect/off"),
-      SignalAspect.RED, RailcraftConstants.rl("entity/signal_box_aspect/red"),
-      SignalAspect.YELLOW, RailcraftConstants.rl("entity/signal_box_aspect/yellow"),
-      SignalAspect.GREEN, RailcraftConstants.rl("entity/signal_box_aspect/green"));
+  private static final Map<SignalAspect, Identifier> ASPECT_TEXTURE_LOCATIONS = Map.of(
+      SignalAspect.OFF, RailcraftConstants.id("entity/signal_box_aspect/off"),
+      SignalAspect.RED, RailcraftConstants.id("entity/signal_box_aspect/red"),
+      SignalAspect.YELLOW, RailcraftConstants.id("entity/signal_box_aspect/yellow"),
+      SignalAspect.GREEN, RailcraftConstants.id("entity/signal_box_aspect/green"));
 
-  private static final ResourceLocation SIDE_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/signal_box/side");
-  private static final ResourceLocation CONNECTED_SIDE_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/signal_box/connected_side");
-  private static final ResourceLocation BOTTOM_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/signal_box/bottom");
+  private static final Identifier SIDE_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/signal_box/side");
+  private static final Identifier CONNECTED_SIDE_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/signal_box/connected_side");
+  private static final Identifier BOTTOM_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/signal_box/bottom");
 
   private final CuboidModel model =
       new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
 
-  protected abstract ResourceLocation getTopTextureLocation();
+  protected abstract Identifier getTopTextureIdentifier();
 
   @Override
   public int getViewDistance() {
@@ -62,7 +62,7 @@ public abstract class AbstractSignalBoxRenderer
   @Override
   public void extractRenderState(AbstractSignalBoxBlockEntity blockEntity,
       AbstractSignalBoxRenderState renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.customName = Optional.ofNullable(blockEntity.getCustomName());
     renderState.level = blockEntity.getLevel();
@@ -78,7 +78,7 @@ public abstract class AbstractSignalBoxRenderer
   @Override
   public void submit(AbstractSignalBoxRenderState state, PoseStack poseStack,
       SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
-    collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, vertexConsumer) -> {
       if (state.level != null) {
         var blockEntity = state.level.getBlockEntity(state.blockPos);
         if (blockEntity == null) {
@@ -100,13 +100,13 @@ public abstract class AbstractSignalBoxRenderer
     this.model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
     this.model.set(Direction.UP, this.model.new Face()
-        .setSprite(textureAtlas.getSprite(this.getTopTextureLocation()))
+        .setSprite(textureAtlas.getSprite(this.getTopTextureIdentifier()))
         .setSize(16));
     this.model.set(Direction.DOWN, this.model.new Face()
         .setSprite(textureAtlas.getSprite(BOTTOM_TEXTURE_LOCATION))
         .setSize(16));
 
-    var renderType = RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS);
+    var renderType = RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS);
     collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
       for (var direction : Direction.Plane.HORIZONTAL) {
         var isConnected = state.directionConnections.get(direction);

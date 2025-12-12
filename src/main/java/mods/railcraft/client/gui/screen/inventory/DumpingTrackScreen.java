@@ -6,13 +6,13 @@ import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.DumpingTrackMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/dumping_track.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/dumping_track.png");
 
   private static final Component FILTERS =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);
@@ -24,7 +24,7 @@ public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 

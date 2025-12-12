@@ -1,8 +1,8 @@
 package mods.railcraft.client;
 
 import java.net.URI;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
@@ -87,8 +87,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -204,7 +204,7 @@ public class ClientManager {
   }
 
   private static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
-    event.register(RailcraftConstants.rl("locomotive_color"), LocomotiveColor.MAP_CODEC);
+    event.register(RailcraftConstants.id("locomotive_color"), LocomotiveColor.MAP_CODEC);
   }
 
   private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
@@ -271,8 +271,8 @@ public class ClientManager {
     }, RailcraftBlocks.RITUAL.get());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final ResourceLocation STILL_TEXTURE =
-          RailcraftConstants.rl("block/steam_still");
+      private static final Identifier STILL_TEXTURE =
+          RailcraftConstants.id("block/steam_still");
 
       @Override
       public int getTintColor() {
@@ -280,20 +280,20 @@ public class ClientManager {
       }
 
       @Override
-      public ResourceLocation getStillTexture() {
+      public Identifier getStillTexture() {
         return STILL_TEXTURE;
       }
 
       @Override
-      public ResourceLocation getFlowingTexture() {
+      public Identifier getFlowingTexture() {
         return STILL_TEXTURE;
       }
     }, RailcraftFluidTypes.STEAM.get());
     event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final ResourceLocation STILL_TEXTURE =
-          ResourceLocation.withDefaultNamespace("block/water_still");
-      private static final ResourceLocation FLOW_TEXTURE =
-          ResourceLocation.withDefaultNamespace("block/water_flow");
+      private static final Identifier STILL_TEXTURE =
+          Identifier.withDefaultNamespace("block/water_still");
+      private static final Identifier FLOW_TEXTURE =
+          Identifier.withDefaultNamespace("block/water_flow");
 
       @Override
       public int getTintColor() {
@@ -301,12 +301,12 @@ public class ClientManager {
       }
 
       @Override
-      public ResourceLocation getStillTexture() {
+      public Identifier getStillTexture() {
         return STILL_TEXTURE;
       }
 
       @Override
-      public ResourceLocation getFlowingTexture() {
+      public Identifier getFlowingTexture() {
         return FLOW_TEXTURE;
       }
 
@@ -329,7 +329,7 @@ public class ClientManager {
   }
 
   private static void handleSpecialRenderers(RegisterSpecialModelRendererEvent event) {
-    event.register(RailcraftConstants.rl("void_chest"), VoidChestItemRenderer.Unbaked.MAP_CODEC);
+    event.register(RailcraftConstants.id("void_chest"), VoidChestItemRenderer.Unbaked.MAP_CODEC);
   }
 
   private static void handleSpecialBlockRenderers(RegisterSpecialBlockModelRendererEvent event) {

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 public class TrackLayerMinecartRenderer extends MaintenanceMinecartRenderer {
 
   public TrackLayerMinecartRenderer(EntityRendererProvider.Context context) {
-    super(context, RailcraftConstants.rl("textures/entity/minecart/track_layer_contents.png"));
+    super(context, RailcraftConstants.id("textures/entity/minecart/track_layer_contents.png"));
   }
 
   @Override

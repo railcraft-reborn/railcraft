@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.google.common.collect.ForwardingCollection;
 import com.google.common.collect.ForwardingMap;
@@ -184,8 +184,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     return node == null || !node.isValid() || !Objects.equals(node.chargeSpec, chargeSpec);
   }
 
-  @Nullable
-  private ChargeBlock.Spec getChargeSpec(BlockState state, BlockPos pos) {
+  private ChargeBlock.@Nullable Spec getChargeSpec(BlockState state, BlockPos pos) {
     if (state.getBlock() instanceof ChargeBlock chargeBlock) {
       return chargeBlock.getChargeSpecs(state, this.level, pos).get(this.network);
     }

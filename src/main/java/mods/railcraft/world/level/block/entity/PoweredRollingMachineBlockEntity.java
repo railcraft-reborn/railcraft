@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.util.container.CombinedVanillaContainerWrapper;
 import mods.railcraft.world.inventory.PoweredRollingMachineMenu;

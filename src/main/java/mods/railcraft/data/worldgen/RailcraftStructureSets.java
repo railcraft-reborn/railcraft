@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 public class RailcraftStructureSets {
 
   private static final ResourceKey<StructureSet> GEODE = ResourceKey
-      .create(Registries.STRUCTURE_SET, RailcraftConstants.rl("geode"));
+      .create(Registries.STRUCTURE_SET, RailcraftConstants.id("geode"));
 
   public static void bootstrap(BootstrapContext<StructureSet> context) {
     var holdergetter = context.lookup(Registries.STRUCTURE);

@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
@@ -14,11 +14,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.IMinecartCollisionHandler;
@@ -87,7 +87,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
           .around(cart)
           .and(EntitySelector.ENTITY_STILL_ALIVE, ModEntitySelector.NON_MECHANICAL)
           .list(level);
-      var maxEntityCramming = serverLevel.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+      var maxEntityCramming = serverLevel.getGameRules().get(GameRules.MAX_ENTITY_CRAMMING);
       if (carts.size() >= maxEntityCramming) {
         rollingStock.primeExplosion();
       }

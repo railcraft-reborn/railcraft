@@ -7,7 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class TunnelBoreModel extends EntityModel<TunnelBoreRendererState> {
 
@@ -16,7 +16,7 @@ public class TunnelBoreModel extends EntityModel<TunnelBoreRendererState> {
   private final ModelPart furnaceIdle;
 
   public TunnelBoreModel(ModelPart root) {
-    super(root, RenderType::entityTranslucent);
+    super(root, RenderTypes::entityTranslucent);
     this.boreHead = root.getChild("boreHead");
     this.furnaceActive = root.getChild("furnaceActive");
     this.furnaceIdle = root.getChild("furnaceIdle");

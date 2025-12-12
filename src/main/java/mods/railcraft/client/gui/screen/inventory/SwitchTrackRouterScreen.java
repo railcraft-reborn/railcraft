@@ -15,14 +15,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRouterMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/routing.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
@@ -49,7 +49,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
       }
 
       @Override
-      public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
+      public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX,
           int centreY, int mouseX, int mouseY) {
         if (!this.getTooltip().isEmpty()) {
           super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
@@ -59,7 +59,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 

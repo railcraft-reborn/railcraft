@@ -24,7 +24,7 @@ public class RailcraftSpecialRecipeBuilder extends SpecialRecipeBuilder {
 
   @Override
   public void save(RecipeOutput recipeOutput, String id) {
-    var resourceKey = ResourceKey.create(Registries.RECIPE, RailcraftConstants.rl(id));
+    var resourceKey = ResourceKey.create(Registries.RECIPE, RailcraftConstants.id(id));
     recipeOutput.accept(resourceKey, this.factory.apply(CraftingBookCategory.MISC), null);
   }
 }

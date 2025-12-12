@@ -37,7 +37,7 @@ public class RailcraftModelLayers {
   }
 
   private static ModelLayerLocation register(String model, String layer) {
-    var layerLocation = new ModelLayerLocation(RailcraftConstants.rl(model), layer);
+    var layerLocation = new ModelLayerLocation(RailcraftConstants.id(model), layer);
     if (!allModels.add(layerLocation)) {
       throw new IllegalStateException("Duplicate registration for " + layerLocation);
     } else {

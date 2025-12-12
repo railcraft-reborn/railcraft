@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import mods.railcraft.RailcraftConfig;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public class RecipeUtil {
 
   public static <T> Optional<T> getPreferredElementByMod(Stream<T> list,
-      Function<T, ResourceLocation> getName) {
+      Function<T, Identifier> getName) {
     var mods = RailcraftConfig.SERVER.preferredOres.get();
     return list.min(
         Comparator.<T>comparingInt(t -> {

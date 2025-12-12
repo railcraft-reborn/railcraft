@@ -13,7 +13,7 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 class RailcraftModelTemplates {
@@ -40,20 +40,20 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate SIGNAL_BOX_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("signal_box").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("signal_box").toString())),
       Optional.empty(),
       TextureSlot.UP
   );
 
   static final TexturedModel.Provider SIGNAL_BOX_TEMPLATE_PROVIDER = TexturedModel.createDefault(
       block -> new TextureMapping()
-          .put(TextureSlot.UP, RailcraftConstants.rl("entity/signal_box/" + name(block))),
+          .put(TextureSlot.UP, RailcraftConstants.id("entity/signal_box/" + name(block))),
       SIGNAL_BOX_TEMPLATE
   );
 
   private static final ModelTemplate DUAL_SIGNAL_INVENTORY_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("dual_signal_inventory").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("dual_signal_inventory").toString())),
       Optional.of("_inventory"),
       RailcraftTextureSlot.TOP_LAMP,
       RailcraftTextureSlot.BOTTOM_LAMP
@@ -61,17 +61,17 @@ class RailcraftModelTemplates {
 
   static final TexturedModel.Provider DUAL_SIGNAL_INVENTORY_TEMPLATE_PROVIDER = TexturedModel.createDefault(
       block -> {
-        ResourceLocation topLamp;
-        ResourceLocation bottomLamp;
+        Identifier topLamp;
+        Identifier bottomLamp;
         if (block == RailcraftBlocks.DUAL_DISTANT_SIGNAL.get()) {
-          topLamp = RailcraftConstants.rl("entity/signal_aspect/red");
-          bottomLamp = RailcraftConstants.rl("entity/signal_aspect/green");
+          topLamp = RailcraftConstants.id("entity/signal_aspect/red");
+          bottomLamp = RailcraftConstants.id("entity/signal_aspect/green");
         } else if (block == RailcraftBlocks.DUAL_TOKEN_SIGNAL.get()) {
-          topLamp = RailcraftConstants.rl("entity/signal_aspect/green");
-          bottomLamp = RailcraftConstants.rl("entity/signal_aspect/yellow");
+          topLamp = RailcraftConstants.id("entity/signal_aspect/green");
+          bottomLamp = RailcraftConstants.id("entity/signal_aspect/yellow");
         } else if (block == RailcraftBlocks.DUAL_BLOCK_SIGNAL.get()) {
-          topLamp = RailcraftConstants.rl("entity/signal_aspect/green");
-          bottomLamp = RailcraftConstants.rl("entity/signal_aspect/red");
+          topLamp = RailcraftConstants.id("entity/signal_aspect/green");
+          bottomLamp = RailcraftConstants.id("entity/signal_aspect/red");
         } else {
           throw new NotImplementedException();
         }
@@ -85,7 +85,7 @@ class RailcraftModelTemplates {
 
   static final ModelTemplate FRAME_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("frame_template").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("frame_template").toString())),
       Optional.empty(),
       TextureSlot.SIDE,
       TextureSlot.TOP
@@ -93,7 +93,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate LOGBOOK_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("logbook_template").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("logbook_template").toString())),
       Optional.empty(),
       TextureSlot.SIDE,
       TextureSlot.TOP,
@@ -122,7 +122,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate CHIMNEY_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("chimney_template").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("chimney_template").toString())),
       Optional.empty(),
       TextureSlot.SIDE,
       TextureSlot.TOP,
@@ -150,7 +150,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank").toString())),
       Optional.empty(),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -170,7 +170,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_NE_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_ne").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_ne").toString())),
       Optional.of("_ne"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -181,7 +181,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_NEW_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_new").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_new").toString())),
       Optional.of("_new"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -192,7 +192,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_NSE_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_nse").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_nse").toString())),
       Optional.of("_nse"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -203,7 +203,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_NSW_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_nsw").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_nsw").toString())),
       Optional.of("_nsw"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -214,7 +214,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_NW_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_nw").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_nw").toString())),
       Optional.of("_nw"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -225,7 +225,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_SE_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_se").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_se").toString())),
       Optional.of("_se"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -236,7 +236,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_SEW_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_sew").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_sew").toString())),
       Optional.of("_sew"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -247,7 +247,7 @@ class RailcraftModelTemplates {
 
   private static final ModelTemplate STEAM_BOILER_SW_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_steam_boiler_tank_sw").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_steam_boiler_tank_sw").toString())),
       Optional.of("_sw"),
       TextureSlot.SIDE,
       TextureSlot.END
@@ -259,7 +259,7 @@ class RailcraftModelTemplates {
 
   static final ModelTemplate MIRRORED_CUBE_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_mirrored_cube").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_mirrored_cube").toString())),
       Optional.empty(),
       TextureSlot.DOWN,
       TextureSlot.UP,
@@ -272,7 +272,7 @@ class RailcraftModelTemplates {
 
   static final ModelTemplate BATTERY_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("battery").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("battery").toString())),
       Optional.empty(),
       TextureSlot.BOTTOM,
       TextureSlot.TOP,
@@ -298,7 +298,7 @@ class RailcraftModelTemplates {
 
   static final ModelTemplate FORCE_TRACK_EMITTER_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("force_track_emitter").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("force_track_emitter").toString())),
       Optional.empty(),
       TextureSlot.FRONT,
       TextureSlot.SIDE,
@@ -309,14 +309,14 @@ class RailcraftModelTemplates {
 
   static final ModelTemplate FORCE_TRACK_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_force_track").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_force_track").toString())),
       Optional.empty(),
       TextureSlot.RAIL
   );
 
   static final ModelTemplate ELEVATOR_TRACK_TEMPLATE = new ModelTemplate(
       Optional.of(ModelLocationUtils
-          .decorateBlockModelLocation(RailcraftConstants.rl("template_elevator_track").toString())),
+          .decorateBlockModelLocation(RailcraftConstants.id("template_elevator_track").toString())),
       Optional.empty(),
       TextureSlot.TEXTURE
   );
@@ -407,9 +407,9 @@ class RailcraftModelTemplates {
       return type.name().toLowerCase(Locale.ROOT) + template.suffix.orElse("");
     }
 
-    public ResourceLocation getModel(TrackType type) {
+    public Identifier getModel(TrackType type) {
       var path = "block/track_template/%s/%s".formatted(type.folderName, getName(type));
-      return RailcraftConstants.rl(path);
+      return RailcraftConstants.id(path);
     }
   }
 
@@ -430,8 +430,8 @@ class RailcraftModelTemplates {
       return suffixBuilder.toString();
     }
 
-    public ResourceLocation getModel(boolean active, boolean reverse) {
-      return RailcraftConstants.rl("block/track_template/throttle_track/" + getName(active, reverse));
+    public Identifier getModel(boolean active, boolean reverse) {
+      return RailcraftConstants.id("block/track_template/throttle_track/" + getName(active, reverse));
     }
   }
 
@@ -449,12 +449,12 @@ class RailcraftModelTemplates {
       return this.name().toLowerCase(Locale.ROOT);
     }
 
-    public ResourceLocation getModel() {
-      return RailcraftConstants.rl("block/track_template/locking_track/" + getName());
+    public Identifier getModel() {
+      return RailcraftConstants.id("block/track_template/locking_track/" + getName());
     }
   }
 
-  private static ResourceLocation key(Block block) {
+  private static Identifier key(Block block) {
     return BuiltInRegistries.BLOCK.getKey(block);
   }
 

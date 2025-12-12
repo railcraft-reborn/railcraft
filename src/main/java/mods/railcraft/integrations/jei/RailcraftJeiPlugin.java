@@ -40,7 +40,7 @@ import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -52,8 +52,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public static final int TEXT_COLOR = 0xFF808080;
 
   @Override
-  public ResourceLocation getPluginUid() {
-    return RailcraftConstants.rl("jei_plugin");
+  public Identifier getPluginUid() {
+    return RailcraftConstants.id("jei_plugin");
   }
 
   @Override

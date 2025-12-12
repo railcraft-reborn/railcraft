@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer;
 
 import java.util.Collection;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.client.util.RenderUtil;
@@ -12,10 +12,10 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -67,7 +67,7 @@ public class ShuntingAuraRenderer {
           this.renderLink(level, cartPosition, linkedCart.linkBId(), color, partialTick, renderer,
               poseStack);
 
-          bufferSource.endBatch(RenderType.lines());
+          bufferSource.endBatch(RenderTypes.lines());
         }
         poseStack.popPose();
       }

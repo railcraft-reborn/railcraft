@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;

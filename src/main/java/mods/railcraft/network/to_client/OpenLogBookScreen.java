@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public record OpenLogBookScreen(List<List<String>> pages) implements CustomPacketPayload {
 
   public static final Type<OpenLogBookScreen> TYPE =
-      new Type<>(RailcraftConstants.rl("open_log_book"));
+      new Type<>(RailcraftConstants.id("open_log_book"));
 
   public static final StreamCodec<FriendlyByteBuf, OpenLogBookScreen> STREAM_CODEC =
       StreamCodec.composite(

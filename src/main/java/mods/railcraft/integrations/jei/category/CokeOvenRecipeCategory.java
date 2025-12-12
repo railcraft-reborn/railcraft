@@ -20,7 +20,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 
@@ -29,8 +29,8 @@ public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<
   private static final int WIDTH = 127;
   private static final int HEIGHT = 49;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/coke_oven.png");
 
   private final IDrawable tankBackground, tankOverlay, flame, arrow;
 

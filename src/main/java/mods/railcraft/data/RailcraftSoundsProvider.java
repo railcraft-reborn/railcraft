@@ -17,32 +17,32 @@ public class RailcraftSoundsProvider extends SoundDefinitionsProvider {
     this.add(RailcraftSoundEvents.STEAM_WHISTLE.get(),
         definition()
             .with(
-                sound(RailcraftConstants.rl("locomotive/steam/whistle1")),
-                sound(RailcraftConstants.rl("locomotive/steam/whistle2")),
-                sound(RailcraftConstants.rl("locomotive/steam/whistle3")))
+                sound(RailcraftConstants.id("locomotive/steam/whistle1")),
+                sound(RailcraftConstants.id("locomotive/steam/whistle2")),
+                sound(RailcraftConstants.id("locomotive/steam/whistle3")))
             .subtitle(Translations.Subtitle.STEAM_WHISTLE));
     this.add(RailcraftSoundEvents.ELECTRIC_WHISTLE.get(),
         definition()
             .with(
-                sound(RailcraftConstants.rl("locomotive/electric/whistle1")),
-                sound(RailcraftConstants.rl("locomotive/electric/whistle2")),
-                sound(RailcraftConstants.rl("locomotive/electric/whistle3")))
+                sound(RailcraftConstants.id("locomotive/electric/whistle1")),
+                sound(RailcraftConstants.id("locomotive/electric/whistle2")),
+                sound(RailcraftConstants.id("locomotive/electric/whistle3")))
             .subtitle(Translations.Subtitle.ELECTRIC_WHISTLE));
     this.add(RailcraftSoundEvents.STEAM_BURST.get(),
         definition()
-            .with(sound(RailcraftConstants.rl("machine/steam_burst")))
+            .with(sound(RailcraftConstants.id("machine/steam_burst")))
             .subtitle(Translations.Subtitle.STEAM_BURST));
     this.add(RailcraftSoundEvents.STEAM_HISS.get(),
         definition()
-            .with(sound(RailcraftConstants.rl("machine/steam_hiss")))
+            .with(sound(RailcraftConstants.id("machine/steam_hiss")))
             .subtitle(Translations.Subtitle.STEAM_HISS));
     this.add(RailcraftSoundEvents.MACHINE_ZAP.get(),
         definition()
             .with(
-                sound(RailcraftConstants.rl("machine/zap1")),
-                sound(RailcraftConstants.rl("machine/zap2")),
-                sound(RailcraftConstants.rl("machine/zap3")),
-                sound(RailcraftConstants.rl("machine/zap4")))
+                sound(RailcraftConstants.id("machine/zap1")),
+                sound(RailcraftConstants.id("machine/zap2")),
+                sound(RailcraftConstants.id("machine/zap3")),
+                sound(RailcraftConstants.id("machine/zap4")))
             .subtitle(Translations.Subtitle.MACHINE_ZAP));
   }
 }

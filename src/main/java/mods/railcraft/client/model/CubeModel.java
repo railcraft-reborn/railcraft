@@ -6,12 +6,12 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 
 public class CubeModel<S> extends SimpleModel<S> {
 
-  public CubeModel(Function<ResourceLocation, RenderType> renderTypeFactory, ModelPart root) {
+  public CubeModel(Function<Identifier, RenderType> renderTypeFactory, ModelPart root) {
     super(renderTypeFactory, root);
   }
 

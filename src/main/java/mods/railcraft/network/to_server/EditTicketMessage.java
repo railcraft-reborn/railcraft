@@ -15,7 +15,7 @@ public record EditTicketMessage(
     InteractionHand hand, String dest) implements CustomPacketPayload {
 
   public static final Type<EditTicketMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("edit_ticket"));
+      new Type<>(RailcraftConstants.id("edit_ticket"));
 
   public static final StreamCodec<FriendlyByteBuf, EditTicketMessage> STREAM_CODEC =
       StreamCodec.composite(

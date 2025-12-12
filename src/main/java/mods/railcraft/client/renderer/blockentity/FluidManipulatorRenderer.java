@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.renderer.blockentity.state.FluidManipulatorRenderState;
@@ -17,21 +17,21 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEntity,
     S extends FluidManipulatorRenderState> implements BlockEntityRenderer<T, S> {
 
-  public static final ResourceLocation INTERIOR_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/fluid_manipulator/interior");
+  public static final Identifier INTERIOR_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/fluid_manipulator/interior");
 
   private static final CuboidModel interiorModel =
       new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
 
   @Override
   public void extractRenderState(T blockEntity, S renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.tank = blockEntity.getTankManager().get(0);
   }

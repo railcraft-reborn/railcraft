@@ -5,5 +5,5 @@ import net.minecraft.client.KeyMapping;
 
 public final class RailcraftKeyMappingCategory {
   public static final KeyMapping.Category DEFAULT =
-      KeyMapping.Category.register(RailcraftConstants.rl("default"));
+      KeyMapping.Category.register(RailcraftConstants.id("default"));
 }

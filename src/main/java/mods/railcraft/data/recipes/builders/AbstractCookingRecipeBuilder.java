@@ -2,7 +2,7 @@ package mods.railcraft.data.recipes.builders;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.world.item.Item;

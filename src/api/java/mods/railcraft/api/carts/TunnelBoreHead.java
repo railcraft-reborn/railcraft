@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.carts;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * This interface it used to define an item that can be used as a bore head for the Tunnel Bore.
@@ -18,5 +18,5 @@ public interface TunnelBoreHead {
    *
    * @return The texture file path
    */
-  ResourceLocation getTextureLocation();
+  Identifier getTextureLocation();
 }

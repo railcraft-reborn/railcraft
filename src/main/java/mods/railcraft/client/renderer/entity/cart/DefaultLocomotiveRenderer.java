@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
 public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive, LocomotiveRenderState> {
@@ -18,22 +18,22 @@ public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locom
   protected final String modelTag;
   private final EntityModel<LocomotiveRenderState> model;
   private final EntityModel<LocomotiveRenderState> snowLayer;
-  private final ResourceLocation[] textures;
+  private final Identifier[] textures;
 
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<LocomotiveRenderState> model,
       EntityModel<LocomotiveRenderState> snowLayer) {
-    this(context, modelTag, model, snowLayer, new ResourceLocation[] {
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/primary.png"),
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/secondary.png"),
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/nocolor.png"),
-        RailcraftConstants.rl("textures/entity/locomotive/" + modelTag + "/snow.png")
+    this(context, modelTag, model, snowLayer, new Identifier[] {
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/primary.png"),
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/secondary.png"),
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/nocolor.png"),
+        RailcraftConstants.id("textures/entity/locomotive/" + modelTag + "/snow.png")
     });
   }
 
   public DefaultLocomotiveRenderer(EntityRendererProvider.Context context, String modelTag,
       EntityModel<LocomotiveRenderState> model,
-      EntityModel<LocomotiveRenderState> snowLayer, ResourceLocation[] textures) {
+      EntityModel<LocomotiveRenderState> snowLayer, Identifier[] textures) {
     super(context);
     this.modelTag = modelTag;
     this.model = model;

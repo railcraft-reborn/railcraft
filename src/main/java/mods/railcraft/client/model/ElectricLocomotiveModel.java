@@ -9,12 +9,12 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class ElectricLocomotiveModel extends EntityModel<LocomotiveRenderState> {
 
   public ElectricLocomotiveModel(ModelPart root) {
-    super(root, RenderType::entityTranslucent);
+    super(root, RenderTypes::entityTranslucent);
   }
 
   public static LayerDefinition createBodyLayer(CubeDeformation deformation) {

@@ -2,7 +2,7 @@ package mods.railcraft.client.renderer.blockentity;
 
 import java.util.Map;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
@@ -14,33 +14,33 @@ import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity,
     S extends AbstractSignalRenderState> implements BlockEntityRenderer<T, S> {
 
-  private static final Map<SignalAspect, ResourceLocation> ASPECT_TEXTURE_LOCATIONS = Map.of(
-      SignalAspect.OFF, RailcraftConstants.rl("entity/signal_aspect/off"),
-      SignalAspect.RED, RailcraftConstants.rl("entity/signal_aspect/red"),
-      SignalAspect.YELLOW, RailcraftConstants.rl("entity/signal_aspect/yellow"),
-      SignalAspect.GREEN, RailcraftConstants.rl("entity/signal_aspect/green"));
+  private static final Map<SignalAspect, Identifier> ASPECT_TEXTURE_LOCATIONS = Map.of(
+      SignalAspect.OFF, RailcraftConstants.id("entity/signal_aspect/off"),
+      SignalAspect.RED, RailcraftConstants.id("entity/signal_aspect/red"),
+      SignalAspect.YELLOW, RailcraftConstants.id("entity/signal_aspect/yellow"),
+      SignalAspect.GREEN, RailcraftConstants.id("entity/signal_aspect/green"));
 
   private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
 
   @Override
   public void extractRenderState(T blockEntity, S renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.customName = Optional.ofNullable(blockEntity.getCustomName());
     renderState.level = blockEntity.getLevel();
@@ -50,7 +50,7 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
   public void submit(S state, PoseStack poseStack, SubmitNodeCollector collector,
       CameraRenderState cameraState) {
 
-    collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, vertexConsumer) -> {
       if (state.level != null) {
         var blockEntity = state.level.getBlockEntity(state.blockPos);
         if (blockEntity == null) {
@@ -82,7 +82,8 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
             .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
             .setSize(16));
 
-    collector.submitCustomGeometry(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS),
+    collector.submitCustomGeometry(poseStack,
+        RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS),
         (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(this.signalAspectModel, pose, vertexConsumer,
           0xFFFFFFFF, FaceDisplay.FRONT, false);

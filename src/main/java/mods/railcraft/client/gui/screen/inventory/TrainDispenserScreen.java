@@ -6,13 +6,13 @@ import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.world.inventory.TrainDispenserMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TrainDispenserScreen extends RailcraftMenuScreen<TrainDispenserMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/train_dispenser.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/train_dispenser.png");
 
   private final static Component PATTERN =
       Component.translatable(Translations.Screen.PATTERN);
@@ -35,7 +35,7 @@ public class TrainDispenserScreen extends RailcraftMenuScreen<TrainDispenserMenu
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

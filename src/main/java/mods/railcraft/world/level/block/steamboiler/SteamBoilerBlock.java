@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.steamboiler;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.MultiblockBlock;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import net.minecraft.core.BlockPos;

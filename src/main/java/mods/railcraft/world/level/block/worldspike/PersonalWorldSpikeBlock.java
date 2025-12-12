@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.worldspike;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.worldspike.PersonalWorldSpikeBlockEntity;

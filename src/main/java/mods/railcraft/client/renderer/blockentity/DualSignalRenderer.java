@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.renderer.blockentity.state.DualSignalRenderState;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
@@ -22,7 +22,7 @@ public final class DualSignalRenderer<T extends AbstractSignalBlockEntity & Dual
   @Override
   public void extractRenderState(T blockEntity, DualSignalRenderState renderState,
       float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.direction =
         blockEntity.getBlockState().getValue(SignalBlock.FACING);

@@ -1524,7 +1524,7 @@ public class RailcraftItems {
   public static <I extends BlockItem> DeferredItem<I> blockItem(
       DeferredBlock<? extends Block> block,
       BiFunction<? super Block, ? super Item.Properties, ? extends I> factory) {
-    var name = block.unwrapKey().orElseThrow().location().getPath();
+    var name = block.unwrapKey().orElseThrow().identifier().getPath();
     return deferredRegister.registerItem(name,
         p -> factory.apply(block.value(), p.useBlockDescriptionPrefix()));
   }

@@ -20,7 +20,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,8 +28,8 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class RoutingTableBookScreen extends Screen {
 
-  static final ResourceLocation BOOK_LOCATION =
-      RailcraftConstants.rl("textures/gui/item/routing_table_book.png");
+  static final Identifier BOOK_LOCATION =
+      RailcraftConstants.id("textures/gui/item/routing_table_book.png");
   static final int TEXT_WIDTH = 220;
   static final int TEXT_HEIGHT = 128;
   static final int IMAGE_WIDTH = 256;

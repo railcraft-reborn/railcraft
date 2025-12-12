@@ -1,7 +1,6 @@
 package mods.railcraft.client.model;
 
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.MinecartModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -13,7 +12,8 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.Mth;
 
 /**
- * Copy of {@link MinecartModel} that accepts a {@link CubeDeformation}.
+ * Copy of {@link net.minecraft.client.model.object.cart.MinecartModel MinecartModel} accepts a
+ * {@link CubeDeformation}.
  *
  * @author Sm0keySa1m0n
  *

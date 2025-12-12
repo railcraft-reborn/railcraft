@@ -1,7 +1,7 @@
 package mods.railcraft.client.renderer.blockentity.state;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;

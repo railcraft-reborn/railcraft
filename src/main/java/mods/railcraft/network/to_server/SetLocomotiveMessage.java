@@ -15,7 +15,7 @@ public record SetLocomotiveMessage(
     boolean reverse) implements CustomPacketPayload {
 
   public static final Type<SetLocomotiveMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_locomotive"));
+      new Type<>(RailcraftConstants.id("set_locomotive"));
 
   public static final StreamCodec<FriendlyByteBuf, SetLocomotiveMessage> STREAM_CODEC =
       StreamCodec.composite(

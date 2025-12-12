@@ -10,6 +10,7 @@ public final class FuelUtil {
   private FuelUtil() {
   }
 
+  @SuppressWarnings("deprecation")
   public static float getFuelValue(FluidResource fluidResource) {
     var fluidHeat = fluidResource.getFluid().builtInRegistryHolder().getData(RailcraftDataMaps.FLUID_HEAT);
     if (fluidHeat == null) {

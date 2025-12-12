@@ -6,13 +6,13 @@ import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.world.inventory.detector.LocomotiveDetectorMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class LocomotiveDetectorScreen extends RailcraftMenuScreen<LocomotiveDetectorMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/double_slot.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/double_slot.png");
 
   public LocomotiveDetectorScreen(LocomotiveDetectorMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
@@ -21,7 +21,7 @@ public class LocomotiveDetectorScreen extends RailcraftMenuScreen<LocomotiveDete
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 

@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import mods.railcraft.client.renderer.blockentity.state.RitualBlockRenderState;
@@ -34,7 +34,7 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
   @Override
   public void extractRenderState(RitualBlockEntity blockEntity,
       RitualBlockRenderState renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
 
     renderState.yOffset = blockEntity.getYOffset(partialTick);

@@ -7,13 +7,13 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
+  private static final Identifier WIDGETS_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/coke_oven.png");
 
   public CokeOvenScreen(CokeOvenMenu menu, Inventory inventory, Component title) {
     super(menu, inventory, title);
@@ -41,7 +41,7 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE;
   }
 }

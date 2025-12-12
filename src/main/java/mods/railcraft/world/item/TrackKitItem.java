@@ -12,7 +12,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class TrackKitItem extends Item {
 
-  private final Map<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks;
+  private final Map<Identifier, Supplier<? extends BaseRailBlock>> outfittedBlocks;
   private final boolean allowedOnSlopes;
 
   public TrackKitItem(Properties properties) {
@@ -100,7 +100,7 @@ public class TrackKitItem extends Item {
 
   public static class Properties extends Item.Properties {
 
-    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks =
+    private final ImmutableMap.Builder<Identifier, Supplier<? extends BaseRailBlock>> outfittedBlocks =
         ImmutableMap.builder();
     private boolean allowedOnSlopes;
 
@@ -110,7 +110,7 @@ public class TrackKitItem extends Item {
       return this.addOutfittedBlock(trackType.getId(), block);
     }
 
-    public Properties addOutfittedBlock(ResourceLocation trackTypeId,
+    public Properties addOutfittedBlock(Identifier trackTypeId,
         Supplier<? extends BaseRailBlock> block) {
       this.outfittedBlocks.put(trackTypeId, block);
       return this;

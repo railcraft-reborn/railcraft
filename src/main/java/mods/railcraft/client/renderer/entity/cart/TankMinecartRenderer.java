@@ -12,19 +12,19 @@ import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 
 public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart, TankMinecartRendererState> {
 
-  private static final ResourceLocation TANK_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/entity/minecart/tank.png");
+  private static final Identifier TANK_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/entity/minecart/tank.png");
 
   private final LowSidesMinecartModel<TankMinecartRendererState> bodyModel;
   private final LowSidesMinecartModel<TankMinecartRendererState> snowModel;
@@ -37,7 +37,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART));
     this.snowModel = new LowSidesMinecartModel<>(
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART_SNOW));
-    this.tankModel = new CubeModel<>(RenderType::entityTranslucent,
+    this.tankModel = new CubeModel<>(RenderTypes::entityTranslucent,
         context.bakeLayer(RailcraftModelLayers.CUBE));
     this.itemModelResolver = context.getItemModelResolver();
   }

@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.collect.Lists;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -19,13 +19,13 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class LogBookScreen extends Screen {
 
   private static final int TEXT_WIDTH = 220;
-  private static final ResourceLocation BOOK_LOCATION =
-      RailcraftConstants.rl("textures/gui/block/logbook.png");
+  private static final Identifier BOOK_LOCATION =
+      RailcraftConstants.id("textures/gui/block/logbook.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 181;
   private final List<String> pages = Lists.newArrayList();

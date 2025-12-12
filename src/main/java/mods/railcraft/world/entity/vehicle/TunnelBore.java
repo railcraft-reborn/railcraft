@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
@@ -47,7 +47,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -55,6 +54,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -575,7 +575,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
                   // Break other blocks first
                   LevelUtil.playerRemoveBlock(serverLevel, searchPos.immutable(),
                       MinecartUtil.getFakePlayer(this),
-                      serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
+                      serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)
                           && !RailcraftConfig.SERVER.boreDestroysBlocks.get());
                 }
               }
@@ -722,7 +722,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
 
     if (!RailcraftConfig.SERVER.boreDestroysBlocks.get()
-        && fakePlayer.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        && fakePlayer.level().getGameRules().get(GameRules.BLOCK_DROPS)) {
       targetState
           .getDrops(new LootParams.Builder((ServerLevel) this.level())
               .withParameter(LootContextParams.TOOL, head)

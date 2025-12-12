@@ -14,19 +14,19 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public abstract class MaintenanceMinecartRenderer
     extends ContentsMinecartRenderer<MaintenanceMinecart, MaintenanceMinecartRendererState> {
 
-  private static final ResourceLocation LAMP_ON_TEX =
-      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_on.png");
-  private static final ResourceLocation LAMP_OFF_TEX =
-      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_off.png");
-  private static final ResourceLocation LAMP_DISABLED_TEX =
-      RailcraftConstants.rl("textures/entity/minecart/maintenance_lamp_disabled.png");
+  private static final Identifier LAMP_ON_TEX =
+      RailcraftConstants.id("textures/entity/minecart/maintenance_lamp_on.png");
+  private static final Identifier LAMP_OFF_TEX =
+      RailcraftConstants.id("textures/entity/minecart/maintenance_lamp_off.png");
+  private static final Identifier LAMP_DISABLED_TEX =
+      RailcraftConstants.id("textures/entity/minecart/maintenance_lamp_disabled.png");
 
-  private final ResourceLocation maintenanceTextureLocation;
+  private final Identifier maintenanceTextureLocation;
 
   private final DeformableMinecartModel<MaintenanceMinecartRendererState> bodyModel;
   private final DeformableMinecartModel<MaintenanceMinecartRendererState> snowModel;
@@ -35,7 +35,7 @@ public abstract class MaintenanceMinecartRenderer
   private final MaintenanceLampModel<MaintenanceMinecartRendererState> lampModel;
 
   public MaintenanceMinecartRenderer(EntityRendererProvider.Context context,
-      ResourceLocation maintenanceTextureLocation) {
+      Identifier maintenanceTextureLocation) {
     super(context);
 
     this.maintenanceTextureLocation = maintenanceTextureLocation;
@@ -69,7 +69,7 @@ public abstract class MaintenanceMinecartRenderer
     //poseStack.translate(-0.5F, -0.5F, -0.5F);
 
     boolean blinking = renderState.isBlinking;
-    ResourceLocation textureLocation;
+    Identifier textureLocation;
     if (blinking) {
       textureLocation = LAMP_ON_TEX;
     } else if (renderState.mode == MaintenanceMinecart.Mode.OFF) {

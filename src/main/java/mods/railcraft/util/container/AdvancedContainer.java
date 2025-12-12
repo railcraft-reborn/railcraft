@@ -2,7 +2,7 @@ package mods.railcraft.util.container;
 
 import java.util.List;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;

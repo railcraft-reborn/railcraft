@@ -14,15 +14,15 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
 
   private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/routing_track.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/routing_track.png");
   private final RoutingTrackBlockEntity routingBlockEntity;
   private MultiButton<LockableSwitchTrackActuatorBlockEntity.Lock> lockButton;
   private int refreshTimer;
@@ -89,7 +89,7 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 

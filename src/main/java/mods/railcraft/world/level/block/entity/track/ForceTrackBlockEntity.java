@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.entity.ForceTrackEmitterBlockEntity;

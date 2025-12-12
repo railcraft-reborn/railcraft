@@ -6,14 +6,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class IngameWindowScreen extends Screen {
 
-  public static final ResourceLocation WIDGETS_TEXTURE =
-      RailcraftConstants.rl("textures/gui/widgets.png");
-  public static final ResourceLocation LARGE_WINDOW_TEXTURE =
-      RailcraftConstants.rl("textures/gui/large_window.png");
+  public static final Identifier WIDGETS_TEXTURE =
+      RailcraftConstants.id("textures/gui/widgets.png");
+  public static final Identifier LARGE_WINDOW_TEXTURE =
+      RailcraftConstants.id("textures/gui/large_window.png");
 
   public static final int TEXT_COLOR = 0xFF404040;
   public static final int DEFAULT_WINDOW_WIDTH = 176;
@@ -22,13 +22,13 @@ public class IngameWindowScreen extends Screen {
 
   protected final int windowWidth;
   protected final int windowHeight;
-  protected final ResourceLocation backgroundTexture;
+  protected final Identifier backgroundTexture;
 
   protected IngameWindowScreen(Component title) {
     this(title, WIDGETS_TEXTURE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
   }
 
-  protected IngameWindowScreen(Component title, ResourceLocation backgroundTexture,
+  protected IngameWindowScreen(Component title, Identifier backgroundTexture,
       int windowWidth, int windowHeight) {
     super(title);
     this.windowWidth = windowWidth;

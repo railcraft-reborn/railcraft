@@ -17,7 +17,7 @@ public record SetSwitchTrackRouterMessage(
     SwitchTrackRouterBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final CustomPacketPayload.Type<SetSwitchTrackRouterMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_switch_track_router"));
+      new Type<>(RailcraftConstants.id("set_switch_track_router"));
 
   public static final StreamCodec<FriendlyByteBuf, SetSwitchTrackRouterMessage> STREAM_CODEC =
       StreamCodec.composite(

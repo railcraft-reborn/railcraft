@@ -2,7 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -23,14 +23,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
-import net.minecraft.world.entity.vehicle.OldMinecartBehavior;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
+import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -137,7 +137,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public void destroy(ServerLevel level, DamageSource source) {
     this.kill(level);
-    if (level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
       var itemstack = this.getPickResult().copy();
       if (this.hasCustomName()) {
         itemstack.set(DataComponents.CUSTOM_NAME, this.getCustomName());

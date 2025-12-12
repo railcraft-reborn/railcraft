@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import mods.railcraft.util.ValidateSlots;
 import mods.railcraft.util.container.StackFilter;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
-import net.minecraft.world.entity.vehicle.MinecartChest;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
+import net.minecraft.world.entity.vehicle.minecart.MinecartChest;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 

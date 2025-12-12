@@ -1,6 +1,6 @@
 package mods.railcraft.client.renderer.blockentity;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.renderer.blockentity.state.FluidLoaderRenderState;
@@ -9,25 +9,25 @@ import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity, FluidLoaderRenderState> {
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
-  private static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/fluid_loader/pipe_side");
-  private static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/fluid_loader/pipe_end");
+  private static final Identifier PIPE_SIDE_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/fluid_loader/pipe_side");
+  private static final Identifier PIPE_END_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/fluid_loader/pipe_end");
   private static final CuboidModel PIPE_MODEL = new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
       1 - PIPE_OFFSET, RenderUtil.PIXEL, 1 - PIPE_OFFSET);
 
@@ -39,7 +39,7 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
   @Override
   public void extractRenderState(FluidLoaderBlockEntity blockEntity,
       FluidLoaderRenderState renderState, float partialTick, Vec3 cameraPos,
-      @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
     super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
     renderState.pipeLength = blockEntity.getPipeLength(partialTick);
   }
@@ -67,7 +67,8 @@ public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlo
 
     poseStack.pushPose();
     PIPE_MODEL.setMinY(RenderUtil.PIXEL - state.pipeLength);
-    collector.submitCustomGeometry(poseStack, RenderType.entityCutout(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack,
+        RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(PIPE_MODEL, pose, vertexConsumer, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
     });

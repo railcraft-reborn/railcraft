@@ -1,7 +1,7 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.ChatFormatting;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 
 public class FirestoneOreBlockItem extends BlockItem {
 
@@ -25,7 +25,7 @@ public class FirestoneOreBlockItem extends BlockItem {
   @Override
   public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity,
       @Nullable EquipmentSlot slot) {
-    if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)
+    if (level.getGameRules().get(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER) != 0
         && entity instanceof Player player
         && level.getRandom().nextInt(12) % 4 == 0) {
       FirestoneItem.trySpawnFire(level, player.blockPosition(), stack, player);

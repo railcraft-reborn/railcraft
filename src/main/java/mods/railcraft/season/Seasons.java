@@ -2,7 +2,7 @@ package mods.railcraft.season;
 
 import java.time.LocalDate;
 import java.time.Month;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.client.renderer.entity.state.RailcraftMinecartRenderState;
 import mods.railcraft.world.entity.vehicle.SeasonalCart;
@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.state.MinecartRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 
 public final class Seasons {

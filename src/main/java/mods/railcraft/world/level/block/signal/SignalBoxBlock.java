@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;

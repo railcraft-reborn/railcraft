@@ -1,7 +1,7 @@
 package mods.railcraft.tags;
 
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
@@ -160,11 +160,11 @@ public class RailcraftTags {
     public static final TagKey<Item> ARMORS_BOOTS_STEEL = commonTag("armors/boots/steel");
 
     private static TagKey<Item> tag(String name) {
-      return ItemTags.create(RailcraftConstants.rl(name));
+      return ItemTags.create(RailcraftConstants.id(name));
     }
 
     public static TagKey<Item> commonTag(String name) {
-      return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return ItemTags.create(Identifier.fromNamespaceAndPath("c", name));
     }
 
     public static TagKey<Item> oresTag(String name) {
@@ -249,11 +249,11 @@ public class RailcraftTags {
     public static final TagKey<Block> SALTPETER_ORE = commonTag("ores/saltpeter");
 
     private static TagKey<Block> tag(String name) {
-      return BlockTags.create(RailcraftConstants.rl(name));
+      return BlockTags.create(RailcraftConstants.id(name));
     }
 
     private static TagKey<Block> commonTag(String name) {
-      return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return BlockTags.create(Identifier.fromNamespaceAndPath("c", name));
     }
   }
 
@@ -263,7 +263,7 @@ public class RailcraftTags {
     public static final TagKey<Fluid> CREOSOTE = commonTag("creosote");
 
     private static TagKey<Fluid> commonTag(String name) {
-      return FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return FluidTags.create(Identifier.fromNamespaceAndPath("c", name));
     }
   }
 }

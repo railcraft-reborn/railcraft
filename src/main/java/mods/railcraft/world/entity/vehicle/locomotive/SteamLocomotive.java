@@ -1,6 +1,6 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.util.container.ContainerMapper;

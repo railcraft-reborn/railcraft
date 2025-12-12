@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.base.Predicates;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;

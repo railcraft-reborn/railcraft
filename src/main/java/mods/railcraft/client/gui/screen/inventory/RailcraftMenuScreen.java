@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPosition
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
@@ -72,7 +72,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
     this.renderTooltip(guiGraphics, mouseX, mouseY);
   }
 
-  public abstract ResourceLocation getWidgetsTexture();
+  public abstract Identifier getWidgetsTexture();
 
   @Override
   protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {

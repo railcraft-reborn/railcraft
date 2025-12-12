@@ -10,8 +10,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -80,11 +80,11 @@ public class RollingRecipeBuilder {
     this.save(recipeOutput, BuiltInRegistries.ITEM.getKey(this.result));
   }
 
-  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
-    var customResourceLocation = resourceLocation.withPrefix("rolling/");
+  public void save(RecipeOutput recipeOutput, Identifier identifier) {
+    var customIdentifier = identifier.withPrefix("rolling/");
     var pattern = ShapedRecipePattern.of(this.key, this.rows);
     var recipe = new RollingRecipe(pattern, new ItemStack(this.result, this.count),
         this.processTime);
-    recipeOutput.accept(ResourceKey.create(Registries.RECIPE, customResourceLocation), recipe, null);
+    recipeOutput.accept(ResourceKey.create(Registries.RECIPE, customIdentifier), recipe, null);
   }
 }
