@@ -1,6 +1,5 @@
 package mods.railcraft;
 
-import java.util.Objects;
 import java.util.Optional;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
@@ -281,7 +280,7 @@ public class Railcraft {
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
 
     event.registerItem(Capabilities.Fluid.ITEM,
-        (stack, ctx) -> new BucketResourceHandler(Objects.requireNonNull(ctx)), RailcraftItems.CREOSOTE_BUCKET);
+        (stack, ctx) -> new BucketResourceHandler(ctx), RailcraftItems.CREOSOTE_BUCKET);
     event.registerBlockEntity(Capabilities.Item.BLOCK,
         RailcraftBlockEntityTypes.VOID_CHEST.get(), VoidChestBlockEntity::getItemCap);
 
