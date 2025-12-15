@@ -18,7 +18,7 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
 
   private final Collection<WaterCollectionModule> modules;
 
-  private List<Component> tooltip;
+  private List<Component> tooltip = new ArrayList<>();
 
   public WaterCollectionGaugeWidget(Collection<WaterCollectionModule> modules, StandardTank tank,
       int x, int y, int u, int v, int w, int h) {
@@ -52,10 +52,9 @@ public class WaterCollectionGaugeWidget extends FluidGaugeWidget {
       precipitationMultiplier /= count;
     }
 
-    this.tooltip = new ArrayList<>();
-
     int baseRate = RailcraftConfig.SERVER.waterCollectionRate.get();
 
+    this.tooltip.clear();
     this.tooltip.addAll(this.tank.getTooltip());
     this.tooltip.add(Component.empty());
     this.tooltip.add(Component.translatable(Translations.Screen.WATER_TANK_SEE_SKY,
