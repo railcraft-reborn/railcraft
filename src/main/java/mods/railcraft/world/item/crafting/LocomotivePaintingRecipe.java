@@ -1,20 +1,42 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 import mods.railcraft.world.item.LocomotiveItem;
+import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.component.LocomotiveColorComponent;
+import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class LocomotivePaintingRecipe extends CustomRecipe {
 
+  @Nullable
+  private PlacementInfo placementInfo;
+  protected final NonNullList<Optional<Ingredient>> ingredients;
+
   public LocomotivePaintingRecipe(CraftingBookCategory category) {
     super(category);
+    this.ingredients = NonNullList.withSize(9, Optional.empty());
+    this.ingredients.set(1, Optional.of(Ingredient.of(Items.RED_DYE)));
+    this.ingredients.set(4, Optional.of(Ingredient.of(RailcraftItems.STEAM_LOCOMOTIVE.get())));
+    this.ingredients.set(7, Optional.of(Ingredient.of(Items.BLUE_DYE)));
   }
 
   private ItemStack getItemStackInRow(CraftingInput craftingInput, int row) {
@@ -71,5 +93,33 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
   @Override
   public RecipeSerializer<LocomotivePaintingRecipe> getSerializer() {
     return RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get();
+  }
+
+  @Override
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      this.placementInfo = PlacementInfo.createFromOptionals(this.ingredients);
+    }
+    return this.placementInfo;
+  }
+
+  @Override
+  public List<RecipeDisplay> display() {
+    var result = RailcraftItems.STEAM_LOCOMOTIVE.toStack();
+    result.set(RailcraftDataComponents.LOCOMOTIVE_COLOR.get(),
+        new LocomotiveColorComponent(DyeColor.RED, DyeColor.BLUE));
+
+    return List.of(
+        new ShapedCraftingRecipeDisplay(
+            3,
+            3,
+            this.ingredients.stream()
+                .map(i -> i.map(Ingredient::display)
+                    .orElse(SlotDisplay.Empty.INSTANCE))
+                .toList(),
+            new SlotDisplay.ItemStackSlotDisplay(result),
+            new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
+        )
+    );
   }
 }

@@ -1,5 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -11,6 +12,9 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public abstract class CartDisassemblyRecipe extends CustomRecipe {
@@ -49,6 +53,17 @@ public abstract class CartDisassemblyRecipe extends CustomRecipe {
       this.placementInfo = PlacementInfo.create(Ingredient.of(this.ingredient));
     }
     return this.placementInfo;
+  }
+
+  @Override
+  public List<RecipeDisplay> display() {
+    return List.of(
+        new ShapelessCraftingRecipeDisplay(
+            List.of(Ingredient.of(this.ingredient).display()),
+            new SlotDisplay.ItemStackSlotDisplay(new ItemStack(this.result)),
+            new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
+        )
+    );
   }
 
   @Override
