@@ -89,7 +89,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
   private final ContainerMapper fuelContainer =
-      ContainerMapper.make(this, 1, 6).addFilters(StackFilter.FUEL);
+      ContainerMapper.make(this, 1, 6);
   private final ContainerMapper ballastContainer =
       ContainerMapper.make(this, 7, 9).addFilters(StackFilter.BALLAST);
   private final ContainerMapper trackContainer =
@@ -130,6 +130,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
         new TunnelBorePart(this, 1.6F, 1.4F, -2.2F), // tail2
     };
     this.constructed = true;
+    this.fuelContainer.addFilters(StackFilter.isFuel(level));
     this.containers = List.of(this.fuelContainer, this.ballastContainer, this.trackContainer);
 
     // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
@@ -687,14 +688,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
    * @return true if the target block is clear
    */
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
-    var targetState = this.level().getBlockState(targetPos);
+    var serverLevel = (ServerLevel) this.level();
+    var targetState = serverLevel.getBlockState(targetPos);
     if (targetState.isAir()) {
       return true;
     }
 
     if (BaseRailBlock.isRail(targetState)) {
-      var targetShape =
-          TrackUtil.getTrackDirection(this.level(), targetPos, targetState, this);
+      var targetShape = TrackUtil.getTrackDirection(serverLevel, targetPos, targetState, this);
       if (preferredShape == targetShape) {
         return true;
       }
@@ -714,7 +715,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     ServerPlayer fakePlayer = MinecartUtil.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
-    var breakEvent = new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
+    var breakEvent = new BlockEvent.BreakEvent(serverLevel, targetPos, targetState, fakePlayer);
     NeoForge.EVENT_BUS.post(breakEvent);
 
     if (breakEvent.isCanceled()) {
@@ -722,14 +723,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
 
     if (!RailcraftConfig.SERVER.boreDestroysBlocks.get()
-        && fakePlayer.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
       targetState
-          .getDrops(new LootParams.Builder((ServerLevel) this.level())
+          .getDrops(new LootParams.Builder(serverLevel)
               .withParameter(LootContextParams.TOOL, head)
               .withParameter(LootContextParams.ATTACKING_ENTITY, this)
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
-            if (StackFilter.FUEL.test(stack)) {
+            if (StackFilter.isFuel(serverLevel).test(stack)) {
               stack = this.fuelContainer.insert(stack);
             }
 
