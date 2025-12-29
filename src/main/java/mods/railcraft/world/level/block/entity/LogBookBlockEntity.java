@@ -60,6 +60,9 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
     }
   }
 
+  /**
+   * Save the pages to the tag
+   */
   public static CompoundTag convertLogToTag(Multimap<LocalDate, String> log) {
     var tag = new CompoundTag();
     var monthAgo = LocalDate.now().minusMonths(1);
@@ -84,6 +87,9 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
     return tag;
   }
 
+  /**
+   * Load the pages from the tag
+   */
   public static Multimap<LocalDate, String> convertLogFromTag(CompoundTag tag) {
     Multimap<LocalDate, String> log = HashMultimap.create();
 
@@ -100,7 +106,7 @@ public class LogBookBlockEntity extends RailcraftBlockEntity {
         var playerList = compound.getList(CompoundTagKeys.PLAYERS, Tag.TAG_COMPOUND);
         var players = new HashSet<String>();
         for (int j = 0; j < playerList.size(); j++) {
-          var playerCompound = playerList.getCompound(i);
+          var playerCompound = playerList.getCompound(j);
           players.add(playerCompound.getString("player"));
         }
         log.putAll(date, players);
