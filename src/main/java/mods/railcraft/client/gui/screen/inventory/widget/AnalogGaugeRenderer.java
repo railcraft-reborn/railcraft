@@ -25,7 +25,9 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
 
   @Override
   public List<ClientTooltipComponent> getTooltip() {
-    return this.widget.getGauge().getTooltip();
+    return this.widget.getGauge().getTooltip().stream()
+        .map(component -> ClientTooltipComponent.create(component.getVisualOrderText()))
+        .toList();
   }
 
   @Override

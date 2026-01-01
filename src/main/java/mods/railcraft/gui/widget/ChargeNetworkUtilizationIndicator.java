@@ -5,7 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.charge.ChargeNetworkImpl;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +15,7 @@ public class ChargeNetworkUtilizationIndicator implements Gauge {
   protected final ServerLevel level;
   protected final BlockPos pos;
   private float chargePercent;
-  private final List<ClientTooltipComponent> tooltip = new ArrayList<>(1);
+  private final List<Component> tooltip = new ArrayList<>(1);
 
   public ChargeNetworkUtilizationIndicator(@Nullable ServerLevel level, BlockPos pos) {
     this.level = level;
@@ -26,12 +25,11 @@ public class ChargeNetworkUtilizationIndicator implements Gauge {
   @Override
   public void refresh() {
     this.tooltip.clear();
-    this.tooltip.add(ClientTooltipComponent.create(
-        Component.literal(String.format("%.0f%%", this.chargePercent * 100.0)).getVisualOrderText()));
+    this.tooltip.add(Component.literal(String.format("%.0f%%", this.chargePercent * 100.0)));
   }
 
   @Override
-  public List<ClientTooltipComponent> getTooltip() {
+  public List<Component> getTooltip() {
     return this.tooltip;
   }
 
