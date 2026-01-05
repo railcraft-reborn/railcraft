@@ -43,10 +43,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   private static final double MOTION_MIN = 0.2D;
 
-  protected static final VoxelShape Z_SHAPE = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D);
-  protected static final VoxelShape X_SHAPE = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
-  protected static final VoxelShape Z_SHAPE_LOW = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 13.0D, 10.0D);
-  protected static final VoxelShape X_SHAPE_LOW = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 13.0D, 16.0D);
+  protected static final VoxelShape Z_SHAPE = Shapes.or(FLAT_AABB, Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D));
+  protected static final VoxelShape X_SHAPE = Shapes.or(FLAT_AABB, Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D));
+  protected static final VoxelShape X_SHAPE_LOW = Shapes.or(FLAT_AABB, Block.box(6.0D, 0.0D, 0.0D, 10.0D, 13.0D, 16.0D));
+  protected static final VoxelShape Z_SHAPE_LOW = Shapes.or(FLAT_AABB, Block.box(0.0D, 0.0D, 6.0D, 16.0D, 13.0D, 10.0D));
   protected static final VoxelShape Z_COLLISION_SHAPE =
       box(0.0D, 0.0D, 6.0D, 16.0D, 24.0D, 10.0D);
   protected static final VoxelShape X_COLLISION_SHAPE =
