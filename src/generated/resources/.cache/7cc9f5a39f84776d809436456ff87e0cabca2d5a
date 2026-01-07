@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-01T19:25:01.226838	Tags for minecraft:item mod id railcraft
+// 1.21.1	2026-01-07T02:20:43.274294428	Tags for minecraft:item mod id railcraft
 e4b5c3cfded4b9b76efeda37728f26dc89261239 data/c/tags/item/armors/boots/steel.json
 5251495abc7cf69ab447d425014c585ffd3ee618 data/c/tags/item/armors/chestplates/steel.json
 e17d210ae3b04c5e5696fab17c38c94dcb437f75 data/c/tags/item/armors/helmets/steel.json
@@ -103,11 +103,11 @@ ec96409b13e00aacfd3a6d9f397e2ed76dda5165 data/minecraft/tags/item/foot_armor.jso
 c12118bda87efc5274515a86a0a7f3b189982de6 data/minecraft/tags/item/pickaxes.json
 15360ef6012773af817ef8496de52353494b4db3 data/minecraft/tags/item/shovels.json
 05168ea5fb65c2a597f1ca271644789e1dd9aa9c data/minecraft/tags/item/swords.json
-4276d58b0cb375037387fa9b749ae6b1e09d33c9 data/railcraft/tags/item/abandoned_track.json
+564ba471e816ad98403b775ce26d5dce54d344d6 data/railcraft/tags/item/abandoned_track.json
 9b21abe5b3e3997560ef95937505d9a8112afa92 data/railcraft/tags/item/abyssal.json
 3f5ccd47db2e1f5b813e0f1e606034d2ba9b53e6 data/railcraft/tags/item/crowbar.json
 ce3776760cd245b3be24a2863b4f4ab016e5b8ff data/railcraft/tags/item/detector.json
-592e64113a8afc0a5dafcdbf62ae4c012d67b168 data/railcraft/tags/item/electric_track.json
+1da7420fa39ba9c39afbcb881dfb77e05aabe518 data/railcraft/tags/item/electric_track.json
 789fd4d8051dd37cc25a0682024927162f331bc0 data/railcraft/tags/item/enchantments.json
 18f97a8f6200b56e94e454448233f41d49541550 data/railcraft/tags/item/gear_chest_loot.json
 6f70aa0939666b437b1f94030c02681a1a80eedf data/railcraft/tags/item/high_speed_electric_track.json
@@ -116,14 +116,14 @@ c414f3475af630884a5ab7ff5389c4eadb096fc8 data/railcraft/tags/item/ingot_chest_lo
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/item/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/item/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/item/iron_tank_wall.json
-3b9872bd73d41ad2a348f2e5ab20cefddfba67b6 data/railcraft/tags/item/iron_track.json
+b165abc6c10b0a39bc78084fa43257946d40b211 data/railcraft/tags/item/iron_track.json
 29116defc8cf089cc6b3a1c93669c60463c981d7 data/railcraft/tags/item/plate_chest_loot.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/item/post.json
 1ecaf64f7b17425064c50cdd01fd826d38f37db5 data/railcraft/tags/item/quarried.json
-8464d70cee360a2e5808a1d1d1c5b90d0230a38e data/railcraft/tags/item/reinforced_track.json
+603358b9f9e60cd909835228aa255fb7eb049170 data/railcraft/tags/item/reinforced_track.json
 36dd475b78cc6cfda74baa55b8a7ba9919242524 data/railcraft/tags/item/steel_tank_gauge.json
 8bd3423ee85f552fd410fd0a24e26456019b1185 data/railcraft/tags/item/steel_tank_valve.json
 39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/item/steel_tank_wall.json
-4f443f634d9e8f3e783a576b578de32d8d9b802c data/railcraft/tags/item/strap_iron_track.json
+4aa94c50e6dfd8ffcd5876aa793e7a1262c70ef2 data/railcraft/tags/item/strap_iron_track.json
 3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/item/strengthened_glass.json
 701b4781c556d9e0eed70f3137cd5eebb22a9092 data/railcraft/tags/item/track_kit.json

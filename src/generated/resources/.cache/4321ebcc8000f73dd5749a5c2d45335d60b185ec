@@ -1,4 +1,4 @@
-// 1.21.1	2025-11-17T16:30:59.416033	Tags for minecraft:block mod id railcraft
+// 1.21.1	2026-01-07T02:20:43.270807346	Tags for minecraft:block mod id railcraft
 e36857f35c1bac4bde5a8450008b92cf82656216 data/c/tags/block/ore_rates/dense.json
 8ce5fa4b4f1c2619e124ef387b086d72f9c26f04 data/c/tags/block/ore_rates/singular.json
 135cfb50a5296d7842d36234ec1033fc2e454af4 data/c/tags/block/ores.json
@@ -21,29 +21,29 @@ e28c7fdf089f8fc76f9e5565d74f0293e412cfbc data/minecraft/tags/block/needs_iron_to
 e0dd6b3d5c00bb4625d93949af368b6cc90379c8 data/minecraft/tags/block/needs_stone_tool.json
 e1d606686d8d1ae939af83da8c931c49c2e9df5e data/minecraft/tags/block/rails.json
 9732f1964281f5d5e6f3d067e648bb4bfc5cbafb data/neoforge/tags/block/enderman_place_on_blacklist.json
-4276d58b0cb375037387fa9b749ae6b1e09d33c9 data/railcraft/tags/block/abandoned_track.json
+564ba471e816ad98403b775ce26d5dce54d344d6 data/railcraft/tags/block/abandoned_track.json
 9b21abe5b3e3997560ef95937505d9a8112afa92 data/railcraft/tags/block/abyssal.json
 5d37cf39d46349a6645d3f076a92aa2e94b9624e data/railcraft/tags/block/aspect_emitter.json
 192386fbb9d76dd115cb27c418ef2656209a93c4 data/railcraft/tags/block/aspect_receiver.json
 53a54148c37e39d19b70be13a370359fd0c3193b data/railcraft/tags/block/ballast.json
 ce3776760cd245b3be24a2863b4f4ab016e5b8ff data/railcraft/tags/block/detector.json
-592e64113a8afc0a5dafcdbf62ae4c012d67b168 data/railcraft/tags/block/electric_track.json
+1da7420fa39ba9c39afbcb881dfb77e05aabe518 data/railcraft/tags/block/electric_track.json
 6f70aa0939666b437b1f94030c02681a1a80eedf data/railcraft/tags/block/high_speed_electric_track.json
 6dc9632ad2d582c36b7dec9f486517003fb2b44e data/railcraft/tags/block/high_speed_track.json
 e428d6ae724c5108f98185295926eb14c6510c44 data/railcraft/tags/block/iron_tank_gauge.json
 ad43ddea7185867f695a872b9110aff36104b44d data/railcraft/tags/block/iron_tank_valve.json
 c84bc8091a2ddab656bbcac68ac18060ef1b9eb0 data/railcraft/tags/block/iron_tank_wall.json
-3b9872bd73d41ad2a348f2e5ab20cefddfba67b6 data/railcraft/tags/block/iron_track.json
+b165abc6c10b0a39bc78084fa43257946d40b211 data/railcraft/tags/block/iron_track.json
 77690ba158209beb37aa5436c376485258f75111 data/railcraft/tags/block/mineable/crowbar.json
 5c3ee0c8b144c2b48d062bca01cdc96427bb6c26 data/railcraft/tags/block/post.json
 1ecaf64f7b17425064c50cdd01fd826d38f37db5 data/railcraft/tags/block/quarried.json
 0295528cb5c194e5df814b65688466abcfd79833 data/railcraft/tags/block/quarried_replaceable_blocks.json
-8464d70cee360a2e5808a1d1d1c5b90d0230a38e data/railcraft/tags/block/reinforced_track.json
+603358b9f9e60cd909835228aa255fb7eb049170 data/railcraft/tags/block/reinforced_track.json
 cef2fe722cdf4386365bd961d925fa5aeb2e244e data/railcraft/tags/block/signal.json
 36dd475b78cc6cfda74baa55b8a7ba9919242524 data/railcraft/tags/block/steel_tank_gauge.json
 8bd3423ee85f552fd410fd0a24e26456019b1185 data/railcraft/tags/block/steel_tank_valve.json
 39074036a3b8c8bbad74fcad7dce1c559f82f107 data/railcraft/tags/block/steel_tank_wall.json
-4f443f634d9e8f3e783a576b578de32d8d9b802c data/railcraft/tags/block/strap_iron_track.json
+4aa94c50e6dfd8ffcd5876aa793e7a1262c70ef2 data/railcraft/tags/block/strap_iron_track.json
 3a7becb38c8d1c2314b0c3b33165fbb0a8abea1e data/railcraft/tags/block/strengthened_glass.json
 aef9e91cc72b4b67ad79db18ed826e6241996595 data/railcraft/tags/block/switch_track_actuator.json
 857a88edcb53ad2838d5471af89c751576924a82 data/railcraft/tags/block/track_undercutter_invalid_ballast.json
