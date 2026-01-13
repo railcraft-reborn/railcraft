@@ -136,7 +136,7 @@ public class RailcraftItems {
 
   public static final DeferredItem<TurbineRotorItem> TURBINE_ROTOR =
       deferredRegister.registerItem("turbine_rotor", properties ->
-          new TurbineRotorItem(properties.stacksTo(1)));
+          new TurbineRotorItem(properties.stacksTo(1).durability(30_000)));
 
   public static final DeferredItem<BlockItem> STEAM_TURBINE =
       blockItem(RailcraftBlocks.STEAM_TURBINE);
