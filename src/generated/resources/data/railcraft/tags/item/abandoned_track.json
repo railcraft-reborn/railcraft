@@ -19,6 +19,7 @@
     "railcraft:abandoned_whistle_track",
     "railcraft:abandoned_locomotive_track",
     "railcraft:abandoned_throttle_track",
-    "railcraft:abandoned_routing_track"
+    "railcraft:abandoned_routing_track",
+    "railcraft:abandoned_buffer_stop_track"
   ]
 }

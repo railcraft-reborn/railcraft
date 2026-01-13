@@ -19,6 +19,7 @@
     "railcraft:electric_whistle_track",
     "railcraft:electric_locomotive_track",
     "railcraft:electric_throttle_track",
-    "railcraft:electric_routing_track"
+    "railcraft:electric_routing_track",
+    "railcraft:electric_buffer_stop_track"
   ]
 }

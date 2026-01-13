@@ -19,6 +19,7 @@
     "railcraft:strap_iron_whistle_track",
     "railcraft:strap_iron_locomotive_track",
     "railcraft:strap_iron_throttle_track",
-    "railcraft:strap_iron_routing_track"
+    "railcraft:strap_iron_routing_track",
+    "railcraft:strap_iron_buffer_stop_track"
   ]
 }
