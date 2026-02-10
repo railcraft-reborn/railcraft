@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -37,24 +38,24 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   private static final int WATER_OUTPUT_RATE = 4;
   private static final int ENERGY_OUTPUT_RATE = 900;
 
-  private static final BlockPredicate BLOCK_PREDICATE =
-      BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
+  private static final BlockPredicate BLOCK_PREDICATE = 
+  BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
 
   private static final MultiblockPattern<Void> pattern =
-      MultiblockPattern.<Void>builder(BlockPos.ZERO)
-          .layer(List.of(
-              CharList.of('A', 'W', 'B'),
-              CharList.of('B', 'W', 'A')))
-          .layer(List.of(
-              CharList.of('C', 'X', 'D'),
-              CharList.of('D', 'X', 'C')))
-          .predicate('A', BLOCK_PREDICATE)
-          .predicate('B', BLOCK_PREDICATE)
-          .predicate('C', BLOCK_PREDICATE)
-          .predicate('D', BLOCK_PREDICATE)
-          .predicate('X', BLOCK_PREDICATE)
-          .predicate('W', BLOCK_PREDICATE)
-          .build();
+  MultiblockPattern.<Void>builder(BlockPos.ZERO)
+      .layer(List.of(
+          CharList.of('A', 'W', 'B'),
+          CharList.of('B', 'W', 'A')))
+      .layer(List.of(
+          CharList.of('C', 'X', 'D'),
+          CharList.of('D', 'X', 'C')))
+      .predicate('A', BLOCK_PREDICATE)
+      .predicate('B', BLOCK_PREDICATE)
+      .predicate('C', BLOCK_PREDICATE)
+      .predicate('D', BLOCK_PREDICATE)
+      .predicate('X', BLOCK_PREDICATE)
+      .predicate('W', BLOCK_PREDICATE)
+      .build();
 
   private static final MultiblockPattern<Void> rotatedPattern = pattern.rotateClockwise();
 
@@ -95,7 +96,8 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
           master.getEnergyStorage()
               .ifPresent(energyStorage -> EnergyUtil.pushToSides(level, blockPos, energyStorage,
-                  ENERGY_OUTPUT_RATE, filter, Direction.values()));
+                  ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get().intValue(),
+                  filter, Direction.values()));
 
           master.getFluidHandler().ifPresent(fluidHandler -> {
             var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
