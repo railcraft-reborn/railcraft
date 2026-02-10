@@ -38,7 +38,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   private static final int WATER_OUTPUT_RATE = 4;
   private static final int ENERGY_OUTPUT_RATE = 900;
 
-  private static final BlockPredicate BLOCK_PREDICATE = 
+  private static final BlockPredicate BLOCK_PREDICATE =
   BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
 
   private static final MultiblockPattern<Void> pattern =
