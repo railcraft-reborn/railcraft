@@ -128,7 +128,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
   @Override
   public ItemInteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand, this.module.getTank())
+    var handler = this.fluidHandler != null ? this.fluidHandler : this.module.getTank();
+    return FluidUtil.interactWithFluidHandler(player, hand, handler)
         ? ItemInteractionResult.CONSUME
         : super.use(player, hand);
   }

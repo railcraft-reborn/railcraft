@@ -209,6 +209,10 @@ public class Railcraft {
         RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getFuelContainer());
     event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION,
         RailcraftEntityTypes.STEAM_LOCOMOTIVE.get(), (e, side) -> e.getFuelContainer());
+    event.registerEntity(Capabilities.ItemHandler.ENTITY,
+        RailcraftEntityTypes.TUNNEL_BORE.get(), (e, side) -> new InvWrapper(e));
+    event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION,
+        RailcraftEntityTypes.TUNNEL_BORE.get(), (e, side) -> new InvWrapper(e));
 
     event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
         RailcraftBlockEntityTypes.WATER_TANK_SIDING.get(), WaterTankSidingBlockEntity::getFluidCap);
