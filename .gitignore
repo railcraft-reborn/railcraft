@@ -94,3 +94,10 @@ repo
 .atom-build.json
 
 CHANGELOG.md
+
+# Replit
+.replit
+replit.md
+.cache/
+.local/
+attached_assets/
