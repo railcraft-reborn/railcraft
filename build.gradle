@@ -258,13 +258,8 @@ neoForge.ideSyncTask generateModMetadata
 
 def lastCommit = providers.exec {
     commandLine 'git', 'rev-parse', 'HEAD'
-}.standardOutput.asText.get().trim()
-
-def penultimateTag = () -> {
-    providers.exec {
-        commandLine 'git', 'describe', '--abbrev=0', '--tags', 'HEAD~'
-    }.standardOutput.asText.get().trim()
-}
+    ignoreExitValue = true
+}.standardOutput.asText.map { it.trim() }
 
 tasks.named('jar', Jar).configure {
     from([sourceSets.api.output, sourceSets.main.output])
@@ -276,7 +271,7 @@ tasks.named('jar', Jar).configure {
             'Implementation-Title'      : project.name,
             'Implementation-Version'    : project.version,
             'Implementation-Vendor'     : 'Sm0keySa1m0n, Edivad99',
-            'Implementation-Commit'     : lastCommit,
+            'Implementation-Commit'     : lastCommit.getOrElse('unknown'),
         ])
     }
 }
@@ -290,14 +285,27 @@ tasks.register('apiJar', Jar) {
 
 assemble.dependsOn(jar, apiJar)
 
-tasks.register('makeChangelog', GitChangelogTask) {
-    fromRepo.set(projectDir.absolutePath.toString())
-    fromRevision.set(penultimateTag())
-    toRevision.set('HEAD')
-    file.set(file('CHANGELOG.md'))
-    untaggedName.set('Next release')
-    templateContent.set(file('changelog.mustache').text)
-    ignoreCommitsIfMessageMatches.set('^.*Merge branch.*$')
+if (!project.hasProperty('skipChangelog')) {
+    def penultimateTag = providers.exec {
+        commandLine 'git', 'describe', '--abbrev=0', '--tags', 'HEAD~'
+        ignoreExitValue = true
+    }.standardOutput.asText.map { it.trim() }
+
+    tasks.register('makeChangelog', GitChangelogTask) {
+        fromRepo.set(projectDir.absolutePath.toString())
+        def tag = penultimateTag.getOrElse('')
+        if (!tag.isEmpty()) {
+            fromRevision.set(tag)
+        }
+        toRevision.set('HEAD')
+        file.set(file('CHANGELOG.md'))
+        untaggedName.set('Next release')
+        def mustache = file('changelog.mustache')
+        if (mustache.exists()) {
+            templateContent.set(mustache.text)
+        }
+        ignoreCommitsIfMessageMatches.set('^.*Merge branch.*$')
+    }
 }
 
 publishMods {
