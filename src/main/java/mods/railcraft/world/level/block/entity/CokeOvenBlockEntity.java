@@ -93,6 +93,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
           this.getBlockState().setValue(CokeOvenBricksBlock.WINDOW,
               membership.patternElement().marker() == 'W'));
     }
+    this.level.invalidateCapabilities(this.getBlockPos());
   }
 
   @Override

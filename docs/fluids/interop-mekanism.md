@@ -91,6 +91,26 @@ contract with no mod-specific code required.
 4. **BUG-0004**: FluidTools.containsFluid required all tanks to match instead of any
 5. **BUG-0005**: FluidGaugeWidget skipped sync when tank filled from empty state
 6. **BUG-0006**: CokeOvenModule liquid processing slot was extractable by automation
+7. **BUG-0009**: Coke Oven capability cache not invalidated on multiblock formation
+
+### BUG-0009 Details (Coke Oven Creosote Extraction)
+
+**Symptom**: Mekanism mechanical pipes could not extract creosote from a formed Coke Oven
+despite the GUI showing fluid in the tank.
+
+**Root cause**: `CokeOvenBlockEntity.membershipChanged()` did not call
+`level.invalidateCapabilities(this.getBlockPos())`. For 'B' (brick) blocks on the bottom
+and top layers, the block state does not change when the multiblock forms (WINDOW was
+already `false`), so NeoForge's implicit capability cache invalidation never fires.
+Mekanism's `BlockCapabilityCache` retains a stale `null` handler from before formation.
+
+**Fix**: Added `this.level.invalidateCapabilities(this.getBlockPos())` at the end of
+`membershipChanged()`, called unconditionally for both formation and disbanding. This
+forces external mods to re-query the capability, picking up the now-valid
+`StandardTank` (drain-only via `disableFill`).
+
+**Supported extraction faces**: All 26 blocks of the formed Coke Oven, all faces.
+No side or layer gating.
 
 ### Next Steps
 
@@ -101,7 +121,3 @@ contract with no mod-specific code required.
 - Consider whether `TankBlockEntity.use()` should route through `ValveFluidHandler` instead
   of directly accessing the raw tank, to enforce height-based restrictions on player
   bucket interactions.
-- Investigate the coke oven `fluidContainer` ContainerMapper size parameter
-  (`SLOT_LIQUID_OUTPUT = 4` used as size instead of computed count of 3). Currently benign
-  because `processContainer` only accesses indices 0-2, but could cause issues if other
-  container operations are called on the mapper.
