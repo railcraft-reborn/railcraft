@@ -23,6 +23,31 @@ This project is maintained by:
 
 Thanks also to [LetterN](https://github.com/LetterN) who contributed in the early stages of development.
 
+## Building
+
+Requires **Java 21** (JDK) and **Git**.
+
+```shell
+git clone https://github.com/railcraft-reborn/railcraft.git
+cd railcraft
+./gradlew build
+```
+
+The mod JAR is produced at `build/libs/railcraft-reborn-<version>.jar` (the one
+**without** `-api` in the name). Install this JAR into your NeoForge `mods/` folder.
+
+Key Gradle tasks:
+
+| Task | Description |
+|---|---|
+| `./gradlew build` | Compile, test, and produce the mod JAR |
+| `./gradlew runClient` | Launch a development Minecraft client |
+| `./gradlew runServer` | Launch a development Minecraft server |
+| `./gradlew spotlessCheck` | Check code formatting |
+| `./gradlew spotlessApply` | Auto-fix code formatting |
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup details.
+
 ## Official Links
 
 * [Discord](https://discord.gg/VyaUt2r)

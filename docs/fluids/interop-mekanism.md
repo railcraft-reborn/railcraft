@@ -16,7 +16,10 @@ contract with no mod-specific code required.
   tank.
 - The coke oven tank has `disableFill = true` (internal fill only via recipe output). Pipes
   can **drain** creosote but cannot push fluid in.
-- Expected: Mekanism pipe extracts creosote from the coke oven automatically.
+- BUG-0009 fixed a stale capability cache issue that prevented external mods from
+  discovering the handler after multiblock formation.
+- **Not verified**: This fix has not been tested against a live Mekanism installation.
+  Workaround: use a Railcraft Fluid Loader to extract creosote.
 
 ### Mekanism Pipe -> Iron/Steel Tank
 
