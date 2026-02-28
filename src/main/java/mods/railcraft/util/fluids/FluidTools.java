@@ -87,11 +87,11 @@ public final class FluidTools {
     return FluidUtil.getFluidHandler(stack)
         .filter(item -> {
           for (int i = 0; i < item.getTanks(); i++) {
-            if (!item.getFluidInTank(i).getFluid().isSame(fluid)) {
-              return false;
+            if (item.getFluidInTank(i).getFluid().isSame(fluid)) {
+              return true;
             }
           }
-          return true;
+          return false;
         })
         .isPresent();
   }

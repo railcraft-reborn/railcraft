@@ -26,8 +26,7 @@ public class FluidGaugeWidget extends Widget {
   public boolean requiresSync(ServerPlayer player) {
     syncCounter++;
     return (syncCounter % 16) == 0
-        || (!this.lastSyncedFluidStack.isEmpty()
-            && !FluidStack.matches(this.lastSyncedFluidStack, tank.getFluid()));
+        || !FluidStack.matches(this.lastSyncedFluidStack, tank.getFluid());
   }
 
   @Override

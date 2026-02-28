@@ -24,7 +24,7 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   private final IItemHandler itemHandler = new InvWrapper(this) {
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (slot == SLOT_OUTPUT)
+      if (slot == SLOT_INPUT || slot == SLOT_PROCESS)
         return ItemStack.EMPTY;
       return super.extractItem(slot, amount, simulate);
     }

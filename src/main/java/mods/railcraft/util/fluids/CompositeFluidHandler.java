@@ -137,18 +137,21 @@ public class CompositeFluidHandler implements IFluidHandler {
   @Override
   public FluidStack getFluidInTank(int tank) {
     int index = this.getIndexForTank(tank);
-    return this.getHandlerFromIndex(index).getFluidInTank(tank);
+    int slot = this.getSlotFromIndex(tank, index);
+    return this.getHandlerFromIndex(index).getFluidInTank(slot);
   }
 
   @Override
   public int getTankCapacity(int tank) {
     int index = this.getIndexForTank(tank);
-    return this.getHandlerFromIndex(index).getTankCapacity(tank);
+    int slot = this.getSlotFromIndex(tank, index);
+    return this.getHandlerFromIndex(index).getTankCapacity(slot);
   }
 
   @Override
   public boolean isFluidValid(int tank, FluidStack stack) {
     int index = this.getIndexForTank(tank);
-    return this.getHandlerFromIndex(index).isFluidValid(tank, stack);
+    int slot = this.getSlotFromIndex(tank, index);
+    return this.getHandlerFromIndex(index).isFluidValid(slot, stack);
   }
 }

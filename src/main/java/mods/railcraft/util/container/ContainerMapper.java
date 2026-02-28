@@ -112,7 +112,8 @@ public class ContainerMapper implements Container, ContainerManipulator<Modifiab
 
   @Override
   public ItemStack removeItemNoUpdate(int slot) {
-    return this.container.removeItemNoUpdate(slot);
+    this.validSlot(slot);
+    return this.container.removeItemNoUpdate(this.start + slot);
   }
 
   @Override

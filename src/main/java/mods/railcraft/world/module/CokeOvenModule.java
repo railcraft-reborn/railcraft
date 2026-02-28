@@ -40,12 +40,12 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
         .changeCallback(this::setChanged);
 
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
-    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
+    fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT - SLOT_LIQUID_INPUT + 1);
 
     itemHandler = new InvWrapper(this) {
       @Override
       public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot == SLOT_INPUT) {
+        if (slot == SLOT_INPUT || slot == SLOT_LIQUID_INPUT || slot == SLOT_LIQUID_PROCESSING) {
           return ItemStack.EMPTY;
         }
         return super.extractItem(slot, amount, simulate);
@@ -53,7 +53,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
       @Override
       public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (slot == SLOT_INPUT) {
+        if (slot == SLOT_INPUT || slot == SLOT_LIQUID_INPUT) {
           return super.insertItem(slot, stack, simulate);
         }
         return stack;
