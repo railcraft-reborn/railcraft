@@ -62,10 +62,7 @@ sourceSets {
 }
 
 neoForge {
-    enable {
-        version = project.neo_version
-        disableRecompilation = System.getenv("CI") == "true"
-    }
+    version = project.neo_version
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
