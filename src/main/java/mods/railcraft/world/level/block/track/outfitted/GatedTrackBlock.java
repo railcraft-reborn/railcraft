@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -163,11 +164,6 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
-    return 0;
-  }
-
-  @Override
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     if (isOneWay(blockState) && isOpen(blockState)) {
@@ -218,13 +214,16 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       Block neighborBlock, BlockPos neighborPos, boolean moved) {
     super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
     if (!level.isClientSide()) {
-      boolean powered = isPowered(blockState);
-      if (powered != isOpen(blockState)) {
-        level.setBlock(pos, blockState.setValue(OPEN, powered), Block.UPDATE_CLIENTS);
-        level.playSound(null, pos, powered
-                ? SoundEvents.FENCE_GATE_OPEN
-                : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
-            level.getRandom().nextFloat() * 0.1F + 0.9F);
+      boolean flag = level.hasNeighborSignal(pos);
+      if (isPowered(blockState) != flag) {
+        level.setBlock(pos, blockState.setValue(POWERED, flag).setValue(OPEN, flag), Block.UPDATE_CLIENTS);
+        if (blockState.getValue(OPEN) != flag) {
+          level.playSound(null, pos, flag
+                  ? SoundEvents.FENCE_GATE_OPEN
+                  : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
+              level.getRandom().nextFloat() * 0.1F + 0.9F);
+          level.gameEvent(null, flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+        }
       }
     }
   }
