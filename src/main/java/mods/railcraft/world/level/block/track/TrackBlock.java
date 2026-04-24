@@ -82,7 +82,6 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     return this.trackType.get().getSpikeMaulVariants();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
@@ -332,7 +331,6 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   /**
    * @see net.minecraft.world.level.block.RailBlock#mirror(BlockState, Mirror)
    */
-  @SuppressWarnings("deprecation")
   @Override
   public BlockState mirror(BlockState state, Mirror mirror) {
     Property<RailShape> shape = getShapeProperty();

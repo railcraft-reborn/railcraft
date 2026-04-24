@@ -88,6 +88,11 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
+  public boolean canMakeSlopes(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    return false;
+  }
+
+  @Override
   public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos pos,
       CollisionContext context) {
     if (blockState.getValue(IN_WALL)) {
