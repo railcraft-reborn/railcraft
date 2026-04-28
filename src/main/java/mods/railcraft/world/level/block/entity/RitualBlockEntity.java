@@ -42,12 +42,13 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   private int charge;
 
   private int rebuildDelay;
+  @Nullable
   private Component itemName;
   private int tick = 0;
 
   // Client only
-  private long rotationYaw;
-  private long preRotationYaw;
+  private float rotationYaw;
+  private float preRotationYaw;
   private float yOffset = -2;
   private float preYOffset = -2;
 
@@ -58,10 +59,9 @@ public class RitualBlockEntity extends RailcraftBlockEntity {
   public static void clientTick(Level level, BlockPos blockPos, BlockState blockState,
       RitualBlockEntity blockEntity) {
     blockEntity.preRotationYaw = blockEntity.rotationYaw;
-    blockEntity.rotationYaw += 5;
-    if (blockEntity.rotationYaw >= 360) {
-      blockEntity.rotationYaw = 0;
-      blockEntity.preRotationYaw = blockEntity.rotationYaw;
+    blockEntity.rotationYaw += 0.3f;
+    if (blockEntity.rotationYaw >= Math.PI * 2) {
+      blockEntity.rotationYaw -= (float)(Math.PI * 2);
     }
     blockEntity.preYOffset = blockEntity.yOffset;
     if (blockEntity.yOffset < 0) {
