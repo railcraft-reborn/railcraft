@@ -15,6 +15,8 @@ public abstract class FluidManipulatorBlock<T extends FluidManipulatorBlockEntit
 
   protected FluidManipulatorBlock(Class<T> blockEntityType, Properties properties) {
     super(blockEntityType, properties);
+    this.registerDefaultState(this.stateDefinition.any()
+        .setValue(POWERED, false));
   }
 
   @Override
