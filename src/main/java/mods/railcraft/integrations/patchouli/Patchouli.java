@@ -57,9 +57,10 @@ public class Patchouli {
 
     var waterTankBlock = validBlock(patchouliApi, RailcraftBlocks.WATER_TANK_SIDING.get());
     var waterTank = patchouliApi.makeMultiblock(new String[][]{
-        {"BB", "BB"}, //Y:1
-        {"BB", "0B"}  //Y:0
-        }, 'B', waterTankBlock, '0', waterTankBlock
+        {"BBB", "BBB", "BBB"}, //Y:2
+        {"BBB", "BAB", "BBB"}, //Y:1
+        {"BBB", "B0B", "BBB"}  //Y:0
+        }, 'B', waterTankBlock, '0', waterTankBlock, 'A', patchouliApi.airMatcher()
     ).setSymmetrical(true);
     patchouliApi
         .registerMultiblock(RailcraftConstants.rl("water_tank"), waterTank);
