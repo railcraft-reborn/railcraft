@@ -59,6 +59,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -748,8 +749,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     }
   }
 
-  public void applyAction(Player player, boolean single, Consumer<Locomotive> action) {
-    var locos = RollingStock.getOrThrow(this).train().entities()
+  public static void applyAction(Player player, AbstractMinecart minecart, boolean single,
+      Consumer<Locomotive> action) {
+    var locos = RollingStock.getOrThrow(minecart).train().entities()
         .flatMap(FunctionalUtil.ofType(Locomotive.class))
         .filter(loco -> loco.canControl(player));
     if (single) {

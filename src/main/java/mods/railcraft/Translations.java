@@ -615,6 +615,11 @@ public class Translations {
   public static class KeyBinding {
     public static final String CATEGORY = makeKey("key", "category");
     public static final String CHANGE_AURA = makeKey("key", "change_aura");
+    public static final String REVERSE = makeKey("key", "loco.reverse");
+    public static final String FASTER = makeKey("key", "loco.faster");
+    public static final String SLOWER = makeKey("key", "loco.slower");
+    public static final String MODE = makeKey("key", "loco.mode");
+    public static final String WHISTLE = makeKey("key", "loco.whistle");
   }
 
   public static class EnchantmentDescriptions {

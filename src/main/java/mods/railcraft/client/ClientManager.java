@@ -52,6 +52,8 @@ import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.integrations.patchouli.Patchouli;
+import mods.railcraft.network.NetworkChannel;
+import mods.railcraft.network.play.SetLocomotiveByKeyAttributesMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
@@ -63,11 +65,13 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -86,11 +90,12 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
+import net.minecraftforge.network.PacketDistributor;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
 
-  private static ShuntingAuraRenderer shuntingAuraRenderer;
+  private static final ShuntingAuraRenderer shuntingAuraRenderer = new ShuntingAuraRenderer();
 
   public static void init(IEventBus modEventBus) {
     modEventBus.addListener(ClientManager::handleClientSetup);
@@ -102,7 +107,6 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleKeyRegister);
     MinecraftForge.EVENT_BUS.register(ClientManager.class);
 
-    shuntingAuraRenderer = new ShuntingAuraRenderer();
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
   }
 
@@ -215,7 +219,12 @@ public class ClientManager {
   }
 
   private static void handleKeyRegister(RegisterKeyMappingsEvent event) {
-    event.register(KeyBinding.CHANGE_AURA_KEY);
+    event.register(KeyBinding.CHANGE_AURA.getKeyMapping());
+    event.register(KeyBinding.REVERSE.getKeyMapping());
+    event.register(KeyBinding.FASTER.getKeyMapping());
+    event.register(KeyBinding.SLOWER.getKeyMapping());
+    event.register(KeyBinding.MODE_CHANGE.getKeyMapping());
+    event.register(KeyBinding.WHISTLE.getKeyMapping());
   }
 
   // ================================================================================
@@ -304,8 +313,45 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleKeyInput(InputEvent.Key event) {
-    if (KeyBinding.CHANGE_AURA_KEY.consumeClick()) {
-      GogglesItem.changeAuraByKey(Minecraft.getInstance().player);
+    var player = Minecraft.getInstance().player;
+    if (player == null) {
+      return;
+    }
+    if (Minecraft.getInstance().screen instanceof ChatScreen) {
+      return;
+    }
+
+    if (KeyBinding.CHANGE_AURA.consumeClick()) {
+      GogglesItem.changeAuraByKey(player);
+    }
+    // Locomotive Keybindings
+    if (!(player.getVehicle() instanceof Minecart)) {
+      return;
+    }
+    if (KeyBinding.REVERSE.consumeClick()) {
+      NetworkChannel.GAME.sendToServer(
+          new SetLocomotiveByKeyAttributesMessage(
+              SetLocomotiveByKeyAttributesMessage.LocomotiveKeyBinding.REVERSE));
+    }
+    if (KeyBinding.FASTER.consumeClick()) {
+      NetworkChannel.GAME.sendToServer(
+          new SetLocomotiveByKeyAttributesMessage(
+              SetLocomotiveByKeyAttributesMessage.LocomotiveKeyBinding.FASTER));
+    }
+    if (KeyBinding.SLOWER.consumeClick()) {
+      NetworkChannel.GAME.sendToServer(
+          new SetLocomotiveByKeyAttributesMessage(
+              SetLocomotiveByKeyAttributesMessage.LocomotiveKeyBinding.SLOWER));
+    }
+    if (KeyBinding.MODE_CHANGE.consumeClick()) {
+      NetworkChannel.GAME.sendToServer(
+          new SetLocomotiveByKeyAttributesMessage(
+              SetLocomotiveByKeyAttributesMessage.LocomotiveKeyBinding.MODE_CHANGE));
+    }
+    if (KeyBinding.WHISTLE.consumeClick()) {
+      NetworkChannel.GAME.sendToServer(
+          new SetLocomotiveByKeyAttributesMessage(
+              SetLocomotiveByKeyAttributesMessage.LocomotiveKeyBinding.WHISTLE));
     }
   }
 }

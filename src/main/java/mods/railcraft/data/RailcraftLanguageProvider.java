@@ -1303,6 +1303,11 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   private void keyBindingTranslations() {
     this.add(Translations.KeyBinding.CATEGORY, RailcraftConstants.NAME);
     this.add(Translations.KeyBinding.CHANGE_AURA, "Change Aura");
+    this.add(Translations.KeyBinding.FASTER, "Increase locomotive speed");
+    this.add(Translations.KeyBinding.SLOWER, "Decrease locomotive speed");
+    this.add(Translations.KeyBinding.REVERSE, "Change locomotive direction");
+    this.add(Translations.KeyBinding.WHISTLE, "Locomotive whistle");
+    this.add(Translations.KeyBinding.MODE, "Change locomotive mode");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {
