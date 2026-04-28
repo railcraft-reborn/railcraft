@@ -37,6 +37,11 @@ public class BufferStopTrackBlock extends ReversibleOutfittedTrackBlock {
   }
 
   @Override
+  public boolean canMakeSlopes(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    return false;
+  }
+
+  @Override
   public void appendHoverText(ItemStack stack, BlockGetter level, List<Component> lines,
       TooltipFlag flag) {
     lines.add(Component.translatable(Translations.Tips.BUFFER_STOP_TRACK)
