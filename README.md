@@ -8,9 +8,8 @@
 
 Here you will find the source and issue tracker for the **Railcraft Reborn** project.
 
-> [!NOTE]
-> Railcraft Reborn for 1.20.1 is currently in **maintenance mode**.  
-> It will **only receive updates for bug fixes** and no new features are planned.
+> [!WARNING]
+> Railcraft Reborn for 1.20.1 it is no longer developed.  
 
 ## What is Railcraft Reborn?
 
