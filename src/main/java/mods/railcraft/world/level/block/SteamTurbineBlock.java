@@ -3,6 +3,7 @@ package mods.railcraft.world.level.block;
 import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -35,11 +36,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   public static final Property<Type> TYPE = EnumProperty.create("type", Type.class);
 
   public static final Property<Boolean> ROTATED = BooleanProperty.create("rotated");
-
-  private static final Map<Charge, Spec> CHARGE_SPECS =
-      Spec.make(Charge.distribution, ChargeBlock.ConnectType.BLOCK, 0,
-          new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
-              SteamTurbineModule.CHARGE_OUTPUT, SteamTurbineModule.CHARGE_OUTPUT, 1));
 
   public SteamTurbineBlock(Properties properties) {
     super(properties);
@@ -74,7 +70,11 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state,
       ServerLevel level, BlockPos pos) {
-    return CHARGE_SPECS;
+    return Spec.make(Charge.distribution, ChargeBlock.ConnectType.BLOCK, 0,
+        new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
+            SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
+            SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
+            1));
   }
 
   @Override
