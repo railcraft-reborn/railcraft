@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,10 +42,10 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
 
   private static final double MOTION_MIN = 0.2D;
 
-  protected static final VoxelShape Z_SHAPE = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D);
-  protected static final VoxelShape X_SHAPE = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D);
-  protected static final VoxelShape Z_SHAPE_LOW = Block.box(0.0D, 0.0D, 6.0D, 16.0D, 13.0D, 10.0D);
-  protected static final VoxelShape X_SHAPE_LOW = Block.box(6.0D, 0.0D, 0.0D, 10.0D, 13.0D, 16.0D);
+  protected static final VoxelShape Z_SHAPE = Shapes.or(FLAT_AABB, Block.box(0.0D, 0.0D, 6.0D, 16.0D, 16.0D, 10.0D));
+  protected static final VoxelShape X_SHAPE = Shapes.or(FLAT_AABB, Block.box(6.0D, 0.0D, 0.0D, 10.0D, 16.0D, 16.0D));
+  protected static final VoxelShape X_SHAPE_LOW = Shapes.or(FLAT_AABB, Block.box(6.0D, 0.0D, 0.0D, 10.0D, 13.0D, 16.0D));
+  protected static final VoxelShape Z_SHAPE_LOW = Shapes.or(FLAT_AABB, Block.box(0.0D, 0.0D, 6.0D, 16.0D, 13.0D, 10.0D));
   protected static final VoxelShape Z_COLLISION_SHAPE =
       box(0.0D, 0.0D, 6.0D, 16.0D, 24.0D, 10.0D);
   protected static final VoxelShape X_COLLISION_SHAPE =
@@ -82,6 +83,11 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
     builder.add(OPEN, IN_WALL, ONE_WAY);
+  }
+
+  @Override
+  public boolean canMakeSlopes(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    return false;
   }
 
   @Override
@@ -162,11 +168,6 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
   }
 
   @Override
-  public int getPowerPropagation(BlockState blockState, Level level, BlockPos pos) {
-    return 0;
-  }
-
-  @Override
   public void onMinecartPass(BlockState blockState, Level level, BlockPos pos,
       AbstractMinecart cart) {
     if (isOneWay(blockState) && isOpen(blockState)) {
@@ -217,13 +218,16 @@ public class GatedTrackBlock extends ReversiblePoweredOutfittedTrackBlock {
       @Nullable Orientation orientation, boolean moved) {
     super.neighborChanged(blockState, level, pos, neighborBlock, orientation, moved);
     if (!level.isClientSide()) {
-      boolean powered = isPowered(blockState);
-      if (powered != isOpen(blockState)) {
-        level.setBlock(pos, blockState.setValue(OPEN, powered), Block.UPDATE_CLIENTS);
-        level.playSound(null, pos, powered
-                ? SoundEvents.FENCE_GATE_OPEN
-                : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
-            level.getRandom().nextFloat() * 0.1F + 0.9F);
+      boolean flag = level.hasNeighborSignal(pos);
+      if (isPowered(blockState) != flag) {
+        level.setBlock(pos, blockState.setValue(POWERED, flag).setValue(OPEN, flag), Block.UPDATE_CLIENTS);
+        if (blockState.getValue(OPEN) != flag) {
+          level.playSound(null, pos, flag
+                  ? SoundEvents.FENCE_GATE_OPEN
+                  : SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0F,
+              level.getRandom().nextFloat() * 0.1F + 0.9F);
+          level.gameEvent(null, flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+        }
       }
     }
   }

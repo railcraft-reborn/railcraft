@@ -294,7 +294,7 @@ tasks.register('makeChangelog', GitChangelogTask) {
     fromRepo.set(projectDir.absolutePath.toString())
     fromRevision.set(penultimateTag())
     toRevision.set('HEAD')
-    file.set(file('CHANGELOG.md'));
+    file.set(file('CHANGELOG.md'))
     untaggedName.set('Next release')
     templateContent.set(file('changelog.mustache').text)
     ignoreCommitsIfMessageMatches.set('^.*Merge branch.*$')

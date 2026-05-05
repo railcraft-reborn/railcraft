@@ -19,6 +19,7 @@
     "railcraft:reinforced_whistle_track",
     "railcraft:reinforced_locomotive_track",
     "railcraft:reinforced_throttle_track",
-    "railcraft:reinforced_routing_track"
+    "railcraft:reinforced_routing_track",
+    "railcraft:reinforced_buffer_stop_track"
   ]
 }

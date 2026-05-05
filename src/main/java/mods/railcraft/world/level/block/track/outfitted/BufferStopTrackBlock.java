@@ -29,4 +29,9 @@ public class BufferStopTrackBlock extends ReversibleOutfittedTrackBlock {
       BlockPos pos, CollisionContext context) {
     return BUFFER_STOP_SHAPE;
   }
+
+  @Override
+  public boolean canMakeSlopes(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+    return false;
+  }
 }

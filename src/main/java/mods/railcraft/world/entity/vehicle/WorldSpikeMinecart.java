@@ -55,15 +55,13 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
       WorldSpikeBlockEntity.spawnParticle(serverLevel, getOnPos());
       if (!this.chunkPosition().equals(this.lastChunk)) {
         var newChunkSet = new LongOpenHashSet();
+        // Load chunk in a 3x3 area
         for (int x = - 1; x <= 1; x++) {
           for (int z = - 1; z <= 1; z++) {
-            // Load chunk with X shape
-            if (x * z == 0) {
-              var loadChunk = new ChunkPos(this.chunkPosition().x + x, this.chunkPosition().z + z);
-              newChunkSet.add(loadChunk.toLong());
-              Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid,
-                  loadChunk.x, loadChunk.z, true, false);
-            }
+            var loadChunk = new ChunkPos(this.chunkPosition().x + x, this.chunkPosition().z + z);
+            newChunkSet.add(loadChunk.toLong());
+            Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid,
+                loadChunk.x, loadChunk.z, true, false);
           }
         }
         var modified = this.chunkSet.removeAll(newChunkSet);

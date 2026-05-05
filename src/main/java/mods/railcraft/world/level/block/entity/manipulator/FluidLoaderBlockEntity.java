@@ -11,6 +11,7 @@ import mods.railcraft.util.Predicates;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -207,14 +208,14 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (this.isManualMode()) {
       powered = false;
     }
-    // if (powered) {
-    // this.resetPipeLength();
-    // TileEntity blockEntity = this.level.getBlockEntity(this.getBlockPos().below(2));
-    // if (blockEntity instanceof LockingTrack) {
-    // ((LockingTrack) blockEntity).releaseCart();
-    // }
-    // }
     super.setPowered(powered);
+    if (powered && this.level != null) {
+      this.resetPipeLength();
+      var blockEntity = this.level.getBlockEntity(this.getBlockPos().below(2));
+      if (blockEntity instanceof LockingTrackBlockEntity lockingTrack) {
+        lockingTrack.releaseCart();
+      }
+    }
   }
 
   @Override
