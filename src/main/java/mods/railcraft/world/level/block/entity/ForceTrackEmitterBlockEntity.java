@@ -213,10 +213,9 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
 
   @Override
   public void onMagnify(Player player) {
-    player.displayClientMessage(
+    player.sendOverlayMessage(
         Component.translatable("gui.railcraft.force.track.emitter.info",
-            this.getTrackCount()),
-        true);
+            this.getTrackCount()));
   }
 
   @Override

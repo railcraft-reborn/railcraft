@@ -8,10 +8,10 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.ItemLike;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
@@ -19,26 +19,20 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   private final int creosoteOutput;
 
-  private CokeOvenRecipeBuilder(ItemLike result, int count, Ingredient ingredient, float experience,
+  private CokeOvenRecipeBuilder(ItemInstance result, Ingredient ingredient, float experience,
       int cookingTime, int creosoteOutput) {
-    super(result, count, ingredient, experience, cookingTime);
+    super(result, ingredient, experience, cookingTime);
     this.creosoteOutput = creosoteOutput;
   }
 
-  public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
+  public static CokeOvenRecipeBuilder coking(ItemInstance result, Ingredient ingredient,
       float experience, int creosoteOutput) {
     return coking(result, ingredient, experience, DEFAULT_COOKING_TIME, creosoteOutput);
   }
 
-  public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
+  public static CokeOvenRecipeBuilder coking(ItemInstance result, Ingredient ingredient,
       float experience, int cookingTime, int creosoteOutput) {
-    return coking(result, 1, ingredient, experience, cookingTime, creosoteOutput);
-  }
-
-  public static CokeOvenRecipeBuilder coking(ItemLike result, int resultCount,
-      Ingredient ingredient, float experience, int cookingTime, int creosoteOutput) {
-    return new CokeOvenRecipeBuilder(result, resultCount, ingredient, experience, cookingTime,
-        creosoteOutput);
+    return new CokeOvenRecipeBuilder(result, ingredient, experience, cookingTime, creosoteOutput);
   }
 
   @Override
@@ -55,7 +49,8 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result, this.count),
+    var recipe = new CokeOvenRecipe(this.ingredient,
+        new ItemStackTemplate(this.result.typeHolder(), this.result.count()),
         this.experience, this.cookingTime, this.creosoteOutput);
     recipeOutput.accept(customResourceKey, recipe, builder.build(advancementId));
   }

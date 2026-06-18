@@ -192,7 +192,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     if (this.level().isClientSide()) {
       return InteractionResult.SUCCESS;
     }
@@ -208,7 +208,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
       return InteractionResult.SUCCESS;
     }
     if (this.canControl(player)) {
-      return super.interact(player, hand);
+      return super.interact(player, hand, location);
     }
     return InteractionResult.SUCCESS;
   }

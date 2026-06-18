@@ -55,7 +55,7 @@ public class GogglesItem extends Item {
       return;
     }
     var aura = incrementAura(itemStack);
-    player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
+    player.sendOverlayMessage(getDescriptionText(aura.getDisplayName(), false));
     ClientPacketDistributor.sendToServer(new UpdateAuraByKeyMessage(aura));
   }
 
@@ -78,7 +78,7 @@ public class GogglesItem extends Item {
     var itemStack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
       var aura = incrementAura(itemStack);
-      player.displayClientMessage(getDescriptionText(aura.getDisplayName(), false), true);
+      player.sendOverlayMessage(getDescriptionText(aura.getDisplayName(), false));
     }
     return InteractionResult.SUCCESS;
   }

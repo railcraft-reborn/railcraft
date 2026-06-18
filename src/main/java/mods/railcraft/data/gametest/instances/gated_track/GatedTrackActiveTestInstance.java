@@ -16,7 +16,7 @@ public class GatedTrackActiveTestInstance extends GameTestInstance {
   public static final MapCodec<GatedTrackActiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(GatedTrackActiveTestInstance::new);
 
-  public GatedTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public GatedTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

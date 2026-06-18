@@ -16,7 +16,7 @@ public class TurnoutTrackActiveReverseTestInstance extends GameTestInstance {
   public static final MapCodec<TurnoutTrackActiveReverseTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(TurnoutTrackActiveReverseTestInstance::new);
 
-  public TurnoutTrackActiveReverseTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public TurnoutTrackActiveReverseTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

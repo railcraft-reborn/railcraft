@@ -128,7 +128,6 @@ import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
@@ -435,7 +434,7 @@ public class Railcraft {
         var drop = entityItem.getItem();
         var cooked = recipeManager
             .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(drop), level)
-            .map(x -> x.value().assemble(null, registryAccess))
+            .map(x -> x.value().assemble(null))
             .orElse(ItemStack.EMPTY);
         if (!cooked.isEmpty() && level.getRandom().nextBoolean()) {
           entityItem.setItem(new ItemStack(cooked.getItem(), drop.getCount()));
@@ -444,18 +443,18 @@ public class Railcraft {
     }
   }
 
-  @SubscribeEvent
-  public void addCustomTrades(VillagerTradesEvent event) {
-    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.getKey()) {
-      RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
-    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.getKey()) {
-      RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
-    } else if (event.getType() == VillagerProfession.ARMORER) {
-      RailcraftVillagerTrades.addTradeForArmorer(event.getTrades());
-    } else if (event.getType() == VillagerProfession.TOOLSMITH) {
-      RailcraftVillagerTrades.addTradeForToolSmith(event.getTrades());
-    }
-  }
+//  @SubscribeEvent
+//  public void addCustomTrades(VillagerTradesEvent event) {
+//    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.getKey()) {
+//      RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
+//    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.getKey()) {
+//      RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
+//    } else if (event.getType() == VillagerProfession.ARMORER) {
+//      RailcraftVillagerTrades.addTradeForArmorer(event.getTrades());
+//    } else if (event.getType() == VillagerProfession.TOOLSMITH) {
+//      RailcraftVillagerTrades.addTradeForToolSmith(event.getTrades());
+//    }
+//  }
 
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {

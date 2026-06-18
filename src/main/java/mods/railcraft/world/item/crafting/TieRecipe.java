@@ -2,11 +2,9 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.Objects;
 import org.jspecify.annotations.Nullable;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.PlacementInfo;
@@ -24,9 +22,8 @@ public abstract class TieRecipe extends CustomRecipe {
   @Nullable
   private PlacementInfo placementInfo;
 
-  public TieRecipe(CraftingBookCategory category, TagKey<Fluid> fluidTag,
-      ItemStack result) {
-    super(category);
+  public TieRecipe(TagKey<Fluid> fluidTag, ItemStack result) {
+    super();
     this.fluidTag = fluidTag;
     this.result = result;
   }
@@ -58,7 +55,7 @@ public abstract class TieRecipe extends CustomRecipe {
   protected abstract boolean testIngredient(ItemStack itemPresent, int index);
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     var fluidHandler = Objects.requireNonNull(
         craftingInput.getItem(1).getCapability(Capabilities.Fluid.ITEM, null));
 
@@ -73,8 +70,8 @@ public abstract class TieRecipe extends CustomRecipe {
     var remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
     for(int i = 0; i < remainingItems.size(); ++i) {
       ItemStack item = input.getItem(i);
-      if (!item.getCraftingRemainder().isEmpty()) {
-        remainingItems.set(i, item.getCraftingRemainder());
+      if (item.getCraftingRemainder() != null) {
+        remainingItems.set(i, item.getCraftingRemainder().create());
       } else {
         var itemAccess = ItemAccess.forStack(item);
         var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);

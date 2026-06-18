@@ -6,7 +6,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.1'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2'
     id 'me.modmuss50.mod-publish-plugin' version '1.1.0'
     id 'com.diffplug.spotless' version '8.1.0'
 }
@@ -25,7 +25,7 @@ base {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
         if (System.getProperty('idea.active')) {
             vendor = JvmVendorSpec.JETBRAINS
         }
@@ -61,15 +61,7 @@ sourceSets {
 }
 
 neoForge {
-    enable {
-        version = project.neo_version
-        disableRecompilation = System.getenv("CI") == "true"
-    }
-
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
+    version = project.neo_version
 
     validateAccessTransformers = true
 

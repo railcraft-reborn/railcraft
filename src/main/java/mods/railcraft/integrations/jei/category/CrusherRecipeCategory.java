@@ -13,7 +13,7 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +46,7 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
 
   @Override
   public void draw(RecipeHolder<CrusherRecipe> recipe, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.background.draw(guiGraphics);
     this.arrow.draw(guiGraphics, 58, 0);
   }

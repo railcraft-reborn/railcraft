@@ -38,7 +38,15 @@ public class RenderUtil {
   }
 
   public static int getColorARGB(FluidStack fluidStack) {
-    return IClientFluidTypeExtensions.of(fluidStack.getFluid()).getTintColor(fluidStack);
+    var fluidModel = Minecraft.getInstance()
+        .getModelManager()
+        .getFluidStateModelSet()
+        .get(fluidStack.getFluid().defaultFluidState());
+    var tintSource = fluidModel.fluidTintSource();
+    if (tintSource == null) {
+      return -1;
+    }
+    return tintSource.colorAsStack(fluidStack);
   }
 
   public static int calculateGlowLight(int combinedLight, FluidStack fluid) {

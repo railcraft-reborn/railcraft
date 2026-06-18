@@ -4,7 +4,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.FluidGaugeRenderer;
 import mods.railcraft.world.inventory.CokeOvenMenu;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -22,8 +22,9 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractBackground(graphics, mouseX, mouseY, partialTicks);
     int x = (this.width - this.imageWidth) / 2;
     int y = (this.height - this.imageHeight) / 2;
 
@@ -31,11 +32,11 @@ public class CokeOvenScreen extends RailcraftMenuScreen<CokeOvenMenu> {
     if (logic.getProgress() > 0) {
       var progressPercent = logic.getProgressPercent();
       int burnProgress = (int) ((1.0 - progressPercent) * 12);
-      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 16,
+      graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 16,
           (y + 38) - burnProgress,
           176, 59 - burnProgress, 14, burnProgress + 2, 256, 256);
       int cookProgress = (int) (progressPercent * SharedConstants.TICKS_PER_SECOND);
-      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 34, y + 43, 176, 61,
+      graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 34, y + 43, 176, 61,
           cookProgress + 1, 16, 256, 256);
     }
   }

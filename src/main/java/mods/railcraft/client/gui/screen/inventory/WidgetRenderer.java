@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.List;
 import mods.railcraft.gui.widget.Widget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -25,9 +25,9 @@ public class WidgetRenderer<T extends Widget> {
     return false;
   }
 
-  public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
+  public void render(Identifier widgetLocation, GuiGraphicsExtractor graphics, int centreX, int centreY,
       int mouseX, int mouseY) {
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.x, centreY + this.widget.y,
+    graphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.x, centreY + this.widget.y,
         this.widget.u, this.widget.v, this.widget.w, this.widget.h, 256, 256);
   }
 

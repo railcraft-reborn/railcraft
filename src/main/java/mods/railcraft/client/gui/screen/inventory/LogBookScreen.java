@@ -12,7 +12,7 @@ import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -108,27 +108,27 @@ public class LogBookScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    super.extractRenderState(graphics, mouseX, mouseY, a);
     this.setFocused(null);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
     int l = this.font.width(this.pageMsg);
-    guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
+    graphics.text(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
     var displayCache = this.getDisplayCache();
     for (var lineinfo : displayCache.lines) {
-      guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
+      graphics.text(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
           -16777216, false);
     }
     this.updateButtonVisibility();
   }
 
   @Override
-  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderTransparentBackground(guiGraphics);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    this.extractTransparentBackground(graphics);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
+    graphics.blit(RenderPipelines.GUI_TEXTURED, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
         IMAGE_HEIGHT, 256, 256);
   }
 

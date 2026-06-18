@@ -8,6 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
@@ -20,7 +21,7 @@ public final class ChargeSavedData extends SavedData {
   private static final int ABSENT_VALUE = -1;
 
   private static final SavedDataType<ChargeSavedData> TYPE = new SavedDataType<>(
-      "railcraft.charge.distribution",
+      RailcraftConstants.id("charge.distribution"),
       ChargeSavedData::new,
       __ -> RecordCodecBuilder.create(instance -> instance.group(
           Codec.pair(

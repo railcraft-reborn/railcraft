@@ -105,6 +105,7 @@ public class QuarriedFeature extends Feature<QuarriedConfiguration> {
       level.setBlock(above, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 
     if (config.targetProvider().test(existingState, random))
-      level.setBlock(blockPos, config.stateProvider().getState(random, blockPos), Block.UPDATE_CLIENTS);
+      level.setBlock(blockPos, config.stateProvider().getState(level, random, blockPos),
+          Block.UPDATE_CLIENTS);
   }
 }

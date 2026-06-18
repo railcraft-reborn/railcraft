@@ -16,7 +16,7 @@ public class LauncherTrackActiveTestInstance extends GameTestInstance {
   public static final MapCodec<LauncherTrackActiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(LauncherTrackActiveTestInstance::new);
 
-  public LauncherTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public LauncherTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

@@ -16,7 +16,7 @@ public class OneWayTrackActiveTestInstance extends GameTestInstance {
   public static final MapCodec<OneWayTrackActiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(OneWayTrackActiveTestInstance::new);
 
-  public OneWayTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public OneWayTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

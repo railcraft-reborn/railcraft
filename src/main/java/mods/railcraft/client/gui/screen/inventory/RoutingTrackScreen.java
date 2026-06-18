@@ -11,7 +11,7 @@ import mods.railcraft.world.level.block.entity.LockableSwitchTrackActuatorBlockE
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -28,10 +28,8 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   private int refreshTimer;
 
   public RoutingTrackScreen(RoutingTrackMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
+    super(menu, inventory, title, 140);
     this.routingBlockEntity = menu.getRoutingBlockEntity();
-
-    this.imageHeight = 140;
     this.inventoryLabelY = this.imageHeight - 94;
   }
 
@@ -94,9 +92,9 @@ public class RoutingTrackScreen extends RailcraftMenuScreen<RoutingTrackMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE), 64,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE), 64,
         29, 0x404040, false);
   }
 }

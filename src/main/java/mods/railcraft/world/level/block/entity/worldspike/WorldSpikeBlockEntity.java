@@ -43,10 +43,10 @@ public class WorldSpikeBlockEntity extends RailcraftBlockEntity {
   }
 
   public static void spawnParticle(ServerLevel level, BlockPos blockPos) {
-    var random = level.random;
-    var chunkPos = new ChunkPos(blockPos);
-    for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
-      for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
+    var random = level.getRandom();
+    var chunkPos = ChunkPos.containing(blockPos);
+    for (int x = chunkPos.x() - 1; x <= chunkPos.x() + 1; x++) {
+      for (int z = chunkPos.z() - 1; z <= chunkPos.z() + 1; z++) {
         int xCorner = x * 16;
         int zCorner = z * 16;
         double yCorner = blockPos.getY() - 8;

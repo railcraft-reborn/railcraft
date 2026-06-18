@@ -6,7 +6,7 @@ import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
 import mods.railcraft.gui.widget.GaugeWidget;
 import mods.railcraft.world.inventory.SteamLocomotiveMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -18,8 +18,7 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
       RailcraftConstants.id("textures/gui/container/steam_locomotive.png");
 
   public SteamLocomotiveScreen(SteamLocomotiveMenu menu, Inventory inv, Component title) {
-    super(menu, inv, title, "steam");
-    this.imageHeight = SteamLocomotiveMenu.HEIGHT;
+    super(menu, inv, title, SteamLocomotiveMenu.HEIGHT, "steam");
     this.inventoryLabelY = 110;
     for (var w : this.menu.getWidgets()) {
       if (w instanceof FluidGaugeWidget fluidGaugeWidget) {
@@ -37,13 +36,14 @@ public class SteamLocomotiveScreen extends LocomotiveScreen<SteamLocomotiveMenu>
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
-    int x = (width - this.getXSize()) / 2;
-    int y = (height - this.getYSize()) / 2;
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractBackground(graphics, mouseX, mouseY, partialTicks);
+    int x = (width - this.getImageWidth()) / 2;
+    int y = (height - this.getImageHeight()) / 2;
     if (this.menu.getLocomotive().boiler().hasFuel()) {
       int scale = this.menu.getLocomotive().boiler().getBurnProgressScaled(12);
-      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, x + 99, y + 33 - scale, 176,
+      graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, x + 99, y + 33 - scale, 176,
           59 - scale, 14, scale + 2, 256, 256);
     }
   }

@@ -4,7 +4,7 @@ import java.util.function.Function;
 import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -38,7 +38,8 @@ public class RailcraftButton extends Button {
   }
 
   @Override
-  protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+  protected void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX,
+      int mouseY, float partialTick) {
     var font = Minecraft.getInstance().font;
     int i = this.getYImage(this.isHoveredOrFocused());
 
@@ -53,7 +54,7 @@ public class RailcraftButton extends Button {
         this.getY(), xOffset + w - this.width / 2, yOffset + i * h,
         this.width / 2, h, 256, 256, ARGB.white(this.alpha));
     int j = getFGColor();
-    guiGraphics.drawCenteredString(font, this.getMessage(), this.getX() + this.width / 2,
+    guiGraphics.centeredText(font, this.getMessage(), this.getX() + this.width / 2,
         this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
   }
 

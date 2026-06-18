@@ -2,8 +2,6 @@ package mods.railcraft.client.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.data.AtlasIds;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidRenderer {
@@ -25,12 +23,15 @@ public class FluidRenderer {
   }
 
   public static TextureAtlasSprite getFluidTexture(FluidStack fluidStack, FluidType type) {
-    var fluid = fluidStack.getFluid();
-    var spriteLocation = switch (type) {
-      case STILL -> IClientFluidTypeExtensions.of(fluid).getStillTexture(fluidStack);
-      case FLOWING -> IClientFluidTypeExtensions.of(fluid).getFlowingTexture(fluidStack);
+    var fluidModel = Minecraft.getInstance()
+        .getModelManager()
+        .getFluidStateModelSet()
+        .get(fluidStack.getFluid().defaultFluidState());
+    var material = switch (type) {
+      case STILL -> fluidModel.stillMaterial();
+      case FLOWING -> fluidModel.flowingMaterial();
     };
-    return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(spriteLocation);
+    return material.sprite();
   }
 
   public enum FluidType {

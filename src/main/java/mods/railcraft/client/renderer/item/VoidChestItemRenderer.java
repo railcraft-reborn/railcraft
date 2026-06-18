@@ -13,26 +13,24 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemDisplayContext;
 
 public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
 
-  private final MaterialSet materials;
+  private final SpriteGetter sprites;
   private final ChestModel model;
   private final float openness;
 
-  public VoidChestItemRenderer(MaterialSet materials, ChestModel model, float openness) {
-    this.materials = materials;
+  public VoidChestItemRenderer(SpriteGetter sprites, ChestModel model, float openness) {
+    this.sprites = sprites;
     this.model = model;
     this.openness = openness;
   }
 
   @Override
-  public void submit(ItemDisplayContext displayContext, PoseStack poseStack,
-      SubmitNodeCollector nodeCollector, int packedLight, int packedOverlay, boolean hasFoil,
-      int outlineColor) {
+  public void submit(PoseStack poseStack, SubmitNodeCollector nodeCollector, int packedLight,
+      int packedOverlay, boolean hasFoil, int outlineColor) {
     nodeCollector.submitModel(
         this.model,
         this.openness,
@@ -41,7 +39,7 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
         packedLight,
         packedOverlay,
         -1,
-        this.materials.get(VoidChestRenderer.VOID_CHEST),
+        this.sprites.get(VoidChestRenderer.VOID_CHEST),
         outlineColor,
         null
     );
@@ -75,7 +73,7 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
     @Override
     public SpecialModelRenderer<?> bake(SpecialModelRenderer.BakingContext context) {
       var chestModel = new ChestModel(context.entityModelSet().bakeLayer(ModelLayers.CHEST));
-      return new VoidChestItemRenderer(context.materials(), chestModel, this.openness);
+      return new VoidChestItemRenderer(context.sprites(), chestModel, this.openness);
     }
   }
 }

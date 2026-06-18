@@ -6,7 +6,7 @@ import mods.railcraft.client.gui.screen.inventory.RailcraftMenuScreen;
 import mods.railcraft.network.to_server.SetItemDetectorMessage;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -35,8 +35,8 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   @Override
   protected void init() {
     super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
+    int centreX = (this.width - this.getImageWidth()) / 2;
+    int centreY = (this.height - this.getImageHeight()) / 2;
     this.addRenderableWidget(Button
         .builder(Component.literal("<"), __ -> {
           var value = this.itemDetector.getPrimaryMode().previous();
@@ -78,24 +78,26 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractBackground(graphics, mouseX, mouseY, partialTicks);
     var visible = itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED;
     this.filterLeft.visible = visible;
     this.filterRight.visible = visible;
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY,
         IngameWindowScreen.TEXT_COLOR, false);
     var primaryModeName = this.itemDetector.getPrimaryMode().getName();
-    guiGraphics.drawString(this.font, primaryModeName,
+    graphics.text(this.font, primaryModeName,
         this.imageWidth / 2 - this.font.width(primaryModeName) / 2, 21,
         IngameWindowScreen.TEXT_COLOR, false);
     if (this.itemDetector.getPrimaryMode() == ItemDetectorBlockEntity.PrimaryMode.FILTERED) {
       var filterModeName = this.itemDetector.getFilterMode().getName();
-      guiGraphics.drawString(this.font, filterModeName,
+      graphics.text(this.font, filterModeName,
           this.imageWidth / 2 - this.font.width(filterModeName) / 2, 43,
           IngameWindowScreen.TEXT_COLOR, false);
       return;
@@ -105,7 +107,7 @@ public class ItemDetectorScreen extends RailcraftMenuScreen<ItemDetectorMenu> {
       var slot = this.menu.slots.get(slotNum);
       int displayX = slot.x;
       int displayY = slot.y;
-      guiGraphics.fill(RenderPipelines.GUI_TEXTURED, displayX, displayY,
+      graphics.fill(RenderPipelines.GUI_TEXTURED, displayX, displayY,
           displayX + 16, displayY + 16, color);
     }
   }

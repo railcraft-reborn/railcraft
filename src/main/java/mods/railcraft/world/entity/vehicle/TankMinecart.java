@@ -34,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
@@ -126,12 +127,12 @@ public class TankMinecart extends FilteredMinecart
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     if (FluidTools.interactWithFluidHandler(player, hand, getTankManager())) {
       return InteractionResult.SUCCESS;
     }
 
-    return super.interact(player, hand);
+    return super.interact(player, hand, location);
   }
 
   @Override

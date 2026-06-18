@@ -7,7 +7,7 @@ import mods.railcraft.client.gui.widget.button.MultiButton;
 import mods.railcraft.world.inventory.ManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -30,8 +30,8 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   @Override
   public void init() {
     super.init();
-    var centreX = (this.width - this.getXSize()) / 2;
-    var centreY = (this.height - this.getYSize()) / 2;
+    var centreX = (this.width - this.getImageWidth()) / 2;
+    var centreY = (this.height - this.getImageHeight()) / 2;
 
     this.redstoneModeButton = this.addRenderableWidget(
         MultiButton
@@ -66,11 +66,11 @@ public abstract class ManipulatorScreen<T extends ManipulatorMenu<?>>
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x333333, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0x333333, false);
     if (this.getMenu().hasCartFilter()) {
-      guiGraphics.drawString(this.font, CART_FILTER_TEXT, 75, 16,
-          IngameWindowScreen.TEXT_COLOR, false);
+      graphics.text(this.font, CART_FILTER_TEXT, 75, 16, IngameWindowScreen.TEXT_COLOR, false);
     }
   }
 }

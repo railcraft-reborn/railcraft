@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.inventory.BlastFurnaceMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -18,21 +18,22 @@ public class BlastFurnaceScreen extends RailcraftMenuScreen<BlastFurnaceMenu> {
   }
 
   @Override
-  protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-    super.renderBg(guiGraphics, partialTicks, mouseX, mouseY);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractBackground(graphics, mouseX, mouseY, partialTicks);
     int x = (this.width - this.imageWidth) / 2;
     int y = (this.height - this.imageHeight) / 2;
 
     var logic = this.menu.getBlastFurnace().getBlastFurnaceModule();
     if (logic.isBurning()) {
       int burnProgressScale = logic.getBurnProgressScaled(12);
-      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 56,
+      graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 56,
           y + 36 + 12 - burnProgressScale, 176, 12 - burnProgressScale,
           14, burnProgressScale + 2, 256, 256);
     }
 
     int progressScale = (int) (logic.getProgressPercent() * 24);
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 79, y + 34, 176, 14,
+    graphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_TEXTURE, x + 79, y + 34, 176, 14,
         progressScale + 1, 16, 256, 256);
   }
 

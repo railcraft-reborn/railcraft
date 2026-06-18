@@ -7,12 +7,12 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.gui.render.state.GuiElementRenderState;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -29,7 +29,7 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
   }
 
   @Override
-  public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
+  public void render(Identifier widgetLocation, GuiGraphicsExtractor guiGraphics, int centreX, int centreY,
       int mouseX, int mouseY) {
 
     float halfWidth = 1; // half width of the needle

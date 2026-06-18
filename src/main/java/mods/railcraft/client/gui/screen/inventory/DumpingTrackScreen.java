@@ -4,7 +4,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.DumpingTrackMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,9 +29,9 @@ public class DumpingTrackScreen extends RailcraftMenuScreen<DumpingTrackMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, FILTERS, 250, 26);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, CARTS, 100, 35);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    GuiUtil.drawCenteredString(graphics, this.font, FILTERS, 250, 26);
+    GuiUtil.drawCenteredString(graphics, this.font, CARTS, 100, 35);
   }
 }

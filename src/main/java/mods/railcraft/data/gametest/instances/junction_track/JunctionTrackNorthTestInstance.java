@@ -16,7 +16,7 @@ public class JunctionTrackNorthTestInstance extends GameTestInstance {
   public static final MapCodec<JunctionTrackNorthTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(JunctionTrackNorthTestInstance::new);
 
-  public JunctionTrackNorthTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public JunctionTrackNorthTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

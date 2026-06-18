@@ -9,7 +9,7 @@ import mods.railcraft.network.to_server.SetItemManipulatorMessage;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,8 +35,8 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   @Override
   public void init() {
     super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
+    int centreX = (this.width - this.getImageWidth()) / 2;
+    int centreY = (this.height - this.getImageHeight()) / 2;
 
     this.addRenderableWidget(
         this.transferModeButton = MultiButton
@@ -54,10 +54,10 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR, false);
+    graphics.text(this.font, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR, false);
   }
 
   @Override

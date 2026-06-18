@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.BlastFurnaceRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
-import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +12,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -47,13 +47,13 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
   @Override
   protected void buildRecipes() {
     BlastFurnaceRecipeBuilder
-        .smelting(RailcraftBlocks.STEEL_BLOCK.get(), 1,
+        .smelting(new ItemStackTemplate(RailcraftItems.STEEL_BLOCK),
             Ingredient.of(this.items.getOrThrow(Tags.Items.STORAGE_BLOCKS_IRON)), 9, 9)
         .unlockedBy("has_iron_block", has(Tags.Items.STORAGE_BLOCKS_IRON))
         .save(output, getRailcraftBlastingRecipeName(RailcraftItems.STEEL_BLOCK.get()).toString());
 
     BlastFurnaceRecipeBuilder
-        .smelting(RailcraftItems.STEEL_INGOT.get(),
+        .smelting(new ItemStackTemplate(RailcraftItems.STEEL_INGOT),
             Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)), 1, 1)
         .unlockedBy("has_iron_ingots", has(Tags.Items.INGOTS_IRON))
         .save(output, getRailcraftBlastingRecipeName(Items.IRON_INGOT).toString());
@@ -89,14 +89,14 @@ public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
   private void blastFurnaceSmelting(ItemLike item, int multiplier) {
     BlastFurnaceRecipeBuilder
-        .smelting(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier, multiplier)
+        .smelting(new ItemStackTemplate(RailcraftItems.STEEL_INGOT), Ingredient.of(item), multiplier, multiplier)
         .unlockedBy(getHasName(item), has(item))
         .save(output, getRailcraftBlastingRecipeName(item).toString());
   }
 
   private void blastFurnaceRecycling(ItemLike item, int multiplier) {
     BlastFurnaceRecipeBuilder
-        .recycling(RailcraftItems.STEEL_INGOT.get(), Ingredient.of(item), multiplier)
+        .recycling(new ItemStackTemplate(RailcraftItems.STEEL_INGOT), Ingredient.of(item), multiplier)
         .unlockedBy(getHasName(item), has(item))
         .save(output, getRailcraftBlastingRecipeName(item).toString());
   }

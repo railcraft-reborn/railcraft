@@ -11,7 +11,6 @@ import mods.railcraft.world.module.ModuleProvider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.ContainerListener;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;

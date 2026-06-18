@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -27,14 +27,14 @@ import net.minecraft.world.phys.Vec3;
 public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEntity,
     VoidChestRenderState> {
 
-  public static final Material VOID_CHEST =
-      new Material(Sheets.CHEST_SHEET, RailcraftConstants.id("entity/chest/void_chest"));
+  public static final SpriteId VOID_CHEST =
+      new SpriteId(Sheets.CHEST_SHEET, RailcraftConstants.id("entity/chest/void_chest"));
 
-  private final MaterialSet materials;
+  private final SpriteGetter sprites;
   private final ChestModel singleModel;
 
   public VoidChestRenderer(BlockEntityRendererProvider.Context context) {
-    this.materials = context.materials();
+    this.sprites = context.sprites();
     this.singleModel = new ChestModel(context.bakeLayer(ModelLayers.CHEST));
   }
 
@@ -78,7 +78,7 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
         renderState.lightCoords,
         OverlayTexture.NO_OVERLAY,
         -1,
-        this.materials.get(VOID_CHEST),
+        this.sprites.get(VOID_CHEST),
         0,
         renderState.breakProgress
     );

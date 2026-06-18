@@ -75,26 +75,26 @@ public class CrowbarHandler {
       linkMap.put(player, extension);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_STARTED)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
       return;
     }
 
     if (extension.unlink(last)) {
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_BROKEN)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
     } else {
       if (!last.link(extension)) {
         var message = Component.translatable(Translations.Tips.CROWBAR_LINK_FAILED)
             .withStyle(ChatFormatting.RED);
-        player.displayClientMessage(message, true);
+        player.sendOverlayMessage(message);
         return;
       }
 
       RailcraftCriteriaTriggers.CART_LINK.value().trigger(player, last.entity(), cart);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
           .withStyle(ChatFormatting.GREEN);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
     }
 
     crowbar.onLink(player, hand, stack, cart);

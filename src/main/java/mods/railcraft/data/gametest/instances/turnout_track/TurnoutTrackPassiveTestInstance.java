@@ -16,7 +16,7 @@ public class TurnoutTrackPassiveTestInstance extends GameTestInstance {
   public static final MapCodec<TurnoutTrackPassiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(TurnoutTrackPassiveTestInstance::new);
 
-  public TurnoutTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public TurnoutTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

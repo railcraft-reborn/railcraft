@@ -60,25 +60,24 @@ public class TrackKitItem extends Item {
     var shape = TrackUtil.getRailShapeRaw(level, blockPos);
 
     if (RailShapeUtil.isTurn(shape)) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
-          .withStyle(ChatFormatting.RED), true);
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
     if (shape.isSlope() && !this.allowedOnSlopes) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
-          .withStyle(ChatFormatting.RED), true);
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
-    var outfittedBlock = this.outfittedBlocks
-        .getOrDefault(TrackTypes.REGISTRY.getKey(trackType), () -> null).get();
-    if (outfittedBlock == null) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
-          .withStyle(ChatFormatting.RED), true);
+    if (!this.outfittedBlocks.containsKey(TrackTypes.REGISTRY.getKey(trackType))) {
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
+    var outfittedBlock = this.outfittedBlocks.get(TrackTypes.REGISTRY.getKey(trackType)).get();
     var outfittedBlockState = outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
       var soundType = outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);

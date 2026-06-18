@@ -16,7 +16,7 @@ public class DisembarkingTrackActiveTestInstance extends GameTestInstance {
   public static final MapCodec<DisembarkingTrackActiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(DisembarkingTrackActiveTestInstance::new);
 
-  public DisembarkingTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public DisembarkingTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

@@ -13,17 +13,17 @@ import mods.railcraft.client.util.CuboidModelRenderer.FaceDisplay;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -71,8 +71,8 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
     var textureAtlas =
         Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
-    final int skyLight = LightTexture.sky(state.lightCoords);
-    state.lightCoords = LightTexture.pack(signalAspect.getLampLight(), skyLight);
+    final int skyLight = LightCoordsUtil.sky(state.lightCoords);
+    state.lightCoords = LightCoordsUtil.pack(signalAspect.getLampLight(), skyLight);
 
     this.signalAspectModel.clear();
     this.signalAspectModel.setPackedLight(state.lightCoords);

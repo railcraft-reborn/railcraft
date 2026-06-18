@@ -16,7 +16,7 @@ public class WyeTrackPassiveTestInstance extends GameTestInstance {
   public static final MapCodec<WyeTrackPassiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(WyeTrackPassiveTestInstance::new);
 
-  public WyeTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public WyeTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

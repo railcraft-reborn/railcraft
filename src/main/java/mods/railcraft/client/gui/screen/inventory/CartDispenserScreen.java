@@ -12,8 +12,7 @@ public class CartDispenserScreen extends RailcraftMenuScreen<CartDispenserMenu> 
       RailcraftConstants.id("textures/gui/container/cart_slots.png");
 
   public CartDispenserScreen(CartDispenserMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 140;
+    super(menu, inventory, title, 140);
     this.inventoryLabelY = this.imageHeight - 94;
   }
 

@@ -16,7 +16,7 @@ public class ElevatorTrackUpTestInstance extends GameTestInstance {
   public static final MapCodec<ElevatorTrackUpTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(ElevatorTrackUpTestInstance::new);
 
-  public ElevatorTrackUpTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public ElevatorTrackUpTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

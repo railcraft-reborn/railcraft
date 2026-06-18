@@ -17,7 +17,7 @@ public class CartDispenserPickUpTestInstance extends GameTestInstance {
   public static final MapCodec<CartDispenserPickUpTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(CartDispenserPickUpTestInstance::new);
 
-  public CartDispenserPickUpTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public CartDispenserPickUpTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

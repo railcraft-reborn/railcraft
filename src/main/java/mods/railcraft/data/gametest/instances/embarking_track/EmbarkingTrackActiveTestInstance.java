@@ -16,7 +16,7 @@ public class EmbarkingTrackActiveTestInstance extends GameTestInstance {
   public static final MapCodec<EmbarkingTrackActiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(EmbarkingTrackActiveTestInstance::new);
 
-  public EmbarkingTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public EmbarkingTrackActiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

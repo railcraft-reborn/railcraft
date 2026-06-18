@@ -4,7 +4,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.EnergyMinecartMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,8 +21,9 @@ public class EnergyMinecartScreen extends RailcraftMenuScreen<EnergyMinecartMenu
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY,
         IngameWindowScreen.TEXT_COLOR, false);
   }
 

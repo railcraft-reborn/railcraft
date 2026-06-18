@@ -10,7 +10,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,11 +22,34 @@ import net.minecraft.world.item.crafting.SingleItemRecipe;
 
 public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
+  private static final MapCodec<BlastFurnaceRecipe> MAP_CODEC =
+      RecordCodecBuilder.mapCodec(instance -> instance.group(
+          Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
+              .forGetter(SingleItemRecipe::input),
+          ItemStackTemplate.CODEC.fieldOf(RecipeJsonKeys.RESULT)
+              .forGetter(recipe -> recipe.result()),
+          Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
+              .orElse(0.0F)
+              .forGetter(AbstractCookingRecipe::experience),
+          ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.COOKING_TIME,
+                  BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
+              .forGetter(AbstractCookingRecipe::cookingTime),
+          ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf(RecipeJsonKeys.SLAG_OUTPUT, 0)
+              .forGetter(recipe -> recipe.slagOutput)
+      ).apply(instance, BlastFurnaceRecipe::new));
+
+  private static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC =
+      StreamCodec.of(BlastFurnaceRecipe::toNetwork, BlastFurnaceRecipe::fromNetwork);
+
+  public static final RecipeSerializer<BlastFurnaceRecipe> SERIALIZER =
+      new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
   private final int slagOutput;
 
-  public BlastFurnaceRecipe(Ingredient input, ItemStack result,
+  public BlastFurnaceRecipe(Ingredient input, ItemStackTemplate result,
       float experience, int cookingTime, int slagOutput) {
-    super("", CookingBookCategory.MISC, input, result, experience, cookingTime);
+    super(new CommonInfo(true), new CookingBookInfo(CookingBookCategory.MISC, ""),
+        input, result, experience, cookingTime);
     this.slagOutput = slagOutput;
   }
 
@@ -36,7 +59,7 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
 
   @Override
   public RecipeSerializer<BlastFurnaceRecipe> getSerializer() {
-    return RailcraftRecipeSerializers.BLASTING.get();
+    return SERIALIZER;
   }
 
   @Override
@@ -59,52 +82,20 @@ public class BlastFurnaceRecipe extends AbstractCookingRecipe {
     return RailcraftBlocks.BLAST_FURNACE_BRICKS.get().asItem();
   }
 
-  public static class Serializer implements RecipeSerializer<BlastFurnaceRecipe> {
+  private static BlastFurnaceRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+    var slagOutput = buffer.readVarInt();
+    var cookingTime = buffer.readVarInt();
+    var ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+    var result = ItemStackTemplate.STREAM_CODEC.decode(buffer);
+    var experience = buffer.readFloat();
+    return new BlastFurnaceRecipe(ingredient, result, experience, cookingTime, slagOutput);
+  }
 
-    private static final MapCodec<BlastFurnaceRecipe> CODEC =
-        RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
-                .forGetter(SingleItemRecipe::input),
-            ItemStack.CODEC.fieldOf(RecipeJsonKeys.RESULT)
-                .forGetter(recipe -> recipe.result()),
-            Codec.FLOAT.fieldOf(RecipeJsonKeys.EXPERIENCE)
-                .orElse(0.0F)
-                .forGetter(AbstractCookingRecipe::experience),
-            ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.COOKING_TIME,
-                    BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
-                .forGetter(AbstractCookingRecipe::cookingTime),
-            ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf(RecipeJsonKeys.SLAG_OUTPUT, 0)
-                .forGetter(recipe -> recipe.slagOutput)
-        ).apply(instance, BlastFurnaceRecipe::new));
-
-    private static final StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> STREAM_CODEC =
-        StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
-    @Override
-    public MapCodec<BlastFurnaceRecipe> codec() {
-      return CODEC;
-    }
-
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, BlastFurnaceRecipe> streamCodec() {
-      return STREAM_CODEC;
-    }
-
-    private static BlastFurnaceRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-      var slagOutput = buffer.readVarInt();
-      var cookingTime = buffer.readVarInt();
-      var ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-      var result = ItemStack.STREAM_CODEC.decode(buffer);
-      var experience = buffer.readFloat();
-      return new BlastFurnaceRecipe(ingredient, result, experience, cookingTime, slagOutput);
-    }
-
-    private static void toNetwork(RegistryFriendlyByteBuf buffer, BlastFurnaceRecipe recipe) {
-      buffer.writeVarInt(recipe.slagOutput);
-      buffer.writeVarInt(recipe.cookingTime());
-      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input());
-      ItemStack.STREAM_CODEC.encode(buffer, recipe.result());
-      buffer.writeFloat(recipe.experience());
-    }
+  private static void toNetwork(RegistryFriendlyByteBuf buffer, BlastFurnaceRecipe recipe) {
+    buffer.writeVarInt(recipe.slagOutput);
+    buffer.writeVarInt(recipe.cookingTime());
+    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input());
+    ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.result());
+    buffer.writeFloat(recipe.experience());
   }
 }

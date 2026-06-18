@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -36,10 +36,10 @@ public class DefaultRecipeWrapper <T extends CraftingRecipe> implements ICraftin
 
   @Override
   public void drawInfo(RecipeHolder<T> recipe, int recipeWidth, int recipeHeight,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     var font = Minecraft.getInstance().font;
     int stringWidth = font.width(this.info) / 2;
-    guiGraphics.drawString(font, this.info, 82 - stringWidth, 0,
+    guiGraphics.text(font, this.info, 82 - stringWidth, 0,
         RailcraftJeiPlugin.TEXT_COLOR, false);
   }
 

@@ -1,16 +1,22 @@
 package mods.railcraft.world.item.crafting;
 
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.neoforge.common.Tags;
 
 public class StoneTieRecipe extends TieRecipe {
 
-  public StoneTieRecipe(CraftingBookCategory category) {
-    super(category, Tags.Fluids.WATER,
-        RailcraftItems.STONE_TIE.toStack());
+  private static final StoneTieRecipe INSTANCE = new StoneTieRecipe();
+  private static final MapCodec<StoneTieRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+  private static final StreamCodec<RegistryFriendlyByteBuf, StoneTieRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+  public static final RecipeSerializer<StoneTieRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+  public StoneTieRecipe() {
+    super(Tags.Fluids.WATER, RailcraftItems.STONE_TIE.toStack());
   }
 
   @Override
@@ -25,6 +31,6 @@ public class StoneTieRecipe extends TieRecipe {
 
   @Override
   public RecipeSerializer<StoneTieRecipe> getSerializer() {
-    return RailcraftRecipeSerializers.STONE_TIE.get();
+    return SERIALIZER;
   }
 }

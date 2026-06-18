@@ -36,7 +36,7 @@ public class RoutingTestInstance extends GameTestInstance {
   private static final BlockPos TRAIN_A_B = new BlockPos(12, 1, 12);
   private static final BlockPos TRAIN_A_C = new BlockPos(12, 1, 14);
 
-  public RoutingTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public RoutingTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

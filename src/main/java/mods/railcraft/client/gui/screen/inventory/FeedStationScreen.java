@@ -12,8 +12,7 @@ public class FeedStationScreen extends RailcraftMenuScreen<FeedStationMenu> {
       RailcraftConstants.id("textures/gui/container/single_slot.png");
 
   public FeedStationScreen(FeedStationMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 140;
+    super(menu, inventory, title, 140);
     this.inventoryLabelY = this.imageHeight - 94;
   }
 

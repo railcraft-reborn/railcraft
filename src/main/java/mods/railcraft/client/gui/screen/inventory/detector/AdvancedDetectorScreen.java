@@ -13,8 +13,7 @@ public class AdvancedDetectorScreen extends RailcraftMenuScreen<AdvancedDetector
       RailcraftConstants.id("textures/gui/container/advanced_detector.png");
 
   public AdvancedDetectorScreen(AdvancedDetectorMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 140;
+    super(menu, inventory, title, 140);
     this.inventoryLabelY = this.imageHeight - 94;
   }
 

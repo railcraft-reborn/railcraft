@@ -42,8 +42,7 @@ public class ChargeMeterItem extends Item {
       var node = (ChargeNetworkImpl.ChargeNode) chargeBlock.getMeterAccess(Charge.distribution,
           state, (ServerLevel) level, pos);
       if (node != null && node.isValid() && !node.isGridNull()) {
-        player.displayClientMessage(
-            Component.translatable(Translations.ChargeMeter.START, SECONDS_TO_RECORD), false);
+        player.sendSystemMessage(Component.translatable(Translations.ChargeMeter.START, SECONDS_TO_RECORD));
         node.startUsageRecording(SECONDS_TO_RECORD * SharedConstants.TICKS_PER_SECOND, avg -> {
           sendNetworkStat(player, node.getGrid());
           var battery = node.storage().orElse(null);
@@ -61,16 +60,16 @@ public class ChargeMeterItem extends Item {
 
   public static void sendCartStat(Player player, Component displayName,
       ChargeCartStorageImpl cartStorage) {
-    player.displayClientMessage(CommonComponents.joinLines(
+    player.sendSystemMessage(CommonComponents.joinLines(
         displayName.copy().withStyle(ChatFormatting.BLUE),
         lineFormatter(Translations.ChargeMeter.CHARGE, cartStorage.getAmountAsInt(), "FE"),
         lineFormatter(Translations.ChargeMeter.DRAW, cartStorage.getDraw(), "FE/t"),
         lineFormatter(Translations.ChargeMeter.LOSS, cartStorage.getLosses(), "FE/t")
-    ), false);
+    ));
   }
 
   private static void sendNetworkStat(Player player, ChargeNetworkImpl.ChargeGrid grid) {
-    player.displayClientMessage(CommonComponents.joinLines(
+    player.sendSystemMessage(CommonComponents.joinLines(
         Component.translatable(Translations.ChargeMeter.NETWORK).withStyle(ChatFormatting.BLUE),
         lineFormatter(Translations.ChargeMeter.SIZE, grid.size(), ""),
         lineFormatter(Translations.ChargeMeter.CHARGE, grid.isInfinite() ? "INF" : grid.getCharge(), "FE"),
@@ -78,28 +77,28 @@ public class ChargeMeterItem extends Item {
         lineFormatter(Translations.ChargeMeter.MAX_DRAW, grid.getMaxDraw(), "FE/t"),
         lineFormatter(Translations.ChargeMeter.LOSS, grid.getLosses(), "FE/t"),
         lineFormatter(Translations.ChargeMeter.EFFICIENCY, grid.getEfficiency() * 100.0, "%")
-    ), false);
+    ));
   }
 
   private static void sendNodeStat(Player player, double avg, ChargeNetworkImpl.ChargeNode node) {
-    player.displayClientMessage(CommonComponents.joinLines(
+    player.sendSystemMessage(CommonComponents.joinLines(
         Component.translatable(Translations.ChargeMeter.NODE).withStyle(ChatFormatting.BLUE),
         lineFormatter(Translations.ChargeMeter.DRAW, avg, "FE"),
         lineFormatter(Translations.ChargeMeter.LOSS, node.getChargeSpec().losses(), "FE/t")
-    ), false);
+    ));
   }
 
   private static void sendProducerStat(Player player, ChargeStorageBlockImpl battery,
       ChargeNetworkImpl.ChargeNode node) {
     var infiniteBattery = battery.getState() == ChargeStorage.State.INFINITE;
     var loss = node.getChargeSpec().losses() * RailcraftConfig.SERVER.lossMultiplier.get();
-    player.displayClientMessage(CommonComponents.joinLines(
+    player.sendSystemMessage(CommonComponents.joinLines(
         Component.translatable(Translations.ChargeMeter.PRODUCER).withStyle(ChatFormatting.BLUE),
         lineFormatter(Translations.ChargeMeter.CHARGE, infiniteBattery ? "INF" : battery.getAvailableCharge(), "FE"),
         lineFormatter(Translations.ChargeMeter.MAX_DRAW, battery.getMaxDraw(), "FE/t"),
         lineFormatter(Translations.ChargeMeter.LOSS, loss, "FE/t"),
         lineFormatter(Translations.ChargeMeter.EFFICIENCY, battery.getEfficiency() * 100.0, "%")
-    ), false);
+    ));
   }
 
   private static Component lineFormatter(String translation, Object data, String unit) {

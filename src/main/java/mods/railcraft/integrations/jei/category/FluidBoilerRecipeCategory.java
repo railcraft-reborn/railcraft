@@ -21,7 +21,7 @@ import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -55,8 +55,8 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
   }
 
   @Override
-  public void draw(FluidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
+  public void draw(FluidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.heatBackground.draw(guiGraphics, 23, 5);
     this.heatOverlay.draw(guiGraphics, 23 + 1, 5 + 1);
     this.flame.draw(guiGraphics, 46, 19);

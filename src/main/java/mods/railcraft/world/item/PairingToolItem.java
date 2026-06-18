@@ -68,7 +68,7 @@ public abstract class PairingToolItem<T, P> extends Item {
         return InteractionResult.FAIL;
       }
       var result = this.begin(target);
-      player.displayClientMessage(result.message(), true);
+      player.sendOverlayMessage(result.message());
       if (result.success()) {
         setTargetPos(itemStack, GlobalPos.of(level.dimension(), pos));
         return InteractionResult.CONSUME;
@@ -104,13 +104,13 @@ public abstract class PairingToolItem<T, P> extends Item {
     }
 
     var result = this.complete(targetEntity, peerEntity);
-    player.displayClientMessage(result.message(), true);
+    player.sendOverlayMessage(result.message());
     clearTargetPos(itemStack);
     return result.success() ? InteractionResult.CONSUME : InteractionResult.FAIL;
   }
 
   private void displayMessageForState(Player player, State state) {
-    player.displayClientMessage(this.getMessageForState(state), true);
+    player.sendOverlayMessage(this.getMessageForState(state));
   }
 
   /**

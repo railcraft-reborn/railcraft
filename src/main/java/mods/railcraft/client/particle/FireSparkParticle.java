@@ -52,10 +52,9 @@ public class FireSparkParticle extends SingleQuadParticle {
     this.zd = vel.z * velScale;
   }
 
-
   @Override
-  protected int getLightColor(float partialTick) {
-    int brightness = super.getLightColor(partialTick);
+  protected int getLightCoords(float partialTick) {
+    int brightness = super.getLightCoords(partialTick);
     int j = brightness >> 16 & 255;
     return 240 | j << 16;
   }
@@ -76,7 +75,7 @@ public class FireSparkParticle extends SingleQuadParticle {
     } else {
       float f = (float) this.age / (float) lifetime;
 
-      if (level.random.nextFloat() > f) {
+      if (random.nextFloat() > f) {
         level.addParticle(ParticleTypes.SMOKE, x, y, z, xd, yd, zd);
       }
 

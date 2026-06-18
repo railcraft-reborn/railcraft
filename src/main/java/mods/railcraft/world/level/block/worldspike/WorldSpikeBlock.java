@@ -51,9 +51,9 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
   }
 
   private void forceChunk(ServerLevel serverLevel, BlockPos pos, boolean add) {
-    var chunkPos = new ChunkPos(pos);
-    for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
-      for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
+    var chunkPos = ChunkPos.containing(pos);
+    for (int x = chunkPos.x() - 1; x <= chunkPos.x() + 1; x++) {
+      for (int z = chunkPos.z() - 1; z <= chunkPos.z() + 1; z++) {
         Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, pos, x, z, add, false);
       }
     }

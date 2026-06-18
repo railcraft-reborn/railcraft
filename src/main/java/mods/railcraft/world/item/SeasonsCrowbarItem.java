@@ -28,7 +28,7 @@ public class SeasonsCrowbarItem extends CrowbarItem {
     if (!level.isClientSide()) {
       incrementSeason(itemStack);
       var season = getSeason(itemStack);
-      player.displayClientMessage(getDescriptionText(season, false), true);
+      player.sendOverlayMessage(getDescriptionText(season, false));
     }
     return InteractionResult.SUCCESS;
   }

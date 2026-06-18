@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
@@ -57,37 +58,37 @@ public class RollingRecipeProvider extends RecipeProvider {
 
   private void misc() {
     RollingRecipePattern.hForm(output, Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)),
-        RailcraftItems.POST.variantFor(DyeColor.BLACK).get(), 16);
+        new ItemStackTemplate(RailcraftItems.POST.variantFor(DyeColor.BLACK), 16));
 
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_PLATE)),
-        RailcraftItems.TURBINE_BLADE.get(), 1, "steel_turbine_blade");
+        new ItemStackTemplate(RailcraftItems.TURBINE_BLADE), "steel_turbine_blade");
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.NICKEL_PLATE)),
-        RailcraftItems.TURBINE_BLADE.get(), 1, "nickel_turbine_blade");
+        new ItemStackTemplate(RailcraftItems.TURBINE_BLADE), "nickel_turbine_blade");
 
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRONZE_PLATE)),
-        RailcraftItems.BUSHING_GEAR.get(), 4, "_bronze");
+        new ItemStackTemplate(RailcraftItems.BUSHING_GEAR, 4), "_bronze");
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRASS_PLATE)),
-        RailcraftItems.BUSHING_GEAR.get(), 4, "_brass");
+        new ItemStackTemplate(RailcraftItems.BUSHING_GEAR, 4), "_brass");
   }
 
   private void buildChargeSpool() {
-    RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_LARGE.get())
+    RollingRecipeBuilder.rolled(new ItemStackTemplate(RailcraftItems.CHARGE_SPOOL_LARGE))
         .pattern("a")
         .define(this.items, 'a', Tags.Items.STORAGE_BLOCKS_COPPER)
         .save(output);
-    RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_SMALL.get())
+    RollingRecipeBuilder.rolled(new ItemStackTemplate(RailcraftItems.CHARGE_SPOOL_SMALL))
         .pattern("a")
         .define(this.items, 'a', Tags.Items.INGOTS_COPPER)
         .save(output);
   }
 
   private void buildTrackParts() {
-    final var trackParts = RailcraftItems.TRACK_PARTS.get();
-    var name = RecipeBuilder.getDefaultRecipeId(trackParts).getPath();
+    final var trackParts = new ItemStackTemplate(RailcraftItems.TRACK_PARTS);
+    var name = RecipeBuilder.getDefaultRecipeId(trackParts).identifier().getPath();
     RollingRecipeBuilder.rolled(trackParts)
         .pattern("aa ")
         .pattern("a  ")
@@ -106,137 +107,137 @@ public class RollingRecipeProvider extends RecipeProvider {
   private void buildRebars() {
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)),
-        RailcraftItems.REBAR.get(), 4, "rebar_iron");
+        new ItemStackTemplate(RailcraftItems.REBAR), "rebar_iron");
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRONZE_INGOT)),
-        RailcraftItems.REBAR.get(), 4, "rebar_bronze");
+        new ItemStackTemplate(RailcraftItems.REBAR), "rebar_bronze");
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_INGOT)),
-        RailcraftItems.REBAR.get(), 6, "rebar_invar");
+        new ItemStackTemplate(RailcraftItems.REBAR), "rebar_invar");
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
-        RailcraftItems.REBAR.get(), 8, "rebar_steel");
+        new ItemStackTemplate(RailcraftItems.REBAR), "rebar_steel");
   }
 
   private void buildElectrodes() {
     RollingRecipePattern.line(output, Ingredient.of(Items.COAL, Items.CHARCOAL),
-        RailcraftItems.CARBON_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.CARBON_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.NICKEL_PLATE)),
-        RailcraftItems.NICKEL_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.NICKEL_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.IRON_PLATE)),
-        RailcraftItems.IRON_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.IRON_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.ZINC_PLATE)),
-        RailcraftItems.ZINC_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.ZINC_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.SILVER_PLATE)),
-        RailcraftItems.SILVER_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.SILVER_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_PLATE)),
-        RailcraftItems.STEEL_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.STEEL_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.TIN_PLATE)),
-        RailcraftItems.TIN_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.TIN_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.GOLD_PLATE)),
-        RailcraftItems.GOLD_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.GOLD_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.LEAD_PLATE)),
-        RailcraftItems.LEAD_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.LEAD_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRASS_PLATE)),
-        RailcraftItems.BRASS_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.BRASS_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_PLATE)),
-        RailcraftItems.INVAR_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.INVAR_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRONZE_PLATE)),
-        RailcraftItems.BRONZE_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.BRONZE_ELECTRODE));
     RollingRecipePattern.line(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.COPPER_PLATE)),
-        RailcraftItems.COPPER_ELECTRODE.get(), 1);
+        new ItemStackTemplate(RailcraftItems.COPPER_ELECTRODE));
   }
 
   private void buildRails() {
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)),
-        RailcraftItems.STANDARD_RAIL.get(), 8, "standard_rail");
+        new ItemStackTemplate(RailcraftItems.STANDARD_RAIL, 8), "standard_rail");
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRONZE_INGOT)),
-        RailcraftItems.STANDARD_RAIL.get(), 8, "bronze_rail");
+        new ItemStackTemplate(RailcraftItems.STANDARD_RAIL, 8), "bronze_rail");
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_INGOT)),
-        RailcraftItems.STANDARD_RAIL.get(), 12, "invar_rail");
+        new ItemStackTemplate(RailcraftItems.STANDARD_RAIL, 12), "invar_rail");
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
-        RailcraftItems.STANDARD_RAIL.get(), 16, "steel_rail");
+        new ItemStackTemplate(RailcraftItems.STANDARD_RAIL, 16), "steel_rail");
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_COPPER)),
-        RailcraftItems.ELECTRIC_RAIL.get(), 6, "copper_electric_rail");
+        new ItemStackTemplate(RailcraftItems.ELECTRIC_RAIL, 6), "copper_electric_rail");
     RollingRecipePattern.parallelLines(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)),
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_GOLD)),
-        RailcraftItems.ADVANCED_RAIL.get(), 8, "advanced_rail");
+        new ItemStackTemplate(RailcraftItems.ADVANCED_RAIL, 8), "advanced_rail");
     RollingRecipePattern.parallelThreeLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
         Ingredient.of(Items.BLAZE_POWDER),
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_GOLD)),
-        RailcraftItems.HIGH_SPEED_RAIL.get(), 8, "standard_high_speed_rail");
+        new ItemStackTemplate(RailcraftItems.HIGH_SPEED_RAIL, 8), "standard_high_speed_rail");
     RollingRecipePattern.parallelThreeLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.OBSIDIAN_DUST)),
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
-        RailcraftItems.REINFORCED_RAIL.get(), 8, "steel_reinforced_rail");
+        new ItemStackTemplate(RailcraftItems.REINFORCED_RAIL, 8), "steel_reinforced_rail");
     RollingRecipePattern.parallelThreeLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_INGOT)),
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.OBSIDIAN_DUST)),
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_INGOT)),
-        RailcraftItems.REINFORCED_RAIL.get(), 4, "invar_reinforced_rail");
+        new ItemStackTemplate(RailcraftItems.REINFORCED_RAIL, 4), "invar_reinforced_rail");
     RollingRecipePattern.parallelThreeLines(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_COPPER)),
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
-        RailcraftItems.ELECTRIC_RAIL.get(), 12);
+        new ItemStackTemplate(RailcraftItems.ELECTRIC_RAIL, 12));
   }
 
   private void buildPlates() {
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)),
-        RailcraftItems.IRON_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.IRON_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_GOLD)),
-        RailcraftItems.GOLD_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.GOLD_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_COPPER)),
-        RailcraftItems.COPPER_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.COPPER_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_INGOT)),
-        RailcraftItems.STEEL_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.STEEL_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.NICKEL_INGOT)),
-        RailcraftItems.NICKEL_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.NICKEL_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.INVAR_INGOT)),
-        RailcraftItems.INVAR_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.INVAR_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRASS_INGOT)),
-        RailcraftItems.BRASS_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.BRASS_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.TIN_INGOT)),
-        RailcraftItems.TIN_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.TIN_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.BRONZE_INGOT)),
-        RailcraftItems.BRONZE_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.BRONZE_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.LEAD_INGOT)),
-        RailcraftItems.LEAD_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.LEAD_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.SILVER_INGOT)),
-        RailcraftItems.SILVER_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.SILVER_PLATE, 4));
     RollingRecipePattern.square2x2(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.ZINC_INGOT)),
-        RailcraftItems.ZINC_PLATE.get(), 4);
+        new ItemStackTemplate(RailcraftItems.ZINC_PLATE, 4));
   }
 }

@@ -24,7 +24,7 @@ public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
         continue;
       }
 
-      var bounds = new Rect2i(gui.getGuiLeft() + slot.x, gui.getGuiTop() + slot.y, 17, 17);
+      var bounds = new Rect2i(gui.getLeftPos() + slot.x, gui.getTopPos() + slot.y, 17, 17);
 
       if (ingredient.getIngredient() instanceof ItemStack itemStack) {
         if ((slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom())) {

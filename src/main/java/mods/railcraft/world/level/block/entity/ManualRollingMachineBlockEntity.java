@@ -123,7 +123,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       var recipe = blockEntity.currentRecipe.get();
       if (blockEntity.progress >= recipe.value().getProcessTime()) {
         blockEntity.isWorking = false;
-        var result = recipe.value().assemble(blockEntity.craftMatrix.asCraftInput(), level.registryAccess());
+        var result = recipe.value().assemble(blockEntity.craftMatrix.asCraftInput());
         if (blockEntity.invResult.canFit(result)) {
           blockEntity.craftMatrix.getItems().forEach(x -> x.shrink(1));
           blockEntity.invResult.insert(result);

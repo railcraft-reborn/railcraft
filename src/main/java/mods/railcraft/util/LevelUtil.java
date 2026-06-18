@@ -116,11 +116,11 @@ public class LevelUtil {
     if (stack.isEmpty()) {
       return;
     }
-    float xOffset = level.random.nextFloat() * 0.8F + 0.1F;
-    float yOffset = level.random.nextFloat() * 0.8F + 0.1F;
-    float zOffset = level.random.nextFloat() * 0.8F + 0.1F;
+    float xOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
+    float yOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
+    float zOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
     while (!stack.isEmpty()) {
-      int numToDrop = Math.min(level.random.nextInt(21) + 10, stack.getCount());
+      int numToDrop = Math.min(level.getRandom().nextInt(21) + 10, stack.getCount());
       var newStack = stack.split(numToDrop);
       var itemEntity = new ItemEntity(level, x + xOffset, y + yOffset, z + zOffset, newStack);
       level.addFreshEntity(itemEntity);

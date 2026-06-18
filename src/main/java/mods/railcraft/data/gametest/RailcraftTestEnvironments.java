@@ -9,10 +9,10 @@ import net.minecraft.resources.ResourceKey;
 
 public class RailcraftTestEnvironments {
 
-  public static final ResourceKey<TestEnvironmentDefinition> DEFAULT =
+  public static final ResourceKey<TestEnvironmentDefinition<?>> DEFAULT =
       ResourceKey.create(Registries.TEST_ENVIRONMENT, RailcraftConstants.id("default"));
 
-  public static void bootstrap(BootstrapContext<TestEnvironmentDefinition> bootstrap) {
+  public static void bootstrap(BootstrapContext<TestEnvironmentDefinition<?>> bootstrap) {
     bootstrap.register(DEFAULT, new TestEnvironmentDefinition.AllOf(List.of()));
   }
 }

@@ -121,7 +121,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void writeToBuf(RegistryFriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeNullable(this.ringCentroidPos,  (buffer, value) -> buffer.writeVec3(value));
+    data.writeNullable(this.ringCentroidPos, Vec3.STREAM_CODEC);
     data.writeUUID(this.ringId);
   }
 
@@ -129,7 +129,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void readFromBuf(RegistryFriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = data.readNullable(buffer -> buffer.readVec3());
+    this.ringCentroidPos = data.readNullable(Vec3.STREAM_CODEC);
     this.ringId = data.readUUID();
   }
 

@@ -35,8 +35,8 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
    */
   @Overwrite
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
-    var ret = super.interact(player, hand);
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+    var ret = super.interact(player, hand, location);
     if (ret.consumesAction()) {
       return ret;
     }
@@ -47,7 +47,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
         var craftRemainder = itemstack.getCraftingRemainder();
         itemstack.shrink(1);
         if (itemstack.isEmpty()) {
-          player.setItemInHand(hand, craftRemainder);
+          player.setItemInHand(hand, craftRemainder.create());
         }
       }
 

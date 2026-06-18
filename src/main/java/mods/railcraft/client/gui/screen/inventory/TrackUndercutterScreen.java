@@ -5,7 +5,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.IngameWindowScreen;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.world.inventory.TrackUndercutterMenu;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,21 +19,20 @@ public class TrackUndercutterScreen extends MaintenanceMinecartScreen<TrackUnder
   private static final Component SIDES = Component.translatable(Translations.Screen.SIDES);
 
   public TrackUndercutterScreen(TrackUndercutterMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title, menu.getTrackUndercutter());
-    this.imageHeight = 205;
+    super(menu, inventory, title, 205, menu.getTrackUndercutter());
     this.inventoryLabelY = this.imageHeight - 94;
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    graphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY,
         4210752, false);
-    guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
+    graphics.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY,
         4210752, false);
-    guiGraphics.drawString(this.font, PATTERN, 8, 23, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, STOCK, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, UNDER, imageWidth, 23);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, SIDES, imageWidth, 65);
+    graphics.text(this.font, PATTERN, 8, 23, IngameWindowScreen.TEXT_COLOR, false);
+    graphics.text(this.font, STOCK, 125, 21, IngameWindowScreen.TEXT_COLOR, false);
+    GuiUtil.drawCenteredString(graphics, this.font, UNDER, imageWidth, 23);
+    GuiUtil.drawCenteredString(graphics, this.font, SIDES, imageWidth, 65);
   }
 
   @Override

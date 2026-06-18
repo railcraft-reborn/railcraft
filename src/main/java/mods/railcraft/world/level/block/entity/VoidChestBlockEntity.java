@@ -71,7 +71,7 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
     double x = (double)pos.getX() + 0.5;
     double y = (double)pos.getY() + 0.5;
     double z = (double)pos.getZ() + 0.5;
-    level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+    level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
   }
 
   @Override

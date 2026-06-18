@@ -5,7 +5,7 @@ import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.gui.widget.FluidGaugeWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -27,7 +27,7 @@ public class FluidGaugeRenderer extends WidgetRenderer<FluidGaugeWidget> {
   }
 
   @Override
-  public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX,
+  public void render(Identifier widgetLocation, GuiGraphicsExtractor guiGraphics, int centreX,
       int centreY, int mouseX, int mouseY) {
 
     var fluidStack = this.widget.tank.getFluidStack();

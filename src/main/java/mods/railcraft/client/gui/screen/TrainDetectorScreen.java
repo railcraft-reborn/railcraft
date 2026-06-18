@@ -4,7 +4,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.to_server.SetTrainDetectorMessage;
 import mods.railcraft.world.level.block.entity.detector.TrainDetectorBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -52,10 +52,10 @@ public class TrainDetectorScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     var componentForce = Component.translatable(Translations.Screen.TRAIN_DETECTOR_SIZE,
         this.trainDetector.getTrainSize());
-    GuiUtil.drawCenteredString(guiGraphics, this.font, componentForce, this.windowWidth, 25);
+    GuiUtil.drawCenteredString(graphics, this.font, componentForce, this.windowWidth, 25);
   }
 }

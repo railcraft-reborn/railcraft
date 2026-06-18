@@ -11,7 +11,7 @@ import mods.railcraft.util.routing.RoutingLogicException;
 import mods.railcraft.world.inventory.SwitchTrackRouterMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
@@ -34,9 +34,7 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
 
   public SwitchTrackRouterScreen(SwitchTrackRouterMenu menu, Inventory inventory,
       Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 158;
-    this.imageWidth = 176;
+    super(menu, inventory, title, 176, 158);
     this.inventoryLabelY = this.imageHeight - 94;
     this.switchTrackRouter = menu.getSwitchTrackRouter();
 
@@ -49,10 +47,10 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
       }
 
       @Override
-      public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX,
+      public void render(Identifier widgetLocation, GuiGraphicsExtractor graphics, int centreX,
           int centreY, int mouseX, int mouseY) {
         if (!this.getTooltip().isEmpty()) {
-          super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
+          super.render(widgetLocation, graphics, centreX, centreY, mouseX, mouseY);
         }
       }
     });
@@ -143,8 +141,8 @@ public class SwitchTrackRouterScreen extends RailcraftMenuScreen<SwitchTrackRout
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
   }
 }

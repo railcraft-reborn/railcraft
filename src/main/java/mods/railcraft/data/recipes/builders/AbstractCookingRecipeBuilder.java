@@ -5,23 +5,22 @@ import java.util.Map;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.data.recipes.RecipeBuilder;
-import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.crafting.Recipe;
 
 public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
 
-  protected final Item result;
-  protected final int count;
+  protected final ItemInstance result;
   protected final Ingredient ingredient;
   protected final float experience;
   protected final int cookingTime;
   protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-  public AbstractCookingRecipeBuilder(ItemLike result, int count, Ingredient ingredient,
+  public AbstractCookingRecipeBuilder(ItemInstance result, Ingredient ingredient,
       float experience, int cookingTime) {
-    this.result = result.asItem();
-    this.count = count;
+    this.result = result;
     this.ingredient = ingredient;
     this.experience = experience;
     this.cookingTime = cookingTime;
@@ -39,7 +38,7 @@ public abstract class AbstractCookingRecipeBuilder implements RecipeBuilder {
   }
 
   @Override
-  public Item getResult() {
-    return this.result;
+  public ResourceKey<Recipe<?>> defaultId() {
+    return RecipeBuilder.getDefaultRecipeId(this.result);
   }
 }

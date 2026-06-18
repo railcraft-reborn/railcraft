@@ -770,7 +770,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
     var boreSlot = this.getItem(0);
     if (!boreSlot.isEmpty()) {
-      var tunnelBoreHead = boreSlot.getItemHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
+      var tunnelBoreHead = boreSlot.typeHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
       if (tunnelBoreHead != null) {
         double dig = tunnelBoreHead.digModifier();
         hardness /= dig;
@@ -920,8 +920,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
         burn = stack.getBurnTime(null, this.level().fuelValues());
         if (burn > 0) {
           var remainingItem = stack.getItem().getCraftingRemainder(stack);
-          if (!remainingItem.isEmpty()) {
-            this.fuelContainer.setItem(slot, remainingItem);
+          if (remainingItem != null) {
+            this.fuelContainer.setItem(slot, remainingItem.create());
           } else {
             this.fuelContainer.removeItem(slot, 1);
           }

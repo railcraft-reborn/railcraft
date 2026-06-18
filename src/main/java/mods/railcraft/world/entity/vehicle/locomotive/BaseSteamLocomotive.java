@@ -31,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
@@ -105,10 +106,10 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     return FluidTools.interactWithFluidHandler(player, hand, this.getTankManager())
         ? InteractionResult.SUCCESS
-        : super.interact(player, hand);
+        : super.interact(player, hand, location);
   }
 
   public TankManager getTankManager() {

@@ -63,7 +63,7 @@ public class ManualRollingMachineMenu extends RailcraftMenu {
     if (this.blockEntity.level() instanceof ServerLevel level) {
       this.craftResult.setItem(0, this.blockEntity.getRecipe(level)
           .map(RecipeHolder::value)
-          .map(r -> r.assemble(this.craftMatrix.asCraftInput(), this.blockEntity.level().registryAccess()))
+          .map(r -> r.assemble(this.craftMatrix.asCraftInput()))
           .orElse(ItemStack.EMPTY));
     }
   }

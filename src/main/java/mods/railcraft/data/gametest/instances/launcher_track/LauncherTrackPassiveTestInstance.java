@@ -16,7 +16,7 @@ public class LauncherTrackPassiveTestInstance extends GameTestInstance {
   public static final MapCodec<LauncherTrackPassiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(LauncherTrackPassiveTestInstance::new);
 
-  public LauncherTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public LauncherTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

@@ -16,7 +16,7 @@ public class OneWayTrackPassiveTestInstance extends GameTestInstance {
   public static final MapCodec<OneWayTrackPassiveTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(OneWayTrackPassiveTestInstance::new);
 
-  public OneWayTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public OneWayTrackPassiveTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

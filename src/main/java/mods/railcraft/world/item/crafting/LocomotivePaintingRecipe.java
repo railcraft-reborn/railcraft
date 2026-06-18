@@ -1,11 +1,14 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.LocomotiveItem;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -13,9 +16,10 @@ import net.minecraft.world.level.Level;
 
 public class LocomotivePaintingRecipe extends CustomRecipe {
 
-  public LocomotivePaintingRecipe(CraftingBookCategory category) {
-    super(category);
-  }
+  private static final LocomotivePaintingRecipe INSTANCE = new LocomotivePaintingRecipe();
+  private static final MapCodec<LocomotivePaintingRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+  private static final StreamCodec<RegistryFriendlyByteBuf, LocomotivePaintingRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+  public static final RecipeSerializer<LocomotivePaintingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   private ItemStack getItemStackInRow(CraftingInput craftingInput, int row) {
     int width = craftingInput.width();
@@ -44,23 +48,23 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     var dyePrimary = getItemStackInRow(craftingInput, 0);
     var loco = getItemStackInRow(craftingInput, 1);
     var dyeSecondary = getItemStackInRow(craftingInput, 2);
 
-    if (!(dyePrimary.getItem() instanceof DyeItem primaryItem)) {
+    if (!dyePrimary.has(DataComponents.DYE)) {
       return ItemStack.EMPTY;
     }
     if (!(loco.getItem() instanceof LocomotiveItem locomotiveItem)) {
       return ItemStack.EMPTY;
     }
-    if (!(dyeSecondary.getItem() instanceof DyeItem secondaryItem)) {
+    if (!dyeSecondary.has(DataComponents.DYE)) {
       return ItemStack.EMPTY;
     }
 
-    var primaryColor = primaryItem.getDyeColor();
-    var secondaryColor = secondaryItem.getDyeColor();
+    var primaryColor = Objects.requireNonNull(dyePrimary.get(DataComponents.DYE));
+    var secondaryColor = Objects.requireNonNull(dyeSecondary.get(DataComponents.DYE));
     var result = new ItemStack(locomotiveItem);
     var components = loco.getComponents();
     result.applyComponents(components);
@@ -70,6 +74,6 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
 
   @Override
   public RecipeSerializer<LocomotivePaintingRecipe> getSerializer() {
-    return RailcraftRecipeSerializers.LOCOMOTIVE_PAINTING.get();
+    return SERIALIZER;
   }
 }

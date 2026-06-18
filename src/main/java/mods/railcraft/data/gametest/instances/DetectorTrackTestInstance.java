@@ -18,7 +18,7 @@ public class DetectorTrackTestInstance extends GameTestInstance {
   public static final MapCodec<DetectorTrackTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(DetectorTrackTestInstance::new);
 
-  public DetectorTrackTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public DetectorTrackTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

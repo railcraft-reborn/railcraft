@@ -28,7 +28,7 @@ public class BlockSignalTestInstance extends GameTestInstance {
   private static final BlockPos BLOCK_SIGNAL_RIGHT = new BlockPos(2, 1, 3);
   private final boolean spawnCart;
 
-  public BlockSignalTestInstance(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition>> info) {
+  public BlockSignalTestInstance(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
     this.spawnCart = spawnCart;
   }

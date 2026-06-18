@@ -10,7 +10,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.RecipeUtil;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
@@ -26,6 +25,25 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
 public class CrusherRecipe implements Recipe<SingleRecipeInput> {
+
+  private static final MapCodec<CrusherRecipe> MAP_CODEC =
+      RecordCodecBuilder.mapCodec(instance -> instance.group(
+          Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
+              .forGetter(recipe -> recipe.ingredient),
+          CrusherOutput.CODEC.listOf().fieldOf(RecipeJsonKeys.OUTPUTS)
+              .orElse(Collections.emptyList())
+              .forGetter(recipe -> recipe.probabilityOutputs),
+          ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.PROCESS_TIME,
+                  CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
+              .forGetter(recipe -> recipe.processTime)
+      ).apply(instance, CrusherRecipe::new));
+
+  private static final StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> STREAM_CODEC =
+      StreamCodec.of(CrusherRecipe::toNetwork, CrusherRecipe::fromNetwork);
+
+  public static final RecipeSerializer<CrusherRecipe> SERIALIZER =
+      new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
   private final Ingredient ingredient;
   private final List<CrusherOutput> probabilityOutputs;
   private final int processTime;
@@ -49,7 +67,7 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
   }
 
   @Override
-  public ItemStack assemble(SingleRecipeInput inventory, HolderLookup.Provider provider) {
+  public ItemStack assemble(SingleRecipeInput inventory) {
     return ItemStack.EMPTY;
   }
 
@@ -67,7 +85,7 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
 
   @Override
   public RecipeSerializer<CrusherRecipe> getSerializer() {
-    return RailcraftRecipeSerializers.CRUSHER.get();
+    return SERIALIZER;
   }
 
   @Override
@@ -78,6 +96,16 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
   @Override
   public boolean isSpecial() {
     return true;
+  }
+
+  @Override
+  public boolean showNotification() {
+    return true;
+  }
+
+  @Override
+  public String group() {
+    return "";
   }
 
   @Override
@@ -102,55 +130,27 @@ public class CrusherRecipe implements Recipe<SingleRecipeInput> {
     }
   }
 
-  public static class Serializer implements RecipeSerializer<CrusherRecipe> {
-
-    private static final MapCodec<CrusherRecipe> CODEC =
-        RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Ingredient.CODEC.fieldOf(RecipeJsonKeys.INGREDIENT)
-                .forGetter(recipe -> recipe.ingredient),
-            CrusherOutput.CODEC.listOf().fieldOf(RecipeJsonKeys.OUTPUTS)
-                .orElse(Collections.emptyList())
-                .forGetter(recipe -> recipe.probabilityOutputs),
-            ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.PROCESS_TIME,
-                    CrusherRecipeBuilder.DEFAULT_PROCESSING_TIME)
-                .forGetter(recipe -> recipe.processTime)
-        ).apply(instance, CrusherRecipe::new));
-
-    private static final StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> STREAM_CODEC =
-        StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
-    @Override
-    public MapCodec<CrusherRecipe> codec() {
-      return CODEC;
+  private static CrusherRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+    var tickCost = buffer.readVarInt();
+    var ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+    var size = buffer.readVarInt();
+    var probabilityOutputs = new ArrayList<CrusherOutput>();
+    for (int i = 0; i < size; i++) {
+      probabilityOutputs.add(new CrusherOutput(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer),
+          buffer.readVarInt(), buffer.readDouble()));
     }
+    return new CrusherRecipe(ingredient, probabilityOutputs, tickCost);
+  }
 
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> streamCodec() {
-      return STREAM_CODEC;
-    }
-
-    private static CrusherRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-      var tickCost = buffer.readVarInt();
-      var ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-      var size = buffer.readVarInt();
-      var probabilityOutputs = new ArrayList<CrusherOutput>();
-      for (int i = 0; i < size; i++) {
-        probabilityOutputs.add(new CrusherOutput(Ingredient.CONTENTS_STREAM_CODEC.decode(buffer),
-            buffer.readVarInt(), buffer.readDouble()));
-      }
-      return new CrusherRecipe(ingredient, probabilityOutputs, tickCost);
-    }
-
-    private static void toNetwork(RegistryFriendlyByteBuf buffer, CrusherRecipe recipe) {
-      buffer.writeVarInt(recipe.processTime);
-      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-      buffer.writeVarInt(recipe.probabilityOutputs.size());
-      for (int i = 0; i < recipe.probabilityOutputs.size(); i++) {
-        var item = recipe.probabilityOutputs.get(i);
-        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, item.output);
-        buffer.writeVarInt(item.quantity);
-        buffer.writeDouble(item.probability);
-      }
+  private static void toNetwork(RegistryFriendlyByteBuf buffer, CrusherRecipe recipe) {
+    buffer.writeVarInt(recipe.processTime);
+    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
+    buffer.writeVarInt(recipe.probabilityOutputs.size());
+    for (int i = 0; i < recipe.probabilityOutputs.size(); i++) {
+      var item = recipe.probabilityOutputs.get(i);
+      Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, item.output);
+      buffer.writeVarInt(item.quantity);
+      buffer.writeDouble(item.probability);
     }
   }
 }

@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.RuleBasedBlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 public class RailcraftOreFeatures {
@@ -127,13 +126,13 @@ public class RailcraftOreFeatures {
             BlockStateProvider.simple(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).get()))));
     context.register(SALTPETER, new ConfiguredFeature<>(Feature.DISK,
         new DiskConfiguration(
-            RuleBasedBlockStateProvider.simple(RailcraftBlocks.SALTPETER_ORE.get()),
+            BlockStateProvider.simple(RailcraftBlocks.SALTPETER_ORE.get()),
             BlockPredicate.matchesBlocks(
                 List.of(Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get())),
             UniformInt.of(2, 3), 1)));
     context.register(FIRESTONE, new ConfiguredFeature<>(Feature.DISK,
         new DiskConfiguration(
-            RuleBasedBlockStateProvider.simple(RailcraftBlocks.FIRESTONE_ORE.get()),
+            BlockStateProvider.simple(RailcraftBlocks.FIRESTONE_ORE.get()),
             BlockPredicate.matchesBlocks(
                 List.of(Blocks.NETHERRACK, RailcraftBlocks.FIRESTONE_ORE.get())),
             ConstantInt.of(1), 1)));

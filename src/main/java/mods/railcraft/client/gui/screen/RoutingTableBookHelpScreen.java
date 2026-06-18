@@ -7,7 +7,7 @@ import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
@@ -146,21 +146,21 @@ public class RoutingTableBookHelpScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+    super.extractRenderState(graphics, mouseX, mouseY, partialTick);
     int xOffset = (this.width - RoutingTableBookScreen.IMAGE_WIDTH) / 2;
     int yOffset = (this.height - RoutingTableBookScreen.IMAGE_HEIGHT) / 2;
     int l = this.font.width(this.numberOfPages);
-    guiGraphics.drawString(this.font, this.numberOfPages, xOffset - l + 225, yOffset + 15,
+    graphics.text(this.font, this.numberOfPages, xOffset - l + 225, yOffset + 15,
         -16777216, false);
   }
 
   @Override
-  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderTransparentBackground(guiGraphics);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    this.extractTransparentBackground(graphics);
     int xOffset = (this.width - RoutingTableBookScreen.IMAGE_WIDTH) / 2;
     int yOffset = (this.height - RoutingTableBookScreen.IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, RoutingTableBookScreen.BOOK_LOCATION, xOffset, yOffset, 0, 0,
+    graphics.blit(RenderPipelines.GUI_TEXTURED, RoutingTableBookScreen.BOOK_LOCATION, xOffset, yOffset, 0, 0,
         RoutingTableBookScreen.IMAGE_WIDTH, RoutingTableBookScreen.IMAGE_HEIGHT,
         RoutingTableBookScreen.BACKGROUND_TEXTURE_WIDTH, RoutingTableBookScreen.BACKGROUND_TEXTURE_HEIGHT);
   }

@@ -60,8 +60,8 @@ public class LocomotiveTrackBlock extends PoweredOutfittedTrackBlock {
     var res = level.setBlockAndUpdate(pos, state.setValue(LOCOMOTIVE_MODE, newMode));
     var currentMode = Component.translatable(Translations.Tips.CURRENT_MODE);
     var modeDisplay = newMode.getDisplayName().copy().withStyle(ChatFormatting.DARK_PURPLE);
-    player.displayClientMessage(
-        currentMode.append(CommonComponents.SPACE).append(modeDisplay), true);
+    player.sendOverlayMessage(
+        currentMode.append(CommonComponents.SPACE).append(modeDisplay));
     return res;
   }
 

@@ -19,7 +19,7 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.SolidBoilerJEIRecipe;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluids;
@@ -52,8 +52,8 @@ public class SolidBoilerRecipeCategory extends AbstractRecipeCategory<SolidBoile
   }
 
   @Override
-  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
+  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.heatBackground.draw(guiGraphics, 23, 5);
     this.heatOverlay.draw(guiGraphics, 23 + 1, 5 + 1);
     this.flame.draw(guiGraphics, 46, 3);

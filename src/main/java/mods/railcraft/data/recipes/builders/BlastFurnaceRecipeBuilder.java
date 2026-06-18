@@ -8,10 +8,10 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.ItemLike;
 
 public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
@@ -19,28 +19,22 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   private final int slagOutput;
 
-  private BlastFurnaceRecipeBuilder(ItemLike result, int count, Ingredient ingredient,
+  private BlastFurnaceRecipeBuilder(ItemInstance result, Ingredient ingredient,
       float experience, int cookingTime, int slagOutput) {
-    super(result, count, ingredient, experience, cookingTime);
+    super(result, ingredient, experience, cookingTime);
     this.slagOutput = slagOutput;
   }
 
-  public static BlastFurnaceRecipeBuilder smelting(ItemLike result, int count,
-      Ingredient ingredient, int multiplier, int slagOutput) {
-    return new BlastFurnaceRecipeBuilder(result, count, ingredient, 0,
-        DEFAULT_COOKING_TIME * multiplier, slagOutput);
-  }
-
-  public static BlastFurnaceRecipeBuilder smelting(ItemLike result, Ingredient ingredient,
+  public static BlastFurnaceRecipeBuilder smelting(ItemInstance result, Ingredient ingredient,
       int multiplier, int slagOutput) {
-    return new BlastFurnaceRecipeBuilder(result.asItem(), multiplier, ingredient,
-        0, DEFAULT_COOKING_TIME * multiplier, slagOutput);
+    return new BlastFurnaceRecipeBuilder(new ItemStackTemplate(result.typeHolder(), multiplier),
+        ingredient, 0, DEFAULT_COOKING_TIME * multiplier, slagOutput);
   }
 
-  public static BlastFurnaceRecipeBuilder recycling(ItemLike result, Ingredient ingredient,
+  public static BlastFurnaceRecipeBuilder recycling(ItemInstance result, Ingredient ingredient,
       int multiplier) {
-    return new BlastFurnaceRecipeBuilder(result.asItem(),
-        multiplier, ingredient, 0, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
+    return new BlastFurnaceRecipeBuilder(new ItemStackTemplate(result.typeHolder(), multiplier),
+        ingredient, 0, (DEFAULT_COOKING_TIME / 2) * multiplier, 0);
   }
 
   @Override
@@ -57,7 +51,8 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    var recipe = new BlastFurnaceRecipe(this.ingredient, new ItemStack(this.result, this.count),
+    var recipe = new BlastFurnaceRecipe(this.ingredient,
+        new ItemStackTemplate(this.result.typeHolder(), this.result.count()),
         this.experience, this.cookingTime, this.slagOutput);
     recipeOutput.accept(customResourceKey, recipe, builder.build(advancementId));
   }

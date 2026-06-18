@@ -17,8 +17,7 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -51,7 +50,7 @@ public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<
 
   @Override
   public void draw(RecipeHolder<CokeOvenRecipe> recipe, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.flame.draw(guiGraphics, 1, 3);
     this.arrow.draw(guiGraphics, 20, 21);
   }
@@ -87,7 +86,7 @@ public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<
     builder
         .addOutputSlot(49, 20)
         .setOutputSlotBackground()
-        .add(recipe.assemble(null, Minecraft.getInstance().level.registryAccess()));
+        .add(recipe.assemble(null));
     // Not the actual capacity, but is 10000 for a better visibility
     builder.addOutputSlot(78, 1)
         .add(NeoForgeTypes.FLUID_STACK, recipe.getCreosote())

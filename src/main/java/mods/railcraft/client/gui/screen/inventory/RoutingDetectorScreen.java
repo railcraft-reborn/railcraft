@@ -12,7 +12,7 @@ import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
@@ -35,9 +35,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
 
   public RoutingDetectorScreen(RoutingDetectorMenu menu, Inventory inventory,
       Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 158;
-    this.imageWidth = 176;
+    super(menu, inventory, title, 176, 158);
     this.inventoryLabelY = this.imageHeight - 94;
     this.routingDetector = menu.getRoutingDetector();
 
@@ -51,7 +49,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
       }
 
       @Override
-      public void render(Identifier widgetLocation, GuiGraphics guiGraphics, int centreX,
+      public void render(Identifier widgetLocation, GuiGraphicsExtractor guiGraphics, int centreX,
           int centreY, int mouseX, int mouseY) {
         if (!this.getTooltip().isEmpty()) {
           super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
@@ -145,8 +143,8 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
   }
 }

@@ -5,7 +5,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.to_server.SetLauncherTrackMessage;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -44,8 +44,9 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
+    super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
     minus10Button.active =
         this.track.getLaunchForce() >= LauncherTrackBlockEntity.MIN_LAUNCH_FORCE + 10;
     minus1Button.active =
@@ -57,11 +58,11 @@ public class LauncherTrackScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     var componentForce = Component.translatable(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE,
         this.track.getLaunchForce());
-    GuiUtil.drawCenteredString(guiGraphics, this.font, componentForce, this.windowWidth, 25);
+    GuiUtil.drawCenteredString(graphics, this.font, componentForce, this.windowWidth, 25);
   }
 
   private void incrementForce(int incrementAmount) {

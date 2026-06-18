@@ -19,7 +19,7 @@ public class ForceTrackTestInstance extends GameTestInstance {
   public static final MapCodec<ForceTrackTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(ForceTrackTestInstance::new);
 
-  public ForceTrackTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public ForceTrackTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

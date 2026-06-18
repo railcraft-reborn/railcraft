@@ -16,7 +16,7 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -39,12 +39,15 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   private int refreshTimer;
 
-  protected LocomotiveScreen(T menu, Inventory inventory, Component title, String type) {
-    super(menu, inventory, title);
+  protected LocomotiveScreen(T menu, Inventory inventory, Component title, int imageHeight, String type) {
+    super(menu, inventory, title, imageHeight);
     this.locomotive = menu.getLocomotive();
     this.type = type;
-    this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
     this.inventoryLabelY = this.imageHeight - 94;
+  }
+
+  protected LocomotiveScreen(T menu, Inventory inventory, Component title, String type) {
+    this(menu, inventory, title, LocomotiveMenu.DEFAULT_HEIGHT, type);
   }
 
   private Optional<Tooltip> createLockTooltip(Locomotive.Lock lock) {
@@ -61,11 +64,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   public void init() {
     super.init();
 
-    var centreX = (this.width - this.getXSize()) / 2;
-    var centreY = (this.height - this.getYSize()) / 2;
+    var centreX = (this.width - this.getImageWidth()) / 2;
+    var centreY = (this.height - this.getImageHeight()) / 2;
 
     var layout = LinearLayout.vertical();
-    layout.setPosition(centreX + 4, centreY + this.getYSize() - 129);
+    layout.setPosition(centreX + 4, centreY + this.getImageHeight() - 129);
 
     var modeLayout = layout.addChild(LinearLayout.horizontal().spacing(2));
 
@@ -108,7 +111,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     // Lock button
     this.lockButton = this.addRenderableWidget(
         MultiButton.builder(ButtonTexture.SMALL_BUTTON, this.locomotive.getLock())
-            .bounds(centreX + 154, centreY + this.getYSize() - 111, 16, 16)
+            .bounds(centreX + 154, centreY + this.getImageHeight() - 111, 16, 16)
             .tooltipFactory(this::createLockTooltip)
             .stateCallback(this::setLock)
             .build());
@@ -178,8 +181,8 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   }
 
   @Override
-  protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
-    super.renderTooltip(guiGraphics, x, y);
+  protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    super.extractTooltip(graphics, mouseX, mouseY);
     if (this.hoveredSlot instanceof ItemFilterSlot slotTicket && !slotTicket.hasItem()) {
       slotTicket.setTooltip(Collections.singletonList(ClientTooltipComponent.create(
           Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET).getVisualOrderText())));

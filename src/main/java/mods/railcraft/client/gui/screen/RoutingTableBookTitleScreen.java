@@ -8,7 +8,7 @@ import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.network.to_server.EditRoutingTableBookMessage;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
@@ -113,24 +113,25 @@ public class RoutingTableBookTitleScreen extends Screen {
     }
   }
 
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    super.render(guiGraphics, mouseX, mouseY, partialTick);
+  @Override
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    super.extractRenderState(graphics, mouseX, mouseY, a);
     int xOffset = (this.width - RoutingTableBookScreen.IMAGE_WIDTH) / 2;
     int yOffset = (this.height - RoutingTableBookScreen.IMAGE_HEIGHT) / 2;
     int l = this.font.width(EDIT_TITLE_LABEL);
-    guiGraphics.drawString(this.font, EDIT_TITLE_LABEL, xOffset + 160 - l, yOffset + 34, -16777216, false);
+    graphics.text(this.font, EDIT_TITLE_LABEL, xOffset + 160 - l, yOffset + 34, -16777216, false);
     int l1 = this.font.width(this.title);
-    guiGraphics.drawString(this.font, this.title, xOffset + 120 - l1 / 2, yOffset + 50, -16777216, false);
+    graphics.text(this.font, this.title, xOffset + 120 - l1 / 2, yOffset + 50, -16777216, false);
     int l2 = this.font.width(this.ownerText);
-    guiGraphics.drawString(this.font, this.ownerText, xOffset + 130 - l2, yOffset + 60, -16777216, false);
+    graphics.text(this.font, this.ownerText, xOffset + 130 - l2, yOffset + 60, -16777216, false);
   }
 
   @Override
-  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderTransparentBackground(guiGraphics);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    this.extractTransparentBackground(graphics);
     int xOffset = (this.width - RoutingTableBookScreen.IMAGE_WIDTH) / 2;
     int yOffset = (this.height - RoutingTableBookScreen.IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, RoutingTableBookScreen.BOOK_LOCATION, xOffset, yOffset, 0, 0,
+    graphics.blit(RenderPipelines.GUI_TEXTURED, RoutingTableBookScreen.BOOK_LOCATION, xOffset, yOffset, 0, 0,
         RoutingTableBookScreen.IMAGE_WIDTH, RoutingTableBookScreen.IMAGE_HEIGHT,
         RoutingTableBookScreen.BACKGROUND_TEXTURE_WIDTH, RoutingTableBookScreen.BACKGROUND_TEXTURE_HEIGHT);
   }

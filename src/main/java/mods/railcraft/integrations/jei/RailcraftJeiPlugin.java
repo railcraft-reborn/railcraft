@@ -38,7 +38,7 @@ import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -152,7 +152,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
         new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.SPLIT)) {
           @Override
           public void drawInfo(RecipeHolder<CartDisassemblyRecipe> recipe, int recipeWidth,
-              int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+              int recipeHeight, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
             super.drawInfo(recipe, recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
             var drawable = registration.getJeiHelpers().getGuiHelper()
                 .createDrawableItemStack(new ItemStack(Items.MINECART));

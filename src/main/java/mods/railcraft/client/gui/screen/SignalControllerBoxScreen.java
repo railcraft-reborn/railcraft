@@ -5,7 +5,7 @@ import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.to_server.SetSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -47,17 +47,17 @@ public class SignalControllerBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(graphics, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_DEFAULT),
         this.windowWidth, 25);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(graphics, this.font,
         this.defaultAspect.getDisplayName(), this.windowWidth, 35);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(graphics, this.font,
         Component.translatable(Translations.Screen.SINGAL_CONTROLLER_BOX_POWERED),
         this.windowWidth, 60);
-    GuiUtil.drawCenteredString(guiGraphics, this.font,
+    GuiUtil.drawCenteredString(graphics, this.font,
         this.poweredAspect.getDisplayName(), this.windowWidth, 70);
   }
 

@@ -4,25 +4,23 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 
 public class RollingRecipePattern {
 
   public static void line(RecipeOutput recipeOutput,
       Ingredient ingredient,
-      ItemLike result,
-      int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    line(recipeOutput, ingredient, result, count, name);
+      ItemStackTemplate result) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
+    line(recipeOutput, ingredient, result, name);
   }
 
   public static void line(RecipeOutput recipeOutput,
       Ingredient ingredient,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String customName) {
-    RollingRecipeBuilder.rolled(result, count)
+    RollingRecipeBuilder.rolled(result)
         .pattern(" a ")
         .pattern(" a ")
         .pattern(" a ")
@@ -32,19 +30,17 @@ public class RollingRecipePattern {
 
   public static void parallelLines(RecipeOutput recipeOutput,
       Ingredient ingred,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String customName) {
-    parallelLines(recipeOutput, ingred, ingred, result, count, customName);
+    parallelLines(recipeOutput, ingred, ingred, result, customName);
   }
 
   public static void parallelLines(RecipeOutput recipeOutput,
       Ingredient ingred1,
       Ingredient ingred2,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String customName) {
-    RollingRecipeBuilder.rolled(result, count)
+    RollingRecipeBuilder.rolled(result)
         .pattern("a b")
         .pattern("a b")
         .pattern("a b")
@@ -58,20 +54,18 @@ public class RollingRecipePattern {
       Ingredient ingred1,
       Ingredient ingred2,
       Ingredient ingred3,
-      ItemLike result,
-      int count) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    parallelThreeLines(recipeOutput, ingred1, ingred2, ingred3, result, count, name);
+      ItemStackTemplate result) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
+    parallelThreeLines(recipeOutput, ingred1, ingred2, ingred3, result, name);
   }
 
   public static void parallelThreeLines(RecipeOutput recipeOutput,
       Ingredient ingred1,
       Ingredient ingred2,
       Ingredient ingred3,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String customName) {
-    RollingRecipeBuilder.rolled(result, count)
+    RollingRecipeBuilder.rolled(result)
         .pattern("abc")
         .pattern("abc")
         .pattern("abc")
@@ -83,10 +77,9 @@ public class RollingRecipePattern {
 
   public static void diagonalLine(RecipeOutput recipeOutput,
       Ingredient materialTag,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String customName) {
-    RollingRecipeBuilder.rolled(result, count)
+    RollingRecipeBuilder.rolled(result)
         .pattern("  a")
         .pattern(" a ")
         .pattern("a  ")
@@ -94,20 +87,16 @@ public class RollingRecipePattern {
         .save(recipeOutput, RailcraftConstants.id(customName));
   }
 
-  public static void square2x2(RecipeOutput recipeOutput,
-      Ingredient materialTag,
-      ItemLike result,
-      int count) {
-    square2x2(recipeOutput, materialTag, result, count, "");
+  public static void square2x2(RecipeOutput recipeOutput, Ingredient materialTag, ItemStackTemplate result) {
+    square2x2(recipeOutput, materialTag, result, "");
   }
 
   public static void square2x2(RecipeOutput recipeOutput,
       Ingredient materialTag,
-      ItemLike result,
-      int count,
+      ItemStackTemplate result,
       String postfix) {
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-    RollingRecipeBuilder.rolled(result, count)
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
+    RollingRecipeBuilder.rolled(result)
         .pattern("aa")
         .pattern("aa")
         .define('a', materialTag)
@@ -116,9 +105,8 @@ public class RollingRecipePattern {
 
   public static void hForm(RecipeOutput recipeOutput,
       Ingredient materialTag,
-      ItemLike result,
-      int count) {
-    RollingRecipeBuilder.rolled(result, count)
+      ItemStackTemplate result) {
+    RollingRecipeBuilder.rolled(result)
         .pattern("a a")
         .pattern("aaa")
         .pattern("a a")

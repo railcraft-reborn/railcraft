@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
@@ -110,7 +111,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     if (player instanceof ServerPlayer serverPlayer) {
       if (this.hasMenu()) {
         serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));

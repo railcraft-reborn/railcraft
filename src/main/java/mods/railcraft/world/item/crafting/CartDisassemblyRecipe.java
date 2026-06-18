@@ -1,12 +1,10 @@
 package mods.railcraft.world.item.crafting;
 
 import org.jspecify.annotations.Nullable;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,8 +18,8 @@ public abstract class CartDisassemblyRecipe extends CustomRecipe {
   @Nullable
   private PlacementInfo placementInfo;
 
-  public CartDisassemblyRecipe(Item ingredient, Item result, CraftingBookCategory category) {
-    super(category);
+  public CartDisassemblyRecipe(Item ingredient, Item result) {
+    super();
     this.ingredient = ingredient;
     this.result = result;
   }
@@ -39,7 +37,7 @@ public abstract class CartDisassemblyRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     return new ItemStack(this.result);
   }
 

@@ -30,7 +30,7 @@ public class DualBlockSignalSecondary extends GameTestInstance {
   private final boolean changeControllerAspect;
 
   public DualBlockSignalSecondary(boolean changeControllerAspect,
-      TestData<Holder<TestEnvironmentDefinition>> info) {
+      TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
     this.changeControllerAspect = changeControllerAspect;
   }

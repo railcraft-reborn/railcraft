@@ -16,7 +16,7 @@ public class JunctionTrackWestTestInstance extends GameTestInstance {
   public static final MapCodec<JunctionTrackWestTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(JunctionTrackWestTestInstance::new);
 
-  public JunctionTrackWestTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public JunctionTrackWestTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

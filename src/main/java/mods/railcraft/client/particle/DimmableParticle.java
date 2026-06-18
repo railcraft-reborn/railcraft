@@ -17,8 +17,8 @@ public abstract class DimmableParticle extends SingleQuadParticle {
   }
 
   @Override
-  public int getLightColor(float partialTicks) {
-    int lightColor = super.getLightColor(partialTicks);
+  protected int getLightCoords(float partialTicks) {
+    int lightColor = super.getLightCoords(partialTicks);
     double progress = Math.pow((double) this.age / this.lifetime, 3);
     int var4 = lightColor & 255;
     int var5 = lightColor >> 16 & 255;

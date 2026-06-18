@@ -8,7 +8,7 @@ import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.CommonComponents;
@@ -78,7 +78,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     if (this.readingManual) {
       this.editBoxDest.setVisible(false);
@@ -86,26 +86,26 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      guiGraphics.drawString(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
+      graphics.text(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
           15, TEXT_COLOR, false);
 
-      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR, false);
+      graphics.textWithWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR, false);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
           .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
       var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
-      var poseStack = guiGraphics.pose();
+      var poseStack = graphics.pose();
       poseStack.pushMatrix();
       {
         poseStack.scale(2, 2);
-        guiGraphics.drawCenteredString(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
+        graphics.centeredText(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
       }
       poseStack.popMatrix();
-      guiGraphics.drawString(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
+      graphics.text(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
           45, TEXT_COLOR, false);
-      guiGraphics.drawString(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
+      graphics.text(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
           60, TEXT_COLOR, false);
       this.editBoxDest.setVisible(true);
       this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));

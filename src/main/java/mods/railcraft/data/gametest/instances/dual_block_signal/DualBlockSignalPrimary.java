@@ -29,7 +29,7 @@ public class DualBlockSignalPrimary extends GameTestInstance {
   private static final BlockPos BLOCK_SIGNAL = new BlockPos(1, 1, 3);
   private final boolean spawnCart;
 
-  public DualBlockSignalPrimary(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition>> info) {
+  public DualBlockSignalPrimary(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
     this.spawnCart = spawnCart;
   }

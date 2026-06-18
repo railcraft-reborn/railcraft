@@ -145,21 +145,21 @@ public class RailcraftGameTestInstances {
 
   private static <T extends GameTestInstance> void registerTestInstance(
       BootstrapContext<GameTestInstance> bootstrap,
-      String name, Function<TestData<Holder<TestEnvironmentDefinition>>, T> factory) {
+      String name, Function<TestData<Holder<TestEnvironmentDefinition<?>>>, T> factory) {
     registerTestInstance(bootstrap, name, name, factory);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(
       BootstrapContext<GameTestInstance> bootstrap,
       String path, String template,
-      Function<TestData<Holder<TestEnvironmentDefinition>>, T> factory) {
+      Function<TestData<Holder<TestEnvironmentDefinition<?>>>, T> factory) {
     bootstrap.register(
         ResourceKey.create(Registries.TEST_INSTANCE, RailcraftConstants.id(path)),
         factory.apply(getDefaultTestData(bootstrap, template))
     );
   }
 
-  private static TestData<Holder<TestEnvironmentDefinition>> getDefaultTestData(
+  private static TestData<Holder<TestEnvironmentDefinition<?>>> getDefaultTestData(
       BootstrapContext<GameTestInstance> bootstrap, String template) {
     var environments = bootstrap.lookup(Registries.TEST_ENVIRONMENT);
     return new TestData<>(
@@ -177,7 +177,7 @@ public class RailcraftGameTestInstances {
   }
 
   public static <T extends GameTestInstance> MapCodec<T> defaultCodec(
-      Function<TestData<Holder<TestEnvironmentDefinition>>, T> factory) {
+      Function<TestData<Holder<TestEnvironmentDefinition<?>>>, T> factory) {
     return RecordCodecBuilder.mapCodec(instance -> instance.group(
         TestData.CODEC.forGetter(t -> t.info)
     ).apply(instance, factory));

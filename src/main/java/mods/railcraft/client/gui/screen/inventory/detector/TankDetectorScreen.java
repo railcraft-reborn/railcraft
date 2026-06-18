@@ -9,7 +9,7 @@ import mods.railcraft.network.to_server.SetTankDetectorMessage;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,8 +25,7 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   private int refreshTimer;
 
   public TankDetectorScreen(TankDetectorMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 140;
+    super(menu, inventory, title, 140);
     this.inventoryLabelY = this.imageHeight - 94;
     this.tankDetectorBlockEntity = this.menu.getTankDetectorBlockEntity();
   }
@@ -39,8 +38,8 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   @Override
   public void init() {
     super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
+    int centreX = (this.width - this.getImageWidth()) / 2;
+    int centreY = (this.height - this.getImageHeight()) / 2;
 
     this.addRenderableWidget(
         this.mode = MultiButton
@@ -67,9 +66,9 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, Component.translatable(Translations.Screen.FILTER), 50,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, Component.translatable(Translations.Screen.FILTER), 50,
         29, 0x404040, false);
   }
 }

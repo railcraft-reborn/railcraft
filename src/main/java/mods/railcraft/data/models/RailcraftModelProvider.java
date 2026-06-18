@@ -14,6 +14,7 @@ import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
@@ -104,9 +105,10 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
-import net.minecraft.client.renderer.block.model.multipart.Condition;
-import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition;
+import net.minecraft.client.renderer.block.dispatch.multipart.Condition;
+import net.minecraft.client.renderer.item.CuboidItemModelWrapper;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -624,11 +626,12 @@ public class RailcraftModelProvider extends ModelProvider {
     var path = BuiltInRegistries.ITEM.getKey(item).getPath()
         .replace("creative", "electric");
     var rl = itemModels.generateLayeredItem(item,
-        modLocation("item/%s_layer0".formatted(path)),
-        modLocation("item/%s_layer1".formatted(path)));
+        new Material(modLocation("item/%s_layer0".formatted(path))),
+        new Material(modLocation("item/%s_layer1".formatted(path))));
 
     itemModels.itemModelOutput.accept(item,
-        new BlockModelWrapper.Unbaked(rl,
+        new CuboidItemModelWrapper.Unbaked(rl,
+            Optional.empty(),
             List.of(
                 new LocomotiveColor(0),
                 new LocomotiveColor(1)
@@ -638,8 +641,8 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private void generateFirestone(ItemModelGenerators itemModels, Item item) {
-    var rl = itemModels.generateLayeredItem(item,
-        modLocation("item/refined_firestone"), TextureMapping.getItemTexture(item));
+    var rl = itemModels.generateLayeredItem(item, new Material(
+        modLocation("item/refined_firestone")), TextureMapping.getItemTexture(item));
     itemModels.itemModelOutput.accept(item, ItemModelUtils.plainModel(rl));
   }
 
@@ -1340,7 +1343,7 @@ public class RailcraftModelProvider extends ModelProvider {
   }
 
   private Identifier createSteamTurbineModel(BlockModelGenerators blockModels, Block block,
-      Identifier sideTexture, String suffix, boolean rotated) {
+      Material sideTexture, String suffix, boolean rotated) {
     var frontTexture = TextureMapping.getBlockTexture(block, suffix);
 
     var tm = new TextureMapping()
@@ -1499,7 +1502,7 @@ public class RailcraftModelProvider extends ModelProvider {
     blockModels.blockStateOutput.accept(
         BlockModelGenerators.createSimpleBlock(block, plainVariant(model)));
 
-    var side = modLocation("block/fluid_manipulator_side_inventory");
+    var side = new Material(modLocation("block/fluid_manipulator_side_inventory"));
     var bottom = TextureMapping.getBlockTexture(block, "_bottom");
     var top = TextureMapping.getBlockTexture(block, "_top");
 

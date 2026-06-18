@@ -32,7 +32,7 @@ public class BlockSignalRelayBoxComplexTestInstance extends GameTestInstance {
   private static final BlockPos BLOCK_SIGNAL_RELAY_BOX_3_COMPLEX = new BlockPos(4, 1, 6);
   private final boolean spawnCart;
 
-  public BlockSignalRelayBoxComplexTestInstance(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition>> info) {
+  public BlockSignalRelayBoxComplexTestInstance(boolean spawnCart, TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
     this.spawnCart = spawnCart;
   }

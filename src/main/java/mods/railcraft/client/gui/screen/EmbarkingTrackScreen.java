@@ -4,7 +4,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.to_server.SetEmbarkingTrackMessage;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -54,9 +54,10 @@ public class EmbarkingTrackScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
+      float partialTicks) {
     var componentRadius =
         Component.translatable(Translations.Screen.EMBARKING_TRACK_RADIUS, this.radius);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, componentRadius, this.windowWidth, 25);
+    GuiUtil.drawCenteredString(graphics, this.font, componentRadius, this.windowWidth, 25);
   }
 }

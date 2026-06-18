@@ -16,8 +16,7 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -46,7 +45,7 @@ public class BlastFurnaceRecipeCategory extends
 
   @Override
   public void draw(RecipeHolder<BlastFurnaceRecipe> recipe, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.flame.draw(guiGraphics, 1, 20);
     this.arrow.draw(guiGraphics, 25, 19);
   }
@@ -84,7 +83,7 @@ public class BlastFurnaceRecipeCategory extends
     builder
         .addOutputSlot(61, 5)
         .setOutputSlotBackground()
-        .add(recipe.assemble(null, Minecraft.getInstance().level.registryAccess()));
+        .add(recipe.assemble(null));
     builder.addOutputSlot(61, 37)
         .setStandardSlotBackground()
         .add(new ItemStack(RailcraftItems.SLAG.get(), recipe.getSlagOutput()));

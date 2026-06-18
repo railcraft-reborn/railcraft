@@ -33,7 +33,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -101,14 +103,14 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     buildWorldSpike();
   }
 
-  private void conversion(ItemLike from, ItemLike to, int count, String optionalName) {
+  private void conversion(ItemLike from, ItemStackTemplate to, String optionalName) {
     Identifier path;
     if (optionalName.isEmpty()) {
-      path = RecipeBuilder.getDefaultRecipeId(to);
+      path = RecipeBuilder.getDefaultRecipeId(to).identifier();
     } else {
       path = RailcraftConstants.id(optionalName);
     }
-    shapeless(RecipeCategory.MISC, to, count)
+    shapeless(RecipeCategory.MISC, to)
         .requires(from)
         .unlockedBy(getHasName(from), has(from))
         .save(output, path.toString());
@@ -662,50 +664,50 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.LEAD_ORE.get(),
         RailcraftItems.DEEPSLATE_LEAD_ORE.get(),
         RailcraftItems.LEAD_RAW.get());
-    oreSmelting(leadSmeltables, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
-        1, 200, "lead_ingot");
-    oreBlasting(leadSmeltables, RecipeCategory.MISC, RailcraftItems.LEAD_INGOT.get(),
-        1, 100, "lead_ingot");
+    oreSmelting(leadSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.LEAD_INGOT.get(), 1, 200, "lead_ingot");
+    oreBlasting(leadSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.LEAD_INGOT.get(), 1, 100, "lead_ingot");
 
     List<ItemLike> nickelSmeltables =
         List.of(
             RailcraftItems.NICKEL_ORE.get(),
             RailcraftItems.DEEPSLATE_NICKEL_ORE.get(),
             RailcraftItems.NICKEL_RAW.get());
-    oreSmelting(nickelSmeltables, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
-        1, 200, "nickel_ingot");
-    oreBlasting(nickelSmeltables, RecipeCategory.MISC, RailcraftItems.NICKEL_INGOT.get(),
-        1, 100, "nickel_ingot");
+    oreSmelting(nickelSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.NICKEL_INGOT.get(), 1, 200, "nickel_ingot");
+    oreBlasting(nickelSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.NICKEL_INGOT.get(), 1, 100, "nickel_ingot");
 
     List<ItemLike> silverSmeltables =
         List.of(
             RailcraftItems.SILVER_ORE.get(),
             RailcraftItems.DEEPSLATE_SILVER_ORE.get(),
             RailcraftItems.SILVER_RAW.get());
-    oreSmelting(silverSmeltables, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
-        1, 200, "silver_ingot");
-    oreBlasting(silverSmeltables, RecipeCategory.MISC, RailcraftItems.SILVER_INGOT.get(),
-        1, 100, "silver_ingot");
+    oreSmelting(silverSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.SILVER_INGOT.get(), 1, 200, "silver_ingot");
+    oreBlasting(silverSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.SILVER_INGOT.get(), 1, 100, "silver_ingot");
 
     List<ItemLike> tinSmeltables =
         List.of(
             RailcraftItems.TIN_ORE.get(),
             RailcraftItems.DEEPSLATE_TIN_ORE.get(),
             RailcraftItems.TIN_RAW.get());
-    oreSmelting(tinSmeltables, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
-        1, 200, "tin_ingot");
-    oreBlasting(tinSmeltables, RecipeCategory.MISC, RailcraftItems.TIN_INGOT.get(),
-        1, 100, "tin_ingot");
+    oreSmelting(tinSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.TIN_INGOT.get(), 1, 200, "tin_ingot");
+    oreBlasting(tinSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.TIN_INGOT.get(), 1, 100, "tin_ingot");
 
     List<ItemLike> zincSmeltables =
         List.of(
             RailcraftItems.ZINC_ORE.get(),
             RailcraftItems.DEEPSLATE_ZINC_ORE.get(),
             RailcraftItems.ZINC_RAW.get());
-    oreSmelting(zincSmeltables, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
-        1, 200, "zinc_ingot");
-    oreBlasting(zincSmeltables, RecipeCategory.MISC, RailcraftItems.ZINC_INGOT.get(),
-        1, 100, "zinc_ingot");
+    oreSmelting(zincSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.ZINC_INGOT.get(), 1, 200, "zinc_ingot");
+    oreBlasting(zincSmeltables, RecipeCategory.MISC, CookingBookCategory.MISC,
+        RailcraftItems.ZINC_INGOT.get(), 1, 100, "zinc_ingot");
   }
 
   private void buildTurbineParts() {
@@ -1350,9 +1352,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildChargeItems() {
     this.conversion(RailcraftItems.CHARGE_SPOOL_MEDIUM.get(),
-        RailcraftItems.CHARGE_SPOOL_SMALL.get(), 3, "charge_spool_small_from_medium");
+        new ItemStackTemplate(RailcraftItems.CHARGE_SPOOL_SMALL, 3),
+        "charge_spool_small_from_medium");
     this.conversion(RailcraftItems.CHARGE_SPOOL_LARGE.get(),
-        RailcraftItems.CHARGE_SPOOL_MEDIUM.get(), 3, "charge_spool_medium_from_large");
+        new ItemStackTemplate(RailcraftItems.CHARGE_SPOOL_MEDIUM, 3),
+        "charge_spool_medium_from_large");
 
     shaped(RecipeCategory.MISC, RailcraftItems.CHARGE_TERMINAL.get())
         .pattern(" b ")
@@ -1479,9 +1483,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildGears() {
     square2x2(RailcraftTags.Items.BRONZE_INGOT,
-        RailcraftItems.BUSHING_GEAR.get(), 1, "_bronze");
+        new ItemStackTemplate(RailcraftItems.BUSHING_GEAR), "_bronze");
     square2x2(RailcraftTags.Items.BRASS_INGOT,
-        RailcraftItems.BUSHING_GEAR.get(), 1, "_brass");
+        new ItemStackTemplate(RailcraftItems.BUSHING_GEAR), "_brass");
 
     gear(RailcraftItems.IRON_GEAR.get(),
         Tags.Items.INGOTS_IRON);
@@ -1700,12 +1704,12 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     var colorItems = RailcraftItems.STRENGTHENED_GLASS;
     var tagItem = RailcraftTags.Items.STRENGTHENED_GLASS;
 
-    var result = colorItems.variantFor(DyeColor.WHITE).get();
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 6);
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
 
     for (var ingredient : ingredients.entrySet()) {
       var recipeName = name.substring(name.indexOf('_') + 1) + "_" + ingredient.getKey();
-      shaped(RecipeCategory.MISC, result, 6)
+      shaped(RecipeCategory.MISC, result)
           .pattern("aba")
           .pattern("aca")
           .pattern("ada")
@@ -1748,11 +1752,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void tankWall(TagKey<Item> ingredientTag,
       VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = colorItems.variantFor(DyeColor.WHITE).get();
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
-    shaped(RecipeCategory.MISC, result, 8)
+    shaped(RecipeCategory.MISC, result)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredientTag)
@@ -1764,11 +1768,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void tankValve(TagKey<Item> ingredientTag,
       VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = colorItems.variantFor(DyeColor.WHITE).get();
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
-    shaped(RecipeCategory.MISC, result, 8)
+    shaped(RecipeCategory.MISC, result)
         .pattern("aba")
         .pattern("bcb")
         .pattern("aba")
@@ -1783,11 +1787,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void tankGauge(TagKey<Item> ingredientTag,
       VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = colorItems.variantFor(DyeColor.WHITE).get();
-    var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
-    shaped(RecipeCategory.MISC, result, 8)
+    shaped(RecipeCategory.MISC, result)
         .pattern("aba")
         .pattern("bab")
         .pattern("aba")
@@ -1821,14 +1825,15 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   private void buildDecorativeStone() {
     for (var type : DecorativeBlock.values()) {
       square2x2(RailcraftItems.DECORATIVE_STONE.variantFor(type).get(),
-          RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 4,
+          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type), 4),
           "_from_%s_stone".formatted(type.getSerializedName()));
       square2x2(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get(),
-          RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 4,
+          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type), 4),
           "_from_%s_cobblestone".formatted(type.getSerializedName()));
       SingleItemRecipeBuilder.stonecutting(
               Ingredient.of(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()),
-              RecipeCategory.MISC, RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get())
+              RecipeCategory.MISC,
+              RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 1)
           .unlockedBy(getHasName(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()),
               has(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()))
           .save(output,
@@ -1836,7 +1841,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
                   .formatted(type.getSerializedName(), type.getSerializedName())).toString());
       SingleItemRecipeBuilder.stonecutting(
               Ingredient.of(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()),
-              RecipeCategory.MISC, RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get())
+              RecipeCategory.MISC,
+              RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 1)
           .unlockedBy(getHasName(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()),
               has(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()))
           .save(output,
@@ -1862,7 +1868,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
               has(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get()))
           .save(output);
       square2x2(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(),
-          RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get(), 4, "");
+          new ItemStackTemplate(RailcraftItems.DECORATIVE_BRICKS.variantFor(type), 4), "");
       stairBuilder(RailcraftItems.DECORATIVE_BRICK_STAIRS.variantFor(type).get(),
           Ingredient.of(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get()))
           .unlockedBy(getHasName(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get()),
@@ -1872,7 +1878,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           RailcraftItems.DECORATIVE_BRICK_SLAB.variantFor(type).get(),
           RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get());
       square2x2(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get(),
-          RailcraftItems.DECORATIVE_PAVER.variantFor(type).get(), 4, "");
+          new ItemStackTemplate(RailcraftItems.DECORATIVE_PAVER.variantFor(type), 4), "");
       stairBuilder(RailcraftItems.DECORATIVE_PAVER_STAIRS.variantFor(type).get(),
           Ingredient.of(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get()))
           .unlockedBy(getHasName(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get()),
@@ -1919,7 +1925,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void frame(int count, TagKey<Item> tag, String suffix) {
-    var name = RecipeBuilder.getDefaultRecipeId(RailcraftItems.FRAME_BLOCK.get()).getPath();
+    var name = RecipeBuilder.getDefaultRecipeId(new ItemStackTemplate(RailcraftItems.FRAME_BLOCK))
+        .identifier().getPath();
     shaped(RecipeCategory.MISC, RailcraftItems.FRAME_BLOCK.get(), count)
         .pattern("aaa")
         .pattern("b b")
@@ -2070,19 +2077,18 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .save(output);
   }
 
-  private void square2x2(TagKey<Item> ingredient, Item result, int quantity, String suffix) {
-  var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
-  shaped(RecipeCategory.MISC, result, quantity)
-      .pattern("aa")
-      .pattern("aa")
-      .define('a', ingredient)
-      .unlockedBy("has_material", has(ingredient))
-      .save(output, RailcraftConstants.id(name + suffix).toString());
-}
+  private void square2x2(TagKey<Item> ingredient, ItemStackTemplate result, String suffix) {
+    var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
+    shaped(RecipeCategory.MISC, result)
+        .pattern("aa")
+        .pattern("aa")
+        .define('a', ingredient)
+        .unlockedBy("has_material", has(ingredient))
+        .save(output, RailcraftConstants.id(name + suffix).toString());
+  }
 
-  private void square2x2(Item ingredient,
-      Item result, int quantity, String suffix) {
-    var builder = shaped(RecipeCategory.MISC, result, quantity)
+  private void square2x2(Item ingredient, ItemStackTemplate result, String suffix) {
+    var builder = shaped(RecipeCategory.MISC, result)
         .pattern("aa")
         .pattern("aa")
         .define('a', ingredient)
@@ -2090,7 +2096,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     if (suffix.isEmpty()) {
       builder.save(output);
     } else {
-      var name = RecipeBuilder.getDefaultRecipeId(result).getPath();
+      var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
       builder.save(output, RailcraftConstants.id(name + suffix).toString());
     }
   }

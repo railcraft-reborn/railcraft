@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +23,7 @@ public class TokenRingManager extends SavedData {
       Codec.unboundedMap(Codec.STRING, TokenRingData.CODEC);
 
   private static final SavedDataType<TokenRingManager> TYPE = new SavedDataType<>(
-      "railcraft.tokens",
+      RailcraftConstants.id("tokens"),
       TokenRingManager::new,
       serverLevel -> RecordCodecBuilder.create(instance -> instance.group(
           MAP_CODEC.fieldOf(CompoundTagKeys.TOKEN_RINGS).forGetter(manager -> from(manager.tokenRings))

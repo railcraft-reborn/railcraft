@@ -4,9 +4,9 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.particle.ChimneyParticleOptions;
 import mods.railcraft.util.LevelUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -57,8 +57,9 @@ public class ChimneyBlockEntity extends RailcraftBlockEntity {
     if (stack.isEmpty()) {
       return;
     }
-    if (stack.getItem() instanceof DyeItem dye) {
-      this.color = dye.getDyeColor().getFireworkColor();
+    var dyeColor = stack.get(DataComponents.DYE);
+    if (dyeColor != null) {
+      this.color = dyeColor.getFireworkColor();
       this.setChanged();
     }
   }

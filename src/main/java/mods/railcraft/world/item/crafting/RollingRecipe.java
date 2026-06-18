@@ -7,11 +7,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RecipeJsonKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
@@ -28,13 +28,29 @@ import net.minecraft.world.level.Level;
 
 public class RollingRecipe implements Recipe<CraftingInput> {
 
+  private static final MapCodec<RollingRecipe> MAP_CODEC =
+      RecordCodecBuilder.mapCodec(instance -> instance.group(
+          ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
+          ItemStackTemplate.CODEC.fieldOf(RecipeJsonKeys.RESULT)
+              .forGetter(recipe -> recipe.result),
+          ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.PROCESS_TIME,
+                  RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
+              .forGetter(recipe -> recipe.processTime)
+      ).apply(instance, RollingRecipe::new));
+
+  private static final StreamCodec<RegistryFriendlyByteBuf, RollingRecipe> STREAM_CODEC =
+      StreamCodec.of(RollingRecipe::toNetwork, RollingRecipe::fromNetwork);
+
+  public static final RecipeSerializer<RollingRecipe> SERIALIZER =
+      new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
   private final ShapedRecipePattern pattern;
-  private final ItemStack result;
+  private final ItemStackTemplate result;
   private final int processTime;
   @Nullable
   private PlacementInfo placementInfo;
 
-  public RollingRecipe(ShapedRecipePattern pattern, ItemStack result, int processTime) {
+  public RollingRecipe(ShapedRecipePattern pattern, ItemStackTemplate result, int processTime) {
     this.pattern = pattern;
     this.result = result;
     this.processTime = processTime;
@@ -63,17 +79,13 @@ public class RollingRecipe implements Recipe<CraftingInput> {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput inventory, HolderLookup.Provider provider) {
-    return this.result.copy();
-  }
-
-  public ItemStack getResult() {
-    return result;
+  public ItemStack assemble(CraftingInput inventory) {
+    return this.result.create();
   }
 
   @Override
   public RecipeSerializer<RollingRecipe> getSerializer() {
-    return RailcraftRecipeSerializers.ROLLING.get();
+    return SERIALIZER;
   }
 
   @Override
@@ -92,6 +104,16 @@ public class RollingRecipe implements Recipe<CraftingInput> {
   @Override
   public boolean isSpecial() {
     return true;
+  }
+
+  @Override
+  public boolean showNotification() {
+    return true;
+  }
+
+  @Override
+  public String group() {
+    return "";
   }
 
   @Override
@@ -116,42 +138,16 @@ public class RollingRecipe implements Recipe<CraftingInput> {
     return RecipeBookCategories.CRAFTING_MISC;
   }
 
-  public static class Serializer implements RecipeSerializer<RollingRecipe> {
+  private static RollingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+    var pattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
+    int processTime = buffer.readVarInt();
+    var result = ItemStackTemplate.STREAM_CODEC.decode(buffer);
+    return new RollingRecipe(pattern, result, processTime);
+  }
 
-    private static final MapCodec<RollingRecipe> CODEC =
-        RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern),
-            ItemStack.CODEC.fieldOf(RecipeJsonKeys.RESULT)
-                .forGetter(recipe -> recipe.result),
-            ExtraCodecs.POSITIVE_INT.optionalFieldOf(RecipeJsonKeys.PROCESS_TIME,
-                    RollingRecipeBuilder.DEFAULT_PROCESSING_TIME)
-                .forGetter(recipe -> recipe.processTime)
-        ).apply(instance, RollingRecipe::new));
-
-    private static final StreamCodec<RegistryFriendlyByteBuf, RollingRecipe> STREAM_CODEC =
-        StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
-    @Override
-    public MapCodec<RollingRecipe> codec() {
-      return CODEC;
-    }
-
-    @Override
-    public StreamCodec<RegistryFriendlyByteBuf, RollingRecipe> streamCodec() {
-      return STREAM_CODEC;
-    }
-
-    private static RollingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-      var pattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
-      int processTime = buffer.readVarInt();
-      var result = ItemStack.STREAM_CODEC.decode(buffer);
-      return new RollingRecipe(pattern, result, processTime);
-    }
-
-    private static void toNetwork(RegistryFriendlyByteBuf buffer, RollingRecipe recipe) {
-      ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);
-      buffer.writeVarInt(recipe.processTime);
-      ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-    }
+  private static void toNetwork(RegistryFriendlyByteBuf buffer, RollingRecipe recipe) {
+    ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);
+    buffer.writeVarInt(recipe.processTime);
+    ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.result);
   }
 }

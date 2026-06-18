@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -102,10 +102,10 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     for (var aspect : SignalAspect.values()) {
-      guiGraphics.drawString(this.font, aspect.getDisplayName(), 10,
+      graphics.text(this.font, aspect.getDisplayName(), 10,
           getYPosFromIndex(aspect.ordinal()) + 1, TEXT_COLOR, false);
     }
   }

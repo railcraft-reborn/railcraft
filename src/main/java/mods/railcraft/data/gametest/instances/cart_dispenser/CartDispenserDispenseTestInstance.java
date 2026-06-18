@@ -20,7 +20,7 @@ public class CartDispenserDispenseTestInstance extends GameTestInstance {
   public static final MapCodec<CartDispenserDispenseTestInstance> CODEC =
       RailcraftGameTestInstances.defaultCodec(CartDispenserDispenseTestInstance::new);
 
-  public CartDispenserDispenseTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public CartDispenserDispenseTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

@@ -151,7 +151,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var input = new SingleRecipeInput(ingredient);
     return level.recipeAccess()
         .getRecipeFor(RecipeType.SMELTING, input, level)
-        .map(x -> x.value().assemble(input, level.registryAccess()))
+        .map(x -> x.value().assemble(input))
         .orElse(ItemStack.EMPTY);
   }
 

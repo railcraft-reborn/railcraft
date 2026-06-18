@@ -13,7 +13,6 @@ import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,131 +22,131 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftVillagerTrades {
 
-  public static void addTradeForTrackman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
-    /*BiFunction<ItemStack, RandomSource, ItemStack> enchanter = (stack, rand) -> {
-      EnchantmentHelper.enchantItem(rand, stack,
-          15 + rand.nextInt(16), true);
-      return stack;
-    };*/
-
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.COAL_COKE.get(), 16, 24)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.RAIL, 30, 34), new Offer(Items.EMERALD, 2, 3)));
-
-    trades.get(2)
-        .add(new TrackKitTrade());
-    trades.get(2)
-        .add(new TrackKitTrade());
-
-    trades.get(3)
-        .add(new TrackKitTrade());
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_CROWBAR.get()),
-            new Offer(Items.EMERALD, 24, 52))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.WHISTLE_TUNER.get()),
-            new Offer(Items.EMERALD, 1, 2)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get()),
-            new Offer(Items.EMERALD, 6, 8)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.SIGNAL_TUNER.get()),
-            new Offer(Items.EMERALD, 6, 8)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.GOGGLES.get()),
-            new Offer(Items.EMERALD, 4, 8)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.OVERALLS.get()),
-            new Offer(Items.EMERALD, 19, 32))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
-  }
-
-  public static void addTradeForCartman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.COAL_COKE.get(), 8, 12)));
-
-    trades.get(2)
-        .add(new CartTrade(false, 4, 7));
-    trades.get(2)
-        .add(new CartTrade(false, 4, 7));
-
-    trades.get(3)
-        .add(new CartTrade(false, 3, 5));
-    trades.get(3)
-        .add(new CartTrade(true, 30, 40));
-    trades.get(3)
-        .add(new CartTrade(true, 30, 40));
-  }
-
-  public static void addTradeForToolSmith(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.COAL_COKE.get(), 8, 12)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.IRON_INGOT, 7, 9)));
-
-    trades.get(2)
-        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
-            new Offer(Items.EMERALD, 1, 2), new Offer(Items.IRON_INGOT)));
-    trades.get(2)
-        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
-            new Offer(Items.EMERALD, 3, 4)));
-    trades.get(2)
-        .add(new GenericTrade(new Offer(RailcraftItems.SLAG.get(), 1, 2),
-            new Offer(Items.EMERALD, 2, 4)));
-
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_GEAR.get()),
-            new Offer(Items.EMERALD, 9, 16)));
-  }
-
-  public static void addTradeForArmorer(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
-    trades.get(1)
-        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
-    trades.get(1)
-        .add(new GenericTrade(new Offer(RailcraftItems.COAL_COKE.get(), 4, 6),
-            new Offer(Items.EMERALD)));
-
-    trades.get(2)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(Items.COPPER_INGOT, 7, 9)));
-    trades.get(2)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.TIN_INGOT.get(), 7, 9)));
-    trades.get(2)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.ZINC_INGOT.get(), 7, 9)));
-    trades.get(2)
-        .add(new GenericTrade(new Offer(Items.EMERALD),
-            new Offer(RailcraftItems.NICKEL_INGOT.get(), 7, 9)));
-
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_INGOT.get()),
-            new Offer(Items.EMERALD, 2, 3)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_INGOT.get()),
-            new Offer(Items.EMERALD, 2, 3)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_INGOT.get()),
-            new Offer(Items.EMERALD, 2, 3)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_GEAR.get()),
-            new Offer(Items.EMERALD, 6, 12)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_GEAR.get()),
-            new Offer(Items.EMERALD, 6, 12)));
-    trades.get(3)
-        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_GEAR.get()),
-            new Offer(Items.EMERALD, 6, 12)));
-  }
+//  public static void addTradeForTrackman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+//    /*BiFunction<ItemStack, RandomSource, ItemStack> enchanter = (stack, rand) -> {
+//      EnchantmentHelper.enchantItem(rand, stack,
+//          15 + rand.nextInt(16), true);
+//      return stack;
+//    };*/
+//
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.COAL_COKE.get(), 16, 24)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.RAIL, 30, 34), new Offer(Items.EMERALD, 2, 3)));
+//
+//    trades.get(2)
+//        .add(new TrackKitTrade());
+//    trades.get(2)
+//        .add(new TrackKitTrade());
+//
+//    trades.get(3)
+//        .add(new TrackKitTrade());
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_CROWBAR.get()),
+//            new Offer(Items.EMERALD, 24, 52))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.WHISTLE_TUNER.get()),
+//            new Offer(Items.EMERALD, 1, 2)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get()),
+//            new Offer(Items.EMERALD, 6, 8)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.SIGNAL_TUNER.get()),
+//            new Offer(Items.EMERALD, 6, 8)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.GOGGLES.get()),
+//            new Offer(Items.EMERALD, 4, 8)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.OVERALLS.get()),
+//            new Offer(Items.EMERALD, 19, 32))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
+//  }
+//
+//  public static void addTradeForCartman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.COAL_COKE.get(), 8, 12)));
+//
+//    trades.get(2)
+//        .add(new CartTrade(false, 4, 7));
+//    trades.get(2)
+//        .add(new CartTrade(false, 4, 7));
+//
+//    trades.get(3)
+//        .add(new CartTrade(false, 3, 5));
+//    trades.get(3)
+//        .add(new CartTrade(true, 30, 40));
+//    trades.get(3)
+//        .add(new CartTrade(true, 30, 40));
+//  }
+//
+//  public static void addTradeForToolSmith(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.COAL_COKE.get(), 8, 12)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.IRON_INGOT, 7, 9)));
+//
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
+//            new Offer(Items.EMERALD, 1, 2), new Offer(Items.IRON_INGOT)));
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_INGOT.get()),
+//            new Offer(Items.EMERALD, 3, 4)));
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(RailcraftItems.SLAG.get(), 1, 2),
+//            new Offer(Items.EMERALD, 2, 4)));
+//
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.STEEL_GEAR.get()),
+//            new Offer(Items.EMERALD, 9, 16)));
+//  }
+//
+//  public static void addTradeForArmorer(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
+//    trades.get(1)
+//        .add(new GenericTrade(new Offer(RailcraftItems.COAL_COKE.get(), 4, 6),
+//            new Offer(Items.EMERALD)));
+//
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(Items.COPPER_INGOT, 7, 9)));
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.TIN_INGOT.get(), 7, 9)));
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.ZINC_INGOT.get(), 7, 9)));
+//    trades.get(2)
+//        .add(new GenericTrade(new Offer(Items.EMERALD),
+//            new Offer(RailcraftItems.NICKEL_INGOT.get(), 7, 9)));
+//
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_INGOT.get()),
+//            new Offer(Items.EMERALD, 2, 3)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_INGOT.get()),
+//            new Offer(Items.EMERALD, 2, 3)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_INGOT.get()),
+//            new Offer(Items.EMERALD, 2, 3)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.BRONZE_GEAR.get()),
+//            new Offer(Items.EMERALD, 6, 12)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.BRASS_GEAR.get()),
+//            new Offer(Items.EMERALD, 6, 12)));
+//    trades.get(3)
+//        .add(new GenericTrade(new Offer(RailcraftItems.INVAR_GEAR.get()),
+//            new Offer(Items.EMERALD, 6, 12)));
+//  }
 
   private static class Offer {
 
@@ -169,7 +168,7 @@ public class RailcraftVillagerTrades {
     }
   }
 
-  private static class GenericTrade implements VillagerTrades.ItemListing {
+  private static class GenericTrade /*implements VillagerTrades.ItemListing*/ {
 
     private static final ToIntFunction<GenericTrade> USE_SETTER = t -> 7;
     private static final BiFunction<ItemStack, RandomSource, ItemStack> DEFAULT_ENCHANTER =
@@ -186,7 +185,7 @@ public class RailcraftVillagerTrades {
       this.enchanter = DEFAULT_ENCHANTER;
     }
 
-    @Override
+    //@Override
     public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       var sellStack = prepareStack(random, sale);
       var buyStack1 = prepareStack(random, offers[0]);
@@ -214,7 +213,7 @@ public class RailcraftVillagerTrades {
     }
   }
 
-  private static class TrackKitTrade implements VillagerTrades.ItemListing {
+  private static class TrackKitTrade /*implements VillagerTrades.ItemListing*/ {
 
     private static final List<ItemStack> TRACK_KITS;
 
@@ -227,7 +226,7 @@ public class RailcraftVillagerTrades {
     }
 
     @Nullable
-    @Override
+    //@Override
     public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       if (TRACK_KITS.isEmpty()) {
         return null;
@@ -241,7 +240,7 @@ public class RailcraftVillagerTrades {
     }
   }
 
-  private static class CartTrade implements VillagerTrades.ItemListing {
+  private static class CartTrade /*implements VillagerTrades.ItemListing*/ {
 
     private static final List<Item> CHEAP = new ArrayList<>();
     private static final List<Item> EXPENSIVE = new ArrayList<>();
@@ -279,7 +278,7 @@ public class RailcraftVillagerTrades {
     }
 
     @Nullable
-    @Override
+    //@Override
     public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource random) {
       if (current.isEmpty()) {
         return null;

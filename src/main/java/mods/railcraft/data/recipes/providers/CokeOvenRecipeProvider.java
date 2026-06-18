@@ -10,6 +10,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -42,18 +43,20 @@ public class CokeOvenRecipeProvider extends RecipeProvider {
   @Override
   protected void buildRecipes() {
     CokeOvenRecipeBuilder
-        .coking(Items.CHARCOAL, Ingredient.of(this.items.getOrThrow(ItemTags.LOGS)), 0, 300, 250)
+        .coking(new ItemStackTemplate(Items.CHARCOAL),
+            Ingredient.of(this.items.getOrThrow(ItemTags.LOGS)), 0, 300, 250)
         .unlockedBy("has_logs", has(ItemTags.LOGS))
         .save(output);
 
     CokeOvenRecipeBuilder
-        .coking(RailcraftItems.COAL_COKE.get(), Ingredient.of(Items.COAL), 0, 500)
+        .coking(new ItemStackTemplate(RailcraftItems.COAL_COKE),
+            Ingredient.of(Items.COAL), 0, 500)
         .unlockedBy(getHasName(Items.COAL), has(Items.COAL))
         .save(output);
 
     CokeOvenRecipeBuilder
-        .coking(RailcraftItems.COAL_COKE_BLOCK.get(), Ingredient.of(Items.COAL_BLOCK), 0,
-            CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME * 9, 5000)
+        .coking(new ItemStackTemplate(RailcraftItems.COAL_COKE_BLOCK),
+            Ingredient.of(Items.COAL_BLOCK), 0, CokeOvenRecipeBuilder.DEFAULT_COOKING_TIME * 9, 5000)
         .unlockedBy(getHasName(Items.COAL_BLOCK), has(Items.COAL_BLOCK))
         .save(output);
   }

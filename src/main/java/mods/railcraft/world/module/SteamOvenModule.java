@@ -97,7 +97,6 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     int count = 0;
     boolean changed = true;
     boolean smelted = false;
-    var registryAccess = provider.getLevel().registryAccess();
     while (count < ITEMS_SMELTED && changed) {
       changed = false;
       for (int slot = 0; slot < 9 && count < ITEMS_SMELTED; slot++) {
@@ -106,7 +105,7 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
           continue;
         }
         var output = getRecipe(stack)
-            .map(x -> x.value().assemble(new SingleRecipeInput(stack), registryAccess))
+            .map(x -> x.value().assemble(new SingleRecipeInput(stack)))
             .orElse(ItemStack.EMPTY);
         if (!output.isEmpty() &&
             outputContainer.canFit(output) &&

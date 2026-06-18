@@ -81,7 +81,7 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
 
   private boolean craftAndPushImp() {
     var output =
-        this.recipe.assemble(null, this.provider.level().registryAccess());
+        this.recipe.assemble(null);
     var fluidOutput = this.recipe.getCreosote();
     if (!this.outputContainer.canFit(output)) {
       return false;

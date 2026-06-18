@@ -7,7 +7,7 @@ import mods.railcraft.client.util.GuiUtil;
 import mods.railcraft.network.to_server.SetSignalCapacitorBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -47,16 +47,15 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
         .bounds(centredX + 23, centredY + 65, 130, 15)
         .stateCallback(this::setMode)
         .build());
-
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     var componentDuration =
         Component.translatable(Translations.Screen.SIGNAL_CAPACITOR_BOX_DURATION,
         this.signalBox.getTicksToPower() / SharedConstants.TICKS_PER_SECOND);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, componentDuration, this.windowWidth, 25);
+    GuiUtil.drawCenteredString(graphics, this.font, componentDuration, this.windowWidth, 25);
   }
 
   @Override

@@ -28,7 +28,7 @@ public class InterlockTestInstance extends GameTestInstance {
   private static final BlockPos LEVER_2 = new BlockPos(5, 1, 1);
   private static final BlockPos LEVER_3 = new BlockPos(4, 1, 1);
 
-  public InterlockTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+  public InterlockTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
   }
 

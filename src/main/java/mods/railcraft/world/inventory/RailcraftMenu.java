@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -91,18 +91,18 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   }
 
   @Override
-  public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
+  public void clicked(int slotId, int mouseButton, ContainerInput containerInput, Player player) {
     if (slotId >= 0) {
       var slot = this.slots.get(slotId);
       if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
-        this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
+        this.slotClickPhantom(railcraftSlot, mouseButton, containerInput, player);
       }
     }
-    super.clicked(slotId, mouseButton, clickType, player);
+    super.clicked(slotId, mouseButton, containerInput, player);
   }
 
   private void slotClickPhantom(RailcraftSlot slot, int mouseButton,
-      ClickType clickType, Player player) {
+      ContainerInput containerInput, Player player) {
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom()) {
         slot.set(ItemStack.EMPTY);
@@ -116,13 +116,13 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       if (stackSlot.isEmpty() && !stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
         fillPhantomSlot(slot, stackHeld, mouseButton);
       } else if (stackHeld.isEmpty()) {
-        adjustPhantomSlot(slot, mouseButton, clickType);
+        adjustPhantomSlot(slot, mouseButton, containerInput);
         slot.onTake(player, containerMenu.getCarried());
       }
     }
   }
 
-  private void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ClickType clickType) {
+  private void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ContainerInput containerInput) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -131,7 +131,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       return;
     }
     int stackSize;
-    if (clickType == ClickType.QUICK_MOVE) {
+    if (containerInput == ContainerInput.QUICK_MOVE) {
       stackSize = mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
     } else {
       stackSize = mouseButton == 0 ? stackSlot.getCount() - 1 : stackSlot.getCount() + 1;

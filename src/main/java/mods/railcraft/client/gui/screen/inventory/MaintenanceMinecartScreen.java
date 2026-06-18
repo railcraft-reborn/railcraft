@@ -10,7 +10,7 @@ import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.entity.vehicle.MaintenancePatternMinecart;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +25,12 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   private MultiButton<MaintenanceMinecart.Mode> mode;
   private int refreshTimer;
 
+  protected MaintenanceMinecartScreen(T menu, Inventory inventory, Component title, int imageHeight,
+      MaintenancePatternMinecart cart) {
+    super(menu, inventory, title, imageHeight);
+    this.cart = cart;
+  }
+
   protected MaintenanceMinecartScreen(T menu, Inventory inventory, Component title,
       MaintenancePatternMinecart cart) {
     super(menu, inventory, title);
@@ -34,13 +40,13 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   @Override
   protected void init() {
     super.init();
-    var centreX = (this.width - this.getXSize()) / 2;
-    var centreY = (this.height - this.getYSize()) / 2;
+    var centreX = (this.width - this.getImageWidth()) / 2;
+    var centreY = (this.height - this.getImageHeight()) / 2;
 
     this.mode = this.addRenderableWidget(
         MultiButton
             .builder(ButtonTexture.SMALL_BUTTON, this.cart.mode())
-            .bounds(centreX + 120, centreY + getYSize() - 100, 40, 16)
+            .bounds(centreX + 120, centreY + getImageHeight() - 100, 40, 16)
             .stateCallback(this::setMaintenanceMode)
             .tooltipFactory(this::createLockTooltip)
             .build());
@@ -73,9 +79,9 @@ public abstract class MaintenanceMinecartScreen<T extends RailcraftMenu> extends
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, PATTERN, 38, 30, IngameWindowScreen.TEXT_COLOR, false);
+    graphics.text(this.font, STOCK, 125, 25, IngameWindowScreen.TEXT_COLOR, false);
   }
 }

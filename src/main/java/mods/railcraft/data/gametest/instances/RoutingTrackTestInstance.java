@@ -33,7 +33,7 @@ public class RoutingTrackTestInstance extends GameTestInstance {
   private static final BlockPos ROUTING_TRACK_POS = new BlockPos(1, 1, 4);
   private final boolean pullLever;
 
-  public RoutingTrackTestInstance(boolean pullLever, TestData<Holder<TestEnvironmentDefinition>> info) {
+  public RoutingTrackTestInstance(boolean pullLever, TestData<Holder<TestEnvironmentDefinition<?>>> info) {
     super(info);
     this.pullLever = pullLever;
   }

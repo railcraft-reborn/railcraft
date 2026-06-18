@@ -207,7 +207,7 @@ public class ClientManager {
     event.register(RailcraftConstants.id("locomotive_color"), LocomotiveColor.MAP_CODEC);
   }
 
-  private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
+  private static void handleBlockColors(RegisterColorHandlersEvent.BlockTintSources event) {
     event.register((state, level, pos, tintIndex) ->
             state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
         RailcraftBlocks.FORCE_TRACK_EMITTER.get());
@@ -289,6 +289,7 @@ public class ClientManager {
         return STILL_TEXTURE;
       }
     }, RailcraftFluidTypes.STEAM.get());
+
     event.registerFluidType(new IClientFluidTypeExtensions() {
       private static final Identifier STILL_TEXTURE =
           Identifier.withDefaultNamespace("block/water_still");
@@ -377,7 +378,7 @@ public class ClientManager {
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
                   .withClickEvent(new ClickEvent.OpenUrl(URI.create(modUrl)))));
-      event.getPlayer().displayClientMessage(message, false);
+      event.getPlayer().sendSystemMessage(message);
     }
 
     var qualifier = modInfo.getVersion().getQualifier();
@@ -402,7 +403,7 @@ public class ClientManager {
                   .withClickEvent(new ClickEvent.OpenUrl(URI.create(issueUrl)))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-      event.getPlayer().displayClientMessage(message, false);
+      event.getPlayer().sendSystemMessage(message);
     }
 
     var minecartImprovedFeatureFlag =
@@ -414,7 +415,7 @@ public class ClientManager {
           Component.literal("Some Railcraft features may not work as intended.")
               .withStyle(ChatFormatting.YELLOW)
       );
-      event.getPlayer().displayClientMessage(message, false);
+      event.getPlayer().sendSystemMessage(message);
     }
   }
 

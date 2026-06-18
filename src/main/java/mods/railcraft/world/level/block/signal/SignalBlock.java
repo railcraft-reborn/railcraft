@@ -102,11 +102,11 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
   }
 
   @Override
-  protected int getLightBlock(BlockState state) {
+  protected int getLightDampening(BlockState state) {
     return 0;
-    /*return LevelUtil.getBlockEntity(state, state, AbstractSignalBlockEntity.class)
-        .map(AbstractSignalBlockEntity::getLightValue)
-        .orElseGet(() -> super.getLightBlock(state));*/
+//    return LevelUtil.getBlockEntity(state, state, AbstractSignalBlockEntity.class)
+//        .map(AbstractSignalBlockEntity::getLightValue)
+//        .orElseGet(() -> super.getLightBlock(state));
   }
 
   @Override
