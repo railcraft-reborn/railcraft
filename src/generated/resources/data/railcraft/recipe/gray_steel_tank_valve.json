@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:steel_tank_valve",
-    "b": "minecraft:gray_dye"
+    "b": "#c:dyes/gray"
   },
   "pattern": [
     "aaa",

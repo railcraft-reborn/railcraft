@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:strengthened_glass",
-    "b": "minecraft:light_gray_dye"
+    "b": "#c:dyes/light_gray"
   },
   "pattern": [
     "aaa",

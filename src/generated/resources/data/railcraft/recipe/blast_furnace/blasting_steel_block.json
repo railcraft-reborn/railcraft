@@ -4,7 +4,7 @@
   "experience": 0.0,
   "ingredient": "#c:storage_blocks/iron",
   "result": {
-    "count": 1,
+    "count": 9,
     "id": "railcraft:steel_block"
   },
   "slagOutput": 9

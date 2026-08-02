@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:post",
-    "b": "minecraft:magenta_dye"
+    "b": "#c:dyes/magenta"
   },
   "pattern": [
     "aaa",

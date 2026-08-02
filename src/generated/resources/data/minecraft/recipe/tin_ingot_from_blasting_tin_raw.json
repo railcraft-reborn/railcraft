@@ -6,7 +6,6 @@
   "group": "tin_ingot",
   "ingredient": "railcraft:tin_raw",
   "result": {
-    "count": 1,
     "id": "railcraft:tin_ingot"
   }
 }

@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/rail_curved",
-  "render_type": "minecraft:cutout",
   "textures": {
     "rail": "railcraft:block/electric_track_corner"
   }

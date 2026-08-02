@@ -4,7 +4,6 @@
   "experience": 0.0,
   "ingredient": "railcraft:steel_shears",
   "result": {
-    "count": 1,
     "id": "railcraft:steel_ingot"
   }
 }

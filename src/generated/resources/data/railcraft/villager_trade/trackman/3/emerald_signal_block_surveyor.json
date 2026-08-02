@@ -1,0 +1,16 @@
+{
+  "gives": {
+    "id": "railcraft:signal_block_surveyor"
+  },
+  "max_uses": 12.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": {
+      "type": "minecraft:uniform",
+      "max": 8.0,
+      "min": 6.0
+    },
+    "id": "minecraft:emerald"
+  },
+  "xp": 15.0
+}

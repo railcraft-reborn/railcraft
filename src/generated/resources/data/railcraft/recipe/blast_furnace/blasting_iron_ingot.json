@@ -3,7 +3,6 @@
   "experience": 0.0,
   "ingredient": "#c:ingots/iron",
   "result": {
-    "count": 1,
     "id": "railcraft:steel_ingot"
   },
   "slagOutput": 1

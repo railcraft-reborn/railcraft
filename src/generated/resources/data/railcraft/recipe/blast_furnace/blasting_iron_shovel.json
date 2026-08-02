@@ -3,7 +3,6 @@
   "experience": 0.0,
   "ingredient": "minecraft:iron_shovel",
   "result": {
-    "count": 1,
     "id": "railcraft:steel_ingot"
   },
   "slagOutput": 1

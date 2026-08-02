@@ -2,7 +2,6 @@
   "type": "minecraft:stonecutting",
   "ingredient": "railcraft:abyssal_cobblestone",
   "result": {
-    "count": 1,
     "id": "railcraft:polished_abyssal_stone"
   }
 }

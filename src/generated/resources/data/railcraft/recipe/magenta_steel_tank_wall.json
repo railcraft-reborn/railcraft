@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:steel_tank_wall",
-    "b": "minecraft:magenta_dye"
+    "b": "#c:dyes/magenta"
   },
   "pattern": [
     "aaa",

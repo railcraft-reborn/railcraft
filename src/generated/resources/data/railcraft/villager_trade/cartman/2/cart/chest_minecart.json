@@ -1,0 +1,16 @@
+{
+  "gives": {
+    "id": "minecraft:chest_minecart"
+  },
+  "max_uses": 12.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": {
+      "type": "minecraft:uniform",
+      "max": 7.0,
+      "min": 4.0
+    },
+    "id": "minecraft:emerald"
+  },
+  "xp": 15.0
+}

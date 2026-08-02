@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:post",
-    "b": "minecraft:cyan_dye"
+    "b": "#c:dyes/cyan"
   },
   "pattern": [
     "aaa",

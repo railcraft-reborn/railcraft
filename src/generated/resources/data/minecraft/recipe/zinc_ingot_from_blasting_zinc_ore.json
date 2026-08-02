@@ -6,7 +6,6 @@
   "group": "zinc_ingot",
   "ingredient": "railcraft:zinc_ore",
   "result": {
-    "count": 1,
     "id": "railcraft:zinc_ingot"
   }
 }

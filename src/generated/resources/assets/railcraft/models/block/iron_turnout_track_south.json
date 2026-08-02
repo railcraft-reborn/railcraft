@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/rail_flat",
-  "render_type": "minecraft:cutout",
   "textures": {
     "rail": "railcraft:block/iron_turnout_track_south"
   }

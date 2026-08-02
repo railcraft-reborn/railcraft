@@ -1,0 +1,16 @@
+{
+  "gives": {
+    "id": "minecraft:emerald"
+  },
+  "max_uses": 12.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": {
+      "type": "minecraft:uniform",
+      "max": 9.0,
+      "min": 7.0
+    },
+    "id": "railcraft:tin_ingot"
+  },
+  "xp": 15.0
+}

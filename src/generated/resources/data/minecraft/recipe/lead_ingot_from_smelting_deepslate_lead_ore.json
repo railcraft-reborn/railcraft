@@ -6,7 +6,6 @@
   "group": "lead_ingot",
   "ingredient": "railcraft:deepslate_lead_ore",
   "result": {
-    "count": 1,
     "id": "railcraft:lead_ingot"
   }
 }

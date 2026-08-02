@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:iron_tank_wall",
-    "b": "minecraft:blue_dye"
+    "b": "#c:dyes/blue"
   },
   "pattern": [
     "aaa",

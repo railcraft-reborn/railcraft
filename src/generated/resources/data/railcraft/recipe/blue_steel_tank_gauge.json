@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:steel_tank_gauge",
-    "b": "minecraft:blue_dye"
+    "b": "#c:dyes/blue"
   },
   "pattern": [
     "aaa",

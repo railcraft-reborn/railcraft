@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "a": "#railcraft:strengthened_glass",
-    "b": "minecraft:black_dye"
+    "b": "#c:dyes/black"
   },
   "pattern": [
     "aaa",

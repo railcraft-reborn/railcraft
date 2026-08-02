@@ -4,7 +4,6 @@
   "experience": 0.0,
   "ingredient": "minecraft:coal",
   "result": {
-    "count": 1,
     "id": "railcraft:coal_coke"
   }
 }

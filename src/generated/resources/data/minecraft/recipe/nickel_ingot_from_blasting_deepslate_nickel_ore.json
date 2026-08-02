@@ -6,7 +6,6 @@
   "group": "nickel_ingot",
   "ingredient": "railcraft:deepslate_nickel_ore",
   "result": {
-    "count": 1,
     "id": "railcraft:nickel_ingot"
   }
 }

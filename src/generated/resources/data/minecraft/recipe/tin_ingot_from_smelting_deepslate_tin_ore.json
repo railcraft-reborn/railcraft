@@ -6,7 +6,6 @@
   "group": "tin_ingot",
   "ingredient": "railcraft:deepslate_tin_ore",
   "result": {
-    "count": 1,
     "id": "railcraft:tin_ingot"
   }
 }

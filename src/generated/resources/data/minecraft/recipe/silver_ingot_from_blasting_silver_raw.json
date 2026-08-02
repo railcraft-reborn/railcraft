@@ -6,7 +6,6 @@
   "group": "silver_ingot",
   "ingredient": "railcraft:silver_raw",
   "result": {
-    "count": 1,
     "id": "railcraft:silver_ingot"
   }
 }
