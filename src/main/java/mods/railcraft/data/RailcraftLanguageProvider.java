@@ -8,6 +8,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.DecorativeBlock;
@@ -18,10 +19,12 @@ import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
 
@@ -1081,13 +1084,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void villagerTranslations() {
-//    final String trackman = Translations.makeKey("entity.minecraft.villager",
-//        RailcraftVillagerProfession.TRACKMAN.getKey().identifier().getPath());
-//    final String railman = Translations.makeKey("entity.minecraft.villager",
-//        RailcraftVillagerProfession.CARTMAN.getKey().identifier().getPath());
+    this.add(villagerName(RailcraftVillagerProfession.TRACKMAN), "Trackman");
+    this.add(villagerName(RailcraftVillagerProfession.CARTMAN), "Cartman");
+  }
 
-//    this.add(trackman, "Trackman");
-//    this.add(railman, "Cartman");
+  /** Matches the name component the profession itself is registered with. */
+  private static String villagerName(
+      DeferredHolder<VillagerProfession, VillagerProfession> profession) {
+    return Translations.makeKey("entity",
+        "villager." + profession.getKey().identifier().getPath());
   }
 
   private void damageSourceTranslations() {

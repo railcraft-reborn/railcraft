@@ -32,6 +32,7 @@ import mods.railcraft.data.tags.RailcraftDamageTypeTagsProvider;
 import mods.railcraft.data.tags.RailcraftFluidTagsProvider;
 import mods.railcraft.data.tags.RailcraftItemTagsProvider;
 import mods.railcraft.data.tags.RailcraftPoiTypeTagsProvider;
+import mods.railcraft.data.tags.RailcraftVillagerTradeTagsProvider;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
 import mods.railcraft.data.worldgen.RailcraftStructureSets;
 import mods.railcraft.data.worldgen.RailcraftStructures;
@@ -50,7 +51,9 @@ import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
+import mods.railcraft.world.entity.npc.RailcraftTradeSets;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
+import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.ChargeMeterItem;
@@ -332,7 +335,11 @@ public class Railcraft {
         .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap)
         .add(Registries.ENCHANTMENT, RailcraftEnchantments::bootstrap)
         .add(Registries.TEST_INSTANCE, RailcraftGameTestInstances::bootstrap)
-        .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap));
+        .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap)
+        .add(Registries.VILLAGER_TRADE, RailcraftVillagerTrades::bootstrap)
+        .add(Registries.TRADE_SET, RailcraftTradeSets::bootstrap));
+    // Must come after the trades themselves, so that the pools can resolve them
+    event.createProvider(RailcraftVillagerTradeTagsProvider::new);
   }
 
   private void registerChunkControllers(RegisterTicketControllersEvent event) {
@@ -440,19 +447,6 @@ public class Railcraft {
       }
     }
   }
-
-//  @SubscribeEvent
-//  public void addCustomTrades(VillagerTradesEvent event) {
-//    if (event.getType() == RailcraftVillagerProfession.TRACKMAN.getKey()) {
-//      RailcraftVillagerTrades.addTradeForTrackman(event.getTrades());
-//    } else if (event.getType() == RailcraftVillagerProfession.CARTMAN.getKey()) {
-//      RailcraftVillagerTrades.addTradeForCartman(event.getTrades());
-//    } else if (event.getType() == VillagerProfession.ARMORER) {
-//      RailcraftVillagerTrades.addTradeForArmorer(event.getTrades());
-//    } else if (event.getType() == VillagerProfession.TOOLSMITH) {
-//      RailcraftVillagerTrades.addTradeForToolSmith(event.getTrades());
-//    }
-//  }
 
   @SubscribeEvent
   public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
