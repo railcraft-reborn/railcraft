@@ -1,6 +1,7 @@
 package mods.railcraft.world.item.crafting;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.TagKey;
@@ -18,11 +19,15 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 public abstract class TieRecipe extends CustomRecipe {
 
   private final TagKey<Fluid> fluidTag;
-  private final ItemStack result;
+  /**
+   * Lazy, as recipe instances are created while the serializers are registered, before item
+   * components have been bound.
+   */
+  private final Supplier<ItemStack> result;
   @Nullable
   private PlacementInfo placementInfo;
 
-  public TieRecipe(TagKey<Fluid> fluidTag, ItemStack result) {
+  public TieRecipe(TagKey<Fluid> fluidTag, Supplier<ItemStack> result) {
     super();
     this.fluidTag = fluidTag;
     this.result = result;
@@ -60,7 +65,7 @@ public abstract class TieRecipe extends CustomRecipe {
         craftingInput.getItem(1).getCapability(Capabilities.Fluid.ITEM, null));
 
     if (fluidHandler.getAmountAsInt(0) >= 1000) {
-      return result.copy();
+      return this.result.get().copy();
     }
     return ItemStack.EMPTY;
   }

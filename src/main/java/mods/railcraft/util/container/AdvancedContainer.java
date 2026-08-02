@@ -58,7 +58,6 @@ public class AdvancedContainer extends SimpleContainer
 
   public AdvancedContainer listener(Listener callback) {
     this.listener = callback;
-    this.addListener(callback);
     return this;
   }
 
@@ -74,6 +73,13 @@ public class AdvancedContainer extends SimpleContainer
   @Override
   public int getMaxStackSize() {
     return this.maxStackSize;
+  }
+
+  @Override
+  public void setChanged() {
+    if (this.listener != null) {
+      this.listener.containerChanged(this);
+    }
   }
 
   @Override
@@ -120,7 +126,10 @@ public class AdvancedContainer extends SimpleContainer
     }
   }
 
-  public interface Listener extends ContainerListener {
+  @FunctionalInterface
+  public interface Listener {
+
+    void containerChanged(Container container);
 
     default boolean stillValid(Player player) {
       return true;

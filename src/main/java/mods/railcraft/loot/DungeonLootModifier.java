@@ -21,9 +21,14 @@ public class DungeonLootModifier extends LootModifier {
           .apply(inst, DungeonLootModifier::new));
   private final ResourceKey<LootTable> lootTable;
 
-  public DungeonLootModifier(LootItemCondition[] conditionsIn, ResourceKey<LootTable> lootTable) {
-    super(conditionsIn);
+  public DungeonLootModifier(LootItemCondition[] conditionsIn, int priority,
+      ResourceKey<LootTable> lootTable) {
+    super(conditionsIn, priority);
     this.lootTable = lootTable;
+  }
+
+  public DungeonLootModifier(LootItemCondition[] conditionsIn, ResourceKey<LootTable> lootTable) {
+    this(conditionsIn, IGlobalLootModifier.DEFAULT_PRIORITY, lootTable);
   }
 
   @SuppressWarnings("deprecation")

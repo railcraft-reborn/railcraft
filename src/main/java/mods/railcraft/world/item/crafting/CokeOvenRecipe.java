@@ -37,7 +37,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
                   BlastFurnaceRecipeBuilder.DEFAULT_COOKING_TIME)
               .forGetter(AbstractCookingRecipe::cookingTime),
           ExtraCodecs.POSITIVE_INT.fieldOf(RecipeJsonKeys.CREOSOTE_OUTPUT)
-              .forGetter(recipe -> recipe.creosote.getAmount())
+              .forGetter(recipe -> recipe.creosoteOutput)
       ).apply(instance, CokeOvenRecipe::new));
 
   private static final StreamCodec<RegistryFriendlyByteBuf, CokeOvenRecipe> STREAM_CODEC =
@@ -46,17 +46,21 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   public static final RecipeSerializer<CokeOvenRecipe> SERIALIZER =
       new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-  private final FluidStack creosote;
+  /**
+   * Kept as a plain amount, as recipes are also built during data generation, where fluid
+   * components are not bound yet and {@link FluidStack} cannot be created.
+   */
+  private final int creosoteOutput;
 
   public CokeOvenRecipe(Ingredient ingredient, ItemStackTemplate result,
       float experience, int cookingTime, int creosoteOutput) {
     super(new CommonInfo(true), new CookingBookInfo(CookingBookCategory.MISC, ""),
         ingredient, result, experience, cookingTime);
-    this.creosote = new FluidStack(RailcraftFluids.CREOSOTE.get(), creosoteOutput);
+    this.creosoteOutput = creosoteOutput;
   }
 
   public FluidStack getCreosote() {
-    return this.creosote;
+    return new FluidStack(RailcraftFluids.CREOSOTE.get(), this.creosoteOutput);
   }
 
   @Override
@@ -94,7 +98,7 @@ public class CokeOvenRecipe extends AbstractCookingRecipe {
   }
 
   private static void toNetwork(RegistryFriendlyByteBuf buffer, CokeOvenRecipe recipe) {
-    buffer.writeVarInt(recipe.creosote.getAmount());
+    buffer.writeVarInt(recipe.creosoteOutput);
     buffer.writeVarInt(recipe.cookingTime());
     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.input());
     ItemStackTemplate.STREAM_CODEC.encode(buffer, recipe.result());

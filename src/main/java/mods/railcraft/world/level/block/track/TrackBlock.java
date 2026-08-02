@@ -206,7 +206,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     });
   }
 
-  @Override
+  /**
+   * Called whenever a cart passes over this track. Formerly a NeoForge hook on
+   * {@link BaseRailBlock}, removed in 26.1; now dispatched by Railcraft itself from
+   * {@code OldMinecartBehaviorMixin}.
+   */
   public void onMinecartPass(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
     this.getTrackType().getEventHandler().minecartPass(level, cart, pos);
@@ -227,7 +231,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     }
   }
 
-  @Override
+  /**
+   * The speed cap this track imposes on carts. Formerly a NeoForge hook on
+   * {@link BaseRailBlock}, removed in 26.1; now queried by Railcraft itself from
+   * {@code OldMinecartBehaviorMixin}.
+   */
   public float getRailMaxSpeed(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
     return (float) this.getTrackType().getEventHandler().getMaxSpeed(level, cart, pos);

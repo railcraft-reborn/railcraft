@@ -322,7 +322,7 @@ class RailcraftModelTemplates {
       return TexturedModel.createDefault(
           block -> TextureMapping
               .singleSlot(TextureSlot.RAIL, TextureMapping.getBlockTexture(block, "_outfitted")),
-          template.extend().renderType(RailcraftModelProvider.CUTOUT).suffix(suffix).build()
+          template.extend().suffix(suffix).build()
       );
     }
   }

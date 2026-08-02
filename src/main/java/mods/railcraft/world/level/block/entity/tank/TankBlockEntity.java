@@ -132,7 +132,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
   @Override
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand, null, this.module.getTank())
+    return FluidUtil.interactWithFluidHandler(player, hand, null, this.module.getTank(), null)
         ? InteractionResult.CONSUME
         : super.use(player, hand);
   }

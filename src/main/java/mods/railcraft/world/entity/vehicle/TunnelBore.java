@@ -63,7 +63,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class TunnelBore extends RailcraftMinecart implements Linkable {
 
@@ -714,7 +714,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     ServerPlayer fakePlayer = MinecartUtil.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
-    var breakEvent = new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
+    var breakEvent = new BreakBlockEvent(this.level(), targetPos, targetState, fakePlayer);
     NeoForge.EVENT_BUS.post(breakEvent);
 
     if (breakEvent.isCanceled()) {

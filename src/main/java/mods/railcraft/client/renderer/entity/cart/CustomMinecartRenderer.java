@@ -159,7 +159,6 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     reusedState.hurtDir = entity.getHurtDir();
     reusedState.damageTime = Math.max(entity.getDamage() - partialTick, 0.0F);
     reusedState.displayOffset = entity.getDisplayOffset();
-    reusedState.displayBlockState = entity.getDisplayBlockState();
   }
 
   private static <T extends AbstractMinecart, S extends MinecartRenderState> void newExtractState(T entity,

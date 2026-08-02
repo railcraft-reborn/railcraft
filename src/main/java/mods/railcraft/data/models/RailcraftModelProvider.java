@@ -15,7 +15,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import org.jspecify.annotations.Nullable;
 import com.mojang.math.Quadrant;
@@ -100,7 +99,6 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -128,12 +126,6 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
 
 public class RailcraftModelProvider extends ModelProvider {
-
-  static final String CUTOUT = "cutout";
-
-  private static final UnaryOperator<ModelTemplate> CUTOUT_OP =
-      t -> t.extend().renderType(CUTOUT).build();
-
   public RailcraftModelProvider(PackOutput packOutput) {
     super(packOutput, RailcraftConstants.ID);
   }
@@ -649,22 +641,18 @@ public class RailcraftModelProvider extends ModelProvider {
   /// BLOCKS
   private void createStrengthenedGlass(BlockModelGenerators blockModels, Block block) {
     var singleModel = TexturedModel.CUBE
-        .updateTemplate(CUTOUT_OP)
         .updateTexture(tm ->
             tm.put(TextureSlot.ALL, TextureMapping.getBlockTexture(block, "_top")))
         .createWithSuffix(block, "_single", blockModels.modelOutput);
     var topModel = TexturedModel.COLUMN
-        .updateTemplate(CUTOUT_OP)
         .updateTexture(tm ->
             tm.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_top")))
         .createWithSuffix(block, "_top", blockModels.modelOutput);
     var centerModel = TexturedModel.COLUMN
-        .updateTemplate(CUTOUT_OP)
         .updateTexture(tm ->
             tm.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_center")))
         .createWithSuffix(block, "_center", blockModels.modelOutput);
     var bottomModel = TexturedModel.COLUMN
-        .updateTemplate(CUTOUT_OP)
         .updateTexture(tm ->
             tm.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side_bottom")))
         .createWithSuffix(block, "_bottom", blockModels.modelOutput);
@@ -1078,13 +1066,11 @@ public class RailcraftModelProvider extends ModelProvider {
     var topPoweredTexture = TextureMapping.getBlockTexture(block, "_top_powered");
 
     var model = RailcraftModelTemplates.FRAME_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .create(block, new TextureMapping()
             .put(TextureSlot.SIDE, sideTexture)
             .put(TextureSlot.TOP, topTexture), blockModels.modelOutput);
 
     var modelPowered = RailcraftModelTemplates.FRAME_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_powered", new TextureMapping()
             .put(TextureSlot.SIDE, sideTexture)
             .put(TextureSlot.TOP, topPoweredTexture), blockModels.modelOutput);
@@ -1410,7 +1396,6 @@ public class RailcraftModelProvider extends ModelProvider {
         .put(TextureSlot.PARTICLE, sideUnpowered);
 
     var modelUnpowered = RailcraftModelTemplates.FORCE_TRACK_EMITTER_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .createWithOverride(block, "_unpowered", tmUnpowered, blockModels.modelOutput);
 
     var tmPowered = new TextureMapping()
@@ -1421,7 +1406,6 @@ public class RailcraftModelProvider extends ModelProvider {
         .put(TextureSlot.PARTICLE, side);
 
     var modelPowered = RailcraftModelTemplates.FORCE_TRACK_EMITTER_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_powered", tmPowered, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
@@ -1447,7 +1431,6 @@ public class RailcraftModelProvider extends ModelProvider {
     var texture = TextureMapping.getBlockTexture(block);
 
     var model = RailcraftModelTemplates.FORCE_TRACK_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .create(block, TextureMapping.singleSlot(TextureSlot.RAIL, texture),
             blockModels.modelOutput);
 
@@ -1465,11 +1448,9 @@ public class RailcraftModelProvider extends ModelProvider {
     var textureOn = TextureMapping.getBlockTexture(block, "_on");
 
     var model = RailcraftModelTemplates.ELEVATOR_TRACK_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .create(block, TextureMapping.singleSlot(TextureSlot.TEXTURE, texture),
             blockModels.modelOutput);
     var activeModel = RailcraftModelTemplates.ELEVATOR_TRACK_TEMPLATE
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_on", TextureMapping.singleSlot(TextureSlot.TEXTURE, textureOn),
             blockModels.modelOutput);
 
@@ -1496,7 +1477,6 @@ public class RailcraftModelProvider extends ModelProvider {
       FluidManipulatorBlock<?> block) {
     var tm = TextureMapping.cubeBottomTop(block);
     var model = ModelTemplates.CUBE_BOTTOM_TOP
-        .extend().renderType(CUTOUT).build()
         .create(block, tm, blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(
@@ -1561,23 +1541,18 @@ public class RailcraftModelProvider extends ModelProvider {
     var cornerTexture = TextureMapping.getBlockTexture(block, "_corner");
 
     var flatModel0 = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_0", TextureMapping.singleSlot(TextureSlot.RAIL, texture0),
             blockModels.modelOutput);
     var flatModel1 = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_1", TextureMapping.singleSlot(TextureSlot.RAIL, texture1),
             blockModels.modelOutput);
     var cornerModel = ModelTemplates.RAIL_CURVED
-        .extend().renderType(CUTOUT).build()
         .create(block,
             TextureMapping.singleSlot(TextureSlot.RAIL, cornerTexture), blockModels.modelOutput);
     var raisedNorthEastModel = ModelTemplates.RAIL_RAISED_NE
-        .extend().renderType(CUTOUT).build()
         .create(block,
             TextureMapping.singleSlot(TextureSlot.RAIL, texture0), blockModels.modelOutput);
     var raisedSouthWestModel = ModelTemplates.RAIL_RAISED_SW
-        .extend().renderType(CUTOUT).build()
         .create(block,
             TextureMapping.singleSlot(TextureSlot.RAIL, texture0), blockModels.modelOutput);
 
@@ -1643,16 +1618,12 @@ public class RailcraftModelProvider extends ModelProvider {
     var textureMappingCorner = TextureMapping.rail(TextureMapping.getBlockTexture(block, "_corner"));
 
     var flatModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .create(block, textureMapping, blockModels.modelOutput);
     var cornerModel = ModelTemplates.RAIL_CURVED
-        .extend().renderType(CUTOUT).build()
         .create(block, textureMappingCorner, blockModels.modelOutput);
     var raisedNorthEastModel = ModelTemplates.RAIL_RAISED_NE
-        .extend().renderType(CUTOUT).build()
         .create(block, textureMapping, blockModels.modelOutput);
     var raisedSouthWestModel = ModelTemplates.RAIL_RAISED_SW
-        .extend().renderType(CUTOUT).build()
         .create(block, textureMapping, blockModels.modelOutput);
     blockModels.registerSimpleFlatItemModel(block);
     blockModels.blockStateOutput.accept(
@@ -2524,19 +2495,15 @@ public class RailcraftModelProvider extends ModelProvider {
     var southSwitchedTexture = TextureMapping.getBlockTexture(block, "_south_switched");
 
     var northModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_north",
             TextureMapping.singleSlot(TextureSlot.RAIL, northTexture), blockModels.modelOutput);
     var northSwitchedModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_north_switched",
             TextureMapping.singleSlot(TextureSlot.RAIL, northSwitchedTexture), blockModels.modelOutput);
     var southModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_south",
             TextureMapping.singleSlot(TextureSlot.RAIL, southTexture), blockModels.modelOutput);
     var southSwitchedModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_south_switched",
             TextureMapping.singleSlot(TextureSlot.RAIL, southSwitchedTexture), blockModels.modelOutput);
 
@@ -2598,19 +2565,15 @@ public class RailcraftModelProvider extends ModelProvider {
     var westSwitchedTexture = TextureMapping.getBlockTexture(block, "_west_switched");
 
     var eastModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_east",
             TextureMapping.singleSlot(TextureSlot.RAIL, eastTexture), blockModels.modelOutput);
     var eastSwitchedModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_east_switched",
             TextureMapping.singleSlot(TextureSlot.RAIL, eastSwitchedTexture), blockModels.modelOutput);
     var westModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_west",
             TextureMapping.singleSlot(TextureSlot.RAIL, westTexture), blockModels.modelOutput);
     var westSwitchedModel = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .createWithSuffix(block, "_west_switched",
             TextureMapping.singleSlot(TextureSlot.RAIL, westSwitchedTexture), blockModels.modelOutput);
 
@@ -2636,7 +2599,6 @@ public class RailcraftModelProvider extends ModelProvider {
 
   private void createJunctionTrack(BlockModelGenerators blockModels, JunctionTrackBlock block) {
     var model = ModelTemplates.RAIL_FLAT
-        .extend().renderType(CUTOUT).build()
         .create(block, TextureMapping.rail(block), blockModels.modelOutput);
 
     blockModels.blockStateOutput.accept(

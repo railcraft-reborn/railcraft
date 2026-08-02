@@ -18,7 +18,7 @@ public class WoodenTieRecipe extends TieRecipe {
 
   public WoodenTieRecipe() {
     super(RailcraftTags.Fluids.CREOSOTE,
-        RailcraftItems.WOODEN_TIE.toStack(3));
+        () -> RailcraftItems.WOODEN_TIE.toStack(3));
   }
 
   @Override

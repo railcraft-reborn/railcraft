@@ -20,7 +20,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class LevelUtil {
 
@@ -75,7 +75,7 @@ public class LevelUtil {
       actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
     }
     var event = NeoForge.EVENT_BUS.post(
-        new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor));
+        new BreakBlockEvent(level, pos, level.getBlockState(pos), actor));
     if (event.isCanceled())
       return false;
 
@@ -95,7 +95,7 @@ public class LevelUtil {
     var blockState = level.getBlockState(pos);
     var blockEntity = level.getBlockEntity(pos);
 
-    var event = NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player));
+    var event = NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, blockState, player));
     if (event.isCanceled()) {
       return false;
     }

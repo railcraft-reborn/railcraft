@@ -31,7 +31,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -2115,7 +2114,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .pattern("aba")
           .pattern("aaa")
           .define('a', tagItem)
-          .define('b', DyeItem.byColor(dyeColor))
+          .define('b', dyeColor.getTag())
           .unlockedBy(getHasName(base), has(base))
           .save(output);
     }

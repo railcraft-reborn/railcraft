@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Unique;
 import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
+import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -53,7 +54,10 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       if (!state.is(BlockTags.RAILS)) {
         return self().getMaxSpeed(level);
       } else {
-        float railMaxSpeed = ((BaseRailBlock)state.getBlock()).getRailMaxSpeed(state, level, pos, minecart);
+        // Vanilla rails no longer expose a per-rail speed cap, so they keep the cart's own limit
+        float railMaxSpeed = state.getBlock() instanceof TrackBlock trackBlock
+            ? trackBlock.getRailMaxSpeed(state, level, pos, minecart)
+            : (float) self().getMaxSpeed(level);
         return Math.min(railMaxSpeed, minecart.getData(RailcraftAttachmentTypes.CURRENT_SPEED_CAP_ON_RAIL));
       }
     }
@@ -203,9 +207,9 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
       this.setDeltaMovement(d25 * (double)(j - blockpos.getX()), vec36.y, d25 * (double)(i - blockpos.getZ()));
     }
 
-    if (this.railcraft$shouldDoRailFunctions()) { //RAILCRAFT PATCH
-      BaseRailBlock baserailblock = (BaseRailBlock) blockstate.getBlock(); //RAILCRAFT PATCH
-      baserailblock.onMinecartPass(blockstate, level(), blockpos, this.minecart); //RAILCRAFT PATCH
+    if (this.railcraft$shouldDoRailFunctions() //RAILCRAFT PATCH
+        && blockstate.getBlock() instanceof TrackBlock trackBlock) { //RAILCRAFT PATCH
+      trackBlock.onMinecartPass(blockstate, level(), blockpos, this.minecart); //RAILCRAFT PATCH
     } //RAILCRAFT PATCH
 
     if (flag && this.railcraft$shouldDoRailFunctions()) { //RAILCRAFT PATCH

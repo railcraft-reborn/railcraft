@@ -21,7 +21,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
@@ -61,23 +63,30 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public ItemStack getCraftingRemainder(ItemStack itemStack) {
+  public @Nullable ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
+    var damage = instance.getOrDefault(DataComponents.DAMAGE, 0);
+    var maxDamage = instance.getOrDefault(DataComponents.MAX_DAMAGE, 0);
+    double damageLevel = maxDamage == 0 ? 0.0D : (double) damage / (double) maxDamage;
+
     ItemStack newStack;
-    double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
-    if (random.nextDouble() < damageLevel * 0.0001) {
+    if (this.random.nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
-      if (itemStack.has(DataComponents.CUSTOM_NAME))
-        newStack.set(DataComponents.CUSTOM_NAME, itemStack.getHoverName());
+      var customName = instance.get(DataComponents.CUSTOM_NAME);
+      if (customName != null) {
+        newStack.set(DataComponents.CUSTOM_NAME, customName);
+      }
     } else {
-      newStack = itemStack.copy();
+      newStack = new ItemStack(instance.typeHolder());
+      newStack.set(DataComponents.DAMAGE, damage);
     }
-    newStack.setCount(1);
+
     var res = new AtomicReference<>(newStack);
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
       newStack.hurtAndBreak(1, serverPlayer.level(), serverPlayer,
           __ -> res.set(ItemStack.EMPTY));
     }
-    return res.get();
+    var remainder = res.get();
+    return remainder.isEmpty() ? null : ItemStackTemplate.fromNonEmptyStack(remainder);
   }
 
   @Override

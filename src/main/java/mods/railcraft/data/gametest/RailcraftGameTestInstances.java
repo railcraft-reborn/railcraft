@@ -172,7 +172,8 @@ public class RailcraftGameTestInstances {
         false,
         1,
         1,
-        true
+        true,
+        0
     );
   }
 

@@ -16,7 +16,7 @@ public class StoneTieRecipe extends TieRecipe {
   public static final RecipeSerializer<StoneTieRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   public StoneTieRecipe() {
-    super(Tags.Fluids.WATER, RailcraftItems.STONE_TIE.toStack());
+    super(Tags.Fluids.WATER, () -> RailcraftItems.STONE_TIE.toStack());
   }
 
   @Override

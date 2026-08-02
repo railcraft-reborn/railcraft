@@ -1,14 +1,9 @@
 package mods.railcraft.world.entity.npc;
 
-import com.google.common.collect.ImmutableSet;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftVillagerProfession {

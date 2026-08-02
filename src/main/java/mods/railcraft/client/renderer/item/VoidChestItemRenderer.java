@@ -52,7 +52,8 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
     this.model.root().getExtentsForGui(posestack, consumer);
   }
 
-  public record Unbaked(Identifier texture, float openness) implements SpecialModelRenderer.Unbaked {
+  public record Unbaked(Identifier texture, float openness)
+      implements NoDataSpecialModelRenderer.Unbaked {
 
     public static final MapCodec<VoidChestItemRenderer.Unbaked> MAP_CODEC =
         RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -71,7 +72,7 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
     }
 
     @Override
-    public SpecialModelRenderer<?> bake(SpecialModelRenderer.BakingContext context) {
+    public VoidChestItemRenderer bake(SpecialModelRenderer.BakingContext context) {
       var chestModel = new ChestModel(context.entityModelSet().bakeLayer(ModelLayers.CHEST));
       return new VoidChestItemRenderer(context.sprites(), chestModel, this.openness);
     }

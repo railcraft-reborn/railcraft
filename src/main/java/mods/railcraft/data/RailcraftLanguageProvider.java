@@ -8,7 +8,6 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.vehicle.MaintenanceMinecart;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.DecorativeBlock;

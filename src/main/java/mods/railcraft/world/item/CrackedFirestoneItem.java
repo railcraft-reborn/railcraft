@@ -1,8 +1,12 @@
 package mods.railcraft.world.item;
 
 import java.util.concurrent.atomic.AtomicReference;
+import org.jspecify.annotations.Nullable;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class CrackedFirestoneItem extends RefinedFirestoneItem {
@@ -18,16 +22,22 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
   }
 
   @Override
-  public ItemStack getCraftingRemainder(ItemStack itemStack) {
-    double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
-    if (random.nextDouble() < damageLevel * 0.0001) {
-      return RailcraftItems.RAW_FIRESTONE.get().getDefaultInstance();
+  public @Nullable ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
+    var damage = instance.getOrDefault(DataComponents.DAMAGE, 0);
+    var maxDamage = instance.getOrDefault(DataComponents.MAX_DAMAGE, 0);
+    double damageLevel = maxDamage == 0 ? 0.0D : (double) damage / (double) maxDamage;
+    if (this.random.nextDouble() < damageLevel * 0.0001) {
+      return new ItemStackTemplate(RailcraftItems.RAW_FIRESTONE.get());
     }
-    var newStack = new AtomicReference<>(itemStack.copyWithCount(1));
+
+    var damagedStack = new ItemStack(instance.typeHolder());
+    damagedStack.set(DataComponents.DAMAGE, damage);
+    var newStack = new AtomicReference<>(damagedStack);
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
       newStack.get().hurtAndBreak(1, serverPlayer.level(), serverPlayer,
           __ -> newStack.set(ItemStack.EMPTY));
     }
-    return newStack.get();
+    var remainder = newStack.get();
+    return remainder.isEmpty() ? null : ItemStackTemplate.fromNonEmptyStack(remainder);
   }
 }

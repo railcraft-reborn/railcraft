@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.block.model.BlockDisplayContext;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 
 /**
  * @author Sm0keySa1m0n
@@ -34,7 +32,7 @@ public abstract class ContentsMinecartRenderer<T extends RailcraftMinecart, S ex
     var displayOffset = renderState.displayOffset;
     var scale = 0.75F;
     poseStack.scale(scale, scale, scale);
-    if (!renderState.displayBlockState.is(Blocks.AIR)) {
+    if (!renderState.displayBlockModel.isEmpty()) {
       poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, 0.5F);
     } else {
       poseStack.translate(-0.5F, (displayOffset - 8.0F) / 16.0F, -0.5F);
@@ -53,11 +51,11 @@ public abstract class ContentsMinecartRenderer<T extends RailcraftMinecart, S ex
 
   protected void renderContents(S renderState, PoseStack poseStack,
       SubmitNodeCollector collector, int color) {
-    var blockstate = renderState.displayBlockModel;
-    if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
+    var displayBlockModel = renderState.displayBlockModel;
+    if (!displayBlockModel.isEmpty()) {
       poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-      collector.submitBlock(poseStack, blockstate, renderState.lightCoords, OverlayTexture.NO_OVERLAY,
-          renderState.outlineColor);
+      displayBlockModel.submitMultiLayer(poseStack, collector, renderState.lightCoords,
+          OverlayTexture.NO_OVERLAY, renderState.outlineColor);
     }
   }
 }

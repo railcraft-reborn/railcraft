@@ -1,6 +1,8 @@
 package mods.railcraft.client;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Set;
 import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
@@ -73,16 +75,22 @@ import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
+import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BuiltInBlockModels;
+import net.minecraft.client.renderer.block.FluidModel;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
@@ -93,6 +101,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -105,16 +114,18 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
+import net.neoforged.neoforge.client.event.RegisterBlockModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.client.event.RegisterSpecialBlockModelRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.fluid.FluidTintSources;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -134,6 +145,7 @@ public class ClientManager {
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
     modEventBus.addListener(ClientManager::handleKeyRegister);
     modEventBus.addListener(ClientManager::handleClientExtensions);
+    modEventBus.addListener(ClientManager::handleFluidModels);
     modEventBus.addListener(ClientManager::handleSpecialRenderers);
     modEventBus.addListener(ClientManager::handleSpecialBlockRenderers);
     NeoForge.EVENT_BUS.register(ClientManager.class);
@@ -208,18 +220,41 @@ public class ClientManager {
   }
 
   private static void handleBlockColors(RegisterColorHandlersEvent.BlockTintSources event) {
-    event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
-        RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col;
+      }
 
-    event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackBlock.COLOR).getMapColor().col,
-        RailcraftBlocks.FORCE_TRACK.get());
+      @Override
+      public Set<Property<?>> relevantProperties() {
+        return Set.of(ForceTrackEmitterBlock.COLOR);
+      }
+    }), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.register((state, level, pos, tintIndex) -> level != null && pos != null
-            ? BiomeColors.getAverageGrassColor(level, pos)
-            : GrassColor.get(0.5D, 1.0D),
-        RailcraftBlocks.ABANDONED_TRACK.get());
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return state.getValue(ForceTrackBlock.COLOR).getMapColor().col;
+      }
+
+      @Override
+      public Set<Property<?>> relevantProperties() {
+        return Set.of(ForceTrackBlock.COLOR);
+      }
+    }), RailcraftBlocks.FORCE_TRACK.get());
+
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return GrassColor.get(0.5D, 1.0D);
+      }
+
+      @Override
+      public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return BiomeColors.getAverageGrassColor(level, pos);
+      }
+    }), RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
   private static void handleParticleRegistration(RegisterParticleProvidersEvent event) {
@@ -271,53 +306,14 @@ public class ClientManager {
     }, RailcraftBlocks.RITUAL.get());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final Identifier STILL_TEXTURE =
-          RailcraftConstants.id("block/steam_still");
 
       @Override
-      public int getTintColor() {
-        return 0xFFF5F5F5;
-      }
-
-      @Override
-      public Identifier getStillTexture() {
-        return STILL_TEXTURE;
-      }
-
-      @Override
-      public Identifier getFlowingTexture() {
-        return STILL_TEXTURE;
-      }
-    }, RailcraftFluidTypes.STEAM.get());
-
-    event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final Identifier STILL_TEXTURE =
-          Identifier.withDefaultNamespace("block/water_still");
-      private static final Identifier FLOW_TEXTURE =
-          Identifier.withDefaultNamespace("block/water_flow");
-
-      @Override
-      public int getTintColor() {
-        return 0xFF6A6200;
-      }
-
-      @Override
-      public Identifier getStillTexture() {
-        return STILL_TEXTURE;
-      }
-
-      @Override
-      public Identifier getFlowingTexture() {
-        return FLOW_TEXTURE;
-      }
-
-      @Override
-      public Vector4f modifyFogColor(Camera camera, float partialTick,
+      public void modifyFogColor(Camera camera, float partialTick,
           ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
         var x = Integer.parseInt("6A", 16) / 255f;
         var y = Integer.parseInt("62", 16) / 255f;
         var z = Integer.parseInt("00", 16) / 255f;
-        return new Vector4f(x, y, z, fluidFogColor.w());
+        fluidFogColor.set(x, y, z, fluidFogColor.w());
       }
 
       @Override
@@ -329,13 +325,28 @@ public class ClientManager {
     }, RailcraftFluidTypes.CREOSOTE.get());
   }
 
+  private static void handleFluidModels(RegisterFluidModelsEvent event) {
+    var steamTexture = new Material(RailcraftConstants.id("block/steam_still"));
+    event.register(new FluidModel.Unbaked(steamTexture, steamTexture, null,
+        FluidTintSources.constant(0xFFF5F5F5)), RailcraftFluids.STEAM);
+
+    event.register(new FluidModel.Unbaked(
+        new Material(Identifier.withDefaultNamespace("block/water_still")),
+        new Material(Identifier.withDefaultNamespace("block/water_flow")),
+        null,
+        FluidTintSources.constant(0xFF6A6200)),
+        RailcraftFluids.CREOSOTE, RailcraftFluids.FLOWING_CREOSOTE);
+  }
+
   private static void handleSpecialRenderers(RegisterSpecialModelRendererEvent event) {
     event.register(RailcraftConstants.id("void_chest"), VoidChestItemRenderer.Unbaked.MAP_CODEC);
   }
 
-  private static void handleSpecialBlockRenderers(RegisterSpecialBlockModelRendererEvent event) {
-    event.register(RailcraftBlocks.VOID_CHEST.get(), new VoidChestItemRenderer.Unbaked(
-            VoidChestRenderer.VOID_CHEST.texture()));
+  private static void handleSpecialBlockRenderers(RegisterBlockModelsEvent event) {
+    event.register(
+        BuiltInBlockModels.special(
+            new VoidChestItemRenderer.Unbaked(VoidChestRenderer.VOID_CHEST.texture())),
+        RailcraftBlocks.VOID_CHEST.get());
   }
 
   // ================================================================================
@@ -350,7 +361,7 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  static void handleRenderWorldLast(RenderLevelStageEvent.AfterEntities event) {
+  static void handleRenderWorldLast(RenderLevelStageEvent.AfterOpaqueFeatures event) {
     shuntingAuraRenderer.render(event.getPoseStack(), event.getLevelRenderState().cameraRenderState,
         Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
   }

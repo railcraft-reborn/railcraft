@@ -2,10 +2,8 @@ package mods.railcraft.world.item.crafting;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftRecipeSerializers {
@@ -18,6 +16,10 @@ public class RailcraftRecipeSerializers {
 //          () -> new CustomRecipe.Serializer<>(PatchouliBookCrafting::new));
 
   public static void register(IEventBus modEventBus) {
+    deferredRegister.register("rolling", () -> RollingRecipe.SERIALIZER);
+    deferredRegister.register("coking", () -> CokeOvenRecipe.SERIALIZER);
+    deferredRegister.register("blasting", () -> BlastFurnaceRecipe.SERIALIZER);
+    deferredRegister.register("crusher", () -> CrusherRecipe.SERIALIZER);
     deferredRegister.register("ticket_duplicate", () -> TicketDuplicateRecipe.SERIALIZER);
     deferredRegister.register("locomotive_painting", () -> LocomotivePaintingRecipe.SERIALIZER);
     deferredRegister.register("rotor_repair", () -> RotorRepairRecipe.SERIALIZER);

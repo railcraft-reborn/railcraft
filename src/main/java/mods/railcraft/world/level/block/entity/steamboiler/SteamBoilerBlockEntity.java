@@ -74,7 +74,7 @@ public class SteamBoilerBlockEntity
   @Override
   public InteractionResult use(ServerPlayer player, InteractionHand hand) {
     return FluidUtil.interactWithFluidHandler(player, hand, null,
-        this.getModule(SteamBoilerModule.class).get().getTankManager())
+        this.getModule(SteamBoilerModule.class).get().getTankManager(), null)
             ? InteractionResult.CONSUME
             : super.use(player, hand);
   }

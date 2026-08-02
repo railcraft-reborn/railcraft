@@ -61,7 +61,7 @@ public final class FluidTools {
       ResourceHandler<FluidResource> fluidHandler) {
     return player.level().isClientSide()
         ? isFluidHandler(player.getItemInHand(hand))
-        : FluidUtil.interactWithFluidHandler(player, hand, null, fluidHandler);
+        : FluidUtil.interactWithFluidHandler(player, hand, null, fluidHandler, null);
   }
 
   public static boolean isFluidHandler(ItemStack stack) {

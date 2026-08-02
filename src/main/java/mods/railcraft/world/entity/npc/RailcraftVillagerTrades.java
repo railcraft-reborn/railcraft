@@ -7,7 +7,6 @@ import java.util.function.BiFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import org.jspecify.annotations.Nullable;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.server.level.ServerLevel;
