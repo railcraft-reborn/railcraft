@@ -1,5 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import java.util.stream.IntStream;
 import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
@@ -15,6 +16,9 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class TicketDuplicateRecipe extends CustomRecipe {
@@ -77,6 +81,14 @@ public class TicketDuplicateRecipe extends CustomRecipe {
       this.placementInfo = PlacementInfo.create(ingredients);
     }
     return this.placementInfo;
+  }
+
+  @Override
+  public List<RecipeDisplay> display() {
+    return List.of(new ShapelessCraftingRecipeDisplay(
+        List.of(SOURCE.display(), BLANK.display()),
+        new SlotDisplay.ItemSlotDisplay(RailcraftItems.TICKET.get()),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
   }
 
   @Override

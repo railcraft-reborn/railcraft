@@ -1,5 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import java.util.stream.IntStream;
 import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
@@ -8,11 +9,15 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class RotorRepairRecipe extends CustomRecipe {
@@ -83,6 +88,14 @@ public class RotorRepairRecipe extends CustomRecipe {
       this.placementInfo = PlacementInfo.create(ingredients);
     }
     return this.placementInfo;
+  }
+
+  @Override
+  public List<RecipeDisplay> display() {
+    return List.of(new ShapelessCraftingRecipeDisplay(
+        List.of(ROTOR.display(), BLADE.display()),
+        new SlotDisplay.ItemSlotDisplay(RailcraftItems.TURBINE_ROTOR.get()),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
   }
 
   @Override

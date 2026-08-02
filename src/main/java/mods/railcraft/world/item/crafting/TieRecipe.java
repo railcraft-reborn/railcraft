@@ -1,14 +1,21 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -58,6 +65,26 @@ public abstract class TieRecipe extends CustomRecipe {
   }
 
   protected abstract boolean testIngredient(ItemStack itemPresent, int index);
+
+  /** What to show in the slot that takes the fluid container. */
+  protected abstract SlotDisplay fluidContainerDisplay();
+
+  /** What to show in the three slots of the bottom row. */
+  protected abstract List<SlotDisplay> materialDisplays();
+
+  @Override
+  public List<RecipeDisplay> display() {
+    var materials = this.materialDisplays();
+    var slots = new ArrayList<SlotDisplay>(6);
+    slots.add(SlotDisplay.Empty.INSTANCE);
+    slots.add(this.fluidContainerDisplay());
+    slots.add(SlotDisplay.Empty.INSTANCE);
+    slots.addAll(materials);
+    return List.of(new ShapedCraftingRecipeDisplay(3, 2, slots,
+        new SlotDisplay.ItemStackSlotDisplay(
+            ItemStackTemplate.fromNonEmptyStack(this.result.get())),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
+  }
 
   @Override
   public ItemStack assemble(CraftingInput craftingInput) {

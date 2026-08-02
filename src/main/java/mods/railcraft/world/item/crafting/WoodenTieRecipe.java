@@ -1,5 +1,6 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
@@ -8,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 public class WoodenTieRecipe extends TieRecipe {
 
@@ -24,6 +26,17 @@ public class WoodenTieRecipe extends TieRecipe {
   @Override
   protected boolean testIngredient(ItemStack itemPresent, int index) {
     return itemPresent.is(ItemTags.WOODEN_SLABS);
+  }
+
+  @Override
+  protected SlotDisplay fluidContainerDisplay() {
+    return new SlotDisplay.ItemSlotDisplay(RailcraftItems.CREOSOTE_BUCKET.get());
+  }
+
+  @Override
+  protected List<SlotDisplay> materialDisplays() {
+    var slabs = new SlotDisplay.TagSlotDisplay(ItemTags.WOODEN_SLABS);
+    return List.of(slabs, slabs, slabs);
   }
 
   @Override

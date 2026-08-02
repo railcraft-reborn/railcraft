@@ -1,11 +1,14 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.neoforged.neoforge.common.Tags;
 
 public class StoneTieRecipe extends TieRecipe {
@@ -16,7 +19,7 @@ public class StoneTieRecipe extends TieRecipe {
   public static final RecipeSerializer<StoneTieRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   public StoneTieRecipe() {
-    super(Tags.Fluids.WATER, () -> RailcraftItems.STONE_TIE.toStack());
+    super(Tags.Fluids.WATER, RailcraftItems.STONE_TIE::toStack);
   }
 
   @Override
@@ -27,6 +30,17 @@ public class StoneTieRecipe extends TieRecipe {
       return itemPresent.is(RailcraftItems.REBAR.get());
     }
     return false;
+  }
+
+  @Override
+  protected SlotDisplay fluidContainerDisplay() {
+    return new SlotDisplay.ItemSlotDisplay(Items.WATER_BUCKET);
+  }
+
+  @Override
+  protected List<SlotDisplay> materialDisplays() {
+    var cement = new SlotDisplay.ItemSlotDisplay(RailcraftItems.BAG_OF_CEMENT.get());
+    return List.of(cement, new SlotDisplay.ItemSlotDisplay(RailcraftItems.REBAR.get()), cement);
   }
 
   @Override
