@@ -1,7 +1,0 @@
-// 1.21.11	2025-12-12T17:12:09.322699	Global Loot Modifiers : railcraft
-d5d1ebe74a154a448f4b9ee288f954bc8e01fe2f data/neoforge/loot_modifiers/global_loot_modifiers.json
-16e59dbf9d9bf0b818ed46e4d8e14b5521a88cda data/railcraft/loot_modifiers/chests/abandoned_mineshaft.json
-94e692f317874a895e1a93b7d6e95968a34db451 data/railcraft/loot_modifiers/chests/simple_dungeon.json
-e49251d306dd55e90d93e0b60ba24b30c1420b04 data/railcraft/loot_modifiers/chests/stronghold_corridor.json
-109bf739a0ac753294bc274636ba857e1df23282 data/railcraft/loot_modifiers/chests/stronghold_crossing.json
-98419d6e0296d7b103e7f241b3737a4728d4d318 data/railcraft/loot_modifiers/chests/village/village_armorer.json
