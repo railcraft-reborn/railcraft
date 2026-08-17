@@ -2,11 +2,11 @@ package mods.railcraft.world.item.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -19,8 +19,10 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.transfer.access.ItemAccess;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public abstract class TieRecipe extends CustomRecipe {
@@ -50,12 +52,7 @@ public abstract class TieRecipe extends CustomRecipe {
       return false;
     }
 
-    var item = craftingInput.getItem(1);
-    if (item.isEmpty()) {
-      return false;
-    }
-    var cap = item.getCapability(Capabilities.Fluid.ITEM, null);
-    if (cap == null || !FluidUtil.getStack(cap, 0).is(this.fluidTag)) {
+    if (!FluidUtil.getFirstStackContained(craftingInput.getItem(1)).is(this.fluidTag)) {
       return false;
     }
 
@@ -88,39 +85,65 @@ public abstract class TieRecipe extends CustomRecipe {
 
   @Override
   public ItemStack assemble(CraftingInput craftingInput) {
-    var fluidHandler = Objects.requireNonNull(
-        craftingInput.getItem(1).getCapability(Capabilities.Fluid.ITEM, null));
-
-    if (fluidHandler.getAmountAsInt(0) >= 1000) {
-      return this.result.get().copy();
-    }
-    return ItemStack.EMPTY;
+    // Only produce a result if the container can actually give up the fluid, so that
+    // getRemainingItems never has to hand back a container it failed to drain.
+    return drain(craftingInput.getItem(1)) == null
+        ? ItemStack.EMPTY
+        : this.result.get().copy();
   }
 
   @Override
   public final NonNullList<ItemStack> getRemainingItems(CraftingInput input) {
     var remainingItems = NonNullList.withSize(input.size(), ItemStack.EMPTY);
-    for(int i = 0; i < remainingItems.size(); ++i) {
+    for (int i = 0; i < remainingItems.size(); ++i) {
       ItemStack item = input.getItem(i);
+      if (item.isEmpty()) {
+        continue;
+      }
       if (item.getCraftingRemainder() != null) {
         remainingItems.set(i, item.getCraftingRemainder().create());
       } else {
-        var itemAccess = ItemAccess.forStack(item);
-        var cap = itemAccess.getCapability(Capabilities.Fluid.ITEM);
-        if (cap != null) {
-          try (var tx = Transaction.openRoot()) {
-            var resource = cap.getResource(0);
-            if (!resource.isEmpty()) {
-              var extracted = cap.extract(resource, 1000, tx);
-              if (extracted == 1000) {
-                tx.commit();
-              }
-            }
-          }
-          remainingItems.set(i, item.copy());
+        var drained = drain(item);
+        if (drained != null) {
+          remainingItems.set(i, drained);
         }
       }
     }
     return remainingItems;
+  }
+
+  /**
+   * Removes one bucket of fluid from a single copy of the given container, leaving the container
+   * passed in untouched.
+   *
+   * @return the emptied container, or {@code null} if a bucket could not be drained
+   */
+  @Nullable
+  private static ItemStack drain(ItemStack container) {
+    if (container.isEmpty()) {
+      return null;
+    }
+    var slot = new SimpleContainer(container.copyWithCount(1));
+    var cap = ItemAccess.forHandlerIndex(VanillaContainerWrapper.of(slot), 0)
+        .getCapability(Capabilities.Fluid.ITEM);
+    if (cap == null) {
+      return null;
+    }
+
+    // Resolve the fluid before opening a transaction, so a failed extraction leaves nothing behind.
+    for (int i = 0; i < cap.size(); i++) {
+      var resource = cap.getResource(i);
+      if (resource.isEmpty()) {
+        continue;
+      }
+      try (var tx = Transaction.openRoot()) {
+        if (cap.extract(resource, FluidType.BUCKET_VOLUME, tx) != FluidType.BUCKET_VOLUME) {
+          return null;
+        }
+        tx.commit();
+      }
+      return slot.getItem(0);
+    }
+    return null;
   }
 }

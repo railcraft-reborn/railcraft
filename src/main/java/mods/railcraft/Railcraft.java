@@ -1,6 +1,5 @@
 package mods.railcraft;
 
-import java.util.Objects;
 import java.util.Optional;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
@@ -131,7 +130,6 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 @Mod(RailcraftConstants.ID)
@@ -280,8 +278,6 @@ public class Railcraft {
     event.registerBlockEntity(Capabilities.Item.BLOCK,
         RailcraftBlockEntityTypes.ITEM_UNLOADER.get(), ItemUnloaderBlockEntity::getItemCap);
 
-    event.registerItem(Capabilities.Fluid.ITEM,
-        (stack, ctx) -> new BucketResourceHandler(Objects.requireNonNull(ctx)), RailcraftItems.CREOSOTE_BUCKET);
     event.registerBlockEntity(Capabilities.Item.BLOCK,
         RailcraftBlockEntityTypes.VOID_CHEST.get(), VoidChestBlockEntity::getItemCap);
 
