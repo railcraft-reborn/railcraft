@@ -175,9 +175,12 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   }
 
   private Optional<RecipeHolder<CrusherRecipe>> getRecipe(ItemStack itemStack) {
-    return ((ServerLevel) provider.getLevel()).recipeAccess()
-        .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
-            new SingleRecipeInput(itemStack), provider.getLevel());
+    if (provider.getLevel() instanceof ServerLevel serverLevel) {
+      return serverLevel.recipeAccess()
+              .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
+                      new SingleRecipeInput(itemStack), serverLevel);
+    }
+    return Optional.empty();
   }
 
   @Override

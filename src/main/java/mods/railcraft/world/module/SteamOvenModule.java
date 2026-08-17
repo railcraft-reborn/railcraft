@@ -65,9 +65,12 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
   }
 
   private Optional<RecipeHolder<SmeltingRecipe>> getRecipe(ItemStack itemStack) {
-    return ((ServerLevel) provider.getLevel()).recipeAccess()
-        .getRecipeFor(RecipeType.SMELTING,
-            new SingleRecipeInput(itemStack), provider.getLevel());
+    if (provider.getLevel() instanceof ServerLevel serverLevel) {
+      return serverLevel.recipeAccess()
+          .getRecipeFor(RecipeType.SMELTING,
+              new SingleRecipeInput(itemStack), serverLevel);
+    }
+    return Optional.empty();
   }
 
   @Override
