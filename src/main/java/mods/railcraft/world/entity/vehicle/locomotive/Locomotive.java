@@ -101,7 +101,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
   private static final Set<Mode> SUPPORTED_MODES =
       Collections.unmodifiableSet(EnumSet.allOf(Mode.class));
 
-  protected float renderYaw;
   private int fuel;
   private int whistleDelay;
   private int tempIdle;
@@ -429,10 +428,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setDeltaMovement(this.getDeltaMovement().multiply(-1.0D, 1.0D, -1.0D));
   }
 
-  @Override
-  public void setRenderYaw(float yaw) {
-    this.renderYaw = yaw;
-  }
 
   public abstract SoundEvent getWhistleSound();
 

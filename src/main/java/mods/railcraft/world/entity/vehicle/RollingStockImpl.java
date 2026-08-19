@@ -23,7 +23,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.NameAndId;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -453,15 +452,6 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
         HighSpeedTrackUtil.checkSafetyAndExplode(this.level(),
             this.minecart.blockPosition(), this.entity());
       }
-    }
-
-    // Fix flip
-    var distance = Mth.degreesDifference(this.minecart.getYRot(), this.minecart.yRotO);
-    var cutoff = 120;
-    if (distance < -cutoff || distance >= cutoff) {
-      this.minecart.setYRot(this.minecart.getYRot() + 180);
-      this.minecart.flipped = !this.minecart.flipped;
-      this.minecart.setYRot(this.minecart.getYRot() % 360);
     }
 
     if (BaseRailBlock.isRail(this.level(), this.minecart.blockPosition())) {

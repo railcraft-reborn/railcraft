@@ -87,31 +87,21 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
       Vec3 vector3d3 = vector3d2.add(-vector3d1.x, -vector3d1.y, -vector3d1.z);
       if (vector3d3.length() != 0.0) {
         vector3d3 = vector3d3.normalize();
-        yaw = (float)(Math.atan2(vector3d3.z, vector3d3.x) * 180.0 / Math.PI);
+        float railYaw = (float)(Math.atan2(vector3d3.z, vector3d3.x) * 180.0 / Math.PI);
         pitch = (float)(Math.atan(vector3d3.y) * 73.0);
+        // The rail derived yaw comes from the rail shape alone, so it describes the axis of the
+        // track but not which way round the cart sits on it. Vanilla carts are symmetric and don't
+        // care, but rolling stock with a front does: keep the rail yaw for the geometry and pick
+        // whichever of its two orientations matches the cart's facing. The models are built facing
+        // away from the physics yaw, so the facing to match against is the cart's yaw plus 180.
+        if (Math.abs(Mth.degreesDifference(railYaw, yaw + 180.0F)) > 90.0F) {
+          railYaw += 180.0F;
+          pitch = -pitch;
+        }
+        yaw = railYaw;
       }
     }
-    /*yaw %= 360;
-    if (yaw < 0)
-      yaw += 360;
-    yaw += 360;
 
-    float serverYaw = cart.getYRot();
-    serverYaw += 180;
-    serverYaw %= 360;
-    if (serverYaw < 0)
-      serverYaw += 360;
-    serverYaw += 360;
-
-    if (Math.abs(yaw - serverYaw) > 90) {
-      yaw += 180;
-      pitch = -pitch;
-    }*/
-
-    //FIXME
-    /*if (cart instanceof Directional directional) {
-      directional.setRenderYaw(yaw);
-    }*/
     poseStack.translate(0, 0.375F, 0);
 
     boolean renderName = false;

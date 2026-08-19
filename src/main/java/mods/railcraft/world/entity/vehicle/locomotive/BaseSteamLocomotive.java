@@ -146,8 +146,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
   @Override
   protected void clientTick(Level level) {
     super.clientTick(level);
-    // future information: renderYaw FACES at -x when at 0deg
-    double rads = Math.toRadians(renderYaw);
+    double rads = Math.toRadians(this.getYRot());
     if (this.isSmoking()) {
       float offset = 0.4f;
 
