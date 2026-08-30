@@ -31,6 +31,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   private static final Logger logger = LogUtils.getLogger();
 
+  private static final int RETRY_INTERVAL_TICKS = 40;
+
   private final Class<T> clazz;
   private final Collection<MultiblockPattern<M>> patterns;
 
@@ -52,6 +54,15 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   private MultiblockPattern<M> currentPattern;
 
   private boolean evaluationPending;
+
+  /**
+   * Whether this block has ever been the master of a formed multiblock. Persisted so that a
+   * structure which is temporarily broken keeps trying to re-form itself and does not run the
+   * entity check again, entities are only a concern when initially assembling a structure.
+   */
+  private boolean wasFormed;
+
+  private int retryTimer;
 
   // Only present on the client
   @Nullable
@@ -81,6 +92,13 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   }
 
   protected void serverTick() {
+    // A structure which was formed before but isn't anymore is retried periodically. Evaluation is
+    // otherwise only triggered by neighbouring block updates, which may never come again.
+    if (this.wasFormed && !this.isFormed() && ++this.retryTimer >= RETRY_INTERVAL_TICKS) {
+      this.retryTimer = 0;
+      this.evaluationPending = true;
+    }
+
     if (this.evaluationPending) {
       this.evaluate();
     }
@@ -114,7 +132,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
       return;
     }
 
-    var pattern = this.resolvePattern();
+    var pattern = this.resolvePattern(!this.isFormed() && !this.wasFormed);
     if (this.isFormed() && (!this.isMaster() || pattern.isPresent())
         || !this.isFormed() && pattern.isEmpty()) {
       return;
@@ -142,6 +160,10 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
           blockEntity.setMembership(new Membership<>(entry.getValue(), this.clazz.cast(this)));
           this.members.put(entry.getKey(), blockEntity);
         }
+      }
+      if (!this.wasFormed) {
+        this.wasFormed = true;
+        this.setChanged();
       }
     }, this::disband);
   }
@@ -179,9 +201,22 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    *         marker.
    */
   public Optional<Pair<MultiblockPattern<M>, Map<BlockPos, MultiblockPattern.Element>>> resolvePattern() {
+    return this.resolvePattern(true);
+  }
+
+  /**
+   * Evaluate the multiblock pattern and resolve the position of each block.
+   *
+   * @param checkForEntities - whether the pattern's entity check bounds should be honoured
+   * @return an empty {@link Optional} if the pattern fails to resolve, otherwise an
+   *         {@link Optional} containing a map of block positions to their associated pattern
+   *         marker.
+   */
+  public Optional<Pair<MultiblockPattern<M>, Map<BlockPos, MultiblockPattern.Element>>> resolvePattern(
+      boolean checkForEntities) {
     if (this.level instanceof ServerLevel serverLevel) {
       return this.patterns.stream()
-          .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel)
+          .flatMap(pattern -> pattern.resolve(this.getBlockPos(), serverLevel, checkForEntities)
               .map(map -> Pair.of(pattern, map))
               .stream())
           .findAny();
@@ -267,7 +302,9 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   @Override
   protected void loadAdditional(ValueInput input) {
     super.loadAdditional(input);
+    this.wasFormed = input.getBooleanOr(CompoundTagKeys.WAS_FORMED, false);
     if (input.getBooleanOr(CompoundTagKeys.MASTER, false)) {
+      this.wasFormed = true;
       this.enqueueEvaluation();
     }
   }
@@ -276,6 +313,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   protected void saveAdditional(ValueOutput output) {
     super.saveAdditional(output);
     output.putBoolean(CompoundTagKeys.MASTER, this.membership != null && this.membership.master() == this);
+    output.putBoolean(CompoundTagKeys.WAS_FORMED, this.wasFormed);
   }
 
   @Override

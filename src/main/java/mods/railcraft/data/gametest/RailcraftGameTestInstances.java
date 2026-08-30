@@ -30,6 +30,10 @@ import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackActive
 import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.tank.TankEntityInsideTestInstance;
+import mods.railcraft.data.gametest.instances.tank.TankEntityOutsideTestInstance;
+import mods.railcraft.data.gametest.instances.tank.TankKeepsFluidTestInstance;
+import mods.railcraft.data.gametest.instances.tank.TankReformsTestInstance;
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackActiveReverseTestInstance;
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackPassiveReverseTestInstance;
@@ -87,6 +91,10 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("routing_track", () -> RoutingTrackTestInstance.CODEC);
     deferredRegister.register("dual_block_signal_primary", () -> DualBlockSignalPrimary.CODEC);
     deferredRegister.register("dual_block_signal_secondary", () -> DualBlockSignalSecondary.CODEC);
+    deferredRegister.register("tank_keeps_fluid", () -> TankKeepsFluidTestInstance.CODEC);
+    deferredRegister.register("tank_entity_inside", () -> TankEntityInsideTestInstance.CODEC);
+    deferredRegister.register("tank_entity_outside", () -> TankEntityOutsideTestInstance.CODEC);
+    deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -141,6 +149,11 @@ public class RailcraftGameTestInstances {
         t -> new DualBlockSignalSecondary(false, t));
     registerTestInstance(bootstrap, "dual_block_signal_secondary_yellow", "dual_block_signal",
         t -> new DualBlockSignalSecondary(true, t));
+
+    registerTestInstance(bootstrap, "tank_keeps_fluid", "iron_tank", TankKeepsFluidTestInstance::new);
+    registerTestInstance(bootstrap, "tank_entity_inside", "iron_tank", TankEntityInsideTestInstance::new);
+    registerTestInstance(bootstrap, "tank_entity_outside", "iron_tank", TankEntityOutsideTestInstance::new);
+    registerTestInstance(bootstrap, "tank_reforms", "iron_tank", TankReformsTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

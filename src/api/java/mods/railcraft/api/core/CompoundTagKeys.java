@@ -139,6 +139,7 @@ public final class CompoundTagKeys {
   public static final String TRAIN_SIZE = "trainSize";
   public static final String TRANSFER_MODE = "transferMode";
   public static final String VALUE = "value";
+  public static final String WAS_FORMED = "wasFormed";
   public static final String WATER_TANK = "waterTank";
   public static final String WHISTLE_PITCH = "whistlePitch";
 

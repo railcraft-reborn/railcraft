@@ -123,7 +123,22 @@ public class MultiblockPattern<T> {
   }
 
   public Optional<Map<BlockPos, Element>> resolve(BlockPos blockPos, ServerLevel level) {
-    if (!this.checkForEntities(blockPos, level)) {
+    return this.resolve(blockPos, level, true);
+  }
+
+  /**
+   * Resolve this pattern at the specified position.
+   *
+   * @param blockPos - the position of the master
+   * @param level - the level
+   * @param checkForEntities - whether the entity check bounds should be honoured. This should only
+   *        be done when initially forming a structure, otherwise an entity wandering into an
+   *        already formed structure would cause it to disband.
+   * @return an empty {@link Optional} if the pattern fails to resolve
+   */
+  public Optional<Map<BlockPos, Element>> resolve(BlockPos blockPos, ServerLevel level,
+      boolean checkForEntities) {
+    if (checkForEntities && !this.checkForEntities(blockPos, level)) {
       return Optional.empty();
     }
 
