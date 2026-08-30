@@ -28,12 +28,14 @@ public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinec
 
   private static final float PIXEL_OFFSET = 0.5F / 16F;
 
-  private static final CuboidModel FRAME_MODEL =
-      new CuboidModel(PIXEL_OFFSET, PIXEL_OFFSET, PIXEL_OFFSET,
-          1 - PIXEL_OFFSET, 1 - PIXEL_OFFSET, 1 - PIXEL_OFFSET);
+  private static CuboidModel createFrameModel() {
+    return new CuboidModel(PIXEL_OFFSET, PIXEL_OFFSET, PIXEL_OFFSET,
+        1 - PIXEL_OFFSET, 1 - PIXEL_OFFSET, 1 - PIXEL_OFFSET);
+  }
 
-  private static final CuboidModel CORE_MODEL =
-      new CuboidModel(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F);
+  private static CuboidModel createCoreModel() {
+    return new CuboidModel(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F);
+  }
 
   private final LowSidesMinecartModel<RailcraftMinecartRenderState> bodyModel;
   private final LowSidesMinecartModel<RailcraftMinecartRenderState> snowModel;
@@ -51,26 +53,25 @@ public class EnergyMinecartRenderer extends ContentsMinecartRenderer<EnergyMinec
       SubmitNodeCollector collector, int color) {
     var textureAtlas = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
-    CuboidModel.Face frameFace = FRAME_MODEL.new Face()
-        .setSprite(textureAtlas.getSprite(FRAME));
+    var frameModel = createFrameModel();
+    var coreModel = createCoreModel();
 
-    CuboidModel.Face coreFace = CORE_MODEL.new Face()
-        .setSprite(textureAtlas.getSprite(CORE));
+    frameModel.setAll(frameModel.new Face()
+        .setSprite(textureAtlas.getSprite(FRAME)));
+    frameModel.setPackedLight(renderState.lightCoords);
+    frameModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-    FRAME_MODEL.setAll(frameFace);
-    FRAME_MODEL.setPackedLight(renderState.lightCoords);
-    FRAME_MODEL.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-
-    CORE_MODEL.setAll(coreFace);
-    CORE_MODEL.setPackedLight(renderState.lightCoords);
-    CORE_MODEL.setPackedOverlay(OverlayTexture.NO_OVERLAY);
+    coreModel.setAll(coreModel.new Face()
+        .setSprite(textureAtlas.getSprite(CORE)));
+    coreModel.setPackedLight(renderState.lightCoords);
+    coreModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
     poseStack.pushPose();
     collector.submitCustomGeometry(poseStack, RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS),
         (pose, vertexConsumer) -> {
-      CuboidModelRenderer.render(FRAME_MODEL, pose, vertexConsumer, 0xFFFFFFFF,
+      CuboidModelRenderer.render(frameModel, pose, vertexConsumer, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
-      CuboidModelRenderer.render(CORE_MODEL, pose, vertexConsumer, 0xFFFFFFFF,
+      CuboidModelRenderer.render(coreModel, pose, vertexConsumer, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
     });
     poseStack.popPose();

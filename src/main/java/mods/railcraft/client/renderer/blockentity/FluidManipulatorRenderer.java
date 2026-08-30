@@ -26,8 +26,9 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
   public static final Identifier INTERIOR_TEXTURE_LOCATION =
       RailcraftConstants.id("entity/fluid_manipulator/interior");
 
-  private static final CuboidModel interiorModel =
-      new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
+  private static CuboidModel createInteriorModel() {
+    return new CuboidModel(0.011F, 0.01F, 0.011F, 0.989F, 0.99F, 0.989F);
+  }
 
   @Override
   public void extractRenderState(T blockEntity, S renderState, float partialTick, Vec3 cameraPos,
@@ -41,6 +42,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
       CameraRenderState cameraState) {
     var textureAtlas = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
+    var interiorModel = createInteriorModel();
     interiorModel.setAll(interiorModel.new Face()
         .setSprite(textureAtlas.getSprite(INTERIOR_TEXTURE_LOCATION)));
     interiorModel.setPackedLight(state.lightCoords);

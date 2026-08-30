@@ -36,8 +36,6 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
       SignalAspect.YELLOW, RailcraftConstants.id("entity/signal_aspect/yellow"),
       SignalAspect.GREEN, RailcraftConstants.id("entity/signal_aspect/green"));
 
-  private final CuboidModel signalAspectModel = new CuboidModel(1.0F);
-
   @Override
   public void extractRenderState(T blockEntity, S renderState, float partialTick, Vec3 cameraPos,
       ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
@@ -72,20 +70,20 @@ public abstract class AbstractSignalRenderer<T extends AbstractSignalBlockEntity
         Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
     final int skyLight = LightCoordsUtil.sky(state.lightCoords);
-    state.lightCoords = LightCoordsUtil.pack(signalAspect.getLampLight(), skyLight);
+    final int lightCoords = LightCoordsUtil.pack(signalAspect.getLampLight(), skyLight);
 
-    this.signalAspectModel.clear();
-    this.signalAspectModel.setPackedLight(state.lightCoords);
-    this.signalAspectModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-    this.signalAspectModel.set(direction,
-        this.signalAspectModel.new Face()
+    var signalAspectModel = new CuboidModel(1.0F);
+    signalAspectModel.setPackedLight(lightCoords);
+    signalAspectModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
+    signalAspectModel.set(direction,
+        signalAspectModel.new Face()
             .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(signalAspect)))
             .setSize(16));
 
     collector.submitCustomGeometry(poseStack,
         RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS),
         (pose, vertexConsumer) -> {
-      CuboidModelRenderer.render(this.signalAspectModel, pose, vertexConsumer,
+      CuboidModelRenderer.render(signalAspectModel, pose, vertexConsumer,
           0xFFFFFFFF, FaceDisplay.FRONT, false);
     });
   }

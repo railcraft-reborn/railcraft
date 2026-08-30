@@ -44,9 +44,6 @@ public abstract class AbstractSignalBoxRenderer
   private static final Identifier BOTTOM_TEXTURE_LOCATION =
       RailcraftConstants.id("entity/signal_box/bottom");
 
-  private final CuboidModel model =
-      new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
-
   protected abstract Identifier getTopTextureIdentifier();
 
   @Override
@@ -96,13 +93,14 @@ public abstract class AbstractSignalBoxRenderer
     var textureAtlas =
         Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
-    this.model.setPackedLight(state.lightCoords);
-    this.model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
+    var model = new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
+    model.setPackedLight(state.lightCoords);
+    model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-    this.model.set(Direction.UP, this.model.new Face()
+    model.set(Direction.UP, model.new Face()
         .setSprite(textureAtlas.getSprite(this.getTopTextureIdentifier()))
         .setSize(16));
-    this.model.set(Direction.DOWN, this.model.new Face()
+    model.set(Direction.DOWN, model.new Face()
         .setSprite(textureAtlas.getSprite(BOTTOM_TEXTURE_LOCATION))
         .setSize(16));
 
@@ -110,32 +108,32 @@ public abstract class AbstractSignalBoxRenderer
     collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
       for (var direction : Direction.Plane.HORIZONTAL) {
         var isConnected = state.directionConnections.get(direction);
-        this.model.set(direction, this.model.new Face()
+        model.set(direction, model.new Face()
             .setSprite(textureAtlas.getSprite(isConnected
                 ? CONNECTED_SIDE_TEXTURE_LOCATION
                 : SIDE_TEXTURE_LOCATION))
             .setSize(16));
       }
-      CuboidModelRenderer.render(this.model, pose, vertexConsumer,
+      CuboidModelRenderer.render(model, pose, vertexConsumer,
           0xFFFFFFFF, FaceDisplay.BOTH, false);
     });
 
     collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
       for (var direction : Direction.Plane.HORIZONTAL) {
         if (state.directionConnections.get(direction)) {
-          this.model.disable(direction);
+          model.disable(direction);
         } else {
           var aspect = state.directionSignalAspects.get(direction);
           final int skyLight = LightCoordsUtil.sky(state.lightCoords);
           final int facePackedLight = LightCoordsUtil.pack(aspect.getLampLight(), skyLight);
-          this.model.set(direction, this.model.new Face()
+          model.set(direction, model.new Face()
                   .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(aspect)))
                   .setSize(16)
                   .setPackedLight(facePackedLight)
                   .setPackedOverlay(OverlayTexture.NO_OVERLAY));
         }
       }
-      CuboidModelRenderer.render(this.model, pose, vertexConsumer,
+      CuboidModelRenderer.render(model, pose, vertexConsumer,
           0xFFFFFFFF, FaceDisplay.BOTH, false);
     });
   }
