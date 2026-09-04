@@ -11,10 +11,6 @@ public class RailcraftRecipeSerializers {
   private static final DeferredRegister<RecipeSerializer<?>> deferredRegister =
       DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, RailcraftConstants.ID);
 
-//  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<ShapelessRecipe>> PATCHOULI_BOOK_CRAFTING =
-//      deferredRegister.register("patchouli_book_crafting",
-//          () -> new CustomRecipe.Serializer<>(PatchouliBookCrafting::new));
-
   public static void register(IEventBus modEventBus) {
     deferredRegister.register("rolling", () -> RollingRecipe.SERIALIZER);
     deferredRegister.register("coking", () -> CokeOvenRecipe.SERIALIZER);
@@ -28,6 +24,7 @@ public class RailcraftRecipeSerializers {
     deferredRegister.register("void_chest_minecart_disassembly", () -> VoidChestMinecartDisassemblyRecipe.SERIALIZER);
     deferredRegister.register("wooden_tie", () -> WoodenTieRecipe.SERIALIZER);
     deferredRegister.register("stone_tie", () -> StoneTieRecipe.SERIALIZER);
+    deferredRegister.register("patchouli_book_crafting", () -> PatchouliBookCrafting.SERIALIZER);
     deferredRegister.register(modEventBus);
   }
 }

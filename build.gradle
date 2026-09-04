@@ -147,9 +147,7 @@ dependencies {
     compileOnly "dev.emi:emi-neoforge:$emi_version+1.21:api"
     //localRuntime "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
 
-    compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
-    //localRuntime "vazkii.patchouli:Patchouli:$patchouli_version"
-
+    implementation "curse.maven:patchouli-306770:$patchouli_id"
     implementation "curse.maven:jade-324717:$jade_id"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 

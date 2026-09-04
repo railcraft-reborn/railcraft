@@ -1,5 +1,7 @@
 package mods.railcraft.data.recipes;
 
+import static net.neoforged.neoforge.common.conditions.NeoForgeConditions.modLoaded;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -10,6 +12,7 @@ import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
+import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
@@ -39,6 +42,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
@@ -1202,9 +1206,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.VOID_DUST), has(RailcraftItems.VOID_DUST))
         .save(output);
 
-    //TODO: Restore
-    /*RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
-        .save(output.withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");*/
+    RailcraftSpecialRecipeBuilder.special(PatchouliBookCrafting::new)
+        .save(output.withConditions(modLoaded(PatchouliAPI.MOD_ID)), "patchouli_book_crafting");
   }
 
   private void buildCartsVariant() {
