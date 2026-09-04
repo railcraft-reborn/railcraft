@@ -11,13 +11,13 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -30,7 +30,6 @@ import net.neoforged.neoforge.transfer.access.ItemAccess;
 public enum StackFilter implements Predicate<ItemStack> {
 
   ALL(__ -> true),
-  FUEL(itemStack -> Minecraft.getInstance().level.fuelValues().isFuel(itemStack)),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
     var item = itemStack.getItem();
@@ -177,5 +176,9 @@ public enum StackFilter implements Predicate<ItemStack> {
 
       return matches;
     };
+  }
+
+  public static Predicate<ItemStack> isFuel(Level level) {
+    return itemStack -> !itemStack.isEmpty() && level.fuelValues().isFuel(itemStack);
   }
 }
