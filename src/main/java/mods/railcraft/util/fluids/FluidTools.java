@@ -3,7 +3,6 @@ package mods.railcraft.util.fluids;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 import com.google.common.base.Predicates;
 import mods.railcraft.util.container.ContainerMapper;
@@ -86,7 +85,9 @@ public final class FluidTools {
 
   public static boolean isRoomInContainer(ItemStack stack, Fluid fluid) {
     var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
-    Objects.requireNonNull(cap);
+    if (cap == null) {
+      return false;
+    }
     try (var tx = Transaction.openRoot()) {
       return cap.insert(FluidResource.of(fluid), Integer.MAX_VALUE, tx) > 0;
     }
@@ -94,7 +95,9 @@ public final class FluidTools {
 
   public static boolean containsFluid(ItemStack stack, Fluid fluid) {
     var cap = ItemAccess.forStack(stack).getCapability(Capabilities.Fluid.ITEM);
-    Objects.requireNonNull(cap);
+    if (cap == null) {
+      return false;
+    }
     for (int i = 0; i < cap.size(); i++) {
       if (!cap.getResource(i).is(fluid)) {
         return false;
