@@ -9,7 +9,6 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,7 +29,7 @@ public class SteamTurbineMenu extends RailcraftMenu {
     this.addWidget(this.turbineWidget = new AnalogGaugeWidget(new Gauge() {
 
       private float clientValue;
-      private List<ClientTooltipComponent> tooltip = Collections.emptyList();
+      private List<Component> tooltip = Collections.emptyList();
 
       {
         this.refresh();
@@ -38,13 +37,12 @@ public class SteamTurbineMenu extends RailcraftMenu {
 
       @Override
       public void refresh() {
-        this.tooltip = List.of(ClientTooltipComponent.create(
-            Component.literal(String.format("%.0f%%", this.clientValue * 100.0))
-                .getVisualOrderText()));
+        this.tooltip =
+            List.of(Component.literal(String.format("%.0f%%", this.clientValue * 100.0)));
       }
 
       @Override
-      public List<ClientTooltipComponent> getTooltip() {
+      public List<Component> getTooltip() {
         return this.tooltip;
       }
 

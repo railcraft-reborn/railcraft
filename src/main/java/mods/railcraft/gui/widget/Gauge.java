@@ -2,13 +2,13 @@ package mods.railcraft.gui.widget;
 
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.network.chat.Component;
 
 public interface Gauge {
 
   void refresh();
 
-  default List<ClientTooltipComponent> getTooltip() {
+  default List<Component> getTooltip() {
     return Collections.emptyList();
   }
 

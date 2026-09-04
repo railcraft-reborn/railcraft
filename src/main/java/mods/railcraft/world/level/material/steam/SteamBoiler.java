@@ -10,7 +10,6 @@ import mods.railcraft.gui.widget.Gauge;
 import mods.railcraft.world.level.material.FuelProvider;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -283,17 +282,16 @@ public class SteamBoiler implements ValueIOSerializable {
   private class TemperatureGauge implements Gauge {
 
     @Nullable
-    private List<ClientTooltipComponent> tooltip;
+    private List<Component> tooltip;
 
     @Override
     public void refresh() {
-      this.tooltip = List.of(ClientTooltipComponent.create(
-          Component.literal(String.format("%.0f°C", SteamBoiler.this.getTemperature()))
-              .getVisualOrderText()));
+      this.tooltip = List.of(
+          Component.literal(String.format("%.0f°C", SteamBoiler.this.getTemperature())));
     }
 
     @Override
-    public List<ClientTooltipComponent> getTooltip() {
+    public List<Component> getTooltip() {
       return this.tooltip == null ? Collections.emptyList() : this.tooltip;
     }
 
