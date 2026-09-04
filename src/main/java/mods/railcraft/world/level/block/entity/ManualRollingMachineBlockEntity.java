@@ -103,7 +103,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
   public Optional<RecipeHolder<RollingRecipe>> getRecipe(ServerLevel level) {
     return level.recipeAccess()
-        .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), this.level);
+        .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), level);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
