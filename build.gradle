@@ -302,6 +302,8 @@ publishMods {
     file = jar.archiveFile
     additionalFiles.from(apiJar)
 
+    maxRetries = 7
+
     curseforge {
         projectId = '901491'
         accessToken = providers.environmentVariable('CURSEFORGE_TOKEN')
