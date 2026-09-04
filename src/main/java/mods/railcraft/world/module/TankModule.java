@@ -1,6 +1,7 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
@@ -10,12 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
@@ -25,15 +24,9 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   private final StandardTank tank;
 
   private final ResourceHandler<ItemResource> itemHandler =
-      new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-        @Override
-        public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-          if (index == SLOT_OUTPUT) {
-            return 0;
-          }
-          return super.extract(index, resource, amount, transaction);
-        }
-  };
+      new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+          index -> index == SLOT_INPUT,
+          index -> index == SLOT_OUTPUT);
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;

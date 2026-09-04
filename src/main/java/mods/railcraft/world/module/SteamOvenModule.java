@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
 import net.minecraft.server.level.ServerLevel;
@@ -14,12 +15,10 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
 
@@ -38,23 +37,9 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
         .filter(RailcraftTags.Fluids.STEAM);
     this.inputContainer = ContainerMapper.make(this, SLOT_INPUT, 9);
     this.outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
-    this.itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-      @Override
-      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index < 9) {
-          return 0;
-        }
-        return super.extract(index, resource, amount, transaction);
-      }
-
-      @Override
-      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index >= 9) {
-          return 0;
-        }
-        return super.insert(index, resource, amount, transaction);
-      }
-    };
+    this.itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index < SLOT_OUTPUT,
+        index -> index >= SLOT_OUTPUT);
   }
 
   @Override

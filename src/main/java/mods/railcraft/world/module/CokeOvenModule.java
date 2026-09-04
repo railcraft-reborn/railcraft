@@ -2,6 +2,7 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -12,13 +13,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -46,23 +45,9 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
 
-    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-      @Override
-      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index == SLOT_INPUT) {
-          return 0;
-        }
-        return super.extract(index, resource, amount, transaction);
-      }
-
-      @Override
-      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index == SLOT_INPUT) {
-          return super.insert(index, resource, amount, transaction);
-        }
-        return 0;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index == SLOT_INPUT,
+        index -> index != SLOT_INPUT);
   }
 
   @Override
@@ -103,18 +88,6 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   @Override
   public void serverTick() {
     super.serverTick();
-
-    var topSlot = this.getItem(SLOT_LIQUID_INPUT);
-    if (!topSlot.isEmpty() && !FluidTools.isFluidHandler(topSlot)) {
-      this.setItem(SLOT_LIQUID_INPUT, ItemStack.EMPTY);
-      this.provider.dropItem(topSlot);
-    }
-
-    var bottomSlot = this.getItem(SLOT_LIQUID_OUTPUT);
-    if (!bottomSlot.isEmpty() && !FluidTools.isFluidHandler(bottomSlot)) {
-      this.setItem(SLOT_LIQUID_OUTPUT, ItemStack.EMPTY);
-      this.provider.dropItem(bottomSlot);
-    }
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;

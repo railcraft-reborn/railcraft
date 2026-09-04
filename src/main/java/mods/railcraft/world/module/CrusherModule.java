@@ -9,6 +9,7 @@ import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -19,13 +20,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
@@ -51,23 +50,9 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     currentRecipe = Optional.empty();
 
-    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-      @Override
-      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index < SLOT_OUTPUT) {
-          return 0;
-        }
-        return super.extract(index, resource, amount, transaction);
-      }
-
-      @Override
-      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index < SLOT_OUTPUT) {
-          return super.insert(index, resource, amount, transaction);
-        }
-        return 0;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index < SLOT_OUTPUT,
+        index -> index >= SLOT_OUTPUT);
     energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 

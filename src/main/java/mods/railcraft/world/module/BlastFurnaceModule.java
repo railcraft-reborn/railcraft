@@ -3,6 +3,7 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
@@ -13,11 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
 
@@ -46,23 +45,9 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
 
-    itemHandler = new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-      @Override
-      public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index == SLOT_INPUT || index == SLOT_FUEL) {
-          return 0;
-        }
-        return super.extract(index, resource, amount, transaction);
-      }
-
-      @Override
-      public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
-        if (index == SLOT_INPUT || index == SLOT_FUEL) {
-          return super.insert(index, resource, amount, transaction);
-        }
-        return 0;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index == SLOT_INPUT || index == SLOT_FUEL,
+        index -> index != SLOT_INPUT && index != SLOT_FUEL);
   }
 
   public ContainerManipulator<?> getFuelContainer() {

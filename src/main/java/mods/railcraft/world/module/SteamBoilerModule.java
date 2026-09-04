@@ -3,6 +3,7 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
@@ -16,11 +17,9 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
@@ -35,15 +34,9 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   protected final SteamBoiler boiler;
 
   private final ResourceHandler<ItemResource> itemHandler =
-      new DelegatingResourceHandler<>(VanillaContainerWrapper.of(this)) {
-        @Override
-        public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
-          if (index != SLOT_LIQUID_INPUT) {
-            return 0;
-          }
-          return super.extract(index, resource, amount, transaction);
-        }
-  };
+      new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+          index -> index == SLOT_LIQUID_INPUT,
+          index -> index == SLOT_LIQUID_OUTPUT);
 
   protected final TankManager tankManager = new TankManager();
 
