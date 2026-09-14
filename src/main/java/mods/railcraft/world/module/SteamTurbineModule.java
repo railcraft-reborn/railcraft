@@ -80,14 +80,15 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     var thisTick = addedEnergy ? 1 : 0;
     this.operatingRatio = (thisTick - this.operatingRatio) * 0.05F + this.operatingRatio;
 
-    var chargeStorage = this.storage().get();
-    if (!chargeStorage.isFull()) {
-      try (var tx = Transaction.openRoot()) {
-        chargeStorage.insert(this.energy, tx);
-        tx.commit();
-        this.energy = 0;
+    this.storage().ifPresent(chargeStorage -> {
+      if (!chargeStorage.isFull()) {
+        try (var tx = Transaction.openRoot()) {
+          chargeStorage.insert(this.energy, tx);
+          tx.commit();
+          this.energy = 0;
+        }
       }
-    }
+    });
   }
 
   public float getOperatingRatio() {
@@ -169,12 +170,12 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
     @Override
     public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
-      return SteamTurbineModule.this.steamTank.insert(index, resource, amount, transaction);
+      return this.getTank(index).insert(resource, amount, transaction);
     }
 
     @Override
     public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
-      return SteamTurbineModule.this.waterTank.extract(index, resource, amount, transaction);
+      return this.getTank(index).extract(resource, amount, transaction);
     }
   }
 }
