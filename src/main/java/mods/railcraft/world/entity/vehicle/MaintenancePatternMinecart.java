@@ -1,18 +1,18 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     implements WorldlyContainer {
@@ -24,9 +24,9 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
     super(type, level);
   }
 
-  protected MaintenancePatternMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
-      double z, Level level) {
-    super(itemStack, type, x, y, z, level);
+  protected MaintenancePatternMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   public Container getPattern() {
@@ -72,15 +72,14 @@ public abstract class MaintenancePatternMinecart extends MaintenanceMinecart
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.put(CompoundTagKeys.PATTERN, this.patternContainer.createTag(this.registryAccess()));
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.PATTERN, this.patternContainer);
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.patternContainer
-        .fromTag(tag.getList(CompoundTagKeys.PATTERN, Tag.TAG_COMPOUND), this.registryAccess());
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    valueInput.readChild(CompoundTagKeys.PATTERN, this.patternContainer);
   }
 }

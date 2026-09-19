@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 public class RailcraftStructures {
 
   public static final ResourceKey<Structure> GEODE = ResourceKey
-      .create(Registries.STRUCTURE, RailcraftConstants.rl("geode"));
+      .create(Registries.STRUCTURE, RailcraftConstants.id("geode"));
 
   public static void bootstrap(BootstrapContext<Structure> context) {
     var holdergetter = context.lookup(Registries.BIOME);

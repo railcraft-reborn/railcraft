@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.EntitySearcher;
@@ -11,20 +11,20 @@ import mods.railcraft.world.inventory.CartDispenserMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements MenuProvider {
 
@@ -73,7 +73,7 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
 
   protected void onPulse(ServerLevel serverLevel) {
     EntitySearcher.findMinecarts()
-        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .at(this.getBlockPos().offset(this.getFacing().getUnitVec3i()))
         .stream(serverLevel)
         .findAny()
         .ifPresentOrElse(cart -> {
@@ -91,14 +91,14 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
             if (!cart.getPassengers().isEmpty()) {
               MinecartUtil.removePassengers(cart);
             }
-            cart.kill();
+            cart.kill(serverLevel);
           }
         }, () -> {
           if (this.timeSinceLastSpawn > RailcraftConfig.SERVER.cartDispenserDelay.get() * SharedConstants.TICKS_PER_SECOND) {
             for (int i = 0; i < this.getContainerSize(); i++) {
               var cartStack = this.getItem(i);
               if (!cartStack.isEmpty()) {
-                var pos = this.getBlockPos().offset(this.getFacing().getNormal());
+                var pos = this.getBlockPos().offset(this.getFacing().getUnitVec3i());
                 var placedCart = MinecartUtil.placeCart(cartStack, serverLevel, pos);
 
                 if (placedCart != null) {
@@ -122,17 +122,17 @@ public class CartDispenserBlockEntity extends ManipulatorBlockEntity implements 
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
-    tag.putInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, this.timeSinceLastSpawn);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putBoolean(CompoundTagKeys.POWERED, this.powered);
+    output.putInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, this.timeSinceLastSpawn);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
-    this.timeSinceLastSpawn = tag.getInt(CompoundTagKeys.TIME_SINCE_LAST_SPAWN);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
+    this.timeSinceLastSpawn = input.getIntOr(CompoundTagKeys.TIME_SINCE_LAST_SPAWN, 0);
   }
 
   @Override

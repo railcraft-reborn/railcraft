@@ -1,34 +1,24 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:redstone_lamp"
-  },
+  "ingredient": "minecraft:redstone_lamp",
   "outputs": [
     {
       "count": 3,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:glowstone_dust"
-      }
+      "result": "minecraft:glowstone_dust"
     },
     {
       "probability": 0.75,
-      "result": {
-        "item": "minecraft:glowstone_dust"
-      }
+      "result": "minecraft:glowstone_dust"
     },
     {
       "count": 3,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:redstone"
-      }
+      "result": "minecraft:redstone"
     },
     {
       "probability": 0.75,
-      "result": {
-        "item": "minecraft:redstone"
-      }
+      "result": "minecraft:redstone"
     }
   ]
 }

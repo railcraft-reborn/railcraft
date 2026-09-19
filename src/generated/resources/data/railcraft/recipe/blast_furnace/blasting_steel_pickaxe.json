@@ -1,9 +1,7 @@
 {
   "type": "railcraft:blasting",
   "experience": 0.0,
-  "ingredient": {
-    "item": "railcraft:steel_pickaxe"
-  },
+  "ingredient": "railcraft:steel_pickaxe",
   "result": {
     "count": 2,
     "id": "railcraft:steel_ingot"

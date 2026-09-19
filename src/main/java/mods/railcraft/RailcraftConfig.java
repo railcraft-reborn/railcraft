@@ -3,7 +3,7 @@ package mods.railcraft;
 import java.util.ArrayList;
 import java.util.List;
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -39,7 +39,7 @@ public class RailcraftConfig {
     container.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.SERVER_SPEC);
   }
 
-  private static boolean isValidResourceLocation(Object obj) {
+  private static boolean isValidIdentifier(Object obj) {
     var str = obj.toString();
     if (str.isEmpty()) {
       return false;
@@ -47,7 +47,7 @@ public class RailcraftConfig {
     if (!str.contains(":")) {
       return false;
     }
-    return ResourceLocation.tryParse(str) != null;
+    return Identifier.tryParse(str) != null;
   }
 
   public static class Server {
@@ -105,7 +105,7 @@ public class RailcraftConfig {
             .comment(
                 "Add entity names to exclude them from explosions caused by high speed collisions")
             .defineList("highSpeedTrackIgnoredEntities", () -> defaultEntities,
-                () -> "minecraft:bat", RailcraftConfig::isValidResourceLocation);
+                () -> "minecraft:bat", RailcraftConfig::isValidIdentifier);
       }
       builder.pop();
 
@@ -121,7 +121,7 @@ public class RailcraftConfig {
       this.cargoBlacklist = builder
           .comment("List of items that the cargo loader will ignore")
           .defineList("cargoBlacklist", ArrayList::new, () -> "minecraft:dirt",
-              RailcraftConfig::isValidResourceLocation);
+              RailcraftConfig::isValidIdentifier);
 
       this.locomotiveDamageMobs = builder
           .comment(

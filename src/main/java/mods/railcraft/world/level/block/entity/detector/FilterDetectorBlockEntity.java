@@ -6,12 +6,11 @@ import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class FilterDetectorBlockEntity extends DetectorBlockEntity
     implements MenuProvider, ContainerManipulator<ModifiableSlotAccessor> {
@@ -34,14 +33,14 @@ public abstract class FilterDetectorBlockEntity extends DetectorBlockEntity
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.invFilters.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.CONTAINER, this.invFilters);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.invFilters.createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CONTAINER, this.invFilters);
   }
 }

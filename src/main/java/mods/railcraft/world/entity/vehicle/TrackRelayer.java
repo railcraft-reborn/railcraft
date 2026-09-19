@@ -8,7 +8,6 @@ import mods.railcraft.world.inventory.TrackRelayerMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -33,8 +32,8 @@ public class TrackRelayer extends MaintenancePatternMinecart {
     super(type, level);
   }
 
-  public TrackRelayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(itemStack, RailcraftEntityTypes.TRACK_RELAYER.get(), x, y, z, level);
+  public TrackRelayer(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.TRACK_RELAYER.get(), level, x, y, z);
   }
 
   @Override
@@ -79,7 +78,7 @@ public class TrackRelayer extends MaintenancePatternMinecart {
 
     boolean nextToSuspended = false;
     for (var direction : HORIZONTAL_DIRECTION) {
-      var blockEntity = this.level().getBlockEntity(pos.offset(direction.getNormal()));
+      var blockEntity = this.level().getBlockEntity(pos.offset(direction.getUnitVec3i()));
       if (blockEntity instanceof DumpingTrackBlockEntity) {
         nextToSuspended = true;
         break;

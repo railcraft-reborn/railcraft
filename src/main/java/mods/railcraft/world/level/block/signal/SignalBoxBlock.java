@@ -1,16 +1,19 @@
 package mods.railcraft.world.level.block.signal;
 
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.Lockable;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.signal.AbstractSignalBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,35 +61,24 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
+  protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
     return Shapes.block();
   }
 
   @Override
-  public void neighborChanged(BlockState state, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
+  protected void neighborChanged(BlockState state, Level level, BlockPos pos,
+      Block neighborBlock, @Nullable Orientation orientation, boolean isMoving) {
     LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .ifPresent(AbstractSignalBoxBlockEntity::neighborChanged);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
-      boolean isMoving) {
-    if (!blockState.is(newState.getBlock())) {
-      LevelUtil.getBlockEntity(level, blockPos, AbstractSignalBoxBlockEntity.class)
-          .ifPresent(AbstractSignalBoxBlockEntity::blockRemoved);
-    }
-    super.onRemove(blockState, level, blockPos, newState, isMoving);
-  }
-
-  @Override
-  public boolean isSignalSource(BlockState blockState) {
+  protected boolean isSignalSource(BlockState blockState) {
     return true;
   }
 
   @Override
-  public int getSignal(BlockState state, BlockGetter level, BlockPos pos,
+  protected int getSignal(BlockState state, BlockGetter level, BlockPos pos,
       Direction direction) {
     return LevelUtil.getBlockEntity(level, pos, AbstractSignalBoxBlockEntity.class)
         .map(blockEntity -> blockEntity.getRedstoneSignal(direction))
@@ -93,13 +86,13 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+  protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
       CollisionContext context) {
     return SHAPE;
   }
 
   @Override
-  public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+  protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
       CollisionContext context) {
     return SHAPE;
   }
@@ -114,17 +107,18 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
   }
 
   @Override
-  public BlockState updateShape(BlockState blockState, Direction direction,
-      BlockState otherState, LevelAccessor level, BlockPos pos, BlockPos otherPos) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
     if (blockState.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER,
-          Fluids.WATER.getTickDelay(level));
+      scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER,
+          Fluids.WATER.getTickDelay(levelReader));
     }
     return direction.getAxis().isHorizontal()
         ? blockState.setValue(PROPERTY_BY_DIRECTION.get(direction),
-        attachesTo(blockState, otherState))
+        attachesTo(blockState, neighborState))
         : direction == Direction.UP
-            ? blockState.setValue(CAP, !otherState.isAir())
+            ? blockState.setValue(CAP, !neighborState.isAir())
             : blockState;
   }
 
@@ -136,9 +130,8 @@ public abstract class SignalBoxBlock extends CrossCollisionBlock {
         || isAspectEmitter(blockState) && isAspectReceiver(otherBlockState);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public float getDestroyProgress(BlockState state, Player player, BlockGetter blockGetter,
+  protected float getDestroyProgress(BlockState state, Player player, BlockGetter blockGetter,
       BlockPos pos) {
     return LevelUtil.getBlockEntity(blockGetter, pos, Lockable.class)
         .filter(Lockable::isLocked)

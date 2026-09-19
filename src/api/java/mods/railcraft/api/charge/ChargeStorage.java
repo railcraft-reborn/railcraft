@@ -8,7 +8,7 @@ package mods.railcraft.api.charge;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 
 /**
  * Batteries the heart of the Charge Network.
@@ -39,7 +39,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
  * }
  * </pre>
  */
-public interface ChargeStorage extends IEnergyStorage {
+public interface ChargeStorage extends EnergyHandler {
 
   enum State {
     /**
@@ -80,11 +80,11 @@ public interface ChargeStorage extends IEnergyStorage {
   int getMaxDraw();
 
   default int getPotentialDraw() {
-    return Mth.clamp(this.getMaxDraw(), 0, this.getEnergyStored());
+    return Mth.clamp(this.getMaxDraw(), 0, this.getAmountAsInt());
   }
 
   default int getAvailableCharge() {
-    return this.getEnergyStored();
+    return this.getAmountAsInt();
   }
 
   default float getEfficiency() {
@@ -92,12 +92,12 @@ public interface ChargeStorage extends IEnergyStorage {
   }
 
   /**
-   * True if and only if {@code this.getEnergyStored() >= this.getMaxEnergyStored()}.
+   * True if and only if {@code this.getAmountAsLong() >= this.getCapacityAsLong()}.
    *
-   * @return {@code this.getEnergyStored() >= this.getMaxEnergyStored()}
+   * @return {@code this.getAmountAsLong() >= this.getCapacityAsLong()}
    */
   default boolean isFull() {
-    return this.getEnergyStored() >= this.getMaxEnergyStored();
+    return this.getAmountAsLong() >= this.getCapacityAsLong();
   }
 
   /**

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.worldspike;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
@@ -46,19 +46,14 @@ public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
     }
   }
 
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean movedByPiston) {
-    super.onRemove(state, level, pos, oldState, movedByPiston);
-    if (level instanceof ServerLevel serverLevel && !state.is(oldState.getBlock())) {
-      this.forceChunk(serverLevel, pos, false);
-    }
+  public void removeChunks(ServerLevel serverLevel, BlockPos pos) {
+    this.forceChunk(serverLevel, pos, false);
   }
 
   private void forceChunk(ServerLevel serverLevel, BlockPos pos, boolean add) {
-    var chunkPos = new ChunkPos(pos);
-    for (int x = chunkPos.x - 1; x <= chunkPos.x + 1; x++) {
-      for (int z = chunkPos.z - 1; z <= chunkPos.z + 1; z++) {
+    var chunkPos = ChunkPos.containing(pos);
+    for (int x = chunkPos.x() - 1; x <= chunkPos.x() + 1; x++) {
+      for (int z = chunkPos.z() - 1; z <= chunkPos.z() + 1; z++) {
         Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, pos, x, z, add, false);
       }
     }

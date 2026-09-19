@@ -36,10 +36,11 @@ public class ZapEffectProviderImpl implements Charge.ZapEffectProvider {
         0.1F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 
     for (var side : Direction.values()) {
-      if (!Block.shouldRenderFace(blockState, level, pos, side, pos.relative(side))) {
+      if (!Block.shouldRenderFace(level, pos, blockState,
+          level.getBlockState(pos.relative(side)), side)) {
         continue;
       }
-      var normal = Vec3.atLowerCornerOf(side.getNormal());
+      var normal = Vec3.atLowerCornerOf(side.getUnitVec3i());
       var variance = new Vec3((rand.nextGaussian() - 0.5) * 0.2, (rand.nextGaussian() - 0.5) * 0.2,
           (rand.nextGaussian() - 0.5) * 0.2);
       var vel = normal.add(variance);

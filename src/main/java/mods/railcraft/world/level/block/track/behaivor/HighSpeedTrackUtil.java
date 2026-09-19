@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.track.behaivor;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.api.track.TrackType;
@@ -10,7 +10,7 @@ import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -22,7 +22,7 @@ public final class HighSpeedTrackUtil {
   private static final float SPEED_SLOPE = 0.45F;
 
   public static double getMaxSpeed(Level level, @Nullable AbstractMinecart cart, BlockPos pos) {
-    return TrackUtil.getTrackDirection(level, pos, cart).isAscending()
+    return TrackUtil.getTrackDirection(level, pos, cart).isSlope()
         ? SPEED_SLOPE
         : speedForNextTrack(level, pos, 0, cart);
   }
@@ -95,7 +95,7 @@ public final class HighSpeedTrackUtil {
       }
       if (foundTrack) {
         var railShape = TrackUtil.getTrackDirection(level, nextPos, cart);
-        if (railShape.isAscending()) {
+        if (railShape.isSlope()) {
           return SPEED_SLOPE;
         }
         maxSpeed = speedForNextTrack(level, nextPos, dist + 1, cart);

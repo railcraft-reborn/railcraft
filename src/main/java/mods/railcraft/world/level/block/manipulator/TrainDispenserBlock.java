@@ -1,18 +1,11 @@
 package mods.railcraft.world.level.block.manipulator;
 
-import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
-import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,11 +15,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEntity> {
 
-  public static final DirectionProperty FACING = BlockStateProperties.FACING;
+  public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
   private static final MapCodec<TrainDispenserBlock> CODEC = simpleCodec(TrainDispenserBlock::new);
 
   public TrainDispenserBlock(Properties properties) {
@@ -76,7 +70,7 @@ public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEnt
 
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
-      BlockPos fromPos, boolean isMoving) {
+      @Nullable Orientation orientation, boolean isMoving) {
 
     boolean flag = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
     level.setBlock(pos, state.setValue(POWERED, flag), 4);
@@ -87,18 +81,5 @@ public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEnt
     if (level.getBlockEntity(pos) instanceof TrainDispenserBlockEntity trainDispenserBlockEntity) {
       trainDispenserBlockEntity.onNeighborChange();
     }
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-      TooltipFlag flag) {
-    tooltip.add(Component.translatable(Translations.Tips.TRAIN_DISPENSER)
-        .withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_ROTATE)
-        .withStyle(ChatFormatting.BLUE));
-    tooltip.add(Component.translatable(Translations.Tips.PAIR_WITH_CONTROL_TRACK)
-        .withStyle(ChatFormatting.BLUE));
-    tooltip.add(Component.translatable(Translations.Tips.APPLY_REDSTONE_TO_DISPENSE_TRAINS)
-        .withStyle(ChatFormatting.RED));
   }
 }

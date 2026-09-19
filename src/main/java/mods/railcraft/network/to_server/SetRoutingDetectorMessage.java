@@ -17,7 +17,7 @@ public record SetRoutingDetectorMessage(
     SwitchTrackRouterBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final Type<SetRoutingDetectorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_routing_detector"));
+      new Type<>(RailcraftConstants.id("set_routing_detector"));
 
   public static final StreamCodec<FriendlyByteBuf, SetRoutingDetectorMessage> STREAM_CODEC =
       StreamCodec.composite(
@@ -34,7 +34,7 @@ public record SetRoutingDetectorMessage(
   public static void handle(SetRoutingDetectorMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ROUTING_DETECTOR.get())
         .filter(routingDetector -> routingDetector.canAccess(senderProfile))
         .ifPresent(routingDetector -> {

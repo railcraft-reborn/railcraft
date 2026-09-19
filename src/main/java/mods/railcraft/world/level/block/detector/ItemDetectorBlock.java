@@ -1,10 +1,11 @@
 package mods.railcraft.world.level.block.detector;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.detector.DetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.ItemDetectorBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +44,7 @@ public class ItemDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.ITEM_DETECTOR.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -52,7 +53,7 @@ public class ItemDetectorBlock extends DetectorBlock {
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
     return level.getBlockEntity(pos, RailcraftBlockEntityTypes.ITEM_DETECTOR.get())
         .map(DetectorBlockEntity::getPowerState)
         .orElse(0);

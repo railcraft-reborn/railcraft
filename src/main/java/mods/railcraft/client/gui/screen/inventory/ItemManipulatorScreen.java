@@ -9,16 +9,16 @@ import mods.railcraft.network.to_server.SetItemManipulatorMessage;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import mods.railcraft.world.level.block.entity.manipulator.ItemManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu> {
 
-  private static final ResourceLocation WIDGETS_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/item_manipulator.png");
+  private static final Identifier WIDGETS_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/item_manipulator.png");
 
   private final static Component FILTERS_TEXT =
       Component.translatable(Translations.Screen.ITEM_MANIPULATOR_FILTERS);
@@ -35,8 +35,8 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   @Override
   public void init() {
     super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
+    int centreX = (this.width - this.getImageWidth()) / 2;
+    int centreY = (this.height - this.getImageHeight()) / 2;
 
     this.addRenderableWidget(
         this.transferModeButton = MultiButton
@@ -54,10 +54,10 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR, false);
-    guiGraphics.drawString(this.font, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, FILTERS_TEXT, 18, 16, IngameWindowScreen.TEXT_COLOR, false);
+    graphics.text(this.font, BUFFER_TEXT, 126, 16, IngameWindowScreen.TEXT_COLOR, false);
   }
 
   @Override
@@ -69,13 +69,13 @@ public class ItemManipulatorScreen extends ManipulatorScreen<ItemManipulatorMenu
   @Override
   protected void sendAttributes() {
     ItemManipulatorBlockEntity manipulator = this.menu.getManipulator();
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetItemManipulatorMessage(manipulator.getBlockPos(),
             manipulator.getRedstoneMode(), manipulator.getTransferMode()));
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return WIDGETS_TEXTURE_LOCATION;
   }
 }

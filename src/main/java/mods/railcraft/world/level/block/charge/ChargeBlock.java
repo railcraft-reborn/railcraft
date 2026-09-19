@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.charge;
 
 import mods.railcraft.api.charge.Charge;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -32,16 +33,14 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
     level.updateNeighbourForOutputSignal(pos, this);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     this.registerNode(state, level, pos);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
+  protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState,
       boolean isMoving) {
     super.onPlace(state, level, pos, oldState, isMoving);
     if (!state.is(oldState.getBlock())) {
@@ -49,14 +48,11 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState oldState,
-      boolean isMoving) {
-    super.onRemove(state, level, pos, oldState, isMoving);
-    if (!state.is(oldState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
-    }
+  protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos,
+      boolean movedByPiston) {
+    super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+    this.deregisterNode(level, pos);
   }
 
   @Override
@@ -65,7 +61,7 @@ public abstract class ChargeBlock extends Block implements mods.railcraft.api.ch
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
     if (level instanceof ServerLevel serverLevel) {
       return Charge.distribution.network(serverLevel).access(pos).getComparatorOutput();
     }

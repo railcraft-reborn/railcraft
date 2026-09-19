@@ -9,16 +9,12 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:sandstone/blocks"
-  },
+  "ingredient": "#c:sandstone/blocks",
   "outputs": [
     {
       "count": 4,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:sand"
-      }
+      "result": "minecraft:sand"
     }
   ]
 }

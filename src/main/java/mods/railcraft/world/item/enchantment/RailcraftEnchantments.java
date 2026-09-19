@@ -2,8 +2,8 @@ package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -26,12 +26,12 @@ public class RailcraftEnchantments {
   public static final ResourceKey<Enchantment> SMACK = createKey("smack");
 
   private static ResourceKey<Enchantment> createKey(String name) {
-    return ResourceKey.create(Registries.ENCHANTMENT, RailcraftConstants.rl(name));
+    return ResourceKey.create(Registries.ENCHANTMENT, RailcraftConstants.id(name));
   }
 
   private static void register(BootstrapContext<Enchantment> context,
       ResourceKey<Enchantment> enchantment, Enchantment.Builder builder) {
-    context.register(enchantment, builder.build(enchantment.location()));
+    context.register(enchantment, builder.build(enchantment.identifier()));
   }
 
   private static Enchantment.Builder customDamageEnchantment(HolderGetter<Item> items,
@@ -45,14 +45,16 @@ public class RailcraftEnchantments {
 
   public static void bootstrap(BootstrapContext<Enchantment> context) {
     var items = context.lookup(Registries.ITEM);
+    var entityType = context.lookup(Registries.ENTITY_TYPE);
+
     register(context, WRECKING, customDamageEnchantment(items, 1, 11, 20));
     register(context, IMPLOSION, customDamageEnchantment(items, 5, 8, 20)
         .withEffect(EnchantmentEffectComponents.DAMAGE,
             new AddValue(LevelBasedValue.perLevel(2.5f)),
             LootItemEntityPropertyCondition.hasProperties(
                 LootContext.EntityTarget.THIS,
-                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.CREEPER))
-            )));
+                EntityPredicate.Builder.entity()
+                    .entityType(EntityTypePredicate.of(entityType, EntityType.CREEPER)))));
     register(context, DESTRUCTION, Enchantment.enchantment(
         Enchantment.definition(items.getOrThrow(RailcraftTags.Items.CROWBAR), 1, 3,
             Enchantment.dynamicCost(5, 10), Enchantment.dynamicCost(15, 10),

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.detector;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.detector.DetectorBlockEntity;
@@ -43,6 +43,6 @@ public class TrainDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.TRAIN_DETECTOR.get())
           .ifPresent(ScreenFactories::openTrainDetectorScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

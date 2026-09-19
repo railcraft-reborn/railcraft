@@ -2,17 +2,18 @@ package mods.railcraft.client.gui.screen;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.util.GuiUtil;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class IngameWindowScreen extends Screen {
 
-  public static final ResourceLocation WIDGETS_TEXTURE =
-      RailcraftConstants.rl("textures/gui/widgets.png");
-  public static final ResourceLocation LARGE_WINDOW_TEXTURE =
-      RailcraftConstants.rl("textures/gui/large_window.png");
+  public static final Identifier WIDGETS_TEXTURE =
+      RailcraftConstants.id("textures/gui/widgets.png");
+  public static final Identifier LARGE_WINDOW_TEXTURE =
+      RailcraftConstants.id("textures/gui/large_window.png");
 
   public static final int TEXT_COLOR = 0xFF404040;
   public static final int DEFAULT_WINDOW_WIDTH = 176;
@@ -21,13 +22,13 @@ public class IngameWindowScreen extends Screen {
 
   protected final int windowWidth;
   protected final int windowHeight;
-  protected final ResourceLocation backgroundTexture;
+  protected final Identifier backgroundTexture;
 
   protected IngameWindowScreen(Component title) {
     this(title, WIDGETS_TEXTURE, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
   }
 
-  protected IngameWindowScreen(Component title, ResourceLocation backgroundTexture,
+  protected IngameWindowScreen(Component title, Identifier backgroundTexture,
       int windowWidth, int windowHeight) {
     super(title);
     this.windowWidth = windowWidth;
@@ -41,26 +42,24 @@ public class IngameWindowScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
     int centredX = (this.width - this.windowWidth) / 2;
     int centredY = (this.height - this.windowHeight) / 2;
-    guiGraphics.blit(this.backgroundTexture, centredX, centredY, 0, 0,
-        this.windowWidth, this.windowHeight);
-    var poseStack = guiGraphics.pose();
-    poseStack.pushPose();
-    poseStack.translate(centredX, centredY, 0);
-    GuiUtil.drawCenteredString(guiGraphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
-    this.renderContent(guiGraphics, mouseX, mouseY, partialTicks);
-    poseStack.popPose();
+    graphics.blit(RenderPipelines.GUI_TEXTURED, this.backgroundTexture, centredX, centredY, 0, 0,
+        this.windowWidth, this.windowHeight, 256, 256);
+    var poseStack = graphics.pose();
+    poseStack.pushMatrix();
+    poseStack.translate(centredX, centredY);
+    GuiUtil.drawCenteredString(graphics, this.font, this.title, this.windowWidth, this.font.lineHeight);
+    this.renderContent(graphics, mouseX, mouseY, partialTicks);
+    poseStack.popMatrix();
     for(var renderable : this.renderables) {
-      renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
+      renderable.extractRenderState(graphics, mouseX, mouseY, partialTicks);
     }
   }
 
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
-      float partialTicks) {}
-
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+  }
 
   @Override
   public void tick() {

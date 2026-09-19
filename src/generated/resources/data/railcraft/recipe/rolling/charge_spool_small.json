@@ -1,15 +1,12 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:ingots/copper"
-    }
+    "a": "#c:ingots/copper"
   },
   "pattern": [
     "a"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:charge_spool_small"
   }
 }

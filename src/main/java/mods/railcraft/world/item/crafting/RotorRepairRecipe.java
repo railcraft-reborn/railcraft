@@ -1,30 +1,45 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import java.util.stream.IntStream;
+import org.jspecify.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class RotorRepairRecipe extends CustomRecipe {
+
+  private static final RotorRepairRecipe INSTANCE = new RotorRepairRecipe();
+  private static final MapCodec<RotorRepairRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+  private static final StreamCodec<RegistryFriendlyByteBuf, RotorRepairRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+  public static final RecipeSerializer<RotorRepairRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   public static final int REPAIR_PER_BLADE = 2500;
 
   private static final Ingredient ROTOR = Ingredient.of(RailcraftItems.TURBINE_ROTOR.get());
   private static final Ingredient BLADE = Ingredient.of(RailcraftItems.TURBINE_BLADE.get());
-
-  public RotorRepairRecipe(CraftingBookCategory category) {
-    super(category);
-  }
+  @Nullable
+  private PlacementInfo placementInfo;
 
   @Override
   public boolean matches(CraftingInput craftingInput, Level level) {
+    if (craftingInput.height() < 2 || craftingInput.width() < 2) {
+      return false;
+    }
+
     boolean containsRotor = false;
     boolean containsBlade = false;
     for (int i = 0; i < craftingInput.size(); i++) {
@@ -40,7 +55,7 @@ public class RotorRepairRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     var rotor = IntStream.range(0, craftingInput.size())
         .mapToObj(craftingInput::getItem)
         .filter(ROTOR)
@@ -49,10 +64,10 @@ public class RotorRepairRecipe extends CustomRecipe {
     if(rotor.isEmpty()) {
       return ItemStack.EMPTY;
     }
-    var numBlades = IntStream.range(0, craftingInput.size())
+    var numBlades = ((int) IntStream.range(0, craftingInput.size())
         .mapToObj(craftingInput::getItem)
         .filter(BLADE)
-        .count();
+        .count());
 
     int damage = rotor.getDamageValue();
     damage -= REPAIR_PER_BLADE * numBlades;
@@ -65,25 +80,26 @@ public class RotorRepairRecipe extends CustomRecipe {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(ROTOR);
-    ingredients.add(BLADE);
-    return ingredients;
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      NonNullList<Ingredient> ingredients = NonNullList.create();
+      ingredients.add(ROTOR);
+      ingredients.add(BLADE);
+      this.placementInfo = PlacementInfo.create(ingredients);
+    }
+    return this.placementInfo;
   }
 
   @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return new ItemStack(RailcraftItems.TURBINE_ROTOR.get());
+  public List<RecipeDisplay> display() {
+    return List.of(new ShapelessCraftingRecipeDisplay(
+        List.of(ROTOR.display(), BLADE.display()),
+        new SlotDisplay.ItemSlotDisplay(RailcraftItems.TURBINE_ROTOR.get()),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
   }
 
   @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width >= 2 && height >= 2;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
-    return RailcraftRecipeSerializers.ROTOR_REPAIR.get();
+  public RecipeSerializer<RotorRepairRecipe> getSerializer() {
+    return SERIALIZER;
   }
 }

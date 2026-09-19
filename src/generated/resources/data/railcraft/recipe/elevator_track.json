@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:advanced_rail"
-    },
-    "b": {
-      "item": "railcraft:standard_rail"
-    },
-    "c": {
-      "item": "minecraft:redstone"
-    }
+    "a": "railcraft:advanced_rail",
+    "b": "railcraft:standard_rail",
+    "c": "minecraft:redstone"
   },
   "pattern": [
     "aca",

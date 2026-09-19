@@ -9,33 +9,23 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/diamond"
-  },
+  "ingredient": "#c:ores/diamond",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:diamond"
-      }
+      "result": "minecraft:diamond"
     },
     {
       "probability": 0.85,
-      "result": {
-        "item": "minecraft:diamond"
-      }
+      "result": "minecraft:diamond"
     },
     {
       "probability": 0.25,
-      "result": {
-        "item": "minecraft:diamond"
-      }
+      "result": "minecraft:diamond"
     },
     {
       "probability": 0.1,
-      "result": {
-        "item": "minecraft:coal"
-      }
+      "result": "minecraft:coal"
     }
   ]
 }

@@ -6,7 +6,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 
-public class MaintenanceLampModel extends SimpleModel {
+public class MaintenanceLampModel<S> extends SimpleModel<S> {
 
   public MaintenanceLampModel(ModelPart root) {
     super(root);

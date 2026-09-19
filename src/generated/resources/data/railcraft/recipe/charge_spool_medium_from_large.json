@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:charge_spool_large"
-    }
+    "railcraft:charge_spool_large"
   ],
   "result": {
     "count": 3,

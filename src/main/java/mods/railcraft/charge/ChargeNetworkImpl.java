@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import com.google.common.collect.ForwardingCollection;
 import com.google.common.collect.ForwardingMap;
@@ -50,13 +50,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ChargeNetworkImpl implements Charge.Network {
 
   private static final Logger logger = LogUtils.getLogger();
 
   public static final int CHARGE_PER_DAMAGE = 1000;
-  public static final Map<ChargeBlock.ConnectType, ConnectionMap> CONNECTION_MAPS =
+  private static final Map<ChargeBlock.ConnectType, ConnectionMap> CONNECTION_MAPS =
       new EnumMap<>(ChargeBlock.ConnectType.class);
   private final ChargeGrid NULL_GRID = new NullGrid();
   private final Map<BlockPos, ChargeNode> nodes = new HashMap<>();
@@ -71,7 +72,7 @@ public class ChargeNetworkImpl implements Charge.Network {
   public ChargeNetworkImpl(Charge network, ServerLevel level) {
     this.network = network;
     this.level = level;
-    this.chargeSavedData = ChargeSavedData.getFor(network, level);
+    this.chargeSavedData = ChargeSavedData.getFor(level);
   }
 
   public void tick() {
@@ -111,9 +112,6 @@ public class ChargeNetworkImpl implements Charge.Network {
   }
 
   private void forConnections(BlockPos pos, BiConsumer<BlockPos, BlockState> action) {
-    if (this.level == null) {
-      return;
-    }
     var state = this.level.getBlockState(pos);
     var chargeSpec = this.getChargeSpec(state, pos);
     if (chargeSpec != null) {
@@ -186,11 +184,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     return node == null || !node.isValid() || !Objects.equals(node.chargeSpec, chargeSpec);
   }
 
-  @Nullable
-  private ChargeBlock.Spec getChargeSpec(BlockState state, BlockPos pos) {
-    if (this.level == null) {
-      return null;
-    }
+  private ChargeBlock.@Nullable Spec getChargeSpec(BlockState state, BlockPos pos) {
     if (state.getBlock() instanceof ChargeBlock chargeBlock) {
       return chargeBlock.getChargeSpecs(state, this.level, pos).get(this.network);
     }
@@ -213,7 +207,7 @@ public class ChargeNetworkImpl implements Charge.Network {
       this.removeNodeImpl(pos);
       node = null;
     }
-    if (node == null && this.level != null) {
+    if (node == null) {
       var state = this.level.getBlockState(pos);
       var chargeSpec = this.getChargeSpec(state, pos);
       if (chargeSpec != null) {
@@ -321,9 +315,9 @@ public class ChargeNetworkImpl implements Charge.Network {
       var rechargeable =
           this.batteries(ChargeStorage.State.RECHARGEABLE).collect(Collectors.toSet());
 
-      var capacity = rechargeable.stream().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
+      var capacity = rechargeable.stream().mapToInt(ChargeStorage::getCapacityAsInt).sum();
       if (capacity > 0) {
-        var charge = rechargeable.stream().mapToInt(ChargeStorage::getEnergyStored).sum();
+        var charge = rechargeable.stream().mapToInt(ChargeStorage::getAmountAsInt).sum();
         final var neededCharge = capacity - charge;
         if (neededCharge > 0) {
           charge += this.removeCharge(this.batteries(ChargeStorage.State.SOURCE).toList(),
@@ -331,7 +325,7 @@ public class ChargeNetworkImpl implements Charge.Network {
         }
         final var chargeLevel = charge / (float) capacity;
         rechargeable.forEach(bat -> bat.setEnergyStored(
-            Mth.floor(chargeLevel * bat.getMaxEnergyStored())));
+            Mth.floor(chargeLevel * bat.getCapacityAsInt())));
       }
 
       batteries.forEach(bat -> {
@@ -354,11 +348,11 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     public int getCharge() {
-      return activeBatteries().mapToInt(ChargeStorage::getEnergyStored).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getAmountAsInt).sum();
     }
 
     public int getCapacity() {
-      return activeBatteries().mapToInt(ChargeStorage::getMaxEnergyStored).sum();
+      return activeBatteries().mapToInt(ChargeStorage::getCapacityAsInt).sum();
     }
 
     public float getChargeLevel() {
@@ -465,21 +459,25 @@ public class ChargeNetworkImpl implements Charge.Network {
      */
     private int removeCharge(List<ChargeStorageBlockImpl> batteries, int desiredAmount,
         boolean simulate) {
-      var amountNeeded = desiredAmount;
+      int totalExtracted = 0;
       for (var battery : batteries) {
-        amountNeeded -= battery.extractEnergy(amountNeeded, simulate);
+        try (var tx = Transaction.openRoot()) {
+          totalExtracted += battery.extract(desiredAmount, tx);
+          if (!simulate) {
+            tx.commit();
+          }
+        }
         if (!simulate) {
           chargeSavedData.updateBatteryRecord(battery);
         }
-        if (amountNeeded <= 0) {
+        if (desiredAmount - totalExtracted <= 0) {
           break;
         }
       }
-      var chargeRemoved = desiredAmount - amountNeeded;
       if (!simulate) {
-        this.chargeUsedThisTick += chargeRemoved;
+        this.chargeUsedThisTick += totalExtracted;
       }
-      return chargeRemoved;
+      return totalExtracted;
     }
 
     @Override
@@ -543,6 +541,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
   public class ChargeNode implements Charge.Access {
 
+    @Nullable
     protected final ChargeStorageBlockImpl chargeBattery;
     private final BlockPos pos;
     private final ChargeBlock.Spec chargeSpec;
@@ -677,7 +676,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public void zap(Entity entity, Charge.DamageOrigin origin, float damage) {
-      if (!(entity.level() instanceof ServerLevel level)) {
+      if (!(entity.level() instanceof ServerLevel serverLevel)) {
         return;
       }
       // logical server
@@ -700,7 +699,7 @@ public class ChargeNetworkImpl implements Charge.Network {
           for (var entry : protections.entrySet()) {
             if (remainingDamage > 0.1F) {
               var result = entry.getValue()
-                  .zap(livingEntity.getItemBySlot(entry.getKey()), level,
+                  .zap(livingEntity.getItemBySlot(entry.getKey()), serverLevel,
                       livingEntity, remainingDamage);
               livingEntity.setItemSlot(entry.getKey(), result.stack());
               remainingDamage -= result.damagePrevented();
@@ -710,9 +709,9 @@ public class ChargeNetworkImpl implements Charge.Network {
           }
         }
         if (remainingDamage > 0.1F
-            && entity.hurt(origin == Charge.DamageOrigin.BLOCK
-                ? RailcraftDamageSources.electric(level.registryAccess())
-                : RailcraftDamageSources.trackElectric(level.registryAccess()), remainingDamage)) {
+          && entity.hurtServer(serverLevel, origin == Charge.DamageOrigin.BLOCK
+            ? RailcraftDamageSources.electric(serverLevel.registryAccess())
+            : RailcraftDamageSources.trackElectric(serverLevel.registryAccess()), remainingDamage)) {
           this.removeCharge(chargeCost, false);
           Charge.zapEffectProvider().zapEffectDeath(entity.level(),
               entity.getX(), entity.getY(), entity.getZ());
@@ -826,7 +825,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     positions = new ConnectionMap();
     for (Direction facing : Direction.values()) {
-      positions.put(facing.getNormal(), any);
+      positions.put(facing.getUnitVec3i(), any);
     }
     CONNECTION_MAPS.put(ChargeBlock.ConnectType.BLOCK, positions);
 

@@ -5,12 +5,13 @@ import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.crafting.Recipe;
 
 public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
@@ -18,43 +19,39 @@ public class CokeOvenRecipeBuilder extends AbstractCookingRecipeBuilder {
 
   private final int creosoteOutput;
 
-  private CokeOvenRecipeBuilder(ItemLike result, int count, Ingredient ingredient, float experience,
+  private CokeOvenRecipeBuilder(ItemInstance result, Ingredient ingredient, float experience,
       int cookingTime, int creosoteOutput) {
-    super(result, count, ingredient, experience, cookingTime);
+    super(result, ingredient, experience, cookingTime);
     this.creosoteOutput = creosoteOutput;
   }
 
-  public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
+  public static CokeOvenRecipeBuilder coking(ItemInstance result, Ingredient ingredient,
       float experience, int creosoteOutput) {
     return coking(result, ingredient, experience, DEFAULT_COOKING_TIME, creosoteOutput);
   }
 
-  public static CokeOvenRecipeBuilder coking(ItemLike result, Ingredient ingredient,
+  public static CokeOvenRecipeBuilder coking(ItemInstance result, Ingredient ingredient,
       float experience, int cookingTime, int creosoteOutput) {
-    return coking(result, 1, ingredient, experience, cookingTime, creosoteOutput);
-  }
-
-  public static CokeOvenRecipeBuilder coking(ItemLike result, int resultCount,
-      Ingredient ingredient, float experience, int cookingTime, int creosoteOutput) {
-    return new CokeOvenRecipeBuilder(result, resultCount, ingredient, experience, cookingTime,
-        creosoteOutput);
+    return new CokeOvenRecipeBuilder(result, ingredient, experience, cookingTime, creosoteOutput);
   }
 
   @Override
-  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
-    var path = resourceLocation.getPath();
-    var customResourceLocation = RailcraftConstants.rl("coke_oven/" + path);
+  public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> resourceKey) {
+    var path = resourceKey.identifier().getPath();
+    var customIdentifier = RailcraftConstants.id("coke_oven/" + path);
+    var customResourceKey = ResourceKey.create(resourceKey.registryKey(), customIdentifier);
 
-    var advancementId = customResourceLocation.withPrefix("recipes/");
+    var advancementId = customIdentifier.withPrefix("recipes/");
 
     var builder = recipeOutput.advancement()
-        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceLocation))
-        .rewards(AdvancementRewards.Builder.recipe(customResourceLocation))
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceKey))
+        .rewards(AdvancementRewards.Builder.recipe(customResourceKey))
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);
 
-    var recipe = new CokeOvenRecipe(this.ingredient, new ItemStack(this.result, this.count),
+    var recipe = new CokeOvenRecipe(this.ingredient,
+        new ItemStackTemplate(this.result.typeHolder(), this.result.count()),
         this.experience, this.cookingTime, this.creosoteOutput);
-    recipeOutput.accept(customResourceLocation, recipe, builder.build(advancementId));
+    recipeOutput.accept(customResourceKey, recipe, builder.build(advancementId));
   }
 }

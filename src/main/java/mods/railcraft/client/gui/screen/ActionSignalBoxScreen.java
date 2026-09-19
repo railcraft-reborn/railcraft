@@ -14,7 +14,7 @@ import mods.railcraft.world.level.block.entity.signal.LockableSignalBoxBlockEnti
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class ActionSignalBoxScreen extends IngameWindowScreen {
 
@@ -72,7 +72,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
       this.signalBox.setLock(lock);
       this.signalBox.setOwner(lock == LockableSignalBoxBlockEntity.Lock.UNLOCKED
           ? null
-          : this.minecraft.player.getGameProfile());
+          : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -80,7 +80,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   private Optional<Tooltip> updateLockButtonTooltip(LockableSignalBoxBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.signalBox.getOwnerOrThrow().getName());
+          this.signalBox.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }
@@ -105,7 +105,7 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.getGameProfile());
+    boolean canAccess = this.signalBox.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.signalBox.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -115,10 +115,10 @@ public class ActionSignalBoxScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.signalBox.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.signalBox.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetActionSignalBoxMessage(this.signalBox.getBlockPos(),
             this.signalBox.getActionSignalAspects(),
             this.lockButton.getState()));

@@ -1,10 +1,10 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.NetworkSerializable;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 /**
  * Similar to an entity component system, the module system is intended for modularisation of logic
@@ -13,7 +13,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
  *
  * @author Sm0keySa1m0n
  */
-public interface Module extends NetworkSerializable, INBTSerializable<CompoundTag> {
+public interface Module extends NetworkSerializable, ValueIOSerializable {
 
   ModuleProvider getProvider();
 
@@ -26,10 +26,8 @@ public interface Module extends NetworkSerializable, INBTSerializable<CompoundTa
   default void readFromBuf(RegistryFriendlyByteBuf in) {}
 
   @Override
-  default CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    return new CompoundTag();
-  }
+  default void serialize(ValueOutput valueOutput) {}
 
   @Override
-  default void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {}
+  default void deserialize(ValueInput valueInput) {}
 }

@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:routing_track",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "pullLever": true,
+  "sky_access": true,
+  "structure": "railcraft:test/routing_track"
+}

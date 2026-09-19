@@ -679,7 +679,7 @@ public class Translations {
   }
 
   public static class KeyBinding {
-    public static final String CATEGORY = makeKey("key", "category");
+    public static final String CATEGORY = makeKey("key.category", "default");
     public static final String CHANGE_AURA = makeKey("key", "change_aura");
     public static final String REVERSE = makeKey("key", "loco.reverse");
     public static final String FASTER = makeKey("key", "loco.faster");

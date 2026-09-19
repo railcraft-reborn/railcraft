@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -14,9 +14,6 @@ import mods.railcraft.world.inventory.TrainDispenserMenu;
 import mods.railcraft.world.item.CartItem;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
 
@@ -61,7 +60,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
       this.resetSpawnSequence();
       return false;
     }
-    var offset = this.getBlockPos().offset(this.getFacing().getNormal());
+    var offset = this.getBlockPos().offset(this.getFacing().getUnitVec3i());
     if (EntitySearcher.findMinecarts().at(offset).list(serverLevel).isEmpty()) {
       var cartItem = this.extract(filter);
       if (!cartItem.isEmpty()) {
@@ -96,7 +95,7 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   @Override
   protected void onPulse(ServerLevel serverLevel) {
     var empty = EntitySearcher.findMinecarts()
-        .at(this.getBlockPos().offset(this.getFacing().getNormal()))
+        .at(this.getBlockPos().offset(this.getFacing().getUnitVec3i()))
         .list(serverLevel)
         .isEmpty();
     if (!empty) {
@@ -121,16 +120,15 @@ public class TrainDispenserBlockEntity extends CartDispenserBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern.createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.invPattern.fromTag(
-        tag.getList(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, Tag.TAG_COMPOUND), provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.TRAIN_DISPENSER_FILTERS, this.invPattern);
   }
 
   @Nullable

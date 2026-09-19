@@ -1,0 +1,10 @@
+{
+  "values": [
+    "railcraft:cartman/2/cart/cargo_minecart",
+    "railcraft:cartman/2/cart/tank_minecart",
+    "railcraft:cartman/2/cart/minecart",
+    "railcraft:cartman/2/cart/chest_minecart",
+    "railcraft:cartman/2/cart/hopper_minecart",
+    "railcraft:cartman/2/cart/tnt_minecart"
+  ]
+}

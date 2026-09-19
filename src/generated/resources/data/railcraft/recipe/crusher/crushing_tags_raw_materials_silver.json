@@ -23,21 +23,15 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:raw_materials/silver"
-  },
+  "ingredient": "#c:raw_materials/silver",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/silver"
-      }
+      "result": "#c:dusts/silver"
     },
     {
       "probability": 0.35,
-      "result": {
-        "tag": "c:dusts/silver"
-      }
+      "result": "#c:dusts/silver"
     }
   ]
 }

@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.Translations;
 import mods.railcraft.world.inventory.CokeOvenMenu;
@@ -11,18 +11,19 @@ import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockPattern;
 import mods.railcraft.world.module.CokeOvenModule;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEntity, Void> {
 
@@ -106,7 +107,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Nullable
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CokeOvenBlockEntity::getCokeOvenModule);
     return masterModule
@@ -115,7 +116,7 @@ public class CokeOvenBlockEntity extends MultiblockBlockEntity<CokeOvenBlockEnti
   }
 
   @Nullable
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     var masterModule = this.getMasterBlockEntity()
         .map(CokeOvenBlockEntity::getCokeOvenModule);
     return masterModule

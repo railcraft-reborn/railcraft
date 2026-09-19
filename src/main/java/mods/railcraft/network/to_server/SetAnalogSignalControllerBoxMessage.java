@@ -16,7 +16,7 @@ public record SetAnalogSignalControllerBoxMessage(
     Map<SignalAspect, BitSet> signalAspectTriggerSignals) implements CustomPacketPayload {
 
   public static final Type<SetAnalogSignalControllerBoxMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_analog_signal_controller_box"));
+      new Type<>(RailcraftConstants.id("set_analog_signal_controller_box"));
 
   public static final StreamCodec<FriendlyByteBuf, SetAnalogSignalControllerBoxMessage> STREAM_CODEC =
       CustomPacketPayload.codec(SetAnalogSignalControllerBoxMessage::write, SetAnalogSignalControllerBoxMessage::read);

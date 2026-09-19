@@ -3,7 +3,7 @@ package mods.railcraft.world.level.block.entity.detector;
 import java.util.List;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
 
@@ -16,7 +16,7 @@ public class EmptyDetectorBlockEntity extends DetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      if (cart.canBeRidden() && cart.getPassengers().isEmpty()) {
+      if (cart.isRideable() && cart.getPassengers().isEmpty()) {
         return Redstone.SIGNAL_MAX;
       }
     }

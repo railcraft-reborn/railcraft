@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.steamboiler;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharArrayList;
 import it.unimi.dsi.fastutil.chars.CharList;
@@ -15,13 +15,13 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.material.steam.SteamConstants;
 import mods.railcraft.world.module.SteamBoilerModule;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Util;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -29,9 +29,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class SteamBoilerBlockEntity
     extends MultiblockBlockEntity<SteamBoilerBlockEntity, SteamBoilerBlockEntity.Metadata> {
@@ -51,8 +52,10 @@ public class SteamBoilerBlockEntity
     return patterns.build();
   });
 
-  private IFluidHandler fluidHandler;
-  private IItemHandler itemHandler;
+  @Nullable
+  private ResourceHandler<FluidResource> fluidHandler;
+  @Nullable
+  private ResourceHandler<ItemResource> itemHandler;
 
   public SteamBoilerBlockEntity(BlockPos blockPos, BlockState blockState) {
     this(RailcraftBlockEntityTypes.STEAM_BOILER.get(), blockPos, blockState);
@@ -69,18 +72,20 @@ public class SteamBoilerBlockEntity
   }
 
   @Override
-  public ItemInteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand,
-        this.getModule(SteamBoilerModule.class).get().getTankManager())
-            ? ItemInteractionResult.CONSUME
+  public InteractionResult use(ServerPlayer player, InteractionHand hand) {
+    return FluidUtil.interactWithFluidHandler(player, hand, null,
+        this.getModule(SteamBoilerModule.class).get().getTankManager(), null)
+            ? InteractionResult.CONSUME
             : super.use(player, hand);
   }
 
-  public IItemHandler getItemCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<ItemResource> getItemCap(@Nullable Direction side) {
     return this.itemHandler;
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.fluidHandler;
   }
 

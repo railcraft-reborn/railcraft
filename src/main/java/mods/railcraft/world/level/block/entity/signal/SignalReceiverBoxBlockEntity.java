@@ -8,11 +8,11 @@ import mods.railcraft.api.signal.entity.SignalReceiverEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements SignalReceiverEntity {
@@ -33,7 +33,7 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalReceiver.destroy();
   }
@@ -56,16 +56,15 @@ public class SignalReceiverBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.signalReceiver
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override

@@ -5,7 +5,7 @@ import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoile
 import mods.railcraft.world.level.material.steam.SolidFuelProvider;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledSteamBoilerBlockEntity> {
 
@@ -41,7 +41,7 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
       if (masterModule.needsFuel && this.fuelMoveTicks++ >= 128) {
         this.fuelMoveTicks = 0;
         this.provider.findAdjacentContainers()
-            .moveOneItemTo(masterModule.fuelContainer, SolidFueledSteamBoilerModule::isFuel);
+            .moveOneItemTo(masterModule.fuelContainer, this::isFuel);
       }
     });
   }
@@ -54,13 +54,12 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
     if (slot >= SLOT_BURN) {
       return isFuel(itemStack);
     } else if (slot == SLOT_LIQUID_INPUT) {
-      return FluidUtil.getFluidContained(itemStack)
-          .map(fluid -> fluid.is(FluidTags.WATER)).orElse(false);
+      return FluidUtil.getFirstStackContained(itemStack).is(FluidTags.WATER);
     }
     return false;
   }
 
-  private static boolean isFuel(ItemStack itemStack) {
-    return itemStack.getBurnTime(null) > 0;
+  private boolean isFuel(ItemStack itemStack) {
+    return itemStack.getBurnTime(null, this.provider.level().fuelValues()) > 0;
   }
 }

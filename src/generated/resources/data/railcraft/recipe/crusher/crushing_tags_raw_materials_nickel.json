@@ -23,21 +23,15 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:raw_materials/nickel"
-  },
+  "ingredient": "#c:raw_materials/nickel",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/nickel"
-      }
+      "result": "#c:dusts/nickel"
     },
     {
       "probability": 0.35,
-      "result": {
-        "tag": "c:dusts/nickel"
-      }
+      "result": "#c:dusts/nickel"
     }
   ]
 }

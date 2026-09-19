@@ -2,15 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:turbine_disk"
-    }
+    "a": "railcraft:turbine_disk"
   },
   "pattern": [
     "aaa"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:turbine_rotor"
   }
 }

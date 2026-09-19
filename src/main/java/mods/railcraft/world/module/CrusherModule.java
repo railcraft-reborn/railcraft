@@ -9,6 +9,7 @@ import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.util.ForwardingEnergyStorage;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
@@ -19,9 +20,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
@@ -35,8 +38,8 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private final Charge network;
   private Optional<RecipeHolder<CrusherRecipe>> currentRecipe;
   private int currentSlot;
-  private final IItemHandler itemHandler;
-  private final IEnergyStorage energyHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
+  private final EnergyHandler energyHandler;
 
   public CrusherModule(CrusherBlockEntity provider, Charge network) {
     super(provider, 18);
@@ -47,23 +50,9 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 9).ignoreItemChecks();
     currentRecipe = Optional.empty();
 
-    itemHandler = new InvWrapper(this) {
-      @Override
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot < SLOT_OUTPUT) {
-          return ItemStack.EMPTY;
-        }
-        return super.extractItem(slot, amount, simulate);
-      }
-
-      @Override
-      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (slot < SLOT_OUTPUT) {
-          return super.insertItem(slot, stack, simulate);
-        }
-        return stack;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index < SLOT_OUTPUT,
+        index -> index >= SLOT_OUTPUT);
     energyHandler = new ForwardingEnergyStorage(this::storage);
   }
 
@@ -81,7 +70,10 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   public void serverTick() {
     super.serverTick();
     if (!lacksRequirements()) {
-      energyHandler.extractEnergy(COST_PER_TICK, false);
+      try (var tx = Transaction.openRoot()) {
+        energyHandler.extract(COST_PER_TICK, tx);
+        tx.commit();
+      }
     }
   }
 
@@ -108,7 +100,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
   @Override
   protected boolean doProcessStep() {
-    return energyHandler.getEnergyStored() > COST_PER_STEP;
+    return energyHandler.getAmountAsInt() > COST_PER_STEP;
   }
 
   @Override
@@ -151,7 +143,7 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
 
     if (hasSpace) {
       outputs.forEach(outputContainer::insert);
-      inputContainer.extract(recipe.getIngredients().getFirst());
+      inputContainer.extract(recipe.placementInfo().ingredients().getFirst());
       provider.getLevel().playSound(null, provider.blockPos(),
           SoundEvents.IRON_GOLEM_DEATH, SoundSource.BLOCKS, 1,
           provider.getLevel().getRandom().nextFloat() * 0.25F + 0.7F);
@@ -162,15 +154,18 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
   private boolean isRecipeValid() {
     return currentRecipe
         .map(RecipeHolder::value)
-        .map(r -> r.getIngredients().getFirst())
+        .map(r -> r.placementInfo().ingredients().getFirst())
         .map(r -> r.test(inputContainer.getItem(currentSlot)))
         .orElse(false);
   }
 
   private Optional<RecipeHolder<CrusherRecipe>> getRecipe(ItemStack itemStack) {
-    return provider.getLevel().getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
-            new SingleRecipeInput(itemStack), provider.getLevel());
+    if (provider.getLevel() instanceof ServerLevel serverLevel) {
+      return serverLevel.recipeAccess()
+              .getRecipeFor(RailcraftRecipeTypes.CRUSHING.get(),
+                      new SingleRecipeInput(itemStack), serverLevel);
+    }
+    return Optional.empty();
   }
 
   @Override
@@ -179,11 +174,11 @@ public class CrusherModule extends CrafterModule<CrusherBlockEntity> {
     currentRecipe = Optional.empty();
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 
-  public IEnergyStorage getEnergyHandler() {
+  public EnergyHandler getEnergyHandler() {
     return energyHandler;
   }
 }

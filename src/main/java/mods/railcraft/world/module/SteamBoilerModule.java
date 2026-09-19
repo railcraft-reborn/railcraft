@@ -3,6 +3,7 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
@@ -10,16 +11,15 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     extends ContainerModule<T> {
@@ -33,14 +33,10 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
 
   protected final SteamBoiler boiler;
 
-  private final IItemHandler itemHandler = new InvWrapper(this) {
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (slot != SLOT_LIQUID_OUTPUT)
-        return ItemStack.EMPTY;
-      return super.extractItem(slot, amount, simulate);
-    }
-  };
+  private final ResourceHandler<ItemResource> itemHandler =
+      new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+          index -> index == SLOT_LIQUID_INPUT,
+          index -> index == SLOT_LIQUID_OUTPUT);
 
   protected final TankManager tankManager = new TankManager();
 
@@ -69,8 +65,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     this.tankManager.add(this.waterTank);
     this.tankManager.add(this.steamTank);
 
-    this.waterTank.disableDrain();
-    this.steamTank.disableFill();
+    this.waterTank.disableExtract();
+    this.steamTank.disableInsert();
 
     this.boiler = new SteamBoiler(this.waterTank, this.steamTank);
     this.boiler.setChangeListener(provider::syncToClient);
@@ -88,7 +84,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     return this.tankManager;
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return this.itemHandler;
   }
 
@@ -100,8 +96,8 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     this.boiler.setTicksPerCycle(metadata.ticksPerCycle());
   }
 
-  private FluidStack checkFill(FluidStack fluidStack) {
-    return this.boiler.checkFill(fluidStack, () -> this.explode = true);
+  private void checkFill(FluidStack waterOriginalState) {
+    this.boiler.checkFill(waterOriginalState, () -> this.explode = true);
   }
 
   public SteamBoiler getBoiler() {
@@ -142,7 +138,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
       return;
     }
 
-    this.boiler.tick(metadata.tanks());
+    this.boiler.tick(level, metadata.tanks());
 
     if (this.processTicks++ >= FluidTools.BUCKET_FILL_TIME) {
       this.processTicks = 0;
@@ -156,20 +152,19 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT(provider));
-    tag.put(CompoundTagKeys.BOILER, this.boiler.serializeNBT(provider));
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueOutput.putChild(CompoundTagKeys.BOILER, this.boiler);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.tankManager.deserializeNBT(provider,
-        tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
-    this.boiler.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.BOILER));
-    this.processState = FluidTools.ProcessState.fromTag(tag);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    valueInput.readChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    valueInput.readChild(CompoundTagKeys.BOILER, this.boiler);
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
   }
 }

@@ -3,9 +3,7 @@ package mods.railcraft.world.item.crafting;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class RailcraftRecipeSerializers {
@@ -13,55 +11,20 @@ public class RailcraftRecipeSerializers {
   private static final DeferredRegister<RecipeSerializer<?>> deferredRegister =
       DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, RailcraftConstants.ID);
 
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> ROLLING =
-      deferredRegister.register("rolling", RollingRecipe.Serializer::new);
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> COKING =
-      deferredRegister.register("coking", CokeOvenRecipe.Serializer::new);
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> BLASTING =
-      deferredRegister.register("blasting", BlastFurnaceRecipe.Serializer::new);
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<?>> CRUSHER =
-      deferredRegister.register("crusher", CrusherRecipe.Serializer::new);
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<TicketDuplicateRecipe>> TICKET_DUPLICATE =
-      deferredRegister.register("ticket_duplicate",
-          () -> new SimpleCraftingRecipeSerializer<>(TicketDuplicateRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<LocomotivePaintingRecipe>> LOCOMOTIVE_PAINTING =
-      deferredRegister.register("locomotive_painting",
-          () -> new SimpleCraftingRecipeSerializer<>(LocomotivePaintingRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<RotorRepairRecipe>> ROTOR_REPAIR =
-      deferredRegister.register("rotor_repair",
-          () -> new SimpleCraftingRecipeSerializer<>(RotorRepairRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> CHEST_MINECART_DISASSEMBLY =
-      deferredRegister.register("chest_minecart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>(ChestMinecartDisassemblyRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> WORLDSPIKE_MINECART_DISASSEMBLY =
-      deferredRegister.register("worldspike_minecart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>(WorldSpikeMinecartDisassemblyRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CartDisassemblyRecipe>> VOID_CHEST_MINECART_DISASSEMBLY =
-      deferredRegister.register("void_chest_minecart_disassembly",
-          () -> new SimpleCraftingRecipeSerializer<>(VoidChestMinecartDisassemblyRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<PatchouliBookCrafting>> PATCHOULI_BOOK_CRAFTING =
-      deferredRegister.register("patchouli_book_crafting",
-          () -> new SimpleCraftingRecipeSerializer<>(PatchouliBookCrafting::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<WoodenTieRecipe>> WOODEN_TIE =
-      deferredRegister.register("wooden_tie",
-          () -> new SimpleCraftingRecipeSerializer<>(WoodenTieRecipe::new));
-
-  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<StoneTieRecipe>> STONE_TIE =
-      deferredRegister.register("stone_tie",
-          () -> new SimpleCraftingRecipeSerializer<>(StoneTieRecipe::new));
-
   public static void register(IEventBus modEventBus) {
+    deferredRegister.register("rolling", () -> RollingRecipe.SERIALIZER);
+    deferredRegister.register("coking", () -> CokeOvenRecipe.SERIALIZER);
+    deferredRegister.register("blasting", () -> BlastFurnaceRecipe.SERIALIZER);
+    deferredRegister.register("crusher", () -> CrusherRecipe.SERIALIZER);
+    deferredRegister.register("ticket_duplicate", () -> TicketDuplicateRecipe.SERIALIZER);
+    deferredRegister.register("locomotive_painting", () -> LocomotivePaintingRecipe.SERIALIZER);
+    deferredRegister.register("rotor_repair", () -> RotorRepairRecipe.SERIALIZER);
+    deferredRegister.register("chest_minecart_disassembly", () -> ChestMinecartDisassemblyRecipe.SERIALIZER);
+    deferredRegister.register("worldspike_minecart_disassembly", () -> WorldSpikeMinecartDisassemblyRecipe.SERIALIZER);
+    deferredRegister.register("void_chest_minecart_disassembly", () -> VoidChestMinecartDisassemblyRecipe.SERIALIZER);
+    deferredRegister.register("wooden_tie", () -> WoodenTieRecipe.SERIALIZER);
+    deferredRegister.register("stone_tie", () -> StoneTieRecipe.SERIALIZER);
+    deferredRegister.register("patchouli_book_crafting", () -> PatchouliBookCrafting.SERIALIZER);
     deferredRegister.register(modEventBus);
   }
 }

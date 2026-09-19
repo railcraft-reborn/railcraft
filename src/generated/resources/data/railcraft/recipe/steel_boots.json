@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    }
+    "a": "#c:ingots/steel"
   },
   "pattern": [
     "a a",
     "a a"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:steel_boots"
   }
 }

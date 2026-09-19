@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:plates/bronze"
-    },
-    "b": {
-      "item": "railcraft:rebar"
-    }
+    "a": "#c:plates/bronze",
+    "b": "railcraft:rebar"
   },
   "pattern": [
     "aaa",

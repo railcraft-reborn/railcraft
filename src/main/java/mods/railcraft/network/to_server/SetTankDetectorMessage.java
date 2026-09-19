@@ -15,7 +15,7 @@ public record SetTankDetectorMessage(
     TankDetectorBlockEntity.Mode mode) implements CustomPacketPayload {
 
   public static final CustomPacketPayload.Type<SetTankDetectorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_tank_detector"));
+      new Type<>(RailcraftConstants.id("set_tank_detector"));
 
   public static final StreamCodec<FriendlyByteBuf, SetTankDetectorMessage> STREAM_CODEC =
       StreamCodec.composite(

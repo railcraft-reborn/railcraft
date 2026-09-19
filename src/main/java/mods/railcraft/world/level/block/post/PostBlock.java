@@ -7,13 +7,13 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VoxelShapeUtil;
 import mods.railcraft.world.level.block.signal.SignalBlock;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,7 +21,8 @@ import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -145,17 +146,17 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state,
+  protected InteractionResult useItemOn(ItemStack itemStack, BlockState state,
       Level level, BlockPos pos, Player player, InteractionHand hand,
       BlockHitResult rayTraceResult) {
     if (level.isClientSide()) {
       return itemStack.is(Items.LEAD)
-          ? ItemInteractionResult.SUCCESS
-          : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+          ? InteractionResult.SUCCESS
+          : InteractionResult.TRY_WITH_EMPTY_HAND;
     } else {
       return LeadItem.bindPlayerMobs(player, level, pos) == InteractionResult.SUCCESS
-          ? ItemInteractionResult.SUCCESS
-          : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+          ? InteractionResult.SUCCESS
+          : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
   }
 
@@ -185,20 +186,20 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
         .setValue(WATERLOGGED, fluidState.getType().isSame(Fluids.WATER));
   }
 
-
   @Override
-  public BlockState updateShape(BlockState blockState, Direction direction,
-      BlockState neighborState, LevelAccessor level, BlockPos blockPos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
     if (blockState.getValue(WATERLOGGED)) {
-      level.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelReader));
     }
 
     return direction.getAxis().getPlane() == Direction.Plane.HORIZONTAL
         ? blockState.setValue(propertyByDirection.get(direction),
             this.getConnection(neighborState,
-                neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()),
+                neighborState.isFaceSturdy(levelReader, neighborPos, direction.getOpposite()),
                 direction.getOpposite()))
-        : blockState.setValue(COLUMN, this.getColumn(level, blockPos));
+        : blockState.setValue(COLUMN, this.getColumn(levelReader, blockPos));
   }
 
   public Connection getConnection(BlockState blockState, boolean sturdy, Direction direction) {
@@ -240,21 +241,18 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
   }
 
   @Override
-  public boolean propagatesSkylightDown(BlockState blockState,
-      BlockGetter level, BlockPos pos) {
+  protected boolean propagatesSkylightDown(BlockState blockState) {
     return !blockState.getValue(WATERLOGGED);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public FluidState getFluidState(BlockState blockState) {
+  protected FluidState getFluidState(BlockState blockState) {
     return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false)
         : super.getFluidState(blockState);
   }
 
-
   @Override
-  public boolean isPathfindable(BlockState state, PathComputationType pathType) {
+  protected boolean isPathfindable(BlockState state, PathComputationType pathType) {
     return false;
   }
 
@@ -278,18 +276,16 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState blockState, Mirror mirror) {
-    switch (mirror) {
-      case LEFT_RIGHT:
-        return blockState.setValue(NORTH, blockState.getValue(SOUTH)).setValue(SOUTH,
-            blockState.getValue(NORTH));
-      case FRONT_BACK:
-        return blockState.setValue(EAST, blockState.getValue(WEST)).setValue(WEST,
-            blockState.getValue(EAST));
-      default:
-        return super.mirror(blockState, mirror);
-    }
+  protected BlockState mirror(BlockState blockState, Mirror mirror) {
+    return switch (mirror) {
+      case LEFT_RIGHT -> blockState
+          .setValue(NORTH, blockState.getValue(SOUTH))
+          .setValue(SOUTH, blockState.getValue(NORTH));
+      case FRONT_BACK -> blockState
+          .setValue(EAST, blockState.getValue(WEST))
+          .setValue(WEST, blockState.getValue(EAST));
+      default -> super.mirror(blockState, mirror);
+    };
   }
 }

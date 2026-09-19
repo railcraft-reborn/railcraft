@@ -2,19 +2,20 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.ItemTransferHandler;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.network.RailcraftDataSerializers;
 import mods.railcraft.season.Season;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,14 +23,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.AbstractMinecartContainer;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecartContainer;
+import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Base type of RC minecarts. It also contains some generic code that most carts will find useful.
@@ -50,14 +54,14 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
     super(type, level);
   }
 
-  protected RailcraftMinecart(EntityType<TunnelBore> type, double x, double y, double z,
-      Level level) {
-    super(type, x, y, z, level);
+  protected RailcraftMinecart(EntityType<?> type, Level level, double x, double y, double z) {
+    super(type, level);
+    this.setInitialPos(x, y, z);
   }
 
-  protected RailcraftMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
-      double z, Level level) {
-    super(type, x, y, z, level);
+  protected RailcraftMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    this(type, level, x, y, z);
     this.loadCustomName(itemStack);
   }
 
@@ -95,26 +99,26 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.putString(CompoundTagKeys.SEASON, this.getSeason().getSerializedName());
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.SEASON, Season.CODEC, this.getSeason());
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.setSeason(Season.fromName(tag.getString(CompoundTagKeys.SEASON)));
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.setSeason(valueInput.read(CompoundTagKeys.SEASON, Season.CODEC).orElse(Season.DEFAULT));
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     if (player instanceof ServerPlayer serverPlayer) {
       if (this.hasMenu()) {
         serverPlayer.openMenu(this, data -> data.writeVarInt(this.getId()));
       }
-      PiglinAi.angerNearbyPiglins(player, true);
+      PiglinAi.angerNearbyPiglins(serverPlayer.level(), player, true);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   protected boolean hasMenu() {
@@ -132,16 +136,16 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public final void destroy(DamageSource source) {
-    this.kill();
-    if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+  public void destroy(ServerLevel level, DamageSource source) {
+    this.kill(level);
+    if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
       var itemstack = this.getPickResult().copy();
       if (this.hasCustomName()) {
         itemstack.set(DataComponents.CUSTOM_NAME, this.getCustomName());
       }
-      this.spawnAtLocation(itemstack);
+      this.spawnAtLocation(level, itemstack);
     }
-    this.chestVehicleDestroyed(source, this.level(), this);
+    this.chestVehicleDestroyed(source, level, this);
   }
 
   @Override
@@ -159,17 +163,16 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public AbstractMinecart.Type getMinecartType() {
-    throw new UnsupportedOperationException();
+  public final boolean isFurnace() {
+    return isPoweredCart();
   }
 
-  @Override
   public boolean isPoweredCart() {
     return false;
   }
 
   @Override
-  public boolean canBeRidden() {
+  public boolean isRideable() {
     return false;
   }
 
@@ -238,7 +241,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
 
   @Nullable
   private Direction determineVerticalTravelDirection(RailShape shape) {
-    return shape.isAscending() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
+    return shape.isSlope() ? this.yo < getY() ? Direction.UP : Direction.DOWN : null;
   }
 
   @Override
@@ -259,5 +262,15 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   @Override
   public boolean shouldRenderAtSqrDistance(double distance) {
     return MinecartUtil.isInRangeToRenderDist(this, distance);
+  }
+
+  @Override
+  protected void moveAlongTrack(ServerLevel level) {
+    super.moveAlongTrack(level);
+    if (SharedConstants.IS_RUNNING_IN_IDE) {
+      if (this.getBehavior() instanceof OldMinecartBehavior) {
+        throw new RuntimeException();
+      }
+    }
   }
 }

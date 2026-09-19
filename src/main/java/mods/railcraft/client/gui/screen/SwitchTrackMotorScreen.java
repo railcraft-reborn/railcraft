@@ -14,7 +14,7 @@ import mods.railcraft.world.level.block.entity.SwitchTrackMotorBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SwitchTrackMotorScreen extends IngameWindowScreen {
 
@@ -84,7 +84,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
     if (this.switchTrackMotor.getLock() != lock) {
       this.switchTrackMotor.setLock(
           lock == LockableSwitchTrackActuatorBlockEntity.Lock.UNLOCKED
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -93,7 +93,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
       LockableSwitchTrackActuatorBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.switchTrackMotor.getOwnerOrThrow().getName());
+          this.switchTrackMotor.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }
@@ -125,7 +125,7 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void updateButtons() {
-    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile());
+    boolean canAccess = this.switchTrackMotor.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.switchTrackMotor.getLock());
     this.signalAspectButtons.forEach((signalAspect, button) -> {
@@ -138,10 +138,10 @@ public class SwitchTrackMotorScreen extends IngameWindowScreen {
   }
 
   private void sendAttributes() {
-    if (!this.switchTrackMotor.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.switchTrackMotor.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetSwitchTrackMotorMessage(this.switchTrackMotor.getBlockPos(),
             this.switchTrackMotor.getActionSignalAspects(),
             this.switchTrackMotor.isRedstoneTriggered(),

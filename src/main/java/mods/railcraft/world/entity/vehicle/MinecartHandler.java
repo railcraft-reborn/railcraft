@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.vehicle;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.track.TrackUtil;
@@ -14,11 +14,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.IMinecartCollisionHandler;
@@ -87,7 +87,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
           .around(cart)
           .and(EntitySelector.ENTITY_STILL_ALIVE, ModEntitySelector.NON_MECHANICAL)
           .list(level);
-      var maxEntityCramming = serverLevel.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+      var maxEntityCramming = serverLevel.getGameRules().get(GameRules.MAX_ENTITY_CRAMMING);
       if (carts.size() >= maxEntityCramming) {
         rollingStock.primeExplosion();
       }
@@ -96,7 +96,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     Vec3 cartMotion = cart.getDeltaMovement();
 
     // TODO: needs more thought in regards to passenger handling
-    if (isLiving && !isPlayer && cart.canBeRidden() && !(other instanceof IronGolem)
+    if (isLiving && !isPlayer && cart.isRideable() && !(other instanceof IronGolem)
         && cartMotion.x() * cartMotion.x() + cartMotion.z() * cartMotion.z() > 0.001D
         && !cart.isVehicle()
         && !other.isPassenger()) {
@@ -149,12 +149,12 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     }
 
     if (other instanceof AbstractMinecart otherCart) {
-      if (!cart.isPoweredCart() || otherCart.isPoweredCart()) {
+      if (!cart.isFurnace() || otherCart.isFurnace()) {
         if (!TrackUtil.isCartLocked(cart)) {
           cart.setDeltaMovement(cart.getDeltaMovement().add(forceX, 0, forceZ));
         }
       }
-      if (!otherCart.isPoweredCart() || cart.isPoweredCart()) {
+      if (!otherCart.isFurnace() || cart.isFurnace()) {
         if (!TrackUtil.isCartLocked(otherCart)) {
           other.setDeltaMovement(other.getDeltaMovement().add(-forceX, 0, -forceZ));
         }
@@ -233,8 +233,8 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     return cart.getBoundingBox().inflate(x, MinecartHandler.COLLISION_EXPANSION, z);
   }
 
-  @Override
   @Nullable
+  @Override
   public AABB getBoundingBox(AbstractMinecart cart) {
     if (cart == null || !cart.isAlive()) {
       return null;
@@ -252,7 +252,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
     if (!cart.isAlive()) {
       return true;
     }
-    if (cart.canBeRidden()) {
+    if (cart.isRideable()) {
       // Don't try to ride a cart if we are riding something else already
       if (player.getVehicle() != null && player.getVehicle() != cart) {
         return true;

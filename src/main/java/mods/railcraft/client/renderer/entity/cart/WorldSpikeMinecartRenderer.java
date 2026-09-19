@@ -2,14 +2,15 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import mods.railcraft.client.model.LowSidesMinecartModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
+import mods.railcraft.client.renderer.entity.state.RailcraftMinecartRenderState;
 import mods.railcraft.world.entity.vehicle.WorldSpikeMinecart;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
-public class WorldSpikeMinecartRenderer extends ContentsMinecartRenderer<WorldSpikeMinecart> {
+public class WorldSpikeMinecartRenderer extends ContentsMinecartRenderer<WorldSpikeMinecart, RailcraftMinecartRenderState> {
 
-  private final LowSidesMinecartModel<WorldSpikeMinecart> bodyModel;
-  private final LowSidesMinecartModel<WorldSpikeMinecart> snowModel;
+  private final LowSidesMinecartModel<RailcraftMinecartRenderState> bodyModel;
+  private final LowSidesMinecartModel<RailcraftMinecartRenderState> snowModel;
 
   public WorldSpikeMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
@@ -20,12 +21,17 @@ public class WorldSpikeMinecartRenderer extends ContentsMinecartRenderer<WorldSp
   }
 
   @Override
-  protected EntityModel<WorldSpikeMinecart> getBodyModel(WorldSpikeMinecart cart) {
+  protected EntityModel<RailcraftMinecartRenderState> getBodyModel(RailcraftMinecartRenderState cart) {
     return this.bodyModel;
   }
 
   @Override
-  protected EntityModel<WorldSpikeMinecart> getSnowModel(WorldSpikeMinecart cart) {
+  protected EntityModel<RailcraftMinecartRenderState> getSnowModel(RailcraftMinecartRenderState cart) {
     return this.snowModel;
+  }
+
+  @Override
+  public RailcraftMinecartRenderState createRenderState() {
+    return new RailcraftMinecartRenderState();
   }
 }

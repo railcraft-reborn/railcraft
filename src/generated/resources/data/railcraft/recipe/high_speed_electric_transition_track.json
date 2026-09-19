@@ -2,15 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:transition_track_kit"
-    },
-    {
-      "item": "railcraft:high_speed_electric_track"
-    }
+    "railcraft:transition_track_kit",
+    "railcraft:high_speed_electric_track"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:high_speed_electric_transition_track"
   }
 }

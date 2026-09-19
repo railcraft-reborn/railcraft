@@ -5,8 +5,12 @@
         "model": "railcraft:block/buffer_stop"
       },
       "when": {
-        "reversed": "false",
-        "shape": "north_south"
+        "AND": [
+          {
+            "reversed": "false",
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
@@ -15,8 +19,12 @@
         "y": 180
       },
       "when": {
-        "reversed": "true",
-        "shape": "north_south"
+        "AND": [
+          {
+            "reversed": "true",
+            "shape": "north_south"
+          }
+        ]
       }
     },
     {
@@ -25,8 +33,12 @@
         "y": 90
       },
       "when": {
-        "reversed": "false",
-        "shape": "east_west"
+        "AND": [
+          {
+            "reversed": "false",
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
@@ -35,13 +47,17 @@
         "y": 270
       },
       "when": {
-        "reversed": "true",
-        "shape": "east_west"
+        "AND": [
+          {
+            "reversed": "true",
+            "shape": "east_west"
+          }
+        ]
       }
     },
     {
       "apply": {
-        "model": "railcraft:block/rail_outfitted"
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted"
       },
       "when": {
         "shape": "north_south"
@@ -49,7 +65,7 @@
     },
     {
       "apply": {
-        "model": "railcraft:block/rail_outfitted",
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted",
         "y": 90
       },
       "when": {

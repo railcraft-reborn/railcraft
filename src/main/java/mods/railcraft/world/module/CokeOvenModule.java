@@ -2,19 +2,22 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.level.material.StandardTank;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockEntity> {
 
@@ -31,34 +34,20 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private final ContainerMapper fluidContainer;
 
-  private final IItemHandler itemHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
 
   public CokeOvenModule(CokeOvenBlockEntity provider) {
     super(provider, 5, SLOT_INPUT);
     this.tank = StandardTank.ofBuckets(64)
-        .disableFill()
+        .disableInsert()
         .changeCallback(this::setChanged);
 
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     fluidContainer = ContainerMapper.make(this, SLOT_LIQUID_INPUT, SLOT_LIQUID_OUTPUT);
 
-    itemHandler = new InvWrapper(this) {
-      @Override
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot == SLOT_INPUT) {
-          return ItemStack.EMPTY;
-        }
-        return super.extractItem(slot, amount, simulate);
-      }
-
-      @Override
-      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (slot == SLOT_INPUT) {
-          return super.insertItem(slot, stack, simulate);
-        }
-        return stack;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index == SLOT_INPUT,
+        index -> index != SLOT_INPUT);
   }
 
   @Override
@@ -76,16 +65,22 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   }
 
   private boolean craftAndPushImp() {
-    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
+    var output =
+        this.recipe.assemble(null);
     var fluidOutput = this.recipe.getCreosote();
-    if (this.outputContainer.canFit(output)
-        && (fluidOutput.isEmpty() || this.tank.internalFill(fluidOutput,
-            IFluidHandler.FluidAction.SIMULATE) >= fluidOutput.getAmount())) {
-      this.removeItem(SLOT_INPUT, 1);
+    if (!this.outputContainer.canFit(output)) {
+      return false;
+    }
 
-      this.outputContainer.insert(output);
-      this.tank.internalFill(fluidOutput, IFluidHandler.FluidAction.EXECUTE);
-      return true;
+    try (var tx = Transaction.openRoot()) {
+      if (fluidOutput.isEmpty() ||
+          this.tank.internalInsert(FluidResource.of(fluidOutput), fluidOutput.getAmount(), tx) >= fluidOutput.getAmount()) {
+        this.removeItem(SLOT_INPUT, 1);
+
+        this.outputContainer.insert(output);
+        tx.commit();
+        return true;
+      }
     }
     return false;
   }
@@ -93,18 +88,6 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
   @Override
   public void serverTick() {
     super.serverTick();
-
-    var topSlot = this.getItem(SLOT_LIQUID_INPUT);
-    if (!topSlot.isEmpty() && !FluidTools.isFluidHandler(topSlot)) {
-      this.setItem(SLOT_LIQUID_INPUT, ItemStack.EMPTY);
-      this.provider.dropItem(topSlot);
-    }
-
-    var bottomSlot = this.getItem(SLOT_LIQUID_OUTPUT);
-    if (!bottomSlot.isEmpty() && !FluidTools.isFluidHandler(bottomSlot)) {
-      this.setItem(SLOT_LIQUID_OUTPUT, ItemStack.EMPTY);
-      this.provider.dropItem(bottomSlot);
-    }
 
     if (this.fluidProcessingTimer++ >= FluidTools.BUCKET_FILL_TIME) {
       this.fluidProcessingTimer = 0;
@@ -133,22 +116,22 @@ public class CokeOvenModule extends CookingModule<CokeOvenRecipe, CokeOvenBlockE
     } && super.canPlaceItem(slot, itemStack);
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.TANK, this.tank.writeToNBT(provider, new CompoundTag()));
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.TANK, this.tank);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.tank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.TANK));
-    this.processState = FluidTools.ProcessState.fromTag(tag);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
   }
 }

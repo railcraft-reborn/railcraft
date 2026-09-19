@@ -2,9 +2,10 @@ package mods.railcraft.client.gui.widget.button;
 
 import java.util.Optional;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.gui.button.ButtonState;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 
 public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton {
@@ -22,7 +23,7 @@ public final class MultiButton<T extends ButtonState<T>> extends RailcraftButton
   }
 
   @Override
-  public void onPress() {
+  public void onPress(InputWithModifiers modifiers) {
     if (!this.locked && this.active) {
       this.setState(this.state.next());
     }

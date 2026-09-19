@@ -15,7 +15,7 @@ public record SetSignalControllerBoxMessage(
     SignalAspect poweredAspect) implements CustomPacketPayload {
 
   public static final Type<SetSignalControllerBoxMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_signal_controller_box"));
+      new Type<>(RailcraftConstants.id("set_signal_controller_box"));
 
   public static final StreamCodec<FriendlyByteBuf, SetSignalControllerBoxMessage> STREAM_CODEC =
       StreamCodec.composite(

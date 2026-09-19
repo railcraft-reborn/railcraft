@@ -15,6 +15,8 @@ import mods.railcraft.world.entity.vehicle.locomotive.CreativeLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.ElectricLocomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.SteamLocomotive;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -158,6 +160,6 @@ public class RailcraftEntityTypes {
 
   private static <T extends Entity> EntityType<T> create(String registryName,
       EntityType.Builder<T> builder) {
-    return builder.build(RailcraftConstants.rl(registryName).toString());
+    return builder.build(ResourceKey.create(Registries.ENTITY_TYPE, RailcraftConstants.id(registryName)));
   }
 }

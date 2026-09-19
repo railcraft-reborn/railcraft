@@ -27,12 +27,12 @@ public class SwitchTrackRouterMenu extends RailcraftMenu {
 
       @Override
       public boolean mayPickup(Player player) {
-        return switchTrackRouter.canAccess(player.getGameProfile());
+        return switchTrackRouter.canAccess(player.nameAndId());
       }
 
       @Override
       public boolean allowModification(Player player) {
-        if (switchTrackRouter.canAccess(player.getGameProfile())) {
+        if (switchTrackRouter.canAccess(player.nameAndId())) {
           return super.allowModification(player);
         }
         return false;

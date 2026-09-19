@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "railcraft:item/reinforced_junction_track"
+  }
+}

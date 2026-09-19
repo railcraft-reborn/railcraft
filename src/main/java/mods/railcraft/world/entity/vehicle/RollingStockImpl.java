@@ -3,36 +3,37 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
-import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Side;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.event.CartLinkEvent;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.level.block.track.ElevatorTrackBlock;
 import mods.railcraft.world.level.block.track.behaivor.HighSpeedTrackUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public class RollingStockImpl implements RollingStock, INBTSerializable<CompoundTag> {
+public class RollingStockImpl implements RollingStock, ValueIOSerializable {
 
   private static final double LINK_DRAG = 0.95;
   private static final float MAX_DISTANCE = 8F;
@@ -181,7 +182,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     }
 
     var train = this.train();
-    rollingStock.train().copyTo(train);
+    Objects.requireNonNull(rollingStock.train()).copyTo(Objects.requireNonNull(train));
 
     Side linkSide = null;
     for (var side : Side.values()) {
@@ -216,7 +217,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     this.completeLink(rollingStock, linkSide);
     rollingStock.completeLink(this, linkSide.opposite());
 
-    train.copyTo(this.train());
+    train.copyTo(Objects.requireNonNull(this.train()));
 
     NeoForge.EVENT_BUS.post(new CartLinkEvent.Link(this, rollingStock));
     return true;
@@ -305,7 +306,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   @Override
   public void launch() {
     this.launchState = LaunchState.LAUNCHING;
-    this.minecart.setCanUseRail(false);
+    this.minecart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, false);
   }
 
   @Override
@@ -402,6 +403,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
     return front;
   }
 
+  @Nullable
   @Override
   public Train train() {
     return this.validateTrainOwnership() ? this.train : this.frontLink.train();
@@ -452,15 +454,6 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       }
     }
 
-    // Fix flip
-    var distance = Mth.degreesDifference(this.minecart.getYRot(), this.minecart.yRotO);
-    var cutoff = 120;
-    if (distance < -cutoff || distance >= cutoff) {
-      this.minecart.setYRot(this.minecart.getYRot() + 180);
-      this.minecart.flipped = !this.minecart.flipped;
-      this.minecart.setYRot(this.minecart.getYRot() % 360);
-    }
-
     if (BaseRailBlock.isRail(this.level(), this.minecart.blockPosition())) {
       this.minecart.fallDistance = 0;
       if (this.minecart.isVehicle()) {
@@ -471,7 +464,7 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
       }
     } else if (this.launchState == LaunchState.LAUNCHING) {
       this.launchState = LaunchState.LAUNCHED;
-      this.minecart.setCanUseRail(true);
+      this.minecart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
     } else if (this.launchState == LaunchState.LAUNCHED && this.minecart.onGround()) {
       this.land();
     }
@@ -635,9 +628,10 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
 
   private void land() {
     this.launchState = LaunchState.LANDED;
-    this.minecart.setMaxSpeedAirLateral(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_LATERAL);
-    this.minecart.setMaxSpeedAirVertical(AbstractMinecart.DEFAULT_MAX_SPEED_AIR_VERTICAL);
-    this.minecart.setDragAir(AbstractMinecart.DEFAULT_AIR_DRAG);
+    this.minecart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_LATERAL,
+        Optional.of(RailcraftConstants.DEFAULT_MAX_SPEED_AIR_LATERAL));
+    this.minecart.setData(RailcraftAttachmentTypes.MAX_SPEED_AIR_VERTICAL, RailcraftConstants.DEFAULT_MAX_SPEED_AIR_VERTICAL);
+    this.minecart.setData(RailcraftAttachmentTypes.AIR_DRAG, RailcraftConstants.DEFAULT_AIR_DRAG);
   }
 
   private float getOptimalDistance(RollingStock rollingStock) {
@@ -673,63 +667,58 @@ public class RollingStockImpl implements RollingStock, INBTSerializable<Compound
   }
 
   @Override
-  public Optional<GameProfile> owner() {
+  public Optional<NameAndId> owner() {
     return this.entity() instanceof Locomotive loco ? loco.getOwner() : Optional.empty();
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = new CompoundTag();
-
+  public void serialize(ValueOutput valueOutput) {
     if (this.train != null) {
-      tag.put(CompoundTagKeys.TRAIN, this.train.toTag());
+      //TODO: TEST
+      this.train.serialize(valueOutput.child(CompoundTagKeys.TRAIN));
     }
 
     if (this.unresolvedBackLink != null) {
-      tag.putUUID(CompoundTagKeys.BACK_LINK, this.unresolvedBackLink);
+      valueOutput.store(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.unresolvedBackLink);
     } else if (this.backLink != null) {
-      tag.putUUID(CompoundTagKeys.BACK_LINK, this.backLink.entity().getUUID());
+      valueOutput.store(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC, this.backLink.entity().getUUID());
     }
 
     if (this.unresolvedFrontLink != null) {
-      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.unresolvedFrontLink);
+      valueOutput.store(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.unresolvedFrontLink);
     } else if (this.frontLink != null) {
-      tag.putUUID(CompoundTagKeys.FRONT_LINK, this.frontLink.entity().getUUID());
+      valueOutput.store(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC, this.frontLink.entity().getUUID());
     }
 
-    tag.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
-    tag.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
+    valueOutput.putBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, this.backAutoLinkEnabled);
+    valueOutput.putBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, this.frontAutoLinkEnabled);
 
-    tag.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
-    tag.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
-    tag.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
-    tag.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
-    tag.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
-    tag.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
-    return tag;
+    valueOutput.putString(CompoundTagKeys.LAUNCH_STATE, this.launchState.getName());
+    valueOutput.putInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, this.elevatorRemainingTicks);
+    valueOutput.putInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, this.preventMountRemainingTicks);
+    valueOutput.putInt(CompoundTagKeys.DERAILED_REMAINING_TICKS, this.derailedRemainingTicks);
+    valueOutput.putBoolean(CompoundTagKeys.EXPLOSION_PENDING, this.explosionPending);
+    valueOutput.putBoolean(CompoundTagKeys.HIGH_SPEED, this.highSpeed);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.train = tag.contains(CompoundTagKeys.TRAIN, Tag.TAG_COMPOUND)
-        ? TrainImpl.fromTag(tag.getCompound(CompoundTagKeys.TRAIN), this)
-        : null;
+  public void deserialize(ValueInput valueInput) {
+    this.train = null;
+    valueInput.child(CompoundTagKeys.TRAIN).ifPresent(train -> {
+      this.train = TrainImpl.deserialize(train, this);
+    });
 
-    this.unresolvedBackLink = tag.hasUUID(CompoundTagKeys.BACK_LINK)
-        ? tag.getUUID(CompoundTagKeys.BACK_LINK)
-        : null;
-    this.unresolvedFrontLink = tag.hasUUID(CompoundTagKeys.FRONT_LINK)
-        ? tag.getUUID(CompoundTagKeys.FRONT_LINK)
-        : null;
+    this.unresolvedBackLink = valueInput.read(CompoundTagKeys.BACK_LINK, UUIDUtil.CODEC).orElse(null);
+    this.unresolvedFrontLink = valueInput.read(CompoundTagKeys.FRONT_LINK, UUIDUtil.CODEC).orElse(null);
 
-    this.backAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.BACK_AUTO_LINK_ENABLED);
-    this.frontAutoLinkEnabled = tag.getBoolean(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED);
+    this.backAutoLinkEnabled = valueInput.getBooleanOr(CompoundTagKeys.BACK_AUTO_LINK_ENABLED, false);
+    this.frontAutoLinkEnabled = valueInput.getBooleanOr(CompoundTagKeys.FRONT_AUTO_LINK_ENABLED, false);
 
-    this.launchState = LaunchState.fromName(tag.getString(CompoundTagKeys.LAUNCH_STATE));
-    this.elevatorRemainingTicks = tag.getInt(CompoundTagKeys.ELEVATOR_REMAINING_TICKS);
-    this.preventMountRemainingTicks = tag.getInt(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS);
-    this.derailedRemainingTicks = tag.getInt(CompoundTagKeys.DERAILED_REMAINING_TICKS);
-    this.explosionPending = tag.getBoolean(CompoundTagKeys.EXPLOSION_PENDING);
-    this.highSpeed = tag.getBoolean(CompoundTagKeys.HIGH_SPEED);
+    this.launchState = valueInput.read(CompoundTagKeys.LAUNCH_STATE, LaunchState.CODEC).orElse(LaunchState.LANDED);
+    this.elevatorRemainingTicks = valueInput.getIntOr(CompoundTagKeys.ELEVATOR_REMAINING_TICKS, 0);
+    this.preventMountRemainingTicks = valueInput.getIntOr(CompoundTagKeys.PREVENT_MOUNT_REMAINING_TICKS, 0);
+    this.derailedRemainingTicks = valueInput.getIntOr(CompoundTagKeys.DERAILED_REMAINING_TICKS, 0);
+    this.explosionPending = valueInput.getBooleanOr(CompoundTagKeys.EXPLOSION_PENDING, false);
+    this.highSpeed = valueInput.getBooleanOr(CompoundTagKeys.HIGH_SPEED, false);
   }
 }

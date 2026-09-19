@@ -6,7 +6,7 @@ import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEn
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -38,7 +38,7 @@ class SignalComponent implements IBlockComponentProvider {
   }
 
   @Override
-  public ResourceLocation getUid() {
-    return RailcraftConstants.rl("signals");
+  public Identifier getUid() {
+    return RailcraftConstants.id("signals");
   }
 }

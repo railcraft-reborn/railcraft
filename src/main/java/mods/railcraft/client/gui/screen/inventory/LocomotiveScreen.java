@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.screen.inventory;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,13 +14,16 @@ import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive.Speed;
 import mods.railcraft.world.inventory.LocomotiveMenu;
+import mods.railcraft.world.inventory.slot.ItemFilterSlot;
 import net.minecraft.SharedConstants;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     extends RailcraftMenuScreen<T> {
@@ -35,21 +39,24 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   private int refreshTimer;
 
-  protected LocomotiveScreen(T menu, Inventory inventory, Component title, String type) {
-    super(menu, inventory, title);
+  protected LocomotiveScreen(T menu, Inventory inventory, Component title, int imageHeight, String type) {
+    super(menu, inventory, title, imageHeight);
     this.locomotive = menu.getLocomotive();
     this.type = type;
-    this.imageHeight = LocomotiveMenu.DEFAULT_HEIGHT;
     this.inventoryLabelY = this.imageHeight - 94;
+  }
+
+  protected LocomotiveScreen(T menu, Inventory inventory, Component title, String type) {
+    this(menu, inventory, title, LocomotiveMenu.DEFAULT_HEIGHT, type);
   }
 
   private Optional<Tooltip> createLockTooltip(Locomotive.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_LOCKED,
-          this.locomotive.getOwnerOrThrow().getName());
+          this.locomotive.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_UNLOCKED);
       case PRIVATE -> Component.translatable(Translations.Screen.LOCOMOTIVE_LOCK_PRIVATE,
-          this.locomotive.getOwnerOrThrow().getName());
+          this.locomotive.getOwnerOrThrow().name());
     }));
   }
 
@@ -57,11 +64,11 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
   public void init() {
     super.init();
 
-    var centreX = (this.width - this.getXSize()) / 2;
-    var centreY = (this.height - this.getYSize()) / 2;
+    var centreX = (this.width - this.getImageWidth()) / 2;
+    var centreY = (this.height - this.getImageHeight()) / 2;
 
     var layout = LinearLayout.vertical();
-    layout.setPosition(centreX + 4, centreY + this.getYSize() - 129);
+    layout.setPosition(centreX + 4, centreY + this.getImageHeight() - 129);
 
     var modeLayout = layout.addChild(LinearLayout.horizontal().spacing(2));
 
@@ -104,7 +111,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     // Lock button
     this.lockButton = this.addRenderableWidget(
         MultiButton.builder(ButtonTexture.SMALL_BUTTON, this.locomotive.getLock())
-            .bounds(centreX + 154, centreY + this.getYSize() - 111, 16, 16)
+            .bounds(centreX + 154, centreY + this.getImageHeight() - 111, 16, 16)
             .tooltipFactory(this::createLockTooltip)
             .stateCallback(this::setLock)
             .build());
@@ -133,7 +140,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
       this.locomotive.setLock(lock);
       this.locomotive.setOwner(lock == Locomotive.Lock.UNLOCKED
           ? null
-          : this.minecraft.player.getGameProfile());
+          : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -145,7 +152,7 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
 
   protected void sendAttributes() {
     this.updateButtons();
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetLocomotiveMessage(this.locomotive.getId(),
             this.locomotive.getMode(), this.locomotive.getSpeed(), this.locomotive.getLock(),
             this.locomotive.isReverse()));
@@ -171,5 +178,14 @@ public abstract class LocomotiveScreen<T extends LocomotiveMenu<?>>
     this.lockButton.active = !locomotive.isLocked()
         || locomotive.getOwnerOrThrow().equals(this.minecraft.player.getGameProfile());
     this.lockButton.setState(locomotive.getLock());
+  }
+
+  @Override
+  protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    super.extractTooltip(graphics, mouseX, mouseY);
+    if (this.hoveredSlot instanceof ItemFilterSlot slotTicket && !slotTicket.hasItem()) {
+      slotTicket.setTooltip(Collections.singletonList(ClientTooltipComponent.create(
+          Component.translatable(Translations.Tips.LOCOMOTIVE_SLOT_TICKET).getVisualOrderText())));
+    }
   }
 }

@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:ingots/steel"
-    }
+    "a": "#c:ingots/steel"
   },
   "pattern": [
     "  a",
@@ -11,7 +9,6 @@
     "a  "
   ],
   "result": {
-    "count": 8,
     "id": "railcraft:rebar"
   }
 }

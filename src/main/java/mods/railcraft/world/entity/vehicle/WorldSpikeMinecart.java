@@ -28,8 +28,8 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  public WorldSpikeMinecart(ItemStack itemStack, double x, double y, double z, Level level) {
-    super(itemStack, RailcraftEntityTypes.WORLD_SPIKE.get(), x, y, z, level);
+  public WorldSpikeMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.WORLD_SPIKE.get(), level, x, y, z);
   }
 
   @Override
@@ -58,10 +58,10 @@ public class WorldSpikeMinecart extends RailcraftMinecart {
         // Load chunk in a 3x3 area
         for (int x = - 1; x <= 1; x++) {
           for (int z = - 1; z <= 1; z++) {
-            var loadChunk = new ChunkPos(this.chunkPosition().x + x, this.chunkPosition().z + z);
-            newChunkSet.add(loadChunk.toLong());
+            var loadChunk = new ChunkPos(this.chunkPosition().x() + x, this.chunkPosition().z() + z);
+            newChunkSet.add(loadChunk.pack());
             Railcraft.CHUNK_CONTROLLER.forceChunk(serverLevel, this.uuid,
-                loadChunk.x, loadChunk.z, true, false);
+                loadChunk.x(), loadChunk.z(), true, false);
           }
         }
         var modified = this.chunkSet.removeAll(newChunkSet);

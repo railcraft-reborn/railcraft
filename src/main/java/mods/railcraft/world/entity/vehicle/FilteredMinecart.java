@@ -2,14 +2,14 @@ package mods.railcraft.world.entity.vehicle;
 
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class FilteredMinecart extends RailcraftMinecart {
 
@@ -22,9 +22,9 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, double x, double y, double z,
-      Level level) {
-    super(itemStack, type, x, y, z, level);
+  protected FilteredMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override
@@ -34,21 +34,16 @@ public abstract class FilteredMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public boolean canBeRidden() {
-    return false;
-  }
-
-  @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.filterContainer.fromTag(tag.getList(CompoundTagKeys.FILTER, Tag.TAG_COMPOUND), this.registryAccess());
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    valueInput.readChild(CompoundTagKeys.FILTER, this.filterContainer);
     this.entityData.set(FILTER, this.getFilterInv().getItem(0));
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.put(CompoundTagKeys.FILTER, this.filterContainer.createTag(this.registryAccess()));
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.FILTER, this.filterContainer);
   }
 
   public boolean hasFilter() {

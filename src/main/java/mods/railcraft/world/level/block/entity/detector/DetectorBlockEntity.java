@@ -7,14 +7,14 @@ import mods.railcraft.world.entity.vehicle.CartConstants;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class DetectorBlockEntity extends RailcraftBlockEntity {
 
@@ -60,7 +60,7 @@ public abstract class DetectorBlockEntity extends RailcraftBlockEntity {
           blockEntity.powerDelay = CartConstants.DETECTED_POWER_OUTPUT_FADE;
         }
         level.setBlockAndUpdate(blockPos, blockState.setValue(DetectorBlock.POWERED, powered));
-        var offsetPos = blockPos.offset(blockState.getValue(DetectorBlock.FACING).getNormal());
+        var offsetPos = blockPos.offset(blockState.getValue(DetectorBlock.FACING).getUnitVec3i());
         level.updateNeighborsAt(offsetPos, blockState.getBlock());
       }
       blockEntity.tick = 0;
@@ -72,17 +72,17 @@ public abstract class DetectorBlockEntity extends RailcraftBlockEntity {
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.powerState = tag.getInt(CompoundTagKeys.POWER_STATE);
-    this.powerDelay = tag.getInt(CompoundTagKeys.POWER_DELAY);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.powerState = input.getIntOr(CompoundTagKeys.POWER_STATE, 0);
+    this.powerDelay = input.getIntOr(CompoundTagKeys.POWER_DELAY, 0);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.POWER_STATE, this.powerState);
-    tag.putInt(CompoundTagKeys.POWER_DELAY, this.powerDelay);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.POWER_STATE, this.powerState);
+    output.putInt(CompoundTagKeys.POWER_DELAY, this.powerDelay);
   }
 
   @Override

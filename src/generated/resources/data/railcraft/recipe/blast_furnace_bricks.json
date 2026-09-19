@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:soul_sand"
-    },
-    "b": {
-      "item": "minecraft:nether_brick"
-    },
-    "c": {
-      "item": "minecraft:magma_cream"
-    }
+    "a": "minecraft:soul_sand",
+    "b": "minecraft:nether_brick",
+    "c": "minecraft:magma_cream"
   },
   "pattern": [
     "aba",

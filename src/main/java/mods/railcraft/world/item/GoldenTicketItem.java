@@ -1,12 +1,15 @@
 package mods.railcraft.world.item;
 
 import java.util.function.Predicate;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 
 public class GoldenTicketItem extends TicketItem {
@@ -18,28 +21,23 @@ public class GoldenTicketItem extends TicketItem {
     super(properties);
   }
 
+  @Nullable
   @Override
-  public boolean hasCraftingRemainingItem(ItemStack stack) {
-    return true;
-  }
-
-  @Override
-  public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+  public ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
     var newItemStack = new ItemStack(this);
-    if (itemStack.has(RailcraftDataComponents.TICKET)) {
+    if (instance.has(RailcraftDataComponents.TICKET)) {
       newItemStack.set(RailcraftDataComponents.TICKET,
-          itemStack.get(RailcraftDataComponents.TICKET));
+          instance.get(RailcraftDataComponents.TICKET));
     }
-    return newItemStack;
+    return new ItemStackTemplate(newItemStack.getItem(), newItemStack.getComponentsPatch());
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player,
-      InteractionHand usedHand) {
+  public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
     var itemStack = player.getItemInHand(usedHand);
     if (level.isClientSide()) {
       ScreenFactories.openGoldenTicketScreen(itemStack, usedHand);
     }
-    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

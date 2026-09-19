@@ -1,13 +1,15 @@
 package mods.railcraft.world.entity.vehicle;
 
-import net.minecraft.nbt.CompoundTag;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.entity.PartEntity;
-
 
 public class TunnelBorePart extends PartEntity<TunnelBore> {
 
@@ -44,7 +46,7 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   private void updatePosition() {
     double x = this.getParent().getOffsetX(getParent().getX(), this.forwardOffset, this.sideOffset);
     double z = this.getParent().getOffsetZ(getParent().getZ(), this.forwardOffset, this.sideOffset);
-    this.moveTo(x, this.getParent().getY() + 0.3F, z, 0, 0);
+    this.snapTo(x, this.getParent().getY() + 0.3F, z, 0, 0);
   }
 
   @Override
@@ -52,20 +54,23 @@ public class TunnelBorePart extends PartEntity<TunnelBore> {
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {}
+  protected void readAdditionalSaveData(ValueInput valueInput) {}
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {}
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {}
 
   @Override
-  public boolean canBeCollidedWith() {
+  public boolean canBeCollidedWith(@Nullable Entity entity) {
     return true;
   }
 
   @Override
-  public boolean hurt(DamageSource damageSource, float amount) {
-    return !isInvulnerableTo(damageSource)
-        && getParent().attackEntityFromPart(this, damageSource, amount);
+  public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+    if (!isInvulnerableToBase(damageSource)) {
+      getParent().attackEntityFromPart(this, damageSource, amount);
+      return true;
+    }
+    return false;
   }
 
   @Override

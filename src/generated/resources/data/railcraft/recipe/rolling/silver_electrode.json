@@ -1,9 +1,7 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:plates/silver"
-    }
+    "a": "#c:plates/silver"
   },
   "pattern": [
     " a ",
@@ -11,7 +9,6 @@
     " a "
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:silver_electrode"
   }
 }

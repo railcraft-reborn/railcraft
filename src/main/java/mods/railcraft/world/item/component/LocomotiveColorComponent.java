@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -34,7 +35,7 @@ public record LocomotiveColorComponent(DyeColor primary, DyeColor secondary)
 
   @Override
   public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer,
-      TooltipFlag tooltipFlag) {
+      TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter) {
     consumer.accept(Component.translatable(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY)
         .withStyle(ChatFormatting.AQUA)
         .append(CommonComponents.SPACE)

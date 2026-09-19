@@ -2,11 +2,8 @@
   "type": "railcraft:coking",
   "creosoteOutput": 500,
   "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:coal"
-  },
+  "ingredient": "minecraft:coal",
   "result": {
-    "count": 1,
     "id": "railcraft:coal_coke"
   }
 }

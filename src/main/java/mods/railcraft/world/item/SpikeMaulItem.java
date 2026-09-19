@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import com.google.common.collect.Lists;
 import mods.railcraft.Translations.Tips;
@@ -12,21 +13,23 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.Weapon;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.LevelReader;
@@ -34,24 +37,20 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-public class SpikeMaulItem extends TieredItem {
+public class SpikeMaulItem extends Item {
 
-  private final ItemAttributeModifiers defaultModifiers;
-
-  public SpikeMaulItem(float attackDamage, float attackSpeed, Tier tier, Properties properties) {
-    super(tier, properties.durability(tier.getUses()));
-    float attackDamageWithBonus = attackDamage + tier.getAttackDamageBonus();
-    this.defaultModifiers = ItemAttributeModifiers.builder()
-        .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
-            attackDamageWithBonus, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-        .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID,
-            attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-        .build();
-  }
-
-  @Override
-  public ItemAttributeModifiers getDefaultAttributeModifiers() {
-    return this.defaultModifiers;
+  public SpikeMaulItem(float attackDamage, float attackSpeed, ToolMaterial material, Properties properties) {
+    super(properties
+        .durability(material.durability())
+        .component(DataComponents.WEAPON, new Weapon(1, Weapon.AXE_DISABLES_BLOCKING_FOR_SECONDS))
+        .attributes(
+            ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
+                    attackDamage + material.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID,
+                    attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build()
+    ));
   }
 
   @Override
@@ -66,7 +65,7 @@ public class SpikeMaulItem extends TieredItem {
     }
 
     var railShape = TrackBlock.getRailShapeRaw(existingBlockState);
-    if (railShape.isAscending()) {
+    if (railShape.isSlope()) {
       return InteractionResult.PASS;
     }
 
@@ -121,9 +120,9 @@ public class SpikeMaulItem extends TieredItem {
           (ServerPlayer) player, heldStack, serverLevel, blockPos);
 
       heldStack.hurtAndBreak(1, serverLevel, player,
-          item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+          item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
@@ -133,14 +132,8 @@ public class SpikeMaulItem extends TieredItem {
   }
 
   @Override
-  public boolean canDisableShield(ItemStack itemStack, ItemStack shieldStack, LivingEntity entity,
-      LivingEntity attacker) {
-    return true;
-  }
-
-  @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
-      List<Component> components, TooltipFlag isAdvanced) {
-    components.add(Component.translatable(Tips.SPIKE_MAUL).withStyle(ChatFormatting.GRAY));
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component.translatable(Tips.SPIKE_MAUL).withStyle(ChatFormatting.GRAY));
   }
 }

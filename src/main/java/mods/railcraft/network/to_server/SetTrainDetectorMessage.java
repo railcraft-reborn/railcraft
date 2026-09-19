@@ -13,7 +13,7 @@ public record SetTrainDetectorMessage(
     BlockPos blockPos, int trainSize) implements CustomPacketPayload {
 
   public static final Type<SetTrainDetectorMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_train_detector"));
+      new Type<>(RailcraftConstants.id("set_train_detector"));
 
   public static final StreamCodec<FriendlyByteBuf, SetTrainDetectorMessage> STREAM_CODEC =
       StreamCodec.composite(

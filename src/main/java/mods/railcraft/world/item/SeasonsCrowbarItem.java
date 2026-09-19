@@ -1,6 +1,6 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
+import java.util.function.Consumer;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.season.Season;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
@@ -9,40 +9,35 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 public class SeasonsCrowbarItem extends CrowbarItem {
 
-  public SeasonsCrowbarItem(Tiers tiers, Properties properties) {
-    super(tiers, properties);
+  public SeasonsCrowbarItem(Properties properties) {
+    super(properties);
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+  public InteractionResult use(Level level, Player player, InteractionHand hand) {
     ItemStack itemStack = player.getItemInHand(hand);
     if (!level.isClientSide()) {
       incrementSeason(itemStack);
       var season = getSeason(itemStack);
-      player.displayClientMessage(getDescriptionText(season, false), true);
+      player.sendOverlayMessage(getDescriptionText(season, false));
     }
-    return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override
-  public boolean isValidRepairItem(ItemStack itemToRepair, ItemStack stack) {
-    return false;
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> list,
-      TooltipFlag adv) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     var season = getSeason(stack);
-    list.add(getDescriptionText(season, true));
+    tooltipAdder.accept(getDescriptionText(season, true));
   }
 
   public static Season getSeason(ItemStack itemStack) {

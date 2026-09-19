@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -7,19 +8,18 @@ import java.util.UUID;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.FunctionalUtil;
-import mods.railcraft.util.fluids.CompositeFluidHandler;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.neoforge.transfer.CombinedResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * @author Sm0keySa1m0n
@@ -77,26 +77,26 @@ public final class TrainImpl implements Train {
   }
 
   @Override
-  public Optional<IItemHandler> itemHandler() {
+  public Optional<ResourceHandler<ItemResource>> itemHandler() {
     var cartHandlers = this.entities()
-        .flatMap(cart -> Optional.ofNullable(cart.getCapability(Capabilities.ItemHandler.ENTITY))
+        .flatMap(cart -> Optional.ofNullable(cart.getCapability(Capabilities.Item.ENTITY))
             .stream())
-        .flatMap(FunctionalUtil.ofType(IItemHandlerModifiable.class))
-        .toArray(IItemHandlerModifiable[]::new);
-    return cartHandlers.length == 0
-        ? Optional.empty()
-        : Optional.of(new CombinedInvWrapper(cartHandlers));
-  }
-
-  @Override
-  public Optional<IFluidHandler> fluidHandler() {
-    var cartHandlers = this.entities()
-        .flatMap(cart -> Optional.ofNullable(
-            cart.getCapability(Capabilities.FluidHandler.ENTITY, null)).stream())
+        //.flatMap(FunctionalUtil.ofType(IndexModifier.class))
         .toList();
     return cartHandlers.isEmpty()
         ? Optional.empty()
-        : Optional.of(new CompositeFluidHandler(cartHandlers));
+        : Optional.of(new CombinedResourceHandler<>(cartHandlers));
+  }
+
+  @Override
+  public Optional<ResourceHandler<FluidResource>> fluidHandler() {
+    var cartHandlers = this.entities()
+        .flatMap(cart -> Optional.ofNullable(
+            cart.getCapability(Capabilities.Fluid.ENTITY, null)).stream())
+        .toList();
+    return cartHandlers.isEmpty()
+        ? Optional.empty()
+        : Optional.of(new CombinedResourceHandler<>(cartHandlers));
   }
 
   public void refreshMaxSpeed() {
@@ -106,7 +106,10 @@ public final class TrainImpl implements Train {
   private float calculateMaxSpeed() {
     double locoBoost = Math.max(0.0, this.getNumRunningLocomotives() - 1.0) * 0.075;
     return (float) this.entities()
-        .mapToDouble(c -> Math.min(c.getMaxCartSpeedOnRail(), this.softMaxSpeed(c) + locoBoost))
+        .mapToDouble(c -> {
+          var maxCartSpeedOnRail = c.getData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL);
+          return Math.min(maxCartSpeedOnRail, this.softMaxSpeed(c) + locoBoost);
+        })
         .min()
         .orElse(1.2F);
   }
@@ -114,11 +117,12 @@ public final class TrainImpl implements Train {
   private float softMaxSpeed(AbstractMinecart cart) {
     return cart instanceof WeightedCart weighted
         ? weighted.softMaxSpeed()
-        : cart.getMaxCartSpeedOnRail();
+        : cart.getData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL);
   }
 
   private void setMaxSpeed(float trainSpeed) {
-    this.entities().forEach(c -> c.setCurrentCartSpeedCapOnRail(trainSpeed));
+    this.entities().forEach(c ->
+        c.setData(RailcraftAttachmentTypes.CURRENT_SPEED_CAP_ON_RAIL, trainSpeed));
   }
 
   @Override
@@ -157,25 +161,18 @@ public final class TrainImpl implements Train {
     return String.format("Train{id=%s}", this.id);
   }
 
-  static TrainImpl fromTag(CompoundTag tag, RollingStockImpl minecart) {
-    var id = tag.getUUID(CompoundTagKeys.ID);
+  static TrainImpl deserialize(ValueInput input, RollingStockImpl minecart) {
+    var id = input.read(CompoundTagKeys.ID, UUIDUtil.CODEC).orElseThrow();
     var train = new TrainImpl(id, minecart);
-    State.fromName(tag.getString(CompoundTagKeys.STATE)).ifPresent(train::setState);
-    tag.getList(CompoundTagKeys.LOCKS, Tag.TAG_INT_ARRAY).stream()
-        .map(NbtUtils::loadUUID)
-        .forEach(train::addLock);
+    input.read(CompoundTagKeys.STATE, State.CODEC).ifPresent(train::setState);
+    input.read(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf())
+        .ifPresent(train.locks::addAll);
     return train;
   }
 
-  CompoundTag toTag() {
-    var tag = new CompoundTag();
-    tag.putUUID(CompoundTagKeys.ID, this.id);
-    tag.putString(CompoundTagKeys.STATE, this.state.getSerializedName());
-    var locksTag = new ListTag();
-    for (var uuid : this.locks) {
-      locksTag.add(NbtUtils.createUUID(uuid));
-    }
-    tag.put(CompoundTagKeys.LOCKS, locksTag);
-    return tag;
+  void serialize(ValueOutput valueOutput) {
+    valueOutput.store(CompoundTagKeys.ID, UUIDUtil.CODEC, this.id);
+    valueOutput.store(CompoundTagKeys.STATE, State.CODEC, this.state);
+    valueOutput.store(CompoundTagKeys.LOCKS, UUIDUtil.CODEC.listOf(), new ArrayList<>(this.locks));
   }
 }

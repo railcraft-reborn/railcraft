@@ -1,12 +1,8 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:dusts/redstone"
-    },
-    "b": {
-      "tag": "c:ingots/gold"
-    }
+    "a": "#c:dusts/redstone",
+    "b": "#c:ingots/gold"
   },
   "pattern": [
     "a b",

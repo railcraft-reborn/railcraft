@@ -1,5 +1,6 @@
 package mods.railcraft.world.entity.vehicle;
 
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.api.track.RailShapeUtil;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.container.ContainerTools;
@@ -15,13 +16,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.neoforged.neoforge.common.IShearable;
 import net.neoforged.neoforge.common.SpecialPlantable;
 
-public class TrackLayer extends MaintenancePatternMinecart {
+public class TrackLayer extends MaintenancePatternMinecart implements CartAdvanceable {
 
   private static final int SLOT_STOCK = 0;
   private static final int SLOT_REPLACE = 0;
@@ -31,8 +32,8 @@ public class TrackLayer extends MaintenancePatternMinecart {
     super(type, level);
   }
 
-  public TrackLayer(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(itemStack, RailcraftEntityTypes.TRACK_LAYER.get(), x, y, z, level);
+  public TrackLayer(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.TRACK_LAYER.get(), level, x, y, z);
   }
 
   @Override
@@ -41,15 +42,19 @@ public class TrackLayer extends MaintenancePatternMinecart {
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
-    if (this.level().isClientSide()) {
-      return;
-    }
-
+  public void advanceOnTrack(ServerLevel serverLevel) {
     this.stockItems(SLOT_REPLACE, SLOT_STOCK);
-    this.updateTravelDirection(pos, state);
-    this.travelDirection().ifPresent(direction -> this.placeTrack(pos, direction));
+    var state = serverLevel.getBlockState(this.blockPosition());
+    if (BaseRailBlock.isRail(state)) {
+      this.updateTravelDirection(this.blockPosition(), state);
+    }
+    this.travelDirection().ifPresent(direction -> this.placeTrack(this.blockPosition(), direction));
+  }
+
+  @Override
+  protected void moveAlongTrack(ServerLevel serverLevel) {
+    super.moveAlongTrack(serverLevel);
+    this.advanceOnTrack(serverLevel);
   }
 
   private void placeTrack(BlockPos pos, Direction direction) {

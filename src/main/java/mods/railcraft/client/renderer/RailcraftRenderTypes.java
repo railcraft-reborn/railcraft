@@ -1,22 +1,19 @@
 package mods.railcraft.client.renderer;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import mods.railcraft.api.core.RailcraftConstants;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
-public class RailcraftRenderTypes extends RenderStateShard {
+public class RailcraftRenderTypes {
 
-  public static final RenderType POSITION_COLOR_LIGHTMAP = RenderType.create("leash",
-      DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, false,
-      RenderType.CompositeState.builder()
-          .setShaderState(POSITION_COLOR_LIGHTMAP_SHADER)
-          .setTextureState(NO_TEXTURE)
-          .setCullState(NO_CULL)
-          .setLightmapState(LIGHTMAP)
-          .createCompositeState(false));
+  private static final RenderSetup POSITION_COLOR_LIGHTMAP_SETUP =
+      RenderSetup.builder(RenderPipelines.OUTLINE_CULL)
+          .useLightmap()
+          .bufferSize(256)
+          .createRenderSetup();
 
-  private RailcraftRenderTypes(String name, Runnable setupState, Runnable clearState){
-    super(name, setupState, clearState);
-  }
+  public static final RenderType POSITION_COLOR_LIGHTMAP = RenderType.create(
+      RailcraftConstants.id("leash").toString(),
+      POSITION_COLOR_LIGHTMAP_SETUP);
 }

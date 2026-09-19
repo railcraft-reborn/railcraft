@@ -1,0 +1,16 @@
+{
+  "gives": {
+    "id": "railcraft:overalls"
+  },
+  "max_uses": 3.0,
+  "reputation_discount": 0.2,
+  "wants": {
+    "count": {
+      "type": "minecraft:uniform",
+      "max": 32.0,
+      "min": 19.0
+    },
+    "id": "minecraft:emerald"
+  },
+  "xp": 15.0
+}

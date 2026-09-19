@@ -10,12 +10,12 @@ import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
     implements BlockSignalEntity, SignalControllerEntity {
@@ -30,7 +30,7 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
     this.blockSignal.destroy();
@@ -57,19 +57,17 @@ public class BlockSignalRelayBoxBlockEntity extends ActionSignalBoxBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal.serializeNBT(provider));
-    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal);
+    output.putChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.blockSignal
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.BLOCK_SIGNAL));
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.BLOCK_SIGNAL, this.blockSignal);
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

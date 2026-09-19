@@ -4,13 +4,10 @@
     "half_height": 1,
     "radius": 1,
     "state_provider": {
-      "fallback": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "railcraft:firestone_ore"
-        }
-      },
-      "rules": []
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "railcraft:firestone_ore"
+      }
     },
     "target": {
       "type": "minecraft:matching_blocks",

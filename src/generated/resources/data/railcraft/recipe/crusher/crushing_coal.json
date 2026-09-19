@@ -1,14 +1,10 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:coal"
-  },
+  "ingredient": "minecraft:coal",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:coal_dust"
-      }
+      "result": "railcraft:coal_dust"
     }
   ]
 }

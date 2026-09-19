@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.collect.ForwardingMap;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.util.ItemStackKey;
@@ -49,7 +49,7 @@ public final class ContainerManifest
   }
 
   private static ManifestEntry compute(ItemStackKey key,
-      @Nullable ContainerManifest.ManifestEntry entry, ItemStack stack) {
+      ContainerManifest.@Nullable ManifestEntry entry, ItemStack stack) {
     if (entry == null) {
       entry = new ManifestEntry(key);
     }

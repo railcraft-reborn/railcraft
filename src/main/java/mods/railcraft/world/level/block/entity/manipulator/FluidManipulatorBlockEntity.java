@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerTools;
@@ -11,9 +11,6 @@ import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -21,15 +18,18 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 
 public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
@@ -52,8 +52,9 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     super(type, blockPos, blockState);
     this.setContainerSize(3);
     this.tankManager.add(this.tank);
-    this.tank.setValidator(fluidStack -> this.getFilterFluid()
-        .map(x -> FluidStack.isSameFluidSameComponents(x, fluidStack)).orElse(true));
+    this.tank.setValidator(fluidResource -> this.getFilterFluid()
+        .map(fluidResource::matches)
+        .orElse(true));
     this.tank.changeCallback(this::tankChanged);
   }
 
@@ -71,16 +72,20 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   public Optional<FluidStack> getFilterFluid() {
-    return FluidUtil.getFluidContained(this.fluidFilterContainer.getItem(0));
+    var item = this.fluidFilterContainer.getItem(0);
+    if (item.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(FluidUtil.getFirstStackContained(item));
   }
 
   public FluidStack getFluidHandled() {
-    return this.getFilterFluid().orElseGet(this.tank::getFluid);
+    return this.getFilterFluid().orElseGet(this.tank::getFluidStack);
   }
 
   @Nullable
-  protected static IFluidHandler getCartFluidHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(Capabilities.FluidHandler.ENTITY, direction);
+  protected static ResourceHandler<FluidResource> getCartFluidHandler(AbstractMinecart cart, Direction direction) {
+    return cart.getCapability(Capabilities.Fluid.ENTITY, direction);
   }
 
   public boolean use(Player player, InteractionHand hand) {
@@ -90,7 +95,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return cart
-        .getCapability(Capabilities.FluidHandler.ENTITY, this.getFacing().getOpposite()) != null
+        .getCapability(Capabilities.Fluid.ENTITY, this.getFacing().getOpposite()) != null
         && super.canHandleCart(cart);
   }
 
@@ -150,21 +155,20 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
-    tag.put(CompoundTagKeys.TANK_MANAGER, this.tankManager.serializeNBT(provider));
-    tag.put(CompoundTagKeys.INV_FILTER, this.getFluidFilter().createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
+    output.putChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    output.putChild(CompoundTagKeys.INV_FILTER, this.getFluidFilter());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.processState = FluidTools.ProcessState.fromTag(tag);
-    this.tankManager.deserializeNBT(provider,
-        tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
-    this.getFluidFilter()
-        .fromTag(tag.getList(CompoundTagKeys.INV_FILTER, Tag.TAG_COMPOUND), provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.processState = input.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
+    input.readChild(CompoundTagKeys.TANK_MANAGER, this.tankManager);
+    input.readChild(CompoundTagKeys.INV_FILTER, this.getFluidFilter());
   }
 
   @Override
@@ -179,7 +183,7 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     this.tankManager.readPacketData(data);
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.tankManager;
   }
 }

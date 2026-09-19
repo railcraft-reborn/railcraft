@@ -8,7 +8,7 @@ package mods.railcraft.api.core;
 
 import java.util.UUID;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class RailcraftConstants {
 
@@ -17,12 +17,15 @@ public final class RailcraftConstants {
   private static final String RAILCRAFT_PLAYER = "[" + ID + "]";
   public static final GameProfile FAKE_GAMEPROFILE =
       new GameProfile(UUID.nameUUIDFromBytes(RAILCRAFT_PLAYER.getBytes()), RAILCRAFT_PLAYER);
+  public static float DEFAULT_MAX_SPEED_AIR_LATERAL = 0.4F;
+  public static float DEFAULT_MAX_SPEED_AIR_VERTICAL = -1.0F;
+  public static float DEFAULT_AIR_DRAG = 0.95F;
 
   private RailcraftConstants() {
   }
 
-  public static ResourceLocation rl(String path) {
-    return ResourceLocation.fromNamespaceAndPath(ID, path);
+  public static Identifier id(String path) {
+    return Identifier.fromNamespaceAndPath(ID, path);
   }
 
   public static String makeTranslationKey(String type, String name) {

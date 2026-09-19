@@ -1,10 +1,9 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import mods.railcraft.Translations;
 import mods.railcraft.api.item.Crowbar;
-import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.item.enchantment.RailcraftEnchantments;
 import net.minecraft.ChatFormatting;
@@ -18,11 +17,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -34,15 +33,15 @@ import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CrowbarItem extends DiggerItem implements Crowbar {
+public class CrowbarItem extends Item implements Crowbar {
 
   private static final int BOOST_DAMAGE = 1;
   private final Set<Class<? extends Block>> shiftRotations =
       Set.of(LeverBlock.class, ButtonBlock.class, ChestBlock.class);
   private final Set<Class<? extends Block>> bannedRotations = Set.of(BaseRailBlock.class);
 
-  public CrowbarItem(Tier tier, Properties properties) {
-    super(tier, RailcraftTags.Blocks.MINEABLE_WITH_CROWBAR, properties);
+  public CrowbarItem(Properties properties) {
+    super(properties);
   }
 
   @Override
@@ -86,7 +85,7 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
         level.setBlockAndUpdate(pos, newBlockState);
         player.swing(hand);
         stack.hurtAndBreak(1, serverLevel, player,
-            item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+            item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
         return InteractionResult.SUCCESS;
       }
     }
@@ -97,14 +96,14 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos,
       LivingEntity entityLiving) {
-    if (!level.isClientSide()
+    if (level instanceof ServerLevel serverLevel
         && entityLiving instanceof Player player && !player.isShiftKeyDown()) {
       var destructionEnchantment = level.registryAccess()
-          .registryOrThrow(Registries.ENCHANTMENT)
-          .getHolderOrThrow(RailcraftEnchantments.DESTRUCTION);
+          .lookupOrThrow(Registries.ENCHANTMENT)
+          .getOrThrow(RailcraftEnchantments.DESTRUCTION);
       int enchantLevel = stack.getEnchantmentLevel(destructionEnchantment) * 2 + 1;
       if (enchantLevel > 1) {
-        checkBlock(level, enchantLevel, pos, player);
+        checkBlock(serverLevel, enchantLevel, pos, player);
       }
     }
     return super.mineBlock(stack, level, state, pos, entityLiving);
@@ -115,12 +114,11 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
    * ev. They just raise the damage on the stack.
    */
   @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     if (attacker instanceof ServerPlayer player) {
-      stack.hurtAndBreak(2, player.serverLevel(), attacker,
+      stack.hurtAndBreak(2, player.level(), attacker,
           item -> attacker.onEquippedItemBroken(item, EquipmentSlot.MAINHAND));
     }
-    return true;
   }
 
   @Override
@@ -130,8 +128,8 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
 
   @Override
   public void onWhack(ServerPlayer player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
-    crowbar.hurtAndBreak(1, player.serverLevel(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+    crowbar.hurtAndBreak(1, player.level(), player,
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 
@@ -144,8 +142,8 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void onLink(ServerPlayer player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
-    crowbar.hurtAndBreak(1, player.serverLevel(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+    crowbar.hurtAndBreak(1, player.level(), player,
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 
@@ -158,19 +156,19 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
   @Override
   public void onBoost(ServerPlayer player, InteractionHand hand, ItemStack crowbar,
       AbstractMinecart cart) {
-    crowbar.hurtAndBreak(BOOST_DAMAGE, player.serverLevel(), player,
-        item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+    crowbar.hurtAndBreak(BOOST_DAMAGE, player.level(), player,
+        item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
     player.swing(hand);
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines,
-      TooltipFlag flag) {
-    lines.add(Component.translatable(Translations.Tips.CROWBAR_DESC)
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+    tooltipAdder.accept(Component.translatable(Translations.Tips.CROWBAR_DESC)
         .withStyle(ChatFormatting.ITALIC));
   }
 
-  private static void removeExtraBlocks(Level level, int enchantmentLevel, BlockPos pos,
+  private static void removeExtraBlocks(ServerLevel level, int enchantmentLevel, BlockPos pos,
       Player player) {
     if (enchantmentLevel > 0) {
       LevelUtil.playerRemoveBlock(level, pos, player);
@@ -178,14 +176,14 @@ public class CrowbarItem extends DiggerItem implements Crowbar {
     }
   }
 
-  private static void checkBlock(Level level, int enchantmentLevel, BlockPos pos, Player player) {
+  private static void checkBlock(ServerLevel level, int enchantmentLevel, BlockPos pos, Player player) {
     var state = level.getBlockState(pos);
     if (player.hasCorrectToolForDrops(state)) {
       removeExtraBlocks(level, enchantmentLevel - 1, pos, player);
     }
   }
 
-  private static void checkBlocks(Level level, int enchantmentLevel, BlockPos pos, Player player) {
+  private static void checkBlocks(ServerLevel level, int enchantmentLevel, BlockPos pos, Player player) {
     // NORTH
     checkBlock(level, enchantmentLevel, pos.offset(0, 0, -1), player);
     checkBlock(level, enchantmentLevel, pos.offset(0, 1, -1), player);

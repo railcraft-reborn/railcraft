@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.entity.detector;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
@@ -11,17 +11,17 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.detector.ItemDetectorMenu;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
@@ -36,10 +36,10 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   @Override
   protected int testCarts(List<AbstractMinecart> minecarts) {
     for (var cart : minecarts) {
-      var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+      var itemHandler = cart.getCapability(Capabilities.Item.ENTITY);
       if (itemHandler != null) {
         var containerManipulator = ContainerManipulator.of(itemHandler);
-        if (itemHandler.getSlots() > 0) {
+        if (itemHandler.size() > 0) {
           switch (primaryMode) {
             case ANYTHING:
               return Redstone.SIGNAL_MAX;
@@ -60,7 +60,7 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
                 return Redstone.SIGNAL_MAX;
               continue;
             case ANALOG:
-              return containerManipulator.calcRedstone();
+              return containerManipulator.getRedstoneSignal();
           }
         }
 
@@ -108,17 +108,19 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.primaryMode = PrimaryMode.fromName(tag.getString(CompoundTagKeys.PRIMARY_MODE));
-    this.filterMode = FilterMode.fromName(tag.getString(CompoundTagKeys.FILTER_MODE));
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.primaryMode = input.read(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC)
+        .orElse(PrimaryMode.ANYTHING);
+    this.filterMode = input.read(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC)
+        .orElse(FilterMode.AT_LEAST);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.PRIMARY_MODE, this.primaryMode.getSerializedName());
-    tag.putString(CompoundTagKeys.FILTER_MODE, this.filterMode.getSerializedName());
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.PRIMARY_MODE, PrimaryMode.CODEC, this.primaryMode);
+    output.store(CompoundTagKeys.FILTER_MODE, FilterMode.CODEC, this.filterMode);
   }
 
   @Override
@@ -192,10 +194,6 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     public String getSerializedName() {
       return this.name;
     }
-
-    public static PrimaryMode fromName(String name) {
-      return CODEC.byName(name, ANYTHING);
-    }
   }
 
   public enum FilterMode implements StringRepresentable {
@@ -230,10 +228,6 @@ public class ItemDetectorBlockEntity extends FilterDetectorBlockEntity {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static FilterMode fromName(String name) {
-      return CODEC.byName(name, AT_LEAST);
     }
   }
 }

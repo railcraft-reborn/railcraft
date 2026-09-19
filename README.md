@@ -1,4 +1,4 @@
-# Railcraft Reborn for Minecraft 1.21
+# Railcraft Reborn for Minecraft 26.1.x
 
 [![CI Build](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml)
 [![Crowdin](https://badges.crowdin.net/railcraft-reborn/localized.svg)](https://crowdin.com/project/railcraft-reborn)

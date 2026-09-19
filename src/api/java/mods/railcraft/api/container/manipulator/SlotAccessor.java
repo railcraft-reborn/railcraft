@@ -36,7 +36,7 @@ public interface SlotAccessor {
   }
 
   default ItemStack simulateExtract() {
-    return this.simulateExtract(1);
+    return this.extract(1, true);
   }
 
   default ItemStack simulateExtract(int amount) {

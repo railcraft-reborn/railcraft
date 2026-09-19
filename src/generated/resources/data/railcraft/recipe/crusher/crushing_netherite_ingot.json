@@ -9,15 +9,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:netherite_ingot"
-  },
+  "ingredient": "minecraft:netherite_ingot",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/netherite"
-      }
+      "result": "#c:dusts/netherite"
     }
   ]
 }

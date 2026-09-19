@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * This interface defines the standard inventory operations.
@@ -27,7 +27,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
  * <p>
  * This interface exists mainly to enforce a consistent naming scheme on these functions.
  */
-public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T> {
+public interface ContainerManipulator<T extends SlotAccessor> {
 
   static <T extends SlotAccessor> ContainerManipulator<T> empty() {
     return Stream::empty;
@@ -44,12 +44,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
     return slots::stream;
   }
 
-  static ContainerManipulator<SlotAccessor> of(IItemHandler itemHandler) {
-    var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
-    return slots::stream;
-  }
-
-  static ContainerManipulator<ModifiableSlotAccessor> of(IItemHandlerModifiable itemHandler) {
+  static ContainerManipulator<SlotAccessor> of(ResourceHandler<ItemResource> itemHandler) {
     var slots = ItemHandlerSlotAccessor.createSlots(itemHandler).toList();
     return slots::stream;
   }
@@ -64,7 +59,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
         .flatMap(direction -> Stream.ofNullable(level.getBlockEntity(blockPos.relative(direction)))
             .filter(filter)
             .flatMap(blockEntity -> Optional.ofNullable(
-                level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(),
+                level.getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(),
                     direction.getOpposite()))
                 .map(ContainerManipulator::of)
                 .stream()))
@@ -84,8 +79,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
 
   Stream<T> stream();
 
-  @Override
-  default Iterator<T> iterator() {
+  default Iterator<T> containerIterator() {
     return this.stream().iterator();
   }
 
@@ -252,7 +246,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
 
   default Optional<T> findFirstExtractable(Predicate<ItemStack> filter) {
     return this.stream()
-        .filter(slot -> slot.matches(filter) && !slot.simulateExtract().isEmpty())
+        .filter(slot -> slot.hasItem() && slot.matches(filter) && !slot.simulateExtract().isEmpty())
         .findFirst();
   }
 
@@ -351,10 +345,7 @@ public interface ContainerManipulator<T extends SlotAccessor> extends Iterable<T
         .orElse(0.0D);
   }
 
-  /**
-   * @see Container#calcRedstoneFromInventory(IInventory)
-   */
-  default int calcRedstone() {
+  default int getRedstoneSignal() {
     double average = this.calculateFullness();
     return Mth.floor(average * 14.0F) + (this.hasNoItems() ? 0 : 1);
   }

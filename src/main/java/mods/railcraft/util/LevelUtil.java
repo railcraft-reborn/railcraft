@@ -1,7 +1,7 @@
 package mods.railcraft.util;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,16 +11,16 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class LevelUtil {
 
@@ -61,32 +61,30 @@ public class LevelUtil {
     return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
   }
 
-  public static boolean destroyBlock(Level level, BlockPos pos) {
-    return level.destroyBlock(pos, level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+  public static boolean destroyBlock(ServerLevel level, BlockPos pos) {
+    return level.destroyBlock(pos, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
-  public static boolean destroyBlock(Level level, BlockPos pos, @Nullable Player actor) {
-    return destroyBlock(level, pos, actor,
-        level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+  public static boolean destroyBlock(ServerLevel level, BlockPos pos, @Nullable Player actor) {
+    return destroyBlock(level, pos, actor, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
   public static boolean destroyBlock(Level level, BlockPos pos, @Nullable Player actor,
       boolean dropBlock) {
-    if (actor == null)
+    if (actor == null) {
       actor = RailcraftFakePlayer.get((ServerLevel) level, pos);
-
+    }
     var event = NeoForge.EVENT_BUS.post(
-        new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), actor));
+        new BreakBlockEvent(level, pos, level.getBlockState(pos), actor));
     if (event.isCanceled())
       return false;
 
     return level.destroyBlock(pos, dropBlock);
   }
 
-  public static boolean playerRemoveBlock(Level level, BlockPos pos,
+  public static boolean playerRemoveBlock(ServerLevel level, BlockPos pos,
       @Nullable Player player) {
-    return playerRemoveBlock(level, pos, player,
-        level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS));
+    return playerRemoveBlock(level, pos, player, level.getGameRules().get(GameRules.BLOCK_DROPS));
   }
 
   public static boolean playerRemoveBlock(Level level, BlockPos pos, @Nullable Player player,
@@ -97,11 +95,13 @@ public class LevelUtil {
     var blockState = level.getBlockState(pos);
     var blockEntity = level.getBlockEntity(pos);
 
-    var event = NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, blockState, player));
-    if (event.isCanceled())
+    var event = NeoForge.EVENT_BUS.post(new BreakBlockEvent(level, pos, blockState, player));
+    if (event.isCanceled()) {
       return false;
+    }
 
-    if (!blockState.onDestroyedByPlayer(level, pos, player, dropBlock, level.getFluidState(pos))) {
+    if (!blockState.onDestroyedByPlayer(level, pos, player, player.getMainHandItem().copy(),
+        dropBlock, level.getFluidState(pos))) {
       return false;
     }
 
@@ -116,11 +116,11 @@ public class LevelUtil {
     if (stack.isEmpty()) {
       return;
     }
-    float xOffset = level.random.nextFloat() * 0.8F + 0.1F;
-    float yOffset = level.random.nextFloat() * 0.8F + 0.1F;
-    float zOffset = level.random.nextFloat() * 0.8F + 0.1F;
+    float xOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
+    float yOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
+    float zOffset = level.getRandom().nextFloat() * 0.8F + 0.1F;
     while (!stack.isEmpty()) {
-      int numToDrop = Math.min(level.random.nextInt(21) + 10, stack.getCount());
+      int numToDrop = Math.min(level.getRandom().nextInt(21) + 10, stack.getCount());
       var newStack = stack.split(numToDrop);
       var itemEntity = new ItemEntity(level, x + xOffset, y + yOffset, z + zOffset, newStack);
       level.addFreshEntity(itemEntity);

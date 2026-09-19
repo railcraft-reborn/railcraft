@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
@@ -19,22 +19,22 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.ItemManipulatorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
     implements MenuProvider {
@@ -140,8 +140,8 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Nullable
-  protected static IItemHandler getCartItemHandler(AbstractMinecart cart, Direction direction) {
-    return cart.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, direction);
+  protected static ResourceHandler<ItemResource> getCartItemHandler(AbstractMinecart cart, Direction direction) {
+    return cart.getCapability(Capabilities.Item.ENTITY_AUTOMATION, direction);
   }
 
   @Override
@@ -233,7 +233,7 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   @Override
   public boolean canHandleCart(AbstractMinecart cart) {
     return Optional.ofNullable(getCartItemHandler(cart, this.getFacing().getOpposite()))
-        .map(inventory -> inventory.getSlots() > 0).orElse(false)
+        .map(inventory -> inventory.size() > 0).orElse(false)
         && super.canHandleCart(cart);
   }
 
@@ -255,16 +255,17 @@ public abstract class ItemManipulatorBlockEntity extends ManipulatorBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.TRANSFER_MODE, this.transferMode.getSerializedName());
-    tag.put(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters().createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.TRANSFER_MODE, TransferMode.CODEC, this.transferMode);
+    output.putChild(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.transferMode = TransferMode.fromName(tag.getString(CompoundTagKeys.TRANSFER_MODE));
-    this.getItemFilters().fromTag(tag.getList(CompoundTagKeys.ITEM_FILTERS, Tag.TAG_COMPOUND), provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.transferMode =
+        input.read(CompoundTagKeys.TRANSFER_MODE, TransferMode.CODEC).orElse(TransferMode.ALL);
+    input.readChild(CompoundTagKeys.ITEM_FILTERS, this.getItemFilters());
   }
 }

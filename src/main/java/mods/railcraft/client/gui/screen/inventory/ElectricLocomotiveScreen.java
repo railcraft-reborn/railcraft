@@ -4,13 +4,13 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.screen.inventory.widget.GaugeRenderer;
 import mods.railcraft.world.inventory.ElectricLocomotiveMenu;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiveMenu> {
 
-  private static final ResourceLocation TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/gui/container/electric_locomotive.png");
+  private static final Identifier TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/gui/container/electric_locomotive.png");
 
   public ElectricLocomotiveScreen(ElectricLocomotiveMenu menu, Inventory inventory,
       Component title) {
@@ -19,7 +19,7 @@ public class ElectricLocomotiveScreen extends LocomotiveScreen<ElectricLocomotiv
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return TEXTURE_LOCATION;
   }
 }

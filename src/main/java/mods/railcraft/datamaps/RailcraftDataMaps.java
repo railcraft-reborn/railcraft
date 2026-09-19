@@ -11,11 +11,11 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 public class RailcraftDataMaps {
 
   public static final DataMapType<Item, TunnelBoreHead> TUNNEL_BORE_HEAD =
-      DataMapType.builder(RailcraftConstants.rl("tunnel_bore_head"),
+      DataMapType.builder(RailcraftConstants.id("tunnel_bore_head"),
           Registries.ITEM, TunnelBoreHead.CODEC).synced(TunnelBoreHead.DIGMODIFIER_CODEC, false).build();
 
   public static final DataMapType<Fluid, FluidHeat> FLUID_HEAT =
-      DataMapType.builder(RailcraftConstants.rl("fluid_heat"),
+      DataMapType.builder(RailcraftConstants.id("fluid_heat"),
           Registries.FLUID, FluidHeat.CODEC).synced(FluidHeat.HEAT_VALUE_PER_BUCKET_CODEC, false).build();
 
   public static void register(IEventBus modEventBus) {

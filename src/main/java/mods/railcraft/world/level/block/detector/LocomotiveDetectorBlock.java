@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.detector;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.detector.DetectorBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.LocomotiveDetectorBlockEntity;
@@ -43,6 +43,6 @@ public class LocomotiveDetectorBlock extends DetectorBlock {
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOCOMOTIVE_DETECTOR.get())
           .ifPresent(blockEntity -> serverPlayer.openMenu(blockEntity, pos));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 }

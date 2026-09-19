@@ -1,13 +1,14 @@
 package mods.railcraft.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 
 public abstract class BaseShrinkingSmokeParticle extends BaseSmokeParticle {
 
   protected BaseShrinkingSmokeParticle(ClientLevel level, double x, double y, double z, double dx,
-      double dy, double dz, float scale) {
-    super(level, x, y, z, dx, dy, dz, scale);
+      double dy, double dz, float scale, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, scale, sprite);
   }
 
   @Override

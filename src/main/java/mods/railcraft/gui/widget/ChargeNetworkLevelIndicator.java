@@ -1,6 +1,6 @@
 package mods.railcraft.gui.widget;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.charge.ChargeNetworkImpl;
 import net.minecraft.core.BlockPos;

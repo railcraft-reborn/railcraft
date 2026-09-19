@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -18,7 +18,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -83,7 +85,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     super.tick(state, level, pos, random);
     if (this.getTrackType().isElectric()) {
       this.registerNode(state, level, pos);
@@ -123,7 +125,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   @Override
   public BlockState updateDir(Level level, BlockPos pos, BlockState state, boolean alwaysPlace) {
-    if (level.isClientSide) {
+    if (level.isClientSide()) {
       return state;
     } else {
       var railshape = state.getValue(this.getShapeProperty());
@@ -133,11 +135,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newBlockState,
-      boolean moved) {
-    super.onRemove(blockState, level, pos, newBlockState, moved);
-    if (this.getTrackType().isElectric() && !blockState.is(newBlockState.getBlock())) {
-      this.deregisterNode((ServerLevel) level, pos);
+  protected void affectNeighborsAfterRemoval(BlockState blockState, ServerLevel level,
+      BlockPos pos, boolean movedByPiston) {
+    super.affectNeighborsAfterRemoval(blockState, level, pos, movedByPiston);
+    if (this.getTrackType().isElectric()) {
+      this.deregisterNode(level, pos);
     }
   }
 
@@ -175,7 +177,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos,
-      Block neighborBlock, BlockPos neighborPos, boolean moved) {
+      Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     if (level.isClientSide()) {
       return;
     }
@@ -204,7 +206,11 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     });
   }
 
-  @Override
+  /**
+   * Called whenever a cart passes over this track. Formerly a NeoForge hook on
+   * {@link BaseRailBlock}, removed in 26.1; now dispatched by Railcraft itself from
+   * {@code OldMinecartBehaviorMixin}.
+   */
   public void onMinecartPass(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
     this.getTrackType().getEventHandler().minecartPass(level, cart, pos);
@@ -218,13 +224,18 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   @Override
-  public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
     if (level instanceof ServerLevel serverLevel) {
       this.getTrackType().getEventHandler().entityInside(serverLevel, pos, state, entity);
     }
   }
 
-  @Override
+  /**
+   * The speed cap this track imposes on carts. Formerly a NeoForge hook on
+   * {@link BaseRailBlock}, removed in 26.1; now queried by Railcraft itself from
+   * {@code OldMinecartBehaviorMixin}.
+   */
   public float getRailMaxSpeed(BlockState state, Level level, BlockPos pos,
       AbstractMinecart cart) {
     return (float) this.getTrackType().getEventHandler().getMaxSpeed(level, cart, pos);
@@ -246,14 +257,14 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   public VoxelShape getShape(BlockState blockState, BlockGetter level, BlockPos blockPos,
       CollisionContext context) {
     RailShape railShape = blockState.is(this) ? blockState.getValue(this.getShapeProperty()) : null;
-    return railShape != null && railShape.isAscending() ? HALF_BLOCK_AABB : FLAT_AABB;
+    return railShape != null && railShape.isSlope() ? SHAPE_SLOPE : SHAPE_FLAT;
   }
 
   /**
    * @see net.minecraft.world.level.block.RailBlock#rotate(BlockState, Rotation)
    */
   @Override
-  public BlockState rotate(BlockState state, Rotation rot) {
+  protected BlockState rotate(BlockState state, Rotation rot) {
     switch (rot) {
       case CLOCKWISE_180:
         switch (state.getValue(getShapeProperty())) {
@@ -332,7 +343,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
    * @see net.minecraft.world.level.block.RailBlock#mirror(BlockState, Mirror)
    */
   @Override
-  public BlockState mirror(BlockState state, Mirror mirror) {
+  protected BlockState mirror(BlockState state, Mirror mirror) {
     Property<RailShape> shape = getShapeProperty();
     RailShape railshape = state.getValue(shape);
 

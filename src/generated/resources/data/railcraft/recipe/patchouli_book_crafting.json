@@ -5,6 +5,5 @@
       "modid": "patchouli"
     }
   ],
-  "type": "railcraft:patchouli_book_crafting",
-  "category": "misc"
+  "type": "railcraft:patchouli_book_crafting"
 }

@@ -8,20 +8,20 @@ import mods.railcraft.network.to_server.EditTicketMessage;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GoldenTicketScreen extends IngameWindowScreen {
 
-  private static final ResourceLocation TICKET_LOCATION =
-      RailcraftConstants.rl("textures/gui/item/golden_ticket.png");
+  private static final Identifier TICKET_LOCATION =
+      RailcraftConstants.id("textures/gui/item/golden_ticket.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 136;
   private static final String PREFIX = "Dest=";
@@ -78,7 +78,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
   }
 
   @Override
-  protected void renderContent(GuiGraphics guiGraphics, int mouseX, int mouseY,
+  protected void renderContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
       float partialTicks) {
     if (this.readingManual) {
       this.editBoxDest.setVisible(false);
@@ -86,26 +86,26 @@ public class GoldenTicketScreen extends IngameWindowScreen {
       var help = Component.translatable(Translations.Screen.GOLDEN_TICKET_HELP)
           .withStyle(ChatFormatting.BLACK);
 
-      guiGraphics.drawString(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
+      graphics.text(this.font, about, this.windowWidth / 2 - this.font.width(about) / 2,
           15, TEXT_COLOR, false);
 
-      guiGraphics.drawWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR);
+      graphics.textWithWordWrap(this.font, help, 15, 30, 230, TEXT_COLOR, false);
       this.helpButton.setMessage(CommonComponents.GUI_BACK);
     } else {
       var title = Component.translatable(Translations.Screen.GOLDEN_TICKET_TITLE)
           .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
       var desc1 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_1);
       var desc2 = Component.translatable(Translations.Screen.GOLDEN_TICKET_DESC_2);
-      var poseStack = guiGraphics.pose();
-      poseStack.pushPose();
+      var poseStack = graphics.pose();
+      poseStack.pushMatrix();
       {
-        poseStack.scale(2, 2, 2);
-        guiGraphics.drawCenteredString(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
+        poseStack.scale(2, 2);
+        graphics.centeredText(this.font, title, IMAGE_WIDTH / 4, 8, TEXT_COLOR);
       }
-      poseStack.popPose();
-      guiGraphics.drawString(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
+      poseStack.popMatrix();
+      graphics.text(this.font, desc1, this.windowWidth / 2 - this.font.width(desc1) / 2,
           45, TEXT_COLOR, false);
-      guiGraphics.drawString(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
+      graphics.text(this.font, desc2, this.windowWidth / 2 - this.font.width(desc2) / 2,
           60, TEXT_COLOR, false);
       this.editBoxDest.setVisible(true);
       this.helpButton.setMessage(Component.translatable(Translations.Screen.HELP));
@@ -120,9 +120,9 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     this.dest = this.dest.trim();
     var destWithoutPrefix = this.dest.substring(PREFIX.length());
     var success = TicketItem.setTicketData(this.itemStack, destWithoutPrefix,
-        this.minecraft.player.getGameProfile());
+        this.minecraft.player.nameAndId());
     if (success) {
-      PacketDistributor.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
+      ClientPacketDistributor.sendToServer(new EditTicketMessage(this.hand, destWithoutPrefix));
     }
   }
 }

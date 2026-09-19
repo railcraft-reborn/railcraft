@@ -13,20 +13,16 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.BlockEntityLike;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 /**
  *
@@ -35,9 +31,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
  * @param <T>
  */
 public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
-    implements SignalNetwork<T>, INBTSerializable<CompoundTag>, NetworkSerializable {
-
-  protected static final RandomSource RANDOM = RandomSource.create();
+    implements SignalNetwork<T>, ValueIOSerializable, NetworkSerializable {
 
   private final Class<T> peerType;
   private final int maxPeers;
@@ -139,25 +133,14 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var peersTag = new ListTag();
-    for (var peer : this.peers) {
-      var posTag = new CompoundTag();
-      posTag.put(CompoundTagKeys.POS, NbtUtils.writeBlockPos(peer));
-      peersTag.add(posTag);
-    }
-    var tag = new CompoundTag();
-    tag.put(CompoundTagKeys.PEER_POS, peersTag);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    valueOutput.store(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf(), new ArrayList<>(this.peers));
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    var peersTag = tag.getList(CompoundTagKeys.PEER_POS, Tag.TAG_COMPOUND);
-    peersTag.stream()
-        .map(CompoundTag.class::cast)
-        .map(posTag -> NbtUtils.readBlockPos(posTag, CompoundTagKeys.POS).orElseThrow())
-        .forEach(this.peers::add);
+  public void deserialize(ValueInput valueInput) {
+    this.peers.addAll(
+        valueInput.read(CompoundTagKeys.PEER_POS, BlockPos.CODEC.listOf()).orElse(new ArrayList<>()));
   }
 
   @Override

@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.signal;
 
 import java.util.Objects;
 import java.util.UUID;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SimpleSignalController;
@@ -15,14 +15,14 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.signal.SimpleTokenRing;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
@@ -56,7 +56,13 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
     }
   }
 
-  public void blockRemoved() {
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.blockRemoved();
+  }
+
+  protected void blockRemoved() {
     this.signalController.destroy();
     if (!this.level.isClientSide()) {
       this.signalNetwork().removePeer(this.getBlockPos());
@@ -98,24 +104,24 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.NETWORK, this.signalController.serializeNBT(provider));
-    tag.putUUID(CompoundTagKeys.TOKEN_RING_ID, this.ringId);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.NETWORK, this.signalController);
+    output.store(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC, this.ringId);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.signalController.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.NETWORK));
-    this.ringId = tag.getUUID(CompoundTagKeys.TOKEN_RING_ID);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
+    this.ringId = input.read(CompoundTagKeys.TOKEN_RING_ID, UUIDUtil.CODEC).orElse(UUID.randomUUID());
   }
 
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf data) {
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
-    data.writeNullable(this.ringCentroidPos, FriendlyByteBuf::writeVec3);
+    data.writeNullable(this.ringCentroidPos, Vec3.STREAM_CODEC);
     data.writeUUID(this.ringId);
   }
 
@@ -123,7 +129,7 @@ public class TokenSignalBlockEntity extends AbstractSignalBlockEntity
   public void readFromBuf(RegistryFriendlyByteBuf data) {
     super.readFromBuf(data);
     this.signalController.readFromBuf(data);
-    this.ringCentroidPos = data.readNullable(FriendlyByteBuf::readVec3);
+    this.ringCentroidPos = data.readNullable(Vec3.STREAM_CODEC);
     this.ringId = data.readUUID();
   }
 

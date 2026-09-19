@@ -1,6 +1,7 @@
 package mods.railcraft.client.renderer;
 
 import java.util.Collection;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.client.util.LineRenderer;
 import mods.railcraft.client.util.RenderUtil;
@@ -8,18 +9,19 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class ShuntingAuraRenderer {
 
+  @Nullable
   private Collection<LinkedCartsMessage.LinkedCart> linkedCarts;
 
   public void clearCarts() {
@@ -30,7 +32,7 @@ public class ShuntingAuraRenderer {
     this.linkedCarts = linkedCarts;
   }
 
-  public void render(PoseStack poseStack, Camera mainCamera, float partialTick) {
+  public void render(PoseStack poseStack, CameraRenderState cameraState, float partialTick) {
     if (this.linkedCarts == null) {
       return;
     }
@@ -41,7 +43,7 @@ public class ShuntingAuraRenderer {
       var aura = GogglesItem.getAura(goggles);
       if (aura == GogglesItem.Aura.SHUNTING) {
         poseStack.pushPose();
-        var projectedView = mainCamera.getPosition();
+        var projectedView = cameraState.pos;
         poseStack.translate(-projectedView.x, -projectedView.y, -projectedView.z);
 
         var level = player.level();
@@ -65,7 +67,7 @@ public class ShuntingAuraRenderer {
           this.renderLink(level, cartPosition, linkedCart.linkBId(), color, partialTick, renderer,
               poseStack);
 
-          bufferSource.endBatch(RenderType.lines());
+          bufferSource.endBatch(RenderTypes.lines());
         }
         poseStack.popPose();
       }
@@ -84,7 +86,7 @@ public class ShuntingAuraRenderer {
     poseStack.scale(0.025F, -0.025F, 0.025F);
     var matrix4f = poseStack.last().pose();
     font.drawInBatch(text, length, 0, 0xFFFF0000, false, matrix4f, bufferSource,
-        Font.DisplayMode.SEE_THROUGH, 0, 15728880);
+        Font.DisplayMode.NORMAL, 0, 15728880);
     poseStack.popPose();
   }
 

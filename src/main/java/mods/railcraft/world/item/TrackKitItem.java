@@ -12,7 +12,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class TrackKitItem extends Item {
 
-  private final Map<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks;
+  private final Map<Identifier, Supplier<? extends BaseRailBlock>> outfittedBlocks;
   private final boolean allowedOnSlopes;
 
   public TrackKitItem(Properties properties) {
@@ -60,25 +60,24 @@ public class TrackKitItem extends Item {
     var shape = TrackUtil.getRailShapeRaw(level, blockPos);
 
     if (RailShapeUtil.isTurn(shape)) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
-          .withStyle(ChatFormatting.RED), true);
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_CORNERS_UNSUPPORTED)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
-    if (shape.isAscending() && !this.allowedOnSlopes) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
-          .withStyle(ChatFormatting.RED), true);
+    if (shape.isSlope() && !this.allowedOnSlopes) {
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_SLOPES_UNSUPPORTED)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
-    var outfittedBlock = this.outfittedBlocks
-        .getOrDefault(TrackTypes.REGISTRY.getKey(trackType), () -> null).get();
-    if (outfittedBlock == null) {
-      player.displayClientMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
-          .withStyle(ChatFormatting.RED), true);
+    if (!this.outfittedBlocks.containsKey(TrackTypes.REGISTRY.getKey(trackType))) {
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_INVALID_TRACK_TYPE)
+          .withStyle(ChatFormatting.RED));
       return InteractionResult.PASS;
     }
 
+    var outfittedBlock = this.outfittedBlocks.get(TrackTypes.REGISTRY.getKey(trackType)).get();
     var outfittedBlockState = outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
       var soundType = outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
@@ -100,7 +99,7 @@ public class TrackKitItem extends Item {
 
   public static class Properties extends Item.Properties {
 
-    private final ImmutableMap.Builder<ResourceLocation, Supplier<? extends BaseRailBlock>> outfittedBlocks =
+    private final ImmutableMap.Builder<Identifier, Supplier<? extends BaseRailBlock>> outfittedBlocks =
         ImmutableMap.builder();
     private boolean allowedOnSlopes;
 
@@ -110,7 +109,7 @@ public class TrackKitItem extends Item {
       return this.addOutfittedBlock(trackType.getId(), block);
     }
 
-    public Properties addOutfittedBlock(ResourceLocation trackTypeId,
+    public Properties addOutfittedBlock(Identifier trackTypeId,
         Supplier<? extends BaseRailBlock> block) {
       this.outfittedBlocks.put(trackTypeId, block);
       return this;

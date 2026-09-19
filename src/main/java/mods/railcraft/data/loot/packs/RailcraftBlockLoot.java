@@ -21,8 +21,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftBlockLoot extends BlockLootSubProvider {
 
-  public RailcraftBlockLoot(HolderLookup.Provider provider) {
-    super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+  public RailcraftBlockLoot(HolderLookup.Provider registries) {
+    super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
   }
 
   @Override

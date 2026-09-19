@@ -13,7 +13,7 @@ public record SetLauncherTrackMessage(
     BlockPos blockPos, byte force) implements CustomPacketPayload {
 
   public static final Type<SetLauncherTrackMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_launcher_track"));
+      new Type<>(RailcraftConstants.id("set_launcher_track"));
 
   public static final StreamCodec<FriendlyByteBuf, SetLauncherTrackMessage> STREAM_CODEC =
       StreamCodec.composite(

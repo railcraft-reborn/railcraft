@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:elevator_track_up",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/elevator_track_up"
+}

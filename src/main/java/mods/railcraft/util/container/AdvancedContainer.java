@@ -2,21 +2,22 @@ package mods.railcraft.util.container;
 
 import java.util.List;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.container.manipulator.ContainerSlotAccessor;
 import mods.railcraft.api.container.manipulator.ModifiableSlotAccessor;
-import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.module.ModuleProvider;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerListener;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 /**
  * An extension of {@link SimpleContainer} with callback support, implementation of
@@ -25,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
  * @author Sm0keySa1m0n
  */
 public class AdvancedContainer extends SimpleContainer
-    implements ContainerManipulator<ModifiableSlotAccessor> {
+    implements ContainerManipulator<ModifiableSlotAccessor>, ValueIOSerializable {
 
   private final List<ModifiableSlotAccessor> slots;
 
@@ -57,7 +58,6 @@ public class AdvancedContainer extends SimpleContainer
 
   public AdvancedContainer listener(Listener callback) {
     this.listener = callback;
-    this.addListener(callback);
     return this;
   }
 
@@ -76,47 +76,29 @@ public class AdvancedContainer extends SimpleContainer
   }
 
   @Override
+  public void setChanged() {
+    if (this.listener != null) {
+      this.listener.containerChanged(this);
+    }
+  }
+
+  @Override
   public boolean stillValid(Player player) {
     return this.listener == null || this.listener.stillValid(player);
   }
 
   @Override
-  public void startOpen(Player player) {
+  public void startOpen(ContainerUser user) {
     if (this.listener != null) {
-      this.listener.startOpen(player);
+      this.listener.startOpen(user);
     }
   }
 
   @Override
-  public void stopOpen(Player player) {
+  public void stopOpen(ContainerUser user) {
     if (this.listener != null) {
-      this.listener.stopOpen(player);
+      this.listener.stopOpen(user);
     }
-  }
-
-  @Override
-  public void fromTag(ListTag tag, HolderLookup.Provider provider) {
-    for (int i = 0; i < tag.size(); ++i) {
-      var slotTag = tag.getCompound(i);
-      ItemStack.parse(provider, slotTag).ifPresent(itemStack -> {
-        int slot = slotTag.getInt(CompoundTagKeys.INDEX);
-        this.setItem(slot, itemStack);
-      });
-    }
-  }
-
-  @Override
-  public ListTag createTag(HolderLookup.Provider provider) {
-    var tag = new ListTag();
-    for (int i = 0; i < this.getContainerSize(); ++i) {
-      var item = this.getItem(i);
-      if (!item.isEmpty()) {
-        var slotTag = new CompoundTag();
-        slotTag.putInt(CompoundTagKeys.INDEX, i);
-        tag.add(item.save(provider, slotTag));
-      }
-    }
-    return tag;
   }
 
   public static AdvancedContainer copyOf(Container original) {
@@ -130,15 +112,32 @@ public class AdvancedContainer extends SimpleContainer
     return copy;
   }
 
-  public interface Listener extends ContainerListener {
+  @Override
+  public void serialize(ValueOutput valueOutput) {
+    ContainerHelper.saveAllItems(valueOutput, this.getItems(), false);
+  }
+
+  @Override
+  public void deserialize(ValueInput valueInput) {
+    var tempItems = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+    ContainerHelper.loadAllItems(valueInput, tempItems);
+    for (int i = 0; i < tempItems.size(); i++) {
+      this.setItem(i, tempItems.get(i));
+    }
+  }
+
+  @FunctionalInterface
+  public interface Listener {
+
+    void containerChanged(Container container);
 
     default boolean stillValid(Player player) {
       return true;
     }
 
-    default void startOpen(Player player) {}
+    default void startOpen(ContainerUser user) {}
 
-    default void stopOpen(Player player) {}
+    default void stopOpen(ContainerUser user) {}
   }
 
   public static class ContainerCallback implements Listener {
@@ -155,13 +154,13 @@ public class AdvancedContainer extends SimpleContainer
     }
 
     @Override
-    public void startOpen(Player player) {
-      this.container.startOpen(player);
+    public void startOpen(ContainerUser user) {
+      this.container.startOpen(user);
     }
 
     @Override
-    public void stopOpen(Player player) {
-      this.container.stopOpen(player);
+    public void stopOpen(ContainerUser user) {
+      this.container.stopOpen(user);
     }
 
     @Override

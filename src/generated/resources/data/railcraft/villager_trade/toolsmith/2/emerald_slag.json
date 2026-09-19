@@ -1,0 +1,27 @@
+{
+  "given_item_modifiers": [
+    {
+      "add": false,
+      "count": {
+        "type": "minecraft:uniform",
+        "max": 2.0,
+        "min": 1.0
+      },
+      "function": "minecraft:set_count"
+    }
+  ],
+  "gives": {
+    "id": "railcraft:slag"
+  },
+  "max_uses": 12.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "count": {
+      "type": "minecraft:uniform",
+      "max": 4.0,
+      "min": 2.0
+    },
+    "id": "minecraft:emerald"
+  },
+  "xp": 15.0
+}

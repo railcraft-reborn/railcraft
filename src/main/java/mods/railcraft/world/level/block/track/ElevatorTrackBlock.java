@@ -1,21 +1,24 @@
 package mods.railcraft.world.level.block.track;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.util.EntitySearcher;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +29,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -42,7 +46,7 @@ public class ElevatorTrackBlock extends Block {
 
   public static final byte ELEVATOR_TIMER = SharedConstants.TICKS_PER_SECOND;
 
-  public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+  public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   protected static final VoxelShape EAST_SHAPE = box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
   protected static final VoxelShape WEST_SHAPE = box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -91,15 +95,16 @@ public class ElevatorTrackBlock extends Block {
     return this.canAttachTo(world, pos.relative(direction.getOpposite()), direction);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public BlockState updateShape(BlockState state, Direction direction,
-      BlockState newState, LevelAccessor world, BlockPos pos, BlockPos newPos) {
-    if (direction.getOpposite() == state.getValue(FACING)
-        && !state.canSurvive(world, pos)) {
+  protected BlockState updateShape(BlockState blockState, LevelReader levelReader,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction, BlockPos neighborPos,
+      BlockState neighborState, RandomSource randomSource) {
+    if (direction.getOpposite() == blockState.getValue(FACING)
+        && !blockState.canSurvive(levelReader, blockPos)) {
       return Blocks.AIR.defaultBlockState();
     } else {
-      return super.updateShape(state, direction, newState, world, pos, newPos);
+      return super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction,
+          neighborPos, neighborState, randomSource);
     }
   }
 
@@ -137,7 +142,7 @@ public class ElevatorTrackBlock extends Block {
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockState mirror(BlockState blockState, Mirror mirror) {
+  protected BlockState mirror(BlockState blockState, Mirror mirror) {
     return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
   }
 
@@ -168,22 +173,22 @@ public class ElevatorTrackBlock extends Block {
       level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
-      BlockPos neighborPos, boolean something) {
-    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, something);
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
+      @Nullable Orientation orientation, boolean something) {
+    super.neighborChanged(blockState, level, pos, neighborBlock, orientation, something);
     boolean powered = getPowered(blockState);
     if (powered != this.determinePowered(level, pos, blockState))
       level.setBlockAndUpdate(pos, blockState.setValue(POWERED, !powered));
   }
 
   @Override
-  public void entityInside(BlockState blockState, Level level, BlockPos pos, Entity entityIn) {
-    entityIn.fallDistance = 0;
-    if (level.isClientSide() || !(entityIn instanceof AbstractMinecart))
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+      InsideBlockEffectApplier effectApplier, boolean isInside) {
+    entity.fallDistance = 0;
+    if (level.isClientSide() || !(entity instanceof AbstractMinecart abstractMinecart))
       return;
-    minecartInteraction(level, (AbstractMinecart) entityIn, pos);
+    minecartInteraction(level, abstractMinecart, pos);
   }
 
   protected boolean determinePowered(Level level, BlockPos pos, BlockState state) {
@@ -250,7 +255,7 @@ public class ElevatorTrackBlock extends Block {
   }
 
   private void holdPosition(BlockState state, AbstractMinecart cart, BlockPos pos) {
-    cart.moveTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
+    cart.snapTo(cart.getX(), pos.getY() - cart.getBbHeight() / 2.0 + 0.5, cart.getZ(),
         getCartRotation(state, cart), 0);
     cart.setDeltaMovement(cart.getDeltaMovement().multiply(1, 0, 1));
   }
@@ -261,13 +266,13 @@ public class ElevatorTrackBlock extends Block {
    *
    * @param cart the minecart for which motion and rotation will be adjusted
    */
-  protected void keepMinecartConnected(BlockPos pos, BlockState state,
-      AbstractMinecart cart) {
+  protected void keepMinecartConnected(BlockPos pos, BlockState state, AbstractMinecart cart) {
     if (BaseRailBlock.isRail(cart.level(), pos.below())
-        || BaseRailBlock.isRail(cart.level(), pos.below(2)))
-      cart.setCanUseRail(false);
-    else
-      cart.setCanUseRail(true);
+        || BaseRailBlock.isRail(cart.level(), pos.below(2))) {
+      cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, false);
+    } else {
+      cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
+    }
     Vec3 motion = cart.getDeltaMovement();
     cart.setDeltaMovement((pos.getX() + 0.5) - cart.getX(), motion.y(),
         (pos.getZ() + 0.5) - cart.getZ());
@@ -316,7 +321,7 @@ public class ElevatorTrackBlock extends Block {
    */
   private boolean pushMinecartOntoRail(Level level, BlockPos pos, BlockState state,
       AbstractMinecart cart, boolean up) {
-    cart.setCanUseRail(true);
+    cart.setData(RailcraftAttachmentTypes.CAN_USE_RAIL, true);
     Direction.Axis axis = state.getValue(FACING).getAxis();
     for (BlockPos target : new BlockPos[] {pos, up ? pos.above() : pos.below()}) {
       for (Direction.AxisDirection direction : Direction.AxisDirection.values()) {

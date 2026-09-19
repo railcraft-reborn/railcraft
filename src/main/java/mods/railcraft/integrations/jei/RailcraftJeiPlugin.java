@@ -33,16 +33,14 @@ import mods.railcraft.world.inventory.SteamOvenMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
-import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -54,8 +52,8 @@ public class RailcraftJeiPlugin implements IModPlugin {
   public static final int TEXT_COLOR = 0xFF808080;
 
   @Override
-  public ResourceLocation getPluginUid() {
-    return RailcraftConstants.rl("jei_plugin");
+  public Identifier getPluginUid() {
+    return RailcraftConstants.id("jei_plugin");
   }
 
   @Override
@@ -105,15 +103,15 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public void registerRecipes(IRecipeRegistration registration) {
-    var recipeManager = Minecraft.getInstance().level.getRecipeManager();
     registration.addRecipes(RecipeTypes.ROLLING_MACHINE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.ROLLING.get()));
+        JeiRecipeSync.getRollingRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.COKE_OVEN,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.COKING.get()));
+        JeiRecipeSync.getCokingRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.BLAST_FURNACE,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.BLASTING.get()));
+        JeiRecipeSync.getBlastFurnaceRecipes().stream().toList());
     registration.addRecipes(RecipeTypes.CRUSHER,
-        recipeManager.getAllRecipesFor(RailcraftRecipeTypes.CRUSHING.get()));
+        JeiRecipeSync.getCrushingRecipes().stream().toList());
+
     registration.addRecipes(RecipeTypes.SOLID_BOILER, SolidBoilerRecipeCategory.getBoilerRecipes());
     registration.addRecipes(RecipeTypes.FLUID_BOILER, FluidBoilerRecipeCategory.getBoilerRecipes());
 
@@ -154,7 +152,7 @@ public class RailcraftJeiPlugin implements IModPlugin {
         new DefaultRecipeWrapper<>(true, Component.translatable(Translations.Jei.SPLIT)) {
           @Override
           public void drawInfo(RecipeHolder<CartDisassemblyRecipe> recipe, int recipeWidth,
-              int recipeHeight, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+              int recipeHeight, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
             super.drawInfo(recipe, recipeWidth, recipeHeight, guiGraphics, mouseX, mouseY);
             var drawable = registration.getJeiHelpers().getGuiHelper()
                 .createDrawableItemStack(new ItemStack(Items.MINECART));
@@ -165,29 +163,29 @@ public class RailcraftJeiPlugin implements IModPlugin {
 
   @Override
   public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()),
-        RecipeTypes.ROLLING_MACHINE);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.POWERED_ROLLING_MACHINE.get()),
-        RecipeTypes.ROLLING_MACHINE);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get()),
-        RecipeTypes.COKE_OVEN);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get()),
-        RecipeTypes.BLAST_FURNACE);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.CRUSHER.get()),
-        RecipeTypes.CRUSHER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.STEAM_OVEN.get()),
-        mezz.jei.api.constants.RecipeTypes.SMELTING);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.SOLID_FUELED_FIREBOX.get()),
-        RecipeTypes.SOLID_BOILER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()),
-        RecipeTypes.SOLID_BOILER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()),
-        RecipeTypes.SOLID_BOILER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.FLUID_FUELED_FIREBOX.get()),
-        RecipeTypes.FLUID_BOILER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()),
-        RecipeTypes.FLUID_BOILER);
-    registration.addRecipeCatalyst(new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()),
-        RecipeTypes.FLUID_BOILER);
+    registration.addCraftingStation(RecipeTypes.ROLLING_MACHINE,
+        new ItemStack(RailcraftItems.MANUAL_ROLLING_MACHINE.get()));
+    registration.addCraftingStation(RecipeTypes.ROLLING_MACHINE,
+        new ItemStack(RailcraftItems.POWERED_ROLLING_MACHINE.get()));
+    registration.addCraftingStation(RecipeTypes.COKE_OVEN,
+        new ItemStack(RailcraftItems.COKE_OVEN_BRICKS.get()));
+    registration.addCraftingStation(RecipeTypes.BLAST_FURNACE,
+        new ItemStack(RailcraftItems.BLAST_FURNACE_BRICKS.get()));
+    registration.addCraftingStation(RecipeTypes.CRUSHER,
+        new ItemStack(RailcraftItems.CRUSHER.get()));
+    registration.addCraftingStation(mezz.jei.api.constants.RecipeTypes.SMELTING,
+        new ItemStack(RailcraftItems.STEAM_OVEN.get()));
+    registration.addCraftingStation(RecipeTypes.SOLID_BOILER,
+        new ItemStack(RailcraftItems.SOLID_FUELED_FIREBOX.get()));
+    registration.addCraftingStation(RecipeTypes.SOLID_BOILER,
+        new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()));
+    registration.addCraftingStation(RecipeTypes.SOLID_BOILER,
+        new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()));
+    registration.addCraftingStation(RecipeTypes.FLUID_BOILER,
+        new ItemStack(RailcraftItems.FLUID_FUELED_FIREBOX.get()));
+    registration.addCraftingStation(RecipeTypes.FLUID_BOILER,
+        new ItemStack(RailcraftItems.HIGH_PRESSURE_STEAM_BOILER_TANK.get()));
+    registration.addCraftingStation(RecipeTypes.FLUID_BOILER,
+        new ItemStack(RailcraftItems.LOW_PRESSURE_STEAM_BOILER_TANK.get()));
   }
 }

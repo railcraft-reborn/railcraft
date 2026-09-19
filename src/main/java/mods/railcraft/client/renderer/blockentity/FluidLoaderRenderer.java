@@ -1,63 +1,82 @@
 package mods.railcraft.client.renderer.blockentity;
 
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.renderer.blockentity.state.FluidLoaderRenderState;
 import mods.railcraft.client.util.CuboidModel;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.data.AtlasIds;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
-public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity> {
+public class FluidLoaderRenderer extends FluidManipulatorRenderer<FluidLoaderBlockEntity, FluidLoaderRenderState> {
 
   private static final float PIPE_OFFSET = 5 * RenderUtil.PIXEL;
-  private static final ResourceLocation PIPE_SIDE_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/fluid_loader/pipe_side");
-  private static final ResourceLocation PIPE_END_TEXTURE_LOCATION =
-      RailcraftConstants.rl("entity/fluid_loader/pipe_end");
-  private static final CuboidModel PIPE_MODEL = new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
-      1 - PIPE_OFFSET, RenderUtil.PIXEL, 1 - PIPE_OFFSET);
+  private static final Identifier PIPE_SIDE_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/fluid_loader/pipe_side");
+  private static final Identifier PIPE_END_TEXTURE_LOCATION =
+      RailcraftConstants.id("entity/fluid_loader/pipe_end");
+
+  private static CuboidModel createPipeModel() {
+    return new CuboidModel(PIPE_OFFSET, 0, PIPE_OFFSET,
+        1 - PIPE_OFFSET, RenderUtil.PIXEL, 1 - PIPE_OFFSET);
+  }
 
   @Override
-  public void render(FluidLoaderBlockEntity blockEntity, float partialTick,
-      PoseStack poseStack, MultiBufferSource bufferSource, int packedLight,
-      int packedOverlay) {
-    super.render(blockEntity, partialTick, poseStack, bufferSource, packedLight,
-        packedOverlay);
-    Minecraft minecraft = Minecraft.getInstance();
+  public FluidLoaderRenderState createRenderState() {
+    return new FluidLoaderRenderState();
+  }
 
-    CuboidModel.Face sideFace = PIPE_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-            .apply(PIPE_SIDE_TEXTURE_LOCATION));
-    PIPE_MODEL.set(Direction.NORTH, sideFace);
-    PIPE_MODEL.set(Direction.SOUTH, sideFace);
-    PIPE_MODEL.set(Direction.EAST, sideFace);
-    PIPE_MODEL.set(Direction.WEST, sideFace);
+  @Override
+  public void extractRenderState(FluidLoaderBlockEntity blockEntity,
+      FluidLoaderRenderState renderState, float partialTick, Vec3 cameraPos,
+      ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
+    super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
+    renderState.pipeLength = blockEntity.getPipeLength(partialTick);
+  }
 
-    CuboidModel.Face endFace = PIPE_MODEL.new Face()
-        .setSprite(minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-            .apply(PIPE_END_TEXTURE_LOCATION));
-    PIPE_MODEL.set(Direction.UP, endFace);
-    PIPE_MODEL.set(Direction.DOWN, endFace);
+  @Override
+  public void submit(FluidLoaderRenderState state, PoseStack poseStack,
+      SubmitNodeCollector collector, CameraRenderState cameraState) {
+    super.submit(state, poseStack, collector, cameraState);
+    var textureAtlas = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS);
 
-    PIPE_MODEL.setPackedLight(packedLight);
-    PIPE_MODEL.setPackedOverlay(packedOverlay);
+    var pipeModel = createPipeModel();
+
+    CuboidModel.Face sideFace = pipeModel.new Face()
+        .setSprite(textureAtlas.getSprite(PIPE_SIDE_TEXTURE_LOCATION));
+    pipeModel.set(Direction.NORTH, sideFace);
+    pipeModel.set(Direction.SOUTH, sideFace);
+    pipeModel.set(Direction.EAST, sideFace);
+    pipeModel.set(Direction.WEST, sideFace);
+
+    CuboidModel.Face endFace = pipeModel.new Face()
+        .setSprite(textureAtlas.getSprite(PIPE_END_TEXTURE_LOCATION));
+    pipeModel.set(Direction.UP, endFace);
+    pipeModel.set(Direction.DOWN, endFace);
+
+    pipeModel.setPackedLight(state.lightCoords);
+    pipeModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
     poseStack.pushPose();
-    {
-      PIPE_MODEL.setMinY(RenderUtil.PIXEL - blockEntity.getPipeLength(partialTick));
-      VertexConsumer vertexBuilder =
-          bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-      CuboidModelRenderer.render(PIPE_MODEL, poseStack, vertexBuilder, 0xFFFFFFFF,
+    pipeModel.setMinY(RenderUtil.PIXEL - state.pipeLength);
+    collector.submitCustomGeometry(poseStack,
+        RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS), (pose, vertexConsumer) -> {
+      CuboidModelRenderer.render(pipeModel, pose, vertexConsumer, 0xFFFFFFFF,
           CuboidModelRenderer.FaceDisplay.BOTH, false);
-    }
+    });
     poseStack.popPose();
   }
 

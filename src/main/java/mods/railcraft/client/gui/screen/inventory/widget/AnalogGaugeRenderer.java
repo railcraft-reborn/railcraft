@@ -1,15 +1,20 @@
 package mods.railcraft.client.gui.screen.inventory.widget;
 
 import java.util.List;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import org.joml.Matrix3x2f;
+import org.jspecify.annotations.Nullable;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.gui.screen.inventory.WidgetRenderer;
 import mods.railcraft.gui.widget.AnalogGaugeWidget;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
@@ -19,12 +24,14 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
   }
 
   @Override
-  public List<Component> getTooltip() {
-    return this.widget.getGauge().getTooltip();
+  public List<ClientTooltipComponent> getTooltip() {
+    return this.widget.getGauge().getTooltip().stream()
+        .map(component -> ClientTooltipComponent.create(component.getVisualOrderText()))
+        .toList();
   }
 
   @Override
-  public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX, int centreY,
+  public void render(Identifier widgetLocation, GuiGraphicsExtractor guiGraphics, int centreX, int centreY,
       int mouseX, int mouseY) {
 
     float halfWidth = 1; // half width of the needle
@@ -35,10 +42,6 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
 
     // set the needle angle between 30° (= 0%) and 150° (= 100%)
     float angle = (120 * value + 30) * Mth.DEG_TO_RAD;
-
-    var tesselator = Tesselator.getInstance();
-
-    var buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
     float cosA = Mth.cos(angle);
     float sinA = Mth.sin(angle);
@@ -55,35 +58,71 @@ public class AnalogGaugeRenderer extends WidgetRenderer<AnalogGaugeWidget> {
     float baseOffset = 1.0F / sinA * halfWidth;
 
     // set the needle color to dark-ish red
-    int red = 100;
-    int green = 0;
-    int blue = 0;
-    int alpha = 255;
+    var color = ARGB.color(255, 100, 0, 0);
 
-    float z = 0;
     float gx = centreX + this.widget.x;
     float gy = centreY + this.widget.y - 1;
 
     float bx = gx + this.widget.w * 0.5F;
     float by = gy + this.widget.h;
 
-    var matrix = guiGraphics.pose().last().pose();
-    buffer
-        .addVertex(matrix, bx - baseOffset, by, z)
-        .setColor(red, green, blue, alpha);
-    buffer
-        .addVertex(matrix, bx + baseOffset, by, z)
-        .setColor(red, green, blue, alpha);
-    buffer
-        .addVertex(matrix, bx - glx + gwx, by - (gly + gwy), z)
-        .setColor(red, green, blue, alpha);
-    buffer
-        .addVertex(matrix, bx - glx - gwx, by - (gly - gwy), z)
-        .setColor(red, green, blue, alpha);
+    guiGraphics.submitGuiElementRenderState(new GuiElementRenderState() {
 
-    BufferUploader.drawWithShader(buffer.buildOrThrow());
+      private final Matrix3x2f pose = new Matrix3x2f(guiGraphics.pose());
+      @Nullable
+      private final ScreenRectangle scissorArea = guiGraphics.peekScissorStack();
 
-    guiGraphics.blit(widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
-        this.widget.ov, 4, 3);
+      @Override
+      @Nullable
+      public ScreenRectangle bounds() {
+        var rectangle = new ScreenRectangle(
+            (int) (bx - baseOffset),
+            (int) ((int) by - (gly + gwy)),
+            2 * (int)baseOffset,
+            2 * (int)gwy
+        );
+
+        rectangle = rectangle.transformMaxBounds(this.pose);
+
+        return this.scissorArea != null
+            ? this.scissorArea.intersection(rectangle)
+            : rectangle;
+      }
+
+      @Override
+      @Nullable
+      public ScreenRectangle scissorArea() {
+        return this.scissorArea;
+      }
+
+      @Override
+      public RenderPipeline pipeline() {
+        return RenderPipelines.GUI;
+      }
+
+      @Override
+      public TextureSetup textureSetup() {
+        return TextureSetup.noTexture();
+      }
+
+      @Override
+      public void buildVertices(VertexConsumer vertexConsumer) {
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - baseOffset, by)
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx + baseOffset, by)
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - glx + gwx, by - (gly + gwy))
+            .setColor(color);
+        vertexConsumer
+            .addVertexWith2DPose(this.pose, bx - glx - gwx, by - (gly - gwy))
+            .setColor(color);
+      }
+    });
+
+    guiGraphics.blit(RenderPipelines.GUI_TEXTURED, widgetLocation, centreX + this.widget.ox, centreY + this.widget.oy, this.widget.ou,
+        this.widget.ov, 4, 3, 256, 256);
   }
 }

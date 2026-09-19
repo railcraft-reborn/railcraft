@@ -1,15 +1,12 @@
 {
   "type": "railcraft:rolling",
   "key": {
-    "a": {
-      "tag": "c:storage_blocks/copper"
-    }
+    "a": "#c:storage_blocks/copper"
   },
   "pattern": [
     "a"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:charge_spool_large"
   }
 }

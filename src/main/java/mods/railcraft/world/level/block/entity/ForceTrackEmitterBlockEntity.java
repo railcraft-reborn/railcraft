@@ -11,8 +11,6 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +20,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implements Magnifiable {
 
@@ -132,9 +132,18 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
     this.removeTrack(toRemove);
   }
 
-  public void clearTracks() {
+  private void clearTracks() {
     this.clearTracks(this.getBlockPos().above()
         .relative(ForceTrackEmitterBlock.getFacing(this.getBlockState())));
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    this.clearTracks();
+    if (level instanceof ServerLevel serverLevel) {
+      ((ForceTrackEmitterBlock) state.getBlock()).deregisterNode(serverLevel, pos);
+    }
   }
 
   public void clearTracks(BlockPos startPos) {
@@ -204,23 +213,22 @@ public class ForceTrackEmitterBlockEntity extends RailcraftBlockEntity implement
 
   @Override
   public void onMagnify(Player player) {
-    player.displayClientMessage(
+    player.sendOverlayMessage(
         Component.translatable("gui.railcraft.force.track.emitter.info",
-            this.getTrackCount()),
-        true);
+            this.getTrackCount()));
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
-    tag.putString(CompoundTagKeys.STATE, this.stateInstance.state().getSerializedName());
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.TRACK_COUNT, this.getTrackCount());
+    output.store(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC, this.stateInstance.state());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    this.trackCount = tag.getInt(CompoundTagKeys.TRACK_COUNT);
-    ForceTrackEmitterState.fromName(tag.getString(CompoundTagKeys.STATE))
-        .ifPresent(this::loadState);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.trackCount = input.getIntOr(CompoundTagKeys.TRACK_COUNT, 0);
+    input.read(CompoundTagKeys.STATE, ForceTrackEmitterState.CODEC).ifPresent(this::loadState);
   }
 }

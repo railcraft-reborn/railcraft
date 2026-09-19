@@ -1,5 +1,6 @@
 package mods.railcraft.client.gui.widget.button;
 
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 
 public class ToggleButton extends RailcraftButton {
@@ -20,9 +21,9 @@ public class ToggleButton extends RailcraftButton {
   }
 
   @Override
-  public void onPress() {
+  public void onPress(InputWithModifiers modifiers) {
     this.toggle();
-    super.onPress();
+    super.onPress(modifiers);
   }
 
   @Override

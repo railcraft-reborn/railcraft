@@ -3,7 +3,7 @@ package mods.railcraft.util.container;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.item.MinecartFactory;
@@ -13,14 +13,16 @@ import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StemBlock;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.transfer.access.ItemAccess;
 
 /**
  * A collection of helper methods for creating {@code Predicate<ItemStack>} objects.
@@ -28,7 +30,6 @@ import net.neoforged.neoforge.common.Tags;
 public enum StackFilter implements Predicate<ItemStack> {
 
   ALL(__ -> true),
-  FUEL(itemStack -> itemStack.getBurnTime(null) > 0),
   TRACK(TrackUtil::isRail),
   MINECART(itemStack -> {
     var item = itemStack.getItem();
@@ -39,8 +40,8 @@ public enum StackFilter implements Predicate<ItemStack> {
   @SuppressWarnings("deprecation")
   BALLAST(itemStack -> ContainerTools.getBlockFromStack(itemStack)
       .builtInRegistryHolder().is(RailcraftTags.Blocks.BALLAST)),
-  FLUID_CONTAINER(itemStack -> itemStack
-      .getCapability(Capabilities.FluidHandler.ITEM) != null),
+  FLUID_CONTAINER(itemStack -> ItemAccess.forStack(itemStack)
+      .getCapability(Capabilities.Fluid.ITEM) != null),
   FEED(itemStack -> itemStack.is(Tags.Items.ANIMAL_FOODS)
       || ContainerTools.getBlockFromStack(itemStack) instanceof StemBlock),
   CARGO(itemStack -> {
@@ -175,5 +176,9 @@ public enum StackFilter implements Predicate<ItemStack> {
 
       return matches;
     };
+  }
+
+  public static Predicate<ItemStack> isFuel(Level level) {
+    return itemStack -> !itemStack.isEmpty() && level.fuelValues().isFuel(itemStack);
   }
 }

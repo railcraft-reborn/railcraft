@@ -1,12 +1,14 @@
 package mods.railcraft.tags;
 
 import mods.railcraft.api.core.RailcraftConstants;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -160,11 +162,11 @@ public class RailcraftTags {
     public static final TagKey<Item> ARMORS_BOOTS_STEEL = commonTag("armors/boots/steel");
 
     private static TagKey<Item> tag(String name) {
-      return ItemTags.create(RailcraftConstants.rl(name));
+      return ItemTags.create(RailcraftConstants.id(name));
     }
 
     public static TagKey<Item> commonTag(String name) {
-      return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return ItemTags.create(Identifier.fromNamespaceAndPath("c", name));
     }
 
     public static TagKey<Item> oresTag(String name) {
@@ -249,11 +251,11 @@ public class RailcraftTags {
     public static final TagKey<Block> SALTPETER_ORE = commonTag("ores/saltpeter");
 
     private static TagKey<Block> tag(String name) {
-      return BlockTags.create(RailcraftConstants.rl(name));
+      return BlockTags.create(RailcraftConstants.id(name));
     }
 
     private static TagKey<Block> commonTag(String name) {
-      return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return BlockTags.create(Identifier.fromNamespaceAndPath("c", name));
     }
   }
 
@@ -263,7 +265,22 @@ public class RailcraftTags {
     public static final TagKey<Fluid> CREOSOTE = commonTag("creosote");
 
     private static TagKey<Fluid> commonTag(String name) {
-      return FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+      return FluidTags.create(Identifier.fromNamespaceAndPath("c", name));
+    }
+  }
+
+  public static class VillagerTrades {
+
+    public static final TagKey<VillagerTrade> TRACKMAN_LEVEL_1 = tag("trackman/level_1");
+    public static final TagKey<VillagerTrade> TRACKMAN_LEVEL_2 = tag("trackman/level_2");
+    public static final TagKey<VillagerTrade> TRACKMAN_LEVEL_3 = tag("trackman/level_3");
+
+    public static final TagKey<VillagerTrade> CARTMAN_LEVEL_1 = tag("cartman/level_1");
+    public static final TagKey<VillagerTrade> CARTMAN_LEVEL_2 = tag("cartman/level_2");
+    public static final TagKey<VillagerTrade> CARTMAN_LEVEL_3 = tag("cartman/level_3");
+
+    private static TagKey<VillagerTrade> tag(String name) {
+      return TagKey.create(Registries.VILLAGER_TRADE, RailcraftConstants.id(name));
     }
   }
 }

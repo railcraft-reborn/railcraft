@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.entity.track;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.util.EnumUtil;
@@ -9,7 +9,7 @@ import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 

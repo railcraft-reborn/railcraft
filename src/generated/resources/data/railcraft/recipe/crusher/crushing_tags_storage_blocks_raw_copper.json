@@ -9,16 +9,12 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:storage_blocks/raw_copper"
-  },
+  "ingredient": "#c:storage_blocks/raw_copper",
   "outputs": [
     {
       "count": 9,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:raw_copper"
-      }
+      "result": "minecraft:raw_copper"
     }
   ]
 }

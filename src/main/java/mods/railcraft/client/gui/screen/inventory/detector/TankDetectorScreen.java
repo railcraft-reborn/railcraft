@@ -9,38 +9,37 @@ import mods.railcraft.network.to_server.SetTankDetectorMessage;
 import mods.railcraft.world.inventory.detector.TankDetectorMenu;
 import mods.railcraft.world.level.block.entity.detector.TankDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/tank_detector.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/tank_detector.png");
   private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
   private final TankDetectorBlockEntity tankDetectorBlockEntity;
   private MultiButton<TankDetectorBlockEntity.Mode> mode;
   private int refreshTimer;
 
   public TankDetectorScreen(TankDetectorMenu menu, Inventory inventory, Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 140;
+    super(menu, inventory, title, 140);
     this.inventoryLabelY = this.imageHeight - 94;
     this.tankDetectorBlockEntity = this.menu.getTankDetectorBlockEntity();
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 
   @Override
   public void init() {
     super.init();
-    int centreX = (this.width - this.getXSize()) / 2;
-    int centreY = (this.height - this.getYSize()) / 2;
+    int centreX = (this.width - this.getImageWidth()) / 2;
+    int centreY = (this.height - this.getImageHeight()) / 2;
 
     this.addRenderableWidget(
         this.mode = MultiButton
@@ -53,7 +52,7 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   private void setMode(TankDetectorBlockEntity.Mode mode) {
     if (mode != this.tankDetectorBlockEntity.getMode()) {
       this.tankDetectorBlockEntity.setMode(mode);
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetTankDetectorMessage(this.tankDetectorBlockEntity.getBlockPos(), mode));
     }
   }
@@ -67,9 +66,9 @@ public class TankDetectorScreen extends RailcraftMenuScreen<TankDetectorMenu> {
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, Component.translatable(Translations.Screen.FILTER), 50,
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, Component.translatable(Translations.Screen.FILTER), 50,
         29, 0x404040, false);
   }
 }

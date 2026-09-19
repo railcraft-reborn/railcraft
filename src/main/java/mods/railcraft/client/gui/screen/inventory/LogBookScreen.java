@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.google.common.collect.Lists;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
@@ -12,19 +12,20 @@ import mods.railcraft.client.gui.widget.button.RailcraftButton;
 import mods.railcraft.client.gui.widget.button.RailcraftPageButton;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.StringSplitter;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class LogBookScreen extends Screen {
 
   private static final int TEXT_WIDTH = 220;
-  private static final ResourceLocation BOOK_LOCATION =
-      RailcraftConstants.rl("textures/gui/block/logbook.png");
+  private static final Identifier BOOK_LOCATION =
+      RailcraftConstants.id("textures/gui/block/logbook.png");
   private static final int IMAGE_WIDTH = 256;
   private static final int IMAGE_HEIGHT = 181;
   private final List<String> pages = Lists.newArrayList();
@@ -107,28 +108,28 @@ public class LogBookScreen extends Screen {
   }
 
   @Override
-  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-    super.render(guiGraphics, mouseX, mouseY, partialTicks);
+  public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    super.extractRenderState(graphics, mouseX, mouseY, a);
     this.setFocused(null);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-
     int l = this.font.width(this.pageMsg);
-    guiGraphics.drawString(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
+    graphics.text(this.font, this.pageMsg, xOffset - l + 225, yOffset + 15, 0, false);
     var displayCache = this.getDisplayCache();
     for (var lineinfo : displayCache.lines) {
-      guiGraphics.drawString(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
+      graphics.text(this.font, lineinfo.asComponent, lineinfo.x, lineinfo.y,
           -16777216, false);
     }
     this.updateButtonVisibility();
   }
 
   @Override
-  public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.renderTransparentBackground(guiGraphics);
+  public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    this.extractTransparentBackground(graphics);
     int xOffset = (this.width - IMAGE_WIDTH) / 2;
     int yOffset = (this.height - IMAGE_HEIGHT) / 2;
-    guiGraphics.blit(BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+    graphics.blit(RenderPipelines.GUI_TEXTURED, BOOK_LOCATION, xOffset, yOffset, 0, 0, IMAGE_WIDTH,
+        IMAGE_HEIGHT, 256, 256);
   }
 
   private DisplayCache getDisplayCache() {

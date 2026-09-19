@@ -29,12 +29,12 @@ public class RoutingDetectorMenu extends RailcraftMenu {
 
       @Override
       public boolean mayPickup(Player player) {
-        return blockEntity.canAccess(player.getGameProfile());
+        return blockEntity.canAccess(player.nameAndId());
       }
 
       @Override
       public boolean allowModification(Player player) {
-        if (blockEntity.canAccess(player.getGameProfile())) {
+        if (blockEntity.canAccess(player.nameAndId())) {
           return super.allowModification(player);
         }
         return false;

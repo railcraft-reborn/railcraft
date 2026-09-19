@@ -3,7 +3,8 @@ package mods.railcraft.world.level.block.entity.tank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharList;
 import mods.railcraft.RailcraftConfig;
@@ -25,7 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -35,10 +36,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEntity, Void> {
 
@@ -52,7 +54,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   private int maxY;
   private int maxZ;
 
-  private IFluidHandler fluidHandler;
+  @Nullable
+  private ResourceHandler<FluidResource> fluidHandler;
 
   public TankBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState,
       Collection<MultiblockPattern<Void>> patterns) {
@@ -71,7 +74,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
               || !tank.getMembership().equals(this.getMembership()),
           Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
       for (var neighbor : neighbors) {
-        FluidUtil.tryFluidTransfer(neighbor, this.fluidHandler, FLOW_RATE, true);
+        ResourceHandlerUtil.move(this.fluidHandler, neighbor, Predicates.alwaysTrue(), FLOW_RATE, null);
       }
     }
   }
@@ -91,7 +94,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     this.setChanged();
     this.syncToClient();
 
-    var fluidStack = this.module.getTank().getFluid();
+    var fluidStack = this.module.getTank().getFluidStack();
     var fluidType = this.module.getTank().getFluidType();
     var light = fluidType.getLightLevel(fluidStack);
     if (light != this.lastLight) {
@@ -127,9 +130,9 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   }
 
   @Override
-  public ItemInteractionResult use(ServerPlayer player, InteractionHand hand) {
-    return FluidUtil.interactWithFluidHandler(player, hand, this.module.getTank())
-        ? ItemInteractionResult.CONSUME
+  public InteractionResult use(ServerPlayer player, InteractionHand hand) {
+    return FluidUtil.interactWithFluidHandler(player, hand, null, this.module.getTank(), null)
+        ? InteractionResult.CONSUME
         : super.use(player, hand);
   }
 
@@ -148,7 +151,14 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
   @Override
   protected void membershipChanged(@Nullable Membership<TankBlockEntity> membership) {
     this.getCurrentPattern().ifPresent(pattern -> {
-      this.module.getTank().setCapacity(this.getCapacityPerBlock() * pattern.getArea());
+      var tank = this.module.getTank();
+      tank.setCapacity(this.getCapacityPerBlock() * pattern.getArea());
+      // The tank keeps its contents while disbanded so that they survive a structure being
+      // temporarily broken, meaning we may be holding more than this structure can store.
+      var fluidStack = tank.getFluidStack();
+      if (fluidStack.getAmount() > tank.getCapacity()) {
+        tank.setFluid(fluidStack.copyWithAmount(tank.getCapacity()));
+      }
       this.maxX = pattern.getXSize();
       this.maxY = pattern.getYSize();
       this.maxZ = pattern.getZSize();
@@ -156,7 +166,6 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     });
 
     if (membership == null) {
-      this.getModule().getTank().setFluid(FluidStack.EMPTY);
       this.lightChanged(BlockStateProperties.MIN_LEVEL);
       level.invalidateCapabilities(this.getBlockPos());
       this.fluidHandler = null;
@@ -175,7 +184,8 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
-  public IFluidHandler getFluidCap(@Nullable Direction side) {
+  @Nullable
+  public ResourceHandler<FluidResource> getFluidCap(@Nullable Direction side) {
     return this.fluidHandler;
   }
 
@@ -224,7 +234,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
     for (int i = 4; i <= 8; i++) {
       var pattern = createTank(i, bottom, middle, top);
-      var entityCheck = new AABB(0, 1, 0, 1, i - 1, 1);
+      var entityCheck = createEntityCheck(3, i);
       patterns.add(buildPattern(pattern, wallPredicate, wallGaugeValvePredicate, entityCheck));
     }
 
@@ -253,7 +263,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
       for (int i = 4; i <= 8; i++) {
         var map = createTank(i, bottom, middle, top);
-        var entityCheck = new AABB(-1, 1, -1, 2, i - 1, 2);
+        var entityCheck = createEntityCheck(5, i);
         patterns.add(buildPattern(map, wallPredicate, wallGaugeValvePredicate, entityCheck));
       }
     }
@@ -289,7 +299,7 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
       for (int i = 4; i <= 8; i++) {
         var map = createTank(i, bottom, middle, top);
-        var entityCheck = new AABB(-2, 1, -2, 3, i - 1, 3);
+        var entityCheck = createEntityCheck(7, i);
         patterns.add(buildPattern(map, wallPredicate, wallGaugeValvePredicate, entityCheck));
       }
     }
@@ -331,12 +341,21 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
 
       for (int i = 4; i <= 8; i++) {
         var map = createTank(i, bottom, middle, top);
-        var entityCheck = new AABB(-3, 1, -3, 4, i - 1, 4);
+        var entityCheck = createEntityCheck(9, i);
         patterns.add(buildPattern(map, wallPredicate, wallGaugeValvePredicate, entityCheck));
       }
     }
 
     return patterns.build();
+  }
+
+  /**
+   * Creates the bounds of the hollow interior of a tank, relative to the master block. The master
+   * sits at pattern position (1, 0, 1), so the interior starts right on top of it and extends over
+   * the remaining <code>size - 2</code> interior blocks.
+   */
+  private static AABB createEntityCheck(int size, int height) {
+    return new AABB(0, 1, 0, size - 2, height - 1, size - 2);
   }
 
   private static MultiblockPattern<Void> buildPattern(

@@ -8,14 +8,15 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.RitualBlock;
 import mods.railcraft.world.level.block.entity.RitualBlockEntity;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class FirestoneItemEntity extends ItemEntity {
@@ -46,48 +47,45 @@ public class FirestoneItemEntity extends ItemEntity {
     if (++this.clock % 4 == 0
         && this.getItem().getItem() instanceof FirestoneItem item
         && item.spawnsFire()
-        && this.level().getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+        && serverLevel.getGameRules().get(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER) != 0) {
       FirestoneItem.trySpawnFire(serverLevel, this.blockPosition(), getItem(), this.getOwner());
     }
   }
 
   @Override
   public void lavaHurt() {
-    if (!this.refined || !this.isAlive() || this.level().isClientSide()) {
+    if (!this.refined || !this.isAlive() || !(this.level() instanceof ServerLevel serverLevel)) {
       return;
     }
     var firestoneBlock = RailcraftBlocks.RITUAL.get().defaultBlockState();
     var surface = this.blockPosition();
-    if (!this.level().getFluidState(surface).is(FluidTags.LAVA)
-        && !this.level().getFluidState(surface.above()).is(FluidTags.LAVA)) {
+    if (!serverLevel.getFluidState(surface).is(FluidTags.LAVA)
+        && !serverLevel.getFluidState(surface.above()).is(FluidTags.LAVA)) {
       return;
     }
 
     for (int i = 0; i < 10; i++) {
       surface = surface.above();
-      if (!this.level().getBlockState(surface).isAir()
-          || !this.level().getFluidState(surface.below()).is(FluidTags.LAVA)) {
+      if (!serverLevel.getBlockState(surface).isAir()
+          || !serverLevel.getFluidState(surface.below()).is(FluidTags.LAVA)) {
         continue;
       }
 
       var cracked = getItem().getItem() instanceof CrackedFirestoneItem;
-      if (LevelUtil.setBlockState(this.level(), surface,
+      if (LevelUtil.setBlockState(serverLevel, surface,
           firestoneBlock.setValue(RitualBlock.CRACKED, cracked), this.getOwner())) {
-        var blockEntity = this.level().getBlockEntity(surface);
+        var blockEntity = serverLevel.getBlockEntity(surface);
         if (blockEntity instanceof RitualBlockEntity fireEntity) {
           var firestone = getItem();
           fireEntity.setCharge(firestone.getMaxDamage() - firestone.getDamageValue());
-          if (firestone.has(DataComponents.CUSTOM_NAME))
+          if (firestone.has(DataComponents.CUSTOM_NAME)) {
             fireEntity.setItemName(firestone.getDisplayName());
-          this.kill();
+          }
+          this.kill(serverLevel);
           return;
         }
       }
     }
-  }
-
-  public boolean isRefined() {
-    return this.refined;
   }
 
   public void setRefined(boolean refined) {
@@ -95,14 +93,14 @@ public class FirestoneItemEntity extends ItemEntity {
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag compound) {
-    super.addAdditionalSaveData(compound);
-    compound.putBoolean(CompoundTagKeys.REFINED, this.refined);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.putBoolean(CompoundTagKeys.REFINED, this.refined);
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag compound) {
-    super.readAdditionalSaveData(compound);
-    this.refined = compound.getBoolean(CompoundTagKeys.REFINED);
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.refined = valueInput.getBooleanOr(CompoundTagKeys.REFINED, false);
   }
 }

@@ -39,6 +39,6 @@ public class RailcraftRecipeTypes {
   }
 
   private static <T extends Recipe<?>> DeferredHolder<RecipeType<?>, RecipeType<T>> register(String name) {
-    return deferredRegister.register(name, () -> RecipeType.simple(RailcraftConstants.rl(name)));
+    return deferredRegister.register(name, () -> RecipeType.simple(RailcraftConstants.id(name)));
   }
 }

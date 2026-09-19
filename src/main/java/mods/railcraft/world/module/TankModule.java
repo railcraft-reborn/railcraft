@@ -1,18 +1,20 @@
 package mods.railcraft.world.module;
 
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.util.fluids.FluidTools.ProcessType;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import mods.railcraft.world.level.material.StandardTank;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class TankModule extends ContainerModule<TankBlockEntity> {
 
@@ -21,14 +23,10 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public static final int SLOT_OUTPUT = 2;
   private final StandardTank tank;
 
-  private final IItemHandler itemHandler = new InvWrapper(this) {
-    @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-      if (slot == SLOT_OUTPUT)
-        return ItemStack.EMPTY;
-      return super.extractItem(slot, amount, simulate);
-    }
-  };
+  private final ResourceHandler<ItemResource> itemHandler =
+      new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+          index -> index == SLOT_INPUT,
+          index -> index == SLOT_OUTPUT);
 
   private FluidTools.ProcessState processState = FluidTools.ProcessState.RESET;
   private int processTicks;
@@ -56,37 +54,37 @@ public class TankModule extends ContainerModule<TankBlockEntity> {
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case SLOT_INPUT -> (!this.tank.isEmpty()
-          && FluidTools.isRoomInContainer(stack, this.tank.getFluid().getFluid()))
-          || FluidUtil.getFluidContained(stack).isPresent();
+          && FluidTools.isRoomInContainer(stack, this.tank.getFluidStack().getFluid()))
+          || !FluidUtil.getFirstStackContained(stack).isEmpty();
       case SLOT_PROCESS, SLOT_OUTPUT -> true;
       default -> false;
     } && super.canPlaceItem(slot, stack);
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return this.itemHandler;
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.put(CompoundTagKeys.TANK, this.tank.writeToNBT(provider, new CompoundTag()));
-    tag.putString(CompoundTagKeys.PROCESS_STATE, this.processState.getSerializedName());
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putChild(CompoundTagKeys.TANK, this.tank);
+    valueOutput.store(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC, this.processState);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.tank.readFromNBT(provider, tag.getCompound(CompoundTagKeys.TANK));
-    this.processState = FluidTools.ProcessState.fromTag(tag);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    valueInput.readChild(CompoundTagKeys.TANK, this.tank);
+    this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
+        .orElse(FluidTools.ProcessState.RESET);
   }
 
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     super.writeToBuf(out);
     out.writeVarInt(this.tank.getCapacity());
-    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluid());
+    FluidStack.OPTIONAL_STREAM_CODEC.encode(out, this.tank.getFluidStack());
   }
 
   @Override

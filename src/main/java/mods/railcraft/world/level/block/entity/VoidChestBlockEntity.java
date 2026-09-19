@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -38,7 +39,7 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
     }
 
     @Override
-    protected boolean isOwnContainer(Player player) {
+    public boolean isOwnContainer(Player player) {
       if (player.containerMenu instanceof ChestMenu chestMenu) {
         return chestMenu.getContainer() == VoidChestBlockEntity.this;
       }
@@ -70,7 +71,7 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
     double x = (double)pos.getX() + 0.5;
     double y = (double)pos.getY() + 0.5;
     double z = (double)pos.getZ() + 0.5;
-    level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+    level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
   }
 
   @Override
@@ -84,16 +85,18 @@ public class VoidChestBlockEntity extends ContainerBlockEntity implements LidBlo
   }
 
   @Override
-  public void startOpen(Player player) {
-    if (!this.remove && !player.isSpectator()) {
-      this.openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+  public void startOpen(ContainerUser containerUser) {
+    if (!this.remove && !containerUser.getLivingEntity().isSpectator()) {
+      this.openersCounter.incrementOpeners(containerUser.getLivingEntity(), this.getLevel(), this.getBlockPos(),
+          this.getBlockState(), containerUser.getContainerInteractionRange());
     }
   }
 
   @Override
-  public void stopOpen(Player player) {
-    if (!this.remove && !player.isSpectator()) {
-      this.openersCounter.decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+  public void stopOpen(ContainerUser containerUser) {
+    if (!this.remove && !containerUser.getLivingEntity().isSpectator()) {
+      this.openersCounter.decrementOpeners(containerUser.getLivingEntity(), this.getLevel(), this.getBlockPos(),
+          this.getBlockState());
     }
   }
 

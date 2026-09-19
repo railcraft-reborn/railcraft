@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.worldspike;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.worldspike.PersonalWorldSpikeBlockEntity;
@@ -28,18 +28,18 @@ public class PersonalWorldSpikeBlock extends WorldSpikeBlock {
       @Nullable LivingEntity placer, ItemStack stack) {
     if (level.getBlockEntity(pos) instanceof PersonalWorldSpikeBlockEntity worldSpike) {
       if (placer instanceof Player player) {
-        worldSpike.setOwner(player.getGameProfile());
+        worldSpike.setOwner(player.nameAndId());
       }
     }
   }
 
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-      boolean willHarvest, FluidState fluid) {
+      ItemStack toolStack, boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof PersonalWorldSpikeBlockEntity worldSpike) {
       if (worldSpike.getOwner().isEmpty() ||
-          worldSpike.isOwnerOrOperator(player.getGameProfile())) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+          worldSpike.isOwnerOrOperator(player.nameAndId())) {
+        return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
       }
     }
     return false;

@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public abstract class FireboxBlock extends SteamBoilerBlock {
 
-  public static final Property<Boolean> LIT = BlockStateProperties.LIT;
+  public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
   public FireboxBlock(Properties properties) {
     super(properties);

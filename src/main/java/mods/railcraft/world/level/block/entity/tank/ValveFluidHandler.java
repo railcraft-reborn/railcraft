@@ -1,9 +1,10 @@
 package mods.railcraft.world.level.block.entity.tank;
 
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class ValveFluidHandler implements IFluidHandler {
+public class ValveFluidHandler implements ResourceHandler<FluidResource> {
 
   private final TankBlockEntity blockEntity;
   private final TankBlockEntity master;
@@ -13,7 +14,7 @@ public class ValveFluidHandler implements IFluidHandler {
     this.master = master;
   }
 
-  private IFluidHandler getDelegate() {
+  private ResourceHandler<FluidResource> getDelegate() {
     return this.master.getModule().getTank();
   }
 
@@ -26,46 +27,43 @@ public class ValveFluidHandler implements IFluidHandler {
   }
 
   @Override
-  public int getTanks() {
-    return this.getDelegate().getTanks();
+  public int size() {
+    return this.getDelegate().size();
   }
 
   @Override
-  public FluidStack getFluidInTank(int tank) {
-    return this.getDelegate().getFluidInTank(tank);
+  public FluidResource getResource(int index) {
+    return this.getDelegate().getResource(index);
   }
 
   @Override
-  public int getTankCapacity(int tank) {
-    return this.getDelegate().getTankCapacity(tank);
+  public long getAmountAsLong(int index) {
+    return this.getDelegate().getAmountAsLong(index);
   }
 
   @Override
-  public boolean isFluidValid(int tank, FluidStack stack) {
-    return this.getDelegate().isFluidValid(tank, stack);
+  public long getCapacityAsLong(int index, FluidResource resource) {
+    return this.getDelegate().getCapacityAsLong(index, resource);
   }
 
   @Override
-  public int fill(FluidStack resource, FluidAction action) {
+  public boolean isValid(int index, FluidResource resource) {
+    return this.getDelegate().isValid(index, resource);
+  }
+
+  @Override
+  public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
     if (!this.isFillable()) {
       return 0;
     }
-    return this.getDelegate().fill(resource, action);
+    return this.getDelegate().insert(index, resource, amount, transaction);
   }
 
   @Override
-  public FluidStack drain(FluidStack resource, FluidAction action) {
+  public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
     if (!this.isDrainable()) {
-      return FluidStack.EMPTY;
+      return 0;
     }
-    return this.getDelegate().drain(resource, action);
-  }
-
-  @Override
-  public FluidStack drain(int maxDrain, FluidAction action) {
-    if (!this.isDrainable()) {
-      return FluidStack.EMPTY;
-    }
-    return this.getDelegate().drain(maxDrain, action);
+    return this.getDelegate().extract(index, resource, amount, transaction);
   }
 }

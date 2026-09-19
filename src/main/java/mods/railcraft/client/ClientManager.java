@@ -1,8 +1,10 @@
 package mods.railcraft.client;
 
-import org.joml.Vector3f;
-import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.net.URI;
+import java.util.List;
+import java.util.Set;
+import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
@@ -10,6 +12,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalUtil;
+import mods.railcraft.client.color.item.LocomotiveColor;
 import mods.railcraft.client.gui.screen.inventory.BlastFurnaceScreen;
 import mods.railcraft.client.gui.screen.inventory.CargoMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.CartDispenserScreen;
@@ -56,64 +59,76 @@ import mods.railcraft.client.particle.SteamParticle;
 import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
+import mods.railcraft.client.renderer.blockentity.VoidChestRenderer;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
+import mods.railcraft.integrations.jei.JeiRecipeSync;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
-import mods.railcraft.world.item.LocomotiveItem;
-import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
+import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.ForceTrackBlock;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
+import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.ChatFormatting;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BuiltInBlockModels;
+import net.minecraft.client.renderer.block.FluidModel;
+import net.minecraft.client.renderer.fog.FogData;
+import net.minecraft.client.renderer.fog.environment.FogEnvironment;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
-import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.VersionChecker;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
+import net.neoforged.neoforge.client.event.RegisterBlockModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.fluid.FluidTintSources;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class ClientManager {
@@ -123,13 +138,16 @@ public class ClientManager {
   public static void init(IEventBus modEventBus) {
     modEventBus.addListener(ClientManager::handleRegisterMenuScreens);
     modEventBus.addListener(ClientManager::handleClientSetup);
-    modEventBus.addListener(ClientManager::handleItemColors);
+    modEventBus.addListener(ClientManager::registerItemTintSources);
     modEventBus.addListener(ClientManager::handleBlockColors);
     modEventBus.addListener(ClientManager::handleParticleRegistration);
     modEventBus.addListener(ClientManager::handleRegisterRenderers);
     modEventBus.addListener(ClientManager::handleRegisterLayerDefinitions);
     modEventBus.addListener(ClientManager::handleKeyRegister);
     modEventBus.addListener(ClientManager::handleClientExtensions);
+    modEventBus.addListener(ClientManager::handleFluidModels);
+    modEventBus.addListener(ClientManager::handleSpecialRenderers);
+    modEventBus.addListener(ClientManager::handleSpecialBlockRenderers);
     NeoForge.EVENT_BUS.register(ClientManager.class);
 
     SignalUtil._setTuningAuraHandler(new TuningAuraHandlerImpl());
@@ -197,30 +215,46 @@ public class ClientManager {
     }
   }
 
-  private static void handleItemColors(RegisterColorHandlersEvent.Item event) {
-    event.register((stack, tintIndex) -> FastColor.ARGB32.opaque(switch (tintIndex) {
-      case 0 -> LocomotiveItem.getColor(stack).primary().getMapColor().col;
-      case 1 -> LocomotiveItem.getColor(stack).secondary().getMapColor().col;
-      default -> 0xFFFFFFFF;
-    }),
-        RailcraftItems.CREATIVE_LOCOMOTIVE.get(),
-        RailcraftItems.STEAM_LOCOMOTIVE.get(),
-        RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
+  private static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
+    event.register(RailcraftConstants.id("locomotive_color"), LocomotiveColor.MAP_CODEC);
   }
 
-  private static void handleBlockColors(RegisterColorHandlersEvent.Block event) {
-    event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col,
-        RailcraftBlocks.FORCE_TRACK_EMITTER.get());
+  private static void handleBlockColors(RegisterColorHandlersEvent.BlockTintSources event) {
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return state.getValue(ForceTrackEmitterBlock.COLOR).getMapColor().col;
+      }
 
-    event.register((state, level, pos, tintIndex) ->
-            state.getValue(ForceTrackBlock.COLOR).getMapColor().col,
-        RailcraftBlocks.FORCE_TRACK.get());
+      @Override
+      public Set<Property<?>> relevantProperties() {
+        return Set.of(ForceTrackEmitterBlock.COLOR);
+      }
+    }), RailcraftBlocks.FORCE_TRACK_EMITTER.get());
 
-    event.register((state, level, pos, tintIndex) -> level != null && pos != null
-            ? BiomeColors.getAverageGrassColor(level, pos)
-            : GrassColor.get(0.5D, 1.0D),
-        RailcraftBlocks.ABANDONED_TRACK.get());
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return state.getValue(ForceTrackBlock.COLOR).getMapColor().col;
+      }
+
+      @Override
+      public Set<Property<?>> relevantProperties() {
+        return Set.of(ForceTrackBlock.COLOR);
+      }
+    }), RailcraftBlocks.FORCE_TRACK.get());
+
+    event.register(List.of(new BlockTintSource() {
+      @Override
+      public int color(BlockState state) {
+        return GrassColor.get(0.5D, 1.0D);
+      }
+
+      @Override
+      public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+        return BiomeColors.getAverageGrassColor(level, pos);
+      }
+    }), RailcraftBlocks.ABANDONED_TRACK.get());
   }
 
   private static void handleParticleRegistration(RegisterParticleProvidersEvent event) {
@@ -253,6 +287,7 @@ public class ClientManager {
     for (var keyBinding : KeyBinding.values()) {
       event.register(keyBinding.getKeyMapping());
     }
+    event.registerCategory(RailcraftKeyMappingCategory.DEFAULT);
   }
 
   private static void handleClientExtensions(RegisterClientExtensionsEvent event) {
@@ -264,74 +299,54 @@ public class ClientManager {
       }
 
       @Override
-      public boolean addHitEffects(BlockState state, Level level, HitResult result,
+      public boolean addHitEffects(BlockState state, Level level, @Nullable HitResult result,
           ParticleEngine particleEngine) {
         return true;
       }
     }, RailcraftBlocks.RITUAL.get());
-    event.registerItem(new IClientItemExtensions() {
-      @Override
-      public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-        return new VoidChestItemRenderer();
-      }
-    }, RailcraftItems.VOID_CHEST.asItem());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final ResourceLocation STILL_TEXTURE =
-          RailcraftConstants.rl("block/steam_still");
 
       @Override
-      public int getTintColor() {
-        return 0xFFF5F5F5;
-      }
-
-      @Override
-      public ResourceLocation getStillTexture() {
-        return STILL_TEXTURE;
-      }
-
-      @Override
-      public ResourceLocation getFlowingTexture() {
-        return STILL_TEXTURE;
-      }
-    }, RailcraftFluidTypes.STEAM.get());
-    event.registerFluidType(new IClientFluidTypeExtensions() {
-      private static final ResourceLocation STILL_TEXTURE =
-          ResourceLocation.withDefaultNamespace("block/water_still");
-      private static final ResourceLocation FLOW_TEXTURE =
-          ResourceLocation.withDefaultNamespace("block/water_flow");
-
-      @Override
-      public int getTintColor() {
-        return 0xFF6A6200;
-      }
-
-      @Override
-      public ResourceLocation getStillTexture() {
-        return STILL_TEXTURE;
-      }
-
-      @Override
-      public ResourceLocation getFlowingTexture() {
-        return FLOW_TEXTURE;
-      }
-
-      @Override
-      public Vector3f modifyFogColor(Camera camera, float partialTick,
-          ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+      public void modifyFogColor(Camera camera, float partialTick,
+          ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor) {
         var x = Integer.parseInt("6A", 16) / 255f;
         var y = Integer.parseInt("62", 16) / 255f;
         var z = Integer.parseInt("00", 16) / 255f;
-        return new Vector3f(x, y, z);
+        fluidFogColor.set(x, y, z, fluidFogColor.w());
       }
 
       @Override
-      public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance,
-          float partialTick, float nearDistance, float farDistance, FogShape shape) {
-        RenderSystem.setShaderFogStart(0);
-        RenderSystem.setShaderFogEnd(3f);
+      public void modifyFogRender(Camera camera, @Nullable FogEnvironment environment,
+          float renderDistance, float partialTick, FogData fogData) {
+        fogData.renderDistanceStart = 0;
+        fogData.renderDistanceEnd = 3f;
       }
     }, RailcraftFluidTypes.CREOSOTE.get());
+  }
+
+  private static void handleFluidModels(RegisterFluidModelsEvent event) {
+    var steamTexture = new Material(RailcraftConstants.id("block/steam_still"));
+    event.register(new FluidModel.Unbaked(steamTexture, steamTexture, null,
+        FluidTintSources.constant(0xFFF5F5F5)), RailcraftFluids.STEAM);
+
+    event.register(new FluidModel.Unbaked(
+        new Material(Identifier.withDefaultNamespace("block/water_still")),
+        new Material(Identifier.withDefaultNamespace("block/water_flow")),
+        null,
+        FluidTintSources.constant(0xFF6A6200)),
+        RailcraftFluids.CREOSOTE, RailcraftFluids.FLOWING_CREOSOTE);
+  }
+
+  private static void handleSpecialRenderers(RegisterSpecialModelRendererEvent event) {
+    event.register(RailcraftConstants.id("void_chest"), VoidChestItemRenderer.Unbaked.MAP_CODEC);
+  }
+
+  private static void handleSpecialBlockRenderers(RegisterBlockModelsEvent event) {
+    event.register(
+        BuiltInBlockModels.special(
+            new VoidChestItemRenderer.Unbaked(VoidChestRenderer.VOID_CHEST.texture())),
+        RailcraftBlocks.VOID_CHEST.get());
   }
 
   // ================================================================================
@@ -346,16 +361,15 @@ public class ClientManager {
   }
 
   @SubscribeEvent
-  static void handleRenderWorldLast(RenderLevelStageEvent event) {
-    if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-      shuntingAuraRenderer.render(event.getPoseStack(), event.getCamera(),
-          event.getPartialTick().getGameTimeDeltaPartialTick(false));
-    }
+  static void handleRenderWorldLast(RenderLevelStageEvent.AfterOpaqueFeatures event) {
+    shuntingAuraRenderer.render(event.getPoseStack(), event.getLevelRenderState().cameraRenderState,
+        Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
   }
 
   @SubscribeEvent
   static void handleClientLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
     shuntingAuraRenderer.clearCarts();
+    JeiRecipeSync.clearAll();
   }
 
   @SuppressWarnings("unused")
@@ -367,21 +381,21 @@ public class ClientManager {
 
     if (versionStatus.shouldDraw()) {
       var newVersion = result.target().toString();
-      var modUrl = modInfo.getModURL().get().toString();
+      var modUrl = modInfo.getModURL().orElseThrow().toString();
       var message = Component.literal(RailcraftConstants.NAME + ": ").withStyle(ChatFormatting.GREEN)
           .append(Component.literal(
               "A new version (%s) is available to download.".formatted(newVersion))
               .withStyle(style -> style
                   .withColor(ChatFormatting.WHITE)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, modUrl))));
-      event.getPlayer().displayClientMessage(message, false);
+                  .withClickEvent(new ClickEvent.OpenUrl(URI.create(modUrl)))));
+      event.getPlayer().sendSystemMessage(message);
     }
 
     var qualifier = modInfo.getVersion().getQualifier();
     boolean isSnapshot = qualifier != null && qualifier.equals("snapshot");
     boolean showMessageBeta = Railcraft.BETA && RailcraftConfig.CLIENT.showBetaMessage.get();
-    if (!FMLLoader.isProduction() || isSnapshot || showMessageBeta) {
+    if (SharedConstants.IS_RUNNING_IN_IDE || isSnapshot || showMessageBeta) {
       var type = isSnapshot ? "development" : "beta";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
       var message = CommonComponents.joinLines(
@@ -397,10 +411,22 @@ public class ClientManager {
               .withStyle(style -> style
                   .withColor(ChatFormatting.GREEN)
                   .withUnderlined(true)
-                  .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl))),
+                  .withClickEvent(new ClickEvent.OpenUrl(URI.create(issueUrl)))),
           Component.literal("- Sm0keySa1m0n, Edivad99")
               .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-      event.getPlayer().displayClientMessage(message, false);
+      event.getPlayer().sendSystemMessage(message);
+    }
+
+    var minecartImprovedFeatureFlag =
+        event.getPlayer().level().enabledFeatures().contains(FeatureFlags.MINECART_IMPROVEMENTS);
+    if (minecartImprovedFeatureFlag) {
+      var message = CommonComponents.joinLines(
+          Component.literal("The 'Minecart Improvements' experiment is enabled.")
+              .withStyle(ChatFormatting.GOLD, ChatFormatting.UNDERLINE),
+          Component.literal("Some Railcraft features may not work as intended.")
+              .withStyle(ChatFormatting.YELLOW)
+      );
+      event.getPlayer().sendSystemMessage(message);
     }
   }
 
@@ -412,6 +438,18 @@ public class ClientManager {
       event.getToolTip().add(Component.translatable(Translations.Tips.CLICK_TO_CRAFT)
           .withStyle(ChatFormatting.YELLOW));
     }
+  }
+
+  @SubscribeEvent
+  static void handleRecipesReceived(RecipesReceivedEvent event) {
+    JeiRecipeSync.setBlastFurnaceRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.BLASTING.get()));
+    JeiRecipeSync.setRollingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.ROLLING.get()));
+    JeiRecipeSync.setCokingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.COKING.get()));
+    JeiRecipeSync.setCrushingRecipes(
+        event.getRecipeMap().byType(RailcraftRecipeTypes.CRUSHING.get()));
   }
 
   @SubscribeEvent
@@ -432,23 +470,23 @@ public class ClientManager {
       return;
     }
     if (KeyBinding.REVERSE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.REVERSE));
     }
     if (KeyBinding.FASTER.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.FASTER));
     }
     if (KeyBinding.SLOWER.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.SLOWER));
     }
     if (KeyBinding.MODE_CHANGE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.MODE_CHANGE));
     }
     if (KeyBinding.WHISTLE.consumeClick()) {
-      PacketDistributor.sendToServer(
+      ClientPacketDistributor.sendToServer(
           new SetLocomotiveByKeyMessage(SetLocomotiveByKeyMessage.LocomotiveKeyBinding.WHISTLE));
     }
   }

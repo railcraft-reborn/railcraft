@@ -2,14 +2,10 @@ package mods.railcraft.util.container;
 
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import org.jetbrains.annotations.Nullable;
-import mods.railcraft.api.core.CompoundTagKeys;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.item.Filter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -31,7 +27,7 @@ public abstract class ContainerTools {
 
   public static ItemStack depleteItem(ItemStack stack) {
     if (stack.getCount() == 1)
-      return stack.getItem().getCraftingRemainingItem(stack);
+      return stack.getItem().getCraftingRemainder(stack).create();
     else {
       stack.split(1);
       return stack;
@@ -58,30 +54,6 @@ public abstract class ContainerTools {
       return filterItem.matches(filter, stack);
     }
     return ItemStack.isSameItem(stack, filter);
-  }
-
-  public static ListTag writeContainer(Container container, HolderLookup.Provider provider) {
-    var tag = new ListTag();
-    for (byte i = 0; i < container.getContainerSize(); i++) {
-      var itemStack = container.getItem(i);
-      if (!itemStack.isEmpty()) {
-        var slotTag = new CompoundTag();
-        slotTag.putByte(CompoundTagKeys.INDEX, i);
-        tag.add(itemStack.save(provider, slotTag));
-      }
-    }
-    return tag;
-  }
-
-  public static void readContainer(Container container, ListTag tag, HolderLookup.Provider provider) {
-    for (byte i = 0; i < tag.size(); i++) {
-      var slotTag = tag.getCompound(i);
-      int slot = slotTag.getByte(CompoundTagKeys.INDEX);
-      if (slot >= 0 && slot < container.getContainerSize()) {
-        ItemStack.parse(provider, slotTag)
-            .ifPresent(itemStack -> container.setItem(slot, itemStack));
-      }
-    }
   }
 
   public static boolean isItemStackBlock(ItemStack itemStack, Block block) {

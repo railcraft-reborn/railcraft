@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:plates/iron"
-    },
-    "b": {
-      "tag": "c:plates/invar"
-    }
+    "a": "#c:plates/iron",
+    "b": "#c:plates/invar"
   },
   "pattern": [
     "a",

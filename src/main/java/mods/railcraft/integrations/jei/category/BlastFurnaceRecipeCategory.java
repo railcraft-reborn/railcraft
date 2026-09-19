@@ -16,11 +16,11 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 
 public class BlastFurnaceRecipeCategory extends
     AbstractRecipeCategory<RecipeHolder<BlastFurnaceRecipe>> {
@@ -44,8 +44,8 @@ public class BlastFurnaceRecipeCategory extends
   }
 
   @Override
-  public void draw(RecipeHolder<BlastFurnaceRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+  public void draw(RecipeHolder<BlastFurnaceRecipe> recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.flame.draw(guiGraphics, 1, 20);
     this.arrow.draw(guiGraphics, 25, 19);
   }
@@ -54,15 +54,18 @@ public class BlastFurnaceRecipeCategory extends
   public void createRecipeExtras(IRecipeExtrasBuilder builder,
       RecipeHolder<BlastFurnaceRecipe> recipeHolder, IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    int cookTime = recipe.getCookingTime();
-    if (cookTime > 0) {
-      int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
-      var timeString =
-          Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
-      builder.addText(timeString, WIDTH, 45)
-          .setTextAlignment(VerticalAlignment.BOTTOM)
-          .setTextAlignment(HorizontalAlignment.CENTER)
-          .setColor(RailcraftJeiPlugin.TEXT_COLOR);
+
+    if (recipe.display().getFirst() instanceof FurnaceRecipeDisplay furnaceRecipeDisplay) {
+      int cookTime = furnaceRecipeDisplay.duration();
+      if (cookTime > 0) {
+        int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
+        var timeString =
+            Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
+        builder.addText(timeString, WIDTH, 45)
+            .setTextAlignment(VerticalAlignment.BOTTOM)
+            .setTextAlignment(HorizontalAlignment.CENTER)
+            .setColor(RailcraftJeiPlugin.TEXT_COLOR);
+      }
     }
   }
 
@@ -70,19 +73,19 @@ public class BlastFurnaceRecipeCategory extends
   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<BlastFurnaceRecipe> recipeHolder,
       IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    var ingredients = recipe.getIngredients();
+    var ingredients = recipe.placementInfo().ingredients();
     builder
         .addInputSlot(1, 1)
         .setStandardSlotBackground()
-        .addIngredients(ingredients.getFirst());
+        .add(ingredients.getFirst());
     builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 1, 37)
         .setStandardSlotBackground();
     builder
         .addOutputSlot(61, 5)
         .setOutputSlotBackground()
-        .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
+        .add(recipe.assemble(null));
     builder.addOutputSlot(61, 37)
         .setStandardSlotBackground()
-        .addItemStack(new ItemStack(RailcraftItems.SLAG.get(), recipe.getSlagOutput()));
+        .add(new ItemStack(RailcraftItems.SLAG.get(), recipe.getSlagOutput()));
   }
 }

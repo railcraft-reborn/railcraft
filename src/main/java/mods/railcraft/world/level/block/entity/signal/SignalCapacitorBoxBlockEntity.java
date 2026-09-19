@@ -12,14 +12,14 @@ import mods.railcraft.util.RedstoneUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
 
@@ -129,22 +129,21 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putShort(CompoundTagKeys.TICKS_POWERED, this.ticksPowered);
-    tag.putShort(CompoundTagKeys.TICKS_TO_POWER, this.ticksToPower);
-    tag.putString(CompoundTagKeys.SIGNAL_ASPECT, this.signalAspect.getSerializedName());
-    tag.putString(CompoundTagKeys.MODE, this.mode.getSerializedName());
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putShort(CompoundTagKeys.TICKS_POWERED, this.ticksPowered);
+    output.putShort(CompoundTagKeys.TICKS_TO_POWER, this.ticksToPower);
+    output.store(CompoundTagKeys.SIGNAL_ASPECT, SignalAspect.CODEC, this.signalAspect);
+    output.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.ticksPowered = tag.getShort(CompoundTagKeys.TICKS_POWERED);
-    this.ticksToPower = tag.getShort(CompoundTagKeys.TICKS_TO_POWER);
-    this.signalAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.SIGNAL_ASPECT)).orElse(SignalAspect.OFF);
-    this.mode = Mode.fromName(tag.getString(CompoundTagKeys.MODE));
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.ticksPowered = (short) input.getShortOr(CompoundTagKeys.TICKS_POWERED, (short) 0);
+    this.ticksToPower = (short) input.getShortOr(CompoundTagKeys.TICKS_TO_POWER, (short) 0);
+    this.signalAspect = input.read(CompoundTagKeys.SIGNAL_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.OFF);
+    this.mode = input.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.RISING_EDGE);
   }
 
   @Override
@@ -215,10 +214,6 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
     @Override
     public Mode next() {
       return EnumUtil.next(this, values());
-    }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, RISING_EDGE);
     }
   }
 }

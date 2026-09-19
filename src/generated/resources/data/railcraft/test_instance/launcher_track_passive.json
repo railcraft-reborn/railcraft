@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:launcher_track_passive",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/launcher_track_passive"
+}

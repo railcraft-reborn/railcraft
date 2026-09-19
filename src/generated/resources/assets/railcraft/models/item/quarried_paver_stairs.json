@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "railcraft:block/quarried_paver",
-    "side": "railcraft:block/quarried_paver",
-    "top": "railcraft:block/quarried_paver"
-  }
-}

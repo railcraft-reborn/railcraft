@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 
 public enum ModEntitySelector implements Predicate<Entity> {
 
@@ -36,7 +36,7 @@ public enum ModEntitySelector implements Predicate<Entity> {
   NON_MECHANICAL {
     @Override
     public boolean test(Entity entity) {
-      return !entity.onlyOpCanSetNbt();
+      return !entity.getType().onlyOpCanSetNbt();
     }
   }
 }

@@ -1,30 +1,23 @@
 package mods.railcraft.client.model;
 
 import java.util.function.Function;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
 
-public class SimpleModel extends Model {
+public class SimpleModel<S> extends Model<S> {
 
   protected final ModelPart root;
 
   public SimpleModel(ModelPart root) {
-    this(RenderType::entityCutout, root);
+    this(RenderTypes::entityCutout, root);
   }
 
-  public SimpleModel(Function<ResourceLocation, RenderType> renderTypeFactory, ModelPart root) {
-    super(renderTypeFactory);
+  public SimpleModel(Function<Identifier, RenderType> renderTypeFactory, ModelPart root) {
+    super(root, renderTypeFactory);
     this.root = root;
-  }
-
-  @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer,
-      int packedLight, int packedOverlay, int color) {
-    this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
   }
 
   public void setRotation(float x, float y, float z) {

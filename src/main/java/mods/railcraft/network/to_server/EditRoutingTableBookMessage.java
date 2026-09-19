@@ -19,7 +19,7 @@ public record EditRoutingTableBookMessage(
     Optional<String> title) implements CustomPacketPayload {
 
   public static final Type<EditRoutingTableBookMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("edit_routing_table_book"));
+      new Type<>(RailcraftConstants.id("edit_routing_table_book"));
 
   public static final StreamCodec<FriendlyByteBuf, EditRoutingTableBookMessage> STREAM_CODEC =
       StreamCodec.composite(
@@ -39,7 +39,7 @@ public record EditRoutingTableBookMessage(
     var itemStack = player.getItemInHand(message.hand);
     if (itemStack.getItem() instanceof RoutingTableBookItem) {
       itemStack.set(RailcraftDataComponents.ROUTING_TABLE_BOOK,
-          new RoutingTableBookContent(message.pages, senderProfile.getName(), message.title));
+          new RoutingTableBookContent(message.pages, senderProfile.name(), message.title));
     }
   }
 }

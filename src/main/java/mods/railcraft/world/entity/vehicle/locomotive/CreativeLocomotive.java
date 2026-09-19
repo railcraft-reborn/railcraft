@@ -1,7 +1,7 @@
 package mods.railcraft.world.entity.vehicle.locomotive;
 
 import java.util.Set;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.container.ContainerMapper;
@@ -11,7 +11,6 @@ import mods.railcraft.world.inventory.CreativeLocomotiveMenu;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.TicketItem;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
@@ -36,9 +35,8 @@ public class CreativeLocomotive extends Locomotive implements WorldlyContainer {
     super(type, level);
   }
 
-  public CreativeLocomotive(ItemStack itemStack, double x, double y, double z,
-      ServerLevel level) {
-    super(itemStack, RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), x, y, z, level);
+  public CreativeLocomotive(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.CREATIVE_LOCOMOTIVE.get(), level, x, y, z);
     this.loadFromItemStack(itemStack);
   }
 

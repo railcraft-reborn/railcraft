@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "railcraft:track_parts"
-    },
-    {
-      "item": "railcraft:advanced_rail"
-    },
-    {
-      "item": "railcraft:advanced_rail"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#minecraft:planks",
+    "railcraft:track_parts",
+    "railcraft:advanced_rail",
+    "railcraft:advanced_rail",
+    "#c:dusts/redstone"
   ],
   "result": {
     "count": 16,

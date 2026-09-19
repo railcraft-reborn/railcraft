@@ -18,7 +18,7 @@ public record SetActionSignalBoxMessage(
     LockableSignalBoxBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final Type<SetActionSignalBoxMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_action_signal_box"));
+      new Type<>(RailcraftConstants.id("set_action_signal_box"));
 
   public static final StreamCodec<FriendlyByteBuf, SetActionSignalBoxMessage> STREAM_CODEC =
       CustomPacketPayload.codec(SetActionSignalBoxMessage::write, SetActionSignalBoxMessage::read);
@@ -43,7 +43,7 @@ public record SetActionSignalBoxMessage(
 
   public static void handle(SetActionSignalBoxMessage message, IPayloadContext context) {
     var player = context.player();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     var level = player.level();
     LevelUtil.getBlockEntity(level, message.blockPos, ActionSignalBoxBlockEntity.class)
         .filter(signalBox -> signalBox.canAccess(senderProfile))

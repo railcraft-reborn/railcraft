@@ -9,15 +9,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:stones"
-  },
+  "ingredient": "#c:stones",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:cobblestone"
-      }
+      "result": "minecraft:cobblestone"
     }
   ]
 }

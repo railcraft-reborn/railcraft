@@ -15,7 +15,7 @@ public record SetLocomotiveMessage(
     boolean reverse) implements CustomPacketPayload {
 
   public static final Type<SetLocomotiveMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_locomotive"));
+      new Type<>(RailcraftConstants.id("set_locomotive"));
 
   public static final StreamCodec<FriendlyByteBuf, SetLocomotiveMessage> STREAM_CODEC =
       StreamCodec.composite(
@@ -39,11 +39,11 @@ public record SetLocomotiveMessage(
         loco.setMode(message.mode);
         loco.setSpeed(message.speed);
         loco.setReverse(message.reverse);
-        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.getGameProfile())) {
+        if (!loco.isLocked() || loco.getOwnerOrThrow().equals(player.nameAndId())) {
           loco.setLock(message.lock);
           loco.setOwner(message.lock == Locomotive.Lock.UNLOCKED
               ? null
-              : player.getGameProfile());
+              : player.nameAndId());
         }
       });
     }

@@ -8,6 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import mods.railcraft.Translations;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -54,7 +55,7 @@ public record RoutingTableBookContent(
 
   @Override
   public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer,
-      TooltipFlag tooltipFlag) {
+      TooltipFlag tooltipFlag, DataComponentGetter dataComponentGetter) {
     if (!author.isEmpty()) {
       consumer.accept(Component.translatable(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, author)
           .withStyle(ChatFormatting.GRAY));

@@ -8,7 +8,7 @@ import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.world.inventory.slot.OutputSlot;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.state.BlockState;
 

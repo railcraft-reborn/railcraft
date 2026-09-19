@@ -20,7 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 
 public class CrowbarHandler {
@@ -44,7 +44,7 @@ public class CrowbarHandler {
 
     var level = player.level();
     if (!(player instanceof ServerPlayer serverPlayer)) {
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     if ((stack.getItem() instanceof SeasonsCrowbarItem)
@@ -53,15 +53,15 @@ public class CrowbarHandler {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.value().trigger(serverPlayer, cart, season);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     if (crowbar.canLink(player, hand, stack, cart)) {
       linkCart(serverPlayer, hand, stack, cart, crowbar);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     } else if (crowbar.canBoost(player, hand, stack, cart)) {
       boostCart(serverPlayer, hand, stack, cart, crowbar);
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     return InteractionResult.PASS;
@@ -75,26 +75,26 @@ public class CrowbarHandler {
       linkMap.put(player, extension);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_STARTED)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
       return;
     }
 
     if (extension.unlink(last)) {
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_BROKEN)
           .withStyle(ChatFormatting.LIGHT_PURPLE);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
     } else {
       if (!last.link(extension)) {
         var message = Component.translatable(Translations.Tips.CROWBAR_LINK_FAILED)
             .withStyle(ChatFormatting.RED);
-        player.displayClientMessage(message, true);
+        player.sendOverlayMessage(message);
         return;
       }
 
       RailcraftCriteriaTriggers.CART_LINK.value().trigger(player, last.entity(), cart);
       var message = Component.translatable(Translations.Tips.CROWBAR_LINK_CREATED)
           .withStyle(ChatFormatting.GREEN);
-      player.displayClientMessage(message, true);
+      player.sendOverlayMessage(message);
     }
 
     crowbar.onLink(player, hand, stack, cart);
@@ -113,8 +113,8 @@ public class CrowbarHandler {
       trackRemover.setMode(trackRemover.mode().next());
     } else {
       var smackEnchantment = player.level().registryAccess()
-          .registryOrThrow(Registries.ENCHANTMENT)
-          .getHolderOrThrow(RailcraftEnchantments.SMACK);
+          .lookupOrThrow(Registries.ENCHANTMENT)
+          .getOrThrow(RailcraftEnchantments.SMACK);
       int lvl = stack.getEnchantmentLevel(smackEnchantment);
       if (lvl == 0) {
         MinecartUtil.smackCart(cart, player, SMACK_VELOCITY);

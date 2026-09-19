@@ -27,6 +27,6 @@ public class RailcraftDamageType {
   }
 
   private static ResourceKey<DamageType> createKey(String name) {
-    return ResourceKey.create(Registries.DAMAGE_TYPE, RailcraftConstants.rl(name));
+    return ResourceKey.create(Registries.DAMAGE_TYPE, RailcraftConstants.id(name));
   }
 }

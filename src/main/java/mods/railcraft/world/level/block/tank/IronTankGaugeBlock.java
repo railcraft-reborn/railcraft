@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.tank;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
 import net.minecraft.core.BlockPos;

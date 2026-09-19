@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/brass"
-    }
+    "a": "#c:ingots/brass"
   },
   "pattern": [
     "aa",
     "aa"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:bushing_gear"
   }
 }

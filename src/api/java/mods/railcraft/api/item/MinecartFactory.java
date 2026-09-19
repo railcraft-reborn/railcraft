@@ -6,15 +6,15 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.item;
 
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import org.jspecify.annotations.Nullable;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 @FunctionalInterface
 public interface MinecartFactory {
 
   @Nullable
   AbstractMinecart createMinecart(
-      ItemStack itemStack, double x, double y, double z, ServerLevel level);
+      ItemStack itemStack, Level level, double x, double y, double z);
 }

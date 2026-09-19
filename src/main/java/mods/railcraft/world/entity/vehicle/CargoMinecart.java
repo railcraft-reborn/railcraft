@@ -24,9 +24,8 @@ public class CargoMinecart extends FilteredMinecart {
     super(type, level);
   }
 
-  public CargoMinecart(ItemStack itemStack, double x, double y, double z,
-      Level level) {
-    super(itemStack, RailcraftEntityTypes.CARGO_MINECART.get(), x, y, z, level);
+  public CargoMinecart(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.CARGO_MINECART.get(), level, x, y, z);
   }
 
   @Override

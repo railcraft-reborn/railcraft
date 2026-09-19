@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.api.signal.SignalReceiver;
@@ -16,11 +16,11 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalControllerEntity, SignalReceiverEntity {
@@ -50,7 +50,7 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
     this.signalReceiver.destroy();
@@ -129,19 +129,17 @@ public class SignalInterlockBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
-    tag.put(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
+    output.putChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
-    this.signalReceiver
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_RECEIVER));
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
+    input.readChild(CompoundTagKeys.SIGNAL_RECEIVER, this.signalReceiver);
   }
 
   @Override

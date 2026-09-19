@@ -17,19 +17,19 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CokeOvenRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
 
 public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<CokeOvenRecipe>> {
 
   private static final int WIDTH = 127;
   private static final int HEIGHT = 49;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/coke_oven.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/coke_oven.png");
 
   private final IDrawable tankBackground, tankOverlay, flame, arrow;
 
@@ -49,25 +49,28 @@ public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<
   }
 
   @Override
-  public void draw(RecipeHolder<CokeOvenRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+  public void draw(RecipeHolder<CokeOvenRecipe> recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.flame.draw(guiGraphics, 1, 3);
     this.arrow.draw(guiGraphics, 20, 21);
   }
 
   @Override
-  public void createRecipeExtras(IRecipeExtrasBuilder builder,
-      RecipeHolder<CokeOvenRecipe> recipeHolder, IFocusGroup focuses) {
+  public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<CokeOvenRecipe> recipeHolder,
+      IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    int cookTime = recipe.getCookingTime();
-    if (cookTime > 0) {
-      int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
-      var timeString =
-          Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
-      builder.addText(timeString, WIDTH - 70, 50)
-          .setTextAlignment(VerticalAlignment.BOTTOM)
-          .setTextAlignment(HorizontalAlignment.CENTER)
-          .setColor(RailcraftJeiPlugin.TEXT_COLOR);
+
+    if (recipe.display().getFirst() instanceof FurnaceRecipeDisplay furnaceRecipeDisplay) {
+      int cookTime = furnaceRecipeDisplay.duration();
+      if (cookTime > 0) {
+        int cookTimeSeconds = cookTime / SharedConstants.TICKS_PER_SECOND;
+        var timeString =
+            Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
+        builder.addText(timeString, WIDTH - 70, 50)
+            .setTextAlignment(VerticalAlignment.BOTTOM)
+            .setTextAlignment(HorizontalAlignment.CENTER)
+            .setColor(RailcraftJeiPlugin.TEXT_COLOR);
+      }
     }
   }
 
@@ -75,18 +78,18 @@ public class CokeOvenRecipeCategory extends AbstractRecipeCategory<RecipeHolder<
   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CokeOvenRecipe> recipeHolder,
       IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    var ingredients = recipe.getIngredients();
+    var ingredients = recipe.input();
     builder
         .addInputSlot(1, 20)
         .setStandardSlotBackground()
-        .addIngredients(ingredients.getFirst());
+        .add(ingredients);
     builder
         .addOutputSlot(49, 20)
         .setOutputSlotBackground()
-        .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
+        .add(recipe.assemble(null));
     // Not the actual capacity, but is 10000 for a better visibility
     builder.addOutputSlot(78, 1)
-        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.getCreosote())
+        .add(NeoForgeTypes.FLUID_STACK, recipe.getCreosote())
         .setFluidRenderer(10_000, true, 48, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);

@@ -9,11 +9,11 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.signal.SignalBoxBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalControllerEntity {
@@ -56,7 +56,7 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
   }
@@ -111,22 +111,21 @@ public class SignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putString(CompoundTagKeys.DEFAULT_ASPECT, this.defaultAspect.getSerializedName());
-    tag.putString(CompoundTagKeys.POWERED_ASPECT, this.poweredAspect.getSerializedName());
-    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.DEFAULT_ASPECT, SignalAspect.CODEC, this.defaultAspect);
+    output.store(CompoundTagKeys.POWERED_ASPECT, SignalAspect.CODEC, this.poweredAspect);
+    output.putChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     this.defaultAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.DEFAULT_ASPECT)).orElse(SignalAspect.GREEN);
+        input.read(CompoundTagKeys.DEFAULT_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.GREEN);
     this.poweredAspect =
-        SignalAspect.fromName(tag.getString(CompoundTagKeys.POWERED_ASPECT)).orElse(SignalAspect.RED);
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+        input.read(CompoundTagKeys.POWERED_ASPECT, SignalAspect.CODEC).orElse(SignalAspect.RED);
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

@@ -4,8 +4,7 @@ package mods.railcraft.world.level.block.entity.detector;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
+import org.jspecify.annotations.Nullable;
 import com.mojang.datafixers.util.Either;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
@@ -19,17 +18,18 @@ import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implements
     ContainerManipulator<ModifiableSlotAccessor>, RouterBlockEntity {
@@ -75,12 +75,18 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   }
 
   @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
+  }
+
+  @Override
   public Railway getRailway() {
     return this.railway;
   }
 
   @Override
-  public void setRailway(@Nullable GameProfile gameProfile) {
+  public void setRailway(@Nullable NameAndId gameProfile) {
     this.railway = gameProfile == null ? Railway.PUBLIC : Railway.PRIVATE;
     if (!this.isLocked()) {
       this.setOwner(gameProfile);
@@ -103,19 +109,19 @@ public class RoutingDetectorBlockEntity extends SecureDetectorBlockEntity implem
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.container.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
-    this.railway = Railway.fromName(tag.getString(CompoundTagKeys.RAILWAY));
-    this.powered = tag.getBoolean(CompoundTagKeys.POWERED);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.CONTAINER, this.container);
+    this.railway = input.read(CompoundTagKeys.RAILWAY, Railway.CODEC).orElse(Railway.PUBLIC);
+    this.powered = input.getBooleanOr(CompoundTagKeys.POWERED, false);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.container.createTag(provider));
-    tag.putString(CompoundTagKeys.RAILWAY, this.railway.getSerializedName());
-    tag.putBoolean(CompoundTagKeys.POWERED, this.powered);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CONTAINER, this.container);
+    output.store(CompoundTagKeys.RAILWAY, Railway.CODEC, this.railway);
+    output.putBoolean(CompoundTagKeys.POWERED, this.powered);
   }
 
   @Override

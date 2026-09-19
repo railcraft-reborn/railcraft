@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:dual_block_signal_secondary",
+  "changeControllerAspect": true,
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/dual_block_signal"
+}

@@ -3,7 +3,8 @@ package mods.railcraft.world.module;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -40,8 +41,11 @@ public abstract class CookingModule<R extends AbstractCookingRecipe, T extends M
   }
 
   protected Optional<RecipeHolder<R>> getRecipeFor(ItemStack itemStack) {
-    return this.provider.level().getRecipeManager()
-        .getRecipeFor(this.getRecipeType(), new SingleRecipeInput(itemStack), this.provider.level());
+    if (this.provider.level() instanceof ServerLevel serverLevel) {
+      return serverLevel.recipeAccess()
+          .getRecipeFor(this.getRecipeType(), new SingleRecipeInput(itemStack), serverLevel);
+    }
+    return Optional.empty();
   }
 
   @Override
@@ -52,6 +56,6 @@ public abstract class CookingModule<R extends AbstractCookingRecipe, T extends M
   @Override
   protected final int calculateDuration() {
     Objects.requireNonNull(this.recipe);
-    return this.recipe.getCookingTime();
+    return this.recipe.cookingTime();
   }
 }

@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
@@ -29,7 +29,7 @@ public class AnalogSignalControllerBoxBlock extends SignalControllerBoxBlock imp
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
           .ifPresent(ScreenFactories::openAnalogSignalControllerBoxScreen);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

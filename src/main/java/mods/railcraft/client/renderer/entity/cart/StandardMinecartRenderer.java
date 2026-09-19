@@ -2,56 +2,76 @@ package mods.railcraft.client.renderer.entity.cart;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.client.renderer.entity.state.RailcraftMinecartRenderState;
 import mods.railcraft.season.Seasons;
+import mods.railcraft.world.entity.vehicle.RailcraftMinecart;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 
-public abstract class StandardMinecartRenderer<T extends AbstractMinecart>
-    extends CustomMinecartRenderer<T> {
+public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S extends RailcraftMinecartRenderState>
+    extends CustomMinecartRenderer<T, S> {
 
-  public static final ResourceLocation SNOW_TEXTURE_LOCATION =
-      RailcraftConstants.rl("textures/carts/cart_snow.png");
+  public static final Identifier SNOW_TEXTURE_LOCATION =
+      RailcraftConstants.id("textures/carts/cart_snow.png");
 
-  public static final ResourceLocation MINECART_TEXTURE_LOCATION =
-      ResourceLocation.withDefaultNamespace("textures/entity/minecart.png");
+  public static final Identifier MINECART_TEXTURE_LOCATION =
+      Identifier.withDefaultNamespace("textures/entity/minecart.png");
 
   public StandardMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
   }
 
   @Override
-  protected void renderBody(T cart, float partialTicks, PoseStack poseStack,
-      MultiBufferSource bufferSource, int packedLight, int color) {
+  protected void renderBody(S renderState, PoseStack poseStack, SubmitNodeCollector collector,
+      CameraRenderState cameraState, int color) {
     poseStack.pushPose();
     poseStack.scale(-1, -1, 1);
-    var bodyModel = this.getBodyModel(cart);
-    var bodyVertexConsumer =
-        bufferSource.getBuffer(bodyModel.renderType(this.getTextureLocation(cart)));
-    bodyModel.setupAnim(cart, 0, 0, -0.1F, 0, 0);
-    bodyModel.renderToBuffer(poseStack, bodyVertexConsumer, packedLight,
-        OverlayTexture.NO_OVERLAY, color);
+    var bodyModel = this.getBodyModel(renderState);
+    bodyModel.setupAnim(renderState);
+    collector.submitModel(
+        bodyModel,
+        renderState,
+        poseStack,
+        bodyModel.renderType(MINECART_TEXTURE_LOCATION),
+        renderState.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        color,
+        null,
+        0,
+        null
+    );
 
-    if (Seasons.isPolarExpress(cart)) {
-      var snowModel = this.getSnowModel(cart);
-      var snowVertexConsumer = bufferSource.getBuffer(snowModel.renderType(SNOW_TEXTURE_LOCATION));
-      snowModel.setupAnim(cart, 0, 0, -0.1F, 0, 0);
-      snowModel.renderToBuffer(poseStack, snowVertexConsumer, packedLight,
-          OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1, 1, 1, 1));
+    if (Seasons.isPolarExpress(renderState)) {
+      var snowModel = this.getSnowModel(renderState);
+      snowModel.setupAnim(renderState);
+      collector.submitModel(
+          snowModel,
+          renderState,
+          poseStack,
+          snowModel.renderType(SNOW_TEXTURE_LOCATION),
+          renderState.lightCoords,
+          OverlayTexture.NO_OVERLAY,
+          ARGB.colorFromFloat(1, 1, 1, 1),
+          null,
+          0,
+          null
+      );
     }
     poseStack.popPose();
   }
 
   @Override
-  public ResourceLocation getTextureLocation(T cart) {
-    return MINECART_TEXTURE_LOCATION;
+  public void extractRenderState(T entity, S reusedState, float partialTick) {
+    super.extractRenderState(entity, reusedState, partialTick);
+    reusedState.season = entity.getSeason();
   }
 
-  protected abstract EntityModel<? super T> getBodyModel(T cart);
+  protected abstract EntityModel<S> getBodyModel(S cart);
 
-  protected abstract EntityModel<? super T> getSnowModel(T cart);
+  protected abstract EntityModel<S> getSnowModel(S cart);
 }

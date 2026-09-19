@@ -1,0 +1,24 @@
+package mods.railcraft.data.tags;
+
+import java.util.concurrent.CompletableFuture;
+import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.PoiTypeTagsProvider;
+import net.minecraft.tags.PoiTypeTags;
+
+public class RailcraftPoiTypeTagsProvider extends PoiTypeTagsProvider {
+
+  public RailcraftPoiTypeTagsProvider(PackOutput packOutput,
+      CompletableFuture<HolderLookup.Provider> registries) {
+    super(packOutput, registries, RailcraftConstants.ID);
+  }
+
+  @Override
+  protected void addTags(HolderLookup.Provider registries) {
+    this.tag(PoiTypeTags.ACQUIRABLE_JOB_SITE)
+        .add(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey())
+        .add(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey());
+  }
+}

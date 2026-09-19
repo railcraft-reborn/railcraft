@@ -3,18 +3,20 @@ package mods.railcraft.world.module;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.ContainerMapper;
+import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastFurnaceBlockEntity> {
 
@@ -25,7 +27,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   private static final int FUEL_PER_TICK = 5;
   private final ContainerMapper fuelContainer, outputContainer, slagContainer;
 
-  private final IItemHandler itemHandler;
+  private final ResourceHandler<ItemResource> itemHandler;
 
   /**
    * The number of ticks that the furnace will keep burning
@@ -43,23 +45,9 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     outputContainer = ContainerMapper.make(this, SLOT_OUTPUT, 1).ignoreItemChecks();
     slagContainer = ContainerMapper.make(this, SLOT_SLAG, 1).ignoreItemChecks();
 
-    itemHandler = new InvWrapper(this) {
-      @Override
-      public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
-          return ItemStack.EMPTY;
-        }
-        return super.extractItem(slot, amount, simulate);
-      }
-
-      @Override
-      public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (slot == SLOT_INPUT || slot == SLOT_FUEL) {
-          return super.insertItem(slot, stack, simulate);
-        }
-        return stack;
-      }
-    };
+    itemHandler = new SlotFilteredResourceHandler<>(VanillaContainerWrapper.of(this),
+        index -> index == SLOT_INPUT || index == SLOT_FUEL,
+        index -> index != SLOT_INPUT && index != SLOT_FUEL);
   }
 
   public ContainerManipulator<?> getFuelContainer() {
@@ -97,7 +85,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
 
   @Override
   protected boolean craftAndPush() {
-    var output = this.recipe.getResultItem(this.provider.level().registryAccess());
+    var output = this.recipe.assemble(null);
 
     if (!this.outputContainer.canFit(output)) {
       return false;
@@ -119,7 +107,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   private int getItemBurnTime(ItemStack itemStack) {
-    return itemStack.getBurnTime(null);
+    return itemStack.getBurnTime(null, this.provider.level().fuelValues());
   }
 
   private void loadFuel() {
@@ -134,9 +122,9 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     }
     this.currentItemBurnTime = itemBurnTime + this.burnTime;
     this.setBurnTime(this.currentItemBurnTime);
-    var craftRemainder = fuel.getCraftingRemainingItem();
+    var craftRemainder = fuel.getCraftingRemainder();
     fuel.shrink(1);
-    this.setItem(SLOT_FUEL, fuel.isEmpty() ? craftRemainder : fuel);
+    this.setItem(SLOT_FUEL, fuel.isEmpty() ? craftRemainder.create() : fuel);
   }
 
   public void setBurnTime(int burnTime) {
@@ -173,23 +161,22 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return this.getItemBurnTime(itemStack) > 0;
   }
 
-  public IItemHandler getItemHandler() {
+  public ResourceHandler<ItemResource> getItemHandler() {
     return itemHandler;
   }
 
   @Override
-  public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-    var tag = super.serializeNBT(provider);
-    tag.putInt(CompoundTagKeys.BURN_TIME, this.burnTime);
-    tag.putInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
-    return tag;
+  public void serialize(ValueOutput valueOutput) {
+    super.serialize(valueOutput);
+    valueOutput.putInt(CompoundTagKeys.BURN_TIME, this.burnTime);
+    valueOutput.putInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, this.currentItemBurnTime);
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    super.deserializeNBT(provider, tag);
-    this.burnTime = tag.getInt(CompoundTagKeys.BURN_TIME);
-    this.currentItemBurnTime = tag.getInt(CompoundTagKeys.CURRENT_ITEM_BURN_TIME);
+  public void deserialize(ValueInput valueInput) {
+    super.deserialize(valueInput);
+    this.burnTime = valueInput.getIntOr(CompoundTagKeys.BURN_TIME, 0);
+    this.currentItemBurnTime = valueInput.getIntOr(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, 0);
   }
 
   @Override

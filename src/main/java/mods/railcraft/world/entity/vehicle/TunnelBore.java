@@ -3,7 +3,7 @@ package mods.railcraft.world.entity.vehicle;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.Linkable;
 import mods.railcraft.api.carts.RollingStock;
@@ -13,6 +13,7 @@ import mods.railcraft.api.carts.TunnelBoreHead;
 import mods.railcraft.api.container.manipulator.SlotAccessor;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
@@ -29,7 +30,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -47,7 +47,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -55,12 +54,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 
 public class TunnelBore extends RailcraftMinecart implements Linkable {
 
@@ -86,7 +89,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       SynchedEntityData.defineId(TunnelBore.class, EntityDataSerializers.ITEM_STACK);
 
   private final ContainerMapper fuelContainer =
-      ContainerMapper.make(this, 1, 6).addFilters(StackFilter.FUEL);
+      ContainerMapper.make(this, 1, 6);
   private final ContainerMapper ballastContainer =
       ContainerMapper.make(this, 7, 9).addFilters(StackFilter.BALLAST);
   private final ContainerMapper trackContainer =
@@ -111,7 +114,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   public TunnelBore(Level level, double x, double y, double z, Direction facing) {
-    super(RailcraftEntityTypes.TUNNEL_BORE.get(), x, y, z, level);
+    super(RailcraftEntityTypes.TUNNEL_BORE.get(), level, x, y, z);
     setFacing(facing);
 
     float headW = 1.5F;
@@ -127,10 +130,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
         new TunnelBorePart(this, 1.6F, 1.4F, -2.2F), // tail2
     };
     this.constructed = true;
+    this.fuelContainer.addFilters(StackFilter.isFuel(level));
     this.containers = List.of(this.fuelContainer, this.ballastContainer, this.trackContainer);
 
     // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
     this.setId(ENTITY_COUNTER.getAndAdd(this.parts.length + 1) + 1);
+
+    this.setData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL, SPEED);
+    this.setData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS, false);
   }
 
   @Override
@@ -175,11 +182,11 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  public boolean hurt(DamageSource source, float damage) {
-    if (this.level().isClientSide() || this.isRemoved()) {
+  public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+    if (this.isRemoved()) {
       return true;
     }
-    if (this.isInvulnerableTo(source)) {
+    if (this.isInvulnerableToBase(source)) {
       return false;
     }
     this.setHurtDir(-this.getHurtDir());
@@ -194,7 +201,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
       if (flag && !this.hasCustomName()) {
         this.remove(RemovalReason.KILLED);
       } else {
-        this.destroy(source);
+        this.destroy(level, source);
       }
     }
     return true;
@@ -289,7 +296,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
           var targetPos = new BlockPos(getPositionAhead(offset)).below();
 
           if (placeBallast) {
-            boolean placed = placeBallast(targetPos);
+            boolean placed = this.placeBallast(serverLevel, targetPos);
             if (placed) {
               setDelay(STANDARD_DELAY);
             } else {
@@ -309,7 +316,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
           var existingState = this.level().getBlockState(targetPos);
 
           if (placeRail) {
-            boolean placed = placeTrack(targetPos, existingState, dir);
+            boolean placed = placeTrack(serverLevel, targetPos, existingState, dir);
             if (placed) {
               setDelay(STANDARD_DELAY);
             } else {
@@ -398,11 +405,6 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     if (isMinecartPowered()) {
       boreRotationAngle += 5;
     }
-  }
-
-  @Override
-  public float getMaxCartSpeedOnRail() {
-    return SPEED;
   }
 
   @Override
@@ -548,8 +550,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @SuppressWarnings("deprecation")
-  protected boolean placeBallast(BlockPos targetPos) {
-    if (!Block.canSupportRigidBlock(this.level(), targetPos)) {
+  protected boolean placeBallast(ServerLevel serverLevel, BlockPos targetPos) {
+    if (!Block.canSupportRigidBlock(serverLevel, targetPos)) {
       return this.ballastContainer.stream()
           .filter(slot -> slot.hasItem()
               && ContainerTools.getBlockFromStack(slot.item())
@@ -559,22 +561,22 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
             var searchPos = targetPos.mutable();
             for (int i = 0; i < MAX_FILL_DEPTH; i++) {
               searchPos.move(Direction.DOWN);
-              if (Block.canSupportRigidBlock(this.level(), searchPos)) {
+              if (Block.canSupportRigidBlock(serverLevel, searchPos)) {
                 // Fill ballast
                 var state =
-                    ContainerTools.getBlockStateFromStack(slot.item(), this.level(), targetPos);
+                    ContainerTools.getBlockStateFromStack(slot.item(), serverLevel, targetPos);
                 if (state != null) {
                   slot.extract();
-                  this.level().setBlockAndUpdate(targetPos, state);
+                  serverLevel.setBlockAndUpdate(targetPos, state);
                   return true;
                 }
               } else {
-                var state = this.level().getBlockState(searchPos);
+                var state = serverLevel.getBlockState(searchPos);
                 if (!state.isAir() && !state.liquid()) {
                   // Break other blocks first
-                  LevelUtil.playerRemoveBlock(this.level(), searchPos.immutable(),
+                  LevelUtil.playerRemoveBlock(serverLevel, searchPos.immutable(),
                       MinecartUtil.getFakePlayer(this),
-                      this.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)
+                      serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)
                           && !RailcraftConfig.SERVER.boreDestroysBlocks.get());
                 }
               }
@@ -593,20 +595,21 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
   }
 
-  protected boolean placeTrack(BlockPos targetPos, BlockState oldState, RailShape shape) {
+  protected boolean placeTrack(ServerLevel level, BlockPos targetPos, BlockState oldState,
+      RailShape shape) {
     var owner = MinecartUtil.getFakePlayer(this);
 
     if (oldState.is(RailcraftTags.Blocks.TUNNEL_BORE_REPLACEABLE_BLOCKS)) {
-      LevelUtil.destroyBlock(this.level(), targetPos, owner, true);
+      LevelUtil.destroyBlock(level, targetPos, owner, true);
     }
 
     if (oldState.isAir()
-        && Block.canSupportRigidBlock(this.level(), targetPos.below())) {
+        && Block.canSupportRigidBlock(level, targetPos.below())) {
       return this.trackContainer.stream()
           .filter(SlotAccessor::hasItem)
           .peek(slot -> {
             var placed =
-                TrackUtil.placeRailAt(slot.item(), (ServerLevel) this.level(), targetPos, shape);
+                TrackUtil.placeRailAt(slot.item(), level, targetPos, shape);
             if (placed) {
               slot.extract();
             }
@@ -685,14 +688,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
    * @return true if the target block is clear
    */
   protected boolean mineBlock(BlockPos targetPos, RailShape preferredShape) {
-    var targetState = this.level().getBlockState(targetPos);
+    var serverLevel = (ServerLevel) this.level();
+    var targetState = serverLevel.getBlockState(targetPos);
     if (targetState.isAir()) {
       return true;
     }
 
     if (BaseRailBlock.isRail(targetState)) {
-      var targetShape =
-          TrackUtil.getTrackDirection(this.level(), targetPos, targetState, this);
+      var targetShape = TrackUtil.getTrackDirection(serverLevel, targetPos, targetState, this);
       if (preferredShape == targetShape) {
         return true;
       }
@@ -712,7 +715,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     ServerPlayer fakePlayer = MinecartUtil.getFakePlayerWith(this, head);
 
     // Fires break event within; harvest handled separately
-    var breakEvent = new BlockEvent.BreakEvent(this.level(), targetPos, targetState, fakePlayer);
+    var breakEvent = new BreakBlockEvent(serverLevel, targetPos, targetState, fakePlayer);
     NeoForge.EVENT_BUS.post(breakEvent);
 
     if (breakEvent.isCanceled()) {
@@ -720,14 +723,14 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     }
 
     if (!RailcraftConfig.SERVER.boreDestroysBlocks.get()
-        && this.level().getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
       targetState
-          .getDrops(new LootParams.Builder((ServerLevel) this.level())
+          .getDrops(new LootParams.Builder(serverLevel)
               .withParameter(LootContextParams.TOOL, head)
               .withParameter(LootContextParams.ATTACKING_ENTITY, this)
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
-            if (StackFilter.FUEL.test(stack)) {
+            if (StackFilter.isFuel(serverLevel).test(stack)) {
               stack = this.fuelContainer.insert(stack);
             }
 
@@ -747,7 +750,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
     LevelUtil.setAir(this.level(), targetPos);
 
-    head.hurtAndBreak(1, fakePlayer.serverLevel(), fakePlayer, __ -> {
+    head.hurtAndBreak(1, fakePlayer.level(), fakePlayer, __ -> {
       this.setItem(0, ItemStack.EMPTY);
     });
 
@@ -768,13 +771,13 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
     var boreSlot = this.getItem(0);
     if (!boreSlot.isEmpty()) {
-      var tunnelBoreHead = boreSlot.getItemHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
+      var tunnelBoreHead = boreSlot.typeHolder().getData(RailcraftDataMaps.TUNNEL_BORE_HEAD);
       if (tunnelBoreHead != null) {
         double dig = tunnelBoreHead.digModifier();
         hardness /= dig;
         var efficiencyEnchantment = this.level().registryAccess()
-            .registryOrThrow(Registries.ENCHANTMENT)
-            .getHolderOrThrow(Enchantments.EFFICIENCY);
+            .lookupOrThrow(Registries.ENCHANTMENT)
+            .getOrThrow(Enchantments.EFFICIENCY);
         int e = boreSlot.getEnchantmentLevel(efficiencyEnchantment);
         hardness /= (e * e * 0.2d + 1);
       }
@@ -828,23 +831,23 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.putInt(CompoundTagKeys.FACING, getFacing().get3DDataValue());
-    tag.putInt(CompoundTagKeys.DELAY, getDelay());
-    tag.putBoolean(CompoundTagKeys.ACTIVE, isActive());
-    tag.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
-    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.FACING, Direction.CODEC, getFacing());
+    valueOutput.putInt(CompoundTagKeys.DELAY, getDelay());
+    valueOutput.putBoolean(CompoundTagKeys.ACTIVE, isActive());
+    valueOutput.putInt(CompoundTagKeys.BURN_TIME, getBurnTime());
+    valueOutput.putInt(CompoundTagKeys.FUEL, this.fuel);
   }
 
   @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    setFacing(Direction.from3DDataValue(tag.getInt(CompoundTagKeys.FACING)));
-    setDelay(tag.getInt(CompoundTagKeys.DELAY));
-    setActive(tag.getBoolean(CompoundTagKeys.ACTIVE));
-    setBurnTime(tag.getInt(CompoundTagKeys.BURN_TIME));
-    setFuel(tag.getInt(CompoundTagKeys.FUEL));
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    setFacing(valueInput.read(CompoundTagKeys.FACING, Direction.CODEC).orElse(Direction.SOUTH));
+    setDelay(valueInput.getIntOr(CompoundTagKeys.DELAY, 0));
+    setActive(valueInput.getBooleanOr(CompoundTagKeys.ACTIVE, false));
+    setBurnTime(valueInput.getIntOr(CompoundTagKeys.BURN_TIME, 0));
+    setFuel(valueInput.getIntOr(CompoundTagKeys.FUEL, 0));
   }
 
   protected int getDelay() {
@@ -915,10 +918,11 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     for (int slot = 0; slot < this.fuelContainer.getContainerSize(); slot++) {
       var stack = this.fuelContainer.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = stack.getBurnTime(null);
+        burn = stack.getBurnTime(null, this.level().fuelValues());
         if (burn > 0) {
-          if (stack.getItem().hasCraftingRemainingItem(stack)) {
-            this.fuelContainer.setItem(slot, stack.getItem().getCraftingRemainingItem(stack));
+          var remainingItem = stack.getItem().getCraftingRemainder(stack);
+          if (remainingItem != null) {
+            this.fuelContainer.setItem(slot, remainingItem.create());
           } else {
             this.fuelContainer.removeItem(slot, 1);
           }
@@ -963,9 +967,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  protected void applyNaturalSlowdown() {
-    this.setDeltaMovement(this.getDeltaMovement()
-        .multiply(CartConstants.STANDARD_DRAG, 0.0D, CartConstants.STANDARD_DRAG));
+  public Vec3 applyNaturalSlowdown(Vec3 speed) {
+    return speed.multiply(CartConstants.STANDARD_DRAG, 0, CartConstants.STANDARD_DRAG);
   }
 
   @Override
@@ -1024,11 +1027,6 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
   }
 
   @Override
-  public boolean shouldDoRailFunctions() {
-    return false;
-  }
-
-  @Override
   public PartEntity<?>[] getParts() {
     return this.parts;
   }
@@ -1045,9 +1043,9 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
         .allMatch(m -> m.filter().test(stack));
   }
 
-  public boolean attackEntityFromPart(TunnelBorePart part, DamageSource damageSource,
+  public void attackEntityFromPart(TunnelBorePart part, DamageSource damageSource,
       float damage) {
-    return hurt(damageSource, damage);
+    this.hurt(damageSource, damage);
   }
 
   @Override

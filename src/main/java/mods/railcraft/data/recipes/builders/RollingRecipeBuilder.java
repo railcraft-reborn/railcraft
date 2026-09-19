@@ -6,12 +6,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
@@ -19,32 +22,23 @@ import net.minecraft.world.level.ItemLike;
 public class RollingRecipeBuilder {
 
   public static final int DEFAULT_PROCESSING_TIME = SharedConstants.TICKS_PER_SECOND * 5;
-  private final Item result;
-  private final int count;
+  private final ItemStackTemplate result;
   private final int processTime;
   private final List<String> rows = Lists.newArrayList();
   private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
 
-  private RollingRecipeBuilder(ItemLike result, int count, int processTime) {
-    this.result = result.asItem();
-    this.count = count;
+  private RollingRecipeBuilder(ItemStackTemplate result, int processTime) {
+    this.result = result;
     this.processTime = processTime;
   }
 
-  public static RollingRecipeBuilder rolled(ItemLike result) {
-    return rolled(result, 1);
+  public static RollingRecipeBuilder rolled(ItemStackTemplate result) {
+    return new RollingRecipeBuilder(result, DEFAULT_PROCESSING_TIME);
   }
 
-  public static RollingRecipeBuilder rolled(ItemLike result, int count) {
-    return rolled(result, count, DEFAULT_PROCESSING_TIME);
-  }
-
-  public static RollingRecipeBuilder rolled(ItemLike result, int count, int processTime) {
-    return new RollingRecipeBuilder(result, count, processTime);
-  }
-
-  public RollingRecipeBuilder define(Character key, TagKey<Item> itemTagValue) {
-    return this.define(key, Ingredient.of(itemTagValue));
+  public RollingRecipeBuilder define(HolderLookup.RegistryLookup<Item> items,
+      Character key, TagKey<Item> itemTagValue) {
+    return this.define(key, Ingredient.of(items.getOrThrow(itemTagValue)));
   }
 
   public RollingRecipeBuilder define(Character key, ItemLike itemValue) {
@@ -73,14 +67,13 @@ public class RollingRecipeBuilder {
   }
 
   public void save(RecipeOutput recipeOutput) {
-    this.save(recipeOutput, BuiltInRegistries.ITEM.getKey(this.result));
+    this.save(recipeOutput, BuiltInRegistries.ITEM.getKey(this.result.item().value()));
   }
 
-  public void save(RecipeOutput recipeOutput, ResourceLocation resourceLocation) {
-    var customResourceLocation = resourceLocation.withPrefix("rolling/");
+  public void save(RecipeOutput recipeOutput, Identifier identifier) {
+    var customIdentifier = identifier.withPrefix("rolling/");
     var pattern = ShapedRecipePattern.of(this.key, this.rows);
-    var recipe = new RollingRecipe(pattern, new ItemStack(this.result, this.count),
-        this.processTime);
-    recipeOutput.accept(customResourceLocation, recipe, null);
+    var recipe = new RollingRecipe(pattern, this.result, this.processTime);
+    recipeOutput.accept(ResourceKey.create(Registries.RECIPE, customIdentifier), recipe, null);
   }
 }

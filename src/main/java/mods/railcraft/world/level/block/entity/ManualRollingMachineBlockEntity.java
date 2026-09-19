@@ -1,19 +1,18 @@
 package mods.railcraft.world.level.block.entity;
 
 import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.data.recipes.builders.RollingRecipeBuilder;
 import mods.railcraft.util.container.AdvancedContainer;
-import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.inventory.ManualRollingMachineMenu;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +23,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implements MenuProvider {
 
@@ -47,20 +48,26 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CONTAINER, this.invResult.createTag(provider));
-    tag.put(CompoundTagKeys.CRAFT_MATRIX, ContainerTools.writeContainer(craftMatrix, provider));
-    tag.putInt(CompoundTagKeys.PROGRESS, this.progress);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CONTAINER, this.invResult);
+    ContainerHelper.saveAllItems(output.child(CompoundTagKeys.CRAFT_MATRIX),
+        NonNullList.copyOf(this.craftMatrix.getItems()), false);
+    output.putInt(CompoundTagKeys.PROGRESS, this.progress);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.invResult.fromTag(tag.getList(CompoundTagKeys.CONTAINER, Tag.TAG_COMPOUND), provider);
-    ContainerTools.readContainer(this.craftMatrix,
-        tag.getList(CompoundTagKeys.CRAFT_MATRIX, Tag.TAG_COMPOUND), provider);
-    this.progress = tag.getInt(CompoundTagKeys.PROGRESS);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.CONTAINER, this.invResult);
+    input.child(CompoundTagKeys.CRAFT_MATRIX).ifPresent(input1 -> {
+      var tempItems = NonNullList.withSize(this.craftMatrix.getContainerSize(), ItemStack.EMPTY);
+      ContainerHelper.loadAllItems(input1, tempItems);
+      for (int i = 0; i < tempItems.size(); i++) {
+        this.craftMatrix.setItem(i, tempItems.get(i));
+      }
+    });
+    this.progress = input.getIntOr(CompoundTagKeys.PROGRESS, 0);
   }
 
   @Override
@@ -94,9 +101,9 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     return this.invResult;
   }
 
-  public Optional<RecipeHolder<RollingRecipe>> getRecipe() {
-    return this.level.getRecipeManager()
-        .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), this.level);
+  public Optional<RecipeHolder<RollingRecipe>> getRecipe(ServerLevel level) {
+    return level.recipeAccess()
+        .getRecipeFor(RailcraftRecipeTypes.ROLLING.get(), this.craftMatrix.asCraftInput(), level);
   }
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
@@ -104,7 +111,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     blockEntity.balanceSlots();
 
     if (++blockEntity.clock % 8 == 0) {
-      blockEntity.currentRecipe = blockEntity.getRecipe();
+      blockEntity.currentRecipe = blockEntity.getRecipe((ServerLevel) level);
       blockEntity.processTime = blockEntity.currentRecipe
           .map(RecipeHolder::value)
           .map(RollingRecipe::getProcessTime)
@@ -112,11 +119,11 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       blockEntity.clock = 0;
     }
 
-    if (blockEntity.currentRecipe.isPresent() && blockEntity.canMakeMore()) {
+    if (blockEntity.currentRecipe.isPresent() && blockEntity.canMakeMore((ServerLevel) level)) {
       var recipe = blockEntity.currentRecipe.get();
       if (blockEntity.progress >= recipe.value().getProcessTime()) {
         blockEntity.isWorking = false;
-        var result = recipe.value().assemble(blockEntity.craftMatrix.asCraftInput(), level.registryAccess());
+        var result = recipe.value().assemble(blockEntity.craftMatrix.asCraftInput());
         if (blockEntity.invResult.canFit(result)) {
           blockEntity.craftMatrix.getItems().forEach(x -> x.shrink(1));
           blockEntity.invResult.insert(result);
@@ -166,8 +173,8 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
     this.useLast = true;
   }
 
-  public boolean canMakeMore() {
-    if (this.getRecipe().isEmpty())
+  public boolean canMakeMore(ServerLevel level) {
+    if (this.getRecipe(level).isEmpty())
       return false;
     if (this.useLast)
       return true;

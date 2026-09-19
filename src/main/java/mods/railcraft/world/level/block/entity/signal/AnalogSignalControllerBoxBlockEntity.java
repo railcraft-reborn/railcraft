@@ -10,14 +10,13 @@ import mods.railcraft.api.signal.entity.SignalControllerEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlockEntity
     implements SignalControllerEntity {
@@ -49,7 +48,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  public void blockRemoved() {
+  protected void blockRemoved() {
     super.blockRemoved();
     this.signalController.destroy();
   }
@@ -123,37 +122,32 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.INPUT_SIGNAL, this.inputSignal);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt(CompoundTagKeys.INPUT_SIGNAL, this.inputSignal);
 
-    var aspectsTag = new ListTag();
+    var aspectsTag = output.childrenList(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS);
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
-      var nbt = new CompoundTag();
-      nbt.putString(CompoundTagKeys.NAME, entry.getKey().getSerializedName());
-      nbt.putByteArray(CompoundTagKeys.SIGNALS, entry.getValue().toByteArray());
-      aspectsTag.add(nbt);
+      var current = aspectsTag.addChild();
+      current.store(CompoundTagKeys.NAME, SignalAspect.CODEC, entry.getKey());
+      current.store(CompoundTagKeys.SIGNALS, ExtraCodecs.BIT_SET, entry.getValue());
     }
-    tag.put(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS, aspectsTag);
 
-    tag.put(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController.serializeNBT(provider));
+    output.putChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.inputSignal = tag.getInt(CompoundTagKeys.INPUT_SIGNAL);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.inputSignal = input.getIntOr(CompoundTagKeys.INPUT_SIGNAL, 0);
 
-    var aspectsTag = tag.getList(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS, Tag.TAG_COMPOUND);
-    for (var nbt : aspectsTag) {
-      var compoundNbt = (CompoundTag) nbt;
-      this.signalAspectTriggerSignals.put(
-          SignalAspect.fromName(compoundNbt.getString(CompoundTagKeys.NAME)).get(),
-          BitSet.valueOf(compoundNbt.getByteArray(CompoundTagKeys.SIGNALS)));
-    }
-
-    this.signalController
-        .deserializeNBT(provider, tag.getCompound(CompoundTagKeys.SIGNAL_CONTROLLER));
+    var aspectsTag = input.childrenListOrEmpty(CompoundTagKeys.SIGNAL_ASPECT_TRIGGER_SIGNALS);
+    aspectsTag.forEach(input1 -> {
+      var name = input1.read(CompoundTagKeys.NAME, SignalAspect.CODEC).orElseThrow();
+      var signals = input1.read(CompoundTagKeys.SIGNALS, ExtraCodecs.BIT_SET).orElseThrow();
+      this.signalAspectTriggerSignals.put(name, signals);
+    });
+    input.readChild(CompoundTagKeys.SIGNAL_CONTROLLER, this.signalController);
   }
 
   @Override

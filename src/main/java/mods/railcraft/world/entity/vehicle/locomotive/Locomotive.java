@@ -6,8 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
-import com.mojang.authlib.GameProfile;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
@@ -41,9 +40,6 @@ import mods.railcraft.world.item.component.LocomotiveWhistlePitchComponent;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -52,8 +48,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
@@ -64,10 +60,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
@@ -90,8 +88,8 @@ public abstract class Locomotive extends RailcraftMinecart implements
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<String> DESTINATION =
       SynchedEntityData.defineId(Locomotive.class, EntityDataSerializers.STRING);
-  private static final EntityDataAccessor<Optional<GameProfile>> OWNER =
-      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.OPTIONAL_GAME_PROFILE);
+  private static final EntityDataAccessor<Optional<NameAndId>> OWNER =
+      SynchedEntityData.defineId(Locomotive.class, RailcraftDataSerializers.OPTIONAL_NAME_AND_ID);
 
   private static final double DRAG_FACTOR = 0.9;
   private static final float HS_FORCE_BONUS = 3.5F;
@@ -103,7 +101,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
   private static final Set<Mode> SUPPORTED_MODES =
       Collections.unmodifiableSet(EnumSet.allOf(Mode.class));
 
-  protected float renderYaw;
   private int fuel;
   private int whistleDelay;
   private int tempIdle;
@@ -113,9 +110,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
     super(type, level);
   }
 
-  protected Locomotive(ItemStack itemStack, EntityType<?> type, double x,
-      double y, double z, ServerLevel level) {
-    super(itemStack, type, x, y, z, level);
+  protected Locomotive(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override
@@ -155,7 +152,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
 
     if (itemStack.has(RailcraftDataComponents.LOCOMOTIVE_OWNER)) {
       var owner = itemStack.get(RailcraftDataComponents.LOCOMOTIVE_OWNER).owner();
-      this.setOwner(owner.gameProfile());
+      this.setOwner(owner);
       this.setLock(Lock.LOCKED);
     }
 
@@ -165,12 +162,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public Optional<GameProfile> getOwner() {
+  public Optional<NameAndId> getOwner() {
     return this.entityData.get(OWNER);
   }
 
   @Override
-  public void setOwner(@Nullable GameProfile owner) {
+  public void setOwner(@Nullable NameAndId owner) {
     this.entityData.set(OWNER, Optional.ofNullable(owner));
   }
 
@@ -194,9 +191,9 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     if (this.level().isClientSide()) {
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+      return InteractionResult.SUCCESS;
     }
 
     var itemStack = player.getItemInHand(hand);
@@ -205,14 +202,14 @@ public abstract class Locomotive extends RailcraftMinecart implements
         this.whistlePitch = this.getNewWhistlePitch();
         this.whistle();
         itemStack.hurtAndBreak(1, (ServerLevel) this.level(), (ServerPlayer) player,
-            item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+            item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
       }
-      return InteractionResult.sidedSuccess(this.level().isClientSide());
+      return InteractionResult.SUCCESS;
     }
     if (this.canControl(player)) {
-      return super.interact(player, hand);
+      return super.interact(player, hand, location);
     }
-    return InteractionResult.sidedSuccess(this.level().isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   /**
@@ -431,10 +428,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     this.setDeltaMovement(this.getDeltaMovement().multiply(-1.0D, 1.0D, -1.0D));
   }
 
-  @Override
-  public void setRenderYaw(float yaw) {
-    this.renderYaw = yaw;
-  }
 
   public abstract SoundEvent getWhistleSound();
 
@@ -513,13 +506,12 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  protected void applyNaturalSlowdown() {
+  public Vec3 applyNaturalSlowdown(Vec3 entitySpeed) {
     if (this.isRemoved()) {
-      return;
+      return Vec3.ZERO;
     }
 
-    this.setDeltaMovement(this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag()));
-
+    Vec3 result = this.getDeltaMovement().multiply(getDrag(), 0.0D, getDrag());
     if (this.isReverse() && this.getSpeed().getLevel() > this.getMaxReverseSpeed().getLevel()) {
       this.setSpeed(this.getMaxReverseSpeed());
     }
@@ -536,8 +528,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
         }
       }
       double yaw = this.getYRot() * Mth.DEG_TO_RAD;
-      this.setDeltaMovement(
-          this.getDeltaMovement().add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force));
+      result = result.add(Math.cos(yaw) * force, 0, Math.sin(yaw) * force);
     }
 
     if (speed != Speed.MAX) {
@@ -548,13 +539,13 @@ public abstract class Locomotive extends RailcraftMinecart implements
         default -> 0.4F;
       };
 
-      var motion = this.getDeltaMovement();
-
-      this.setDeltaMovement(
-          Math.copySign(Math.min(Math.abs(motion.x()), limit), motion.x()),
-          motion.y(),
-          Math.copySign(Math.min(Math.abs(motion.z()), limit), motion.z()));
+      return new Vec3(
+          Math.copySign(Math.min(Math.abs(result.x()), limit), result.x()),
+          result.y(),
+          Math.copySign(Math.min(Math.abs(result.z()), limit), result.z()));
     }
+
+    return result;
   }
 
   private int getFuelUse() {
@@ -601,7 +592,7 @@ public abstract class Locomotive extends RailcraftMinecart implements
     if (entity instanceof ServerPlayer player) {
       var pants = player.getItemBySlot(EquipmentSlot.LEGS);
       if (pants.is(RailcraftItems.OVERALLS.get())) {
-        pants.hurtAndBreak(5, player.serverLevel(), player,
+        pants.hurtAndBreak(5, player.level(), player,
             item -> player.onEquippedItemBroken(item, EquipmentSlot.LEGS));
         return 4;
       }
@@ -689,63 +680,55 @@ public abstract class Locomotive extends RailcraftMinecart implements
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
 
-    tag.putBoolean(CompoundTagKeys.FLIPPED, this.flipped);
+    valueOutput.putBoolean(CompoundTagKeys.FLIPPED, this.flipped);
 
-    tag.putString(CompoundTagKeys.DEST, StringUtils.defaultIfBlank(getDestination(), ""));
+    valueOutput.putString(CompoundTagKeys.DEST, StringUtils.defaultIfBlank(getDestination(), ""));
 
-    tag.putString(CompoundTagKeys.MODE, this.getMode().getSerializedName());
-    tag.putString(CompoundTagKeys.SPEED, this.getSpeed().getSerializedName());
-    tag.putString(CompoundTagKeys.LOCK, this.getLock().getSerializedName());
+    valueOutput.store(CompoundTagKeys.MODE, Locomotive.Mode.CODEC, this.getMode());
+    valueOutput.store(CompoundTagKeys.SPEED, Locomotive.Speed.CODEC, this.getSpeed());
+    valueOutput.store(CompoundTagKeys.LOCK, Locomotive.Lock.CODEC, this.getLock());
 
-    tag.putString(CompoundTagKeys.PRIMARY_COLOR,
-        DyeColor.byId(this.entityData.get(PRIMARY_COLOR)).getSerializedName());
-    tag.putString(CompoundTagKeys.SECONDARY_COLOR,
-        DyeColor.byId(this.entityData.get(SECONDARY_COLOR)).getSerializedName());
+    valueOutput.store(CompoundTagKeys.PRIMARY_COLOR, DyeColor.CODEC,
+        DyeColor.byId(this.entityData.get(PRIMARY_COLOR)));
+    valueOutput.store(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC,
+        DyeColor.byId(this.entityData.get(SECONDARY_COLOR)));
 
-    tag.putFloat(CompoundTagKeys.WHISTLE_PITCH, this.whistlePitch);
+    valueOutput.putFloat(CompoundTagKeys.WHISTLE_PITCH, this.whistlePitch);
 
-    tag.putInt(CompoundTagKeys.FUEL, this.fuel);
+    valueOutput.putInt(CompoundTagKeys.FUEL, this.fuel);
 
-    tag.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
-    this.getOwner().ifPresent(owner -> tag.put(CompoundTagKeys.OWNER,
-        ExtraCodecs.GAME_PROFILE.encode(owner, NbtOps.INSTANCE, new CompoundTag()).getOrThrow()));
+    valueOutput.putBoolean(CompoundTagKeys.REVERSE, this.isReverse());
+    this.getOwner().ifPresent(owner -> {
+      valueOutput.store(CompoundTagKeys.OWNER, NameAndId.CODEC, owner);
+    });
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
 
-    this.flipped = tag.getBoolean(CompoundTagKeys.FLIPPED);
+    this.flipped = valueInput.getBooleanOr(CompoundTagKeys.FLIPPED, false);
 
-    this.setDestination(tag.getString(CompoundTagKeys.DEST));
+    this.setDestination(valueInput.getStringOr(CompoundTagKeys.DEST, ""));
 
-    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
-    this.setSpeed(Speed.fromName(tag.getString(CompoundTagKeys.SPEED)));
-    this.setLock(Lock.fromName(tag.getString(CompoundTagKeys.LOCK)));
+    this.setMode(valueInput.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.IDLE));
+    this.setSpeed(valueInput.read(CompoundTagKeys.SPEED, Speed.CODEC).orElse(Speed.NORMAL));
+    this.setLock(valueInput.read(CompoundTagKeys.LOCK, Lock.CODEC).orElse(Lock.UNLOCKED));
 
-    this.setPrimaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.PRIMARY_COLOR),
-            this.getDefaultPrimaryColor()));
-    this.setSecondaryColor(
-        DyeColor.byName(tag.getString(CompoundTagKeys.SECONDARY_COLOR),
-            this.getDefaultSecondaryColor()));
+    this.setPrimaryColor(valueInput.read(CompoundTagKeys.PRIMARY_COLOR, DyeColor.CODEC)
+        .orElse(this.getDefaultPrimaryColor()));
+    this.setSecondaryColor(valueInput.read(CompoundTagKeys.SECONDARY_COLOR, DyeColor.CODEC)
+        .orElse(this.getDefaultSecondaryColor()));
 
-    this.whistlePitch = tag.getFloat(CompoundTagKeys.WHISTLE_PITCH);
+    this.whistlePitch = valueInput.getFloatOr(CompoundTagKeys.WHISTLE_PITCH, getNewWhistlePitch());
 
-    this.fuel = tag.getInt(CompoundTagKeys.FUEL);
+    this.fuel = valueInput.getIntOr(CompoundTagKeys.FUEL, 0);
 
-    if (tag.contains(CompoundTagKeys.REVERSE, Tag.TAG_BYTE)) {
-      this.entityData.set(REVERSE, tag.getBoolean(CompoundTagKeys.REVERSE));
-    }
-    if (tag.contains(CompoundTagKeys.OWNER, Tag.TAG_COMPOUND)) {
-      this.setOwner(ExtraCodecs.GAME_PROFILE
-          .parse(NbtOps.INSTANCE, tag.getCompound(CompoundTagKeys.OWNER)).getOrThrow());
-    } else {
-      this.setOwner(null);
-    }
+    this.entityData.set(REVERSE, valueInput.getBooleanOr(CompoundTagKeys.REVERSE, false));
+    this.setOwner(valueInput.read(CompoundTagKeys.OWNER, NameAndId.CODEC).orElse(null));
   }
 
   public static void applyAction(Player player, AbstractMinecart minecart, boolean single,
@@ -758,11 +741,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     } else {
       locos.forEach(action);
     }
-  }
-
-  @Override
-  public boolean canBeRidden() {
-    return false;
   }
 
   @Override
@@ -847,10 +825,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     public Component getDisplayName() {
       return Component.translatable(this.translationKey);
     }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, IDLE);
-    }
   }
 
   /**
@@ -894,10 +868,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     public Speed shiftDown() {
       return values()[this.ordinal() + shiftDown];
     }
-
-    public static Speed fromName(String name) {
-      return CODEC.byName(name, NORMAL);
-    }
   }
 
   public enum Lock implements ButtonState<Lock>, StringRepresentable {
@@ -937,10 +907,6 @@ public abstract class Locomotive extends RailcraftMinecart implements
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Lock fromName(String name) {
-      return CODEC.byName(name, UNLOCKED);
     }
   }
 }

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:dusts/coal"
-    },
-    {
-      "tag": "c:dusts/ender_pearl"
-    },
-    {
-      "tag": "c:dusts/obsidian"
-    }
+    "#c:dusts/coal",
+    "#c:dusts/ender_pearl",
+    "#c:dusts/obsidian"
   ],
   "result": {
     "count": 3,

@@ -1,14 +1,14 @@
 package mods.railcraft.api.carts;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * @author Sm0keySa1m0n
@@ -60,15 +60,18 @@ public interface Train {
     return this.state() == State.IDLE || this.isLocked();
   }
 
-  Optional<IItemHandler> itemHandler();
+  Optional<ResourceHandler<ItemResource>> itemHandler();
 
-  Optional<IFluidHandler> fluidHandler();
+  Optional<ResourceHandler<FluidResource>> fluidHandler();
 
   enum State implements StringRepresentable {
 
     STOPPED("stopped"),
     IDLE("idle"),
     NORMAL("normal");
+
+    public static final StringRepresentable.EnumCodec<State> CODEC =
+        StringRepresentable.fromEnum(State::values);
 
     private final String name;
 
@@ -83,10 +86,6 @@ public interface Train {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Optional<State> fromName(String name) {
-      return Arrays.stream(values()).filter(state -> state.name.equals(name)).findAny();
     }
   }
 }

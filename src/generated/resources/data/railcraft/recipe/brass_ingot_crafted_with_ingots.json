@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/zinc"
-    },
-    "b": {
-      "tag": "c:ingots/copper"
-    }
+    "a": "#c:ingots/zinc",
+    "b": "#c:ingots/copper"
   },
   "pattern": [
     "ab",

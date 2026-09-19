@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "railcraft:quarried_stone"
-    }
+    "a": "railcraft:quarried_stone"
   },
   "pattern": [
     "aa",

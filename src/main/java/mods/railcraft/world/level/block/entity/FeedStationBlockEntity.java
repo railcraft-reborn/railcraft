@@ -6,10 +6,9 @@ import mods.railcraft.util.container.StackFilter;
 import mods.railcraft.world.inventory.FeedStationMenu;
 import mods.railcraft.world.level.block.FeedStationBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,6 +17,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class FeedStationBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
@@ -79,7 +80,7 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
       var player = this.level instanceof ServerLevel serverLevel
           ? this.getOwner()
               .<Player>map(
-                  profile -> serverLevel.getServer().getPlayerList().getPlayer(profile.getId()))
+                  profile -> serverLevel.getServer().getPlayerList().getPlayer(profile.id()))
               .orElse(null)
           : null;
 
@@ -95,15 +96,21 @@ public class FeedStationBlockEntity extends ContainerBlockEntity implements Menu
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.feedCounter = tag.getByte(CompoundTagKeys.FEED_COUNTER);
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
   }
 
   @Override
-  public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putByte(CompoundTagKeys.FEED_COUNTER, this.feedCounter);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.feedCounter = input.getByteOr(CompoundTagKeys.FEED_COUNTER, (byte) 0);
+  }
+
+  @Override
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putByte(CompoundTagKeys.FEED_COUNTER, this.feedCounter);
   }
 
   @Override

@@ -13,7 +13,7 @@ public record SetFilterSlotMessage(
     int slotIndex, ItemStack stack) implements CustomPacketPayload {
 
   public static final Type<SetFilterSlotMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_filter_slot"));
+      new Type<>(RailcraftConstants.id("set_filter_slot"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, SetFilterSlotMessage> STREAM_CODEC =
       StreamCodec.composite(

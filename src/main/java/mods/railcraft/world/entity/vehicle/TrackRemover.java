@@ -2,6 +2,7 @@ package mods.railcraft.world.entity.vehicle;
 
 import java.util.HashSet;
 import java.util.Set;
+import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
@@ -15,9 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
 
-public class TrackRemover extends MaintenanceMinecart {
+public class TrackRemover extends MaintenanceMinecart implements CartAdvanceable {
 
   private final Set<BlockPos> tracksBehind = new HashSet<>();
   private final Set<BlockPos> tracksRemoved = new HashSet<>();
@@ -26,19 +26,14 @@ public class TrackRemover extends MaintenanceMinecart {
     super(type, level);
   }
 
-  public TrackRemover(ItemStack itemStack, double x, double y, double z, ServerLevel level) {
-    super(itemStack, RailcraftEntityTypes.TRACK_REMOVER.get(), x, y, z, level);
+  public TrackRemover(ItemStack itemStack, Level level, double x, double y, double z) {
+    super(itemStack, RailcraftEntityTypes.TRACK_REMOVER.get(), level, x, y, z);
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
-    if (this.level().isClientSide()) {
-      return;
-    }
-
-    for (BlockPos track : this.tracksBehind) {
-      if (track.equals(pos)) {
+  public void advanceOnTrack(ServerLevel serverLevel) {
+    for (var track : this.tracksBehind) {
+      if (track.equals(this.blockPosition())) {
         continue;
       }
       this.removeTrack(track);
@@ -46,7 +41,13 @@ public class TrackRemover extends MaintenanceMinecart {
     this.tracksBehind.removeAll(this.tracksRemoved);
     this.tracksRemoved.clear();
 
-    this.addTravelledTrack(pos);
+    this.addTravelledTrack(this.blockPosition());
+  }
+
+  @Override
+  protected void moveAlongTrack(ServerLevel serverLevel) {
+    super.moveAlongTrack(serverLevel);
+    this.advanceOnTrack(serverLevel);
   }
 
   private void addTravelledTrack(BlockPos pos) {

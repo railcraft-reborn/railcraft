@@ -5,10 +5,11 @@ import mods.railcraft.particle.TuningAuraParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
 public class TuningAuraParticle extends DimmableParticle {
@@ -16,8 +17,8 @@ public class TuningAuraParticle extends DimmableParticle {
   private final Vec3 destination, source;
 
   private TuningAuraParticle(ClientLevel level, double x, double y, double z, double dx, double dy,
-      double dz, TuningAuraParticleOptions options, SpriteSet sprites) {
-    super(level, x, y, z, dx, dy, dz);
+      double dz, TuningAuraParticleOptions options, TextureAtlasSprite sprite) {
+    super(level, x, y, z, dx, dy, dz, sprite);
     this.destination = options.destination();
     this.source = new Vec3(x, y, z);
     this.calculateVector();
@@ -26,17 +27,16 @@ public class TuningAuraParticle extends DimmableParticle {
 
     var color = options.color();
     float variant = this.random.nextFloat() * 0.6F + 0.4F;
-    this.rCol = (FastColor.ARGB32.red(color) / 255.0F) * variant;
-    this.gCol = (FastColor.ARGB32.green(color) / 255.0F) * variant;
-    this.bCol = (FastColor.ARGB32.blue(color) / 255.0F) * variant;
+    this.rCol = (ARGB.red(color) / 255.0F) * variant;
+    this.gCol = (ARGB.green(color) / 255.0F) * variant;
+    this.bCol = (ARGB.blue(color) / 255.0F) * variant;
     this.setLifetime(2000);
     this.hasPhysics = false;
-    this.pickSprite(sprites);
   }
 
   @Override
-  public ParticleRenderType getRenderType() {
-    return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+  protected Layer getLayer() {
+    return Layer.TRANSLUCENT;
   }
 
   private void calculateVector() {
@@ -96,8 +96,8 @@ public class TuningAuraParticle extends DimmableParticle {
 
     @Override
     public Particle createParticle(TuningAuraParticleOptions options, ClientLevel level,
-        double x, double y, double z, double dx, double dy, double dz) {
-      return new TuningAuraParticle(level, x, y, z, dx, dy, dz, options, this.sprites);
+        double x, double y, double z, double dx, double dy, double dz, RandomSource randomSource) {
+      return new TuningAuraParticle(level, x, y, z, dx, dy, dz, options, this.sprites.get(randomSource));
     }
   }
 }

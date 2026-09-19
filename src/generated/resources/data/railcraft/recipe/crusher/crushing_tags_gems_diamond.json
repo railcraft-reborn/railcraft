@@ -16,15 +16,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:gems/diamond"
-  },
+  "ingredient": "#c:gems/diamond",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/diamond"
-      }
+      "result": "#c:dusts/diamond"
     }
   ]
 }

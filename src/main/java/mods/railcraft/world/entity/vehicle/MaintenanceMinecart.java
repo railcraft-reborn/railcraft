@@ -5,12 +5,12 @@ import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.api.util.EnumUtil;
+import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.client.gui.widget.button.ButtonTexture;
 import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.network.RailcraftDataSerializers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,8 +23,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class MaintenanceMinecart extends RailcraftMinecart {
 
@@ -39,9 +42,9 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     super(type, level);
   }
 
-  protected MaintenanceMinecart(ItemStack itemStack, EntityType<?> type, double x, double y,
-      double z, Level level) {
-    super(itemStack, type, x, y, z, level);
+  protected MaintenanceMinecart(ItemStack itemStack, EntityType<?> type, Level level,
+      double x, double y, double z) {
+    super(itemStack, type, level, x, y, z);
   }
 
   @Override
@@ -51,17 +54,13 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     builder.define(MODE, Mode.ON);
   }
 
-  @Override
-  public float getMaxCartSpeedOnRail() {
-    return this.mode().speed();
-  }
-
   public Mode mode() {
     return this.entityData.get(MODE);
   }
 
   public void setMode(Mode mode) {
     this.entityData.set(MODE, mode);
+    this.setData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL, mode.speed());
   }
 
   @Override
@@ -98,26 +97,20 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   }
 
   @Override
-  public boolean canBeRidden() {
-    return false;
+  public Vec3 applyNaturalSlowdown(Vec3 speed) {
+    return speed.multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR);
   }
 
   @Override
-  protected void applyNaturalSlowdown() {
-    super.applyNaturalSlowdown();
-    this.setDeltaMovement(this.getDeltaMovement().multiply(DRAG_FACTOR, 1.0D, DRAG_FACTOR));
+  protected void addAdditionalSaveData(ValueOutput valueOutput) {
+    super.addAdditionalSaveData(valueOutput);
+    valueOutput.store(CompoundTagKeys.MODE, Mode.CODEC, this.mode());
   }
 
   @Override
-  protected void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    tag.putString(CompoundTagKeys.MODE, this.mode().getSerializedName());
-  }
-
-  @Override
-  protected void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    this.setMode(Mode.fromName(tag.getString(CompoundTagKeys.MODE)));
+  protected void readAdditionalSaveData(ValueInput valueInput) {
+    super.readAdditionalSaveData(valueInput);
+    this.setMode(valueInput.read(CompoundTagKeys.MODE, Mode.CODEC).orElse(Mode.ON));
   }
 
   protected boolean placeNewTrack(BlockPos pos, int slotStock, RailShape railShape) {
@@ -192,10 +185,6 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
     @Override
     public String getSerializedName() {
       return this.name;
-    }
-
-    public static Mode fromName(String name) {
-      return CODEC.byName(name, ON);
     }
   }
 }

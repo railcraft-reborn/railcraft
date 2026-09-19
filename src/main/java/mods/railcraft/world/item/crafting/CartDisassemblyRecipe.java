@@ -1,23 +1,29 @@
 package mods.railcraft.world.item.crafting;
 
-import net.minecraft.core.HolderLookup;
+import java.util.List;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public abstract class CartDisassemblyRecipe extends CustomRecipe {
 
   private final Item ingredient;
   private final Item result;
+  @Nullable
+  private PlacementInfo placementInfo;
 
-  public CartDisassemblyRecipe(Item ingredient, Item result, CraftingBookCategory category) {
-    super(category);
+  public CartDisassemblyRecipe(Item ingredient, Item result) {
+    super();
     this.ingredient = ingredient;
     this.result = result;
   }
@@ -35,25 +41,24 @@ public abstract class CartDisassemblyRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
-    return this.getResultItem(provider).copy();
-  }
-
-  @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width >= 1 && height >= 1;
-  }
-
-  @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     return new ItemStack(this.result);
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(Ingredient.of(this.ingredient));
-    return ingredients;
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      this.placementInfo = PlacementInfo.create(Ingredient.of(this.ingredient));
+    }
+    return this.placementInfo;
+  }
+
+  @Override
+  public List<RecipeDisplay> display() {
+    return List.of(new ShapelessCraftingRecipeDisplay(
+        List.of(new SlotDisplay.ItemSlotDisplay(this.ingredient)),
+        new SlotDisplay.ItemSlotDisplay(this.result),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
   }
 
   @Override

@@ -2,9 +2,7 @@
   "type": "railcraft:blasting",
   "cookingTime": 1200,
   "experience": 0.0,
-  "ingredient": {
-    "item": "minecraft:bucket"
-  },
+  "ingredient": "minecraft:bucket",
   "result": {
     "count": 3,
     "id": "railcraft:steel_ingot"

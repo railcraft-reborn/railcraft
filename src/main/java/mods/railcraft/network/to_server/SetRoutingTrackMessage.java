@@ -15,7 +15,7 @@ public record SetRoutingTrackMessage(
     LockableSwitchTrackActuatorBlockEntity.Lock lock) implements CustomPacketPayload {
 
   public static final CustomPacketPayload.Type<SetRoutingTrackMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_routing_track"));
+      new Type<>(RailcraftConstants.id("set_routing_track"));
 
   public static final StreamCodec<FriendlyByteBuf, SetRoutingTrackMessage> STREAM_CODEC =
       StreamCodec.composite(
@@ -31,7 +31,7 @@ public record SetRoutingTrackMessage(
   public static void handle(SetRoutingTrackMessage message, IPayloadContext context) {
     var player = context.player();
     var level = player.level();
-    var senderProfile = player.getGameProfile();
+    var senderProfile = player.nameAndId();
     level.getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ROUTING_TRACK.get())
         .filter(routingTrack -> routingTrack.canAccess(senderProfile))
         .ifPresent(routingTrack -> {

@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:dusts/saltpeter"
-    },
-    {
-      "tag": "c:dusts/saltpeter"
-    },
-    {
-      "tag": "c:dusts/sulfur"
-    },
-    {
-      "tag": "c:dusts/charcoal"
-    }
+    "#c:dusts/saltpeter",
+    "#c:dusts/saltpeter",
+    "#c:dusts/sulfur",
+    "#c:dusts/charcoal"
   ],
   "result": {
     "count": 2,

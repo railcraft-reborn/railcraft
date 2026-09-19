@@ -1,15 +1,11 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:prismarine_bricks"
-  },
+  "ingredient": "minecraft:prismarine_bricks",
   "outputs": [
     {
       "count": 9,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:prismarine_shard"
-      }
+      "result": "minecraft:prismarine_shard"
     }
   ]
 }

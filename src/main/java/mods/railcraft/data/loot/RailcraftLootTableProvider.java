@@ -13,10 +13,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 public class RailcraftLootTableProvider extends LootTableProvider {
 
   public RailcraftLootTableProvider(PackOutput packOutput,
-      CompletableFuture<HolderLookup.Provider> provider) {
+      CompletableFuture<HolderLookup.Provider> registries) {
     super(packOutput, Set.of(), List.of(
         new LootTableProvider.SubProviderEntry(RailcraftBlockLoot::new, LootContextParamSets.BLOCK),
         new LootTableProvider.SubProviderEntry(RailcraftChestLoot::new, LootContextParamSets.CHEST))
-    , provider);
+    , registries);
   }
 }

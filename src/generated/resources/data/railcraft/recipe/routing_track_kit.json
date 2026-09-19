@@ -2,23 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "railcraft:track_parts"
-    },
+    "#minecraft:planks",
+    "railcraft:track_parts",
     [
-      {
-        "item": "railcraft:ticket"
-      },
-      {
-        "item": "railcraft:golden_ticket"
-      }
+      "railcraft:ticket",
+      "railcraft:golden_ticket"
     ],
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#c:dusts/redstone"
   ],
   "result": {
     "count": 8,

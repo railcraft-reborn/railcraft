@@ -12,17 +12,18 @@ import mods.railcraft.world.inventory.detector.RoutingDetectorMenu;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
 import mods.railcraft.world.level.block.entity.detector.RoutingDetectorBlockEntity;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMenu> {
 
-  private static final ResourceLocation BACKGROUND_TEXTURE =
-      RailcraftConstants.rl("textures/gui/container/routing.png");
+  private static final Identifier BACKGROUND_TEXTURE =
+      RailcraftConstants.id("textures/gui/container/routing.png");
   private static final Component ROUTING_TABLE =
       Component.translatable(Translations.Screen.ROUTING_TABLE_BOOK);
   private static final int REFRESH_INTERVAL_TICKS = SharedConstants.TICKS_PER_SECOND;
@@ -34,24 +35,23 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
 
   public RoutingDetectorScreen(RoutingDetectorMenu menu, Inventory inventory,
       Component title) {
-    super(menu, inventory, title);
-    this.imageHeight = 158;
-    this.imageWidth = 176;
+    super(menu, inventory, title, 176, 158);
     this.inventoryLabelY = this.imageHeight - 94;
     this.routingDetector = menu.getRoutingDetector();
 
     this.registerWidgetRenderer(new WidgetRenderer<>(menu.getErrorWidget()) {
+
       @Override
-      public List<Component> getTooltip() {
+      public List<ClientTooltipComponent> getTooltip() {
         return menu.getRoutingDetector().logicError()
             .map(RoutingLogicException::getTooltip)
-            .orElse(null);
+            .orElse(List.of());
       }
 
       @Override
-      public void render(ResourceLocation widgetLocation, GuiGraphics guiGraphics, int centreX,
+      public void render(Identifier widgetLocation, GuiGraphicsExtractor guiGraphics, int centreX,
           int centreY, int mouseX, int mouseY) {
-        if (this.getTooltip() != null) {
+        if (!this.getTooltip().isEmpty()) {
           super.render(widgetLocation, guiGraphics, centreX, centreY, mouseX, mouseY);
         }
       }
@@ -59,7 +59,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   @Override
-  public ResourceLocation getWidgetsTexture() {
+  public Identifier getWidgetsTexture() {
     return BACKGROUND_TEXTURE;
   }
 
@@ -85,7 +85,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getLock() != lock) {
       this.routingDetector.setLock(
           lock.equals(SwitchTrackRouterBlockEntity.Lock.UNLOCKED)
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -94,7 +94,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
     if (this.routingDetector.getRailway() != railway) {
       this.routingDetector.setRailway(
           railway.equals(SwitchTrackRouterBlockEntity.Railway.PUBLIC)
-          ? null : this.minecraft.player.getGameProfile());
+          ? null : this.minecraft.player.nameAndId());
       this.sendAttributes();
     }
   }
@@ -102,7 +102,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   private Optional<Tooltip> updateLockButtonTooltip(SwitchTrackRouterBlockEntity.Lock lock) {
     return Optional.of(Tooltip.create(switch (lock) {
       case LOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_LOCKED,
-          this.routingDetector.getOwnerOrThrow().getName());
+          this.routingDetector.getOwnerOrThrow().name());
       case UNLOCKED -> Component.translatable(Translations.Screen.ACTION_SIGNAL_BOX_UNLOCKED);
     }));
   }
@@ -111,7 +111,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
       SwitchTrackRouterBlockEntity.Railway railway) {
     return Optional.of(Tooltip.create(switch (railway) {
       case PRIVATE -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PRIVATE_RAILWAY_DESC,
-          this.routingDetector.getOwnerOrThrow().getName());
+          this.routingDetector.getOwnerOrThrow().name());
       case PUBLIC -> Component.translatable(Translations.Screen.SWITCH_TRACK_ROUTER_PUBLIC_RAILWAY_DESC);
     }));
   }
@@ -126,7 +126,7 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void updateButtons() {
-    var canAccess = this.routingDetector.canAccess(this.minecraft.player.getGameProfile());
+    var canAccess = this.routingDetector.canAccess(this.minecraft.player.nameAndId());
     this.lockButton.active = canAccess;
     this.lockButton.setState(this.routingDetector.getLock());
     this.railwayButton.active = canAccess;
@@ -134,17 +134,17 @@ public class RoutingDetectorScreen extends RailcraftMenuScreen<RoutingDetectorMe
   }
 
   private void sendAttributes() {
-    if (!this.routingDetector.canAccess(this.minecraft.player.getGameProfile())) {
+    if (!this.routingDetector.canAccess(this.minecraft.player.nameAndId())) {
       return;
     }
-    PacketDistributor.sendToServer(
+    ClientPacketDistributor.sendToServer(
         new SetRoutingDetectorMessage(this.routingDetector.getBlockPos(),
             this.railwayButton.getState(), this.lockButton.getState()));
   }
 
   @Override
-  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-    super.renderLabels(guiGraphics, mouseX, mouseY);
-    guiGraphics.drawString(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
+  protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
+    super.extractLabels(graphics, xm, ym);
+    graphics.text(this.font, ROUTING_TABLE, 64, 29, 4210752, false);
   }
 }

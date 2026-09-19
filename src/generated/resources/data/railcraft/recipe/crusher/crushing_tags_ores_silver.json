@@ -23,22 +23,16 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/silver"
-  },
+  "ingredient": "#c:ores/silver",
   "outputs": [
     {
       "count": 2,
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/silver"
-      }
+      "result": "#c:dusts/silver"
     },
     {
       "probability": 0.1,
-      "result": {
-        "tag": "c:dusts/lead"
-      }
+      "result": "#c:dusts/lead"
     }
   ]
 }

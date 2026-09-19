@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "minecraft:planks"
-    },
-    "b": {
-      "tag": "c:ingots/iron"
-    },
-    "c": {
-      "item": "minecraft:slime_ball"
-    }
+    "a": "#minecraft:planks",
+    "b": "#c:ingots/iron",
+    "c": "minecraft:slime_ball"
   },
   "pattern": [
     "aaa",

@@ -9,7 +9,7 @@ import mods.railcraft.network.to_server.SetFilterSlotMessage;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
     implements IGhostIngredientHandler<T> {
@@ -24,7 +24,7 @@ public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
         continue;
       }
 
-      var bounds = new Rect2i(gui.getGuiLeft() + slot.x, gui.getGuiTop() + slot.y, 17, 17);
+      var bounds = new Rect2i(gui.getLeftPos() + slot.x, gui.getTopPos() + slot.y, 17, 17);
 
       if (ingredient.getIngredient() instanceof ItemStack itemStack) {
         if ((slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom())) {
@@ -38,7 +38,7 @@ public class GhostIngredientHandler<T extends RailcraftMenuScreen<?>>
               @Override
               public void accept(I ingredient) {
                 var itemStack = ((ItemStack) ingredient).copy();
-                PacketDistributor.sendToServer(new SetFilterSlotMessage(slot.index, itemStack));
+                ClientPacketDistributor.sendToServer(new SetFilterSlotMessage(slot.index, itemStack));
                 slot.set(itemStack);
               }
             });

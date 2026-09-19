@@ -9,40 +9,28 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/coal"
-  },
+  "ingredient": "#c:ores/coal",
   "outputs": [
     {
       "count": 2,
       "probability": 1.0,
-      "result": {
-        "item": "railcraft:coal_dust"
-      }
+      "result": "railcraft:coal_dust"
     },
     {
       "probability": 0.65,
-      "result": {
-        "item": "railcraft:coal_dust"
-      }
+      "result": "railcraft:coal_dust"
     },
     {
       "probability": 0.15,
-      "result": {
-        "item": "railcraft:sulfur_dust"
-      }
+      "result": "railcraft:sulfur_dust"
     },
     {
       "probability": 0.15,
-      "result": {
-        "item": "minecraft:coal"
-      }
+      "result": "minecraft:coal"
     },
     {
       "probability": 0.001,
-      "result": {
-        "item": "minecraft:diamond"
-      }
+      "result": "minecraft:diamond"
     }
   ]
 }

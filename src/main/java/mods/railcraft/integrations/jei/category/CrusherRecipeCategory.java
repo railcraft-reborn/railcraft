@@ -13,9 +13,9 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -24,8 +24,8 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
   private static final int WIDTH = 144;
   private static final int HEIGHT = 54;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/crusher.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/crusher.png");
 
   private final IDrawable background, arrow;
 
@@ -45,8 +45,8 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
   }
 
   @Override
-  public void draw(RecipeHolder<CrusherRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView,
-      GuiGraphics guiGraphics, double mouseX, double mouseY) {
+  public void draw(RecipeHolder<CrusherRecipe> recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.background.draw(guiGraphics);
     this.arrow.draw(guiGraphics, 58, 0);
   }
@@ -55,11 +55,11 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrusherRecipe> recipeHolder,
       IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    var ingredients = recipe.getIngredients();
+    var ingredients = recipe.placementInfo().ingredients();
 
     builder
         .addInputSlot(19, 19)
-        .addIngredients(ingredients.getFirst());
+        .add(ingredients.getFirst());
 
     var outputs = recipe.getProbabilityOutputs();
     for (int y = 0; y < 3; y++) {
@@ -71,7 +71,7 @@ public class CrusherRecipeCategory extends AbstractRecipeCategory<RecipeHolder<C
         }
         var recipeLayout = builder
             .addOutputSlot(91 + x * 18, y * 18 + 1)
-            .addItemStack(itemStack);
+            .add(itemStack);
         if (!itemStack.isEmpty()) {
           recipeLayout.addRichTooltipCallback((recipeSlotView, tooltip) -> {
             double probability = outputs.get(index - 1).probability() * 100;

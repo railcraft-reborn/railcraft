@@ -1,0 +1,19 @@
+{
+  "values": [
+    "railcraft:cartman/3/cart/cargo_minecart",
+    "railcraft:cartman/3/cart/tank_minecart",
+    "railcraft:cartman/3/cart/minecart",
+    "railcraft:cartman/3/cart/chest_minecart",
+    "railcraft:cartman/3/cart/hopper_minecart",
+    "railcraft:cartman/3/cart/tnt_minecart",
+    "railcraft:cartman/3/locomotive/electric_locomotive",
+    "railcraft:cartman/3/locomotive/steam_locomotive",
+    "railcraft:cartman/3/locomotive/world_spike",
+    "railcraft:cartman/3/locomotive/void_chest_minecart",
+    "railcraft:cartman/3/locomotive/track_layer",
+    "railcraft:cartman/3/locomotive/track_relayer",
+    "railcraft:cartman/3/locomotive/track_remover",
+    "railcraft:cartman/3/locomotive/track_undercutter",
+    "railcraft:cartman/3/locomotive/tunnel_bore"
+  ]
+}

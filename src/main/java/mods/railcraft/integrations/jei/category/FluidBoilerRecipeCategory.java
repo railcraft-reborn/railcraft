@@ -1,7 +1,7 @@
 package mods.railcraft.integrations.jei.category;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Objects;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -20,19 +20,21 @@ import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoilerJEIRecipe> {
 
   public static final int WIDTH = 117;
   public static final int HEIGHT = 54;
 
-  public static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/fluid_fueled_steam_boiler.png");
+  public static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/fluid_fueled_steam_boiler.png");
 
   private final IDrawable tankBackground, tankOverlay, heatBackground, heatOverlay, flame;
 
@@ -53,8 +55,8 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
   }
 
   @Override
-  public void draw(FluidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
+  public void draw(FluidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.heatBackground.draw(guiGraphics, 23, 5);
     this.heatOverlay.draw(guiGraphics, 23 + 1, 5 + 1);
     this.flame.draw(guiGraphics, 46, 19);
@@ -73,20 +75,25 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, FluidBoilerJEIRecipe recipe, IFocusGroup focuses) {
     builder.addOutputSlot(1, 4)
-        .addFluidStack(recipe.steam(), 1000)
+        .add(recipe.steam(), 1000)
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
-    builder.addInputSlot(73, 4)
-        .addIngredients(NeoForgeTypes.FLUID_STACK,
-            Stream.of(recipe.fuel().getStacks())
-                .map(x -> x.copyWithAmount(1000))
-                .toList())
+
+    var fluidBuilder = builder.addInputSlot(73, 4)
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
+
+    Objects.requireNonNull(Minecraft.getInstance().level).registryAccess()
+        .lookupOrThrow(BuiltInRegistries.FLUID.key())
+        .getOrThrow(recipe.fuel())
+        .forEach(fluid -> {
+          fluidBuilder.add(NeoForgeTypes.FLUID_STACK, new FluidStack(fluid, 1000));
+        });
+
     builder.addInputSlot(100, 4)
-        .addFluidStack(recipe.water(), 1000)
+        .add(recipe.water(), 1000)
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
@@ -94,7 +101,7 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
 
   public static List<FluidBoilerJEIRecipe> getBoilerRecipes() {
     return List.of(
-        new FluidBoilerJEIRecipe(FluidIngredient.tag(RailcraftTags.Fluids.CREOSOTE),
+        new FluidBoilerJEIRecipe(RailcraftTags.Fluids.CREOSOTE,
             Fluids.WATER,
             RailcraftFluids.STEAM.get(), 100)
     );

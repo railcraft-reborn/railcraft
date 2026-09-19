@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:block_signal_relay_box",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "spawnCart": false,
+  "structure": "railcraft:test/block_signal_relay_box"
+}

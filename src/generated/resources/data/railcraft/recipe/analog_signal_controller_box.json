@@ -2,22 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_ingot"
-    },
-    "b": {
-      "item": "railcraft:controller_circuit"
-    },
-    "c": {
-      "item": "minecraft:comparator"
-    }
+    "a": "minecraft:iron_ingot",
+    "b": "railcraft:controller_circuit",
+    "c": "minecraft:comparator"
   },
   "pattern": [
     "aba",
     "aca"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:analog_signal_controller_box"
   }
 }

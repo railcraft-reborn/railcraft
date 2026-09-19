@@ -3,6 +3,7 @@ package mods.railcraft.world.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import org.jspecify.annotations.Nullable;
 import io.netty.buffer.Unpooled;
 import mods.railcraft.gui.widget.Widget;
 import mods.railcraft.network.to_client.SyncWidgetMessage;
@@ -13,11 +14,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.connection.ConnectionType;
 
 public abstract class RailcraftMenu extends AbstractContainerMenu {
 
@@ -26,7 +28,8 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private final Predicate<Player> validator;
   private final List<Widget> widgets = new ArrayList<>();
 
-  protected RailcraftMenu(MenuType<?> type, int id, Player player, Predicate<Player> validator) {
+  protected RailcraftMenu(@Nullable MenuType<?> type, int id, Player player,
+      Predicate<Player> validator) {
     super(type, id);
     this.player = player;
     this.validator = validator;
@@ -76,7 +79,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   private void sendWidgetPacket(ServerPlayer player, Widget widget) {
     if (widget.requiresSync(player)) {
       var byteBuf = new RegistryFriendlyByteBuf(
-          new FriendlyByteBuf(Unpooled.buffer()), player.registryAccess());
+          new FriendlyByteBuf(Unpooled.buffer()), player.registryAccess(), ConnectionType.OTHER);
       try {
         widget.writeToBuf(player, byteBuf);
         var message = new SyncWidgetMessage(this.containerId, widget.getId(), byteBuf.array());
@@ -88,18 +91,18 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
   }
 
   @Override
-  public void clicked(int slotId, int mouseButton, ClickType clickType, Player player) {
+  public void clicked(int slotId, int mouseButton, ContainerInput containerInput, Player player) {
     if (slotId >= 0) {
       var slot = this.slots.get(slotId);
       if (slot instanceof RailcraftSlot railcraftSlot && railcraftSlot.isPhantom()) {
-        this.slotClickPhantom(railcraftSlot, mouseButton, clickType, player);
+        this.slotClickPhantom(railcraftSlot, mouseButton, containerInput, player);
       }
     }
-    super.clicked(slotId, mouseButton, clickType, player);
+    super.clicked(slotId, mouseButton, containerInput, player);
   }
 
   private void slotClickPhantom(RailcraftSlot slot, int mouseButton,
-      ClickType clickType, Player player) {
+      ContainerInput containerInput, Player player) {
     if (mouseButton == 2) {
       if (slot.canAdjustPhantom()) {
         slot.set(ItemStack.EMPTY);
@@ -113,13 +116,13 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       if (stackSlot.isEmpty() && !stackHeld.isEmpty() && slot.mayPlace(stackHeld)) {
         fillPhantomSlot(slot, stackHeld, mouseButton);
       } else if (stackHeld.isEmpty()) {
-        adjustPhantomSlot(slot, mouseButton, clickType);
+        adjustPhantomSlot(slot, mouseButton, containerInput);
         slot.onTake(player, containerMenu.getCarried());
       }
     }
   }
 
-  private void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ClickType clickType) {
+  private void adjustPhantomSlot(RailcraftSlot slot, int mouseButton, ContainerInput containerInput) {
     if (!slot.canAdjustPhantom()) {
       return;
     }
@@ -128,7 +131,7 @@ public abstract class RailcraftMenu extends AbstractContainerMenu {
       return;
     }
     int stackSize;
-    if (clickType == ClickType.QUICK_MOVE) {
+    if (containerInput == ContainerInput.QUICK_MOVE) {
       stackSize = mouseButton == 0 ? (stackSlot.getCount() + 1) / 2 : stackSlot.getCount() * 2;
     } else {
       stackSize = mouseButton == 0 ? stackSlot.getCount() - 1 : stackSlot.getCount() + 1;

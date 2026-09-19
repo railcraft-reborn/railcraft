@@ -1,27 +1,19 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:brick_stairs"
-  },
+  "ingredient": "minecraft:brick_stairs",
   "outputs": [
     {
       "count": 4,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:brick"
-      }
+      "result": "minecraft:brick"
     },
     {
       "probability": 0.5,
-      "result": {
-        "item": "minecraft:brick"
-      }
+      "result": "minecraft:brick"
     },
     {
       "probability": 0.5,
-      "result": {
-        "item": "minecraft:brick"
-      }
+      "result": "minecraft:brick"
     }
   ]
 }

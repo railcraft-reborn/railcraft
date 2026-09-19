@@ -1,23 +1,16 @@
 package mods.railcraft.world.level.block.manipulator;
 
-import java.util.List;
-import mods.railcraft.Translations;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class AdvancedItemLoaderBlock extends ItemLoaderBlock {
 
-  public static final DirectionProperty FACING = BlockStateProperties.FACING;
+  public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
   public AdvancedItemLoaderBlock(Properties properties) {
     super(properties);
@@ -41,14 +34,5 @@ public class AdvancedItemLoaderBlock extends ItemLoaderBlock {
   @Override
   public Direction getFacing(BlockState blockState) {
     return blockState.getValue(FACING);
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-      TooltipFlag flag) {
-    tooltip.add(Component.translatable(Translations.Tips.ITEM_LOADER)
-        .withStyle(ChatFormatting.GRAY));
-    tooltip.add(Component.translatable(Translations.Tips.HIT_CROWBAR_TO_ROTATE)
-        .withStyle(ChatFormatting.BLUE));
   }
 }

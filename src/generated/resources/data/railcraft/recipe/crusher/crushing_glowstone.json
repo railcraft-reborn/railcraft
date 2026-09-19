@@ -1,21 +1,15 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:glowstone"
-  },
+  "ingredient": "minecraft:glowstone",
   "outputs": [
     {
       "count": 3,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:glowstone_dust"
-      }
+      "result": "minecraft:glowstone_dust"
     },
     {
       "probability": 0.75,
-      "result": {
-        "item": "minecraft:glowstone_dust"
-      }
+      "result": "minecraft:glowstone_dust"
     }
   ]
 }

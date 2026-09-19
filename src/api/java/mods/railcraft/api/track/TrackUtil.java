@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.RailcraftFakePlayer;
 import mods.railcraft.api.item.TrackPlacer;
 import mods.railcraft.api.item.TrackTypeLike;
@@ -22,7 +22,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -197,8 +197,8 @@ public final class TrackUtil {
     if (block instanceof BaseRailBlock railBlock) {
       return railBlock;
     }
-    throw new IllegalArgumentException(BuiltInRegistries.BLOCK.getKey(block)
-        + " is not a rail block.");
+    throw new IllegalArgumentException("%s is not a rail block."
+        .formatted(BuiltInRegistries.BLOCK.getKey(block)));
   }
 
   public static boolean setRailShape(Level level, BlockPos pos, RailShape railShape) {
@@ -250,13 +250,13 @@ public final class TrackUtil {
     }
 
     var up = pos.above();
-    if (shape.isAscending() && BaseRailBlock.isRail(level.getBlockState(up))) {
+    if (shape.isSlope() && BaseRailBlock.isRail(level.getBlockState(up))) {
       return Optional.of(up);
     }
 
     var down = pos.below();
     if (BaseRailBlock.isRail(level.getBlockState(down))
-        && getRailShapeRaw(level, down).isAscending()) {
+        && getRailShapeRaw(level, down).isSlope()) {
       return Optional.of(down);
     }
 

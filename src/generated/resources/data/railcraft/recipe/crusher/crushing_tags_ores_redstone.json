@@ -9,35 +9,25 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/redstone"
-  },
+  "ingredient": "#c:ores/redstone",
   "outputs": [
     {
       "count": 6,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:redstone"
-      }
+      "result": "minecraft:redstone"
     },
     {
       "count": 2,
       "probability": 0.85,
-      "result": {
-        "item": "minecraft:redstone"
-      }
+      "result": "minecraft:redstone"
     },
     {
       "probability": 0.25,
-      "result": {
-        "item": "minecraft:redstone"
-      }
+      "result": "minecraft:redstone"
     },
     {
       "probability": 0.1,
-      "result": {
-        "item": "minecraft:glowstone_dust"
-      }
+      "result": "minecraft:glowstone_dust"
     }
   ]
 }

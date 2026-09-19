@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:ingots/nickel"
-    },
-    "b": {
-      "item": "railcraft:bushing_gear"
-    }
+    "a": "#c:ingots/nickel",
+    "b": "railcraft:bushing_gear"
   },
   "pattern": [
     " a ",
@@ -15,7 +11,6 @@
     " a "
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:nickel_gear"
   }
 }

@@ -9,15 +9,11 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:lapis_lazuli"
-  },
+  "ingredient": "minecraft:lapis_lazuli",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/lapis"
-      }
+      "result": "#c:dusts/lapis"
     }
   ]
 }

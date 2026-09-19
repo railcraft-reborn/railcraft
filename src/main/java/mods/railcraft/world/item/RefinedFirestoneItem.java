@@ -1,8 +1,8 @@
 package mods.railcraft.world.item;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import org.jetbrains.annotations.Nullable;
+import java.util.function.Consumer;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations.Tips;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.world.entity.FirestoneItemEntity;
@@ -21,14 +21,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class RefinedFirestoneItem extends FirestoneItem {
@@ -59,45 +63,48 @@ public class RefinedFirestoneItem extends FirestoneItem {
   }
 
   @Override
-  public boolean hasCraftingRemainingItem(ItemStack stack) {
-    return true;
-  }
+  public @Nullable ItemStackTemplate getCraftingRemainder(ItemInstance instance) {
+    var damage = instance.getOrDefault(DataComponents.DAMAGE, 0);
+    var maxDamage = instance.getOrDefault(DataComponents.MAX_DAMAGE, 0);
+    double damageLevel = maxDamage == 0 ? 0.0D : (double) damage / (double) maxDamage;
 
-  @Override
-  public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
     ItemStack newStack;
-    double damageLevel = (double) itemStack.getDamageValue() / (double) itemStack.getMaxDamage();
-    if (random.nextDouble() < damageLevel * 0.0001) {
+    if (this.random.nextDouble() < damageLevel * 0.0001) {
       newStack = CrackedFirestoneItem.getItemEmpty();
-      if (itemStack.has(DataComponents.CUSTOM_NAME))
-        newStack.set(DataComponents.CUSTOM_NAME, itemStack.getHoverName());
+      var customName = instance.get(DataComponents.CUSTOM_NAME);
+      if (customName != null) {
+        newStack.set(DataComponents.CUSTOM_NAME, customName);
+      }
     } else {
-      newStack = itemStack.copy();
+      newStack = new ItemStack(instance.typeHolder());
+      newStack.set(DataComponents.DAMAGE, damage);
     }
-    newStack.setCount(1);
+
     var res = new AtomicReference<>(newStack);
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
-      newStack.hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
+      newStack.hurtAndBreak(1, serverPlayer.level(), serverPlayer,
           __ -> res.set(ItemStack.EMPTY));
     }
-    return res.get();
+    var remainder = res.get();
+    return remainder.isEmpty() ? null : ItemStackTemplate.fromNonEmptyStack(remainder);
   }
 
   @Override
-  public final int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+  public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType,
+      FuelValues fuelValues) {
     return itemStack.getDamageValue() < itemStack.getMaxDamage() ? this.heat : 0;
   }
 
   @Override
-  public void appendHoverText(ItemStack itemStack, TooltipContext context,
-      List<Component> lines, TooltipFlag adv) {
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+      TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
     MutableComponent component;
-    if (itemStack.getDamageValue() >= itemStack.getMaxDamage() - 5) {
+    if (stack.getDamageValue() >= stack.getMaxDamage() - 5) {
       component = Component.translatable(Tips.FIRESTONE_EMPTY);
     } else {
       component = Component.translatable(Tips.FIRESTONE_CHARGED);
     }
-    lines.add(component.withStyle(ChatFormatting.GRAY));
+    tooltipAdder.accept(component.withStyle(ChatFormatting.GRAY));
   }
 
   @Override
@@ -111,7 +118,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
     var random = level.getRandom();
 
     if (!(level instanceof ServerLevel serverLevel))
-      return InteractionResult.sidedSuccess(level.isClientSide());
+      return InteractionResult.SUCCESS;
 
     if (stack.getDamageValue() == stack.getMaxDamage())
       return InteractionResult.PASS;
@@ -123,7 +130,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
         var drops = Block.getDrops(blockState, serverLevel, pos, level.getBlockEntity(pos));
         if (drops.size() == 1 && !drops.getFirst().isEmpty()
             && drops.getFirst().getItem() instanceof BlockItem) {
-          var cooked = cookedItem(level, drops.getFirst());
+          var cooked = cookedItem(serverLevel, drops.getFirst());
           if (cooked.getItem() instanceof BlockItem) {
             var newState = ContainerTools.getBlockStateFromStack(cooked, level, pos);
             if (newState != null) {
@@ -146,13 +153,14 @@ public class RefinedFirestoneItem extends FirestoneItem {
         stack.hurtAndBreak(1, serverLevel, serverPlayer, __ -> {});
       }
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
-  private ItemStack cookedItem(Level level, ItemStack ingredient) {
-    return level.getRecipeManager()
-        .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(ingredient), level)
-        .map(x -> x.value().getResultItem(level.registryAccess()))
+  private ItemStack cookedItem(ServerLevel level, ItemStack ingredient) {
+    var input = new SingleRecipeInput(ingredient);
+    return level.recipeAccess()
+        .getRecipeFor(RecipeType.SMELTING, input, level)
+        .map(x -> x.value().assemble(input))
         .orElse(ItemStack.EMPTY);
   }
 
@@ -163,13 +171,13 @@ public class RefinedFirestoneItem extends FirestoneItem {
     if (level instanceof ServerLevel serverLevel && !livingEntity.fireImmune()) {
       livingEntity.igniteForSeconds(5);
       itemStack.hurtAndBreak(1, serverLevel, player,
-          item -> player.onEquippedItemBroken(item, LivingEntity.getSlotForHand(hand)));
+          item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
       level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
           SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
       player.swing(hand);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Override

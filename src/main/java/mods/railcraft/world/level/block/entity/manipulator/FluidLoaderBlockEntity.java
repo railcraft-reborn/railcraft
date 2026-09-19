@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.manipulator;
 
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.FluidTransferHandler;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -15,15 +15,17 @@ import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
 
@@ -125,7 +127,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       }
     }
 
-    IFluidHandler tankCart = getCartFluidHandler(cart, Direction.UP);
+    ResourceHandler<FluidResource> tankCart = getCartFluidHandler(cart, Direction.UP);
     if (tankCart == null) {
       return;
     }
@@ -139,9 +141,9 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     }
 
     if (cartNeedsFilling && (!needsPipe || this.isPipeExtended())) {
-      FluidStack moved = FluidUtil.tryFluidTransfer(tankCart, this.tank,
-          RailcraftConfig.SERVER.tankCartFluidTransferRate.get(), true);
-      this.setProcessing(!moved.isEmpty());
+      int moved = ResourceHandlerUtil.move(this.tank, tankCart, __ -> true,
+          RailcraftConfig.SERVER.tankCartFluidTransferRate.get(), null);
+      this.setProcessing(moved > 0);
     } else {
       this.setProcessing(false);
     }
@@ -154,16 +156,29 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
       fluidTransferHandler.setFilling(this.isProcessing());
     }
 
-    if (!this.tank.getFluid().isEmpty()
-        && tankCart.fill(this.tank.getFluid(), IFluidHandler.FluidAction.SIMULATE) == 0) {
-      this.setResetTimer(RESET_WAIT);
+    if (!this.tank.getFluidStack().isEmpty()) {
+      try (var tx = Transaction.openRoot()) {
+        int filled = tankCart.insert(FluidResource.of(this.tank.getFluidStack()),
+            this.tank.getFluidAmount(), tx);
+        if (filled == 0) {
+          this.setResetTimer(RESET_WAIT);
+        }
+      }
     }
   }
 
-  private boolean cartNeedsFilling(IFluidHandler cartFluidHandler) {
-    FluidStack fluidStack = this.tank.getFluid();
-    return !fluidStack.isEmpty()
-        && cartFluidHandler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) > 0;
+  private boolean cartNeedsFilling(ResourceHandler<FluidResource> cartFluidHandler) {
+    FluidStack fluidStack = this.tank.getFluidStack();
+    if (fluidStack.isEmpty()) {
+      return false;
+    }
+    try (var tx = Transaction.openRoot()) {
+      int filled = cartFluidHandler.insert(FluidResource.of(fluidStack), fluidStack.getAmount(), tx);
+      if (filled > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -171,7 +186,7 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (!this.isPipeRetracted()) {
       return true;
     }
-    IFluidHandler cartFluidHandler = getCartFluidHandler(cart, Direction.UP);
+    ResourceHandler<FluidResource> cartFluidHandler = getCartFluidHandler(cart, Direction.UP);
     if (cartFluidHandler == null) {
       return false;
     }
@@ -179,11 +194,13 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
     if (fluid.isEmpty()) {
       return false;
     }
-    return switch (this.getRedstoneMode()) {
-      case COMPLETE -> cartFluidHandler.fill(fluid, IFluidHandler.FluidAction.SIMULATE) > 0;
-      case PARTIAL -> !cartFluidHandler.drain(fluid, IFluidHandler.FluidAction.SIMULATE).isEmpty();
-      default -> false;
-    };
+    try (var tx = Transaction.openRoot()) {
+      return switch (this.getRedstoneMode()) {
+        case COMPLETE -> cartFluidHandler.insert(FluidResource.of(fluid), fluid.getAmount(), tx) > 0;
+        case PARTIAL -> cartFluidHandler.extract(FluidResource.of(fluid), fluid.getAmount(), tx) > 0;
+        default -> false;
+      };
+    }
   }
 
   @Override
@@ -219,15 +236,15 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putFloat(CompoundTagKeys.PIPE_LENGTH, this.pipeLength);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putFloat(CompoundTagKeys.PIPE_LENGTH, this.pipeLength);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.pipeLength = tag.getFloat(CompoundTagKeys.PIPE_LENGTH);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.pipeLength = input.getFloatOr(CompoundTagKeys.PIPE_LENGTH, 0);
   }
 
   @Override

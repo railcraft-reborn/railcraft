@@ -24,7 +24,7 @@ public class RailcraftPlugin implements IWailaPlugin {
 
   @Override
   public void register(IWailaCommonRegistration registration) {
-    registration.registerBlockDataProvider(new RoutingTrackComponent(), RoutingTrackBlockEntity.class);
+    registration.registerBlockDataProvider(new RoutingTrackDataProvider(), RoutingTrackBlockEntity.class);
   }
 
   @Override

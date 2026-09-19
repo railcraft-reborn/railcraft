@@ -16,16 +16,12 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:storage_blocks/raw_lead"
-  },
+  "ingredient": "#c:storage_blocks/raw_lead",
   "outputs": [
     {
       "count": 12,
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/lead"
-      }
+      "result": "#c:dusts/lead"
     }
   ]
 }

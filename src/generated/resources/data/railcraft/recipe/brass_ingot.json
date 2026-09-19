@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "railcraft:brass_block"
-    }
+    "railcraft:brass_block"
   ],
   "result": {
     "count": 9,

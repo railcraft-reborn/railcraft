@@ -1,6 +1,7 @@
 package mods.railcraft.util.container;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -66,10 +67,10 @@ public interface ForwardingContainer extends Container {
   default void setChanged() {}
 
   @Override
-  default void startOpen(Player player) {}
+  default void startOpen(ContainerUser user) {}
 
   @Override
-  default void stopOpen(Player player) {}
+  default void stopOpen(ContainerUser user) {}
 
   @Override
   default boolean canPlaceItem(int index, ItemStack stack) {

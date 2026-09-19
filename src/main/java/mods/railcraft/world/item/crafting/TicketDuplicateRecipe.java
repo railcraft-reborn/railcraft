@@ -1,30 +1,44 @@
 package mods.railcraft.world.item.crafting;
 
+import java.util.List;
 import java.util.stream.IntStream;
+import org.jspecify.annotations.Nullable;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.component.RailcraftDataComponents;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 
 public class TicketDuplicateRecipe extends CustomRecipe {
 
+  private static final TicketDuplicateRecipe INSTANCE = new TicketDuplicateRecipe();
+  private static final MapCodec<TicketDuplicateRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+  private static final StreamCodec<RegistryFriendlyByteBuf, TicketDuplicateRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+  public static final RecipeSerializer<TicketDuplicateRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
   private static final Ingredient SOURCE = Ingredient.of(RailcraftItems.GOLDEN_TICKET.get());
   private static final Ingredient BLANK = Ingredient.of(Items.PAPER);
-
-  public TicketDuplicateRecipe(CraftingBookCategory category) {
-    super(category);
-  }
+  @Nullable
+  private PlacementInfo placementInfo;
 
   @Override
   public boolean matches(CraftingInput craftingInput, Level level) {
+    if (craftingInput.width() * craftingInput.height() < 2) {
+      return false;
+    }
+
     int numBlank = 0;
     int numSource = 0;
     for (int slot = 0; slot < craftingInput.size(); slot++) {
@@ -43,13 +57,13 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public ItemStack assemble(CraftingInput craftingInput, HolderLookup.Provider provider) {
+  public ItemStack assemble(CraftingInput craftingInput) {
     var source = IntStream.range(0, craftingInput.size())
         .mapToObj(craftingInput::getItem)
         .filter(TicketDuplicateRecipe.SOURCE)
         .findFirst()
         .orElse(ItemStack.EMPTY);
-    var result = getResultItem(provider);
+    var result = new ItemStack(RailcraftItems.TICKET.get());
     if (!source.isEmpty()) {
       if (source.has(RailcraftDataComponents.TICKET)) {
         result.set(RailcraftDataComponents.TICKET, source.get(RailcraftDataComponents.TICKET));
@@ -59,25 +73,26 @@ public class TicketDuplicateRecipe extends CustomRecipe {
   }
 
   @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(Ingredient.of(RailcraftItems.GOLDEN_TICKET.get()));
-    ingredients.add(Ingredient.of(Items.PAPER));
-    return ingredients;
+  public PlacementInfo placementInfo() {
+    if (this.placementInfo == null) {
+      NonNullList<Ingredient> ingredients = NonNullList.create();
+      ingredients.add(Ingredient.of(RailcraftItems.GOLDEN_TICKET.get()));
+      ingredients.add(Ingredient.of(Items.PAPER));
+      this.placementInfo = PlacementInfo.create(ingredients);
+    }
+    return this.placementInfo;
   }
 
   @Override
-  public ItemStack getResultItem(HolderLookup.Provider provider) {
-    return new ItemStack(RailcraftItems.TICKET.get());
+  public List<RecipeDisplay> display() {
+    return List.of(new ShapelessCraftingRecipeDisplay(
+        List.of(SOURCE.display(), BLANK.display()),
+        new SlotDisplay.ItemSlotDisplay(RailcraftItems.TICKET.get()),
+        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
   }
 
   @Override
-  public boolean canCraftInDimensions(int width, int height) {
-    return width * height >= 2;
-  }
-
-  @Override
-  public RecipeSerializer<?> getSerializer() {
-    return RailcraftRecipeSerializers.TICKET_DUPLICATE.get();
+  public RecipeSerializer<TicketDuplicateRecipe> getSerializer() {
+    return SERIALIZER;
   }
 }

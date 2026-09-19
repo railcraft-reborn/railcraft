@@ -12,14 +12,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record LinkedCartsMessage(
     Collection<LinkedCart> linkedCarts) implements CustomPacketPayload {
 
   public static final Type<LinkedCartsMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("linked_carts"));
+      new Type<>(RailcraftConstants.id("linked_carts"));
 
   public static final StreamCodec<FriendlyByteBuf, LinkedCartsMessage> STREAM_CODEC =
       StreamCodec.composite(

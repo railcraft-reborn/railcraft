@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:tank_entity_outside",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/iron_tank"
+}

@@ -4,7 +4,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 
 public class LimitedWaterSlot extends WaterSlot {
 
@@ -15,9 +15,7 @@ public class LimitedWaterSlot extends WaterSlot {
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return FluidUtil.getFluidContained(stack)
-        .filter(fluid -> fluid.is(FluidTags.WATER))
-        .filter(fluid -> fluid.getAmount() <= FluidType.BUCKET_VOLUME)
-        .isPresent();
+    var fluidStack = FluidUtil.getFirstStackContained(stack);
+    return fluidStack.is(FluidTags.WATER) && fluidStack.getAmount() <= FluidType.BUCKET_VOLUME;
   }
 }

@@ -1,13 +1,11 @@
 package mods.railcraft.world.level.block;
 
-import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.LogBookBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -15,9 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -77,7 +73,7 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
       level.getBlockEntity(pos, RailcraftBlockEntityTypes.LOGBOOK.get())
           .ifPresent(blockEntity -> blockEntity.use(serverPlayer));
     }
-    return InteractionResult.sidedSuccess(level.isClientSide());
+    return InteractionResult.SUCCESS;
   }
 
   @Nullable
@@ -94,28 +90,21 @@ public class LogBookBlock extends HorizontalDirectionalBlock implements EntityBl
       @Nullable LivingEntity placer, ItemStack stack) {
     if (level.getBlockEntity(pos) instanceof LogBookBlockEntity blockEntity) {
       if (placer instanceof Player player) {
-        blockEntity.setOwner(player.getGameProfile());
+        blockEntity.setOwner(player.nameAndId());
       }
     }
   }
 
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
-      boolean willHarvest, FluidState fluid) {
+      ItemStack toolStack, boolean willHarvest, FluidState fluid) {
     if (level.getBlockEntity(pos) instanceof LogBookBlockEntity blockEntity) {
       if (blockEntity.getOwner().isEmpty() ||
-          blockEntity.isOwnerOrOperator(player.getGameProfile())) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+          blockEntity.isOwnerOrOperator(player.nameAndId())) {
+        return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
       }
     }
     return false;
-  }
-
-  @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip,
-      TooltipFlag flag) {
-    super.appendHoverText(stack, context, tooltip, flag);
-    tooltip.add(Component.translatable(Translations.Tips.LOGBOOK).withStyle(ChatFormatting.GRAY));
   }
 
   @Override

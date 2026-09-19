@@ -23,22 +23,16 @@
     }
   ],
   "type": "railcraft:crusher",
-  "ingredient": {
-    "tag": "c:ores/copper"
-  },
+  "ingredient": "#c:ores/copper",
   "outputs": [
     {
       "count": 2,
       "probability": 1.0,
-      "result": {
-        "tag": "c:dusts/copper"
-      }
+      "result": "#c:dusts/copper"
     },
     {
       "probability": 0.1,
-      "result": {
-        "tag": "c:dusts/gold"
-      }
+      "result": "#c:dusts/gold"
     }
   ]
 }

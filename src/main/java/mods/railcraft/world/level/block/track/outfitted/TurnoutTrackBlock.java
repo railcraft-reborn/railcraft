@@ -1,7 +1,7 @@
 package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
@@ -109,10 +110,10 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   @Override
   public void neighborChanged(BlockState blockState, Level level, BlockPos pos, Block neighborBlock,
-      BlockPos neighborPos, boolean moved) {
+      @Nullable Orientation orientation, boolean moved) {
     level.setBlockAndUpdate(pos,
         blockState.setValue(MIRRORED, this.determineMirrored(level, pos, getFacing(blockState))));
-    super.neighborChanged(blockState, level, pos, neighborBlock, neighborPos, moved);
+    super.neighborChanged(blockState, level, pos, neighborBlock, orientation, moved);
   }
 
   @Override

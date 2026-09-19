@@ -10,7 +10,12 @@ public class TurbineRotorItem extends Item {
   }
 
   @Override
-  public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-    return false;
+  public int getMaxDamage(ItemStack stack) {
+    return 30_000;
+  }
+
+  @Override
+  public boolean isDamageable(ItemStack stack) {
+    return true;
   }
 }

@@ -1,0 +1,28 @@
+{
+  "values": [
+    "railcraft:trackman/track_kit/activator_track_kit",
+    "railcraft:trackman/track_kit/booster_track_kit",
+    "railcraft:trackman/track_kit/coupler_track_kit",
+    "railcraft:trackman/track_kit/control_track_kit",
+    "railcraft:trackman/track_kit/whistle_track_kit",
+    "railcraft:trackman/track_kit/buffer_stop_track_kit",
+    "railcraft:trackman/track_kit/detector_track_kit",
+    "railcraft:trackman/track_kit/disembarking_track_kit",
+    "railcraft:trackman/track_kit/embarking_track_kit",
+    "railcraft:trackman/track_kit/dumping_track_kit",
+    "railcraft:trackman/track_kit/gated_track_kit",
+    "railcraft:trackman/track_kit/launcher_track_kit",
+    "railcraft:trackman/track_kit/locking_track_kit",
+    "railcraft:trackman/track_kit/locomotive_track_kit",
+    "railcraft:trackman/track_kit/one_way_track_kit",
+    "railcraft:trackman/track_kit/routing_track_kit",
+    "railcraft:trackman/track_kit/throttle_track_kit",
+    "railcraft:trackman/track_kit/transition_track_kit",
+    "railcraft:trackman/3/emerald_steel_crowbar",
+    "railcraft:trackman/3/emerald_whistle_tuner",
+    "railcraft:trackman/3/emerald_signal_block_surveyor",
+    "railcraft:trackman/3/emerald_signal_tuner",
+    "railcraft:trackman/3/emerald_goggles",
+    "railcraft:trackman/3/emerald_overalls"
+  ]
+}

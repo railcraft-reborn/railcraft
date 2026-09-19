@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.util.EnumUtil;
@@ -20,20 +20,20 @@ import mods.railcraft.world.level.block.manipulator.ManipulatorBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implements MenuProvider {
 
@@ -55,6 +55,12 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
 
   public ManipulatorBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
     super(type, blockPos, blockState);
+  }
+
+  @Override
+  public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+    super.preRemoveSideEffects(pos, state);
+    Containers.updateNeighboursAfterDestroy(state, this.level, pos);
   }
 
   public RedstoneMode getRedstoneMode() {
@@ -139,7 +145,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     if (this.isManualMode()) {
       return;
     }
-    if (MinecartUtil.cartVelocityIsLessThan(cart, STOP_VELOCITY) || cart.isPoweredCart()) {
+    if (MinecartUtil.cartVelocityIsLessThan(cart, STOP_VELOCITY) || cart.isFurnace()) {
       this.setPowered(true);
     }
   }
@@ -267,18 +273,19 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.putInt(CompoundTagKeys.REDSTONE_MODE, this.redstoneMode.ordinal());
-    tag.put(CompoundTagKeys.CART_FILTERS, this.getCartFilters().createTag(provider));
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.store(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC, this.redstoneMode);
+    output.putChild(CompoundTagKeys.CART_FILTERS, this.getCartFilters());
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
     this.setPowered(ManipulatorBlock.isPowered(this.getBlockState()));
-    this.redstoneMode = RedstoneMode.values()[tag.getInt(CompoundTagKeys.REDSTONE_MODE)];
-    this.getCartFilters().fromTag(tag.getList(CompoundTagKeys.CART_FILTERS, Tag.TAG_COMPOUND), provider);
+    this.redstoneMode =
+        input.read(CompoundTagKeys.REDSTONE_MODE, RedstoneMode.CODEC).orElse(RedstoneMode.COMPLETE);
+    input.readChild(CompoundTagKeys.CART_FILTERS, this.getCartFilters());
   }
 
   public enum TransferMode implements ButtonState<TransferMode>, StringRepresentable {
@@ -288,7 +295,7 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     STOCK("stock", "➧➧#"),
     TRANSFER("transfer", "➧#➧");
 
-    private static final StringRepresentable.EnumCodec<TransferMode> CODEC =
+    public static final StringRepresentable.EnumCodec<TransferMode> CODEC =
         StringRepresentable.fromEnum(TransferMode::values);
 
     private final String name;
@@ -336,18 +343,17 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     public TransferMode next() {
       return EnumUtil.next(this, values());
     }
-
-    public static TransferMode fromName(String name) {
-      return CODEC.byName(name, ALL);
-    }
   }
 
-  public enum RedstoneMode implements ButtonState<RedstoneMode> {
+  public enum RedstoneMode implements ButtonState<RedstoneMode>, StringRepresentable {
 
     COMPLETE("complete", '✓'),
     IMMEDIATE("immediate", '❢'),
     MANUAL("manual", '✘'),
     PARTIAL("partial", '➧');
+
+    private static final StringRepresentable.EnumCodec<RedstoneMode> CODEC =
+        StringRepresentable.fromEnum(RedstoneMode::values);
 
     private final String name;
     private final Component label;
@@ -388,6 +394,11 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     @Override
     public RedstoneMode next() {
       return EnumUtil.next(this, values());
+    }
+
+    @Override
+    public String getSerializedName() {
+      return this.name;
     }
   }
 }

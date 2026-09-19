@@ -1,15 +1,11 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:clay"
-  },
+  "ingredient": "minecraft:clay",
   "outputs": [
     {
       "count": 4,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:clay_ball"
-      }
+      "result": "minecraft:clay_ball"
     }
   ]
 }

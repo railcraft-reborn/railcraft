@@ -2,22 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:netherrack"
-    },
-    "b": {
-      "tag": "c:dusts/redstone"
-    },
-    "c": {
-      "item": "minecraft:cauldron"
-    }
+    "a": "minecraft:netherrack",
+    "b": "#c:dusts/redstone",
+    "c": "minecraft:cauldron"
   },
   "pattern": [
     " a ",
     "bcb"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:chimney"
   }
 }

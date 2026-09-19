@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.List;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.util.container.AdvancedContainer;
@@ -13,19 +13,18 @@ import mods.railcraft.world.level.block.entity.RailcraftBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
 public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements MenuProvider {
@@ -56,7 +55,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   private static BlockEntity getBlockEntityAround(Level level, BlockPos pos) {
     for (var direction : DIRECTION) {
       var blockEntity = level.getBlockEntity(pos.relative(direction));
-      if (blockEntity != null && level.getCapability(Capabilities.ItemHandler.BLOCK,
+      if (blockEntity != null && level.getCapability(Capabilities.Item.BLOCK,
           blockEntity.getBlockPos(), null) != null) {
         return blockEntity;
       }
@@ -102,7 +101,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
       return;
     }
 
-    var itemHandler = cart.getCapability(Capabilities.ItemHandler.ENTITY);
+    var itemHandler = cart.getCapability(Capabilities.Item.ENTITY);
     if (itemHandler != null) {
       var cartInv = ContainerManipulator.of(itemHandler);
       if (!cartInv.hasItems()) {
@@ -128,7 +127,7 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
         return;
       }
       var itemHandlerBlockEntity = this.level
-          .getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+          .getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(), null);
       if (itemHandlerBlockEntity != null) {
         var blockInv = ContainerManipulator.of(itemHandlerBlockEntity);
         cartInv.moveOneItemStackTo(blockInv);
@@ -137,19 +136,19 @@ public class DumpingTrackBlockEntity extends RailcraftBlockEntity implements Men
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.saveAdditional(tag, provider);
-    tag.put(CompoundTagKeys.CART_FILTER, this.cartFilter.createTag(provider));
-    tag.put(CompoundTagKeys.ITEM_FILTER, this.itemFilter.createTag(provider));
-    tag.putInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP, this.ticksSinceLastDrop);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putChild(CompoundTagKeys.CART_FILTER, this.cartFilter);
+    output.putChild(CompoundTagKeys.ITEM_FILTER, this.itemFilter);
+    output.putInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP, this.ticksSinceLastDrop);
   }
 
   @Override
-  public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-    super.loadAdditional(tag, provider);
-    this.cartFilter.fromTag(tag.getList(CompoundTagKeys.CART_FILTER, Tag.TAG_COMPOUND), provider);
-    this.itemFilter.fromTag(tag.getList(CompoundTagKeys.ITEM_FILTER, Tag.TAG_COMPOUND), provider);
-    this.ticksSinceLastDrop = tag.getInt(CompoundTagKeys.TICKS_SINCE_LAST_DROP);
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    input.readChild(CompoundTagKeys.CART_FILTER, this.cartFilter);
+    input.readChild(CompoundTagKeys.ITEM_FILTER, this.itemFilter);
+    this.ticksSinceLastDrop = input.getIntOr(CompoundTagKeys.TICKS_SINCE_LAST_DROP, 0);
   }
 
   @Nullable

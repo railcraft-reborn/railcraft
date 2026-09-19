@@ -1,14 +1,10 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:nether_brick_fence"
-  },
+  "ingredient": "minecraft:nether_brick_fence",
   "outputs": [
     {
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:nether_brick"
-      }
+      "result": "minecraft:nether_brick"
     }
   ]
 }

@@ -4,9 +4,9 @@ import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -86,7 +86,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
   }
 
   @Override
-  public boolean canConvertToSource(FluidState state, Level level, BlockPos pos) {
+  public boolean canConvertToSource(FluidState state, ServerLevel level, BlockPos pos) {
     return false;
   }
 
@@ -117,7 +117,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
     }
 
     @Override
-    protected boolean canConvertToSource(Level level) {
+    protected boolean canConvertToSource(ServerLevel level) {
       return false;
     }
   }
@@ -135,7 +135,7 @@ public abstract class CreosoteFluid extends FlowingFluid {
     }
 
     @Override
-    protected boolean canConvertToSource(Level level) {
+    protected boolean canConvertToSource(ServerLevel level) {
       return true;
     }
   }

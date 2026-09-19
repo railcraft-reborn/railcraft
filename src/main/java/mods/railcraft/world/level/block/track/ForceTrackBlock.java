@@ -1,10 +1,10 @@
 package mods.railcraft.world.level.block.track;
 
+import org.jspecify.annotations.Nullable;
 import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
-import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.level.redstone.Orientation;
 
 public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
 
@@ -62,7 +63,7 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
 
   @Override
   public void neighborChanged(BlockState blockState,
-      Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
+      Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean moved) {
     if (neighborBlock != this) {
       if (level.getBlockEntity(pos) instanceof ForceTrackBlockEntity forceTrackBlockEntity) {
         forceTrackBlockEntity.neighborChanged();
@@ -76,16 +77,6 @@ public final class ForceTrackBlock extends TrackBlock implements EntityBlock {
     if (!oldBlockState.is(blockState.getBlock())) {
       this.updateState(blockState, level, pos, moved);
     }
-  }
-
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState,
-      boolean moved) {
-    if (!state.is(newState.getBlock())) {
-      level.getBlockEntity(pos, RailcraftBlockEntityTypes.FORCE_TRACK.get())
-          .ifPresent(ForceTrackBlockEntity::blockRemoved);
-    }
-    super.onRemove(state, level, pos, newState, moved);
   }
 
   @Override

@@ -6,25 +6,27 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import com.google.common.base.Predicates;
 import mods.railcraft.api.core.CompoundTagKeys;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
+public class TankManager implements ResourceHandler<FluidResource>, ValueIOSerializable {
 
   public static final TankManager EMPTY = new TankManager(List.of());
 
   public static final BiFunction<BlockEntity, Direction, Boolean> TANK_FILTER = (be, dir) ->
-      be.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), dir) != null;
+      be.getLevel().getCapability(Capabilities.Fluid.BLOCK, be.getBlockPos(), dir) != null;
   private final List<StandardTank> tanks;
 
   public TankManager(StandardTank... tanks) {
@@ -40,32 +42,29 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   }
 
   @Override
-  public ListTag serializeNBT(HolderLookup.Provider provider) {
-    var tanksTag = new ListTag();
-    for (byte i = 0; i < this.tanks.size(); i++) {
-      var tank = this.tanks.get(i);
-      var tankTag = new CompoundTag();
-      tankTag.putByte(CompoundTagKeys.INDEX, i);
-      tank.writeToNBT(provider, tankTag);
-      tanksTag.add(tankTag);
+  public void serialize(ValueOutput valueOutput) {
+    var list = valueOutput.childrenList(CompoundTagKeys.TANK);
+    for (int i = 0; i < this.tanks.size(); i++) {
+      var tankOutput = list.addChild();
+      tankOutput.putInt(CompoundTagKeys.INDEX, i);
+      this.tanks.get(i).serialize(tankOutput);
     }
-    return tanksTag;
   }
 
   @Override
-  public void deserializeNBT(HolderLookup.Provider provider, ListTag tanksTag) {
-    for (int i = 0; i < tanksTag.size(); i++) {
-      var tag = tanksTag.getCompound(i);
-      int index = tag.getByte(CompoundTagKeys.INDEX);
+  public void deserialize(ValueInput valueInput) {
+    var list = valueInput.childrenListOrEmpty(CompoundTagKeys.TANK);
+    list.forEach(input -> {
+      var index = input.getIntOr(CompoundTagKeys.INDEX, -1);
       if (index >= 0 && index < this.tanks.size()) {
-        this.tanks.get(index).readFromNBT(provider, tag);
+        this.tanks.get(index).deserialize(input);
       }
-    }
+    });
   }
 
   public void writePacketData(RegistryFriendlyByteBuf data) {
     for (var tank : this.tanks) {
-      FluidStack.OPTIONAL_STREAM_CODEC.encode(data, tank.getFluid());
+      FluidStack.OPTIONAL_STREAM_CODEC.encode(data, tank.getFluidStack());
     }
   }
 
@@ -76,42 +75,13 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   }
 
   @Override
-  public int fill(FluidStack resource, FluidAction doFill) {
-    return this.tanks.stream()
-        .mapToInt(tank -> tank.fill(resource, doFill))
-        .filter(filled -> filled > 0)
-        .findFirst()
-        .orElse(0);
-  }
-
-  public int fill(int tankIndex, FluidStack resource, FluidAction doFill) {
-    return this.tanks.get(tankIndex).fill(resource, doFill);
+  public int insert(int index, FluidResource resource, int amount, TransactionContext transaction) {
+    return this.tanks.get(index).insert(0, resource, amount, transaction);
   }
 
   @Override
-  public FluidStack drain(FluidStack resource, FluidAction doDrain) {
-    return this.tanks.stream()
-        .map(tank -> tank.drain(resource, doDrain))
-        .filter(fluid -> !fluid.isEmpty())
-        .findFirst()
-        .orElse(FluidStack.EMPTY);
-  }
-
-  @Override
-  public FluidStack drain(int maxDrain, FluidAction doDrain) {
-    return this.tanks.stream()
-        .map(tank -> tank.drain(maxDrain, doDrain))
-        .filter(fluid -> !fluid.isEmpty())
-        .findFirst()
-        .orElse(FluidStack.EMPTY);
-  }
-
-  public FluidStack drain(int tankIndex, FluidStack resource, FluidAction doDrain) {
-    return this.tanks.get(tankIndex).drain(resource, doDrain);
-  }
-
-  public FluidStack drain(int tankIndex, int maxDrain, FluidAction doDrain) {
-    return this.tanks.get(tankIndex).drain(maxDrain, doDrain);
+  public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
+    return this.tanks.get(index).extract(0, resource, amount, transaction);
   }
 
   public StandardTank get(int tankIndex) {
@@ -121,44 +91,49 @@ public class TankManager implements IFluidHandler, INBTSerializable<ListTag> {
   public void setCapacity(int tankIndex, int capacity) {
     var tank = this.get(tankIndex);
     tank.setCapacity(capacity);
-    var fluidStack = tank.getFluid();
+    var fluidStack = tank.getFluidStack();
     if (fluidStack.getAmount() > capacity) {
       fluidStack.setAmount(capacity);
     }
   }
 
-  public void pull(Collection<IFluidHandler> targets, int tankIndex, int amount) {
+  public void pull(Collection<ResourceHandler<FluidResource>> targets, int tankIndex, int amount) {
     this.transfer(targets, tankIndex,
-        (me, them) -> FluidUtil.tryFluidTransfer(me, them, amount, true));
+        (me, them) -> ResourceHandlerUtil.move(them, me, Predicates.alwaysTrue(), amount, null));
   }
 
-  public void push(Collection<IFluidHandler> targets, int tankIndex, int amount) {
+  public void push(Collection<ResourceHandler<FluidResource>> targets, int tankIndex, int amount) {
     this.transfer(targets, tankIndex,
-        (me, them) -> FluidUtil.tryFluidTransfer(them, me, amount, true));
+        (me, them) -> ResourceHandlerUtil.move(me, them, Predicates.alwaysTrue(), amount, null));
   }
 
-  public void transfer(Collection<IFluidHandler> targets, int tankIndex,
-      BiConsumer<IFluidHandler, IFluidHandler> transfer) {
+  public void transfer(Collection<ResourceHandler<FluidResource>> targets, int tankIndex,
+      BiConsumer<ResourceHandler<FluidResource>, ResourceHandler<FluidResource>> transfer) {
     targets.forEach(them -> transfer.accept(this.get(tankIndex), them));
   }
 
   @Override
-  public int getTanks() {
+  public int size() {
     return this.tanks.size();
   }
 
   @Override
-  public FluidStack getFluidInTank(int tank) {
-    return this.tanks.get(tank).getFluid();
+  public FluidResource getResource(int index) {
+    return this.tanks.get(index).getResource(0);
   }
 
   @Override
-  public int getTankCapacity(int tank) {
-    return this.tanks.get(tank).getCapacity();
+  public long getAmountAsLong(int index) {
+    return this.tanks.get(index).getAmountAsLong(0);
   }
 
   @Override
-  public boolean isFluidValid(int tank, FluidStack stack) {
-    return this.tanks.get(tank).isFluidValid(stack);
+  public long getCapacityAsLong(int index, FluidResource resource) {
+    return this.tanks.get(index).getCapacityAsLong(0, resource);
+  }
+
+  @Override
+  public boolean isValid(int index, FluidResource resource) {
+    return this.tanks.get(index).isValid(0, resource);
   }
 }

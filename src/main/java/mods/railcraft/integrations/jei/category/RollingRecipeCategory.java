@@ -10,9 +10,11 @@ import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.RollingRecipe;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 public class RollingRecipeCategory extends AbstractRecipeCategory<RecipeHolder<RollingRecipe>> {
 
@@ -36,13 +38,21 @@ public class RollingRecipeCategory extends AbstractRecipeCategory<RecipeHolder<R
   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<RollingRecipe> recipeHolder,
       IFocusGroup focuses) {
     var recipe = recipeHolder.value();
-    var registryAccess = Minecraft.getInstance().level.registryAccess();
-    this.craftingGridHelper.createAndSetOutputs(builder, List.of(recipe.getResultItem(registryAccess)));
+    var display = recipe.display().getFirst();
+    var resultItem = display.result();
+    this.craftingGridHelper.createAndSetOutputs(builder, resultItem);
+
     int width = recipe.getWidth();
     int height = recipe.getHeight();
-    var inputs = recipe.getIngredients().stream()
-        .map(ingredient -> List.of(ingredient.getItems()))
-        .toList();
-    this.craftingGridHelper.createAndSetInputs(builder, inputs, width, height);
+    if (recipe.display().isEmpty()) {
+      craftingGridHelper.createAndSetIngredientsFromDisplays(builder, List.of(), width, height);
+    } else {
+      List<SlotDisplay> ingredients = switch (display) {
+        case ShapedCraftingRecipeDisplay shapedDisplay -> shapedDisplay.ingredients();
+        case ShapelessCraftingRecipeDisplay shapelessDisplay -> shapelessDisplay.ingredients();
+        default -> List.of();
+      };
+      craftingGridHelper.createAndSetIngredientsFromDisplays(builder, ingredients, width, height);
+    }
   }
 }

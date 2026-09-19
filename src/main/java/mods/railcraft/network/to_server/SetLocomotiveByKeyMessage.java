@@ -5,14 +5,14 @@ import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.entity.vehicle.minecart.Minecart;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetLocomotiveByKeyMessage(LocomotiveKeyBinding keyBinding) implements CustomPacketPayload {
 
   public static final Type<SetLocomotiveByKeyMessage> TYPE =
-      new Type<>(RailcraftConstants.rl("set_locomotive_by_key"));
+      new Type<>(RailcraftConstants.id("set_locomotive_by_key"));
 
   public static final StreamCodec<FriendlyByteBuf, SetLocomotiveByKeyMessage> STREAM_CODEC =
       StreamCodec.composite(

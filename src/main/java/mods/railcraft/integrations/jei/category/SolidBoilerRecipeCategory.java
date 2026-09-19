@@ -19,9 +19,9 @@ import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.SolidBoilerJEIRecipe;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -30,8 +30,8 @@ public class SolidBoilerRecipeCategory extends AbstractRecipeCategory<SolidBoile
   public static final int WIDTH = 117;
   public static final int HEIGHT = 54;
 
-  private static final ResourceLocation BACKGROUND =
-      RailcraftConstants.rl("textures/gui/container/solid_fueled_steam_boiler.png");
+  private static final Identifier BACKGROUND =
+      RailcraftConstants.id("textures/gui/container/solid_fueled_steam_boiler.png");
 
   private final IDrawable tankBackground, tankOverlay, heatBackground, heatOverlay, flame;
 
@@ -52,8 +52,8 @@ public class SolidBoilerRecipeCategory extends AbstractRecipeCategory<SolidBoile
   }
 
   @Override
-  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
-      double mouseX, double mouseY) {
+  public void draw(SolidBoilerJEIRecipe recipe, IRecipeSlotsView recipeSlotsView,
+      GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
     this.heatBackground.draw(guiGraphics, 23, 5);
     this.heatOverlay.draw(guiGraphics, 23 + 1, 5 + 1);
     this.flame.draw(guiGraphics, 46, 3);
@@ -71,13 +71,13 @@ public class SolidBoilerRecipeCategory extends AbstractRecipeCategory<SolidBoile
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, SolidBoilerJEIRecipe recipe, IFocusGroup focuses) {
-    builder.addOutputSlot(1, 4)
-        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.steam())
+    builder.addSlot(RecipeIngredientRole.OUTPUT, 1, 4)
+        .add(NeoForgeTypes.FLUID_STACK, recipe.steam())
         .setFluidRenderer(10_000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
-    builder.addInputSlot(100, 4)
-        .addIngredient(NeoForgeTypes.FLUID_STACK, recipe.water())
+    builder.addSlot(RecipeIngredientRole.INPUT, 100, 4)
+        .add(NeoForgeTypes.FLUID_STACK, recipe.water())
         .setFluidRenderer(10_000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);

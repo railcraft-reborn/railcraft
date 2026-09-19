@@ -1,14 +1,14 @@
 package mods.railcraft.client.util;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.jspecify.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import mods.railcraft.client.util.CuboidModel.Face;
 import net.minecraft.core.Direction;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 /**
@@ -31,22 +31,21 @@ public class CuboidModelRenderer {
 
   private CuboidModelRenderer() {}
 
-  public static void render(CuboidModel model, PoseStack poseStack, VertexConsumer buffer, int argb,
+  public static void render(CuboidModel model, PoseStack.Pose pose, VertexConsumer buffer, int argb,
       FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
     Arrays.fill(combinedARGB, argb);
-    render(model, poseStack, buffer, combinedARGB, faceDisplay, fakeDisableDiffuse);
+    render(model, pose, buffer, combinedARGB, faceDisplay, fakeDisableDiffuse);
   }
 
   /**
    * @implNote Based off of Tinker's
    */
-  public static void render(CuboidModel model, PoseStack poseStack, VertexConsumer buffer,
+  public static void render(CuboidModel model, PoseStack.Pose pose, VertexConsumer buffer,
       int[] colors, FaceDisplay faceDisplay, boolean fakeDisableDiffuse) {
     float xShift = Mth.floor(model.getMinX());
     float yShift = Mth.floor(model.getMinY());
     float zShift = Mth.floor(model.getMinZ());
-    poseStack.pushPose();
-    poseStack.translate(xShift, yShift, zShift);
+    pose.translate(xShift, yShift, zShift);
     float minX = model.getMinX() - xShift;
     float minY = model.getMinY() - yShift;
     float minZ = model.getMinZ() - zShift;
@@ -59,7 +58,6 @@ public class CuboidModelRenderer {
     float[] xBounds = getBlockBounds(xDelta, minX, maxX);
     float[] yBounds = getBlockBounds(yDelta, minY, maxY);
     float[] zBounds = getBlockBounds(zDelta, minZ, maxZ);
-    PoseStack.Pose pose = poseStack.last();
     Matrix4f matrix4f = pose.pose();
     Vector3f normal = fakeDisableDiffuse ? NORMAL : YP;
     Vector3f from = new Vector3f();
@@ -96,7 +94,6 @@ public class CuboidModelRenderer {
         }
       }
     }
-    poseStack.popPose();
   }
 
   /**
@@ -206,10 +203,10 @@ public class CuboidModelRenderer {
     float minV = spriteInfo.getSprite().getV(v1);
     float maxV = spriteInfo.getSprite().getV(v2);
     int argb = colors[face.ordinal()];
-    var red = FastColor.ARGB32.red(argb);
-    var green = FastColor.ARGB32.green(argb);
-    var blue = FastColor.ARGB32.blue(argb);
-    var alpha = FastColor.ARGB32.alpha(argb);
+    var red = ARGB.red(argb);
+    var green = ARGB.green(argb);
+    var blue = ARGB.blue(argb);
+    var alpha = ARGB.alpha(argb);
     // add quads
     switch (face) {
       case DOWN:

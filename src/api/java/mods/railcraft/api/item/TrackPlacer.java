@@ -6,7 +6,7 @@
  -----------------------------------------------------------------------------*/
 package mods.railcraft.api.item;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -55,9 +55,9 @@ public interface TrackPlacer {
   Block getPlacedBlock();
 
   /**
-   * Return true if the given tile entity corresponds to this Track item.
+   * Return true if the given block entity corresponds to this Track item.
    * <p/>
-   * If the track has no tile entity, return true on null.
+   * If the track has no block entity, return true on null.
    */
-  boolean isPlacedTileEntity(ItemStack stack, @Nullable BlockEntity tile);
+  boolean isPlacedBlockEntity(ItemStack stack, @Nullable BlockEntity blockEntity);
 }

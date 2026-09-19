@@ -2,22 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "item": "minecraft:iron_ingot"
-    },
-    "b": {
-      "item": "minecraft:comparator"
-    },
-    "c": {
-      "item": "minecraft:redstone"
-    }
+    "a": "minecraft:iron_ingot",
+    "b": "minecraft:comparator",
+    "c": "minecraft:redstone"
   },
   "pattern": [
     "aba",
     "aca"
   ],
   "result": {
-    "count": 1,
     "id": "railcraft:signal_sequencer_box"
   }
 }

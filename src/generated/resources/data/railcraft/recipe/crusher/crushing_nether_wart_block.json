@@ -1,15 +1,11 @@
 {
   "type": "railcraft:crusher",
-  "ingredient": {
-    "item": "minecraft:nether_wart_block"
-  },
+  "ingredient": "minecraft:nether_wart_block",
   "outputs": [
     {
       "count": 9,
       "probability": 1.0,
-      "result": {
-        "item": "minecraft:nether_wart"
-      }
+      "result": "minecraft:nether_wart"
     }
   ]
 }

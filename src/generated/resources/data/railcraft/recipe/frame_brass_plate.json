@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "a": {
-      "tag": "c:plates/brass"
-    },
-    "b": {
-      "item": "railcraft:rebar"
-    }
+    "a": "#c:plates/brass",
+    "b": "railcraft:rebar"
   },
   "pattern": [
     "aaa",

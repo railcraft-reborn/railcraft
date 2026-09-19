@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "tag": "minecraft:planks"
-    },
-    {
-      "item": "railcraft:track_parts"
-    },
-    {
-      "tag": "c:dyes/yellow"
-    },
-    {
-      "tag": "c:dyes/black"
-    },
-    {
-      "item": "minecraft:note_block"
-    },
-    {
-      "tag": "c:dusts/redstone"
-    }
+    "#minecraft:planks",
+    "railcraft:track_parts",
+    "#c:dyes/yellow",
+    "#c:dyes/black",
+    "minecraft:note_block",
+    "#c:dusts/redstone"
   ],
   "result": {
     "count": 8,

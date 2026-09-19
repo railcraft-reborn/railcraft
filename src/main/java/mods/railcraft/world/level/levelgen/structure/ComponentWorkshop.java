@@ -7,8 +7,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 public class ComponentWorkshop {
 
   private static final ResourceKey<StructureProcessorList> EMPTY_PROCESSOR_LIST_KEY =
-      ResourceKey.create(Registries.PROCESSOR_LIST, ResourceLocation.withDefaultNamespace("empty"));
+      ResourceKey.create(Registries.PROCESSOR_LIST, Identifier.withDefaultNamespace("empty"));
 
   /**
    * Adds the building to the targeted pool. We will call this in addNewVillageBuilding method
@@ -27,15 +27,16 @@ public class ComponentWorkshop {
    */
   private static void addBuildingToPool(Registry<StructureTemplatePool> templatePoolRegistry,
       Registry<StructureProcessorList> processorListRegistry,
-      ResourceLocation templatePoolName, ResourceLocation newStructureName, int frequency) {
+      Identifier templatePoolName, Identifier newStructureName, int frequency) {
 
     Holder<StructureProcessorList> emptyProcessorList = processorListRegistry
-        .getHolderOrThrow(EMPTY_PROCESSOR_LIST_KEY);
+        .getOrThrow(EMPTY_PROCESSOR_LIST_KEY);
 
-    var pool = templatePoolRegistry.get(templatePoolName);
-    if (pool == null) {
+    var optionalPool = templatePoolRegistry.get(templatePoolName);
+    if (optionalPool.isEmpty()) {
       return;
     }
+    var pool = optionalPool.get().value();
 
     var piece = SinglePoolElement
         .legacy(newStructureName.toString(), emptyProcessorList)
@@ -51,15 +52,15 @@ public class ComponentWorkshop {
   }
 
   public static void addVillageStructures(RegistryAccess.Frozen registryAccess) {
-    var templatePoolRegistry = registryAccess.registry(Registries.TEMPLATE_POOL).orElseThrow();
-    var processorListRegistry = registryAccess.registry(Registries.PROCESSOR_LIST).orElseThrow();
+    var templatePoolRegistry = registryAccess.lookup(Registries.TEMPLATE_POOL).orElseThrow();
+    var processorListRegistry = registryAccess.lookup(Registries.PROCESSOR_LIST).orElseThrow();
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
-        ResourceLocation.withDefaultNamespace("village/plains/houses"),
-        RailcraftConstants.rl("component_workshop_cartman"), 4);
+        Identifier.withDefaultNamespace("village/plains/houses"),
+        RailcraftConstants.id("component_workshop_cartman"), 4);
 
     addBuildingToPool(templatePoolRegistry, processorListRegistry,
-        ResourceLocation.withDefaultNamespace("village/plains/houses"),
-        RailcraftConstants.rl("component_workshop_trackman"), 6);
+        Identifier.withDefaultNamespace("village/plains/houses"),
+        RailcraftConstants.id("component_workshop_trackman"), 6);
   }
 }
