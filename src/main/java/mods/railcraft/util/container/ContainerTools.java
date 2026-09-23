@@ -26,9 +26,10 @@ public abstract class ContainerTools {
   }
 
   public static ItemStack depleteItem(ItemStack stack) {
-    if (stack.getCount() == 1)
-      return stack.getItem().getCraftingRemainder(stack).create();
-    else {
+    if (stack.getCount() == 1) {
+      var remainder = stack.getItem().getCraftingRemainder(stack);
+      return remainder == null ? ItemStack.EMPTY : remainder.create();
+    } else {
       stack.split(1);
       return stack;
     }

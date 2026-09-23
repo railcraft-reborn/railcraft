@@ -46,7 +46,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
       if (!player.getAbilities().instabuild) {
         var craftRemainder = itemstack.getCraftingRemainder();
         itemstack.shrink(1);
-        if (itemstack.isEmpty()) {
+        if (itemstack.isEmpty() && craftRemainder != null) {
           player.setItemInHand(hand, craftRemainder.create());
         }
       }
