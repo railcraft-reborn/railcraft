@@ -40,6 +40,9 @@ public record SetAnalogSignalControllerBoxMessage(
   }
 
   public static void handle(SetAnalogSignalControllerBoxMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ANALOG_SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(signalBox -> {

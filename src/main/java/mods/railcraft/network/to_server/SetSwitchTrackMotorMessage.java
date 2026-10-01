@@ -45,6 +45,9 @@ public record SetSwitchTrackMotorMessage(
   }
 
   public static void handle(SetSwitchTrackMotorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var player = context.player();
     var level = player.level();
     var senderProfile = player.nameAndId();

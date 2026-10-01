@@ -32,6 +32,9 @@ public record SetRoutingDetectorMessage(
   }
 
   public static void handle(SetRoutingDetectorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var player = context.player();
     var level = player.level();
     var senderProfile = player.nameAndId();

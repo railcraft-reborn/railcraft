@@ -29,6 +29,9 @@ public record SetTankDetectorMessage(
   }
 
   public static void handle(SetTankDetectorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.TANK_DETECTOR.get())
         .ifPresent(blockEntity -> {

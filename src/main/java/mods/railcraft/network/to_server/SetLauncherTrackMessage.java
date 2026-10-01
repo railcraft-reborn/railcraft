@@ -27,6 +27,9 @@ public record SetLauncherTrackMessage(
   }
 
   public static void handle(SetLauncherTrackMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.LAUNCHER_TRACK.get())
         .ifPresent(track -> {

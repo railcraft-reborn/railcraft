@@ -30,6 +30,9 @@ public record SetSignalControllerBoxMessage(
   }
 
   public static void handle(SetSignalControllerBoxMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.SIGNAL_CONTROLLER_BOX.get())
         .ifPresent(signalBox -> {

@@ -32,6 +32,9 @@ public record SetSwitchTrackRouterMessage(
   }
 
   public static void handle(SetSwitchTrackRouterMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var player = context.player();
     var level = player.level();
     var senderProfile = player.nameAndId();

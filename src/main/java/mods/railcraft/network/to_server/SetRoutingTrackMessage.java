@@ -29,6 +29,9 @@ public record SetRoutingTrackMessage(
   }
 
   public static void handle(SetRoutingTrackMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var player = context.player();
     var level = player.level();
     var senderProfile = player.nameAndId();

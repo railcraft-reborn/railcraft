@@ -31,6 +31,9 @@ public record SetItemDetectorMessage(
   }
 
   public static void handle(SetItemDetectorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.ITEM_DETECTOR.get())
         .ifPresent(itemDetector -> {

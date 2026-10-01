@@ -30,6 +30,9 @@ public record SetFluidManipulatorMessage(
   }
 
   public static void handle(SetFluidManipulatorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var level = context.player().level();
     LevelUtil.getBlockEntity(level, message.blockPos, FluidManipulatorBlockEntity.class)
         .ifPresent(manipulator -> {
