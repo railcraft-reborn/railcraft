@@ -3,9 +3,7 @@ package mods.railcraft.world.level.block;
 import org.jspecify.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,10 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEventListener;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class MultiblockBlock extends BaseEntityBlock {
@@ -30,12 +28,22 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
     return RenderShape.MODEL;
   }
 
-  @Nullable
   @Override
-  public <T extends BlockEntity> GameEventListener getListener(ServerLevel level, T blockEntity) {
-    return blockEntity instanceof MultiblockBlockEntity<?, ?> multiblock
-        ? new MultiblockListener(multiblock)
-        : null;
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
+      Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+    super.neighborChanged(blockState, level, blockPos, neighborBlock, orientation, movedByPiston);
+    neighborChanged(level, blockPos);
+  }
+
+  /**
+   * Lets the multiblock block entity at the specified position know that a neighbouring block
+   * changed, so it can evaluate its structure.
+   */
+  public static void neighborChanged(Level level, BlockPos blockPos) {
+    if (!level.isClientSide()
+        && level.getBlockEntity(blockPos) instanceof MultiblockBlockEntity<?, ?> blockEntity) {
+      blockEntity.neighborChanged();
+    }
   }
 
   @Override

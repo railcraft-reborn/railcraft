@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:review",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/iron_tank",
+  "test": "MultiblockEvaluationTests#h1MemberKeepsUnloadedMaster"
+}

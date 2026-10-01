@@ -3,11 +3,10 @@ package mods.railcraft.world.level.block.tank;
 import org.jspecify.annotations.Nullable;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.world.level.block.AbstractStrengthenedGlassBlock;
+import mods.railcraft.world.level.block.MultiblockBlock;
 import mods.railcraft.world.level.block.entity.multiblock.MultiblockBlockEntity;
-import mods.railcraft.world.level.block.entity.multiblock.MultiblockListener;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,12 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.gameevent.GameEventListener;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock implements EntityBlock {
@@ -41,12 +39,11 @@ public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock impl
     builder.add(LEVEL);
   }
 
-  @Nullable
   @Override
-  public <T extends BlockEntity> GameEventListener getListener(ServerLevel level, T blockEntity) {
-    return blockEntity instanceof MultiblockBlockEntity<?, ?> multiblock
-        ? new MultiblockListener(multiblock)
-        : null;
+  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos,
+      Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+    super.neighborChanged(blockState, level, blockPos, neighborBlock, orientation, movedByPiston);
+    MultiblockBlock.neighborChanged(level, blockPos);
   }
 
   @Override

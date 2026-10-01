@@ -127,7 +127,6 @@ import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.CanContinueSleepingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -458,11 +457,6 @@ public class Railcraft {
         }
       }
     }
-  }
-
-  @SubscribeEvent
-  public void handleNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
-    event.getLevel().gameEvent(null, RailcraftGameEvents.NEIGHBOR_NOTIFY, event.getPos());
   }
 
   @SubscribeEvent

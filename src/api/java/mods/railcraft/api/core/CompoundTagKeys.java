@@ -73,6 +73,7 @@ public final class CompoundTagKeys {
   public static final String LOG = "log";
   public static final String LOSS = "loss";
   public static final String MASTER = "master";
+  public static final String MASTER_POS = "masterPos";
   public static final String MAX_DRAW = "maxDraw";
   public static final String MAX_TEMPERATURE = "maxTemperature";
   public static final String MODE = "mode";

@@ -138,10 +138,6 @@ public class MultiblockPattern<T> {
    */
   public Optional<Map<BlockPos, Element>> resolve(BlockPos blockPos, ServerLevel level,
       boolean checkForEntities) {
-    if (checkForEntities && !this.checkForEntities(blockPos, level)) {
-      return Optional.empty();
-    }
-
     var originPos = blockPos.subtract(this.masterOffset);
     Map<BlockPos, Element> map = new HashMap<>(this.getArea());
 
@@ -155,6 +151,11 @@ public class MultiblockPattern<T> {
       }
     }
 
+    // Checked last, blocks are much cheaper to check than entities
+    if (checkForEntities && !this.checkForEntities(blockPos, level)) {
+      return Optional.empty();
+    }
+
     return Optional.of(map);
   }
 
@@ -163,7 +164,8 @@ public class MultiblockPattern<T> {
     var marker = this.pattern[y][z][x];
     var predicate = this.predicates.get(marker);
     var pos = originPos.offset(x, y, z);
-    if (!predicate.test(level, pos)) {
+    // Never load chunks to check a structure, a structure which isn't fully loaded doesn't match
+    if (!level.isLoaded(pos) || !predicate.test(level, pos)) {
       return false;
     }
     consumer.accept(pos, new Element(new BlockPos(x, y, z), marker));

@@ -79,6 +79,14 @@ public abstract class TankBlockEntity extends MultiblockBlockEntity<TankBlockEnt
     }
   }
 
+  @Override
+  protected void dynamicTick() {
+    this.serverTick();
+    if (this.isMaster()) {
+      this.moduleDispatcher.serverTick();
+    }
+  }
+
   private void lightChanged(int light) {
     if (this.getBlockState().getBlock() instanceof TankGaugeBlock) {
       this.level.setBlock(this.getBlockPos(),
