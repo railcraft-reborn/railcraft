@@ -24,6 +24,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -123,8 +124,13 @@ public abstract class RailcraftBlockEntity extends BlockEntity
   @Override
   public void syncToClient() {
     if (this.level instanceof ServerLevel serverLevel) {
-      var packet = this.getUpdatePacket();
-      serverLevel.players().forEach(player -> player.connection.send(packet));
+      // Only players who can see this block need to know about it
+      var players = serverLevel.getChunkSource().chunkMap
+          .getPlayers(ChunkPos.containing(this.getBlockPos()), false);
+      if (!players.isEmpty()) {
+        var packet = this.getUpdatePacket();
+        players.forEach(player -> player.connection.send(packet));
+      }
     }
   }
 
