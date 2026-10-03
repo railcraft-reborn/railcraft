@@ -233,6 +233,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
   protected void setMembership(@Nullable Membership<T> membership) {
     this.membership = membership;
     this.membershipChanged(membership);
+    this.invalidateCapabilities();
     this.setChanged();
     this.syncToClient();
   }
