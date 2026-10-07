@@ -17,6 +17,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -38,6 +39,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private int energy;
 
   private final IFluidHandler fluidHandler = new FluidHandler();
+  private final IEnergyStorage outputEnergyHandler = new OutputEnergyHandler();
 
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
@@ -54,6 +56,14 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
   public IFluidHandler getFluidHandler() {
     return this.fluidHandler;
+  }
+
+  /**
+   * Extract-only view of the charge storage, a turbine must never be refilled by an external
+   * energy network.
+   */
+  public IEnergyStorage getOutputEnergyHandler() {
+    return this.outputEnergyHandler;
   }
 
   @Override
@@ -171,6 +181,39 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
       return SteamTurbineModule.this.waterTank.drain(maxDrain, action);
+    }
+  }
+
+  private class OutputEnergyHandler implements IEnergyStorage {
+
+    @Override
+    public int receiveEnergy(int toReceive, boolean simulate) {
+      return 0;
+    }
+
+    @Override
+    public int extractEnergy(int toExtract, boolean simulate) {
+      return SteamTurbineModule.this.getEnergyStorage().extractEnergy(toExtract, simulate);
+    }
+
+    @Override
+    public int getEnergyStored() {
+      return SteamTurbineModule.this.getEnergyStorage().getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+      return SteamTurbineModule.this.getEnergyStorage().getMaxEnergyStored();
+    }
+
+    @Override
+    public boolean canExtract() {
+      return SteamTurbineModule.this.getEnergyStorage().canExtract();
+    }
+
+    @Override
+    public boolean canReceive() {
+      return false;
     }
   }
 }
