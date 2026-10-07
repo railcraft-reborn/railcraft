@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.energy.EnergyHandler;
 import net.neoforged.neoforge.transfer.fluid.FluidResource;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
@@ -38,6 +39,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   private int energy;
 
   private final ResourceHandler<FluidResource> fluidHandler = new FluidHandler();
+  private final EnergyHandler outputEnergyHandler = new OutputEnergyHandler();
 
   public SteamTurbineModule(SteamTurbineBlockEntity provider, Charge network) {
     super(provider, network);
@@ -54,6 +56,14 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
   public ResourceHandler<FluidResource> getFluidHandler() {
     return this.fluidHandler;
+  }
+
+  /**
+   * Extract-only view of the charge storage, a turbine must never be refilled by an external
+   * energy network.
+   */
+  public EnergyHandler getOutputEnergyHandler() {
+    return this.outputEnergyHandler;
   }
 
   @Override
@@ -176,6 +186,29 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
     @Override
     public int extract(int index, FluidResource resource, int amount, TransactionContext transaction) {
       return this.getTank(index).extract(resource, amount, transaction);
+    }
+  }
+
+  private class OutputEnergyHandler implements EnergyHandler {
+
+    @Override
+    public int insert(int amount, TransactionContext transaction) {
+      return 0;
+    }
+
+    @Override
+    public int extract(int amount, TransactionContext transaction) {
+      return SteamTurbineModule.this.getEnergyStorage().extract(amount, transaction);
+    }
+
+    @Override
+    public long getAmountAsLong() {
+      return SteamTurbineModule.this.getEnergyStorage().getAmountAsLong();
+    }
+
+    @Override
+    public long getCapacityAsLong() {
+      return SteamTurbineModule.this.getEnergyStorage().getCapacityAsLong();
     }
   }
 }

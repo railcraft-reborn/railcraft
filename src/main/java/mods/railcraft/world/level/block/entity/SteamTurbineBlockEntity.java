@@ -162,7 +162,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
     var masterModule = this.getMasterBlockEntity()
         .map(SteamTurbineBlockEntity::getSteamTurbineModule);
     return masterModule
-        .map(SteamTurbineModule::getEnergyStorage)
+        .map(SteamTurbineModule::getOutputEnergyHandler)
         .orElse(null);
   }
 
