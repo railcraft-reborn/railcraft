@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.chars.CharArrayList;
 import it.unimi.dsi.fastutil.chars.CharList;
+import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.multiblock.BlockPredicate;
@@ -18,6 +19,7 @@ import mods.railcraft.world.module.SteamBoilerModule;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -166,41 +169,42 @@ public class SteamBoilerBlockEntity
 
   private static List<MultiblockPattern<Metadata>> buildPatterns(BlockPredicate fireboxPredicate) {
     return List.of(buildPattern(3, 4, 2, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-        BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+        RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(3, 3, 2, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-            BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(3, 2, 2, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-            BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
 
         buildPattern(2, 3, 1, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-            BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(2, 2, 1, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-            BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
 
         buildPattern(1, 1, 1, TICKS_HIGH, HEAT_HIGH, STEAM_HIGH,
-            BlockPredicate.of(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
 
         buildPattern(3, 4, 2, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(3, 3, 2, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(3, 2, 2, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
 
         buildPattern(2, 3, 1, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
         buildPattern(2, 2, 1, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate),
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate),
 
         buildPattern(1, 1, 1, TICKS_LOW, HEAT_LOW, STEAM_LOW,
-            BlockPredicate.of(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK), fireboxPredicate));
+            RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, fireboxPredicate));
   }
 
   private static MultiblockPattern<Metadata> buildPattern(int width, int tankHeight, int offset,
-      int ticks, float heat, int capacity, BlockPredicate tankPredicate,
+      int ticks, float heat, int capacity, Holder<Block> tank,
       BlockPredicate fireboxPredicate) {
+    var tankPredicate = BlockPredicate.of(tank::value);
     var builder = MultiblockPattern.<Metadata>builder(offset, 0, offset)
-        .metadata(new Metadata(width * width * tankHeight, ticks, heat, capacity))
+        .metadata(new Metadata(width * width * tankHeight, ticks, heat, capacity, tank))
         .predicate('T', tankPredicate)
         .predicate('F', fireboxPredicate)
         .predicate('O', tankPredicate.or(fireboxPredicate).negate());
@@ -244,5 +248,11 @@ public class SteamBoilerBlockEntity
   }
 
   public record Metadata(int tanks, int ticksPerCycle, float maxTemperature,
-      int steamCapacityPerTank) {}
+      int steamCapacityPerTank, Holder<Block> tank) {
+
+    public float steamMultiplier() {
+      var data = this.tank.getData(RailcraftDataMaps.STEAM_BOILER_TANK);
+      return data == null ? 1 : data.steamMultiplier();
+    }
+  }
 }

@@ -37,6 +37,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
   private float maxTemperature = SteamConstants.MAX_HEAT_LOW;
 
   private double efficiencyModifier = 1;
+  private float steamMultiplier = 1;
   private int ticksPerCycle = 16;
   @Nullable
   private Runnable changeListener;
@@ -93,6 +94,11 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   public SteamBoiler setEfficiencyModifier(double modifier) {
     this.efficiencyModifier = modifier;
+    return this;
+  }
+
+  public SteamBoiler setSteamMultiplier(float multiplier) {
+    this.steamMultiplier = multiplier;
     return this;
   }
 
@@ -252,7 +258,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
     waterCost = Math.min(waterCost, water.getAmount());
 
     var steam = new FluidStack(RailcraftFluids.STEAM.get(),
-        SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
+        Math.round(SteamConstants.STEAM_PER_UNIT_WATER * waterCost * this.steamMultiplier));
 
     this.waterTank.internalDrain(waterCost, IFluidHandler.FluidAction.EXECUTE);
     this.steamTank.internalFill(steam, IFluidHandler.FluidAction.EXECUTE);

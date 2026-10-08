@@ -3,6 +3,7 @@ package mods.railcraft.data;
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.datamaps.FluidHeat;
 import mods.railcraft.datamaps.RailcraftDataMaps;
+import mods.railcraft.datamaps.SteamBoilerTank;
 import mods.railcraft.datamaps.TunnelBoreHead;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
@@ -38,5 +39,9 @@ public class RailcraftDataMapProvider extends DataMapProvider {
 
     this.builder(RailcraftDataMaps.FLUID_HEAT)
         .add(RailcraftTags.Fluids.CREOSOTE, new FluidHeat(4800), false);
+
+    this.builder(RailcraftDataMaps.STEAM_BOILER_TANK)
+        .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, new SteamBoilerTank(1), false)
+        .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, new SteamBoilerTank(1), false);
   }
 }

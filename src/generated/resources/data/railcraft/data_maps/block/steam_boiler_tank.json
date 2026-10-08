@@ -1,0 +1,10 @@
+{
+  "values": {
+    "railcraft:high_pressure_steam_boiler_tank": {
+      "steam_multiplier": 1.0
+    },
+    "railcraft:low_pressure_steam_boiler_tank": {
+      "steam_multiplier": 1.0
+    }
+  }
+}

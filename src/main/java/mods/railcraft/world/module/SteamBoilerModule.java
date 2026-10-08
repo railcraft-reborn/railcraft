@@ -142,6 +142,7 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
       return;
     }
 
+    this.boiler.setSteamMultiplier(metadata.steamMultiplier());
     this.boiler.tick(metadata.tanks());
 
     if (this.processTicks++ >= FluidTools.BUCKET_FILL_TIME) {
