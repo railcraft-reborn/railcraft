@@ -41,6 +41,7 @@ import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.ai.village.poi.RailcraftPoiTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
 import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
+import mods.railcraft.world.entity.vehicle.BedMinecart;
 import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.ChargeMeterItem;
@@ -86,6 +87,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
@@ -106,6 +108,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
+import net.neoforged.neoforge.event.entity.player.CanContinueSleepingEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -402,6 +405,15 @@ public class Railcraft {
           event.setCancellationResult(crowbarActionResult);
         }
       }
+    }
+  }
+
+  @SubscribeEvent
+  public void handleContinueSleeping(CanContinueSleepingEvent event) {
+    // The cart is the bed, so there is no bed block at the sleeping position.
+    if (event.getProblem() == Player.BedSleepingProblem.NOT_POSSIBLE_HERE
+        && event.getEntity().getVehicle() instanceof BedMinecart) {
+      event.setContinueSleeping(true);
     }
   }
 

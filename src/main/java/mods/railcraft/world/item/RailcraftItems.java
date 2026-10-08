@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
+import mods.railcraft.world.entity.vehicle.BedMinecart;
 import mods.railcraft.world.entity.vehicle.CargoMinecart;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
 import mods.railcraft.world.entity.vehicle.TankMinecart;
@@ -497,6 +498,10 @@ public class RailcraftItems {
   public static final DeferredItem<CartItem> VOID_CHEST_MINECART =
       deferredRegister.register("void_chest_minecart",
           () -> new CartItem(VoidChestMinecart::new, new Item.Properties().stacksTo(1)));
+
+  public static final DeferredItem<CartItem> BED_MINECART =
+      deferredRegister.register("bed_minecart",
+          () -> new CartItem(BedMinecart::new, new Item.Properties().stacksTo(1)));
 
   public static final DeferredItem<WorldSpikeMinecartItem> WORLD_SPIKE_MINECART =
       deferredRegister.register("world_spike_minecart",

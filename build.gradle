@@ -103,6 +103,8 @@ neoForge {
         gameTestServer {
             type = "gameTestServer"
             gameDirectory = project.file('runs/gameTestServer')
+            // The test classpath doesn't have the localRuntime mods
+            sourceSet = sourceSets.test
         }
     }
 
@@ -153,8 +155,10 @@ dependencies {
     compileOnly "vazkii.patchouli:Patchouli:$patchouli_version:api"
     localRuntime "vazkii.patchouli:Patchouli:$patchouli_version"
 
-    implementation "curse.maven:jade-api-324717:$jade_id"
-    implementation "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
+    compileOnly "curse.maven:jade-api-324717:$jade_id"
+    localRuntime "curse.maven:jade-api-324717:$jade_id"
+    compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
+    localRuntime "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 
     localRuntime "curse.maven:mekanism-268560:6895130"//mekanism
     localRuntime "curse.maven:mekanism-268567:6895134"//mekanism-tools

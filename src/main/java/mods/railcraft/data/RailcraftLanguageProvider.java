@@ -228,6 +228,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
     this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");
     this.addItem(RailcraftItems.VOID_CHEST_MINECART, "Minecart with Void Chest");
+    this.addItem(RailcraftItems.BED_MINECART, "Minecart with Bed");
     this.addItem(RailcraftItems.WORLD_SPIKE_MINECART, "Minecart with Worldspike");
     this.addItem(RailcraftItems.CRACKED_FIRESTONE, "Cracked Firestone");
     this.addItem(RailcraftItems.RAW_FIRESTONE, "Raw Firestone");
@@ -375,6 +376,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addEntityType(RailcraftEntityTypes.TANK_MINECART, "Minecart with Tank");
     this.addEntityType(RailcraftEntityTypes.ENERGY_MINECART, "Minecart with Energy cell");
     this.addEntityType(RailcraftEntityTypes.VOID_CHEST_MINECART, "Minecart with Void Chest");
+    this.addEntityType(RailcraftEntityTypes.BED_MINECART, "Minecart with Bed");
     this.addEntityType(RailcraftEntityTypes.WORLD_SPIKE, "Minecart with Worldspike");
     this.addEntityType(RailcraftEntityTypes.CREATIVE_LOCOMOTIVE, "Creative Locomotive");
     this.addEntityType(RailcraftEntityTypes.STEAM_LOCOMOTIVE, "Steam Locomotive");
@@ -595,6 +597,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.REDSTONE_LINKAGE, "Redstone linkage:");
     this.add(Translations.Tips.LISTEN, "Listen");
     this.add(Translations.Tips.CLICK_TO_CRAFT, "- Click to craft -");
+    this.add(Translations.Tips.BED_MINECART_KEYS, "Press %s to Dismount, %s to Sleep");
     this.add(Translations.Tips.ABANDONED_TRACK, "Can be suspended over gaps in terrain");
     this.add(Translations.Tips.REINFORCED_TRACK, "125% of the speed of normal track");
     this.add(Translations.Tips.STRAP_IRON_TRACK, "30% of the speed of iron track");
@@ -1310,6 +1313,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.KeyBinding.REVERSE, "Change locomotive direction");
     this.add(Translations.KeyBinding.WHISTLE, "Locomotive whistle");
     this.add(Translations.KeyBinding.MODE, "Change locomotive mode");
+    this.add(Translations.KeyBinding.SLEEP, "Sleep in the Minecart with Bed");
   }
 
   private void configurationTranslations() {

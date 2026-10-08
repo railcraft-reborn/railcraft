@@ -257,7 +257,7 @@ public class RailcraftVillagerTrades {
       CHEAP.add(EntityType.TNT_MINECART);
       CHEAP.add(RailcraftEntityTypes.CARGO_MINECART.get());
       // CHEAP.add(RailcraftCarts.JUKEBOX);
-      // CHEAP.add(RailcraftCarts.BED);
+      CHEAP.add(RailcraftEntityTypes.BED_MINECART.get());
       CHEAP.add(RailcraftEntityTypes.TANK_MINECART.get());
       // CHEAP.add(RailcraftCarts.TNT_WOOD);
       // CHEAP.add(RailcraftCarts.WORK);

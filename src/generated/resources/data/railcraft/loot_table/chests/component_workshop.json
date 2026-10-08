@@ -75,6 +75,10 @@
         {
           "type": "minecraft:item",
           "name": "railcraft:tank_minecart"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "railcraft:bed_minecart"
         }
       ],
       "name": "railcraft_carts",

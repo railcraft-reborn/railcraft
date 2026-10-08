@@ -159,7 +159,7 @@ public abstract class RailcraftMinecart extends AbstractMinecartContainer
   }
 
   @Override
-  public AbstractMinecart.Type getMinecartType() {
+  public final AbstractMinecart.Type getMinecartType() {
     throw new UnsupportedOperationException();
   }
 

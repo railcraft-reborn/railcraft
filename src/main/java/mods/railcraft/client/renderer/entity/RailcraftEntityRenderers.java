@@ -1,5 +1,6 @@
 package mods.railcraft.client.renderer.entity;
 
+import mods.railcraft.client.renderer.entity.cart.BedMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.CargoMinecartRenderer;
 import mods.railcraft.client.renderer.entity.cart.ElectricLocomotiveRenderer;
 import mods.railcraft.client.renderer.entity.cart.EnergyMinecartRenderer;
@@ -27,6 +28,8 @@ public class RailcraftEntityRenderers {
         EnergyMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.VOID_CHEST_MINECART.get(),
         VoidChestMinecartRenderer::new);
+    event.registerEntityRenderer(RailcraftEntityTypes.BED_MINECART.get(),
+        BedMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.WORLD_SPIKE.get(),
         WorldSpikeMinecartRenderer::new);
     event.registerEntityRenderer(RailcraftEntityTypes.TRACK_LAYER.get(),

@@ -56,7 +56,7 @@ public record RailcraftChestLoot(HolderLookup.Provider provider) implements Loot
             .add(LootItem.lootTableItem(RailcraftItems.TANK_MINECART.get()).setWeight(1))
             //.add(LootItem.lootTableItem(RailcraftItems.WORK_MINECART.get()).setWeight(1))
             //.add(LootItem.lootTableItem(RailcraftItems.TNT_WOOD_MINECART.get()).setWeight(1))
-            //.add(LootItem.lootTableItem(RailcraftItems.BED_MINECART.get()).setWeight(1))
+            .add(LootItem.lootTableItem(RailcraftItems.BED_MINECART.get()).setWeight(1))
             //.add(LootItem.lootTableItem(RailcraftItems.JUKEBOX_MINECART.get()).setWeight(1))
         )
         .withPool(LootPool.lootPool()

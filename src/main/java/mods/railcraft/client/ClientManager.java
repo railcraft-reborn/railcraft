@@ -3,6 +3,7 @@ package mods.railcraft.client;
 import org.joml.Vector3f;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
@@ -60,8 +61,10 @@ import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
 import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
+import mods.railcraft.network.to_server.SleepInBedMinecartMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
+import mods.railcraft.world.entity.vehicle.BedMinecart;
 import mods.railcraft.world.inventory.RailcraftMenuTypes;
 import mods.railcraft.world.item.GogglesItem;
 import mods.railcraft.world.item.LocomotiveItem;
@@ -86,11 +89,14 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -107,6 +113,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -414,6 +421,28 @@ public class ClientManager {
     }
   }
 
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  static void handleRenderPlayerPre(RenderPlayerEvent.Pre event) {
+    var player = event.getEntity();
+    if (player.isSleeping() && player.getVehicle() instanceof BedMinecart cart) {
+      // Without a bed block the player lies from its position towards west, so we align it
+      // with the cart, center it and lift it over the ends of the cart.
+      var poseStack = event.getPoseStack();
+      poseStack.pushPose();
+      var yaw = Mth.rotLerp(event.getPartialTick(), cart.yRotO, cart.getYRot());
+      poseStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
+      poseStack.translate(player.getDimensions(Pose.STANDING).height() / 2, 0.625F, 0);
+    }
+  }
+
+  @SubscribeEvent
+  static void handleRenderPlayerPost(RenderPlayerEvent.Post event) {
+    var player = event.getEntity();
+    if (player.isSleeping() && player.getVehicle() instanceof BedMinecart) {
+      event.getPoseStack().popPose();
+    }
+  }
+
   @SubscribeEvent
   static void handleKeyInput(InputEvent.Key event) {
     var player = Minecraft.getInstance().player;
@@ -426,6 +455,9 @@ public class ClientManager {
 
     if (KeyBinding.CHANGE_AURA.consumeClick()) {
       GogglesItem.changeAuraByKey(player);
+    }
+    if (KeyBinding.SLEEP.consumeClick() && player.getVehicle() instanceof BedMinecart) {
+      PacketDistributor.sendToServer(new SleepInBedMinecartMessage());
     }
     // Locomotive Keybindings
     if (!(player.getVehicle() instanceof Minecart)) {

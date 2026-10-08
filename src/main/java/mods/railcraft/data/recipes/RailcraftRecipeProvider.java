@@ -12,6 +12,7 @@ import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
+import mods.railcraft.world.item.crafting.BedMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
@@ -1258,6 +1259,14 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .unlockedBy(getHasName(RailcraftItems.VOID_CHEST), has(RailcraftItems.VOID_CHEST))
         .save(recipeOutput);
 
+    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.BED_MINECART)
+        .pattern("a")
+        .pattern("b")
+        .define('a', ItemTags.BEDS)
+        .define('b', Items.MINECART)
+        .unlockedBy(getHasName(Items.WHITE_BED), has(Items.WHITE_BED))
+        .save(recipeOutput);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART)
         .pattern("a")
         .pattern("b")
@@ -1310,6 +1319,8 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         .save(recipeOutput, "worldspike_minecart_disassembly");
     RailcraftSpecialRecipeBuilder.special(VoidChestMinecartDisassemblyRecipe::new)
         .save(recipeOutput, "void_chest_minecart_disassembly");
+    RailcraftSpecialRecipeBuilder.special(BedMinecartDisassemblyRecipe::new)
+        .save(recipeOutput, "bed_minecart_disassembly");
 
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, RailcraftItems.TRACK_LAYER.get())
         .pattern("aba")
