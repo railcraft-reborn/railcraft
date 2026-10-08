@@ -94,3 +94,6 @@ repo
 .atom-build.json
 
 CHANGELOG.md
+
+# datagen cache
+src/generated/resources/.cache
