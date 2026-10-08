@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:bed_minecart_sleep",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/detector_track"
+}

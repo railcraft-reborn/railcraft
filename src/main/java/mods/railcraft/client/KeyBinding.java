@@ -13,7 +13,8 @@ public enum KeyBinding {
   FASTER(Translations.KeyBinding.FASTER, GLFW.GLFW_KEY_PERIOD),
   SLOWER(Translations.KeyBinding.SLOWER, GLFW.GLFW_KEY_COMMA),
   MODE_CHANGE(Translations.KeyBinding.MODE, GLFW.GLFW_KEY_M),
-  WHISTLE(Translations.KeyBinding.WHISTLE, GLFW.GLFW_KEY_B);
+  WHISTLE(Translations.KeyBinding.WHISTLE, GLFW.GLFW_KEY_B),
+  SLEEP(Translations.KeyBinding.SLEEP, GLFW.GLFW_KEY_DOWN);
 
   private final KeyMapping keyMapping;
 

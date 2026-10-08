@@ -22,6 +22,7 @@ public class RailcraftRecipeSerializers {
     deferredRegister.register("chest_minecart_disassembly", () -> ChestMinecartDisassemblyRecipe.SERIALIZER);
     deferredRegister.register("worldspike_minecart_disassembly", () -> WorldSpikeMinecartDisassemblyRecipe.SERIALIZER);
     deferredRegister.register("void_chest_minecart_disassembly", () -> VoidChestMinecartDisassemblyRecipe.SERIALIZER);
+    deferredRegister.register("bed_minecart_disassembly", () -> BedMinecartDisassemblyRecipe.SERIALIZER);
     deferredRegister.register("wooden_tie", () -> WoodenTieRecipe.SERIALIZER);
     deferredRegister.register("stone_tie", () -> StoneTieRecipe.SERIALIZER);
     deferredRegister.register("patchouli_book_crafting", () -> PatchouliBookCrafting.SERIALIZER);

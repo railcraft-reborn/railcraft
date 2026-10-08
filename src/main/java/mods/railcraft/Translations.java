@@ -377,6 +377,7 @@ public class Translations {
     public static final String REDSTONE_LINKAGE = makeKey("tips", "redstone_linkage");
     public static final String LISTEN = makeKey("tips", "listen");
     public static final String CLICK_TO_CRAFT = makeKey("tips", "click_to_craft");
+    public static final String BED_MINECART_KEYS = makeKey("tips", "bed_minecart.keys");
     public static final String ABANDONED_TRACK = makeKey("tips", "abandoned_track");
     public static final String REINFORCED_TRACK = makeKey("tips", "reinforced_track");
     public static final String STRAP_IRON_TRACK = makeKey("tips", "strap_iron_track");
@@ -686,6 +687,7 @@ public class Translations {
     public static final String SLOWER = makeKey("key", "loco.slower");
     public static final String MODE = makeKey("key", "loco.mode");
     public static final String WHISTLE = makeKey("key", "loco.whistle");
+    public static final String SLEEP = makeKey("key", "bed_minecart.sleep");
   }
 
   public static class Enchantment {

@@ -4,6 +4,7 @@ import java.util.function.Function;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.data.gametest.instances.BedMinecartTestInstance;
 import mods.railcraft.data.gametest.instances.BlockSignalTestInstance;
 import mods.railcraft.data.gametest.instances.DetectorTrackTestInstance;
 import mods.railcraft.data.gametest.instances.ForceTrackTestInstance;
@@ -95,6 +96,7 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("tank_entity_inside", () -> TankEntityInsideTestInstance.CODEC);
     deferredRegister.register("tank_entity_outside", () -> TankEntityOutsideTestInstance.CODEC);
     deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
+    deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -154,6 +156,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "tank_entity_inside", "iron_tank", TankEntityInsideTestInstance::new);
     registerTestInstance(bootstrap, "tank_entity_outside", "iron_tank", TankEntityOutsideTestInstance::new);
     registerTestInstance(bootstrap, "tank_reforms", "iron_tank", TankReformsTestInstance::new);
+
+    registerTestInstance(bootstrap, "bed_minecart_sleep", "detector_track", BedMinecartTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

@@ -149,6 +149,7 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.TANK_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ENERGY_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.VOID_CHEST_MINECART.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.BED_MINECART.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.WORLD_SPIKE_MINECART.get(),
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TRACK_LAYER.get(), ModelTemplates.FLAT_ITEM);

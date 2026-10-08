@@ -54,6 +54,7 @@ public class RailcraftVillagerTrades {
 
   private static final List<DeferredItem<?>> CHEAP_CARTS = List.of(
       RailcraftItems.CARGO_MINECART,
+      RailcraftItems.BED_MINECART,
       RailcraftItems.TANK_MINECART);
 
   private static final List<DeferredItem<?>> EXPENSIVE_CARTS = List.of(

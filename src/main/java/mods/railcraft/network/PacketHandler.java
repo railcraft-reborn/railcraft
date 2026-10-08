@@ -25,6 +25,7 @@ import mods.railcraft.network.to_server.SetSwitchTrackMotorMessage;
 import mods.railcraft.network.to_server.SetSwitchTrackRouterMessage;
 import mods.railcraft.network.to_server.SetTankDetectorMessage;
 import mods.railcraft.network.to_server.SetTrainDetectorMessage;
+import mods.railcraft.network.to_server.SleepInBedMinecartMessage;
 import mods.railcraft.network.to_server.UpdateAuraByKeyMessage;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -88,6 +89,8 @@ public final class PacketHandler {
         SetTankDetectorMessage.STREAM_CODEC, SetTankDetectorMessage::handle);
     registrar.playToServer(SetFilterSlotMessage.TYPE,
         SetFilterSlotMessage.STREAM_CODEC, SetFilterSlotMessage::handle);
+    registrar.playToServer(SleepInBedMinecartMessage.TYPE,
+        SleepInBedMinecartMessage.STREAM_CODEC, SleepInBedMinecartMessage::handle);
   }
 
   private static void registerServerToClient(PayloadRegistrar registrar) {
