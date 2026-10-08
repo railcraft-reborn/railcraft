@@ -40,6 +40,7 @@ public class SteamBoiler implements ValueIOSerializable {
   private float maxTemperature = SteamConstants.MAX_HEAT_LOW;
 
   private double efficiencyModifier = 1;
+  private float steamMultiplier = 1;
   private int ticksPerCycle = 16;
   @Nullable
   private Runnable changeListener;
@@ -75,6 +76,11 @@ public class SteamBoiler implements ValueIOSerializable {
 
   public SteamBoiler setEfficiencyModifier(double modifier) {
     this.efficiencyModifier = modifier;
+    return this;
+  }
+
+  public SteamBoiler setSteamMultiplier(float multiplier) {
+    this.steamMultiplier = multiplier;
     return this;
   }
 
@@ -235,7 +241,7 @@ public class SteamBoiler implements ValueIOSerializable {
       waterCost = Math.min(waterCost, waterExtracted);
 
       var steam = new FluidStack(RailcraftFluids.STEAM.get(),
-          SteamConstants.STEAM_PER_UNIT_WATER * waterCost);
+          Math.round(SteamConstants.STEAM_PER_UNIT_WATER * waterCost * this.steamMultiplier));
 
       this.steamTank.internalInsert(FluidResource.of(steam), steam.getAmount(), tx);
       tx.commit();
