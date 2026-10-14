@@ -45,8 +45,14 @@ public abstract class ContentsMinecartRenderer<T extends RailcraftMinecart, S ex
   @Override
   public void extractRenderState(T entity, S reusedState, float partialTick) {
     super.extractRenderState(entity, reusedState, partialTick);
-    this.blockModelResolver.update(reusedState.displayBlockModel, entity.getDisplayBlockState(),
-        BLOCK_DISPLAY_CONTEXT);
+    var displayBlockState = entity.getDisplayBlockState();
+    if (displayBlockState.isAir()) {
+      // The resolver sets up a model even for air, so the contents would be offset as a block.
+      reusedState.displayBlockModel.clear();
+    } else {
+      this.blockModelResolver.update(reusedState.displayBlockModel, displayBlockState,
+          BLOCK_DISPLAY_CONTEXT);
+    }
   }
 
   protected void renderContents(S renderState, PoseStack poseStack,
