@@ -20,7 +20,7 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
       RailcraftConstants.id("textures/carts/cart_snow.png");
 
   public static final Identifier MINECART_TEXTURE_LOCATION =
-      Identifier.withDefaultNamespace("textures/entity/minecart.png");
+      Identifier.withDefaultNamespace("textures/entity/minecart/minecart.png");
 
   public StandardMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
