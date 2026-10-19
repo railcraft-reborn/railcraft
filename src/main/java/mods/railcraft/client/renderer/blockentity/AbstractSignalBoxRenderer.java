@@ -39,6 +39,14 @@ public abstract class AbstractSignalBoxRenderer
   private final CuboidModel model =
       new CuboidModel(2 / 16F, 0, 2 / 16.0F, 14 / 16.0F, 15 / 16.0F, 14 / 16.0F);
 
+  private static final float ASPECT_OFFSET = 0.001F;
+
+  // Aspect lamps are drawn as a separate, slightly inflated shell so they never share a plane
+  // with the box faces (coplanar faces z-fight, especially in shader shadow passes)
+  private final CuboidModel aspectModel = new CuboidModel(
+      2 / 16F - ASPECT_OFFSET, 0, 2 / 16.0F - ASPECT_OFFSET,
+      14 / 16.0F + ASPECT_OFFSET, 15 / 16.0F, 14 / 16.0F + ASPECT_OFFSET);
+
   protected abstract ResourceLocation getTopTextureLocation();
 
   @Override
@@ -79,19 +87,13 @@ public abstract class AbstractSignalBoxRenderer
           .setSize(16));
     }
 
-    var vertexConsumer =
-        bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
-    CuboidModelRenderer.render(this.model, poseStack, vertexConsumer,
-        0xFFFFFFFF, FaceDisplay.BOTH, false);
-
+    this.aspectModel.clear();
     for (var direction : Direction.Plane.HORIZONTAL) {
-      if (SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
-        this.model.disable(direction);
-      } else {
+      if (!SignalBoxBlock.isConnected(blockEntity.getBlockState(), direction)) {
         var aspect = blockEntity.getSignalAspect(direction).getDisplayAspect();
         final int skyLight = LightTexture.sky(packedLight);
         final int facePackedLight = LightTexture.pack(aspect.getLampLight(), skyLight);
-        this.model.set(direction, this.model.new Face()
+        this.aspectModel.set(direction, this.aspectModel.new Face()
             .setSprite(spriteGetter.apply(ASPECT_TEXTURE_LOCATIONS.get(aspect)))
             .setSize(16)
             .setPackedLight(facePackedLight)
@@ -99,8 +101,12 @@ public abstract class AbstractSignalBoxRenderer
       }
     }
 
+    var vertexConsumer =
+        bufferSource.getBuffer(RenderType.entityCutout(InventoryMenu.BLOCK_ATLAS));
     CuboidModelRenderer.render(this.model, poseStack, vertexConsumer,
-        0xFFFFFFFF, FaceDisplay.BOTH, false);
+        0xFFFFFFFF, FaceDisplay.FRONT, false);
+    CuboidModelRenderer.render(this.aspectModel, poseStack, vertexConsumer,
+        0xFFFFFFFF, FaceDisplay.FRONT, false);
   }
 
   @Override
