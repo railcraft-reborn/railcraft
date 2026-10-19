@@ -138,7 +138,7 @@ public class CuboidModelRenderer {
       @Nullable Face spriteInfo, Vector3f from, Vector3f to,
       Direction face, int[] colors, FaceDisplay faceDisplay,
       Vector3f normal) {
-    if (spriteInfo == null) {
+    if (spriteInfo == null || !spriteInfo.isEnabled()) {
       return;
     }
     // start with texture coordinates

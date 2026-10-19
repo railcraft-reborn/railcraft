@@ -44,6 +44,8 @@ public abstract class AbstractSignalBoxRenderer
   private static final Identifier BOTTOM_TEXTURE_LOCATION =
       RailcraftConstants.id("entity/signal_box/bottom");
 
+  private static final float ASPECT_OFFSET = 0.001F;
+
   protected abstract Identifier getTopTextureIdentifier();
 
   @Override
@@ -104,37 +106,39 @@ public abstract class AbstractSignalBoxRenderer
         .setSprite(textureAtlas.getSprite(BOTTOM_TEXTURE_LOCATION))
         .setSize(16));
 
+    for (var direction : Direction.Plane.HORIZONTAL) {
+      var isConnected = state.directionConnections.get(direction);
+      model.set(direction, model.new Face()
+          .setSprite(textureAtlas.getSprite(isConnected
+              ? CONNECTED_SIDE_TEXTURE_LOCATION
+              : SIDE_TEXTURE_LOCATION))
+          .setSize(16));
+    }
+
+    // Aspect lamps are drawn as a separate, slightly inflated shell so they never share a plane
+    // with the box faces (coplanar faces z-fight, especially in shader shadow passes)
+    var aspectModel = new CuboidModel(
+        2 / 16F - ASPECT_OFFSET, 0, 2 / 16.0F - ASPECT_OFFSET,
+        14 / 16.0F + ASPECT_OFFSET, 15 / 16.0F, 14 / 16.0F + ASPECT_OFFSET);
+    for (var direction : Direction.Plane.HORIZONTAL) {
+      if (!state.directionConnections.get(direction)) {
+        var aspect = state.directionSignalAspects.get(direction);
+        final int skyLight = LightCoordsUtil.sky(state.lightCoords);
+        final int facePackedLight = LightCoordsUtil.pack(aspect.getLampLight(), skyLight);
+        aspectModel.set(direction, aspectModel.new Face()
+            .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(aspect)))
+            .setSize(16)
+            .setPackedLight(facePackedLight)
+            .setPackedOverlay(OverlayTexture.NO_OVERLAY));
+      }
+    }
+
     var renderType = RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS);
     collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-      for (var direction : Direction.Plane.HORIZONTAL) {
-        var isConnected = state.directionConnections.get(direction);
-        model.set(direction, model.new Face()
-            .setSprite(textureAtlas.getSprite(isConnected
-                ? CONNECTED_SIDE_TEXTURE_LOCATION
-                : SIDE_TEXTURE_LOCATION))
-            .setSize(16));
-      }
       CuboidModelRenderer.render(model, pose, vertexConsumer,
-          0xFFFFFFFF, FaceDisplay.BOTH, false);
-    });
-
-    collector.submitCustomGeometry(poseStack, renderType, (pose, vertexConsumer) -> {
-      for (var direction : Direction.Plane.HORIZONTAL) {
-        if (state.directionConnections.get(direction)) {
-          model.disable(direction);
-        } else {
-          var aspect = state.directionSignalAspects.get(direction);
-          final int skyLight = LightCoordsUtil.sky(state.lightCoords);
-          final int facePackedLight = LightCoordsUtil.pack(aspect.getLampLight(), skyLight);
-          model.set(direction, model.new Face()
-                  .setSprite(textureAtlas.getSprite(ASPECT_TEXTURE_LOCATIONS.get(aspect)))
-                  .setSize(16)
-                  .setPackedLight(facePackedLight)
-                  .setPackedOverlay(OverlayTexture.NO_OVERLAY));
-        }
-      }
-      CuboidModelRenderer.render(model, pose, vertexConsumer,
-          0xFFFFFFFF, FaceDisplay.BOTH, false);
+          0xFFFFFFFF, FaceDisplay.FRONT, false);
+      CuboidModelRenderer.render(aspectModel, pose, vertexConsumer,
+          0xFFFFFFFF, FaceDisplay.FRONT, false);
     });
   }
 
