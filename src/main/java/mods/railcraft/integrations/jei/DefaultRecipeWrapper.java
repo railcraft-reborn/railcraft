@@ -1,5 +1,6 @@
 package mods.railcraft.integrations.jei;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -47,9 +48,15 @@ public class DefaultRecipeWrapper <T extends CraftingRecipe> implements ICraftin
   public void setRecipe(RecipeHolder<T> recipeHolder, IRecipeLayoutBuilder builder,
       ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
     var inputs = recipeHolder.value().getIngredients().stream()
-        .map(ingredient -> List.of(ingredient.getItems()))
+        // Copy the stacks, getItems() exposes the ingredient's backing array
+        .map(ingredient -> Arrays.stream(ingredient.getItems())
+            .map(stack -> {
+              var copy = stack.copy();
+              this.stackModifier.accept(copy);
+              return copy;
+            })
+            .toList())
         .toList();
-    inputs.forEach(l -> l.forEach(stackModifier));
     var registryAccess = Minecraft.getInstance().level.registryAccess();
     craftingGridHelper.createAndSetOutputs(builder,
         List.of(recipeHolder.value().getResultItem(registryAccess)));
