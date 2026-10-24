@@ -11,6 +11,7 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -19,7 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
-import com.google.common.collect.ForwardingCollection;
 import com.google.common.collect.ForwardingMap;
 import com.google.common.collect.ForwardingSet;
 import com.google.common.collect.Iterators;
@@ -79,35 +78,28 @@ public class ChargeNetworkImpl implements Charge.Network {
     this.tickingNodes.removeIf(ChargeNode::checkUsageRecordingCompletion);
 
     // Process the queue of nodes waiting to be added/removed from the network
-    Set<BlockPos> added = new HashSet<>();
-    Iterator<Map.Entry<BlockPos, ChargeNode>> iterator = queue.entrySet().iterator();
     int count = 0;
-    while (iterator.hasNext() && count < 500) {
+    while (!queue.isEmpty() && count < 500) {
       count++;
+      Iterator<Map.Entry<BlockPos, ChargeNode>> iterator = queue.entrySet().iterator();
       Map.Entry<BlockPos, ChargeNode> action = iterator.next();
+      iterator.remove();
       if (action.getValue() == null) {
         removeNodeImpl(action.getKey());
       } else {
         addNodeImpl(action.getKey(), action.getValue());
-        added.add(action.getKey());
+        // Search for connected nodes of the added node and queue them too, they are processed
+        // in this same tick so the graph fills out without waiting one tick per node
+        forConnections(action.getKey(), this::addNode);
       }
-      iterator.remove();
     }
-
-    // Search for connected nodes of recently added nodes and register them too
-    // helps fill out the graph faster and more reliably
-    Set<BlockPos> newNodes = new HashSet<>();
-    added.forEach(pos -> forConnections(pos, (conPos, conState) -> {
-      if (addNode(conPos, conState))
-        newNodes.add(conPos);
-    }));
 
     // Remove discarded grids and tick what's left
     grids.removeIf(g -> g.invalid);
     grids.forEach(ChargeGrid::tick);
 
-    if (!newNodes.isEmpty()) {
-      logger.debug("Nodes queued: {}", newNodes.size());
+    if (count > 0) {
+      logger.debug("Nodes processed: {}, still queued: {}", count, queue.size());
     }
   }
 
@@ -117,6 +109,10 @@ public class ChargeNetworkImpl implements Charge.Network {
     if (chargeSpec != null) {
       CONNECTION_MAPS.get(chargeSpec.connectType()).forEach((k, v) -> {
         var otherPos = pos.offset(k);
+        // Never force-load a chunk just to discover connections
+        if (!this.level.isLoaded(otherPos)) {
+          return;
+        }
         var otherState = this.level.getBlockState(otherPos);
         var other = this.getChargeSpec(otherState, otherPos);
         if (other != null && CONNECTION_MAPS.get(other.connectType()).get(pos.subtract(otherPos))
@@ -214,6 +210,9 @@ public class ChargeNetworkImpl implements Charge.Network {
         pos = pos.immutable();
         node = new ChargeNode(pos, chargeSpec);
         this.addNodeImpl(pos, node);
+        // Nodes are not persisted, so after a restart the network is rebuilt lazily from here:
+        // queue the neighbours so the tick flood fill registers the rest of the network
+        this.forConnections(pos, this::addNode);
       }
     }
     return node == null ? NULL_NODE : node;
@@ -290,7 +289,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     protected void destroy(boolean touchNodes) {
-      logger.debug("Destroying grid: {}", this);
+      logger.debug("Destroying grid: {}", this.toString());
       invalid = true;
       totalLosses = 0;
       if (touchNodes) {
@@ -574,7 +573,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     public ChargeGrid getGrid() {
-      if (chargeGrid.isActive())
+      if (chargeGrid.isActive() || !this.isValid())
         return chargeGrid;
       constructGrid();
       return chargeGrid;
@@ -600,12 +599,12 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public boolean hasCapacity(int amount) {
-      return chargeGrid.hasCapacity(amount);
+      return this.getGrid().hasCapacity(amount);
     }
 
     @Override
     public boolean useCharge(int amount, boolean simulate) {
-      boolean removed = this.chargeGrid.useCharge(amount, simulate);
+      boolean removed = this.getGrid().useCharge(amount, simulate);
       if (removed && !simulate) {
         this.listeners.forEach(c -> c.chargeRemoved(this, amount));
         this.usageRecorder.ifPresent(r -> r.useCharge(amount));
@@ -615,7 +614,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public int removeCharge(int desiredAmount, boolean simulate) {
-      var removed = this.chargeGrid.removeCharge(desiredAmount, simulate);
+      var removed = this.getGrid().removeCharge(desiredAmount, simulate);
       if (!simulate) {
         this.listeners.forEach(c -> c.chargeRemoved(this, removed));
         this.usageRecorder.ifPresent(r -> r.useCharge(removed));
@@ -640,8 +639,9 @@ public class ChargeNetworkImpl implements Charge.Network {
       }
       Deque<ChargeNode> nodeQueue = new ArrayDeque<>();
       nodeQueue.add(this);
-      TreeSet<ChargeGrid> seenGrids =
-          new TreeSet<>(Comparator.comparingInt(ForwardingCollection::size));
+      // Grids must be tracked by identity: ChargeGrid has set equality and grids of equal size
+      // must not collapse into one, otherwise they are never merged
+      Set<ChargeGrid> seenGrids = Collections.newSetFromMap(new IdentityHashMap<>());
       seenGrids.add(this.chargeGrid);
       ChargeNode nextNode;
       while ((nextNode = nodeQueue.poll()) != null) {
@@ -659,7 +659,10 @@ public class ChargeNetworkImpl implements Charge.Network {
           }
         });
       }
-      this.chargeGrid = Objects.requireNonNull(seenGrids.pollLast());
+      this.chargeGrid = seenGrids.stream()
+          .max(Comparator.comparingInt(ChargeGrid::size))
+          .orElseThrow();
+      seenGrids.remove(this.chargeGrid);
       if (this.chargeGrid.isNull()) {
         this.chargeGrid = new ChargeGrid();
         ChargeNetworkImpl.this.grids.add(this.chargeGrid);
@@ -670,8 +673,8 @@ public class ChargeNetworkImpl implements Charge.Network {
         this.chargeGrid.addAll(grid);
         grid.destroy(false);
       });
-      logger.debug("Constructing Grid: {}->{} Added {} nodes", this.pos, this.chargeGrid,
-          this.chargeGrid.size() - originalSize);
+      logger.debug("Constructing Grid: {}->{} Added {} nodes", this.pos,
+          this.chargeGrid.toString(), this.chargeGrid.size() - originalSize);
     }
 
     @Override

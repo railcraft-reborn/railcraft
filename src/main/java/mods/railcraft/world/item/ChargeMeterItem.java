@@ -41,7 +41,7 @@ public class ChargeMeterItem extends Item {
     if (state.getBlock() instanceof ChargeBlock chargeBlock) {
       var node = (ChargeNetworkImpl.ChargeNode) chargeBlock.getMeterAccess(Charge.distribution,
           state, (ServerLevel) level, pos);
-      if (node != null && node.isValid() && !node.isGridNull()) {
+      if (node != null && node.isValid() && !node.getGrid().isNull()) {
         player.sendSystemMessage(Component.translatable(Translations.ChargeMeter.START, SECONDS_TO_RECORD));
         node.startUsageRecording(SECONDS_TO_RECORD * SharedConstants.TICKS_PER_SECOND, avg -> {
           sendNetworkStat(player, node.getGrid());
