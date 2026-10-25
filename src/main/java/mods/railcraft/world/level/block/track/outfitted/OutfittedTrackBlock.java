@@ -58,9 +58,19 @@ public class OutfittedTrackBlock extends TrackBlock {
     return false;
   }
 
+  /**
+   * Whether breaking this track removes only its track kit, leaving the plain track behind.
+   */
+  protected boolean revertsToFlexTrack() {
+    return true;
+  }
+
   @Override
   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player,
       boolean willHarvest, FluidState fluid) {
+    if (!this.revertsToFlexTrack()) {
+      return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+    }
     var newState = TrackUtil.setShape(this.getTrackType().getFlexBlock(),
         TrackUtil.getRailShapeRaw(state));
     boolean result = level.setBlockAndUpdate(pos, newState);

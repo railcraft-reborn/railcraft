@@ -50,10 +50,14 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
-    BlockState blockState = super.getStateForPlacement(context);
-    BlockPos blockPos = context.getClickedPos();
+    var level = context.getLevel();
+    var blockPos = context.getClickedPos();
+    var blockState = super.getStateForPlacement(context);
+    // The shape must be settled before the mirroring, which depends on the facing
+    blockState = blockState.setValue(SHAPE,
+        this.determineShape(level, blockPos, getRailShapeRaw(blockState)));
     return blockState.setValue(MIRRORED,
-        this.determineMirrored(context.getLevel(), blockPos, getFacing(blockState)));
+        this.determineMirrored(level, blockPos, getFacing(blockState)));
   }
 
   private boolean determineMirrored(Level level, BlockPos blockPos, Direction facing) {
@@ -62,49 +66,28 @@ public class TurnoutTrackBlock extends SwitchTrackBlock implements EntityBlock {
         .is(BlockTags.RAILS);
   }
 
-  @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState,
-      boolean moved) {
-    this.adjustShape(state, level, pos);
-    super.onPlace(state, level, pos, oldBlockState, moved);
-  }
-
-  protected void adjustShape(BlockState blockState, Level level, BlockPos pos) {
+  private RailShape determineShape(Level level, BlockPos pos, RailShape shape) {
     var north = pos.north();
     var south = pos.south();
     var east = pos.east();
     var west = pos.west();
     if (BaseRailBlock.isRail(level, north) && BaseRailBlock.isRail(level, south) &&
         BaseRailBlock.isRail(level, east) && BaseRailBlock.isRail(level, west)) {
-      return;
+      return shape;
     }
-    switch (TrackUtil.getRailShapeRaw(blockState)) {
-      case EAST_WEST -> {
-        if (!BaseRailBlock.isRail(level, north) || !BaseRailBlock.isRail(level, south)) {
-          return;
-        }
-
-        var northShape = TrackUtil.getTrackDirection(level, north);
-        var southShape = TrackUtil.getTrackDirection(level, south);
-
-        if (northShape.equals(RailShape.NORTH_SOUTH) && southShape.equals(RailShape.NORTH_SOUTH)) {
-          TrackUtil.setRailShape(level, pos, RailShape.NORTH_SOUTH);
-        }
-      }
-      case NORTH_SOUTH -> {
-        if (!BaseRailBlock.isRail(level, east) || !BaseRailBlock.isRail(level, west)) {
-          return;
-        }
-
-        var eastShape = TrackUtil.getTrackDirection(level, east);
-        var westShape = TrackUtil.getTrackDirection(level, west);
-
-        if (eastShape.equals(RailShape.EAST_WEST) && westShape.equals(RailShape.EAST_WEST)) {
-          TrackUtil.setRailShape(level, pos, RailShape.EAST_WEST);
-        }
-      }
-      default -> {}
-    }
+    return switch (shape) {
+      case EAST_WEST -> BaseRailBlock.isRail(level, north) && BaseRailBlock.isRail(level, south)
+          && TrackUtil.getTrackDirection(level, north) == RailShape.NORTH_SOUTH
+          && TrackUtil.getTrackDirection(level, south) == RailShape.NORTH_SOUTH
+          ? RailShape.NORTH_SOUTH
+          : shape;
+      case NORTH_SOUTH -> BaseRailBlock.isRail(level, east) && BaseRailBlock.isRail(level, west)
+          && TrackUtil.getTrackDirection(level, east) == RailShape.EAST_WEST
+          && TrackUtil.getTrackDirection(level, west) == RailShape.EAST_WEST
+          ? RailShape.EAST_WEST
+          : shape;
+      default -> shape;
+    };
   }
 
   @Override
