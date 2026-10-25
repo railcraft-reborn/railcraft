@@ -2,7 +2,9 @@ package mods.railcraft.world.item;
 
 import mods.railcraft.api.item.MinecartFactory;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -38,7 +40,8 @@ public class CartItem extends Item {
       var minecart = this.minecartFactory.createMinecart(itemStack,
           railPos.getX() + 0.5, railPos.getY() + d0 + 0.0625, railPos.getZ() + 0.5, serverLevel);
       if (minecart != null) {
-        minecart.setYRot(context.getHorizontalDirection().toYRot());
+        // Minecart yaws are a quarter turn off the ones of the other entities
+        minecart.setYRot(alignWithTrack(minecart, context.getRotation() + 90));
         level.addFreshEntity(minecart);
         level.gameEvent(GameEvent.ENTITY_PLACE, railPos,
             GameEvent.Context.of(player, level.getBlockState(railPos.below())));
@@ -46,6 +49,22 @@ public class CartItem extends Item {
       }
     }
     return InteractionResult.sidedSuccess(level.isClientSide());
+  }
+
+  /**
+   * Turns the yaw along the track, otherwise the first move turns the cart either way.
+   */
+  private static float alignWithTrack(AbstractMinecart minecart, float yaw) {
+    var x = minecart.getX();
+    var y = minecart.getY();
+    var z = minecart.getZ();
+    var front = minecart.getPosOffs(x, y, z, 0.3);
+    var back = minecart.getPosOffs(x, y, z, -0.3);
+    if (front == null || back == null || front.equals(back)) {
+      return yaw;
+    }
+    var trackYaw = (float) (Mth.atan2(front.z - back.z, front.x - back.x) * Mth.RAD_TO_DEG);
+    return Mth.degreesDifferenceAbs(trackYaw, yaw) <= 90 ? trackYaw : trackYaw + 180;
   }
 
   public MinecartFactory getMinecartFactory() {

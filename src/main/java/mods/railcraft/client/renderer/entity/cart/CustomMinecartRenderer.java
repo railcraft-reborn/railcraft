@@ -63,14 +63,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart>
       yaw += 360;
     yaw += 360;
 
-    float serverYaw = cart.getYRot();
-    serverYaw += 180;
-    serverYaw %= 360;
-    if (serverYaw < 0)
-      serverYaw += 360;
-    serverYaw += 360;
-
-    if (Math.abs(yaw - serverYaw) > 90) {
+    // The model faces the yaw of the cart, while the track yaw points to its back
+    if (Mth.degreesDifferenceAbs(yaw, cart.getYRot() + 180) > 90) {
       yaw += 180;
       pitch = -pitch;
     }
