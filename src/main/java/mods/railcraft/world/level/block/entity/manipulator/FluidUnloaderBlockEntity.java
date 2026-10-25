@@ -60,14 +60,9 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
     }
 
     try (var tx = Transaction.openRoot()){
-      if (this.getFilterFluid()
-          .map(fluid -> cartFluidHandler.extract(FluidResource.of(fluid), fluid.getAmount(), tx) == 0)
-          .orElse(false)) {
-        return false;
-      }
-
-      var resource = cartFluidHandler.getResource(0);
-      return !resource.isEmpty() && cartFluidHandler.extract(resource, 1, tx) > 0;
+      return this.getFilterFluid()
+          .map(fluid -> cartFluidHandler.extract(FluidResource.of(fluid), fluid.getAmount(), tx) > 0)
+          .orElseGet(() -> !ResourceHandlerUtil.isEmpty(cartFluidHandler));
     }
   }
 }
