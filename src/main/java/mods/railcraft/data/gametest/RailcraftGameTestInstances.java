@@ -30,6 +30,10 @@ import mods.railcraft.data.gametest.instances.junction_track.JunctionTrackNorthT
 import mods.railcraft.data.gametest.instances.junction_track.JunctionTrackWestTestInstance;
 import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.locomotive.LocomotiveKeepsFacingThroughCurveTestInstance;
+import mods.railcraft.data.gametest.instances.locomotive.LocomotiveKeepsFacingWhenReversedInCurveTestInstance;
+import mods.railcraft.data.gametest.instances.locomotive.LocomotiveStaysReversedTestInstance;
+import mods.railcraft.data.gametest.instances.locomotive.PlacedLocomotiveFacesAlongTrackTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxDurationLimitsTestInstance;
@@ -111,6 +115,10 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_pulse", () -> SignalCapacitorBoxPulseTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_duration_limits", () -> SignalCapacitorBoxDurationLimitsTestInstance.CODEC);
+    deferredRegister.register("locomotive_keeps_facing_through_curve", () -> LocomotiveKeepsFacingThroughCurveTestInstance.CODEC);
+    deferredRegister.register("locomotive_keeps_facing_when_reversed_in_curve", () -> LocomotiveKeepsFacingWhenReversedInCurveTestInstance.CODEC);
+    deferredRegister.register("locomotive_stays_reversed", () -> LocomotiveStaysReversedTestInstance.CODEC);
+    deferredRegister.register("placed_locomotive_faces_along_track", () -> PlacedLocomotiveFacesAlongTrackTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -181,6 +189,11 @@ public class RailcraftGameTestInstances {
 
     registerTestInstance(bootstrap, "signal_capacitor_box_pulse", "platform_7x7", SignalCapacitorBoxPulseTestInstance::new);
     registerTestInstance(bootstrap, "signal_capacitor_box_duration_limits", "platform_7x7", SignalCapacitorBoxDurationLimitsTestInstance::new);
+
+    registerTestInstance(bootstrap, "locomotive_keeps_facing_through_curve", "platform_7x7", LocomotiveKeepsFacingThroughCurveTestInstance::new);
+    registerTestInstance(bootstrap, "locomotive_keeps_facing_when_reversed_in_curve", "platform_7x7", LocomotiveKeepsFacingWhenReversedInCurveTestInstance::new);
+    registerTestInstance(bootstrap, "locomotive_stays_reversed", "platform_7x7", LocomotiveStaysReversedTestInstance::new);
+    registerTestInstance(bootstrap, "placed_locomotive_faces_along_track", "platform_7x7", PlacedLocomotiveFacesAlongTrackTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

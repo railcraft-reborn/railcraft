@@ -8,11 +8,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(value = AbstractMinecart.class)
 public class AbstractMinecartMixin {
+
+  /**
+   * Vanilla only notices a cart turning around when its yaw changes by 170 degrees or more in a
+   * tick. A cart turning around on a curve changes by less, so it would keep the new yaw and face
+   * the other way.
+   */
+  private static final float FLIP_CUTOFF = 120;
 
   private AbstractMinecart self() {
     return (AbstractMinecart) (Object) this;
@@ -57,5 +66,19 @@ public class AbstractMinecartMixin {
           ordinal = 1))
   private Vec3 railcraft$fixScale(Vec3 instance, double factor) {
     return instance.scale(self().getData(RailcraftAttachmentTypes.AIR_DRAG));
+  }
+
+  @Inject(method = "tick", at = @At("TAIL"))
+  public void railcraft$fixFlip(CallbackInfo callbackInfo) {
+    var cart = self();
+    // The new minecart behavior keeps track of its direction by itself
+    if (cart.level().isClientSide() || !(cart.getBehavior() instanceof OldMinecartBehavior)) {
+      return;
+    }
+    var distance = Mth.degreesDifference(cart.yRotO, cart.getYRot());
+    if (distance < -FLIP_CUTOFF || distance >= FLIP_CUTOFF) {
+      cart.setYRot((cart.getYRot() + 180) % 360);
+      cart.setFlipped(!cart.isFlipped());
+    }
   }
 }

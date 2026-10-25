@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:placed_locomotive_faces_along_track",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}

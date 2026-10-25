@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:locomotive_keeps_facing_when_reversed_in_curve",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}
