@@ -13,6 +13,7 @@ import mods.railcraft.world.level.material.steam.SteamBoiler;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
@@ -172,5 +173,17 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
         tag.getList(CompoundTagKeys.TANK_MANAGER, Tag.TAG_COMPOUND));
     this.boiler.deserializeNBT(provider, tag.getCompound(CompoundTagKeys.BOILER));
     this.processState = FluidTools.ProcessState.fromTag(tag);
+  }
+
+  @Override
+  public void writeToBuf(RegistryFriendlyByteBuf out) {
+    super.writeToBuf(out);
+    out.writeFloat(this.boiler.getMaxTemperature());
+  }
+
+  @Override
+  public void readFromBuf(RegistryFriendlyByteBuf in) {
+    super.readFromBuf(in);
+    this.boiler.setMaxTemperature(in.readFloat());
   }
 }

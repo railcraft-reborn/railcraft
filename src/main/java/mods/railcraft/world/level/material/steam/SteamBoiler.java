@@ -278,8 +278,9 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
 
   @Override
   public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
-    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE));
+    // Max temperature must be restored first, otherwise the temperature gets clamped to the default
     this.setMaxTemperature(tag.getFloat(CompoundTagKeys.MAX_TEMPERATURE));
+    this.setTemperature(tag.getFloat(CompoundTagKeys.TEMPERATURE));
     this.setBurnTime(tag.getFloat(CompoundTagKeys.BURN_TIME));
     this.setCurrentItemBurnTime(tag.getFloat(CompoundTagKeys.CURRENT_ITEM_BURN_TIME));
   }
