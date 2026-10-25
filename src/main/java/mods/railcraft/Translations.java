@@ -277,6 +277,8 @@ public class Translations {
     public static final String CUT_FIRESTONE = makeKey("tips", "firestone.cut");
     public static final String FIRESTONE_ORE = makeKey("tips", "firestone.ore");
     public static final String CURRENT_MODE = makeKey("tips", "current_mode");
+    public static final String TRACK_KIT_ALREADY_APPLIED =
+        makeKey("tips", "track_kit.already_applied");
     public static final String TRACK_KIT_CORNERS_UNSUPPORTED =
         makeKey("tips", "track_kit.corners_unsupported");
     public static final String TRACK_KIT_SLOPES_UNSUPPORTED =
