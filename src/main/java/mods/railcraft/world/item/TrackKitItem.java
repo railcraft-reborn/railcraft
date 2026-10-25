@@ -10,6 +10,7 @@ import mods.railcraft.api.track.TrackType;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.TrackTypes;
+import mods.railcraft.world.level.block.track.outfitted.OutfittedTrackBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -21,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -78,8 +80,21 @@ public class TrackKitItem extends Item {
     }
 
     var outfittedBlock = this.outfittedBlocks.get(TrackTypes.REGISTRY.getKey(trackType)).get();
+
+    if (oldState.is(outfittedBlock)) {
+      player.sendOverlayMessage(Component.translatable(Tips.TRACK_KIT_ALREADY_APPLIED)
+          .withStyle(ChatFormatting.RED));
+      return InteractionResult.PASS;
+    }
+
+    var oldBlockEntity = level.getBlockEntity(blockPos);
     var outfittedBlockState = outfittedBlock.getStateForPlacement(new BlockPlaceContext(context));
     if (level.setBlockAndUpdate(blockPos, outfittedBlockState)) {
+      // Return the replaced track kit
+      if (oldState.getBlock() instanceof OutfittedTrackBlock
+          && !player.getAbilities().instabuild) {
+        Block.dropResources(oldState, level, blockPos, oldBlockEntity);
+      }
       var soundType = outfittedBlock.getSoundType(outfittedBlockState, level, blockPos, player);
       level.playSound(player, blockPos, soundType.getPlaceSound(), SoundSource.BLOCKS,
           soundType.getVolume(), soundType.getPitch());
