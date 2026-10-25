@@ -66,7 +66,8 @@ public class FluidUnloaderBlockEntity extends FluidManipulatorBlockEntity {
         return false;
       }
 
-      return cartFluidHandler.extract(cartFluidHandler.getResource(0), 1, tx) > 0;
+      var resource = cartFluidHandler.getResource(0);
+      return !resource.isEmpty() && cartFluidHandler.extract(resource, 1, tx) > 0;
     }
   }
 }

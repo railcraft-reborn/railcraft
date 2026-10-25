@@ -76,7 +76,8 @@ public abstract class FluidManipulatorBlockEntity extends ManipulatorBlockEntity
     if (item.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(FluidUtil.getFirstStackContained(item));
+    return Optional.of(FluidUtil.getFirstStackContained(item))
+        .filter(fluid -> !fluid.isEmpty());
   }
 
   public FluidStack getFluidHandled() {
