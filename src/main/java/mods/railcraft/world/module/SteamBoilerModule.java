@@ -11,6 +11,7 @@ import mods.railcraft.world.level.block.steamboiler.FireboxBlock;
 import mods.railcraft.world.level.material.StandardTank;
 import mods.railcraft.world.level.material.TankManager;
 import mods.railcraft.world.level.material.steam.SteamBoiler;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
@@ -167,5 +168,17 @@ public abstract class SteamBoilerModule<T extends SteamBoilerBlockEntity>
     valueInput.readChild(CompoundTagKeys.BOILER, this.boiler);
     this.processState = valueInput.read(CompoundTagKeys.PROCESS_STATE, FluidTools.ProcessState.CODEC)
         .orElse(FluidTools.ProcessState.RESET);
+  }
+
+  @Override
+  public void writeToBuf(RegistryFriendlyByteBuf out) {
+    super.writeToBuf(out);
+    out.writeFloat(this.boiler.getMaxTemperature());
+  }
+
+  @Override
+  public void readFromBuf(RegistryFriendlyByteBuf in) {
+    super.readFromBuf(in);
+    this.boiler.setMaxTemperature(in.readFloat());
   }
 }

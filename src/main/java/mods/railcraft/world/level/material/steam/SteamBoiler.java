@@ -259,8 +259,9 @@ public class SteamBoiler implements ValueIOSerializable {
 
   @Override
   public void deserialize(ValueInput valueInput) {
-    this.setTemperature(valueInput.getFloatOr(CompoundTagKeys.TEMPERATURE, SteamConstants.COLD_TEMP));
+    // Max temperature must be restored first, otherwise the temperature gets clamped to the default
     this.setMaxTemperature(valueInput.getFloatOr(CompoundTagKeys.MAX_TEMPERATURE, SteamConstants.MAX_HEAT_LOW));
+    this.setTemperature(valueInput.getFloatOr(CompoundTagKeys.TEMPERATURE, SteamConstants.COLD_TEMP));
     this.setBurnTime(valueInput.getFloatOr(CompoundTagKeys.BURN_TIME, 0));
     this.setCurrentItemBurnTime(valueInput.getFloatOr(CompoundTagKeys.CURRENT_ITEM_BURN_TIME, 0));
   }
