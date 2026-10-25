@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:turnout_track_spike_maul_branch",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}

@@ -102,8 +102,14 @@ public class SpikeMaulItem extends Item {
       return InteractionResult.PASS;
     }
 
+    // The clicked track is always replaced, even vanilla rails which can't be replaced normally
+    var placeContext = new BlockPlaceContext(context) {
+      {
+        this.replaceClicked = true;
+      }
+    };
     if (!level.setBlockAndUpdate(blockPos,
-        found.get().getStateForPlacement(new BlockPlaceContext(context)))) {
+        found.get().getStateForPlacement(placeContext))) {
       level.setBlockAndUpdate(blockPos, existingBlockState);
       return InteractionResult.FAIL;
     }
@@ -116,8 +122,10 @@ public class SpikeMaulItem extends Item {
         (soundtype.getVolume() + 1) / 2, soundtype.getPitch() * 0.8F);
 
     if (level instanceof ServerLevel serverLevel) {
-      RailcraftCriteriaTriggers.SPIKE_MAUL_USE.value().trigger(
-          (ServerPlayer) player, heldStack, serverLevel, blockPos);
+      if (player instanceof ServerPlayer serverPlayer) {
+        RailcraftCriteriaTriggers.SPIKE_MAUL_USE.value().trigger(
+            serverPlayer, heldStack, serverLevel, blockPos);
+      }
 
       heldStack.hurtAndBreak(1, serverLevel, player,
           item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
