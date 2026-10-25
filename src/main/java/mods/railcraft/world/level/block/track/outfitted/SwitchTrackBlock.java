@@ -31,6 +31,11 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   }
 
   @Override
+  protected boolean revertsToFlexTrack() {
+    return false;
+  }
+
+  @Override
   public Property<RailShape> getShapeProperty() {
     return SHAPE;
   }

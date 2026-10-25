@@ -657,17 +657,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> ABANDONED_WYE_TRACK =
       deferredRegister.registerBlock("abandoned_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.ABANDONED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> ABANDONED_TURNOUT_TRACK =
       deferredRegister.registerBlock("abandoned_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.ABANDONED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> ABANDONED_JUNCTION_TRACK =
       deferredRegister.registerBlock("abandoned_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.ABANDONED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<LauncherTrackBlock> ABANDONED_LAUNCHER_TRACK =
       deferredRegister.registerBlock("abandoned_launcher_track",
@@ -762,17 +762,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> ELECTRIC_WYE_TRACK =
       deferredRegister.registerBlock("electric_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> ELECTRIC_TURNOUT_TRACK =
       deferredRegister.registerBlock("electric_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> ELECTRIC_JUNCTION_TRACK =
       deferredRegister.registerBlock("electric_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<LauncherTrackBlock> ELECTRIC_LAUNCHER_TRACK =
       deferredRegister.registerBlock("electric_launcher_track",
@@ -836,17 +836,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> HIGH_SPEED_WYE_TRACK =
       deferredRegister.registerBlock("high_speed_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.HIGH_SPEED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> HIGH_SPEED_TURNOUT_TRACK =
       deferredRegister.registerBlock("high_speed_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> HIGH_SPEED_JUNCTION_TRACK =
       deferredRegister.registerBlock("high_speed_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<WhistleTrackBlock> HIGH_SPEED_WHISTLE_TRACK =
       deferredRegister.registerBlock("high_speed_whistle_track",
@@ -896,17 +896,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> HIGH_SPEED_ELECTRIC_WYE_TRACK =
       deferredRegister.registerBlock("high_speed_electric_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> HIGH_SPEED_ELECTRIC_TURNOUT_TRACK =
       deferredRegister.registerBlock("high_speed_electric_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> HIGH_SPEED_ELECTRIC_JUNCTION_TRACK =
       deferredRegister.registerBlock("high_speed_electric_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
-              RailcraftBlockProperties.electricTrack(properties).noLootTable()));
+              RailcraftBlockProperties.electricTrack(properties)));
 
   public static final DeferredBlock<WhistleTrackBlock> HIGH_SPEED_ELECTRIC_WHISTLE_TRACK =
       deferredRegister.registerBlock("high_speed_electric_whistle_track",
@@ -981,17 +981,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> IRON_WYE_TRACK =
       deferredRegister.registerBlock("iron_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> IRON_TURNOUT_TRACK =
       deferredRegister.registerBlock("iron_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> IRON_JUNCTION_TRACK =
       deferredRegister.registerBlock("iron_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<LauncherTrackBlock> IRON_LAUNCHER_TRACK =
       deferredRegister.registerBlock("iron_launcher_track",
@@ -1086,17 +1086,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> REINFORCED_WYE_TRACK =
       deferredRegister.registerBlock("reinforced_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.REINFORCED,
-              RailcraftBlockProperties.reinforcedTrack(properties).noLootTable()));
+              RailcraftBlockProperties.reinforcedTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> REINFORCED_TURNOUT_TRACK =
       deferredRegister.registerBlock("reinforced_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.REINFORCED,
-              RailcraftBlockProperties.reinforcedTrack(properties).noLootTable()));
+              RailcraftBlockProperties.reinforcedTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> REINFORCED_JUNCTION_TRACK =
       deferredRegister.registerBlock("reinforced_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.REINFORCED,
-              RailcraftBlockProperties.reinforcedTrack(properties).noLootTable()));
+              RailcraftBlockProperties.reinforcedTrack(properties)));
 
   public static final DeferredBlock<LauncherTrackBlock> REINFORCED_LAUNCHER_TRACK =
       deferredRegister.registerBlock("reinforced_launcher_track",
@@ -1191,17 +1191,17 @@ public class RailcraftBlocks {
   public static final DeferredBlock<WyeTrackBlock> STRAP_IRON_WYE_TRACK =
       deferredRegister.registerBlock("strap_iron_wye_track",
           properties -> new WyeTrackBlock(TrackTypes.STRAP_IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<TurnoutTrackBlock> STRAP_IRON_TURNOUT_TRACK =
       deferredRegister.registerBlock("strap_iron_turnout_track",
           properties -> new TurnoutTrackBlock(TrackTypes.STRAP_IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<JunctionTrackBlock> STRAP_IRON_JUNCTION_TRACK =
       deferredRegister.registerBlock("strap_iron_junction_track",
           properties -> new JunctionTrackBlock(TrackTypes.STRAP_IRON,
-              RailcraftBlockProperties.standardTrack(properties).noLootTable()));
+              RailcraftBlockProperties.standardTrack(properties)));
 
   public static final DeferredBlock<LauncherTrackBlock> STRAP_IRON_LAUNCHER_TRACK =
       deferredRegister.registerBlock("strap_iron_launcher_track",

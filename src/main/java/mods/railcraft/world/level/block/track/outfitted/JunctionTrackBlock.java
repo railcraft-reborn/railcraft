@@ -17,6 +17,11 @@ public class JunctionTrackBlock extends OutfittedTrackBlock {
   }
 
   @Override
+  protected boolean revertsToFlexTrack() {
+    return false;
+  }
+
+  @Override
   public RailShape getRailDirection(BlockState blockState, BlockGetter blockGetter,
       BlockPos blockPos, @Nullable AbstractMinecart cart) {
     if (cart == null) {
