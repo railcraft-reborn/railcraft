@@ -160,8 +160,8 @@ dependencies {
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
     localRuntime "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
 
-    localRuntime "curse.maven:mekanism-268560:6895130"//mekanism
-    localRuntime "curse.maven:mekanism-268567:6895134"//mekanism-tools
+    localRuntime "curse.maven:mekanism-268560:7904058"//mekanism
+    localRuntime "curse.maven:mekanism-268567:7904062"//mekanism-tools
     //localRuntime "curse.maven:sodium-394468:6173749"
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
