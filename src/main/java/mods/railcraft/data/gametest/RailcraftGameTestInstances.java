@@ -32,6 +32,8 @@ import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackActive
 import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxDurationLimitsTestInstance;
+import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxPulseTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankEntityInsideTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankEntityOutsideTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankKeepsFluidTestInstance;
@@ -107,6 +109,8 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
     deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
     deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
+    deferredRegister.register("signal_capacitor_box_pulse", () -> SignalCapacitorBoxPulseTestInstance.CODEC);
+    deferredRegister.register("signal_capacitor_box_duration_limits", () -> SignalCapacitorBoxDurationLimitsTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -174,6 +178,9 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "bed_minecart_sleep", "detector_track", BedMinecartTestInstance::new);
 
     registerTestInstance(bootstrap, "steam_oven_door_on_one_side", "steam_oven", SteamOvenTestInstance::new);
+
+    registerTestInstance(bootstrap, "signal_capacitor_box_pulse", "platform_7x7", SignalCapacitorBoxPulseTestInstance::new);
+    registerTestInstance(bootstrap, "signal_capacitor_box_duration_limits", "platform_7x7", SignalCapacitorBoxDurationLimitsTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

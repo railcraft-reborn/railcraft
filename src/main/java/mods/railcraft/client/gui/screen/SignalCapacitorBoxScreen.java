@@ -72,8 +72,9 @@ public class SignalCapacitorBoxScreen extends IngameWindowScreen {
   }
 
   private void incrementTicksToPower(int incrementSeconds) {
-    short ticksToPower = (short) Math.max(0,
-        this.signalBox.getTicksToPower() + (incrementSeconds * SharedConstants.TICKS_PER_SECOND));
+    short ticksToPower = (short) Math.clamp(
+        this.signalBox.getTicksToPower() + (incrementSeconds * SharedConstants.TICKS_PER_SECOND),
+        0, SignalCapacitorBoxBlockEntity.MAX_TICKS_TO_POWER);
     if (this.signalBox.getTicksToPower() != ticksToPower) {
       this.signalBox.setTicksToPower(ticksToPower);
       this.sendAttributes();
