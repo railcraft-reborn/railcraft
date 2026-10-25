@@ -82,7 +82,9 @@ public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEn
       return;
     }
 
-    var facing = this.getBlockState().getValue(SteamOvenBlock.FACING);
+    // Blocks may have been placed facing different ways, follow the master so that the door is
+    // only shown on one side
+    var facing = membership.master().getBlockState().getValue(SteamOvenBlock.FACING);
     var type = switch (facing) {
       case SOUTH -> {
         switch (membership.patternElement().marker()) {
@@ -125,6 +127,7 @@ public class SteamOvenBlockEntity extends MultiblockBlockEntity<SteamOvenBlockEn
 
     this.level.setBlockAndUpdate(this.getBlockPos(),
         this.getBlockState()
+            .setValue(SteamOvenBlock.FACING, facing)
             .setValue(SteamOvenBlock.TYPE, type));
   }
 

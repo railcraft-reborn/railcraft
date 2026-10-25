@@ -11,6 +11,7 @@ import mods.railcraft.data.gametest.instances.ForceTrackTestInstance;
 import mods.railcraft.data.gametest.instances.InterlockTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTrackTestInstance;
+import mods.railcraft.data.gametest.instances.SteamOvenTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxComplexTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxTestInstance;
 import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserDispenseTestInstance;
@@ -101,6 +102,7 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("tank_entity_outside", () -> TankEntityOutsideTestInstance.CODEC);
     deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
     deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
+    deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -164,6 +166,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "tank_reforms", "iron_tank", TankReformsTestInstance::new);
 
     registerTestInstance(bootstrap, "bed_minecart_sleep", "detector_track", BedMinecartTestInstance::new);
+
+    registerTestInstance(bootstrap, "steam_oven_door_on_one_side", "steam_oven", SteamOvenTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

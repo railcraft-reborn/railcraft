@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:steam_oven",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/steam_oven"
+}
