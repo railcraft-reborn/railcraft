@@ -10,6 +10,7 @@ import mods.railcraft.client.gui.widget.button.TexturePosition;
 import mods.railcraft.gui.button.ButtonState;
 import mods.railcraft.util.RedstoneUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -22,6 +23,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.Redstone;
 
 public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity {
+
+  /**
+   * The longest duration in whole seconds that still fits in a short.
+   */
+  public static final short MAX_TICKS_TO_POWER = (short) (Short.MAX_VALUE
+      / SharedConstants.TICKS_PER_SECOND * SharedConstants.TICKS_PER_SECOND);
 
   private short ticksPowered;
   private short ticksToPower = 200;
@@ -37,7 +44,7 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
   }
 
   public void setTicksToPower(short ticksToPower) {
-    this.ticksToPower = ticksToPower;
+    this.ticksToPower = (short) Math.clamp(ticksToPower, 0, MAX_TICKS_TO_POWER);
     this.setChanged();
   }
 
@@ -52,7 +59,8 @@ public class SignalCapacitorBoxBlockEntity extends AbstractSignalBoxBlockEntity 
 
   public static void serverTick(Level level, BlockPos blockPos, BlockState blockState,
       SignalCapacitorBoxBlockEntity blockEntity) {
-    if (blockEntity.ticksPowered-- > 0) {
+    if (blockEntity.ticksPowered > 0) {
+      blockEntity.ticksPowered--;
       if (blockEntity.mode == Mode.FALLING_EDGE) {
         var signalAspect = SignalAspect.GREEN;
         var powered = RedstoneUtil.hasRepeaterSignal(level, blockPos);
