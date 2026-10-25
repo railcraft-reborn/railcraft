@@ -39,8 +39,10 @@ import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackActiveRe
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackPassiveReverseTestInstance;
 import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.turnout_track.TurnoutTrackPlacementTestInstance;
 import mods.railcraft.data.gametest.instances.wye_track.WyeTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.wye_track.WyeTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.wye_track.WyeTrackPlacementTestInstance;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -78,10 +80,12 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("one_way_track_passive", () -> OneWayTrackPassiveTestInstance.CODEC);
     deferredRegister.register("wye_track_active", () -> WyeTrackActiveTestInstance.CODEC);
     deferredRegister.register("wye_track_passive", () -> WyeTrackPassiveTestInstance.CODEC);
+    deferredRegister.register("wye_track_placement", () -> WyeTrackPlacementTestInstance.CODEC);
     deferredRegister.register("turnout_track_active", () -> TurnoutTrackActiveTestInstance.CODEC);
     deferredRegister.register("turnout_track_passive", () -> TurnoutTrackPassiveTestInstance.CODEC);
     deferredRegister.register("turnout_track_active_reverse", () -> TurnoutTrackActiveReverseTestInstance.CODEC);
     deferredRegister.register("turnout_track_passive_reverse", () -> TurnoutTrackPassiveReverseTestInstance.CODEC);
+    deferredRegister.register("turnout_track_placement", () -> TurnoutTrackPlacementTestInstance.CODEC);
     deferredRegister.register("elevator_track_up", () -> ElevatorTrackUpTestInstance.CODEC);
     deferredRegister.register("elevator_track_down", () -> ElevatorTrackDownTestInstance.CODEC);
     deferredRegister.register("junction_track_west", () -> JunctionTrackWestTestInstance.CODEC);
@@ -118,10 +122,12 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "one_way_track_passive", OneWayTrackPassiveTestInstance::new);
     registerTestInstance(bootstrap, "wye_track_active", WyeTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "wye_track_passive", WyeTrackPassiveTestInstance::new);
+    registerTestInstance(bootstrap, "wye_track_placement", "wye_track_passive", WyeTrackPlacementTestInstance::new);
     registerTestInstance(bootstrap, "turnout_track_active", TurnoutTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "turnout_track_passive", TurnoutTrackPassiveTestInstance::new);
     registerTestInstance(bootstrap, "turnout_track_active_reverse", TurnoutTrackActiveReverseTestInstance::new);
     registerTestInstance(bootstrap, "turnout_track_passive_reverse", TurnoutTrackPassiveReverseTestInstance::new);
+    registerTestInstance(bootstrap, "turnout_track_placement", "turnout_track_passive", TurnoutTrackPlacementTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_up", ElevatorTrackUpTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_down", ElevatorTrackDownTestInstance::new);
     registerTestInstance(bootstrap, "junction_track_west", "junction_track", JunctionTrackWestTestInstance::new);
