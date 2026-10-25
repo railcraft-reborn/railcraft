@@ -72,6 +72,6 @@ public class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locomotive> {
 
   @Override
   public ResourceLocation getTextureLocation(Locomotive locomotive) {
-    throw new IllegalStateException();
+    return this.textures[0];
   }
 }
