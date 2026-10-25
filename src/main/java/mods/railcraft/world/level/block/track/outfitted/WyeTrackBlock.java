@@ -7,6 +7,7 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -31,6 +32,20 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
     var level = context.getLevel();
     var blockPos = context.getClickedPos();
     var blockState = super.getStateForPlacement(context);
+    var tracks = Direction.Plane.HORIZONTAL.stream()
+        .filter(direction -> BaseRailBlock.isRail(level, blockPos.relative(direction)))
+        .toList();
+    // Whatever the shape of the neighbouring tracks, the wye faces away from a lone trunk or
+    // towards the only free side
+    if (tracks.size() == 1) {
+      return this.withFacing(blockState, tracks.getFirst().getOpposite());
+    }
+    if (tracks.size() == 3) {
+      return this.withFacing(blockState, Direction.Plane.HORIZONTAL.stream()
+          .filter(direction -> !tracks.contains(direction))
+          .findFirst()
+          .orElseThrow());
+    }
     blockState = blockState.setValue(SHAPE,
         this.determineShape(level, blockPos, getRailShapeRaw(blockState)));
     // The branch is behind the facing, so turn around if it is only in front
@@ -40,6 +55,14 @@ public class WyeTrackBlock extends SwitchTrackBlock implements EntityBlock {
       blockState = blockState.cycle(REVERSED);
     }
     return blockState;
+  }
+
+  private BlockState withFacing(BlockState blockState, Direction facing) {
+    return blockState
+        .setValue(SHAPE, facing.getAxis() == Direction.Axis.X
+            ? RailShape.EAST_WEST
+            : RailShape.NORTH_SOUTH)
+        .setValue(REVERSED, facing == Direction.SOUTH || facing == Direction.WEST);
   }
 
   private RailShape determineShape(Level level, BlockPos pos, RailShape shape) {

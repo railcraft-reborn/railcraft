@@ -2,10 +2,8 @@ package mods.railcraft.world.level.block.track.outfitted;
 
 import java.util.function.Supplier;
 import mods.railcraft.api.track.TrackType;
-import mods.railcraft.api.track.TrackUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -47,28 +45,17 @@ public abstract class SwitchTrackBlock extends ReversibleOutfittedTrackBlock {
   }
 
   @Override
-  public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldBlockState,
-      boolean moved) {
-    super.onPlace(state, level, pos, oldBlockState, moved);
-    this.updateAdjacentBlocks(state, level, pos);
+  public boolean isValidRailShape(RailShape shape) {
+    // The shape is settled on placement, connecting vanilla rails must not reshape the switch
+    return false;
   }
 
-  protected void updateAdjacentBlocks(BlockState blockState, Level level, BlockPos pos) {
-    var railShape = TrackUtil.getRailShapeRaw(blockState);
-    boolean reversed = blockState.getValue(REVERSED);
-
-    if (railShape == RailShape.NORTH_SOUTH || railShape == RailShape.EAST_WEST) {
-      BlockPos offset;
-      if (railShape == RailShape.NORTH_SOUTH) {
-        offset = reversed ? pos.west() : pos.east();
-      } else {
-        offset = reversed ? pos.north() : pos.south();
-      }
-      if (!BaseRailBlock.isRail(level, offset)) {
-        return;
-      }
-      TrackUtil.updateDir(level, offset);
-    }
+  @Override
+  protected void updateState(BlockState blockState, Level level, BlockPos pos,
+      Block neighborBlock) {
+    // Vanilla rails only see the straight route of a switch, so connect them to every route here.
+    // The state is read again as subclasses may have just changed it.
+    this.updateDir(level, pos, level.getBlockState(pos), true);
   }
 
   public static boolean isSwitched(BlockState blockState) {

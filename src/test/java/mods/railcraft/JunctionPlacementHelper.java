@@ -58,14 +58,21 @@ final class JunctionPlacementHelper {
     return shape.getSerializedName().contains(side.getSerializedName());
   }
 
-  private static void buildJunction(GameTestHelper helper, Direction.Axis mainLine,
-      Direction branch) {
+  /**
+   * Removes every track around {@link #CENTER}.
+   */
+  static void clear(GameTestHelper helper) {
     for (int x = 0; x < 7; x++) {
       for (int z = 0; z < 7; z++) {
         helper.setBlock(x, 2, z, Blocks.AIR);
         helper.setBlock(x, 3, z, Blocks.AIR);
       }
     }
+  }
+
+  private static void buildJunction(GameTestHelper helper, Direction.Axis mainLine,
+      Direction branch) {
+    clear(helper);
     var mainLineDirection =
         Direction.fromAxisAndDirection(mainLine, Direction.AxisDirection.POSITIVE);
     for (int i = 1; i <= 2; i++) {
@@ -79,7 +86,7 @@ final class JunctionPlacementHelper {
     helper.setBlock(pos, Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, shape));
   }
 
-  private static void placeTrack(GameTestHelper helper, Item track, Direction look) {
+  static void placeTrack(GameTestHelper helper, Item track, Direction look) {
     var player = helper.makeMockPlayer(GameType.CREATIVE);
     player.setYRot(look.toYRot());
     var stack = new ItemStack(track);

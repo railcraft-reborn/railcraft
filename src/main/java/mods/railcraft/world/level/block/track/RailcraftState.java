@@ -21,6 +21,8 @@ public class RailcraftState {
   private final boolean isStraight;
   private final List<BlockPos> connections = Lists.newArrayList();
   private final boolean canMakeSlopes;
+  // Junctions and switches keep the shape they were placed with, neighbors can't reshape them.
+  private final boolean fixedShape;
 
   public RailcraftState(Level level, BlockPos pos, BlockState state) {
     this.level = level;
@@ -29,6 +31,8 @@ public class RailcraftState {
     this.block = (BaseRailBlock)state.getBlock();
     this.isStraight = !this.block.isFlexibleRail(this.state, level, pos);
     this.canMakeSlopes = this.block.canMakeSlopes(this.state, level, pos);
+    this.fixedShape =
+        this.block instanceof JunctionTrackBlock || this.block instanceof SwitchTrackBlock;
     this.getRailDirection();
   }
 
@@ -143,6 +147,9 @@ public class RailcraftState {
 
   private void connectTo(RailcraftState state) {
     this.connections.add(state.pos);
+    if (this.fixedShape) {
+      return;
+    }
     BlockPos north = this.pos.north();
     BlockPos south = this.pos.south();
     BlockPos west = this.pos.west();
@@ -328,13 +335,14 @@ public class RailcraftState {
       }
     }
 
-    if (railshape == null || !this.block.isValidRailShape(railshape)) {
+    if (this.fixedShape || railshape == null || !this.block.isValidRailShape(railshape)) {
       railshape = shape;
     }
 
-    this.connections.clear();
-    this.updateConnections(railshape);
     this.state = this.state.setValue(this.block.getShapeProperty(), railshape);
+    // Every route of a switch must be connected, not only the straight one
+    this.connections.clear();
+    this.getRailDirection();
     if (alwaysPlace || this.level.getBlockState(this.pos) != this.state) {
       this.level.setBlock(this.pos, this.state, 3);
 
