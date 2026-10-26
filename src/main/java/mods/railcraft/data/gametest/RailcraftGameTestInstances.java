@@ -11,6 +11,7 @@ import mods.railcraft.data.gametest.instances.ForceTrackTestInstance;
 import mods.railcraft.data.gametest.instances.InterlockTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTrackTestInstance;
+import mods.railcraft.data.gametest.instances.SteamBoilerTestInstance;
 import mods.railcraft.data.gametest.instances.SteamOvenTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxComplexTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxTestInstance;
@@ -113,6 +114,7 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
     deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
     deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
+    deferredRegister.register("steam_boiler", () -> SteamBoilerTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_pulse", () -> SignalCapacitorBoxPulseTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_duration_limits", () -> SignalCapacitorBoxDurationLimitsTestInstance.CODEC);
     deferredRegister.register("locomotive_keeps_facing_through_curve", () -> LocomotiveKeepsFacingThroughCurveTestInstance.CODEC);
@@ -186,6 +188,7 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "bed_minecart_sleep", "detector_track", BedMinecartTestInstance::new);
 
     registerTestInstance(bootstrap, "steam_oven_door_on_one_side", "steam_oven", SteamOvenTestInstance::new);
+    registerTestInstance(bootstrap, "high_pressure_boiler_steam_output", "platform_7x7_tall", SteamBoilerTestInstance::new);
 
     registerTestInstance(bootstrap, "signal_capacitor_box_pulse", "platform_7x7", SignalCapacitorBoxPulseTestInstance::new);
     registerTestInstance(bootstrap, "signal_capacitor_box_duration_limits", "platform_7x7", SignalCapacitorBoxDurationLimitsTestInstance::new);
