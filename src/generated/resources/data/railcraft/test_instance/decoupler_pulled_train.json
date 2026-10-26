@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:decoupler_pulled_train",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}

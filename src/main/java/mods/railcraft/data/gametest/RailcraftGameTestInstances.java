@@ -17,6 +17,8 @@ import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignal
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxTestInstance;
 import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserDispenseTestInstance;
 import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserPickUpTestInstance;
+import mods.railcraft.data.gametest.instances.decoupler_track.DecouplerPulledTrainTestInstance;
+import mods.railcraft.data.gametest.instances.decoupler_track.DecouplerPushedTrainTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackOntoBlockTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackOntoFloorTestInstance;
@@ -80,6 +82,8 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("interlock", () -> InterlockTestInstance.CODEC);
     deferredRegister.register("cart_dispenser_dispense", () -> CartDispenserDispenseTestInstance.CODEC);
     deferredRegister.register("cart_dispenser_pick_up", () -> CartDispenserPickUpTestInstance.CODEC);
+    deferredRegister.register("decoupler_pulled_train", () -> DecouplerPulledTrainTestInstance.CODEC);
+    deferredRegister.register("decoupler_pushed_train", () -> DecouplerPushedTrainTestInstance.CODEC);
     deferredRegister.register("disembarking_track_active", () -> DisembarkingTrackActiveTestInstance.CODEC);
     deferredRegister.register("disembarking_track_passive", () -> DisembarkingTrackPassiveTestInstance.CODEC);
     deferredRegister.register("disembarking_track_onto_floor", () -> DisembarkingTrackOntoFloorTestInstance.CODEC);
@@ -134,6 +138,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "interlock", InterlockTestInstance::new);
     registerTestInstance(bootstrap, "cart_dispenser_dispense", "cart_dispenser", CartDispenserDispenseTestInstance::new);
     registerTestInstance(bootstrap, "cart_dispenser_pick_up", "cart_dispenser", CartDispenserPickUpTestInstance::new);
+    registerTestInstance(bootstrap, "decoupler_pulled_train", "platform_7x7", DecouplerPulledTrainTestInstance::new);
+    registerTestInstance(bootstrap, "decoupler_pushed_train", "platform_7x7", DecouplerPushedTrainTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_active", DisembarkingTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_passive", DisembarkingTrackPassiveTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_onto_floor", "platform_7x7", DisembarkingTrackOntoFloorTestInstance::new);
