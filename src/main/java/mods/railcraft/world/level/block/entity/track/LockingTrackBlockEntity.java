@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity.track;
 
 import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.carts.Train;
 import mods.railcraft.api.core.CompoundTagKeys;
@@ -16,6 +17,7 @@ import mods.railcraft.world.level.block.track.TrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.block.track.outfitted.LockingModeController;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
+import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -27,8 +29,6 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class LockingTrackBlockEntity extends RailcraftBlockEntity implements LockingTrack {
-
-  private static final int TRAIN_LOCKDOWN_DELAY = 200;
 
   public static final double START_BOOST = 0.04;
   public static final double BOOST_FACTOR = 0.06;
@@ -163,6 +163,10 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
     return this.locked && this.prevCart == cart;
   }
 
+  private static int getTrainLockdownDelay() {
+    return RailcraftConfig.SERVER.lockingTrackTrainDelay.get() * SharedConstants.TICKS_PER_SECOND;
+  }
+
   /**
    * Determines if the current train is the same train or cart (depending on track type) as the
    * train or cart in previous ticks. The {@code trainDelay} is needed because there are gaps
@@ -183,7 +187,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
         var prevRollingStock = RollingStock.getOrThrow(this.prevCart);
         if (rollingStock.isSameTrainAs(prevRollingStock)) {
           // reset trainDelay
-          this.trainDelay = TRAIN_LOCKDOWN_DELAY;
+          this.trainDelay = getTrainLockdownDelay();
         } else {
           // We've encountered a new train, force the delay to 0, so we return false
           this.trainDelay = 0;
@@ -195,7 +199,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
             .stream(this.level)
             .map(RollingStock::getOrThrow)
             .anyMatch(cart -> cart.isSameTrainAs(prevRollingStock))) {
-          this.trainDelay = TRAIN_LOCKDOWN_DELAY;
+          this.trainDelay = getTrainLockdownDelay();
         }
       }
 

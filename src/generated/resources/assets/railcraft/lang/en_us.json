@@ -758,6 +758,7 @@
   "railcraft.configuration.highSpeedTrackIgnoredEntities": "Ignored entities",
   "railcraft.configuration.highSpeedTrackMaxSpeed": "High Speed Track max speed",
   "railcraft.configuration.horsepower": "Locomotive horsepower",
+  "railcraft.configuration.lockingTrackTrainDelay": "Locking Track train delay",
   "railcraft.configuration.locomotiveLightLevel": "Locomotive light level",
   "railcraft.configuration.lossMultiplier": "Loss multiplier",
   "railcraft.configuration.maxLauncherTrackForce": "Max Launcher Track force",

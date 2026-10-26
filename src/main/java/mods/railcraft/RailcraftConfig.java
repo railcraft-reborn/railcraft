@@ -82,6 +82,7 @@ public class RailcraftConfig {
     public final DoubleValue turbineEnergyOutputRateMultiplier;
 
     public final IntValue cartDispenserDelay;
+    public final IntValue lockingTrackTrainDelay;
 
     public final BooleanValue changeDungeonLoot;
     public final ConfigValue<List<? extends String>> preferredOres;
@@ -202,6 +203,11 @@ public class RailcraftConfig {
       this.cartDispenserDelay = builder
           .comment("Set the minimum number of seconds between cart dispensing")
           .defineInRange("cartDispenserDelay", 0, 0, Integer.MAX_VALUE);
+
+      this.lockingTrackTrainDelay = builder
+          .comment(
+              "Number of seconds a locking track in a train mode ignores the train it just released")
+          .defineInRange("lockingTrackTrainDelay", 10, 1, 60);
 
       builder.push("charge");
       {

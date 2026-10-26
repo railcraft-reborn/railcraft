@@ -1358,6 +1358,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.MAX_LAUNCHER_TRACK_FORCE,
         "Max Launcher Track force");
     this.add(Translations.ConfigurationScreen.CART_DISPENSER_DELAY, "Cart Dispenser delay");
+    this.add(Translations.ConfigurationScreen.LOCKING_TRACK_TRAIN_DELAY,
+        "Locking Track train delay");
     this.add(Translations.ConfigurationScreen.CHANGE_DUNGEON_LOOT, "Change dungeon loot");
     this.add(Translations.ConfigurationScreen.CHARGE, "Charge");
     this.add(Translations.ConfigurationScreen.LOSS_MULTIPLIER, "Loss multiplier");
