@@ -41,7 +41,7 @@ public class DisembarkingTrackTest {
    * Issue #273, a shulker doesn't fall, so it must be dropped straight on the floor next to the
    * track and not one block above it.
    */
-  @GameTest(template = "platform_7x7", required = false)
+  @GameTest(template = "platform_7x7")
   public static void disembarkingTrackOntoFloor(GameTestHelper helper) {
     helper.setBlock(2, 1, 3, Blocks.DIRT);
     helper.setBlock(2, 2, 3, Blocks.WITHER_ROSE);
@@ -63,6 +63,8 @@ public class DisembarkingTrackTest {
         .setValue(PoweredOutfittedTrackBlock.POWERED, true));
     var cart = helper.spawn(EntityType.MINECART, new BlockPos(3, 2, 3));
     var shulker = helper.spawnWithNoFreeWill(EntityType.SHULKER, new BlockPos(3, 3, 3));
+    // Without this a shulker teleports away from blocks it can't attach to
+    shulker.setNoAi(true);
     shulker.startRiding(cart, true);
   }
 }
