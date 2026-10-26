@@ -77,6 +77,7 @@ public class RailcraftConfig {
 
     public final DoubleValue fuelMultiplier;
     public final DoubleValue fuelPerSteamMultiplier;
+    public final BooleanValue boilersExplode;
 
     public final DoubleValue turbinePowerMultiplier;
     public final DoubleValue turbineEnergyOutputRateMultiplier;
@@ -231,6 +232,11 @@ public class RailcraftConfig {
         this.fuelPerSteamMultiplier = builder
             .comment("Adjust the amount of fuel used to create steam.")
             .defineInRange("fuelPerSteamMultiplier", 1.0F, 0.2F, 6.0F);
+        this.boilersExplode = builder
+            .comment(
+                "Change to 'false' to stop boilers, also the ones of steam locomotives, from exploding",
+                "when water is added while they are superheated and empty")
+            .define("boilersExplode", true);
       }
       builder.pop();
 

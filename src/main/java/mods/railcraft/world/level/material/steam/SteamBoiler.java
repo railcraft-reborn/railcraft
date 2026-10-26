@@ -66,7 +66,7 @@ public class SteamBoiler implements INBTSerializable<CompoundTag> {
       return FluidStack.EMPTY;
     }
 
-    if (this.isSuperHeated()) {
+    if (this.isSuperHeated() && RailcraftConfig.SERVER.boilersExplode.get()) {
       var water = this.waterTank.getFluid();
       if (water.isEmpty()) {
         explosionCallback.run();

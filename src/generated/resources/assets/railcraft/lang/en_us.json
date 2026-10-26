@@ -737,6 +737,7 @@
   "manual.railcraft.routing_table.page.7": "Condition Keywords:\n  Redstone=<true/false>\n    True if the Routing Block\n    is being powered by Redstone.\n",
   "manual.railcraft.routing_table.page.8": "Condition Keywords:\n  Loco=<string>\n    True if locomotive matches\n    parameter string.\n    Accepted strings: electric, steam,\n    creative, none.\n    Using parameter none will only return\n    true if there is no locomotive.\n",
   "manual.railcraft.routing_table.page.9": "Example Script:\n  Dest=TheFarLands\n  Color=Black,Red\n  AND\n  NOT\n  Owner=Steve\n  Dest=SecretHideout/OceanEntrance\n",
+  "railcraft.configuration.boilersExplode": "Boilers explode",
   "railcraft.configuration.boreDestroysBlocks": "Bore destroys blocks",
   "railcraft.configuration.boreMinesAllBlocks": "Bore mines all blocks",
   "railcraft.configuration.boreMiningSpeedMultiplier": "Bore mining speed multiplier",

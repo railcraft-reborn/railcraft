@@ -211,6 +211,7 @@ public class Translations {
     public static final String FUEL_MULTIPLIER = makeConfigurationKey("fuelMultiplier");
     public static final String FUEL_PER_STEAM_MULTIPLIER =
         makeConfigurationKey("fuelPerSteamMultiplier");
+    public static final String BOILERS_EXPLODE = makeConfigurationKey("boilersExplode");
   }
 
   public static class Tips {
