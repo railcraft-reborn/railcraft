@@ -20,6 +20,8 @@ final class DisembarkingTrackTestHelper {
         .setValue(PoweredOutfittedTrackBlock.POWERED, true));
     var cart = helper.spawn(EntityType.MINECART, new BlockPos(3, 1, 3));
     var shulker = helper.spawnWithNoFreeWill(EntityType.SHULKER, new BlockPos(3, 2, 3));
+    // Without this a shulker teleports away from blocks it can't attach to
+    shulker.setNoAi(true);
     shulker.startRiding(cart, true, false);
   }
 }

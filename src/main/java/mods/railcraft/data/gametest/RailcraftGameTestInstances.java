@@ -136,7 +136,7 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "cart_dispenser_pick_up", "cart_dispenser", CartDispenserPickUpTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_active", DisembarkingTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_passive", DisembarkingTrackPassiveTestInstance::new);
-    registerOptionalTestInstance(bootstrap, "disembarking_track_onto_floor", "platform_7x7", DisembarkingTrackOntoFloorTestInstance::new);
+    registerTestInstance(bootstrap, "disembarking_track_onto_floor", "platform_7x7", DisembarkingTrackOntoFloorTestInstance::new);
     registerTestInstance(bootstrap, "disembarking_track_onto_block", "platform_7x7", DisembarkingTrackOntoBlockTestInstance::new);
     registerTestInstance(bootstrap, "embarking_track_active", EmbarkingTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "embarking_track_passive", EmbarkingTrackPassiveTestInstance::new);
@@ -217,29 +217,19 @@ public class RailcraftGameTestInstances {
       Function<TestData<Holder<TestEnvironmentDefinition<?>>>, T> factory) {
     bootstrap.register(
         ResourceKey.create(Registries.TEST_INSTANCE, RailcraftConstants.id(path)),
-        factory.apply(getDefaultTestData(bootstrap, template, true))
-    );
-  }
-
-  private static <T extends GameTestInstance> void registerOptionalTestInstance(
-      BootstrapContext<GameTestInstance> bootstrap,
-      String path, String template,
-      Function<TestData<Holder<TestEnvironmentDefinition<?>>>, T> factory) {
-    bootstrap.register(
-        ResourceKey.create(Registries.TEST_INSTANCE, RailcraftConstants.id(path)),
-        factory.apply(getDefaultTestData(bootstrap, template, false))
+        factory.apply(getDefaultTestData(bootstrap, template))
     );
   }
 
   private static TestData<Holder<TestEnvironmentDefinition<?>>> getDefaultTestData(
-      BootstrapContext<GameTestInstance> bootstrap, String template, boolean required) {
+      BootstrapContext<GameTestInstance> bootstrap, String template) {
     var environments = bootstrap.lookup(Registries.TEST_ENVIRONMENT);
     return new TestData<>(
         environments.getOrThrow(RailcraftTestEnvironments.DEFAULT),
         RailcraftConstants.id("test/" + template),
         400,
         0,
-        required,
+        true,
         Rotation.NONE,
         false,
         1,
