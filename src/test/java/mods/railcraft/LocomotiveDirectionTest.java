@@ -2,8 +2,8 @@ package mods.railcraft;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
-import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
+import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTest;
