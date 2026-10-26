@@ -200,6 +200,8 @@ public class Translations {
         makeConfigurationKey("maxLauncherTrackForce");
     public static final String CART_DISPENSER_DELAY =
         makeConfigurationKey("cartDispenserDelay");
+    public static final String LOCKING_TRACK_TRAIN_DELAY =
+        makeConfigurationKey("lockingTrackTrainDelay");
     public static final String CHANGE_DUNGEON_LOOT =
         makeConfigurationKey("changeDungeonLoot");
     public static final String CHARGE = makeConfigurationKey("charge");
