@@ -2,8 +2,6 @@ package mods.railcraft.data.gametest.instances.locomotive;
 
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.data.gametest.RailcraftGameTestInstances;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestInstance;
@@ -11,6 +9,8 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class LocomotiveKeepsFacingThroughCurveTestInstance extends GameTestInstance {
 
