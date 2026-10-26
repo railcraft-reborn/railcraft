@@ -6,6 +6,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.client.model.CubeModel;
 import mods.railcraft.client.model.LowSidesMinecartModel;
 import mods.railcraft.client.model.RailcraftModelLayers;
+import mods.railcraft.client.renderer.RailcraftRenderTypes;
 import mods.railcraft.client.renderer.entity.state.TankMinecartRendererState;
 import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
@@ -16,7 +17,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -37,7 +37,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART));
     this.snowModel = new LowSidesMinecartModel<>(
         context.bakeLayer(RailcraftModelLayers.LOW_SIDES_MINECART_SNOW));
-    this.tankModel = new CubeModel<>(RenderTypes::entityTranslucent,
+    this.tankModel = new CubeModel<>(RailcraftRenderTypes::entityTranslucentCull,
         context.bakeLayer(RailcraftModelLayers.CUBE));
     this.itemModelResolver = context.getItemModelResolver();
   }
@@ -45,7 +45,9 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
   @Override
   protected void renderContents(TankMinecartRendererState renderState, PoseStack poseStack,
       SubmitNodeCollector collector, int color) {
-    collector.submitModel(
+    // Translucent models are drawn back to front by their origin, which for the tank is a corner
+    // rather than the cart centre, so depending on the view the cart would be drawn over the tank.
+    collector.order(1).submitModel(
         this.tankModel,
         renderState,
         poseStack,
