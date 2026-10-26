@@ -53,12 +53,12 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ChargeNetworkImpl implements Charge.Network {
 
-  private static final Logger logger = LogUtils.getLogger();
+  private static final Logger LOGGER = LogUtils.getLogger();
 
-  public static final int CHARGE_PER_DAMAGE = 1000;
+  private static final int CHARGE_PER_DAMAGE = 1000;
   private static final Map<ChargeBlock.ConnectType, ConnectionMap> CONNECTION_MAPS =
       new EnumMap<>(ChargeBlock.ConnectType.class);
-  private final ChargeGrid NULL_GRID = new NullGrid();
+  private final ChargeGrid nullGrid = new NullGrid();
   private final Map<BlockPos, ChargeNode> nodes = new HashMap<>();
   private final Map<BlockPos, ChargeNode> queue = new LinkedHashMap<>();
   private final Set<ChargeNode> tickingNodes = new LinkedHashSet<>();
@@ -99,7 +99,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     grids.forEach(ChargeGrid::tick);
 
     if (count > 0) {
-      logger.debug("Nodes processed: {}, still queued: {}", count, queue.size());
+      LOGGER.debug("Nodes processed: {}, still queued: {}", count, queue.size());
     }
   }
 
@@ -146,7 +146,7 @@ public class ChargeNetworkImpl implements Charge.Network {
         node.chargeGrid = oldNode.chargeGrid;
         node.chargeGrid.add(node);
       }
-      oldNode.chargeGrid = NULL_GRID;
+      oldNode.chargeGrid = nullGrid;
     }
 
     if (node.isGridNull()) {
@@ -168,7 +168,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     var chargeSpec = this.getChargeSpec(state, pos);
     if (chargeSpec != null && this.needsNode(pos, chargeSpec)) {
       pos = pos.immutable();
-      logger.debug("Registering Node: {}->{}", pos, chargeSpec);
+      LOGGER.debug("Registering Node: {}->{}", pos, chargeSpec);
       this.queue.put(pos, new ChargeNode(pos, chargeSpec));
       return true;
     }
@@ -289,11 +289,11 @@ public class ChargeNetworkImpl implements Charge.Network {
     }
 
     protected void destroy(boolean touchNodes) {
-      logger.debug("Destroying grid: {}", this.toString());
+      LOGGER.debug("Destroying grid: {}", this.toString());
       invalid = true;
       totalLosses = 0;
       if (touchNodes) {
-        forEach(n -> n.chargeGrid = NULL_GRID);
+        forEach(n -> n.chargeGrid = nullGrid);
       }
       batteries.clear();
       chargeNodes.clear();
@@ -544,7 +544,7 @@ public class ChargeNetworkImpl implements Charge.Network {
     protected final ChargeStorageBlockImpl chargeBattery;
     private final BlockPos pos;
     private final ChargeBlock.Spec chargeSpec;
-    private ChargeGrid chargeGrid = NULL_GRID;
+    private ChargeGrid chargeGrid = nullGrid;
     private boolean invalid;
     private Optional<UsageRecorder> usageRecorder = Optional.empty();
     private final Collection<ChargeListener> listeners = new LinkedHashSet<>();
@@ -673,7 +673,7 @@ public class ChargeNetworkImpl implements Charge.Network {
         this.chargeGrid.addAll(grid);
         grid.destroy(false);
       });
-      logger.debug("Constructing Grid: {}->{} Added {} nodes", this.pos,
+      LOGGER.debug("Constructing Grid: {}->{} Added {} nodes", this.pos,
           this.chargeGrid.toString(), this.chargeGrid.size() - originalSize);
     }
 
@@ -788,7 +788,7 @@ public class ChargeNetworkImpl implements Charge.Network {
 
     @Override
     public ChargeGrid getGrid() {
-      return NULL_GRID;
+      return nullGrid;
     }
 
     @Override
