@@ -7,6 +7,7 @@ import mods.railcraft.world.entity.vehicle.MinecartUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -65,7 +66,13 @@ public class DisembarkingTrackBlock extends PoweredOutfittedTrackBlock {
       } else {
         z -= offset;
       }
-      MinecartUtil.removePassengers(cart, x + 0.5D, blockPos.getY() + 1.0D, z + 0.5D);
+      // Drop passengers on the floor next to the track, or on top of the block there
+      var target = BlockPos.containing(x, blockPos.getY(), z);
+      double floor = level.getBlockFloorHeight(target);
+      double y = DismountHelper.isBlockFloorValid(floor)
+          ? target.getY() + floor
+          : target.getY() + 1.0D;
+      MinecartUtil.removePassengers(cart, x + 0.5D, y, z + 0.5D);
       RollingStock.getOrThrow(cart).setPreventMountRemainingTicks(TIME_TILL_NEXT_MOUNT);
     }
   }

@@ -1,0 +1,8 @@
+{
+  "type": "railcraft:disembarking_track_onto_floor",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "required": false,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}
