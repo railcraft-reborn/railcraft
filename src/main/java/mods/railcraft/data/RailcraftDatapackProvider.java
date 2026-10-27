@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
+import mods.railcraft.data.worldgen.RailcraftProcessorLists;
 import mods.railcraft.data.worldgen.RailcraftStructureSets;
 import mods.railcraft.data.worldgen.RailcraftStructures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
@@ -26,6 +27,7 @@ public class RailcraftDatapackProvider extends DatapackBuiltinEntriesProvider {
       .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
       .add(Registries.STRUCTURE, RailcraftStructures::bootstrap)
       .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap)
+      .add(Registries.PROCESSOR_LIST, RailcraftProcessorLists::bootstrap)
       .add(Registries.ENCHANTMENT, RailcraftEnchantments::bootstrap);
 
   public RailcraftDatapackProvider(PackOutput output,

@@ -77,6 +77,7 @@ import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.feature.RailcraftFeatures;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructureProcessorTypes;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
@@ -177,6 +178,7 @@ public class Railcraft {
     RailcraftFeatures.register(modEventBus);
     RailcraftStructureTypes.register(modEventBus);
     RailcraftStructurePieces.register(modEventBus);
+    RailcraftStructureProcessorTypes.register(modEventBus);
     RailcraftCriteriaTriggers.register(modEventBus);
     RailcraftAttachmentTypes.register(modEventBus);
     RailcraftDataMaps.register(modEventBus);
