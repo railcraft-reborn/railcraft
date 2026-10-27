@@ -361,5 +361,21 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.OVERALLS.get())
         .addTag(RailcraftTags.Items.ARMORS_LEGGINGS_STEEL);
     this.tag(ItemTags.FOOT_ARMOR).addTag(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
+
+    this.tag(ItemTags.DURABILITY_ENCHANTABLE)
+        .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+    this.tag(ItemTags.MINING_ENCHANTABLE)
+        .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+    this.tag(ItemTags.MINING_LOOT_ENCHANTABLE)
+        .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
   }
 }
