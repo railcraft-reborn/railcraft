@@ -1372,6 +1372,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.FUEL_MULTIPLIER, "Fuel multiplier");
     this.add(Translations.ConfigurationScreen.FUEL_PER_STEAM_MULTIPLIER,
         "Fuel per steam multiplier");
+    this.add(Translations.ConfigurationScreen.BOILERS_EXPLODE, "Boilers explode");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

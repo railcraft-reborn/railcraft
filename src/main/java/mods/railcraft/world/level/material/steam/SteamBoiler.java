@@ -56,7 +56,8 @@ public class SteamBoiler implements ValueIOSerializable {
    * Callback for adding water.
    */
   public void checkFill(FluidStack waterOriginalState, Runnable explosionCallback) {
-    if (this.isSuperHeated() && waterOriginalState.isEmpty()) {
+    if (this.isSuperHeated() && waterOriginalState.isEmpty()
+        && RailcraftConfig.SERVER.boilersExplode.get()) {
       explosionCallback.run();
     }
   }
