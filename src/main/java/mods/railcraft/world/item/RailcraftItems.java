@@ -375,6 +375,11 @@ public class RailcraftItems {
       deferredRegister.registerItem("diamond_tunnel_bore_head", properties ->
           new TunnelBoreHeadItem(ToolMaterial.DIAMOND, "diamond", properties.durability(6000)));
 
+  public static final DeferredItem<TunnelBoreHeadItem> NETHERITE_TUNNEL_BORE_HEAD =
+      deferredRegister.registerItem("netherite_tunnel_bore_head", properties ->
+          new TunnelBoreHeadItem(ToolMaterial.NETHERITE, "netherite",
+              properties.durability(7800).fireResistant()));
+
   public static final DeferredItem<FluidLoaderBlockItem> FLUID_LOADER =
       blockItem(RailcraftBlocks.FLUID_LOADER, FluidLoaderBlockItem::new);
 

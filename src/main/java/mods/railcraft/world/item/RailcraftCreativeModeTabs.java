@@ -169,6 +169,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get());
             output.accept(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get());
             output.accept(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+            output.accept(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get());
 
             output.accept(RailcraftItems.ITEM_LOADER.get());
             output.accept(RailcraftItems.ADVANCED_ITEM_LOADER.get());
