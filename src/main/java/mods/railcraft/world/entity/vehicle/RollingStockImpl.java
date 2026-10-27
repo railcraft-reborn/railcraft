@@ -449,8 +449,9 @@ public class RollingStockImpl implements RollingStock, ValueIOSerializable {
       if (MinecartUtil.cartVelocityIsLessThan(this.entity(), EXPLOSION_SPEED_THRESHOLD)) {
         this.highSpeed = false;
       } else if (this.launchState == LaunchState.LANDED) {
+        // On slopes the cart can sit in the block above the track
         HighSpeedTrackUtil.checkSafetyAndExplode(this.level(),
-            this.minecart.blockPosition(), this.entity());
+            this.minecart.getCurrentBlockPosOrRailBelow(), this.entity());
       }
     }
 

@@ -31,6 +31,8 @@ import mods.railcraft.data.gametest.instances.embarking_track.EmbarkingTrackActi
 import mods.railcraft.data.gametest.instances.embarking_track.EmbarkingTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.gated_track.GatedTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.gated_track.GatedTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.high_speed_track.HighSpeedTrackDownSlopeTestInstance;
+import mods.railcraft.data.gametest.instances.high_speed_track.HighSpeedTrackUpSlopeTestInstance;
 import mods.railcraft.data.gametest.instances.junction_track.JunctionTrackNorthTestInstance;
 import mods.railcraft.data.gametest.instances.junction_track.JunctionTrackWestTestInstance;
 import mods.railcraft.data.gametest.instances.launcher_track.LauncherTrackActiveTestInstance;
@@ -92,6 +94,8 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("embarking_track_passive", () -> EmbarkingTrackPassiveTestInstance.CODEC);
     deferredRegister.register("gated_track_active", () -> GatedTrackActiveTestInstance.CODEC);
     deferredRegister.register("gated_track_passive", () -> GatedTrackPassiveTestInstance.CODEC);
+    deferredRegister.register("high_speed_track_down_slope", () -> HighSpeedTrackDownSlopeTestInstance.CODEC);
+    deferredRegister.register("high_speed_track_up_slope", () -> HighSpeedTrackUpSlopeTestInstance.CODEC);
     deferredRegister.register("launcher_track_active", () -> LauncherTrackActiveTestInstance.CODEC);
     deferredRegister.register("launcher_track_passive", () -> LauncherTrackPassiveTestInstance.CODEC);
     deferredRegister.register("one_way_track_active", () -> OneWayTrackActiveTestInstance.CODEC);
@@ -148,6 +152,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "embarking_track_passive", EmbarkingTrackPassiveTestInstance::new);
     registerTestInstance(bootstrap, "gated_track_active", GatedTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "gated_track_passive", GatedTrackPassiveTestInstance::new);
+    registerTestInstance(bootstrap, "high_speed_track_down_slope", "platform_7x7_tall", HighSpeedTrackDownSlopeTestInstance::new);
+    registerTestInstance(bootstrap, "high_speed_track_up_slope", "platform_7x7_tall", HighSpeedTrackUpSlopeTestInstance::new);
     registerTestInstance(bootstrap, "launcher_track_active", LauncherTrackActiveTestInstance::new);
     registerTestInstance(bootstrap, "launcher_track_passive", LauncherTrackPassiveTestInstance::new);
     registerTestInstance(bootstrap, "one_way_track_active", OneWayTrackActiveTestInstance::new);
