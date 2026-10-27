@@ -1,0 +1,16 @@
+{
+  "processors": [
+    {
+      "processor_type": "railcraft:block_swap",
+      "swaps": {
+        "minecraft:brick_stairs": "minecraft:sandstone_stairs",
+        "minecraft:bricks": "minecraft:cut_sandstone",
+        "minecraft:cracked_stone_bricks": "minecraft:sandstone",
+        "minecraft:mossy_stone_bricks": "minecraft:sandstone",
+        "minecraft:smooth_stone": "minecraft:smooth_sandstone",
+        "minecraft:stone_brick_stairs": "minecraft:sandstone_stairs",
+        "minecraft:stone_bricks": "minecraft:cut_sandstone"
+      }
+    }
+  ]
+}

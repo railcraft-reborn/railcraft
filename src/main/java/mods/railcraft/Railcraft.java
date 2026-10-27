@@ -33,6 +33,7 @@ import mods.railcraft.data.tags.RailcraftItemTagsProvider;
 import mods.railcraft.data.tags.RailcraftPoiTypeTagsProvider;
 import mods.railcraft.data.tags.RailcraftVillagerTradeTagsProvider;
 import mods.railcraft.data.worldgen.RailcraftBiomeModifiers;
+import mods.railcraft.data.worldgen.RailcraftProcessorLists;
 import mods.railcraft.data.worldgen.RailcraftStructureSets;
 import mods.railcraft.data.worldgen.RailcraftStructures;
 import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
@@ -90,6 +91,7 @@ import mods.railcraft.world.level.gameevent.RailcraftGameEvents;
 import mods.railcraft.world.level.levelgen.feature.RailcraftFeatures;
 import mods.railcraft.world.level.levelgen.structure.ComponentWorkshop;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructurePieces;
+import mods.railcraft.world.level.levelgen.structure.RailcraftStructureProcessorTypes;
 import mods.railcraft.world.level.levelgen.structure.RailcraftStructureTypes;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
@@ -191,6 +193,7 @@ public class Railcraft {
     RailcraftFeatures.register(modEventBus);
     RailcraftStructureTypes.register(modEventBus);
     RailcraftStructurePieces.register(modEventBus);
+    RailcraftStructureProcessorTypes.register(modEventBus);
     RailcraftCriteriaTriggers.register(modEventBus);
     RailcraftAttachmentTypes.register(modEventBus);
     RailcraftDataMaps.register(modEventBus);
@@ -332,6 +335,7 @@ public class Railcraft {
         .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
         .add(Registries.STRUCTURE, RailcraftStructures::bootstrap)
         .add(Registries.STRUCTURE_SET, RailcraftStructureSets::bootstrap)
+        .add(Registries.PROCESSOR_LIST, RailcraftProcessorLists::bootstrap)
         .add(Registries.ENCHANTMENT, RailcraftEnchantments::bootstrap)
         .add(Registries.TEST_INSTANCE, RailcraftGameTestInstances::bootstrap)
         .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap)
