@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "c:ingots/netherite"
+  },
+  "base": {
+    "item": "railcraft:diamond_tunnel_bore_head"
+  },
+  "result": {
+    "count": 1,
+    "id": "railcraft:netherite_tunnel_bore_head"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

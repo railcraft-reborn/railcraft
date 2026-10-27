@@ -224,6 +224,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD, "Bronze Tunnel Bore Head");
     this.addItem(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, "Steel Tunnel Bore Head");
     this.addItem(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, "Diamond Tunnel Bore Head");
+    this.addItem(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD, "Netherite Tunnel Bore Head");
     this.addItem(RailcraftItems.CARGO_MINECART, "Cargo Minecart");
     this.addItem(RailcraftItems.TANK_MINECART, "Minecart with Tank");
     this.addItem(RailcraftItems.ENERGY_MINECART, "Minecart with Energy cell");

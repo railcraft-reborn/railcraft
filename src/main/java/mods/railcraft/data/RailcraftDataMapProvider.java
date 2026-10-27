@@ -35,6 +35,7 @@ public class RailcraftDataMapProvider extends DataMapProvider {
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)
         .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD, new TunnelBoreHead(1 / 0.6F), false)
+        .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.875F), false)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD, new TunnelBoreHead(1), false);
 
     this.builder(RailcraftDataMaps.FLUID_HEAT)

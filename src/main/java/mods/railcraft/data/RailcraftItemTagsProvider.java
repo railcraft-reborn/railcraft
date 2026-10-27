@@ -366,16 +366,19 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
-        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get());
     this.tag(ItemTags.MINING_ENCHANTABLE)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
-        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get());
     this.tag(ItemTags.MINING_LOOT_ENCHANTABLE)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
-        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get());
+        .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get())
+        .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get());
   }
 }

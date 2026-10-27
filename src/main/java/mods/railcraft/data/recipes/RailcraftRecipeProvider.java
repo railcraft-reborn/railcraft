@@ -32,6 +32,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -619,6 +620,14 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
         RailcraftTags.Items.STEEL_BLOCK);
     tunnelBoreHead(recipeOutput, RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get(),
         Tags.Items.STORAGE_BLOCKS_DIAMOND);
+
+    SmithingTransformRecipeBuilder.smithing(
+            Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+            Ingredient.of(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get()),
+            Ingredient.of(Tags.Items.INGOTS_NETHERITE),
+            RecipeCategory.MISC, RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get())
+        .unlocks(getHasName(Items.NETHERITE_INGOT), has(Tags.Items.INGOTS_NETHERITE))
+        .save(recipeOutput, RailcraftConstants.rl("netherite_tunnel_bore_head"));
   }
 
   private static void tunnelBoreHead(RecipeOutput recipeOutput, Item result, TagKey<Item> center) {

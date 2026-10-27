@@ -9,6 +9,9 @@
     "railcraft:iron_tunnel_bore_head": {
       "dig_modifier": 1.0
     },
+    "railcraft:netherite_tunnel_bore_head": {
+      "dig_modifier": 1.875
+    },
     "railcraft:steel_tunnel_bore_head": {
       "dig_modifier": 1.25
     }
