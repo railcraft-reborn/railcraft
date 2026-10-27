@@ -70,7 +70,7 @@ public class TunnelBoreModel extends HierarchicalModel<TunnelBore> {
             .addBox(-8, -35, 13, 4, 16, 4)
             .addBox(-8, -35, -17, 4, 16, 4),
         PartPose.ZERO);
-    return LayerDefinition.create(mesh, 255, 255);
+    return LayerDefinition.create(mesh, 256, 256);
   }
 
   public void setBoreHeadRotation(float rotation) {
