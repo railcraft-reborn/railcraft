@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -320,9 +321,12 @@ public class ElevatorTrackBlock extends Block {
     Direction.Axis axis = state.getValue(FACING).getAxis();
     for (BlockPos target : new BlockPos[] {pos, up ? pos.above() : pos.below()}) {
       for (Direction.AxisDirection direction : Direction.AxisDirection.values()) {
-        if (BaseRailBlock.isRail(level,
-            target.relative(Direction.get(direction, axis)))) {
-          holdPosition(state, cart, target);
+        Direction side = Direction.get(direction, axis);
+        BlockPos railPos = target.relative(side);
+        if (BaseRailBlock.isRail(level, railPos)) {
+          // The upper end of a slope rising towards the elevator is level with the block above
+          holdPosition(state, cart,
+              risesTowards(level, railPos, side.getOpposite()) ? target.above() : target);
           double vel = direction.getStep() * RIDE_VELOCITY;
           Vec3 motion = cart.getDeltaMovement();
           if (axis == Direction.Axis.Z)
@@ -334,5 +338,18 @@ public class ElevatorTrackBlock extends Block {
       }
     }
     return false;
+  }
+
+  private static boolean risesTowards(Level level, BlockPos railPos, Direction direction) {
+    BlockState railState = level.getBlockState(railPos);
+    RailShape shape = ((BaseRailBlock) railState.getBlock())
+        .getRailDirection(railState, level, railPos, null);
+    return shape == switch (direction) {
+      case NORTH -> RailShape.ASCENDING_NORTH;
+      case SOUTH -> RailShape.ASCENDING_SOUTH;
+      case WEST -> RailShape.ASCENDING_WEST;
+      case EAST -> RailShape.ASCENDING_EAST;
+      default -> null;
+    };
   }
 }
