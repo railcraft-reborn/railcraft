@@ -25,7 +25,9 @@ import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTra
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.dual_block_signal.DualBlockSignalPrimary;
 import mods.railcraft.data.gametest.instances.dual_block_signal.DualBlockSignalSecondary;
+import mods.railcraft.data.gametest.instances.elevator_track.ElevatorTrackDownOntoSlopeTestInstance;
 import mods.railcraft.data.gametest.instances.elevator_track.ElevatorTrackDownTestInstance;
+import mods.railcraft.data.gametest.instances.elevator_track.ElevatorTrackUpFromSlopeTestInstance;
 import mods.railcraft.data.gametest.instances.elevator_track.ElevatorTrackUpTestInstance;
 import mods.railcraft.data.gametest.instances.embarking_track.EmbarkingTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.embarking_track.EmbarkingTrackPassiveTestInstance;
@@ -112,6 +114,8 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("turnout_track_spike_maul_branch", () -> TurnoutTrackSpikeMaulBranchTestInstance.CODEC);
     deferredRegister.register("elevator_track_up", () -> ElevatorTrackUpTestInstance.CODEC);
     deferredRegister.register("elevator_track_down", () -> ElevatorTrackDownTestInstance.CODEC);
+    deferredRegister.register("elevator_track_up_from_slope", () -> ElevatorTrackUpFromSlopeTestInstance.CODEC);
+    deferredRegister.register("elevator_track_down_onto_slope", () -> ElevatorTrackDownOntoSlopeTestInstance.CODEC);
     deferredRegister.register("junction_track_west", () -> JunctionTrackWestTestInstance.CODEC);
     deferredRegister.register("junction_track_north", () -> JunctionTrackNorthTestInstance.CODEC);
     deferredRegister.register("block_signal_relay_box", () -> BlockSignalRelayBoxTestInstance.CODEC);
@@ -170,6 +174,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "turnout_track_spike_maul_branch", "platform_7x7", TurnoutTrackSpikeMaulBranchTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_up", ElevatorTrackUpTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_down", ElevatorTrackDownTestInstance::new);
+    registerTestInstance(bootstrap, "elevator_track_up_from_slope", "platform_7x7_tall", ElevatorTrackUpFromSlopeTestInstance::new);
+    registerTestInstance(bootstrap, "elevator_track_down_onto_slope", "platform_7x7_tall", ElevatorTrackDownOntoSlopeTestInstance::new);
     registerTestInstance(bootstrap, "junction_track_west", "junction_track", JunctionTrackWestTestInstance::new);
     registerTestInstance(bootstrap, "junction_track_north", "junction_track", JunctionTrackNorthTestInstance::new);
 
