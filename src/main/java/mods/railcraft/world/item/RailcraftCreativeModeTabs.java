@@ -47,6 +47,7 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.FEED_STATION.get());
             output.accept(RailcraftItems.CHIMNEY.get());
             output.accept(RailcraftItems.FRAME_BLOCK.get());
+            output.accept(RailcraftItems.WIRE.get());
             output.accept(RailcraftItems.CHARGE_METER.get());
             output.accept(RailcraftItems.NICKEL_ZINC_BATTERY.get());
             output.accept(RailcraftItems.NICKEL_IRON_BATTERY.get());

@@ -84,6 +84,19 @@ class RailcraftModelTemplates {
       DUAL_SIGNAL_INVENTORY_TEMPLATE
   );
 
+  static final ModelTemplate WIRE_CORE_TEMPLATE = wireTemplate("template_wire_core", "");
+  static final ModelTemplate WIRE_CONNECTION_TEMPLATE =
+      wireTemplate("template_wire_connection", "_wire");
+  static final ModelTemplate WIRE_PLUG_TEMPLATE = wireTemplate("template_wire_plug", "_plug");
+  static final ModelTemplate WIRE_ITEM_TEMPLATE = wireTemplate("template_wire_item", "_item");
+
+  private static ModelTemplate wireTemplate(String parent, String suffix) {
+    return new ModelTemplate(
+        Optional.of(RailcraftConstants.id(parent).withPrefix("block/")),
+        Optional.of(suffix),
+        TextureSlot.ALL);
+  }
+
   static final ModelTemplate FRAME_TEMPLATE = new ModelTemplate(
       Optional.of(RailcraftConstants.id("frame_template").withPrefix("block/")),
       Optional.empty(),

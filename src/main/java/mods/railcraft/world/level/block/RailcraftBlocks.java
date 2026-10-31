@@ -8,6 +8,7 @@ import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
 import mods.railcraft.world.level.block.charge.NickelZincBatteryBlock;
+import mods.railcraft.world.level.block.charge.WireBlock;
 import mods.railcraft.world.level.block.charge.ZincCarbonBatteryBlock;
 import mods.railcraft.world.level.block.charge.ZincSilverBatteryBlock;
 import mods.railcraft.world.level.block.detector.AdvancedDetectorBlock;
@@ -259,6 +260,17 @@ public class RailcraftBlocks {
                   .strength(3F)
                   .requiresCorrectToolForDrops()
                   .sound(SoundType.WOOD)));
+
+  public static final DeferredBlock<WireBlock> WIRE =
+      deferredRegister.registerBlock("wire",
+          properties -> new WireBlock(
+              properties
+                  .mapColor(MapColor.COLOR_BLUE)
+                  .strength(1F)
+                  .randomTicks()
+                  .requiresCorrectToolForDrops()
+                  .noOcclusion()
+                  .sound(SoundType.METAL)));
 
   public static final DeferredBlock<FrameBlock> FRAME =
       deferredRegister.registerBlock("frame",

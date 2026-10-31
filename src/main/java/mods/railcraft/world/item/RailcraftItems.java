@@ -209,6 +209,9 @@ public class RailcraftItems {
   public static final DeferredItem<FrameBlockItem> FRAME_BLOCK =
       blockItem(RailcraftBlocks.FRAME, FrameBlockItem::new);
 
+  public static final DeferredItem<WireBlockItem> WIRE =
+      blockItem(RailcraftBlocks.WIRE, WireBlockItem::new);
+
   public static final DeferredItem<ChargeMeterItem> CHARGE_METER =
       deferredRegister.registerItem("charge_meter", properties ->
           new ChargeMeterItem(properties

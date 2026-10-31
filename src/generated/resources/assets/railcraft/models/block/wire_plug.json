@@ -1,0 +1,6 @@
+{
+  "parent": "railcraft:block/template_wire_plug",
+  "textures": {
+    "all": "railcraft:block/wire"
+  }
+}

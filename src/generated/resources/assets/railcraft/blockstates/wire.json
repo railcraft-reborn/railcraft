@@ -1,0 +1,115 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire",
+        "x": 90
+      },
+      "when": {
+        "down": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug",
+        "x": 90
+      },
+      "when": {
+        "down": "plug"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire",
+        "x": 270
+      },
+      "when": {
+        "up": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug",
+        "x": 270
+      },
+      "when": {
+        "up": "plug"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire"
+      },
+      "when": {
+        "north": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug"
+      },
+      "when": {
+        "north": "plug"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire",
+        "y": 180
+      },
+      "when": {
+        "south": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug",
+        "y": 180
+      },
+      "when": {
+        "south": "plug"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire",
+        "y": 270
+      },
+      "when": {
+        "west": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug",
+        "y": 270
+      },
+      "when": {
+        "west": "plug"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_wire",
+        "y": 90
+      },
+      "when": {
+        "east": "wire"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/wire_plug",
+        "y": 90
+      },
+      "when": {
+        "east": "plug"
+      }
+    }
+  ]
+}

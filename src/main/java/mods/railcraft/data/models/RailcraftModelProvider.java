@@ -41,6 +41,7 @@ import mods.railcraft.world.level.block.charge.BatteryBlock;
 import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
+import mods.railcraft.world.level.block.charge.WireBlock;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.FluidManipulatorBlock;
@@ -355,6 +356,7 @@ public class RailcraftModelProvider extends ModelProvider {
 
     this.createSteamOven(blockModels, RailcraftBlocks.STEAM_OVEN.get());
     this.createFrameBlock(blockModels, RailcraftBlocks.FRAME.get());
+    this.createWireBlock(blockModels, RailcraftBlocks.WIRE.get());
     this.createLogBookBlock(blockModels, RailcraftBlocks.LOGBOOK.get());
     this.createChimneyBlock(blockModels, RailcraftBlocks.CHIMNEY.get());
     this.createWorldSpikeBlock(blockModels, RailcraftBlocks.WORLD_SPIKE.get());
@@ -1083,6 +1085,38 @@ public class RailcraftModelProvider extends ModelProvider {
             .with(BlockModelGenerators
                 .createBooleanModelDispatch(FrameBlock.POWERED, plainVariant(modelPowered), plainVariant(model))));
     blockModels.registerSimpleItemModel(block, model);
+  }
+
+  private void createWireBlock(BlockModelGenerators blockModels, WireBlock block) {
+    var textures = TextureMapping.cube(block);
+    var coreModel = RailcraftModelTemplates.WIRE_CORE_TEMPLATE
+        .create(block, textures, blockModels.modelOutput);
+    var wireModel = RailcraftModelTemplates.WIRE_CONNECTION_TEMPLATE
+        .create(block, textures, blockModels.modelOutput);
+    var plugModel = RailcraftModelTemplates.WIRE_PLUG_TEMPLATE
+        .create(block, textures, blockModels.modelOutput);
+    var itemModel = RailcraftModelTemplates.WIRE_ITEM_TEMPLATE
+        .create(block, textures, blockModels.modelOutput);
+
+    var generator = MultiPartGenerator.multiPart(block).with(plainVariant(coreModel));
+    for (var entry : WireBlock.PROPERTY_BY_DIRECTION.entrySet()) {
+      var direction = entry.getKey();
+      var rotationX = switch (direction) {
+        case DOWN -> Quadrant.R90;
+        case UP -> Quadrant.R270;
+        default -> Quadrant.R0;
+      };
+      var rotationY = direction.getAxis().isHorizontal()
+          ? Quadrant.parseJson(((int) direction.toYRot() + 180) % 360)
+          : Quadrant.R0;
+      generator
+          .with(condition().term(entry.getValue(), WireBlock.Connection.WIRE),
+              plainVariant(wireModel).with(v -> v.withXRot(rotationX).withYRot(rotationY)))
+          .with(condition().term(entry.getValue(), WireBlock.Connection.PLUG),
+              plainVariant(plugModel).with(v -> v.withXRot(rotationX).withYRot(rotationY)));
+    }
+    blockModels.blockStateOutput.accept(generator);
+    blockModels.registerSimpleItemModel(block, itemModel);
   }
 
   private void createLogBookBlock(BlockModelGenerators blockModels, LogBookBlock block) {

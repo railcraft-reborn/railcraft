@@ -1,0 +1,17 @@
+{
+  "type": "railcraft:rolling",
+  "key": {
+    "a": "#c:ingots/lead",
+    "b": "minecraft:paper",
+    "c": "railcraft:charge_spool_large"
+  },
+  "pattern": [
+    "aba",
+    "bcb",
+    "aba"
+  ],
+  "result": {
+    "count": 8,
+    "id": "railcraft:wire"
+  }
+}
