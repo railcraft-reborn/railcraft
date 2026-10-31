@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "a": {
+      "tag": "c:plates/iron"
+    },
+    "b": {
+      "tag": "c:glass_blocks/colorless"
+    },
+    "c": {
+      "tag": "c:gears/iron"
+    },
+    "d": {
+      "item": "minecraft:piston"
+    }
+  },
+  "pattern": [
+    "aaa",
+    " b ",
+    "cdc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "railcraft:commercial_steam_engine"
+  }
+}

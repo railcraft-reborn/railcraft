@@ -313,6 +313,26 @@ public class RailcraftBlocks {
               .randomTicks()
               .sound(SoundType.METAL)));
 
+  public static final DeferredBlock<SteamEngineBlock> HOBBYIST_STEAM_ENGINE =
+      deferredRegister.register("hobbyist_steam_engine",
+          () -> new SteamEngineBlock(SteamEngineBlock.Tier.HOBBYIST,
+              BlockBehaviour.Properties.of()
+                  .mapColor(MapColor.METAL)
+                  .strength(3.5F)
+                  .requiresCorrectToolForDrops()
+                  .noOcclusion()
+                  .sound(SoundType.METAL)));
+
+  public static final DeferredBlock<SteamEngineBlock> COMMERCIAL_STEAM_ENGINE =
+      deferredRegister.register("commercial_steam_engine",
+          () -> new SteamEngineBlock(SteamEngineBlock.Tier.COMMERCIAL,
+              BlockBehaviour.Properties.ofFullCopy(HOBBYIST_STEAM_ENGINE.get())));
+
+  public static final DeferredBlock<SteamEngineBlock> INDUSTRIAL_STEAM_ENGINE =
+      deferredRegister.register("industrial_steam_engine",
+          () -> new SteamEngineBlock(SteamEngineBlock.Tier.INDUSTRIAL,
+              BlockBehaviour.Properties.ofFullCopy(HOBBYIST_STEAM_ENGINE.get())));
+
   public static final DeferredBlock<WaterTankSiding> WATER_TANK_SIDING =
       deferredRegister.register("water_tank_siding",
           () -> new WaterTankSiding(BlockBehaviour.Properties.of()

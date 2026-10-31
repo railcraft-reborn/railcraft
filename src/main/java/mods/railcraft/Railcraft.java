@@ -56,8 +56,10 @@ import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.HobbyistSteamEngineBlockEntity;
 import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
+import mods.railcraft.world.level.block.entity.SteamEngineBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.VoidChestBlockEntity;
@@ -235,6 +237,19 @@ public class Railcraft {
         RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getFluidCap);
     event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
         RailcraftBlockEntityTypes.STEAM_TURBINE.get(), SteamTurbineBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_ENGINE.get(), SteamEngineBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.STEAM_ENGINE.get(), SteamEngineBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+        RailcraftBlockEntityTypes.HOBBYIST_STEAM_ENGINE.get(),
+        HobbyistSteamEngineBlockEntity::getFluidCap);
+    event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,
+        RailcraftBlockEntityTypes.HOBBYIST_STEAM_ENGINE.get(),
+        HobbyistSteamEngineBlockEntity::getEnergyCap);
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+        RailcraftBlockEntityTypes.HOBBYIST_STEAM_ENGINE.get(),
+        HobbyistSteamEngineBlockEntity::getItemCap);
     event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
         RailcraftBlockEntityTypes.STEAM_BOILER.get(), SteamBoilerBlockEntity::getItemCap);
     event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,

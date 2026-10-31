@@ -23,12 +23,14 @@ import mods.railcraft.client.gui.screen.inventory.EnergyMinecartScreen;
 import mods.railcraft.client.gui.screen.inventory.FeedStationScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidFueledSteamBoilerScreen;
 import mods.railcraft.client.gui.screen.inventory.FluidManipulatorScreen;
+import mods.railcraft.client.gui.screen.inventory.HobbyistSteamEngineScreen;
 import mods.railcraft.client.gui.screen.inventory.ItemManipulatorScreen;
 import mods.railcraft.client.gui.screen.inventory.ManualRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.PoweredRollingMachineScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingDetectorScreen;
 import mods.railcraft.client.gui.screen.inventory.RoutingTrackScreen;
 import mods.railcraft.client.gui.screen.inventory.SolidFueledSteamBoilerScreen;
+import mods.railcraft.client.gui.screen.inventory.SteamEngineScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamLocomotiveScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamOvenScreen;
 import mods.railcraft.client.gui.screen.inventory.SteamTurbineScreen;
@@ -58,6 +60,7 @@ import mods.railcraft.client.particle.TuningAuraParticle;
 import mods.railcraft.client.renderer.ShuntingAuraRenderer;
 import mods.railcraft.client.renderer.blockentity.RailcraftBlockEntityRenderers;
 import mods.railcraft.client.renderer.entity.RailcraftEntityRenderers;
+import mods.railcraft.client.renderer.item.SteamEngineItemRenderer;
 import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.integrations.patchouli.Patchouli;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
@@ -156,6 +159,9 @@ public class ClientManager {
     event.register(RailcraftMenuTypes.FLUID_FUELED_STEAM_BOILER.get(),
         FluidFueledSteamBoilerScreen::new);
     event.register(RailcraftMenuTypes.STEAM_TURBINE.get(), SteamTurbineScreen::new);
+    event.register(RailcraftMenuTypes.HOBBYIST_STEAM_ENGINE.get(),
+        HobbyistSteamEngineScreen::new);
+    event.register(RailcraftMenuTypes.STEAM_ENGINE.get(), SteamEngineScreen::new);
     event.register(RailcraftMenuTypes.TANK.get(), TankScreen::new);
     event.register(RailcraftMenuTypes.WATER_TANK_SIDING.get(), WaterTankSidingScreen::new);
     event.register(RailcraftMenuTypes.TRACK_LAYER.get(), TrackLayerScreen::new);
@@ -282,6 +288,15 @@ public class ClientManager {
         return new VoidChestItemRenderer();
       }
     }, RailcraftItems.VOID_CHEST.asItem());
+
+    event.registerItem(new IClientItemExtensions() {
+      @Override
+      public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+        return new SteamEngineItemRenderer();
+      }
+    }, RailcraftItems.HOBBYIST_STEAM_ENGINE.asItem(),
+        RailcraftItems.COMMERCIAL_STEAM_ENGINE.asItem(),
+        RailcraftItems.INDUSTRIAL_STEAM_ENGINE.asItem());
 
     event.registerFluidType(new IClientFluidTypeExtensions() {
       private static final ResourceLocation STILL_TEXTURE =

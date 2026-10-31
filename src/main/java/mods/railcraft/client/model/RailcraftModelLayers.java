@@ -32,6 +32,8 @@ public class RailcraftModelLayers {
 
   public static final ModelLayerLocation CUBE = register("cube");
 
+  public static final ModelLayerLocation STEAM_ENGINE = register("steam_engine");
+
   private static ModelLayerLocation register(String model) {
     return register(model, "main");
   }

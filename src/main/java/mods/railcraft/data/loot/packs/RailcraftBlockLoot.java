@@ -33,6 +33,9 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
 
     this.dropSelf(RailcraftBlocks.STEAM_TURBINE.get());
+    this.dropSelf(RailcraftBlocks.HOBBYIST_STEAM_ENGINE.get());
+    this.dropSelf(RailcraftBlocks.COMMERCIAL_STEAM_ENGINE.get());
+    this.dropSelf(RailcraftBlocks.INDUSTRIAL_STEAM_ENGINE.get());
     this.dropSelf(RailcraftBlocks.FLUID_LOADER.get());
     this.dropSelf(RailcraftBlocks.FLUID_UNLOADER.get());
     this.dropSelf(RailcraftBlocks.ITEM_LOADER.get());

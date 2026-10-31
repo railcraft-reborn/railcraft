@@ -37,6 +37,9 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.TURBINE_DISK.get());
             output.accept(RailcraftItems.TURBINE_ROTOR.get());
             output.accept(RailcraftItems.STEAM_TURBINE.get());
+            output.accept(RailcraftItems.HOBBYIST_STEAM_ENGINE.get());
+            output.accept(RailcraftItems.COMMERCIAL_STEAM_ENGINE.get());
+            output.accept(RailcraftItems.INDUSTRIAL_STEAM_ENGINE.get());
             output.accept(RailcraftItems.STEAM_OVEN.get());
             output.accept(RailcraftItems.MANUAL_ROLLING_MACHINE.get());
             output.accept(RailcraftItems.POWERED_ROLLING_MACHINE.get());

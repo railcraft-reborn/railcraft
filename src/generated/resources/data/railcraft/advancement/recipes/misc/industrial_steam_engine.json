@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:gears/steel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:industrial_steam_engine"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_gear"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:industrial_steam_engine"
+    ]
+  }
+}

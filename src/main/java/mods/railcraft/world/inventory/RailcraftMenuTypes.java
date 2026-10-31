@@ -21,8 +21,10 @@ import mods.railcraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.CrusherBlockEntity;
 import mods.railcraft.world.level.block.entity.FeedStationBlockEntity;
+import mods.railcraft.world.level.block.entity.HobbyistSteamEngineBlockEntity;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
 import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
+import mods.railcraft.world.level.block.entity.SteamEngineBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.SteamTurbineBlockEntity;
 import mods.railcraft.world.level.block.entity.SwitchTrackRouterBlockEntity;
@@ -70,6 +72,15 @@ public class RailcraftMenuTypes {
   public static final DeferredHolder<MenuType<?>, MenuType<FluidFueledSteamBoilerMenu>> FLUID_FUELED_STEAM_BOILER =
       deferredRegister.register("fluid_fueled_steam_boiler",
           () -> blockEntityMenu(SteamBoilerBlockEntity.class, FluidFueledSteamBoilerMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<HobbyistSteamEngineMenu>> HOBBYIST_STEAM_ENGINE =
+      deferredRegister.register("hobbyist_steam_engine",
+          () -> blockEntityMenu(HobbyistSteamEngineBlockEntity.class,
+              HobbyistSteamEngineMenu::new));
+
+  public static final DeferredHolder<MenuType<?>, MenuType<SteamEngineMenu>> STEAM_ENGINE =
+      deferredRegister.register("steam_engine",
+          () -> blockEntityMenu(SteamEngineBlockEntity.class, SteamEngineMenu::new));
 
   public static final DeferredHolder<MenuType<?>, MenuType<SteamTurbineMenu>> STEAM_TURBINE =
       deferredRegister.register("steam_turbine",

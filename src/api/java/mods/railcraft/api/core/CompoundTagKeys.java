@@ -29,6 +29,7 @@ public final class CompoundTagKeys {
   public static final String CURRENT_CART = "currentCart";
   public static final String CURRENT_CART_ID = "currentCartId";
   public static final String CURRENT_ITEM_BURN_TIME = "currentItemBurnTime";
+  public static final String CURRENT_OUTPUT = "currentOutput";
   public static final String CUSTOM_NAME = "customName";
   public static final String DATE = "date";
   public static final String DECIDING_CARTS = "decidingCarts";
@@ -40,6 +41,7 @@ public final class CompoundTagKeys {
   public static final String ELEVATOR_REMAINING_TICKS = "elevatorRemainingTicks";
   public static final String EMITTER_POS = "emitterPos";
   public static final String ENERGY = "energy";
+  public static final String ENERGY_STAGE = "energyStage";
   public static final String ENTRIES = "entries";
   public static final String EXPLOSION_PENDING = "explosionPending";
   public static final String FACING = "facing";
