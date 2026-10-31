@@ -8,6 +8,7 @@ package mods.railcraft.api.core;
 
 public final class CompoundTagKeys {
 
+  public static final String ACTIONBAR = "actionbar";
   public static final String ACTION_SIGNAL_ASPECTS = "actionSignalAspects";
   public static final String ACTIVE = "active";
   public static final String AURA = "aura";
@@ -115,6 +116,7 @@ public final class CompoundTagKeys {
   public static final String SPRUNG = "sprung";
   public static final String STATE = "state";
   public static final String STEAM_TANK = "steamTank";
+  public static final String SUBTITLE = "subtitle";
   public static final String SYNC = "sync";
   public static final String TANK = "tank";
   public static final String TANK_MANAGER = "tankManager";
@@ -123,6 +125,7 @@ public final class CompoundTagKeys {
   public static final String TICKS_SINCE_LAST_DROP = "ticksSinceLastDrop";
   public static final String TICKS_TO_POWER = "ticksToPower";
   public static final String TIME_SINCE_LAST_SPAWN = "timeSinceLastSpawn";
+  public static final String TITLE = "title";
   public static final String TOKEN_RINGS = "tokenRings";
   public static final String TOKEN_RING_ID = "tokenRingId";
   public static final String TRACK_COUNT = "trackCount";

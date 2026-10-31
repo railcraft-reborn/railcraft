@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "railcraft:messenger_track_kit"
+    },
+    {
+      "item": "railcraft:high_speed_electric_track"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railcraft:high_speed_electric_messenger_track"
+  }
+}

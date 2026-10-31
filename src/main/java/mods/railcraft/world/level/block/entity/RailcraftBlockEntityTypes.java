@@ -50,6 +50,7 @@ import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LockingTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.MessengerTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.RoutingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.TurnoutTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.WyeTrackBlockEntity;
@@ -494,6 +495,18 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get())
               .build(null));
 
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MessengerTrackBlockEntity>> MESSENGER_TRACK =
+      deferredRegister.register("messenger_track",
+          () -> BlockEntityType.Builder
+              .of(MessengerTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.IRON_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_MESSENGER_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_MESSENGER_TRACK.get())
+              .build(null));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CouplerTrackBlockEntity>> COUPLER_TRACK =
       deferredRegister.register("coupler_track",

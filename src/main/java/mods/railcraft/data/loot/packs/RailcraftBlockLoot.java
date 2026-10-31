@@ -146,6 +146,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ABANDONED_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
@@ -187,6 +189,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.ELECTRIC_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
@@ -230,6 +234,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
@@ -253,6 +259,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
         RailcraftItems.ACTIVATOR_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
@@ -273,6 +281,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.IRON_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
@@ -314,6 +324,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.REINFORCED_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
@@ -355,6 +367,8 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
         RailcraftItems.LOCKING_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get(),
         RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get());
+    this.dropOther(RailcraftBlocks.STRAP_IRON_MESSENGER_TRACK.get(),
+        RailcraftItems.MESSENGER_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK.get(),
         RailcraftItems.BUFFER_STOP_TRACK_KIT.get());
     this.dropOther(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),

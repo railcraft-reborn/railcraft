@@ -563,7 +563,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
 
-    this.createDelayedLockingTracks();
+    this.createDelayedLockingAndMessengerTracks();
   }
 
   private void createStrengthenedGlass(Block block) {
@@ -1895,8 +1895,9 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createJunctionTrack(junctionTrackBlock);
   }
 
-
-  private void createDelayedLockingTracks() {
+  private void createDelayedLockingAndMessengerTracks() {
+    var messengerModels = this.createTrackModelSet("messenger_track");
+    var activeMessengerModels = this.createActiveTrackModelSet("messenger_track");
     var delayedModel = this.createPassiveRail("delayed_locking_track");
     var activeDelayedModel = this.createActiveRail("delayed_locking_track");
     var holdingDelayedModel =
@@ -1904,24 +1905,33 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
 
     var tracks = List.of(
         new Block[] {RailcraftBlocks.ABANDONED_TRACK.get(),
-            RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.ABANDONED_MESSENGER_TRACK.get()},
         new Block[] {RailcraftBlocks.ELECTRIC_TRACK.get(),
-            RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_MESSENGER_TRACK.get()},
         new Block[] {RailcraftBlocks.HIGH_SPEED_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_MESSENGER_TRACK.get()},
         new Block[] {RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
-            RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_MESSENGER_TRACK.get()},
         new Block[] {Blocks.RAIL,
-            RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.IRON_MESSENGER_TRACK.get()},
         new Block[] {RailcraftBlocks.REINFORCED_TRACK.get(),
-            RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get()},
+            RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.REINFORCED_MESSENGER_TRACK.get()},
         new Block[] {RailcraftBlocks.STRAP_IRON_TRACK.get(),
-            RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get()});
+            RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_MESSENGER_TRACK.get()});
 
     for (var track : tracks) {
       var outfittedTrackModels = this.createOutfittedTrackModelSet(track[0]);
       this.createDelayedLockingTrack(track[1], outfittedTrackModels.flatModel(),
           delayedModel, activeDelayedModel, holdingDelayedModel);
+      this.createActiveOutfittedTrack(track[2], false, false, outfittedTrackModels,
+          messengerModels, activeMessengerModels);
     }
   }
 

@@ -73,6 +73,11 @@ public class Translations {
         makeKey("screen", "launcher_track.launch_force");
     public static final String DELAYED_LOCKING_TRACK_DELAY =
         makeKey("screen", "delayed_locking_track.delay");
+    public static final String MESSENGER_TRACK_TITLE = makeKey("screen", "messenger_track.title");
+    public static final String MESSENGER_TRACK_SUBTITLE =
+        makeKey("screen", "messenger_track.subtitle");
+    public static final String MESSENGER_TRACK_ACTIONBAR =
+        makeKey("screen", "messenger_track.actionbar");
     public static final String WATER_TANK_SEE_SKY = makeKey("screen", "water_tank.sky");
     public static final String WATER_TANK_BASE_RATE = makeKey("screen", "water_tank.base_rate");
     public static final String WATER_TANK_HUMIDITY = makeKey("screen", "water_tank.humidity");
@@ -377,6 +382,7 @@ public class Translations {
     public static final String DELAYED_LOCKING_TRACK = makeKey("tips", "delayed_locking_track");
     public static final String DELAYED_LOCKING_TRACK_HOLDING =
         makeKey("tips", "delayed_locking_track.holding");
+    public static final String MESSENGER_TRACK = makeKey("tips", "messenger_track");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
     public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");
