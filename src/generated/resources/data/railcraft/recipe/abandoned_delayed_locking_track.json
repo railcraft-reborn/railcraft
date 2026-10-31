@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "railcraft:delayed_locking_track_kit",
+    "railcraft:abandoned_track"
+  ],
+  "result": {
+    "id": "railcraft:abandoned_delayed_locking_track"
+  }
+}

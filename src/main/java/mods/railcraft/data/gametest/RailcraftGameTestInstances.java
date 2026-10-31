@@ -19,6 +19,8 @@ import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserDispen
 import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserPickUpTestInstance;
 import mods.railcraft.data.gametest.instances.decoupler_track.DecouplerPulledTrainTestInstance;
 import mods.railcraft.data.gametest.instances.decoupler_track.DecouplerPushedTrainTestInstance;
+import mods.railcraft.data.gametest.instances.delayed_locking_track.DelayedLockingTrackHoldsThenReleasesTestInstance;
+import mods.railcraft.data.gametest.instances.delayed_locking_track.DelayedLockingTrackUnpoweredLetsCartsPassTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackOntoBlockTestInstance;
 import mods.railcraft.data.gametest.instances.disembarking_track.DisembarkingTrackOntoFloorTestInstance;
@@ -116,6 +118,8 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("elevator_track_down", () -> ElevatorTrackDownTestInstance.CODEC);
     deferredRegister.register("elevator_track_up_from_slope", () -> ElevatorTrackUpFromSlopeTestInstance.CODEC);
     deferredRegister.register("elevator_track_down_onto_slope", () -> ElevatorTrackDownOntoSlopeTestInstance.CODEC);
+    deferredRegister.register("delayed_locking_track_holds_then_releases", () -> DelayedLockingTrackHoldsThenReleasesTestInstance.CODEC);
+    deferredRegister.register("delayed_locking_track_unpowered_lets_carts_pass", () -> DelayedLockingTrackUnpoweredLetsCartsPassTestInstance.CODEC);
     deferredRegister.register("junction_track_west", () -> JunctionTrackWestTestInstance.CODEC);
     deferredRegister.register("junction_track_north", () -> JunctionTrackNorthTestInstance.CODEC);
     deferredRegister.register("block_signal_relay_box", () -> BlockSignalRelayBoxTestInstance.CODEC);
@@ -176,6 +180,8 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "elevator_track_down", ElevatorTrackDownTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_up_from_slope", "platform_7x7_tall", ElevatorTrackUpFromSlopeTestInstance::new);
     registerTestInstance(bootstrap, "elevator_track_down_onto_slope", "platform_7x7_tall", ElevatorTrackDownOntoSlopeTestInstance::new);
+    registerTestInstance(bootstrap, "delayed_locking_track_holds_then_releases", "platform_7x7_tall", DelayedLockingTrackHoldsThenReleasesTestInstance::new);
+    registerTestInstance(bootstrap, "delayed_locking_track_unpowered_lets_carts_pass", "platform_7x7_tall", DelayedLockingTrackUnpoweredLetsCartsPassTestInstance::new);
     registerTestInstance(bootstrap, "junction_track_west", "junction_track", JunctionTrackWestTestInstance::new);
     registerTestInstance(bootstrap, "junction_track_north", "junction_track", JunctionTrackNorthTestInstance::new);
 

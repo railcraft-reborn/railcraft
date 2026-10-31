@@ -350,6 +350,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.TRACK_PARTS, "Track Parts");
     this.addItem(RailcraftItems.TRANSITION_TRACK_KIT, "Transition Track Kit");
     this.addItem(RailcraftItems.LOCKING_TRACK_KIT, "Locking Track Kit");
+    this.addItem(RailcraftItems.DELAYED_LOCKING_TRACK_KIT, "Delayed Locking Track Kit");
     this.addItem(RailcraftItems.BUFFER_STOP_TRACK_KIT, "Buffer Stop Track Kit");
     this.addItem(RailcraftItems.ACTIVATOR_TRACK_KIT, "Activator Track Kit");
     this.addItem(RailcraftItems.BOOSTER_TRACK_KIT, "Booster Track Kit");
@@ -566,6 +567,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_RANGE, "- Hit with Crowbar to change range -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MODE, "- Hit with Crowbar to change mode -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_FORCE, "- Hit with Crowbar to change force -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_DELAY, "- Hit with Crowbar to change delay -");
+    this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_MESSAGE,
+        "- Hit with Crowbar to change message -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_CHANGE_TICKET,
         "- Hit with Crowbar to change ticket -");
     this.add(Translations.Tips.HIT_CROWBAR_TO_ROTATE, "- Hit with Crowbar to rotate -");
@@ -592,6 +596,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.LOCOMOTIVE_TRACK, "Starts/Stops locomotive");
     this.add(Translations.Tips.THROTTLE_TRACK, "Adjusts the speed of passing locomotive");
     this.add(Translations.Tips.LOCKING_TRACK, "Stops and holds carts");
+    this.add(Translations.Tips.DELAYED_LOCKING_TRACK,
+        "Holds trains for a set time, then releases them");
+    this.add(Translations.Tips.DELAYED_LOCKING_TRACK_HOLDING, "Holding train");
     this.add(Translations.Tips.TRANSITION_TRACK, "Transitions to/from high speed");
     this.add(Translations.Tips.ROUTING_TRACK, "Sets a passing locomotive's ticket");
     this.add(Translations.Tips.SWITCH_TRACKS, "Controls adjacent switch tracks");
@@ -684,6 +691,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.MULTIBLOCK_ASSEMBLY_FAILED, "Multiblock Assembly Failed");
     this.add(Translations.Screen.EMBARKING_TRACK_RADIUS, "Radius: %s");
     this.add(Translations.Screen.LAUNCHER_TRACK_LAUNCH_FORCE, "Launch Force: %s");
+    this.add(Translations.Screen.DELAYED_LOCKING_TRACK_DELAY, "Delay: %s seconds");
     this.add(Translations.Screen.WATER_TANK_SEE_SKY, "Can see sky: %s");
     this.add(Translations.Screen.WATER_TANK_BASE_RATE, "Base rate: %s mB/sec");
     this.add(Translations.Screen.WATER_TANK_HUMIDITY, "Humidity multiplier: %s");
@@ -745,6 +753,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   private void trackTranslations() {
     this.addBlock(RailcraftBlocks.ABANDONED_TRACK, "Abandoned Track");
     this.addBlock(RailcraftBlocks.ABANDONED_LOCKING_TRACK, "Abandoned Locking Track");
+    this.addBlock(RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK,
+        "Abandoned Delayed Locking Track");
     this.addBlock(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK, "Abandoned Buffer Stop Track");
     this.addBlock(RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK, "Abandoned Activator Track");
     this.addBlock(RailcraftBlocks.ABANDONED_BOOSTER_TRACK, "Abandoned Booster Track");
@@ -767,6 +777,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
     this.addBlock(RailcraftBlocks.ELECTRIC_TRACK, "Electric Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_LOCKING_TRACK, "Electric Locking Track");
+    this.addBlock(RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK, "Electric Delayed Locking Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK, "Electric Buffer Stop Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK, "Electric Activator Track");
     this.addBlock(RailcraftBlocks.ELECTRIC_BOOSTER_TRACK, "Electric Booster Track");
@@ -789,6 +800,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
     this.addBlock(RailcraftBlocks.HIGH_SPEED_TRACK, "High Speed Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK, "High Speed Locking Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK,
+        "High Speed Delayed Locking Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK, "High Speed Activator Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK, "High Speed Booster Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK, "High Speed Detector Track");
@@ -806,6 +819,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
         "High Speed Electric Transition Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK,
         "High Speed Electric Locking Track");
+    this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK,
+        "High Speed Electric Delayed Locking Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK,
         "High Speed Electric Activator Track");
     this.addBlock(RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK,
@@ -827,6 +842,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
     this.addBlock(RailcraftBlocks.REINFORCED_TRACK, "Reinforced Track");
     this.addBlock(RailcraftBlocks.REINFORCED_LOCKING_TRACK, "Reinforced Locking Track");
+    this.addBlock(RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK,
+        "Reinforced Delayed Locking Track");
     this.addBlock(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK, "Reinforced Buffer Stop Track");
     this.addBlock(RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK, "Reinforced Activator Track");
     this.addBlock(RailcraftBlocks.REINFORCED_BOOSTER_TRACK, "Reinforced Booster Track");
@@ -849,6 +866,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
 
     this.addBlock(RailcraftBlocks.STRAP_IRON_TRACK, "Strap Iron Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK, "Strap Iron Locking Track");
+    this.addBlock(RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK,
+        "Strap Iron Delayed Locking Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK, "Strap Iron Buffer Stop Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK, "Strap Iron Activator Track");
     this.addBlock(RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK, "Strap Iron Booster Track");
@@ -870,6 +889,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.STRAP_IRON_ROUTING_TRACK, "Strap Iron Routing Track");
 
     this.addBlock(RailcraftBlocks.IRON_LOCKING_TRACK, "Iron Locking Track");
+    this.addBlock(RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK, "Iron Delayed Locking Track");
     this.addBlock(RailcraftBlocks.IRON_BUFFER_STOP_TRACK, "Iron Buffer Stop Track");
     this.addBlock(RailcraftBlocks.IRON_ACTIVATOR_TRACK, "Iron Activator Track");
     this.addBlock(RailcraftBlocks.IRON_BOOSTER_TRACK, "Iron Booster Track");

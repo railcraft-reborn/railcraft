@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_delayed_locking_track_kit": {
+      "conditions": {
+        "items": [
+          {
+            "items": "railcraft:delayed_locking_track_kit"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "railcraft:strap_iron_delayed_locking_track"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_delayed_locking_track_kit"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "railcraft:strap_iron_delayed_locking_track"
+    ]
+  }
+}

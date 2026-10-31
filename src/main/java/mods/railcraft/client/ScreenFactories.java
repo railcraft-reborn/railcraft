@@ -3,6 +3,7 @@ package mods.railcraft.client;
 import java.util.List;
 import mods.railcraft.client.gui.screen.ActionSignalBoxScreen;
 import mods.railcraft.client.gui.screen.AnalogSignalControllerBoxScreen;
+import mods.railcraft.client.gui.screen.DelayedLockingTrackScreen;
 import mods.railcraft.client.gui.screen.EmbarkingTrackScreen;
 import mods.railcraft.client.gui.screen.GoldenTicketScreen;
 import mods.railcraft.client.gui.screen.LauncherTrackScreen;
@@ -18,6 +19,7 @@ import mods.railcraft.world.level.block.entity.signal.ActionSignalBoxBlockEntity
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalCapacitorBoxBlockEntity;
 import mods.railcraft.world.level.block.entity.signal.SignalControllerBoxBlockEntity;
+import mods.railcraft.world.level.block.entity.track.DelayedLockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -56,6 +58,11 @@ public class ScreenFactories {
   public static void openLauncherTrackScreen(LauncherTrackBlockEntity track) {
     Minecraft.getInstance().setScreen(new LauncherTrackScreen(track));
   }
+
+  public static void openDelayedLockingTrackScreen(DelayedLockingTrackBlockEntity track) {
+    Minecraft.getInstance().setScreen(new DelayedLockingTrackScreen(track));
+  }
+
 
   public static void openGoldenTicketScreen(ItemStack itemStack, InteractionHand hand) {
     Minecraft.getInstance().setScreen(new GoldenTicketScreen(itemStack, hand));

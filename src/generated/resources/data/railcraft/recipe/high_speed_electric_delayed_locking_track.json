@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "railcraft:delayed_locking_track_kit",
+    "railcraft:high_speed_electric_track"
+  ],
+  "result": {
+    "id": "railcraft:high_speed_electric_delayed_locking_track"
+  }
+}

@@ -55,6 +55,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.ABANDONED_TRACK)
         .add(RailcraftBlocks.ABANDONED_TRACK.get(),
             RailcraftBlocks.ABANDONED_LOCKING_TRACK.get(),
+            RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.ABANDONED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ABANDONED_BOOSTER_TRACK.get(),
             RailcraftBlocks.ABANDONED_CONTROL_TRACK.get(),
@@ -77,6 +78,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.ELECTRIC_TRACK)
         .add(RailcraftBlocks.ELECTRIC_TRACK.get(),
             RailcraftBlocks.ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.ELECTRIC_BOOSTER_TRACK.get(),
             RailcraftBlocks.ELECTRIC_CONTROL_TRACK.get(),
@@ -100,6 +102,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.HIGH_SPEED_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_BOOSTER_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_DETECTOR_TRACK.get(),
@@ -113,6 +116,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRANSITION_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_BOOSTER_TRACK.get(),
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_DETECTOR_TRACK.get(),
@@ -124,6 +128,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
     this.tag(RailcraftTags.Blocks.IRON_TRACK)
         .add(RailcraftBlocks.IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.IRON_BOOSTER_TRACK.get(),
             RailcraftBlocks.IRON_CONTROL_TRACK.get(),
@@ -146,6 +151,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.REINFORCED_TRACK)
         .add(RailcraftBlocks.REINFORCED_TRACK.get(),
             RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
+            RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.REINFORCED_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.REINFORCED_BOOSTER_TRACK.get(),
             RailcraftBlocks.REINFORCED_CONTROL_TRACK.get(),
@@ -168,6 +174,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.Blocks.STRAP_IRON_TRACK)
         .add(RailcraftBlocks.STRAP_IRON_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_ACTIVATOR_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_BOOSTER_TRACK.get(),
             RailcraftBlocks.STRAP_IRON_CONTROL_TRACK.get(),

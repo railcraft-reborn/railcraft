@@ -8,6 +8,7 @@ import mods.railcraft.world.level.block.signal.SignalControllerBoxBlock;
 import mods.railcraft.world.level.block.signal.SignalReceiverBoxBlock;
 import mods.railcraft.world.level.block.track.actuator.SwitchTrackActuatorBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DelayedLockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.EmbarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LauncherTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.LockingTrackBlock;
@@ -34,6 +35,7 @@ public class RailcraftPlugin implements IWailaPlugin {
     registration.registerBlockComponent(new CouplerTrackComponent(), CouplerTrackBlock.class);
     registration.registerBlockComponent(new LocomotiveTrackComponent(), LocomotiveTrackBlock.class);
     registration.registerBlockComponent(new LauncherTrackComponent(), LauncherTrackBlock.class);
+    registration.registerBlockComponent(new DelayedLockingTrackComponent(), DelayedLockingTrackBlock.class);
     registration.registerBlockComponent(new EmbarkingTrackComponent(), EmbarkingTrackBlock.class);
     registration.registerBlockComponent(new ThrottleTrackComponent(), ThrottleTrackBlock.class);
     registration.registerBlockComponent(new RoutingTrackComponent(), RoutingTrackBlock.class);

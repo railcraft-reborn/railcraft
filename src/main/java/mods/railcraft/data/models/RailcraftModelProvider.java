@@ -68,6 +68,7 @@ import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DelayedLockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
@@ -258,6 +259,8 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.TRANSITION_TRACK_KIT.get(),
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.LOCKING_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get(),
+        ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.BUFFER_STOP_TRACK_KIT.get(),
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ACTIVATOR_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
@@ -617,6 +620,8 @@ public class RailcraftModelProvider extends ModelProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
+
+    this.createDelayedLockingTracks(blockModels);
   }
 
   private void generateLocomotive(ItemModelGenerators itemModels, LocomotiveItem item) {
@@ -2302,6 +2307,70 @@ public class RailcraftModelProvider extends ModelProvider {
     this.addLockingMode(LockingMode.TRAIN_BOARDING_REVERSED, trainBoardingReversedModel,
         activeTrainBoardingReversedModel, multiPartGenerator);
 
+    blockModels.blockStateOutput.accept(multiPartGenerator);
+    blockModels.registerSimpleFlatItemModel(block.asItem());
+  }
+
+  private void createDelayedLockingTracks(BlockModelGenerators blockModels) {
+    var ironTrackModel = RailcraftModelTemplates.TRACK_PROVIDER.RAIL_FLAT
+        .getModel(RailcraftModelTemplates.TrackType.RAIL_OUTFITTED);
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get(), ironTrackModel);
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.ABANDONED_TRACK.get()));
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.ELECTRIC_TRACK.get()));
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.HIGH_SPEED_TRACK.get()));
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get()));
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.REINFORCED_TRACK.get()));
+    this.createDelayedLockingTrack(blockModels,
+        RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get(),
+        outfittedTrackModel(RailcraftBlocks.STRAP_IRON_TRACK.get()));
+  }
+
+  /**
+   * The flat outfitted model of a track type, already generated together with its other outfitted
+   * tracks.
+   */
+  private static Identifier outfittedTrackModel(Block trackBlock) {
+    return ModelLocationUtils.getModelLocation(trackBlock, "_outfitted");
+  }
+
+  private void createDelayedLockingTrack(BlockModelGenerators blockModels,
+      DelayedLockingTrackBlock block, Identifier trackModel) {
+    var model = RailcraftModelTemplates.DELAYED_LOCKING_TRACK_PROVIDER.OFF.getModel();
+    var poweredModel = RailcraftModelTemplates.DELAYED_LOCKING_TRACK_PROVIDER.ON.getModel();
+    var holdingModel = RailcraftModelTemplates.DELAYED_LOCKING_TRACK_PROVIDER.HOLDING.getModel();
+
+    var multiPartGenerator = MultiPartGenerator.multiPart(block);
+    for (var shape : List.of(RailShape.NORTH_SOUTH, RailShape.EAST_WEST)) {
+      var rotation = shape == RailShape.EAST_WEST ? Quadrant.R90 : Quadrant.R0;
+      multiPartGenerator
+          .with(condition().term(DelayedLockingTrackBlock.SHAPE, shape),
+              plainVariant(trackModel).with(v -> v.withYRot(rotation)))
+          .with(condition()
+                  .term(DelayedLockingTrackBlock.POWERED, false)
+                  .term(DelayedLockingTrackBlock.SHAPE, shape),
+              plainVariant(model).with(v -> v.withYRot(rotation)))
+          .with(condition()
+                  .term(DelayedLockingTrackBlock.POWERED, true)
+                  .term(DelayedLockingTrackBlock.HOLDING, false)
+                  .term(DelayedLockingTrackBlock.SHAPE, shape),
+              plainVariant(poweredModel).with(v -> v.withYRot(rotation)))
+          .with(condition()
+                  .term(DelayedLockingTrackBlock.POWERED, true)
+                  .term(DelayedLockingTrackBlock.HOLDING, true)
+                  .term(DelayedLockingTrackBlock.SHAPE, shape),
+              plainVariant(holdingModel).with(v -> v.withYRot(rotation)));
+    }
     blockModels.blockStateOutput.accept(multiPartGenerator);
     blockModels.registerSimpleFlatItemModel(block.asItem());
   }

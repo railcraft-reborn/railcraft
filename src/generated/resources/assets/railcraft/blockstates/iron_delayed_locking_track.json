@@ -1,0 +1,82 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted"
+      },
+      "when": {
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/off"
+      },
+      "when": {
+        "powered": "false",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/on"
+      },
+      "when": {
+        "holding": "false",
+        "powered": "true",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/holding"
+      },
+      "when": {
+        "holding": "true",
+        "powered": "true",
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/rail_outfitted/rail_outfitted",
+        "y": 90
+      },
+      "when": {
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/off",
+        "y": 90
+      },
+      "when": {
+        "powered": "false",
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/on",
+        "y": 90
+      },
+      "when": {
+        "holding": "false",
+        "powered": "true",
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/delayed_locking_track/holding",
+        "y": 90
+      },
+      "when": {
+        "holding": "true",
+        "powered": "true",
+        "shape": "east_west"
+      }
+    }
+  ]
+}

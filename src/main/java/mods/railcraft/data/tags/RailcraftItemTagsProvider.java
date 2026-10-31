@@ -286,6 +286,7 @@ public class RailcraftItemTagsProvider extends BlockTagCopyingItemTagProvider {
         .add(RailcraftItems.GATED_TRACK_KIT.get())
         .add(RailcraftItems.LAUNCHER_TRACK_KIT.get())
         .add(RailcraftItems.LOCKING_TRACK_KIT.get())
+        .add(RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get())
         .add(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get())
         .add(RailcraftItems.ONE_WAY_TRACK_KIT.get())
         .add(RailcraftItems.ROUTING_TRACK_KIT.get())

@@ -451,6 +451,15 @@ class RailcraftModelTemplates {
     }
   }
 
+  enum DELAYED_LOCKING_TRACK_PROVIDER {
+    OFF, ON, HOLDING;
+
+    public Identifier getModel() {
+      return RailcraftConstants.id(
+          "block/track_template/delayed_locking_track/" + this.name().toLowerCase(Locale.ROOT));
+    }
+  }
+
   private static Identifier key(Block block) {
     return BuiltInRegistries.BLOCK.getKey(block);
   }
