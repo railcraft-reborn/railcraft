@@ -22,6 +22,7 @@ import mods.railcraft.world.level.block.charge.BatteryBlock;
 import mods.railcraft.world.level.block.charge.DisposableBatteryBlock;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
+import mods.railcraft.world.level.block.charge.WireBlock;
 import mods.railcraft.world.level.block.detector.DetectorBlock;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.manipulator.AdvancedItemLoaderBlock;
@@ -307,6 +308,7 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createSteamOven(RailcraftBlocks.STEAM_OVEN.get());
 
     this.createFrameBlock(RailcraftBlocks.FRAME.get());
+    this.createWireBlock(RailcraftBlocks.WIRE.get());
     this.createLogBookBlock(RailcraftBlocks.LOGBOOK.get());
     this.createChimneyBlock(RailcraftBlocks.CHIMNEY.get());
 
@@ -948,6 +950,44 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         });
 
     this.simpleBlockItem(block, model);
+  }
+
+  private void createWireBlock(WireBlock block) {
+    var wireTexture = TextureMapping.getBlockTexture(block);
+
+    var coreModel = this.models()
+        .withExistingParent(name(block), this.modLoc("template_wire_core"))
+        .texture("all", wireTexture)
+        .renderType(CUTOUT);
+    var wireModel = this.models()
+        .withExistingParent(name(block, "_wire"), this.modLoc("template_wire_connection"))
+        .texture("all", wireTexture)
+        .renderType(CUTOUT);
+    var plugModel = this.models()
+        .withExistingParent(name(block, "_plug"), this.modLoc("template_wire_plug"))
+        .texture("all", wireTexture)
+        .renderType(CUTOUT);
+    var builder = this.getMultipartBuilder(block)
+        .part().modelFile(coreModel).addModel().end();
+
+    for (var entry : WireBlock.PROPERTY_BY_DIRECTION.entrySet()) {
+      var direction = entry.getKey();
+      int rotationX = switch (direction) {
+        case DOWN -> 90;
+        case UP -> 270;
+        default -> 0;
+      };
+      int rotationY = direction.getAxis().isHorizontal()
+          ? ((int) direction.toYRot() + 180) % 360
+          : 0;
+      builder.part().modelFile(wireModel).rotationX(rotationX).rotationY(rotationY).addModel()
+          .condition(entry.getValue(), WireBlock.Connection.WIRE).end();
+      builder.part().modelFile(plugModel).rotationX(rotationX).rotationY(rotationY).addModel()
+          .condition(entry.getValue(), WireBlock.Connection.PLUG).end();
+    }
+
+    this.itemModels().withExistingParent(name(block), this.modLoc("block/template_wire_item"))
+        .texture("all", wireTexture);
   }
 
   private void createLogBookBlock(LogBookBlock block) {

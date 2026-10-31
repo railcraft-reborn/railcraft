@@ -1,0 +1,7 @@
+{
+  "parent": "railcraft:block/template_wire_plug",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "railcraft:block/wire"
+  }
+}

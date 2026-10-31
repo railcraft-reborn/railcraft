@@ -81,6 +81,7 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.ZINC_SILVER_BATTERY.get());
     this.dropSelf(RailcraftBlocks.ZINC_SILVER_BATTERY_EMPTY.get());
     this.dropSelf(RailcraftBlocks.FRAME.get());
+    this.dropSelf(RailcraftBlocks.WIRE.get());
 
     this.add(RailcraftBlocks.LEAD_ORE.get(),
         block -> this.createOreDrop(block, RailcraftItems.LEAD_RAW.get()));

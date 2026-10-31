@@ -308,6 +308,7 @@ public class Translations {
     public static final String SIGNAL_SURVEYOR = makeKey("tips", "signal_surveyor");
     public static final String TOKEN_AREA = makeKey("tips", "token_area");
     public static final String FRAME = makeKey("tips", "frame");
+    public static final String WIRE = makeKey("tips", "wire");
     public static final String SIGNAL_BLOCK_SURVEYOR = makeKey("tips", "signal_block_surveyor");
     public static final String LINKS_CONTROLLERS_TO_RECEIVERS =
         makeKey("tips", "links_controllers_to_receivers");

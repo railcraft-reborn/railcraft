@@ -155,6 +155,8 @@ public class RailcraftItems {
 
   public static final DeferredItem<BlockItem> FRAME_BLOCK = blockItem(RailcraftBlocks.FRAME);
 
+  public static final DeferredItem<BlockItem> WIRE = blockItem(RailcraftBlocks.WIRE);
+
   public static final DeferredItem<ChargeMeterItem> CHARGE_METER =
       deferredRegister.registerItem("charge_meter", properties ->
           new ChargeMeterItem(properties

@@ -30,6 +30,7 @@ public class RollingRecipeProvider extends RecipeProvider {
   public static void genRecipes(RecipeOutput recipeOutput) {
     misc(recipeOutput);
     buildChargeSpool(recipeOutput);
+    buildWire(recipeOutput);
     buildTrackParts(recipeOutput);
     buildRebars(recipeOutput);
     buildElectrodes(recipeOutput);
@@ -60,6 +61,17 @@ public class RollingRecipeProvider extends RecipeProvider {
     RollingRecipeBuilder.rolled(RailcraftItems.CHARGE_SPOOL_SMALL.get())
         .pattern("a")
         .define('a', Tags.Items.INGOTS_COPPER)
+        .save(recipeOutput);
+  }
+
+  private static void buildWire(RecipeOutput recipeOutput) {
+    RollingRecipeBuilder.rolled(RailcraftItems.WIRE.get(), 8)
+        .pattern("aba")
+        .pattern("bcb")
+        .pattern("aba")
+        .define('a', RailcraftTags.Items.LEAD_INGOT)
+        .define('b', Items.PAPER)
+        .define('c', RailcraftItems.CHARGE_SPOOL_LARGE.get())
         .save(recipeOutput);
   }
 

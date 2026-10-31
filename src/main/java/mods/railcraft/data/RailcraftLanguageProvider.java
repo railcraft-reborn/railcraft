@@ -182,6 +182,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.VOID_CHEST, "Void Chest");
 
     this.addBlock(RailcraftBlocks.FRAME, "Frame");
+    this.addBlock(RailcraftBlocks.WIRE, "Wire");
     this.addBlock(RailcraftBlocks.NICKEL_IRON_BATTERY, "Nickel-Iron Battery");
     this.addBlock(RailcraftBlocks.NICKEL_ZINC_BATTERY, "Nickel-Zinc Battery");
     this.addBlock(RailcraftBlocks.ZINC_CARBON_BATTERY, "Zinc-Carbon Battery");
@@ -535,6 +536,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.CART_DISPENSER, "Dispenses carts onto tracks");
     this.add(Translations.Tips.TRAIN_DISPENSER, "Dispenses linked trains onto tracks");
     this.add(Translations.Tips.FRAME, "Use to power track");
+    this.add(Translations.Tips.WIRE,
+        "Carries charge between blocks");
     this.add(Translations.Tips.SIGNAL_BLOCK_SURVEYOR, "Links Signals together");
     this.add(Translations.Tips.LINKS_CONTROLLERS_TO_RECEIVERS, "Links Controllers to Receivers");
     this.add(Translations.Tips.FUELED_BOILER_FIREBOX, "Multi-Block: Variable Size, Bottom Layer");

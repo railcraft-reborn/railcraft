@@ -255,6 +255,7 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY.get())
         .add(RailcraftBlocks.ZINC_CARBON_BATTERY_EMPTY.get())
         .add(RailcraftBlocks.FRAME.get())
+        .add(RailcraftBlocks.WIRE.get())
         .add(RailcraftBlocks.PERSONAL_WORLD_SPIKE.get())
         .add(RailcraftBlocks.WORLD_SPIKE.get())
         .add(RailcraftBlocks.VOID_CHEST.get())

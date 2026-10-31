@@ -394,6 +394,7 @@
   "block.railcraft.white_steel_tank_valve": "White Steel Tank Valve",
   "block.railcraft.white_steel_tank_wall": "White Steel Tank Wall",
   "block.railcraft.white_strengthened_glass": "White Strengthened Glass",
+  "block.railcraft.wire": "Wire",
   "block.railcraft.world_spike": "Worldspike",
   "block.railcraft.yellow_iron_tank_gauge": "Yellow Iron Tank Gauge",
   "block.railcraft.yellow_iron_tank_valve": "Yellow Iron Tank Valve",
@@ -1081,5 +1082,6 @@
   "tips.railcraft.use_electric_locomotive": "Use with Electric Locomotive",
   "tips.railcraft.very_fast": "Very fast",
   "tips.railcraft.water_tank_siding": "Multi-Block: 3x3x3 (Hollow)",
-  "tips.railcraft.whistle_track": "Passing locomotives will blow their whistle"
+  "tips.railcraft.whistle_track": "Passing locomotives will blow their whistle",
+  "tips.railcraft.wire": "Carries charge between blocks"
 }
