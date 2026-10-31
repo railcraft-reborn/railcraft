@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.neoforged.neoforge.common.NeoForge;
@@ -54,8 +55,20 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   private int trainDelay;
 
   public LockingTrackBlockEntity(BlockPos blockPos, BlockState blockState) {
-    super(RailcraftBlockEntityTypes.LOCKING_TRACK.get(), blockPos, blockState);
-    this.lockingModeController = LockingTrackBlock.getLockingMode(blockState).create(this);
+    this(RailcraftBlockEntityTypes.LOCKING_TRACK.get(), blockPos, blockState);
+  }
+
+  protected LockingTrackBlockEntity(BlockEntityType<?> type, BlockPos blockPos,
+      BlockState blockState) {
+    super(type, blockPos, blockState);
+    this.lockingModeController = this.getLockingMode(blockState).create(this);
+  }
+
+  /**
+   * The locking mode of this track, read from the block state by default.
+   */
+  protected LockingMode getLockingMode(BlockState blockState) {
+    return LockingTrackBlock.getLockingMode(blockState);
   }
 
   public void setLockingModeController(LockingModeController lockingModeController) {
@@ -176,8 +189,8 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
    * @return whether the current cart or train (depending on LockType) is the same as previous cart
    *         or trains
    */
-  private boolean isSameTrainOrCart() {
-    final LockingMode lockingMode = LockingTrackBlock.getLockingMode(this.getBlockState());
+  protected boolean isSameTrainOrCart() {
+    final LockingMode lockingMode = this.getLockingMode(this.getBlockState());
     if (lockingMode.getLockType().isTrain()) {
       if (this.currentCart != null
           && this.currentCart.isAlive()
@@ -231,7 +244,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
    * which table to use. As the name implies, {@code trainLeaving} indicates whether the train or
    * cart is in the process of leaving the track.
    */
-  private void calculateLocked() {
+  protected void calculateLocked() {
     final boolean powered = LockingTrackBlock.isPowered(this.getBlockState());
     final boolean sameTrainOrCart = this.isSameTrainOrCart();
     if (this.trainLeaving) {
@@ -269,8 +282,7 @@ public class LockingTrackBlockEntity extends RailcraftBlockEntity implements Loc
   @Override
   public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
     super.loadAdditional(tag, provider);
-    this.lockingModeController =
-        LockingTrackBlock.getLockingMode(this.getBlockState()).create(this);
+    this.lockingModeController = this.getLockingMode(this.getBlockState()).create(this);
     this.lockingModeController.deserializeNBT(provider,
         tag.getCompound(CompoundTagKeys.LOCKING_MODE_CONTROLLER));
     this.locked = tag.getBoolean(CompoundTagKeys.LOCKED);

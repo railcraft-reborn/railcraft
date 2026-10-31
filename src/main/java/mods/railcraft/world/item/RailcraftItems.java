@@ -606,6 +606,10 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> ABANDONED_LOCKING_TRACK =
       blockItem(RailcraftBlocks.ABANDONED_LOCKING_TRACK);
 
+  public static final DeferredItem<BlockItem> ABANDONED_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK);
+
+
   public static final DeferredItem<BlockItem> ABANDONED_BUFFER_STOP_TRACK =
       blockItem(RailcraftBlocks.ABANDONED_BUFFER_STOP_TRACK);
 
@@ -668,6 +672,10 @@ public class RailcraftItems {
 
   public static final DeferredItem<BlockItem> ELECTRIC_LOCKING_TRACK =
       blockItem(RailcraftBlocks.ELECTRIC_LOCKING_TRACK);
+
+  public static final DeferredItem<BlockItem> ELECTRIC_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK);
+
 
   public static final DeferredItem<BlockItem> ELECTRIC_BUFFER_STOP_TRACK =
       blockItem(RailcraftBlocks.ELECTRIC_BUFFER_STOP_TRACK);
@@ -735,6 +743,10 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> HIGH_SPEED_LOCKING_TRACK =
       blockItem(RailcraftBlocks.HIGH_SPEED_LOCKING_TRACK);
 
+  public static final DeferredItem<BlockItem> HIGH_SPEED_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK);
+
+
   public static final DeferredItem<BlockItem> HIGH_SPEED_ACTIVATOR_TRACK =
       blockItem(RailcraftBlocks.HIGH_SPEED_ACTIVATOR_TRACK);
 
@@ -771,6 +783,10 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> HIGH_SPEED_ELECTRIC_LOCKING_TRACK =
       blockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCKING_TRACK);
 
+  public static final DeferredItem<BlockItem> HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK);
+
+
   public static final DeferredItem<BlockItem> HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK =
       blockItem(RailcraftBlocks.HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK);
 
@@ -800,6 +816,10 @@ public class RailcraftItems {
 
   public static final DeferredItem<BlockItem> IRON_LOCKING_TRACK =
       blockItem(RailcraftBlocks.IRON_LOCKING_TRACK);
+
+  public static final DeferredItem<BlockItem> IRON_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK);
+
 
   public static final DeferredItem<BlockItem> IRON_BUFFER_STOP_TRACK =
       blockItem(RailcraftBlocks.IRON_BUFFER_STOP_TRACK);
@@ -864,6 +884,10 @@ public class RailcraftItems {
   public static final DeferredItem<BlockItem> REINFORCED_LOCKING_TRACK =
       blockItem(RailcraftBlocks.REINFORCED_LOCKING_TRACK);
 
+  public static final DeferredItem<BlockItem> REINFORCED_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK);
+
+
   public static final DeferredItem<BlockItem> REINFORCED_BUFFER_STOP_TRACK =
       blockItem(RailcraftBlocks.REINFORCED_BUFFER_STOP_TRACK);
 
@@ -926,6 +950,10 @@ public class RailcraftItems {
 
   public static final DeferredItem<BlockItem> STRAP_IRON_LOCKING_TRACK =
       blockItem(RailcraftBlocks.STRAP_IRON_LOCKING_TRACK);
+
+  public static final DeferredItem<BlockItem> STRAP_IRON_DELAYED_LOCKING_TRACK =
+      blockItem(RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK);
+
 
   public static final DeferredItem<BlockItem> STRAP_IRON_BUFFER_STOP_TRACK =
       blockItem(RailcraftBlocks.STRAP_IRON_BUFFER_STOP_TRACK);
@@ -1029,6 +1057,25 @@ public class RailcraftItems {
               .addOutfittedBlock(TrackTypes.IRON, RailcraftBlocks.IRON_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.REINFORCED, RailcraftBlocks.REINFORCED_LOCKING_TRACK)
               .addOutfittedBlock(TrackTypes.STRAP_IRON, RailcraftBlocks.STRAP_IRON_LOCKING_TRACK)));
+
+  public static final DeferredItem<TrackKitItem> DELAYED_LOCKING_TRACK_KIT =
+      deferredRegister.register("delayed_locking_track_kit",
+          () -> new TrackKitItem(new TrackKitItem.Properties()
+              .addOutfittedBlock(TrackTypes.ABANDONED,
+                  RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.ELECTRIC,
+                  RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED,
+                  RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.IRON,
+                  RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.REINFORCED,
+                  RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK)
+              .addOutfittedBlock(TrackTypes.STRAP_IRON,
+                  RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK)));
+
 
   public static final DeferredItem<TrackKitItem> BUFFER_STOP_TRACK_KIT =
       deferredRegister.register("buffer_stop_track_kit",

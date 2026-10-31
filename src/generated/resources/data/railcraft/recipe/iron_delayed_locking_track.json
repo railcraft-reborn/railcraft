@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "railcraft:delayed_locking_track_kit"
+    },
+    {
+      "item": "minecraft:rail"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "railcraft:iron_delayed_locking_track"
+  }
+}

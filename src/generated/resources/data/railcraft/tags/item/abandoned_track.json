@@ -2,6 +2,7 @@
   "values": [
     "railcraft:abandoned_track",
     "railcraft:abandoned_locking_track",
+    "railcraft:abandoned_delayed_locking_track",
     "railcraft:abandoned_activator_track",
     "railcraft:abandoned_booster_track",
     "railcraft:abandoned_control_track",

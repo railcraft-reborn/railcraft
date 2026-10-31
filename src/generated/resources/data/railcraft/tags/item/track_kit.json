@@ -13,6 +13,7 @@
     "railcraft:gated_track_kit",
     "railcraft:launcher_track_kit",
     "railcraft:locking_track_kit",
+    "railcraft:delayed_locking_track_kit",
     "railcraft:locomotive_track_kit",
     "railcraft:one_way_track_kit",
     "railcraft:routing_track_kit",

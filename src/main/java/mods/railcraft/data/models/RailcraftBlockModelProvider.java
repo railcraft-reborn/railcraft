@@ -1,6 +1,7 @@
 package mods.railcraft.data.models;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.function.Function;
 import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +52,7 @@ import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DelayedLockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock.Mode;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
@@ -560,6 +562,8 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_WHISTLE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_LOCOMOTIVE_TRACK.get(),
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
+
+    this.createDelayedLockingTracks();
   }
 
   private void createStrengthenedGlass(Block block) {
@@ -1889,6 +1893,63 @@ public class RailcraftBlockModelProvider extends BlockStateProvider {
     this.createTurnoutTrack(turnoutTrackBlock);
     this.createWyeTrack(wyeTrackBlock);
     this.createJunctionTrack(junctionTrackBlock);
+  }
+
+
+  private void createDelayedLockingTracks() {
+    var delayedModel = this.createPassiveRail("delayed_locking_track");
+    var activeDelayedModel = this.createActiveRail("delayed_locking_track");
+    var holdingDelayedModel =
+        this.createVariant("delayed_locking_track_holding", ModelTemplates.RAIL_FLAT);
+
+    var tracks = List.of(
+        new Block[] {RailcraftBlocks.ABANDONED_TRACK.get(),
+            RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {RailcraftBlocks.ELECTRIC_TRACK.get(),
+            RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {RailcraftBlocks.HIGH_SPEED_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get(),
+            RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {Blocks.RAIL,
+            RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {RailcraftBlocks.REINFORCED_TRACK.get(),
+            RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get()},
+        new Block[] {RailcraftBlocks.STRAP_IRON_TRACK.get(),
+            RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get()});
+
+    for (var track : tracks) {
+      var outfittedTrackModels = this.createOutfittedTrackModelSet(track[0]);
+      this.createDelayedLockingTrack(track[1], outfittedTrackModels.flatModel(),
+          delayedModel, activeDelayedModel, holdingDelayedModel);
+    }
+  }
+
+  private void createDelayedLockingTrack(Block block, ModelFile trackModel, ModelFile model,
+      ModelFile poweredModel, ModelFile holdingModel) {
+    var builder = this.getMultipartBuilder(block);
+    for (var shape : List.of(RailShape.NORTH_SOUTH, RailShape.EAST_WEST)) {
+      int rotation = shape == RailShape.EAST_WEST ? 90 : 0;
+      builder
+          .part()
+          .modelFile(trackModel).rotationY(rotation).addModel()
+          .condition(DelayedLockingTrackBlock.SHAPE, shape).end()
+          .part()
+          .modelFile(model).rotationY(rotation).addModel()
+          .condition(DelayedLockingTrackBlock.POWERED, false)
+          .condition(DelayedLockingTrackBlock.SHAPE, shape).end()
+          .part()
+          .modelFile(poweredModel).rotationY(rotation).addModel()
+          .condition(DelayedLockingTrackBlock.POWERED, true)
+          .condition(DelayedLockingTrackBlock.HOLDING, false)
+          .condition(DelayedLockingTrackBlock.SHAPE, shape).end()
+          .part()
+          .modelFile(holdingModel).rotationY(rotation).addModel()
+          .condition(DelayedLockingTrackBlock.POWERED, true)
+          .condition(DelayedLockingTrackBlock.HOLDING, true)
+          .condition(DelayedLockingTrackBlock.SHAPE, shape).end();
+    }
+    this.itemModels().basicItem(block.asItem());
   }
 
   private void createLockingTrack(LockingTrackBlock block, ModelFile trackModel) {

@@ -76,6 +76,7 @@ import mods.railcraft.world.level.block.track.outfitted.BoosterTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.BufferStopTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.ControlTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.CouplerTrackBlock;
+import mods.railcraft.world.level.block.track.outfitted.DelayedLockingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DetectorTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DisembarkingTrackBlock;
 import mods.railcraft.world.level.block.track.outfitted.DumpingTrackBlock;
@@ -793,6 +794,12 @@ public class RailcraftBlocks {
           () -> new LockingTrackBlock(TrackTypes.ABANDONED,
               BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
 
+  public static final DeferredBlock<DelayedLockingTrackBlock> ABANDONED_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("abandoned_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.ABANDONED,
+              BlockBehaviour.Properties.ofFullCopy(ABANDONED_TRACK.get())));
+
+
   public static final DeferredBlock<BufferStopTrackBlock> ABANDONED_BUFFER_STOP_TRACK =
       deferredRegister.register("abandoned_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.ABANDONED,
@@ -899,6 +906,12 @@ public class RailcraftBlocks {
       deferredRegister.register("electric_locking_track",
           () -> new LockingTrackBlock(TrackTypes.ELECTRIC,
               BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
+
+  public static final DeferredBlock<DelayedLockingTrackBlock> ELECTRIC_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("electric_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.ELECTRIC,
+              BlockBehaviour.Properties.ofFullCopy(ELECTRIC_TRACK.get())));
+
 
   public static final DeferredBlock<BufferStopTrackBlock> ELECTRIC_BUFFER_STOP_TRACK =
       deferredRegister.register("electric_buffer_stop_track",
@@ -1011,6 +1024,12 @@ public class RailcraftBlocks {
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED,
               BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
 
+  public static final DeferredBlock<DelayedLockingTrackBlock> HIGH_SPEED_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("high_speed_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.HIGH_SPEED,
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_TRACK.get())));
+
+
   public static final DeferredBlock<ActivatorTrackBlock> HIGH_SPEED_ACTIVATOR_TRACK =
       deferredRegister.register("high_speed_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.HIGH_SPEED,
@@ -1074,6 +1093,12 @@ public class RailcraftBlocks {
           () -> new LockingTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
               BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
 
+  public static final DeferredBlock<DelayedLockingTrackBlock> HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("high_speed_electric_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
+              BlockBehaviour.Properties.ofFullCopy(HIGH_SPEED_ELECTRIC_TRACK.get())));
+
+
   public static final DeferredBlock<ActivatorTrackBlock> HIGH_SPEED_ELECTRIC_ACTIVATOR_TRACK =
       deferredRegister.register("high_speed_electric_activator_track",
           () -> new ActivatorTrackBlock(TrackTypes.HIGH_SPEED_ELECTRIC,
@@ -1126,6 +1151,12 @@ public class RailcraftBlocks {
                   .noCollission()
                   .strength(TrackConstants.HARDNESS, TrackConstants.RESISTANCE)
                   .sound(SoundType.METAL)));
+
+  public static final DeferredBlock<DelayedLockingTrackBlock> IRON_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("iron_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.IRON,
+              BlockBehaviour.Properties.ofFullCopy(IRON_LOCKING_TRACK.get())));
+
 
   public static final DeferredBlock<BufferStopTrackBlock> IRON_BUFFER_STOP_TRACK =
       deferredRegister.register("iron_buffer_stop_track",
@@ -1234,6 +1265,12 @@ public class RailcraftBlocks {
           () -> new LockingTrackBlock(TrackTypes.REINFORCED,
               BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
 
+  public static final DeferredBlock<DelayedLockingTrackBlock> REINFORCED_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("reinforced_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.REINFORCED,
+              BlockBehaviour.Properties.ofFullCopy(REINFORCED_TRACK.get())));
+
+
   public static final DeferredBlock<BufferStopTrackBlock> REINFORCED_BUFFER_STOP_TRACK =
       deferredRegister.register("reinforced_buffer_stop_track",
           () -> new BufferStopTrackBlock(TrackTypes.REINFORCED,
@@ -1340,6 +1377,12 @@ public class RailcraftBlocks {
       deferredRegister.register("strap_iron_locking_track",
           () -> new LockingTrackBlock(TrackTypes.STRAP_IRON,
               BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
+
+  public static final DeferredBlock<DelayedLockingTrackBlock> STRAP_IRON_DELAYED_LOCKING_TRACK =
+      deferredRegister.register("strap_iron_delayed_locking_track",
+          () -> new DelayedLockingTrackBlock(TrackTypes.STRAP_IRON,
+              BlockBehaviour.Properties.ofFullCopy(STRAP_IRON_TRACK.get())));
+
 
   public static final DeferredBlock<BufferStopTrackBlock> STRAP_IRON_BUFFER_STOP_TRACK =
       deferredRegister.register("strap_iron_buffer_stop_track",

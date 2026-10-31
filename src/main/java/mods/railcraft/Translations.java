@@ -71,6 +71,8 @@ public class Translations {
         makeKey("screen", "embarking_track.radius");
     public static final String LAUNCHER_TRACK_LAUNCH_FORCE =
         makeKey("screen", "launcher_track.launch_force");
+    public static final String DELAYED_LOCKING_TRACK_DELAY =
+        makeKey("screen", "delayed_locking_track.delay");
     public static final String WATER_TANK_SEE_SKY = makeKey("screen", "water_tank.sky");
     public static final String WATER_TANK_BASE_RATE = makeKey("screen", "water_tank.base_rate");
     public static final String WATER_TANK_HUMIDITY = makeKey("screen", "water_tank.humidity");
@@ -343,6 +345,10 @@ public class Translations {
         makeKey("tips", "hit_crowbar_to_change_mode");
     public static final String HIT_CROWBAR_TO_CHANGE_FORCE =
         makeKey("tips", "hit_crowbar_to_change_force");
+    public static final String HIT_CROWBAR_TO_CHANGE_DELAY =
+        makeKey("tips", "hit_crowbar_to_change_delay");
+    public static final String HIT_CROWBAR_TO_CHANGE_MESSAGE =
+        makeKey("tips", "hit_crowbar_to_change_message");
     public static final String HIT_CROWBAR_TO_CHANGE_TICKET =
         makeKey("tips", "hit_crowbar_to_change_ticket");
     public static final String HIT_CROWBAR_TO_ROTATE =
@@ -368,6 +374,9 @@ public class Translations {
     public static final String LOCOMOTIVE_TRACK = makeKey("tips", "locomotive_track");
     public static final String THROTTLE_TRACK = makeKey("tips", "throttle_track");
     public static final String LOCKING_TRACK = makeKey("tips", "locking_track");
+    public static final String DELAYED_LOCKING_TRACK = makeKey("tips", "delayed_locking_track");
+    public static final String DELAYED_LOCKING_TRACK_HOLDING =
+        makeKey("tips", "delayed_locking_track.holding");
     public static final String TRANSITION_TRACK = makeKey("tips", "transition_track");
     public static final String ROUTING_TRACK = makeKey("tips", "routing_track");
     public static final String SWITCH_TRACKS = makeKey("tips", "switch_track_lever");

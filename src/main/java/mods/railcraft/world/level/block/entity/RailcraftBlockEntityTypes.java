@@ -45,6 +45,7 @@ import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntit
 import mods.railcraft.world.level.block.entity.tank.IronTankBlockEntity;
 import mods.railcraft.world.level.block.entity.tank.SteelTankBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
+import mods.railcraft.world.level.block.entity.track.DelayedLockingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.DumpingTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.ForceTrackBlockEntity;
 import mods.railcraft.world.level.block.entity.track.LauncherTrackBlockEntity;
@@ -479,6 +480,20 @@ public class RailcraftBlockEntityTypes {
                   RailcraftBlocks.REINFORCED_LOCKING_TRACK.get(),
                   RailcraftBlocks.STRAP_IRON_LOCKING_TRACK.get())
               .build(null));
+
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DelayedLockingTrackBlockEntity>> DELAYED_LOCKING_TRACK =
+      deferredRegister.register("delayed_locking_track",
+          () -> BlockEntityType.Builder
+              .of(DelayedLockingTrackBlockEntity::new,
+                  RailcraftBlocks.ABANDONED_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.HIGH_SPEED_ELECTRIC_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.IRON_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.REINFORCED_DELAYED_LOCKING_TRACK.get(),
+                  RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get())
+              .build(null));
+
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CouplerTrackBlockEntity>> COUPLER_TRACK =
       deferredRegister.register("coupler_track",

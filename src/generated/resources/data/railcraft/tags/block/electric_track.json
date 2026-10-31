@@ -2,6 +2,7 @@
   "values": [
     "railcraft:electric_track",
     "railcraft:electric_locking_track",
+    "railcraft:electric_delayed_locking_track",
     "railcraft:electric_activator_track",
     "railcraft:electric_booster_track",
     "railcraft:electric_control_track",
