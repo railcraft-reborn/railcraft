@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "railcraft:messenger_track_kit",
+    "railcraft:strap_iron_track"
+  ],
+  "result": {
+    "id": "railcraft:strap_iron_messenger_track"
+  }
+}

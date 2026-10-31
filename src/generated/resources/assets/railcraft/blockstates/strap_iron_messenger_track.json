@@ -1,0 +1,83 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted"
+      },
+      "when": {
+        "shape": "north_south"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/strap_iron_track_outfitted",
+        "y": 90
+      },
+      "when": {
+        "shape": "east_west"
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/messenger_track/messenger_track"
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/messenger_track/messenger_track",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "false"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/messenger_track/messenger_track_on"
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "north_south"
+          },
+          {
+            "powered": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "railcraft:block/track_template/messenger_track/messenger_track_on",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "shape": "east_west"
+          },
+          {
+            "powered": "true"
+          }
+        ]
+      }
+    }
+  ]
+}

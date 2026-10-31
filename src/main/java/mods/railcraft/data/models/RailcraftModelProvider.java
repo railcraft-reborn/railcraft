@@ -261,6 +261,8 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.LOCKING_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get(),
         ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.MESSENGER_TRACK_KIT.get(),
+        ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.BUFFER_STOP_TRACK_KIT.get(),
         ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ACTIVATOR_TRACK_KIT.get(), ModelTemplates.FLAT_ITEM);
@@ -622,6 +624,7 @@ public class RailcraftModelProvider extends ModelProvider {
         RailcraftBlocks.HIGH_SPEED_ELECTRIC_THROTTLE_TRACK.get());
 
     this.createDelayedLockingTracks(blockModels);
+    this.createMessengerTracks(blockModels);
   }
 
   private void generateLocomotive(ItemModelGenerators itemModels, LocomotiveItem item) {
@@ -2334,6 +2337,47 @@ public class RailcraftModelProvider extends ModelProvider {
     this.createDelayedLockingTrack(blockModels,
         RailcraftBlocks.STRAP_IRON_DELAYED_LOCKING_TRACK.get(),
         outfittedTrackModel(RailcraftBlocks.STRAP_IRON_TRACK.get()));
+  }
+
+  private void createMessengerTracks(BlockModelGenerators blockModels) {
+    var messengerModels =
+        this.createTrackModelSet(RailcraftModelTemplates.TrackType.MESSENGER_TRACK);
+    var activeMessengerModels =
+        this.createTrackModelSet(RailcraftModelTemplates.TrackType.MESSENGER_TRACK_ON);
+    var ironTrackModels =
+        this.createTrackModelSet(RailcraftModelTemplates.TrackType.RAIL_OUTFITTED);
+
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.IRON_MESSENGER_TRACK.get(),
+        false, false, ironTrackModels, messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.ABANDONED_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.ABANDONED_TRACK.get()),
+        messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.ELECTRIC_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.ELECTRIC_TRACK.get()),
+        messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.HIGH_SPEED_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.HIGH_SPEED_TRACK.get()),
+        messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels,
+        RailcraftBlocks.HIGH_SPEED_ELECTRIC_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.HIGH_SPEED_ELECTRIC_TRACK.get()),
+        messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.REINFORCED_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.REINFORCED_TRACK.get()),
+        messengerModels, activeMessengerModels);
+    this.createActiveOutfittedTrack(blockModels, RailcraftBlocks.STRAP_IRON_MESSENGER_TRACK.get(),
+        false, false, outfittedTrackModels(RailcraftBlocks.STRAP_IRON_TRACK.get()),
+        messengerModels, activeMessengerModels);
+  }
+
+  /**
+   * The outfitted models of a track type, already generated together with its other outfitted
+   * tracks.
+   */
+  private static StraightTrackModelSet outfittedTrackModels(Block trackBlock) {
+    return new StraightTrackModelSet(outfittedTrackModel(trackBlock),
+        ModelLocationUtils.getModelLocation(trackBlock, "_outfitted_raised_ne"),
+        ModelLocationUtils.getModelLocation(trackBlock, "_outfitted_raised_sw"));
   }
 
   /**

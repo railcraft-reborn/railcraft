@@ -18,6 +18,7 @@ import mods.railcraft.network.to_server.SetLauncherTrackMessage;
 import mods.railcraft.network.to_server.SetLocomotiveByKeyMessage;
 import mods.railcraft.network.to_server.SetLocomotiveMessage;
 import mods.railcraft.network.to_server.SetMaintenanceMinecartMessage;
+import mods.railcraft.network.to_server.SetMessengerTrackMessage;
 import mods.railcraft.network.to_server.SetRoutingDetectorMessage;
 import mods.railcraft.network.to_server.SetRoutingTrackMessage;
 import mods.railcraft.network.to_server.SetSignalCapacitorBoxMessage;
@@ -64,6 +65,8 @@ public final class PacketHandler {
         SetLauncherTrackMessage.STREAM_CODEC, SetLauncherTrackMessage::handle);
     registrar.playToServer(SetDelayedLockingTrackMessage.TYPE,
         SetDelayedLockingTrackMessage.STREAM_CODEC, SetDelayedLockingTrackMessage::handle);
+    registrar.playToServer(SetMessengerTrackMessage.TYPE,
+        SetMessengerTrackMessage.STREAM_CODEC, SetMessengerTrackMessage::handle);
     registrar.playToServer(SetLocomotiveByKeyMessage.TYPE,
         SetLocomotiveByKeyMessage.STREAM_CODEC, SetLocomotiveByKeyMessage::handle);
     registrar.playToServer(SetLocomotiveMessage.TYPE,

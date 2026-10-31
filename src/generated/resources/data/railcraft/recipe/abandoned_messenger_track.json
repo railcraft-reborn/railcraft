@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "railcraft:messenger_track_kit",
+    "railcraft:abandoned_track"
+  ],
+  "result": {
+    "id": "railcraft:abandoned_messenger_track"
+  }
+}

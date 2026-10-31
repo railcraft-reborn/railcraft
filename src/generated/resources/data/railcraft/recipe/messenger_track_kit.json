@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#minecraft:planks",
+    "railcraft:track_parts",
+    "#minecraft:signs",
+    "#c:dusts/redstone"
+  ],
+  "result": {
+    "count": 4,
+    "id": "railcraft:messenger_track_kit"
+  }
+}

@@ -2,6 +2,7 @@
   "values": [
     "railcraft:iron_locking_track",
     "railcraft:iron_delayed_locking_track",
+    "railcraft:iron_messenger_track",
     "railcraft:iron_activator_track",
     "railcraft:iron_booster_track",
     "railcraft:iron_control_track",

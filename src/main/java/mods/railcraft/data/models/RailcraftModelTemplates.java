@@ -379,6 +379,8 @@ class RailcraftModelTemplates {
     DISEMBARKING_TRACK_RIGHT_ON("disembarking_track_right"),
     TRANSITION_TRACK("transition_track"),
     TRANSITION_TRACK_ON("transition_track"),
+    MESSENGER_TRACK("messenger_track"),
+    MESSENGER_TRACK_ON("messenger_track"),
     RAIL_OUTFITTED("rail_outfitted"),
     CONTROL_TRACK("control_track");
 
