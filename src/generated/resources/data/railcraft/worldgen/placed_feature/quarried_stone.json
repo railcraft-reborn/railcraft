@@ -2,6 +2,10 @@
   "feature": "railcraft:quarried_stone",
   "placement": [
     {
+      "type": "railcraft:ore_config",
+      "ore": "quarried_stone"
+    },
+    {
       "type": "minecraft:rarity_filter",
       "chance": 40
     },

@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
+import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
@@ -1410,6 +1411,19 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.FUEL_PER_STEAM_MULTIPLIER,
         "Fuel per steam multiplier");
     this.add(Translations.ConfigurationScreen.BOILERS_EXPLODE, "Boilers explode");
+    this.add(Translations.ConfigurationScreen.WORLDGEN, "World Generation");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.LEAD), "Lead ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.TIN), "Tin ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SULFUR), "Sulfur ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.ZINC), "Zinc ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.NICKEL), "Nickel ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SILVER), "Silver ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.QUARRIED_STONE),
+        "Quarried stone");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SALTPETER),
+        "Saltpeter ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.FIRESTONE),
+        "Firestone ore");
   }
 
   private void addFluidType(Supplier<? extends FluidType> key, String name) {

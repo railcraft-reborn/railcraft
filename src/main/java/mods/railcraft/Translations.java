@@ -3,6 +3,7 @@ package mods.railcraft;
 import java.util.List;
 import java.util.stream.IntStream;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 
 public class Translations {
 
@@ -219,6 +220,11 @@ public class Translations {
     public static final String FUEL_PER_STEAM_MULTIPLIER =
         makeConfigurationKey("fuelPerSteamMultiplier");
     public static final String BOILERS_EXPLODE = makeConfigurationKey("boilersExplode");
+    public static final String WORLDGEN = makeConfigurationKey("worldgen");
+
+    public static String oreGeneration(WorldgenOre ore) {
+      return makeConfigurationKey(ore.getConfigKey());
+    }
   }
 
   public static class Tips {

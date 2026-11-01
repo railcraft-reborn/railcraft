@@ -1,8 +1,11 @@
 package mods.railcraft;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 import net.minecraft.resources.Identifier;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
@@ -37,6 +40,14 @@ public class RailcraftConfig {
     container.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.CLIENT_SPEC);
     container.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.COMMON_SPEC);
     container.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.SERVER_SPEC);
+  }
+
+  /**
+   * Whether the given ore should generate in newly created chunks. Defaults to enabled while the
+   * server config is not loaded yet.
+   */
+  public static boolean isOreEnabled(WorldgenOre ore) {
+    return !SERVER_SPEC.isLoaded() || SERVER.oreGeneration.get(ore).get();
   }
 
   private static boolean isValidIdentifier(Object obj) {
@@ -87,6 +98,8 @@ public class RailcraftConfig {
 
     public final BooleanValue changeDungeonLoot;
     public final ConfigValue<List<? extends String>> preferredOres;
+
+    public final Map<WorldgenOre, BooleanValue> oreGeneration = new EnumMap<>(WorldgenOre.class);
 
     private Server(ModConfigSpec.Builder builder) {
       builder.comment("High Speed Track Configuration");
@@ -247,6 +260,17 @@ public class RailcraftConfig {
           .comment("An ordered list of mod ids from which the items will be chosen, which Railcraft does not add, and which are necessary for recipes based on tags to work.")
           .defineList("preferredOres", () -> List.of(RailcraftConstants.ID, "minecraft"),
               () -> "modId", __ -> true);
+
+      builder.comment("Turn off the generation of individual ores. Only chunks generated after a change are affected.");
+      builder.push("worldgen");
+      {
+        for (var ore : WorldgenOre.values()) {
+          this.oreGeneration.put(ore, builder
+              .comment("Generate " + ore.getSerializedName().replace('_', ' ') + " in new chunks")
+              .define(ore.getConfigKey(), true));
+        }
+      }
+      builder.pop();
     }
   }
 
