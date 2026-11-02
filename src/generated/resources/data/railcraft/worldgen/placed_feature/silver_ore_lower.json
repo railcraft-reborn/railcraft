@@ -2,6 +2,10 @@
   "feature": "railcraft:silver_ore",
   "placement": [
     {
+      "type": "railcraft:ore_config",
+      "ore": "silver"
+    },
+    {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",

@@ -16,6 +16,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
 import mods.railcraft.world.level.block.entity.track.CouplerTrackBlockEntity;
 import mods.railcraft.world.level.block.track.outfitted.LockingMode;
+import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.util.StringRepresentable;
@@ -1370,6 +1371,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.CHRISTMAS, "Christmas mode");
     this.add(Translations.ConfigurationScreen.HALLOWEEN, "Halloween mode");
     this.add(Translations.ConfigurationScreen.HARVEST, "Harvest mode");
+    this.add(Translations.ConfigurationScreen.WORLDGEN, "World Generation");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.LEAD), "Lead ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.TIN), "Tin ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SULFUR), "Sulfur ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.ZINC), "Zinc ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.NICKEL), "Nickel ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SILVER), "Silver ore");
+    this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.SALTPETER),
+        "Saltpeter ore");
 
     this.add(Translations.ConfigurationScreen.POLAR_EXPRESS_ENABLED, "Polar Express enabled");
     this.add(Translations.ConfigurationScreen.GHOST_TRAIN_ENABLED, "Ghost Train enabled");

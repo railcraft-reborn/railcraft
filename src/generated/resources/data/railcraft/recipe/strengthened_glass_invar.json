@@ -9,7 +9,7 @@
       "tag": "c:ingots/invar"
     },
     "c": {
-      "item": "railcraft:saltpeter_dust"
+      "tag": "c:dusts/saltpeter"
     },
     "d": {
       "item": "minecraft:water_bucket"

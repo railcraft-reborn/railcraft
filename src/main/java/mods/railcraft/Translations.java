@@ -3,6 +3,7 @@ package mods.railcraft;
 import java.util.List;
 import java.util.stream.IntStream;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 
 public class Translations {
 
@@ -160,6 +161,11 @@ public class Translations {
     public static final String CHRISTMAS = makeConfigurationKey("christmas");
     public static final String HALLOWEEN = makeConfigurationKey("halloween");
     public static final String HARVEST = makeConfigurationKey("harvest");
+    public static final String WORLDGEN = makeConfigurationKey("worldgen");
+
+    public static String oreGeneration(WorldgenOre ore) {
+      return makeConfigurationKey(ore.getConfigKey());
+    }
 
     public static final String POLAR_EXPRESS_ENABLED =
         makeConfigurationKey("polarExpressEnabled");

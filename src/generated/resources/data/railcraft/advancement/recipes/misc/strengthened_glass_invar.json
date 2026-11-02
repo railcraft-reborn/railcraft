@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "railcraft:saltpeter_dust"
+            "items": "#c:dusts/saltpeter"
           }
         ]
       },
