@@ -1,8 +1,9 @@
 package mods.railcraft.data.gametest.instances.steam_engine;
 
+import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
+
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.data.gametest.RailcraftGameTestInstances;
-import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.SteamEngineBlockEntity;
 import net.minecraft.core.Holder;

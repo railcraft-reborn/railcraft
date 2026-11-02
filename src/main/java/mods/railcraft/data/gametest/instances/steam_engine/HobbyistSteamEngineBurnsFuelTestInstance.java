@@ -1,16 +1,11 @@
 package mods.railcraft.data.gametest.instances.steam_engine;
 
+import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
+
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.data.gametest.RailcraftGameTestInstances;
-import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.entity.HobbyistSteamEngineBlockEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestInstance;
@@ -18,6 +13,12 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class HobbyistSteamEngineBurnsFuelTestInstance extends GameTestInstance {
 

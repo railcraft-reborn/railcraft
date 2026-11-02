@@ -1,13 +1,13 @@
 package mods.railcraft.data.gametest.instances.steam_engine;
 
+import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
+
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.data.gametest.RailcraftGameTestInstances;
-import static mods.railcraft.data.gametest.instances.steam_engine.SteamEngineTestHelper.ENGINE_POS;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.SteamEngineBlock;
 import mods.railcraft.world.level.block.entity.SteamEngineBlockEntity;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestInstance;
@@ -15,6 +15,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.block.Blocks;
 
 public class CommercialSteamEngineGeneratesEnergyTestInstance extends GameTestInstance {
 
