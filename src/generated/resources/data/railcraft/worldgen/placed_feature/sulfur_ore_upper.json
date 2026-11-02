@@ -2,6 +2,10 @@
   "feature": "railcraft:sulfur_ore",
   "placement": [
     {
+      "type": "railcraft:ore_config",
+      "ore": "sulfur"
+    },
+    {
       "type": "minecraft:count",
       "count": 20
     },

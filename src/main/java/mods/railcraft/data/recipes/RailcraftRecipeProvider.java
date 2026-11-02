@@ -1791,10 +1791,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .pattern("ada")
           .define('a', Tags.Items.GLASS_BLOCKS)
           .define('b', ingredient.getValue())
-          .define('c', RailcraftItems.SALTPETER_DUST.get())
+          .define('c', RailcraftTags.Items.SALTPETER_DUST)
           .define('d', Items.WATER_BUCKET)
           .unlockedBy(getHasName(RailcraftItems.SALTPETER_DUST.get()),
-              has(RailcraftItems.SALTPETER_DUST.get()))
+              has(RailcraftTags.Items.SALTPETER_DUST))
           .save(output, RailcraftConstants.id(recipeName).toString());
     }
 

@@ -2,6 +2,10 @@
   "feature": "railcraft:saltpeter",
   "placement": [
     {
+      "type": "railcraft:ore_config",
+      "ore": "saltpeter"
+    },
+    {
       "type": "minecraft:in_square"
     },
     {

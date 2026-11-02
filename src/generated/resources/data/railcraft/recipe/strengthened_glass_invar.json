@@ -4,7 +4,7 @@
   "key": {
     "a": "#c:glass_blocks",
     "b": "#c:ingots/invar",
-    "c": "railcraft:saltpeter_dust",
+    "c": "#c:dusts/saltpeter",
     "d": "minecraft:water_bucket"
   },
   "pattern": [
