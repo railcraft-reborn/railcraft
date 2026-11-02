@@ -13,6 +13,10 @@ import mods.railcraft.data.gametest.instances.RoutingTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTrackTestInstance;
 import mods.railcraft.data.gametest.instances.SteamBoilerTestInstance;
 import mods.railcraft.data.gametest.instances.SteamOvenTestInstance;
+import mods.railcraft.data.gametest.instances.steam_engine.CommercialSteamEngineGeneratesEnergyTestInstance;
+import mods.railcraft.data.gametest.instances.steam_engine.UnpoweredSteamEngineIsIdleTestInstance;
+import mods.railcraft.data.gametest.instances.steam_engine.SteamEngineCapabilitiesFollowFacingTestInstance;
+import mods.railcraft.data.gametest.instances.steam_engine.HobbyistSteamEngineBurnsFuelTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxComplexTestInstance;
 import mods.railcraft.data.gametest.instances.block_signal_relay_box.BlockSignalRelayBoxTestInstance;
 import mods.railcraft.data.gametest.instances.cart_dispenser.CartDispenserDispenseTestInstance;
@@ -135,6 +139,10 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
     deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
     deferredRegister.register("steam_boiler", () -> SteamBoilerTestInstance.CODEC);
+    deferredRegister.register("commercial_steam_engine_generates_energy", () -> CommercialSteamEngineGeneratesEnergyTestInstance.CODEC);
+    deferredRegister.register("unpowered_steam_engine_is_idle", () -> UnpoweredSteamEngineIsIdleTestInstance.CODEC);
+    deferredRegister.register("steam_engine_capabilities_follow_facing", () -> SteamEngineCapabilitiesFollowFacingTestInstance.CODEC);
+    deferredRegister.register("hobbyist_steam_engine_burns_fuel", () -> HobbyistSteamEngineBurnsFuelTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_pulse", () -> SignalCapacitorBoxPulseTestInstance.CODEC);
     deferredRegister.register("signal_capacitor_box_duration_limits", () -> SignalCapacitorBoxDurationLimitsTestInstance.CODEC);
     deferredRegister.register("locomotive_keeps_facing_through_curve", () -> LocomotiveKeepsFacingThroughCurveTestInstance.CODEC);
@@ -219,6 +227,11 @@ public class RailcraftGameTestInstances {
 
     registerTestInstance(bootstrap, "steam_oven_door_on_one_side", "steam_oven", SteamOvenTestInstance::new);
     registerTestInstance(bootstrap, "high_pressure_boiler_steam_output", "platform_7x7_tall", SteamBoilerTestInstance::new);
+
+    registerTestInstance(bootstrap, "commercial_steam_engine_generates_energy", "platform_7x7", CommercialSteamEngineGeneratesEnergyTestInstance::new);
+    registerTestInstance(bootstrap, "unpowered_steam_engine_is_idle", "platform_7x7", UnpoweredSteamEngineIsIdleTestInstance::new);
+    registerTestInstance(bootstrap, "steam_engine_capabilities_follow_facing", "platform_7x7", SteamEngineCapabilitiesFollowFacingTestInstance::new);
+    registerTestInstance(bootstrap, "hobbyist_steam_engine_burns_fuel", "platform_7x7", HobbyistSteamEngineBurnsFuelTestInstance::new);
 
     registerTestInstance(bootstrap, "signal_capacitor_box_pulse", "platform_7x7", SignalCapacitorBoxPulseTestInstance::new);
     registerTestInstance(bootstrap, "signal_capacitor_box_duration_limits", "platform_7x7", SignalCapacitorBoxDurationLimitsTestInstance::new);

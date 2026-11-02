@@ -49,6 +49,10 @@ public class RailcraftBlockEntityRenderers {
         supply(FluidUnLoaderRenderer::new));
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.STEAM_TURBINE.get(),
         supply(SteamTurbineRenderer::new));
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.HOBBYIST_STEAM_ENGINE.get(),
+        SteamEngineRenderer::new);
+    event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.STEAM_ENGINE.get(),
+        SteamEngineRenderer::new);
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.RITUAL.get(),
         RitualBlockRenderer::new);
     event.registerBlockEntityRenderer(RailcraftBlockEntityTypes.VOID_CHEST.get(),

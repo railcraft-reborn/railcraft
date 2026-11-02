@@ -18,6 +18,7 @@ public class Translations {
     public static final String STEAM_TURBINE_ROTOR = makeKey("screen", "steam_turbine.rotor");
     public static final String STEAM_TURBINE_OUTPUT = makeKey("screen", "steam_turbine.output");
     public static final String STEAM_TURBINE_USAGE = makeKey("screen", "steam_turbine.usage");
+    public static final String STEAM_ENGINE_OUTPUT = makeKey("screen", "steam_engine.output");
     public static final String STEAM_MODE_DESC_IDLE =
         makeKey("screen", "locomotive.steam.mode.description.idle");
     public static final String STEAM_MODE_DESC_RUNNING =
@@ -252,6 +253,13 @@ public class Translations {
     public static final String STEAM_TURBINE_DESC_1 = makeKey("tips", "steam_turbine_desc1");
     public static final String STEAM_TURBINE_DESC_2 = makeKey("tips", "steam_turbine_desc2");
     public static final String STEAM_TURBINE_DESC_3 = makeKey("tips", "steam_turbine_desc3");
+    public static final String STEAM_ENGINE_OUTPUT = makeKey("tips", "steam_engine_output");
+    public static final String STEAM_ENGINE_STEAM_USAGE =
+        makeKey("tips", "steam_engine_steam_usage");
+    public static final String HOBBYIST_STEAM_ENGINE_DESC =
+        makeKey("tips", "hobbyist_steam_engine_desc");
+    public static final String STEAM_ENGINE_REDSTONE = makeKey("tips", "steam_engine_redstone");
+    public static final String STEAM_ENGINE_CROWBAR = makeKey("tips", "steam_engine_crowbar");
     public static final String SPIKE_MAUL = makeKey("tips", "spike_maul");
     public static final String OVERALLS = makeKey("tips", "overalls");
     public static final String NONE = makeKey("tips", "none");

@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "railcraft:item/industrial_steam_engine",
+    "model": {
+      "type": "railcraft:steam_engine",
+      "tier": "industrial"
+    }
+  }
+}

@@ -73,6 +73,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.SOLID_FUELED_FIREBOX, "Solid Fueled Firebox");
     this.addBlock(RailcraftBlocks.FLUID_FUELED_FIREBOX, "Fluid Fueled Firebox");
     this.addBlock(RailcraftBlocks.STEAM_TURBINE, "Steam Turbine Housing");
+    this.addBlock(RailcraftBlocks.HOBBYIST_STEAM_ENGINE, "Hobbyist's Steam Engine");
+    this.addBlock(RailcraftBlocks.COMMERCIAL_STEAM_ENGINE, "Commercial Steam Engine");
+    this.addBlock(RailcraftBlocks.INDUSTRIAL_STEAM_ENGINE, "Industrial Steam Engine");
     this.addBlock(RailcraftBlocks.BLAST_FURNACE_BRICKS, "Blast Furnace Bricks");
     this.addBlock(RailcraftBlocks.FEED_STATION, "Feed Station");
     this.addBlock(RailcraftBlocks.CHIMNEY, "Chimney");
@@ -440,6 +443,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.STEAM_TURBINE_DESC_1, "Generates FE from Steam");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_2, "Outputs water to the bottom");
     this.add(Translations.Tips.STEAM_TURBINE_DESC_3, "Requires a Turbine Rotor");
+    this.add(Translations.Tips.STEAM_ENGINE_OUTPUT, "Output: %s FE/t");
+    this.add(Translations.Tips.STEAM_ENGINE_STEAM_USAGE, "Consumes %s mB/t of Steam");
+    this.add(Translations.Tips.HOBBYIST_STEAM_ENGINE_DESC,
+        "Built-in boiler, burns solid fuel and Water");
+    this.add(Translations.Tips.STEAM_ENGINE_REDSTONE, "Requires a redstone signal to run");
+    this.add(Translations.Tips.STEAM_ENGINE_CROWBAR,
+        "Use a Crowbar to change output side or reset an overheat");
     this.add(Translations.Tips.SPIKE_MAUL, "Converts track to switches and junctions.");
     this.add(Translations.Tips.OVERALLS, "Protection against the dangers of track-working");
     this.add(Translations.Tips.NONE, "None");
@@ -657,6 +667,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Screen.STEAM_TURBINE_ROTOR, "Rotor:");
     this.add(Translations.Screen.STEAM_TURBINE_OUTPUT, "Output:");
     this.add(Translations.Screen.STEAM_TURBINE_USAGE, "Usage:");
+    this.add(Translations.Screen.STEAM_ENGINE_OUTPUT, "%s FE/t");
     this.add(Translations.Screen.STEAM_MODE_DESC_IDLE,
         "Locomotive reduces fuel usage, but retains its heat. If the train is held by a track, it behaves as if idle.");
     this.add(Translations.Screen.STEAM_MODE_DESC_RUNNING, "Makes the locomotive move.");

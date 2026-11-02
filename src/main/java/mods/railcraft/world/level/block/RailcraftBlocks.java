@@ -218,6 +218,15 @@ public class RailcraftBlocks {
               .randomTicks()
               .sound(SoundType.METAL)));
 
+  public static final DeferredBlock<SteamEngineBlock> HOBBYIST_STEAM_ENGINE =
+      registerSteamEngine("hobbyist_steam_engine", SteamEngineBlock.Tier.HOBBYIST);
+
+  public static final DeferredBlock<SteamEngineBlock> COMMERCIAL_STEAM_ENGINE =
+      registerSteamEngine("commercial_steam_engine", SteamEngineBlock.Tier.COMMERCIAL);
+
+  public static final DeferredBlock<SteamEngineBlock> INDUSTRIAL_STEAM_ENGINE =
+      registerSteamEngine("industrial_steam_engine", SteamEngineBlock.Tier.INDUSTRIAL);
+
   public static final DeferredBlock<WaterTankSiding> WATER_TANK_SIDING =
       deferredRegister.registerBlock("water_tank_siding",
           properties -> new WaterTankSiding(properties
@@ -1513,5 +1522,16 @@ public class RailcraftBlocks {
   private static Boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos,
       EntityType<?> entityType) {
     return false;
+  }
+
+  private static DeferredBlock<SteamEngineBlock> registerSteamEngine(String name,
+      SteamEngineBlock.Tier tier) {
+    return deferredRegister.registerBlock(name,
+        properties -> new SteamEngineBlock(tier, properties
+            .mapColor(MapColor.METAL)
+            .strength(3.5F)
+            .requiresCorrectToolForDrops()
+            .noOcclusion()
+            .sound(SoundType.METAL)));
   }
 }

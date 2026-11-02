@@ -196,6 +196,15 @@ public class RailcraftItems {
   public static final DeferredItem<SteamTurbineBlockItem> STEAM_TURBINE =
       blockItem(RailcraftBlocks.STEAM_TURBINE, SteamTurbineBlockItem::new);
 
+  public static final DeferredItem<SteamEngineBlockItem> HOBBYIST_STEAM_ENGINE =
+      blockItem(RailcraftBlocks.HOBBYIST_STEAM_ENGINE, SteamEngineBlockItem::new);
+
+  public static final DeferredItem<SteamEngineBlockItem> COMMERCIAL_STEAM_ENGINE =
+      blockItem(RailcraftBlocks.COMMERCIAL_STEAM_ENGINE, SteamEngineBlockItem::new);
+
+  public static final DeferredItem<SteamEngineBlockItem> INDUSTRIAL_STEAM_ENGINE =
+      blockItem(RailcraftBlocks.INDUSTRIAL_STEAM_ENGINE, SteamEngineBlockItem::new);
+
   public static final DeferredItem<BlastFurnaceBricksBlockItem> BLAST_FURNACE_BRICKS =
       blockItem(RailcraftBlocks.BLAST_FURNACE_BRICKS, BlastFurnaceBricksBlockItem::new);
 

@@ -108,6 +108,17 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("steam_turbine",
           () -> new BlockEntityType<>(SteamTurbineBlockEntity::new, RailcraftBlocks.STEAM_TURBINE.get()));
 
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HobbyistSteamEngineBlockEntity>> HOBBYIST_STEAM_ENGINE =
+      deferredRegister.register("hobbyist_steam_engine",
+          () -> new BlockEntityType<>(HobbyistSteamEngineBlockEntity::new,
+              RailcraftBlocks.HOBBYIST_STEAM_ENGINE.get()));
+
+  public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamEngineBlockEntity>> STEAM_ENGINE =
+      deferredRegister.register("steam_engine",
+          () -> new BlockEntityType<>(SteamEngineBlockEntity::new,
+              RailcraftBlocks.COMMERCIAL_STEAM_ENGINE.get(),
+              RailcraftBlocks.INDUSTRIAL_STEAM_ENGINE.get()));
+
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE =
       deferredRegister.register("blast_furnace",
           () -> new BlockEntityType<>(BlastFurnaceBlockEntity::new, RailcraftBlocks.BLAST_FURNACE_BRICKS.get()));

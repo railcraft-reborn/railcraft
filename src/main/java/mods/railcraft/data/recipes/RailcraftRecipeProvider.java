@@ -779,8 +779,27 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .unlockedBy(getHasName(RailcraftItems.CHARGE_MOTOR.get()),
             has(RailcraftItems.CHARGE_MOTOR.get()))
         .save(output);
+    this.steamEngine(RailcraftItems.HOBBYIST_STEAM_ENGINE.get(),
+        RailcraftTags.Items.BRASS_PLATE, RailcraftTags.Items.BRASS_GEAR);
+    this.steamEngine(RailcraftItems.COMMERCIAL_STEAM_ENGINE.get(),
+        RailcraftTags.Items.IRON_PLATE, RailcraftTags.Items.IRON_GEAR);
+    this.steamEngine(RailcraftItems.INDUSTRIAL_STEAM_ENGINE.get(),
+        RailcraftTags.Items.STEEL_PLATE, RailcraftTags.Items.STEEL_GEAR);
     RailcraftSpecialRecipeBuilder.special(RotorRepairRecipe::new)
         .save(output, "rotor_repair");
+  }
+
+  private void steamEngine(ItemLike result, TagKey<Item> plate, TagKey<Item> gear) {
+    shaped(RecipeCategory.MISC, result)
+        .pattern("aaa")
+        .pattern(" b ")
+        .pattern("cdc")
+        .define('a', plate)
+        .define('b', Tags.Items.GLASS_BLOCKS_COLORLESS)
+        .define('c', gear)
+        .define('d', Items.PISTON)
+        .unlockedBy("has_gear", has(gear))
+        .save(output);
   }
 
   private void buildSignalBox() {

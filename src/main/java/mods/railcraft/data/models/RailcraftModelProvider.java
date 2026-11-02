@@ -22,6 +22,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.api.track.ArrowDirection;
 import mods.railcraft.client.color.item.LocomotiveColor;
 import mods.railcraft.client.renderer.blockentity.VoidChestRenderer;
+import mods.railcraft.client.renderer.item.SteamEngineItemRenderer;
 import mods.railcraft.client.renderer.item.VoidChestItemRenderer;
 import mods.railcraft.data.RailcraftBlockFamilies;
 import mods.railcraft.world.entity.vehicle.locomotive.Locomotive;
@@ -35,6 +36,7 @@ import mods.railcraft.world.level.block.ForceTrackEmitterBlock;
 import mods.railcraft.world.level.block.FurnaceMultiblockBlock;
 import mods.railcraft.world.level.block.LogBookBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
+import mods.railcraft.world.level.block.SteamEngineBlock;
 import mods.railcraft.world.level.block.SteamOvenBlock;
 import mods.railcraft.world.level.block.SteamTurbineBlock;
 import mods.railcraft.world.level.block.charge.BatteryBlock;
@@ -368,6 +370,9 @@ public class RailcraftModelProvider extends ModelProvider {
     this.createWorldSpikeBlock(blockModels, RailcraftBlocks.PERSONAL_WORLD_SPIKE.get());
 
     this.createChests(blockModels, itemModels);
+    this.createSteamEngine(blockModels, itemModels, RailcraftBlocks.HOBBYIST_STEAM_ENGINE.get());
+    this.createSteamEngine(blockModels, itemModels, RailcraftBlocks.COMMERCIAL_STEAM_ENGINE.get());
+    this.createSteamEngine(blockModels, itemModels, RailcraftBlocks.INDUSTRIAL_STEAM_ENGINE.get());
 
     this.createFirebox(blockModels, RailcraftBlocks.SOLID_FUELED_FIREBOX.get());
     this.createFirebox(blockModels, RailcraftBlocks.FLUID_FUELED_FIREBOX.get());
@@ -1173,6 +1178,16 @@ public class RailcraftModelProvider extends ModelProvider {
     var unbaked =
         ItemModelUtils.specialModel(Identifier, new VoidChestItemRenderer.Unbaked(texture));
     itemModels.itemModelOutput.accept(chestItem, unbaked);
+  }
+
+  private void createSteamEngine(BlockModelGenerators blockModels,
+      ItemModelGenerators itemModels, SteamEngineBlock block) {
+    blockModels.createParticleOnlyBlock(block);
+    var item = block.asItem();
+    var baseModel = ModelTemplates.CHEST_INVENTORY
+        .create(item, TextureMapping.particle(block), blockModels.modelOutput);
+    itemModels.itemModelOutput.accept(item, ItemModelUtils.specialModel(baseModel,
+        new SteamEngineItemRenderer.Unbaked(block.getTier())));
   }
 
   private void createFirebox(BlockModelGenerators blockModels, FireboxBlock block) {

@@ -41,5 +41,7 @@ public class RailcraftLayerDefinitions {
         () -> DeformableMinecartModel.createBodyLayer(SNOW_DEFORMATION));
 
     consumer.accept(RailcraftModelLayers.CUBE, CubeModel::createBodyLayer);
+
+    consumer.accept(RailcraftModelLayers.STEAM_ENGINE, SteamEngineModel::createBodyLayer);
   }
 }

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "railcraft:block/industrial_steam_engine"
+    }
+  }
+}

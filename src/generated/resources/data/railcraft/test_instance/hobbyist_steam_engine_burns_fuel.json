@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:hobbyist_steam_engine_burns_fuel",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}
