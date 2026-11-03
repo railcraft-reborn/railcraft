@@ -42,6 +42,9 @@ public record SetActionSignalBoxMessage(
   }
 
   public static void handle(SetActionSignalBoxMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var player = context.player();
     var senderProfile = player.nameAndId();
     var level = player.level();

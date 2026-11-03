@@ -47,6 +47,7 @@ import mods.railcraft.data.gametest.instances.locomotive.LocomotiveStaysReversed
 import mods.railcraft.data.gametest.instances.locomotive.PlacedLocomotiveFacesAlongTrackTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackPassiveTestInstance;
+import mods.railcraft.data.gametest.instances.review.ReviewTestInstance;
 import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxDurationLimitsTestInstance;
 import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxPulseTestInstance;
 import mods.railcraft.data.gametest.instances.steam_engine.CommercialSteamEngineGeneratesEnergyTestInstance;
@@ -149,6 +150,7 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("locomotive_keeps_facing_when_reversed_in_curve", () -> LocomotiveKeepsFacingWhenReversedInCurveTestInstance.CODEC);
     deferredRegister.register("locomotive_stays_reversed", () -> LocomotiveStaysReversedTestInstance.CODEC);
     deferredRegister.register("placed_locomotive_faces_along_track", () -> PlacedLocomotiveFacesAlongTrackTestInstance.CODEC);
+    deferredRegister.register("review", () -> ReviewTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {

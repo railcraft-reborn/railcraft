@@ -27,6 +27,9 @@ public record SetEmbarkingTrackMessage(
   }
 
   public static void handle(SetEmbarkingTrackMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var level = context.player().level();
     var blockState = level.getBlockState(message.blockPos);
     if (blockState.getBlock() instanceof EmbarkingTrackBlock) {

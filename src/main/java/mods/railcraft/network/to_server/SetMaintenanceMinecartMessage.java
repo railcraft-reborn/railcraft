@@ -27,9 +27,10 @@ public record SetMaintenanceMinecartMessage(
   }
 
   public static void handle(SetMaintenanceMinecartMessage message, IPayloadContext context) {
-    var level = context.player().level();
-    var entity = level.getEntity(message.entityId);
-    if (entity instanceof MaintenanceMinecart minecart) {
+    var player = context.player();
+    var entity = player.level().getEntity(message.entityId);
+    if (entity instanceof MaintenanceMinecart minecart
+        && PacketChecks.canEditEntity(player, minecart)) {
       minecart.setMode(message.mode);
     }
   }

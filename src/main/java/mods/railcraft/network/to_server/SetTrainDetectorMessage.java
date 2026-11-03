@@ -27,6 +27,9 @@ public record SetTrainDetectorMessage(
   }
 
   public static void handle(SetTrainDetectorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     context.player().level()
         .getBlockEntity(message.blockPos, RailcraftBlockEntityTypes.TRAIN_DETECTOR.get())
         .ifPresent(trainDetector -> {

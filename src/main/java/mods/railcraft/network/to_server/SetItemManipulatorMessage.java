@@ -32,6 +32,9 @@ public record SetItemManipulatorMessage(
   }
 
   public static void handle(SetItemManipulatorMessage message, IPayloadContext context) {
+    if (!PacketChecks.canEditBlock(context.player(), message.blockPos)) {
+      return;
+    }
     var level = context.player().level();
     LevelUtil.getBlockEntity(level, message.blockPos, ItemManipulatorBlockEntity.class)
         .ifPresent(manipulator -> {
