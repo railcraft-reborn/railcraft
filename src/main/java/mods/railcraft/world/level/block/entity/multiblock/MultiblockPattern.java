@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -116,6 +117,20 @@ public class MultiblockPattern<T> {
         && blockPos.getZ() >= minPos.getZ();
   }
 
+  /**
+   * Determine if every block this pattern covers is loaded, when placed at the specified master
+   * position.
+   *
+   * @param masterPos - the position of the master
+   * @param level - the level
+   * @return <code>true</code> if it is, <code>false</code> otherwise
+   */
+  public boolean isLoaded(BlockPos masterPos, Level level) {
+    var minPos = masterPos.subtract(this.masterOffset);
+    return level.hasChunksAt(minPos,
+        minPos.offset(this.xSize - 1, this.ySize - 1, this.zSize - 1));
+  }
+
   private boolean checkForEntities(BlockPos blockPos, ServerLevel level) {
     return this.entityCheckBounds == null
         || level.getEntitiesOfClass(LivingEntity.class, this.entityCheckBounds.move(blockPos))
@@ -134,10 +149,15 @@ public class MultiblockPattern<T> {
    * @param checkForEntities - whether the entity check bounds should be honoured. This should only
    *        be done when initially forming a structure, otherwise an entity wandering into an
    *        already formed structure would cause it to disband.
-   * @return an empty {@link Optional} if the pattern fails to resolve
+   * @return an empty {@link Optional} if the pattern fails to resolve or isn't fully loaded
    */
   public Optional<Map<BlockPos, Element>> resolve(BlockPos blockPos, ServerLevel level,
       boolean checkForEntities) {
+    // Checking a block in an unloaded chunk would load it
+    if (!this.isLoaded(blockPos, level)) {
+      return Optional.empty();
+    }
+
     if (checkForEntities && !this.checkForEntities(blockPos, level)) {
       return Optional.empty();
     }

@@ -64,6 +64,18 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
   private int retryTimer;
 
+  /**
+   * Whether this block is being removed because its chunk is unloading, as opposed to being broken.
+   */
+  private boolean unloading;
+
+  /**
+   * The master this member belonged to when it was saved. Used once loaded to let the master know
+   * this block is back, it may be waiting for it to re-form or to pick it up again.
+   */
+  @Nullable
+  private BlockPos savedMasterPos;
+
   // Only present on the client
   @Nullable
   private UnresolvedMembership unresolvedMembership;
@@ -127,6 +139,11 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
 
     this.evaluationPending = false;
 
+    if (this.membership != null && this.membership.master().isRemoved()) {
+      // Our master was broken or unloaded
+      this.setMembership(null);
+    }
+
     if (this.isFormed() && !this.isMaster()) {
       // Defer to the master's next tick so that it evaluates the structure only once, no matter how
       // many members were notified of the same change.
@@ -134,9 +151,18 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
       return;
     }
 
+    if (this.isFormed() && !this.currentPattern.isLoaded(this.worldPosition, this.level)) {
+      // Part of the structure is unloaded, so it can't be checked right now. Disbanding would make
+      // us drop our contents, so keep it as is. Members let us know when they're loaded again.
+      return;
+    }
+
     var pattern = this.resolvePattern(!this.isFormed() && !this.wasFormed);
-    if (this.isFormed() && (!this.isMaster() || pattern.isPresent())
-        || !this.isFormed() && pattern.isEmpty()) {
+    if (this.isFormed() && pattern.isPresent()) {
+      this.reattachMembers(pattern.get().getRight());
+      return;
+    }
+    if (!this.isFormed() && pattern.isEmpty()) {
       return;
     }
 
@@ -168,6 +194,28 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
         this.setChanged();
       }
     }, this::disband);
+  }
+
+  /**
+   * Replace the members which were removed since the structure formed, i.e. unloaded and loaded
+   * again, with the block entities now at their position.
+   */
+  private void reattachMembers(Map<BlockPos, MultiblockPattern.Element> resolvedPattern) {
+    for (var entry : this.members.entrySet()) {
+      if (!entry.getValue().isRemoved()) {
+        continue;
+      }
+      var element = resolvedPattern.get(entry.getKey());
+      var blockEntity =
+          LevelUtil.getBlockEntity(this.level, entry.getKey(), this.clazz).orElse(null);
+      if (element == null || blockEntity == null || blockEntity.getMembership().isPresent()) {
+        logger.warn("Invalid block @ [{}]", entry.getKey());
+        this.disband();
+        return;
+      }
+      blockEntity.setMembership(new Membership<>(element, this.clazz.cast(this)));
+      entry.setValue(blockEntity);
+    }
   }
 
   /**
@@ -252,7 +300,8 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @return <code>true</code> if it is a memember, <code>false</code> otherwise
    */
   public boolean isFormed() {
-    return this.membership != null;
+    // A master which was broken or unloaded is no master at all
+    return this.membership != null && !this.membership.master().isRemoved();
   }
 
   /**
@@ -265,7 +314,7 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
     return this.level.isClientSide()
         ? this.unresolvedMembership != null
             && this.unresolvedMembership.masterPos().equals(this.worldPosition)
-        : this.membership != null && this.membership.master() == this;
+        : this.isFormed() && this.membership.master() == this;
   }
 
   /**
@@ -274,7 +323,9 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
    * @return an optional {@link Membership}
    */
   public Optional<Membership<T>> getMembership() {
-    return this.level.isClientSide() ? Optional.empty() : Optional.ofNullable(this.membership);
+    return this.level.isClientSide() || !this.isFormed()
+        ? Optional.empty()
+        : Optional.ofNullable(this.membership);
   }
 
   public Optional<T> getMasterBlockEntity() {
@@ -292,14 +343,59 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
     return Optional.ofNullable(this.unresolvedMembership);
   }
 
+  /**
+   * The members of the multiblock this block is the master of, leaving out unloaded ones.
+   */
   public Optional<Collection<T>> getMembers() {
-    return Optional.ofNullable(this.members).map(Map::values);
+    return Optional.ofNullable(this.members).map(members -> this.streamMembers().toList());
   }
 
+  /**
+   * The members of the multiblock this block is the master of, leaving out unloaded ones.
+   */
   public Stream<T> streamMembers() {
     return Stream.ofNullable(this.members)
         .map(Map::values)
-        .flatMap(Collection::stream);
+        .flatMap(Collection::stream)
+        .filter(member -> !member.isRemoved());
+  }
+
+  @Override
+  public void onLoad() {
+    super.onLoad();
+    if (this.savedMasterPos != null && this.level instanceof ServerLevel
+        && this.level.isLoaded(this.savedMasterPos)
+        && this.clazz.isInstance(this.level.getBlockEntity(this.savedMasterPos))) {
+      this.clazz.cast(this.level.getBlockEntity(this.savedMasterPos)).enqueueEvaluation();
+    }
+    this.savedMasterPos = null;
+  }
+
+  @Override
+  public void onChunkUnloaded() {
+    super.onChunkUnloaded();
+    this.unloading = true;
+  }
+
+  @Override
+  public void setRemoved() {
+    super.setRemoved();
+    if (this.unloading || !(this.level instanceof ServerLevel) || this.membership == null) {
+      return;
+    }
+    // This block was broken or replaced, let the rest of the structure find out
+    var master = this.membership.master();
+    if (master != this) {
+      if (!master.isRemoved()) {
+        master.enqueueEvaluation();
+      }
+    } else if (this.members != null) {
+      for (var member : this.members.values()) {
+        if (member != this && !member.isRemoved()) {
+          member.enqueueEvaluation();
+        }
+      }
+    }
   }
 
   @Override
@@ -310,19 +406,24 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
       this.wasFormed = true;
       this.enqueueEvaluation();
     }
+    this.savedMasterPos = input.read(CompoundTagKeys.MASTER_POS, BlockPos.CODEC).orElse(null);
   }
 
   @Override
   protected void saveAdditional(ValueOutput output) {
     super.saveAdditional(output);
-    output.putBoolean(CompoundTagKeys.MASTER, this.membership != null && this.membership.master() == this);
+    output.putBoolean(CompoundTagKeys.MASTER, this.isMaster());
     output.putBoolean(CompoundTagKeys.WAS_FORMED, this.wasFormed);
+    if (this.isFormed() && !this.isMaster()) {
+      output.store(CompoundTagKeys.MASTER_POS, BlockPos.CODEC,
+          this.membership.master().getBlockPos());
+    }
   }
 
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     super.writeToBuf(out);
-    out.writeNullable(this.membership, (buf, membership) -> {
+    out.writeNullable(this.isFormed() ? this.membership : null, (buf, membership) -> {
       var patternElement = membership.patternElement();
       buf.writeBlockPos(patternElement.relativePos());
       buf.writeChar(patternElement.marker());

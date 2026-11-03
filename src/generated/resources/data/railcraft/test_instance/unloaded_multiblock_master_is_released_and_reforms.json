@@ -1,0 +1,7 @@
+{
+  "type": "railcraft:unloaded_multiblock_master_is_released_and_reforms",
+  "environment": "railcraft:default",
+  "max_ticks": 400,
+  "sky_access": true,
+  "structure": "railcraft:test/platform_7x7"
+}

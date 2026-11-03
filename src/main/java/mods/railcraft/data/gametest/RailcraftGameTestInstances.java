@@ -45,6 +45,9 @@ import mods.railcraft.data.gametest.instances.locomotive.LocomotiveKeepsFacingTh
 import mods.railcraft.data.gametest.instances.locomotive.LocomotiveKeepsFacingWhenReversedInCurveTestInstance;
 import mods.railcraft.data.gametest.instances.locomotive.LocomotiveStaysReversedTestInstance;
 import mods.railcraft.data.gametest.instances.locomotive.PlacedLocomotiveFacesAlongTrackTestInstance;
+import mods.railcraft.data.gametest.instances.multiblock.BrokenMasterReleasesMembersTestInstance;
+import mods.railcraft.data.gametest.instances.multiblock.UnloadedMasterIsReleasedAndReformsTestInstance;
+import mods.railcraft.data.gametest.instances.multiblock.UnloadedMemberRejoinsTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackActiveTestInstance;
 import mods.railcraft.data.gametest.instances.one_way_track.OneWayTrackPassiveTestInstance;
 import mods.railcraft.data.gametest.instances.signal_capacitor_box.SignalCapacitorBoxDurationLimitsTestInstance;
@@ -149,6 +152,9 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("locomotive_keeps_facing_when_reversed_in_curve", () -> LocomotiveKeepsFacingWhenReversedInCurveTestInstance.CODEC);
     deferredRegister.register("locomotive_stays_reversed", () -> LocomotiveStaysReversedTestInstance.CODEC);
     deferredRegister.register("placed_locomotive_faces_along_track", () -> PlacedLocomotiveFacesAlongTrackTestInstance.CODEC);
+    deferredRegister.register("broken_multiblock_master_releases_members", () -> BrokenMasterReleasesMembersTestInstance.CODEC);
+    deferredRegister.register("unloaded_multiblock_master_is_released_and_reforms", () -> UnloadedMasterIsReleasedAndReformsTestInstance.CODEC);
+    deferredRegister.register("unloaded_multiblock_member_rejoins", () -> UnloadedMemberRejoinsTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -240,6 +246,10 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "locomotive_keeps_facing_when_reversed_in_curve", "platform_7x7", LocomotiveKeepsFacingWhenReversedInCurveTestInstance::new);
     registerTestInstance(bootstrap, "locomotive_stays_reversed", "platform_7x7", LocomotiveStaysReversedTestInstance::new);
     registerTestInstance(bootstrap, "placed_locomotive_faces_along_track", "platform_7x7", PlacedLocomotiveFacesAlongTrackTestInstance::new);
+
+    registerTestInstance(bootstrap, "broken_multiblock_master_releases_members", "platform_7x7", BrokenMasterReleasesMembersTestInstance::new);
+    registerTestInstance(bootstrap, "unloaded_multiblock_master_is_released_and_reforms", "platform_7x7", UnloadedMasterIsReleasedAndReformsTestInstance::new);
+    registerTestInstance(bootstrap, "unloaded_multiblock_member_rejoins", "platform_7x7", UnloadedMemberRejoinsTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(
