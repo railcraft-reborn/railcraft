@@ -52,9 +52,13 @@ public class FluidLoaderBlockEntity extends FluidManipulatorBlockEntity {
   }
 
   private void setPipeLength(float pipeLength) {
+    // Sync while the pipe moves, and once more after it stopped so the client stops animating it
+    var changed = pipeLength != this.pipeLength || this.lastPipeLength != this.pipeLength;
     this.lastPipeLength = this.pipeLength;
     this.pipeLength = pipeLength;
-    this.syncToClient();
+    if (changed) {
+      this.syncToClient();
+    }
   }
 
   private void extendPipe() {

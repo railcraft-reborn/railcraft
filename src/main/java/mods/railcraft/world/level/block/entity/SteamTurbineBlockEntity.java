@@ -39,6 +39,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
 
   private static final int WATER_OUTPUT_RATE = 4;
   private static final int ENERGY_OUTPUT_RATE = 900;
+  private static final int SYNC_INTERVAL_TICKS = 10;
 
   private static final BlockPredicate BLOCK_PREDICATE =
       BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
@@ -70,6 +71,8 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
   private float masterOperatingRatio;
 
   private int syncTicks;
+
+  private float syncedOperatingRatio;
 
   public SteamTurbineBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.STEAM_TURBINE.get(), blockPos, blockState,
@@ -116,8 +119,10 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
           }
         });
 
-    if (blockEntity.syncTicks++ >= 4) {
+    if (blockEntity.syncTicks++ >= SYNC_INTERVAL_TICKS
+        && blockEntity.masterOperatingRatio != blockEntity.syncedOperatingRatio) {
       blockEntity.syncTicks = 0;
+      blockEntity.syncedOperatingRatio = blockEntity.masterOperatingRatio;
       blockEntity.syncToClient();
     }
   }
