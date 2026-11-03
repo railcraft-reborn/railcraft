@@ -128,7 +128,9 @@ public abstract class MultiblockBlockEntity<T extends MultiblockBlockEntity<T, M
     this.evaluationPending = false;
 
     if (this.isFormed() && !this.isMaster()) {
-      this.membership.master.evaluate();
+      // Defer to the master's next tick so that it evaluates the structure only once, no matter how
+      // many members were notified of the same change.
+      this.membership.master.enqueueEvaluation();
       return;
     }
 
