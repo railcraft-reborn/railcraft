@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:paper",
+    "#c:dyes/black",
+    "#c:ingots/copper"
+  ],
+  "result": {
+    "id": "railcraft:tag_filter"
+  }
+}

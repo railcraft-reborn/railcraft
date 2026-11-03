@@ -178,6 +178,7 @@ public class RailcraftModelProvider extends ModelProvider {
     itemModels.generateFlatItem(RailcraftItems.GOLDEN_TICKET.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TICKET.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.ROUTING_TABLE_BOOK.get(), ModelTemplates.FLAT_ITEM);
+    itemModels.generateFlatItem(RailcraftItems.TAG_FILTER.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.CONTROLLER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.RECEIVER_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_CIRCUIT.get(), ModelTemplates.FLAT_ITEM);

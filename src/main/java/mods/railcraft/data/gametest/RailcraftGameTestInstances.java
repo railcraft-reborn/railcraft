@@ -56,6 +56,9 @@ import mods.railcraft.data.gametest.instances.steam_engine.CommercialSteamEngine
 import mods.railcraft.data.gametest.instances.steam_engine.HobbyistSteamEngineBurnsFuelTestInstance;
 import mods.railcraft.data.gametest.instances.steam_engine.SteamEngineCapabilitiesFollowFacingTestInstance;
 import mods.railcraft.data.gametest.instances.steam_engine.UnpoweredSteamEngineIsIdleTestInstance;
+import mods.railcraft.data.gametest.instances.tag_filter.TagFilterCyclesTagsTestInstance;
+import mods.railcraft.data.gametest.instances.tag_filter.TagFilterMatchesSelectedTagTestInstance;
+import mods.railcraft.data.gametest.instances.tag_filter.TagFilterRecipeSetsPrototypeTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankEntityInsideTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankEntityOutsideTestInstance;
 import mods.railcraft.data.gametest.instances.tank.TankKeepsFluidTestInstance;
@@ -155,6 +158,9 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("broken_multiblock_master_releases_members", () -> BrokenMasterReleasesMembersTestInstance.CODEC);
     deferredRegister.register("unloaded_multiblock_master_is_released_and_reforms", () -> UnloadedMasterIsReleasedAndReformsTestInstance.CODEC);
     deferredRegister.register("unloaded_multiblock_member_rejoins", () -> UnloadedMemberRejoinsTestInstance.CODEC);
+    deferredRegister.register("tag_filter_matches_selected_tag", () -> TagFilterMatchesSelectedTagTestInstance.CODEC);
+    deferredRegister.register("tag_filter_cycles_tags", () -> TagFilterCyclesTagsTestInstance.CODEC);
+    deferredRegister.register("tag_filter_recipe_sets_prototype", () -> TagFilterRecipeSetsPrototypeTestInstance.CODEC);
   }
 
   public static void bootstrap(BootstrapContext<GameTestInstance> bootstrap) {
@@ -250,6 +256,9 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "broken_multiblock_master_releases_members", "platform_7x7", BrokenMasterReleasesMembersTestInstance::new);
     registerTestInstance(bootstrap, "unloaded_multiblock_master_is_released_and_reforms", "platform_7x7", UnloadedMasterIsReleasedAndReformsTestInstance::new);
     registerTestInstance(bootstrap, "unloaded_multiblock_member_rejoins", "platform_7x7", UnloadedMemberRejoinsTestInstance::new);
+    registerTestInstance(bootstrap, "tag_filter_matches_selected_tag", "platform_7x7", TagFilterMatchesSelectedTagTestInstance::new);
+    registerTestInstance(bootstrap, "tag_filter_cycles_tags", "platform_7x7", TagFilterCyclesTagsTestInstance::new);
+    registerTestInstance(bootstrap, "tag_filter_recipe_sets_prototype", "platform_7x7", TagFilterRecipeSetsPrototypeTestInstance::new);
   }
 
   private static <T extends GameTestInstance> void registerTestInstance(

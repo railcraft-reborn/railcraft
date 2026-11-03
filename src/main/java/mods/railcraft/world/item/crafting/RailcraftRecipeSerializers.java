@@ -17,6 +17,7 @@ public class RailcraftRecipeSerializers {
     deferredRegister.register("blasting", () -> BlastFurnaceRecipe.SERIALIZER);
     deferredRegister.register("crusher", () -> CrusherRecipe.SERIALIZER);
     deferredRegister.register("ticket_duplicate", () -> TicketDuplicateRecipe.SERIALIZER);
+    deferredRegister.register("tag_filter", () -> TagFilterRecipe.SERIALIZER);
     deferredRegister.register("locomotive_painting", () -> LocomotivePaintingRecipe.SERIALIZER);
     deferredRegister.register("rotor_repair", () -> RotorRepairRecipe.SERIALIZER);
     deferredRegister.register("chest_minecart_disassembly", () -> ChestMinecartDisassemblyRecipe.SERIALIZER);

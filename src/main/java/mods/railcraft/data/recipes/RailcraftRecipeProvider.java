@@ -16,6 +16,7 @@ import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.PatchouliBookCrafting;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
 import mods.railcraft.world.item.crafting.StoneTieRecipe;
+import mods.railcraft.world.item.crafting.TagFilterRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.VoidChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
@@ -1154,6 +1155,15 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .requires(Tags.Items.DYES_BLUE)
         .unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK))
         .save(output);
+    shapeless(RecipeCategory.MISC, RailcraftItems.TAG_FILTER.get())
+        .requires(Items.PAPER)
+        .requires(Items.PAPER)
+        .requires(Tags.Items.DYES_BLACK)
+        .requires(Tags.Items.INGOTS_COPPER)
+        .unlockedBy(getHasName(Items.PAPER), has(Items.PAPER))
+        .save(output);
+    RailcraftSpecialRecipeBuilder.special(TagFilterRecipe::new)
+        .save(output, "tag_filter_prototype");
     shaped(RecipeCategory.MISC, RailcraftItems.OVERALLS.get())
         .pattern("aaa")
         .pattern("a a")
