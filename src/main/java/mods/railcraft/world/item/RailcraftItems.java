@@ -568,6 +568,9 @@ public class RailcraftItems {
   public static final DeferredItem<TicketItem> TICKET =
       deferredRegister.registerItem("ticket", TicketItem::new);
 
+  public static final DeferredItem<TagFilterItem> TAG_FILTER =
+      deferredRegister.registerItem("tag_filter", TagFilterItem::new);
+
   public static final DeferredItem<RoutingTableBookItem> ROUTING_TABLE_BOOK =
       deferredRegister.registerItem("routing_table_book", properties ->
           new RoutingTableBookItem(properties

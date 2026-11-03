@@ -245,6 +245,10 @@ public class Translations {
         makeKey("tips", "locomotive.item.no_whistle");
     public static final String LOCOMOTIVE_ITEM_WHISTLE =
         makeKey("tips", "locomotive.item.whistle");
+    public static final String TAG_FILTER_BLANK = makeKey("tips", "tag_filter.blank");
+    public static final String TAG_FILTER_PROTOTYPE = makeKey("tips", "tag_filter.prototype");
+    public static final String TAG_FILTER_TAG = makeKey("tips", "tag_filter.tag");
+    public static final String TAG_FILTER_CHANGE_TAG = makeKey("tips", "tag_filter.change_tag");
     public static final String TRACK_LAYER = makeKey("tips", "track_layer");
     public static final String TRACK_RELAYER = makeKey("tips", "track_relayer");
     public static final String TRACK_REMOVER = makeKey("tips", "track_remover");
@@ -495,11 +499,13 @@ public class Translations {
     public static final String WORLD_SPIKE = makeKey("jei", "desc.world_spike");
     public static final String PERSONAL_WORLD_SPIKE = makeKey("jei", "desc.personal_world_spike");
     public static final String WORLD_SPIKE_MINECART = makeKey("jei", "desc.world_spike_minecart");
+    public static final String TAG_FILTER = makeKey("jei", "desc.tag_filter");
 
     public static final String PAINT = makeKey("jei.gui", "paint");
     public static final String COPY_TAG = makeKey("jei.gui", "copy_tag");
     public static final String REPAIR = makeKey("jei.gui", "repair");
     public static final String SPLIT = makeKey("jei.gui", "split");
+    public static final String SET_PROTOTYPE = makeKey("jei.gui", "set_prototype");
   }
 
   public static class Emi {

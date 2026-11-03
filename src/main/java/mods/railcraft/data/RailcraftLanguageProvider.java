@@ -252,6 +252,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_TUNER, "Signal Tuner");
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
     this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
+    this.addItem(RailcraftItems.TAG_FILTER, "Tag Filter");
     this.addItem(RailcraftItems.TICKET, "Ticket");
     this.addItem(RailcraftItems.ROUTING_TABLE_BOOK, "Routing Table Book");
     this.addItem(RailcraftItems.WHISTLE_TUNER, "Whistle Tuner");
@@ -425,6 +426,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Tips.ROUTING_TABLE_BOOK_LAST_EDIT, "Last edited by %s");
     this.add(Translations.Tips.LOCOMOTIVE_SLOT_TICKET, "Insert Ticket");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_OWNER, "Owner:");
+    this.add(Translations.Tips.TAG_FILTER_BLANK, "Craft it with an item to filter by its tags");
+    this.add(Translations.Tips.TAG_FILTER_PROTOTYPE, "Item:");
+    this.add(Translations.Tips.TAG_FILTER_TAG, "Tag:");
+    this.add(Translations.Tips.TAG_FILTER_CHANGE_TAG, "Use to change tag");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_PRIMARY, "Primary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_SECONDARY, "Secondary color:");
     this.add(Translations.Tips.LOCOMOTIVE_ITEM_NO_WHISTLE, "There is currently no whistle installed");
@@ -1002,10 +1007,15 @@ public class RailcraftLanguageProvider extends LanguageProvider {
        It can only be broken by the owner.""");
     this.add(Translations.Jei.WORLD_SPIKE_MINECART, """
        Load the current chunk and the north, east, south and west chunks, and keeps them loaded.""");
+    this.add(Translations.Jei.TAG_FILTER, """
+       Matches every item in the selected tag. \
+       Craft it with an item to filter by its tags, the item is given back. \
+       Use it to switch between the item's tags, the most specific one is selected first.""");
     this.add(Translations.Jei.PAINT, "Paint");
     this.add(Translations.Jei.COPY_TAG, "Copy Tag");
     this.add(Translations.Jei.REPAIR, "Repair");
     this.add(Translations.Jei.SPLIT, "Split");
+    this.add(Translations.Jei.SET_PROTOTYPE, "Set Item");
   }
 
   private void lookingAtTranslations() {

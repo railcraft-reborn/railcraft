@@ -15,6 +15,7 @@ import mods.railcraft.world.item.crafting.CartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.LocomotivePaintingRecipe;
 import mods.railcraft.world.item.crafting.RailcraftRecipeTypes;
 import mods.railcraft.world.item.crafting.RotorRepairRecipe;
+import mods.railcraft.world.item.crafting.TagFilterRecipe;
 import mods.railcraft.world.item.crafting.TicketDuplicateRecipe;
 import mods.railcraft.world.item.crafting.TieRecipe;
 import mods.railcraft.world.level.block.RailcraftBlocks;
@@ -78,6 +79,7 @@ public class RailcraftEmiPlugin implements EmiPlugin {
             false, Component.translatable(Translations.Jei.PAINT)));
         case TicketDuplicateRecipe r -> registry.addRecipe(new DefaultRecipeWrapper(r, id, true,
             Component.translatable(Translations.Jei.COPY_TAG)));
+        case TagFilterRecipe r -> registry.addRecipe(new TagFilterEmiRecipe(id));
         case RotorRepairRecipe r -> registry.addRecipe(
             new DefaultRecipeWrapper(r, id, true, Component.translatable(Translations.Jei.REPAIR))
                 .modifyInputs(stack -> {

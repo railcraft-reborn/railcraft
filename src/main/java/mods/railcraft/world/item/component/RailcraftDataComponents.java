@@ -85,6 +85,12 @@ public class RailcraftDataComponents {
               .persistent(RoutingTableBookContent.CODEC)
               .networkSynchronized(RoutingTableBookContent.STREAM_CODEC));
 
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<TagFilterComponent>> TAG_FILTER =
+      deferredRegister.registerComponentType("tag_filter", builder ->
+          builder
+              .persistent(TagFilterComponent.CODEC)
+              .networkSynchronized(TagFilterComponent.STREAM_CODEC));
+
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID =
       deferredRegister.registerComponentType("simple_fluid_content", builder ->
           builder
