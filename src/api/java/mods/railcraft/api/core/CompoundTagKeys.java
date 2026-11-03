@@ -71,6 +71,7 @@ public final class CompoundTagKeys {
   public static final String LOCK_ID = "lockId";
   public static final String LOG = "log";
   public static final String MASTER = "master";
+  public static final String MASTER_POS = "masterPos";
   public static final String MAX_TEMPERATURE = "maxTemperature";
   public static final String MODE = "mode";
   public static final String MODULES = "modules";
