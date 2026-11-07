@@ -150,6 +150,8 @@ dependencies {
     implementation "curse.maven:patchouli-306770:$patchouli_id"
     implementation "curse.maven:jade-324717:$jade_id"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
+    compileOnly "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
+    //localRuntime "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
 
     //localRuntime "curse.maven:sodium-394468:6173749"
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
