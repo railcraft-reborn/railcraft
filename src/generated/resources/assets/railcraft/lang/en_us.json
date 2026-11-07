@@ -732,6 +732,7 @@
   "jei.railcraft.desc.world_spike": "Loads a 3x3 area of chunks at world load and keeps them loaded.",
   "jei.railcraft.desc.world_spike_minecart": "Load the current chunk and the north, east, south and west chunks, and keeps them loaded.",
   "jei.railcraft.tips.crusher": "(%s%% chance)",
+  "jei.railcraft.tips.fluid_boiler_heat": "Heat: %s per bucket",
   "key.railcraft.bed_minecart.sleep": "Sleep in the Minecart with Bed",
   "key.railcraft.category": "Railcraft Reborn",
   "key.railcraft.change_aura": "Change Aura",
