@@ -43,8 +43,12 @@ public class RailcraftDataMapProvider extends DataMapProvider {
 
     // Heat values ported from Railcraft 1.12.2
     var buildcraft = new ModLoadedCondition(BCEnergy.MODID);
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    // var forestry = new ModLoadedCondition(ForestryConstants.MOD_ID);
     this.builder(RailcraftDataMaps.FLUID_HEAT)
         .add(RailcraftTags.Fluids.CREOSOTE, new FluidHeat(4800), false)
+        // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+        // .add(forestry("ethanol"), new FluidHeat(16000), false, forestry)
         .add(buildcraft("oil_heavy"), new FluidHeat(42666), false, buildcraft)
         .add(buildcraft("oil_dense"), new FluidHeat(64000), false, buildcraft)
         .add(buildcraft("oil_distilled"), new FluidHeat(20000), false, buildcraft)
@@ -58,6 +62,11 @@ public class RailcraftDataMapProvider extends DataMapProvider {
         .add(RailcraftBlocks.LOW_PRESSURE_STEAM_BOILER_TANK, new SteamBoilerTank(1), false)
         .add(RailcraftBlocks.HIGH_PRESSURE_STEAM_BOILER_TANK, new SteamBoilerTank(1), false);
   }
+
+  // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+  // private static Identifier forestry(String path) {
+  //   return Identifier.fromNamespaceAndPath(ForestryConstants.MOD_ID, path);
+  // }
 
   private static Identifier buildcraft(String path) {
     return Identifier.fromNamespaceAndPath(BCEnergy.MODID, path);

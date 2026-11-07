@@ -336,6 +336,8 @@ public class Railcraft {
     event.createProvider(CokeOvenRecipeProvider.Runner::new);
     event.createProvider(CrusherRecipeProvider.Runner::new);
     event.createProvider(RollingRecipeProvider.Runner::new);
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    // event.createProvider(ForestryRecipeProvider.Runner::new);
     event.createProvider(RailcraftPoiTypeTagsProvider::new);
     event.createProvider(RailcraftLootModifierProvider::new);
     event.createProvider(RailcraftDamageTypeTagsProvider::new);

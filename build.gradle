@@ -58,6 +58,13 @@ sourceSets {
         compileClasspath += api.output
         runtimeClasspath += api.output
     }
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    // Runtime-only source set for the data run, so datagen-only mods stay out of client/server runs
+    //datagen {
+    //    java.srcDirs = []
+    //    resources.srcDirs = []
+    //    runtimeClasspath += api.output + main.output
+    //}
 }
 
 neoForge {
@@ -90,6 +97,8 @@ neoForge {
         clientData {
             clientData()
             gameDirectory = project.file('runs/data')
+            // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+            //sourceSet = sourceSets.datagen
             programArguments.addAll '--mod', 'railcraft', '--all',
                '--output', file('src/generated/resources/').getAbsolutePath(),
                '--existing', file('src/main/resources/').getAbsolutePath()
@@ -117,6 +126,8 @@ neoForge {
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    //datagenRuntimeClasspath.extendsFrom runtimeClasspath
 }
 
 repositories {
@@ -152,6 +163,11 @@ dependencies {
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
     compileOnly "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
     //localRuntime "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    //compileOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
+    //localRuntime "curse.maven:forestry-community-edition-1056828:$forestry_id"
+    // Needed by ForestryRecipeProvider during datagen
+    //datagenRuntimeOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
 
     //localRuntime "curse.maven:sodium-394468:6173749"
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
