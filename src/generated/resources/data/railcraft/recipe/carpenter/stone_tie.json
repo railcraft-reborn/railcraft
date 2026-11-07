@@ -1,0 +1,34 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "forestry"
+    }
+  ],
+  "type": "forestry:carpenter",
+  "box": [],
+  "id": "railcraft:carpenter/stone_tie",
+  "liquid": {
+    "amount": 750,
+    "id": "minecraft:water"
+  },
+  "recipe": {
+    "category": "misc",
+    "key": {
+      "#": {
+        "item": "railcraft:bag_of_cement"
+      },
+      "r": {
+        "item": "railcraft:rebar"
+      }
+    },
+    "pattern": [
+      "#r#"
+    ],
+    "result": {
+      "count": 1,
+      "id": "railcraft:stone_tie"
+    }
+  },
+  "time": 40
+}

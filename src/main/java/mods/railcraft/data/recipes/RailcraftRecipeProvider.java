@@ -8,6 +8,7 @@ import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.data.recipes.providers.BlastFurnaceRecipeProvider;
 import mods.railcraft.data.recipes.providers.CokeOvenRecipeProvider;
 import mods.railcraft.data.recipes.providers.CrusherRecipeProvider;
+import mods.railcraft.data.recipes.providers.ForestryRecipeProvider;
 import mods.railcraft.data.recipes.providers.RollingRecipeProvider;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
@@ -64,6 +65,7 @@ public class RailcraftRecipeProvider extends RecipeProvider implements IConditio
     BlastFurnaceRecipeProvider.genRecipes(recipeOutput);
     CrusherRecipeProvider.genRecipes(recipeOutput);
     RollingRecipeProvider.genRecipes(recipeOutput);
+    ForestryRecipeProvider.genRecipes(recipeOutput);
 
     buildMultiblockBlocks(recipeOutput);
     buildBlockStorageRecipes(recipeOutput);
