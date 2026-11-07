@@ -59,6 +59,12 @@ sourceSets {
         compileClasspath += api.output
         runtimeClasspath += api.output
     }
+    // Runtime-only source set for the data run, so datagen-only mods stay out of client/server runs
+    datagen {
+        java.srcDirs = []
+        resources.srcDirs = []
+        runtimeClasspath += api.output + main.output
+    }
 }
 
 neoForge {
@@ -97,6 +103,7 @@ neoForge {
         data {
             data()
             gameDirectory = project.file('runs/data')
+            sourceSet = sourceSets.datagen
             programArguments.addAll '--mod', 'railcraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
 
@@ -124,6 +131,7 @@ neoForge {
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    datagenRuntimeClasspath.extendsFrom runtimeClasspath
 }
 
 repositories {
@@ -163,6 +171,8 @@ dependencies {
     //localRuntime "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
     compileOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
     //localRuntime "curse.maven:forestry-community-edition-1056828:$forestry_id"
+    // Needed by ForestryRecipeProvider during datagen
+    datagenRuntimeOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
 
     localRuntime "curse.maven:mekanism-268560:7904058"//mekanism
     localRuntime "curse.maven:mekanism-268567:7904062"//mekanism-tools
