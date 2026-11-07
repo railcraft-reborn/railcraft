@@ -7,8 +7,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2'
-    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.4.2'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.1'
     id 'com.diffplug.spotless' version '8.9.0'
 }
 
