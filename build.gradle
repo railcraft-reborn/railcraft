@@ -159,6 +159,10 @@ dependencies {
     localRuntime "curse.maven:jade-api-324717:$jade_id"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
     localRuntime "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
+    compileOnly "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
+    localRuntime "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
+    compileOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
+    localRuntime "curse.maven:forestry-community-edition-1056828:$forestry_id"
 
     localRuntime "curse.maven:mekanism-268560:7904058"//mekanism
     localRuntime "curse.maven:mekanism-268567:7904062"//mekanism-tools
