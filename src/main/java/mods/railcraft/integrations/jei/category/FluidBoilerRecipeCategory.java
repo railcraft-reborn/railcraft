@@ -1,7 +1,7 @@
 package mods.railcraft.integrations.jei.category;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -9,24 +9,24 @@ import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.integrations.jei.RailcraftJeiPlugin;
 import mods.railcraft.integrations.jei.RecipeTypes;
 import mods.railcraft.integrations.jei.recipe.FluidBoilerJEIRecipe;
-import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.transfer.fluid.FluidResource;
 
 public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoilerJEIRecipe> {
 
@@ -80,17 +80,15 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
         .setOverlay(tankOverlay, 0, 0)
         .setBackground(tankBackground, -1, -1);
 
-    var fluidBuilder = builder.addInputSlot(73, 4)
+    builder.addInputSlot(73, 4)
+        .add(recipe.fuel(), 1000)
         .setFluidRenderer(1000, true, 16, 47)
         .setOverlay(tankOverlay, 0, 0)
-        .setBackground(tankBackground, -1, -1);
-
-    Objects.requireNonNull(Minecraft.getInstance().level).registryAccess()
-        .lookupOrThrow(BuiltInRegistries.FLUID.key())
-        .getOrThrow(recipe.fuel())
-        .forEach(fluid -> {
-          fluidBuilder.add(NeoForgeTypes.FLUID_STACK, new FluidStack(fluid, 1000));
-        });
+        .setBackground(tankBackground, -1, -1)
+        .addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip.add(
+            Component.translatable(Translations.Jei.FLUID_BOILER_HEAT,
+                    Math.round(recipe.heatValuePerBucket()))
+                .withStyle(ChatFormatting.GRAY)));
 
     builder.addInputSlot(100, 4)
         .add(recipe.water(), 1000)
@@ -100,10 +98,15 @@ public class FluidBoilerRecipeCategory extends AbstractRecipeCategory<FluidBoile
   }
 
   public static List<FluidBoilerJEIRecipe> getBoilerRecipes() {
-    return List.of(
-        new FluidBoilerJEIRecipe(RailcraftTags.Fluids.CREOSOTE,
-            Fluids.WATER,
-            RailcraftFluids.STEAM.get(), 100)
-    );
+    return BuiltInRegistries.FLUID.getDataMap(RailcraftDataMaps.FLUID_HEAT).keySet().stream()
+        .map(BuiltInRegistries.FLUID::getValue)
+        .filter(fluid -> fluid != Fluids.EMPTY && fluid.defaultFluidState().isSource())
+        .map(fluid -> new FluidBoilerJEIRecipe(fluid,
+            FuelUtil.getFuelValue(FluidResource.of(fluid)),
+            Fluids.WATER, RailcraftFluids.STEAM.get(), 100))
+        .filter(recipe -> recipe.heatValuePerBucket() > 0)
+        .sorted(Comparator.comparingDouble(FluidBoilerJEIRecipe::heatValuePerBucket)
+            .thenComparing(recipe -> BuiltInRegistries.FLUID.getKey(recipe.fuel())))
+        .toList();
   }
 }

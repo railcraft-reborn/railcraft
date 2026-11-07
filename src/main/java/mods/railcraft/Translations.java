@@ -470,6 +470,7 @@ public class Translations {
     public static final String CRUSHER = makeKey("jei", "category.crusher");
     public static final String SOLID_BOILER = makeKey("jei", "category.solid_boiler");
     public static final String FLUID_BOILER = makeKey("jei", "category.fluid_boiler");
+    public static final String FLUID_BOILER_HEAT = makeKey("jei", "tips.fluid_boiler_heat");
     public static final String CRUSHER_TIP = makeKey("jei", "tips.crusher");
 
     public static final String MANUAL_ROLLING_MACHINE =
