@@ -52,17 +52,19 @@ public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock impl
   @Override
   protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
+    var blockEntity = LevelUtil.getBlockEntity(level, pos, TankBlockEntity.class);
     if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
+      // Must match the server result, otherwise the placer doesn't hear the place sound
+      return blockEntity.flatMap(MultiblockBlockEntity::getUnresolvedMembership).isPresent()
+              ? InteractionResult.SUCCESS
+              : InteractionResult.TRY_WITH_EMPTY_HAND;
     }
-
-    return LevelUtil.getBlockEntity(level, pos, TankBlockEntity.class)
-        .flatMap(MultiblockBlockEntity::getMembership)
-        .map(MultiblockBlockEntity.Membership::master)
-        .map(master -> {
-          master.use((ServerPlayer) player, hand);
-          return (InteractionResult) InteractionResult.CONSUME;
-        })
-        .orElse(InteractionResult.TRY_WITH_EMPTY_HAND);
+    return blockEntity.flatMap(MultiblockBlockEntity::getMembership)
+            .map(MultiblockBlockEntity.Membership::master)
+            .map(master -> {
+              master.use((ServerPlayer) player, hand);
+              return (InteractionResult) InteractionResult.CONSUME;
+            })
+            .orElse(InteractionResult.TRY_WITH_EMPTY_HAND);
   }
 }
