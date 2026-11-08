@@ -24,10 +24,7 @@ public final class Seasons {
    * Evaluated on every call, so config changes apply without restarting.
    */
   private static boolean isChristmas() {
-    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
-      return false;
-    }
-    return switch (RailcraftConfig.COMMON.christmas.get()) {
+    return switch (RailcraftConfig.CLIENT.christmas.get()) {
       case 1 -> true;
       case 2 -> false;
       default -> {
@@ -53,6 +50,9 @@ public final class Seasons {
   }
 
   private static boolean isGhostTrain(Season season, @Nullable Component nameTag) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
+      return false;
+    }
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && isHalloween())
           || (nameTag != null && GHOST_TRAIN.equals(nameTag.getString()));
@@ -81,6 +81,9 @@ public final class Seasons {
 
   private static boolean isPolarExpress(Season season, @Nullable Component nameTag,
       Level level, BlockPos pos) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
+      return false;
+    }
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.CLIENT.polarExpressEnabled.get() && isChristmas())
           || (nameTag != null && POLAR_EXPRESS.equals(nameTag.getString()))
@@ -100,10 +103,10 @@ public final class Seasons {
    * Clientside only. Evaluated on every call, so config changes apply without restarting.
    */
   public static boolean isHalloween() {
-    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
       return false;
     }
-    return switch (RailcraftConfig.COMMON.halloween.get()) {
+    return switch (RailcraftConfig.CLIENT.halloween.get()) {
       case 1 -> true;
       case 2 -> false;
       default -> {

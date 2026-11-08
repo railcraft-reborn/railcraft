@@ -18,15 +18,10 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 public class RailcraftConfig {
 
   public static final Client CLIENT;
-  public static final Common COMMON;
   public static final Server SERVER;
-  private static final ModConfigSpec CLIENT_SPEC, COMMON_SPEC, SERVER_SPEC;
+  private static final ModConfigSpec CLIENT_SPEC, SERVER_SPEC;
 
   static {
-    final var commonPair = new ModConfigSpec.Builder().configure(Common::new);
-    COMMON_SPEC = commonPair.getRight();
-    COMMON = commonPair.getLeft();
-
     final var clientPair = new ModConfigSpec.Builder().configure(Client::new);
     CLIENT_SPEC = clientPair.getRight();
     CLIENT = clientPair.getLeft();
@@ -38,7 +33,6 @@ public class RailcraftConfig {
 
   public static void registerConfig(ModContainer container) {
     container.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.CLIENT_SPEC);
-    container.registerConfig(ModConfig.Type.COMMON, RailcraftConfig.COMMON_SPEC);
     container.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.SERVER_SPEC);
   }
 
@@ -268,15 +262,20 @@ public class RailcraftConfig {
     }
   }
 
-  public static class Common {
+  public static class Client {
 
     public final BooleanValue seasonsEnabled;
     public final IntValue christmas;
     public final IntValue halloween;
+    public final BooleanValue ghostTrainEnabled;
+    public final BooleanValue polarExpressEnabled;
+    public final BooleanValue showBetaMessage;
+    public final IntValue locomotiveLightLevel;
 
-    private Common(ModConfigSpec.Builder builder) {
+    private Client(ModConfigSpec.Builder builder) {
       this.seasonsEnabled = builder
-          .comment("Enable season-based item & train effects?")
+          .comment("Change to false to disable all the seasonal cart effects, including the ones "
+              + "set with the Seasons Crowbar")
           .define("seasonsEnabled", true);
 
       this.christmas = builder
@@ -286,17 +285,7 @@ public class RailcraftConfig {
       this.halloween = builder
           .comment("Controls whether Halloween mode is (0) enabled, (1) forced, or (2) disabled")
           .defineInRange("halloween", 0, 0, 2);
-    }
-  }
 
-  public static class Client {
-
-    public final BooleanValue ghostTrainEnabled;
-    public final BooleanValue polarExpressEnabled;
-    public final BooleanValue showBetaMessage;
-    public final IntValue locomotiveLightLevel;
-
-    private Client(ModConfigSpec.Builder builder) {
       this.ghostTrainEnabled = builder
           .comment("Change to false to disable Ghost Train rendering")
           .define("ghostTrainEnabled", true);
