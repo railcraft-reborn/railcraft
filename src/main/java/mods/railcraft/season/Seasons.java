@@ -8,33 +8,26 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 
 public final class Seasons {
 
-  private static final boolean HALLOWEEN;
-  private static final boolean CHRISTMAS;
   public static final String GHOST_TRAIN = "Ghost Train";
   public static final String POLAR_EXPRESS = "Polar Express";
 
-  static {
-    if (RailcraftConfig.COMMON.seasonsEnabled.get()) {
-      var date = LocalDate.now();
-      var month = date.getMonth();
-      var day = date.getDayOfMonth();
+  private Seasons() {}
 
-      CHRISTMAS = switch (RailcraftConfig.COMMON.christmas.get()) {
-        case 1 -> true;
-        case 2 -> false;
-        default -> (month == Month.DECEMBER) || (month == Month.JANUARY);
-      };
-
-      HALLOWEEN = switch (RailcraftConfig.COMMON.halloween.get()) {
-        case 1 -> true;
-        case 2 -> false;
-        default -> (month == Month.OCTOBER && day >= 21)
-            || (month == Month.NOVEMBER && day <= 10);
-      };
-    } else {
-      HALLOWEEN = false;
-      CHRISTMAS = false;
+  /**
+   * Evaluated on every call, so config changes apply without restarting.
+   */
+  private static boolean isChristmas() {
+    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
+      return false;
     }
+    return switch (RailcraftConfig.COMMON.christmas.get()) {
+      case 1 -> true;
+      case 2 -> false;
+      default -> {
+        var month = LocalDate.now().getMonth();
+        yield month == Month.DECEMBER || month == Month.JANUARY;
+      }
+    };
   }
 
   /**
@@ -45,7 +38,7 @@ public final class Seasons {
   public static boolean isGhostTrain(AbstractMinecart cart) {
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
-      return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && HALLOWEEN)
+      return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && isHalloween())
           || cart.hasCustomName() && GHOST_TRAIN.equals(cart.getCustomName().getString());
     }
     return season == Season.HALLOWEEN;
@@ -60,16 +53,28 @@ public final class Seasons {
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
     var level = cart.level();
     return season == Season.DEFAULT
-        ? (RailcraftConfig.CLIENT.polarExpressEnabled.get() && CHRISTMAS)
+        ? (RailcraftConfig.CLIENT.polarExpressEnabled.get() && isChristmas())
             || cart.hasCustomName() && POLAR_EXPRESS.equals(cart.getCustomName().getString())
             || level.getBiome(cart.blockPosition()).value().shouldSnow(level, cart.blockPosition())
         : season == Season.CHRISTMAS;
   }
 
   /**
-   * Clientside only.
+   * Clientside only. Evaluated on every call, so config changes apply without restarting.
    */
   public static boolean isHalloween() {
-    return HALLOWEEN;
+    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
+      return false;
+    }
+    return switch (RailcraftConfig.COMMON.halloween.get()) {
+      case 1 -> true;
+      case 2 -> false;
+      default -> {
+        var date = LocalDate.now();
+        var month = date.getMonth();
+        var day = date.getDayOfMonth();
+        yield (month == Month.OCTOBER && day >= 21) || (month == Month.NOVEMBER && day <= 10);
+      }
+    };
   }
 }
