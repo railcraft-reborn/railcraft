@@ -15,7 +15,11 @@ public class PumpkinParticle extends SteamParticle {
       double dz, TextureAtlasSprite sprite) {
     super(level, x, y, z, dx, dy, dz, sprite);
     this.gravity = -0.01F;
-    this.lifetime = (int) (16.0D / (this.random.nextGaussian() * 0.8D + 0.2D));
+    // The campfire smoke base makes particles ~1 block wide, too big for a pumpkin icon
+    this.quadSize = 0.2F + this.random.nextFloat() * 0.1F;
+    // Keep the pumpkin colors, without the grey tint of the steam
+    this.rCol = this.gCol = this.bCol = 1.0F;
+    this.lifetime = 40 + this.random.nextInt(40);
   }
 
   @Override
