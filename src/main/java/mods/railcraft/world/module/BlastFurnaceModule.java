@@ -152,6 +152,10 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
     return this.burnTime > 0;
   }
 
+  public boolean needsFuel() {
+    return this.getItem(SLOT_FUEL).getCount() < 8;
+  }
+
   public int getBurnProgressScaled(int scale) {
     if (this.burnTime <= 0 || this.currentItemBurnTime <= 0) {
       return 0;

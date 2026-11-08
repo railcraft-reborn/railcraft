@@ -73,14 +73,14 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
 
   @Override
   protected boolean doProcessStep() {
-    if (!this.needFuel()) {
+    if (!this.needsFuel()) {
       this.steamTank.drain(STEAM_PER_STEP, IFluidHandler.FluidAction.EXECUTE);
       return true;
     }
     return false;
   }
 
-  private boolean needFuel() {
+  public boolean needsFuel() {
     var steam = this.steamTank.drain(STEAM_PER_STEP, IFluidHandler.FluidAction.SIMULATE);
     return steam.getAmount() < STEAM_PER_STEP;
   }

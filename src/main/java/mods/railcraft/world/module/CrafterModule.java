@@ -8,11 +8,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 public abstract class CrafterModule<T extends ModuleProvider> extends ContainerModule<T> {
 
   protected static final int PROGRESS_STEP = 16;
+  private static final int PAUSE_DELAY = 4;
 
   protected int progress;
   protected int duration;
   private boolean processing;
-  protected boolean paused;
+  private int pauseTicks;
   private long finishedAt;
 
   private int progressStepTicks;
@@ -23,6 +24,9 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
 
   @Override
   public void serverTick() {
+    if (this.pauseTicks > 0) {
+      this.pauseTicks--;
+    }
     if (this.progressStepTicks++ >= PROGRESS_STEP) {
       this.progressStepTicks = 0;
       this.progressCrafting();
@@ -46,6 +50,17 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
 
   public final boolean isProcessing() {
     return this.processing;
+  }
+
+  /**
+   * Pauses crafting for a few ticks (gate action).
+   */
+  public final void pause() {
+    this.pauseTicks = PAUSE_DELAY;
+  }
+
+  public final boolean isPaused() {
+    return this.pauseTicks > 0;
   }
 
   protected final void setProcessing(boolean processing) {
@@ -95,7 +110,7 @@ public abstract class CrafterModule<T extends ModuleProvider> extends ContainerM
     if (this.isFinished()) {
       this.setProcessing(false);
     }
-    if (this.paused) {
+    if (this.isPaused()) {
       return;
     }
 

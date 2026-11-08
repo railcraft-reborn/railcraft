@@ -28,6 +28,7 @@ import mods.railcraft.data.models.RailcraftBlockModelProvider;
 import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.datamaps.RailcraftDataMaps;
+import mods.railcraft.integrations.buildcraft.BuildCraftIntegration;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -100,7 +101,9 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -148,6 +151,7 @@ public class Railcraft {
     RailcraftConfig.registerConfig(modContainer);
 
     var modEventBus = modContainer.getEventBus();
+    modEventBus.addListener(this::handleCommonSetup);
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
@@ -190,6 +194,12 @@ public class Railcraft {
   }
 
   // Mod Events
+  private void handleCommonSetup(FMLCommonSetupEvent event) {
+    if (ModList.get().isLoaded(BuildCraftIntegration.MOD_ID)) {
+      event.enqueueWork(BuildCraftIntegration::init);
+    }
+  }
+
   private void handleRegisterCapabilities(RegisterCapabilitiesEvent event) {
     for (var entityType : BuiltInRegistries.ENTITY_TYPE) {
       event.registerEntity(RollingStock.CAPABILITY, entityType,
