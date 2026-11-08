@@ -42,12 +42,18 @@ public abstract class MultiblockBlock extends BaseEntityBlock {
   protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState,
       Level level, BlockPos pos, Player player, InteractionHand interactionHand,
       BlockHitResult rayTraceResult) {
+    var blockEntity = LevelUtil.getBlockEntity(level, pos, MultiblockBlockEntity.class);
     if (level.isClientSide()) {
-      return ItemInteractionResult.SUCCESS;
+      // Must match the server result: if the client consumes the click while the server places
+      // the held block, the placer doesn't hear the place sound (it's played only to others).
+      return blockEntity.flatMap(MultiblockBlockEntity::getUnresolvedMembership)
+              .isPresent()
+              ? ItemInteractionResult.SUCCESS
+              : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    return LevelUtil.getBlockEntity(level, pos, MultiblockBlockEntity.class)
-        .map(blockEntity -> (MultiblockBlockEntity<?, ?>) blockEntity)
+    return blockEntity
+        .map(be -> (MultiblockBlockEntity<?, ?>) be)
         .flatMap(MultiblockBlockEntity::getMembership)
         .map(MultiblockBlockEntity.Membership::master)
         .map(master -> master.use((ServerPlayer) player, interactionHand))
