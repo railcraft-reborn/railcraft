@@ -155,7 +155,7 @@ public abstract class BaseSteamLocomotive extends Locomotive implements FluidTra
       var z = this.getZ() - Math.sin(rads) * offset;
 
       SimpleParticleType particle;
-      if (Seasons.isHalloween() && this.random.nextInt(4) == 0) { // 20%?
+      if (Seasons.isGhostTrain(this) && this.random.nextInt(4) == 0) { // 25%
         particle = RailcraftParticleTypes.PUMPKIN.get();
       } else {
         // smog, obviously.

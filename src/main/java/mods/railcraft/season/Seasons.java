@@ -48,10 +48,21 @@ public final class Seasons {
    * Clientside only.
    */
   public static boolean isGhostTrain(MinecartRenderState state) {
-    Season season = getSeason(state);
+    return isGhostTrain(getSeason(state), state.nameTag);
+  }
+
+  /**
+   * Clientside only.
+   */
+  public static boolean isGhostTrain(AbstractMinecart cart) {
+    var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
+    return isGhostTrain(season, cart.getCustomName());
+  }
+
+  private static boolean isGhostTrain(Season season, @Nullable Component nameTag) {
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && HALLOWEEN)
-          || (state.nameTag != null && GHOST_TRAIN.equals(state.nameTag.getString()));
+          || (nameTag != null && GHOST_TRAIN.equals(nameTag.getString()));
     }
     return season == Season.HALLOWEEN;
   }
