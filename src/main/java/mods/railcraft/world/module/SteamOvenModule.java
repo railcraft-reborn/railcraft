@@ -80,6 +80,10 @@ public class SteamOvenModule extends CrafterModule<SteamOvenBlockEntity> {
     }
   }
 
+  public boolean needsFuel() {
+    return this.steamTank.getFluidAmount() < STEAM_PER_STEP;
+  }
+
   @Override
   protected boolean craftAndPush() {
     int count = 0;

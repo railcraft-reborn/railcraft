@@ -36,6 +36,7 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
   protected boolean isWorking, useLast;
   private Optional<RecipeHolder<RollingRecipe>> currentRecipe = Optional.empty();
   private int progress, clock = 0, processTime = 100;
+  private int pauseTicks;
 
   public ManualRollingMachineBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos,
       BlockState blockState) {
@@ -110,6 +111,11 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
       ManualRollingMachineBlockEntity blockEntity) {
     blockEntity.balanceSlots();
 
+    if (blockEntity.pauseTicks > 0) {
+      blockEntity.pauseTicks--;
+      return;
+    }
+
     if (++blockEntity.clock % 8 == 0) {
       blockEntity.currentRecipe = blockEntity.getRecipe((ServerLevel) level);
       blockEntity.processTime = blockEntity.currentRecipe
@@ -143,6 +149,17 @@ public class ManualRollingMachineBlockEntity extends RailcraftBlockEntity implem
 
   protected void progress() {
     this.progress++;
+  }
+
+  public boolean isWorking() {
+    return this.isWorking;
+  }
+
+  /**
+   * Pauses the machine for a few ticks (gate action).
+   */
+  public void pause() {
+    this.pauseTicks = 4;
   }
 
   private void balanceSlots() {

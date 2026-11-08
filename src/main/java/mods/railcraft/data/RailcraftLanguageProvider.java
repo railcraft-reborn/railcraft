@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.buildcraft.GateStatement;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -955,6 +956,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.Jei.SOLID_BOILER, "Solid Boiler");
     this.add(Translations.Jei.FLUID_BOILER, "Fluid Boiler");
     this.add(Translations.Jei.FLUID_BOILER_HEAT, "Heat: %s per bucket");
+    for (var statement : GateStatement.values()) {
+      this.add(statement.getTranslationKey(), statement.getEnglishName());
+    }
     this.add(Translations.Jei.CRUSHER_TIP, "(%s%% chance)");
     this.add(Translations.Jei.MANUAL_ROLLING_MACHINE, """
         Machine for rolling various shapes of metal. If there is only enough items in the grid \

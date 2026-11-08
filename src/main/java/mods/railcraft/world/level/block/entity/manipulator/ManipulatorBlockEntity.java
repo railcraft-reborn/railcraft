@@ -175,12 +175,35 @@ public abstract class ManipulatorBlockEntity extends ContainerBlockEntity implem
     return this.sendCartGateAction;
   }
 
+  /**
+   * Requests the current cart to be sent, regardless of the remaining work (gate action).
+   */
+  public void requestSendCart() {
+    this.sendCartGateAction = true;
+  }
+
+  public boolean hasCart() {
+    return this.currentCart != null;
+  }
+
+  public boolean hasWork() {
+    return this.currentCart != null && this.canHandleCart(this.currentCart)
+        && (this.isProcessing() || this.hasWorkForCart(this.currentCart));
+  }
+
   public void cartWasSent() {
     this.sendCartGateAction = false;
   }
 
   public boolean isPaused() {
     return this.pause > 0;
+  }
+
+  /**
+   * Pauses this manipulator for a few ticks (gate action).
+   */
+  public void pause() {
+    this.pause = PAUSE_DELAY;
   }
 
   protected void setResetTimer(int ticks) {

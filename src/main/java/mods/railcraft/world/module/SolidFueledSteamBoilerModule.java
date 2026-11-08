@@ -46,6 +46,10 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
     });
   }
 
+  public boolean needsFuel() {
+    return this.needsFuel;
+  }
+
   @Override
   public boolean canPlaceItem(int slot, ItemStack itemStack) {
     if (!this.provider.isFormed()) {
