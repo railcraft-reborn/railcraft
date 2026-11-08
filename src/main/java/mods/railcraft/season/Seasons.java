@@ -17,10 +17,7 @@ public final class Seasons {
    * Evaluated on every call, so config changes apply without restarting.
    */
   private static boolean isChristmas() {
-    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
-      return false;
-    }
-    return switch (RailcraftConfig.COMMON.christmas.get()) {
+    return switch (RailcraftConfig.CLIENT.christmas.get()) {
       case 1 -> true;
       case 2 -> false;
       default -> {
@@ -36,6 +33,9 @@ public final class Seasons {
    * @param cart The cart.
    */
   public static boolean isGhostTrain(AbstractMinecart cart) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
+      return false;
+    }
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
     if (season == Season.DEFAULT) {
       return (RailcraftConfig.CLIENT.ghostTrainEnabled.get() && isHalloween())
@@ -50,6 +50,9 @@ public final class Seasons {
    * @param cart The cart.
    */
   public static boolean isPolarExpress(AbstractMinecart cart) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
+      return false;
+    }
     var season = cart instanceof SeasonalCart seasonal ? seasonal.getSeason() : Season.DEFAULT;
     var level = cart.level();
     return season == Season.DEFAULT
@@ -63,10 +66,10 @@ public final class Seasons {
    * Clientside only. Evaluated on every call, so config changes apply without restarting.
    */
   public static boolean isHalloween() {
-    if (!RailcraftConfig.COMMON.seasonsEnabled.get()) {
+    if (!RailcraftConfig.CLIENT.seasonsEnabled.get()) {
       return false;
     }
-    return switch (RailcraftConfig.COMMON.halloween.get()) {
+    return switch (RailcraftConfig.CLIENT.halloween.get()) {
       case 1 -> true;
       case 2 -> false;
       default -> {

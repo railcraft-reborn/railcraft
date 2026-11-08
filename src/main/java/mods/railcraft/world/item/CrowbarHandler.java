@@ -2,7 +2,6 @@ package mods.railcraft.world.item;
 
 import java.util.Map;
 import com.google.common.collect.MapMaker;
-import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
@@ -48,8 +47,7 @@ public class CrowbarHandler {
     }
 
     if ((stack.getItem() instanceof SeasonsCrowbarItem)
-        && cart instanceof SeasonalCart seasonalCart
-        && RailcraftConfig.COMMON.seasonsEnabled.get()) {
+        && cart instanceof SeasonalCart seasonalCart) {
       var season = SeasonsCrowbarItem.getSeason(stack);
       seasonalCart.setSeason(season);
       RailcraftCriteriaTriggers.SEASON_SET.value().trigger(serverPlayer, cart, season);
