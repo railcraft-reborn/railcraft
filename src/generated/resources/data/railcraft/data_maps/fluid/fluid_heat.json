@@ -75,6 +75,15 @@
       ],
       "heat_value_per_bucket": 42666
     },
+    "forestry:biomass": {
+      "neoforge:conditions": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "forestry"
+        }
+      ],
+      "heat_value_per_bucket": 8000
+    },
     "forestry:ethanol": {
       "neoforge:conditions": [
         {
