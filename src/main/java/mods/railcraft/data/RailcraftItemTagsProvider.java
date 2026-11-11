@@ -463,5 +463,32 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
             Items.PACKED_ICE,
             Items.BLUE_ICE);
     this.tag(RailcraftTags.Items.ICEMAN_BACKPACK_REJECT);
+
+    this.tag(RailcraftTags.Items.SIGNALMAN_BACKPACK_ALLOW)
+        .addTag(RailcraftTags.Items.DETECTOR)
+        .add(RailcraftItems.SIGNAL_BLOCK_SURVEYOR.get(),
+            RailcraftItems.SIGNAL_TUNER.get(),
+            RailcraftItems.SIGNAL_LAMP.get(),
+            RailcraftItems.SIGNAL_LABEL.get(),
+            RailcraftItems.GOGGLES.get(),
+            RailcraftItems.CONTROLLER_CIRCUIT.get(),
+            RailcraftItems.RECEIVER_CIRCUIT.get(),
+            RailcraftItems.SIGNAL_CIRCUIT.get(),
+            RailcraftItems.RADIO_CIRCUIT.get(),
+            RailcraftItems.BLOCK_SIGNAL.get(),
+            RailcraftItems.DISTANT_SIGNAL.get(),
+            RailcraftItems.TOKEN_SIGNAL.get(),
+            RailcraftItems.DUAL_BLOCK_SIGNAL.get(),
+            RailcraftItems.DUAL_DISTANT_SIGNAL.get(),
+            RailcraftItems.DUAL_TOKEN_SIGNAL.get(),
+            RailcraftItems.ANALOG_SIGNAL_CONTROLLER_BOX.get(),
+            RailcraftItems.SIGNAL_SEQUENCER_BOX.get(),
+            RailcraftItems.SIGNAL_CAPACITOR_BOX.get(),
+            RailcraftItems.SIGNAL_INTERLOCK_BOX.get(),
+            RailcraftItems.SIGNAL_BLOCK_RELAY_BOX.get(),
+            RailcraftItems.SIGNAL_RECEIVER_BOX.get(),
+            RailcraftItems.SIGNAL_CONTROLLER_BOX.get(),
+            RailcraftItems.TOKEN_SIGNAL_BOX.get());
+    this.tag(RailcraftTags.Items.SIGNALMAN_BACKPACK_REJECT);
   }
 }

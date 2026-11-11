@@ -64,6 +64,9 @@ public class ForestryRecipeProvider {
         RailcraftBackpacks.WOVEN_TRACKMAN_BACKPACK.get(), Ingredient.of(Items.RAIL));
     backpack(output, RailcraftBackpacks.ICEMAN_BACKPACK.get(),
         RailcraftBackpacks.WOVEN_ICEMAN_BACKPACK.get(), Ingredient.of(Items.SNOW_BLOCK));
+    backpack(output, RailcraftBackpacks.SIGNALMAN_BACKPACK.get(),
+        RailcraftBackpacks.WOVEN_SIGNALMAN_BACKPACK.get(),
+        Ingredient.of(RailcraftItems.SIGNAL_LAMP.get()));
   }
 
   private static void backpack(RecipeOutput output, Item backpack, Item wovenBackpack,

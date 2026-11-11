@@ -23,6 +23,9 @@ public final class RailcraftBackpacks {
   public static final RailcraftBackpackDefinition ICEMAN =
           new RailcraftBackpackDefinition(0xFFFFFF, 0xFFFFFF,
                   RailcraftTags.Items.ICEMAN_BACKPACK_ALLOW, RailcraftTags.Items.ICEMAN_BACKPACK_REJECT);
+  public static final RailcraftBackpackDefinition SIGNALMAN =
+          new RailcraftBackpackDefinition(0x004B82, 0xFFFFFF,
+                  RailcraftTags.Items.SIGNALMAN_BACKPACK_ALLOW, RailcraftTags.Items.SIGNALMAN_BACKPACK_REJECT);
 
   public static final DeferredItem<Item> TRACKMAN_BACKPACK =
       backpack("trackman_backpack", TRACKMAN, EnumBackpackType.NORMAL);
@@ -32,6 +35,10 @@ public final class RailcraftBackpacks {
       backpack("iceman_backpack", ICEMAN, EnumBackpackType.NORMAL);
   public static final DeferredItem<Item> WOVEN_ICEMAN_BACKPACK =
       backpack("woven_iceman_backpack", ICEMAN, EnumBackpackType.WOVEN);
+  public static final DeferredItem<Item> SIGNALMAN_BACKPACK =
+      backpack("signalman_backpack", SIGNALMAN, EnumBackpackType.NORMAL);
+  public static final DeferredItem<Item> WOVEN_SIGNALMAN_BACKPACK =
+      backpack("woven_signalman_backpack", SIGNALMAN, EnumBackpackType.WOVEN);
 
   private RailcraftBackpacks() {}
 
@@ -41,11 +48,11 @@ public final class RailcraftBackpacks {
   }
 
   public static List<DeferredItem<Item>> normalBackpacks() {
-    return List.of(TRACKMAN_BACKPACK, ICEMAN_BACKPACK);
+    return List.of(TRACKMAN_BACKPACK, ICEMAN_BACKPACK, SIGNALMAN_BACKPACK);
   }
 
   public static List<DeferredItem<Item>> wovenBackpacks() {
-    return List.of(WOVEN_TRACKMAN_BACKPACK, WOVEN_ICEMAN_BACKPACK);
+    return List.of(WOVEN_TRACKMAN_BACKPACK, WOVEN_ICEMAN_BACKPACK, WOVEN_SIGNALMAN_BACKPACK);
   }
 
   public static void addToCreativeTab(CreativeModeTab.Output output) {
@@ -53,6 +60,8 @@ public final class RailcraftBackpacks {
     output.accept(WOVEN_TRACKMAN_BACKPACK.get());
     output.accept(ICEMAN_BACKPACK.get());
     output.accept(WOVEN_ICEMAN_BACKPACK.get());
+    output.accept(SIGNALMAN_BACKPACK.get());
+    output.accept(WOVEN_SIGNALMAN_BACKPACK.get());
   }
 
   private static DeferredItem<Item> backpack(String name, RailcraftBackpackDefinition definition,

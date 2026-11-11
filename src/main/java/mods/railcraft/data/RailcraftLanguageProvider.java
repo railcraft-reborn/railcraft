@@ -259,6 +259,8 @@ public class RailcraftLanguageProvider extends LanguageProvider {
       this.addItem(RailcraftBackpacks.WOVEN_TRACKMAN_BACKPACK, "Woven Trackman's Backpack");
       this.addItem(RailcraftBackpacks.ICEMAN_BACKPACK, "Iceman's Backpack");
       this.addItem(RailcraftBackpacks.WOVEN_ICEMAN_BACKPACK, "Woven Iceman's Backpack");
+      this.addItem(RailcraftBackpacks.SIGNALMAN_BACKPACK, "Signalman's Backpack");
+      this.addItem(RailcraftBackpacks.WOVEN_SIGNALMAN_BACKPACK, "Woven Signalman's Backpack");
     }
     this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
     this.addItem(RailcraftItems.TAG_FILTER, "Tag Filter");

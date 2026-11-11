@@ -163,6 +163,8 @@ public class RailcraftTags {
     public static final TagKey<Item> TRACKMAN_BACKPACK_REJECT = tag("backpack/reject/trackman");
     public static final TagKey<Item> ICEMAN_BACKPACK_ALLOW = tag("backpack/allow/iceman");
     public static final TagKey<Item> ICEMAN_BACKPACK_REJECT = tag("backpack/reject/iceman");
+    public static final TagKey<Item> SIGNALMAN_BACKPACK_ALLOW = tag("backpack/allow/signalman");
+    public static final TagKey<Item> SIGNALMAN_BACKPACK_REJECT = tag("backpack/reject/signalman");
 
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(RailcraftConstants.rl(name));
