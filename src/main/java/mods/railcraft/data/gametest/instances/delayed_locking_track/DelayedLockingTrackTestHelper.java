@@ -5,7 +5,7 @@ import mods.railcraft.world.level.block.entity.track.DelayedLockingTrackBlockEnt
 import mods.railcraft.world.level.block.track.outfitted.DelayedLockingTrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -44,7 +44,7 @@ final class DelayedLockingTrackTestHelper {
   }
 
   static void launchCart(GameTestHelper helper) {
-    var cart = helper.spawn(EntityType.MINECART, new Vec3(0.5, Y + 0.1, Z + 0.5));
+    var cart = helper.spawn(EntityTypes.MINECART, new Vec3(0.5, Y + 0.1, Z + 0.5));
     cart.setDeltaMovement(0.4, 0, 0);
   }
 }

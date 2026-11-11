@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steel_spike_maul"
+        "recipes": "railcraft:steel_spike_maul"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

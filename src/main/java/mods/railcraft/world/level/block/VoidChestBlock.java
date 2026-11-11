@@ -1,14 +1,11 @@
 package mods.railcraft.world.level.block;
 
 import javax.annotation.Nullable;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.VoidChestBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -40,13 +37,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class VoidChestBlock extends BaseEntityBlock {
 
-  private static final MapCodec<VoidChestBlock> CODEC =
-      RecordCodecBuilder.mapCodec(instance -> instance.group(
-          BuiltInRegistries.SOUND_EVENT.byNameCodec().fieldOf("open_sound").forGetter(VoidChestBlock::getOpenChestSound),
-          BuiltInRegistries.SOUND_EVENT.byNameCodec().fieldOf("close_sound").forGetter(VoidChestBlock::getCloseChestSound),
-          propertiesCodec()
-      ).apply(instance, VoidChestBlock::new)
-  );
   private static final VoxelShape SHAPE = Block.column(14.0, 0.0, 14.0);
   private final SoundEvent openSound;
   private final SoundEvent closeSound;
@@ -60,10 +50,6 @@ public class VoidChestBlock extends BaseEntityBlock {
         .setValue(ChestBlock.WATERLOGGED, false));
   }
 
-  @Override
-  public MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

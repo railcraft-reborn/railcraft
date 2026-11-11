@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:wooden_rail",
     "b": "railcraft:wooden_railbed"

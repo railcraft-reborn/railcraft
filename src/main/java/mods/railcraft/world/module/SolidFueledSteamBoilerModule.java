@@ -1,5 +1,6 @@
 package mods.railcraft.world.module;
 
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.world.level.block.entity.steamboiler.SolidFueledSteamBoilerBlockEntity;
 import mods.railcraft.world.level.material.steam.SolidFuelProvider;
@@ -64,6 +65,6 @@ public class SolidFueledSteamBoilerModule extends SteamBoilerModule<SolidFueledS
   }
 
   private boolean isFuel(ItemStack itemStack) {
-    return itemStack.getBurnTime(null, this.provider.level().fuelValues()) > 0;
+    return FuelUtil.burnTime(itemStack, this.provider.level()) > 0;
   }
 }

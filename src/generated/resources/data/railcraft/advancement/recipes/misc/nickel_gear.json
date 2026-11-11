@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:nickel_gear"
+        "recipes": "railcraft:nickel_gear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

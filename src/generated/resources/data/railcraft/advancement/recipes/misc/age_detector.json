@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:age_detector"
+        "recipes": "railcraft:age_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.steamboiler;
 
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.steamboiler.SteamBoilerBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -21,8 +20,6 @@ public class SteamBoilerTankBlock extends SteamBoilerBlock {
       EnumProperty.create("connection_type", ConnectionType.class);
 
   private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 16, 15);
-  private static final MapCodec<SteamBoilerTankBlock> CODEC =
-      simpleCodec(SteamBoilerTankBlock::new);
 
 
   public SteamBoilerTankBlock(Properties properties) {
@@ -31,10 +28,6 @@ public class SteamBoilerTankBlock extends SteamBoilerBlock {
         .setValue(CONNECTION_TYPE, ConnectionType.NONE));
   }
 
-  @Override
-  protected MapCodec<? extends SteamBoilerBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -65,7 +65,7 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity, TankBl
     poseStack.pushPose();
     model.setPackedLight(RenderUtil.calculateGlowLight(state.lightCoords, fluidStack));
     model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockItemSheet(), (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(model, pose, vertexConsumer,
           RenderUtil.getColorARGB(fluidStack, 1.0F),
           CuboidModelRenderer.FaceDisplay.FRONT, true);

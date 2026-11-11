@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:train_dispenser"
+        "recipes": "railcraft:train_dispenser"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:lead_block_from_lead_ingot"
+        "recipes": "railcraft:lead_block_from_lead_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

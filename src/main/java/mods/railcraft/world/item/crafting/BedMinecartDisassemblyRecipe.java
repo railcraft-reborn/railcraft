@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,7 +17,7 @@ public class BedMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
   public static final RecipeSerializer<BedMinecartDisassemblyRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   public BedMinecartDisassemblyRecipe() {
-    super(RailcraftItems.BED_MINECART.get(), Items.WHITE_BED);
+    super(RailcraftItems.BED_MINECART.get(), Items.BED.pick(DyeColor.WHITE));
   }
 
   @Override

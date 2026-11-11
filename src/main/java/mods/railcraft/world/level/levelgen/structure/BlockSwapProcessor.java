@@ -10,14 +10,13 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 /**
  * Swaps blocks of a structure for other ones, keeping their properties, so stairs keep facing the
  * same way.
  */
-public class BlockSwapProcessor extends StructureProcessor {
+public class BlockSwapProcessor implements StructureProcessor {
 
   public static final MapCodec<BlockSwapProcessor> CODEC =
       Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(),
@@ -46,7 +45,7 @@ public class BlockSwapProcessor extends StructureProcessor {
   }
 
   @Override
-  protected StructureProcessorType<?> getType() {
-    return RailcraftStructureProcessorTypes.BLOCK_SWAP.get();
+  public MapCodec<BlockSwapProcessor> codec() {
+    return CODEC;
   }
 }

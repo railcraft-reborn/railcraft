@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block;
 import java.util.ArrayList;
 import java.util.List;
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.util.BoxBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.RefinedFirestoneItem;
@@ -40,17 +39,12 @@ public class RitualBlock extends BaseEntityBlock {
           .raiseCeiling(0.0625F * -9.0)
           .shiftY(0.0625F * 12.0)
           .build());
-  private static final MapCodec<RitualBlock> CODEC = simpleCodec(RitualBlock::new);
 
   public RitualBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any().setValue(CRACKED, false));
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

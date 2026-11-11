@@ -2,15 +2,15 @@
   "gives": {
     "id": "railcraft:void_chest_minecart"
   },
-  "max_uses": 12.0,
+  "max_uses": 12,
   "reputation_discount": 0.05,
   "wants": {
     "count": {
       "type": "minecraft:uniform",
-      "max": 40.0,
-      "min": 30.0
+      "max": 40,
+      "min": 30
     },
     "id": "minecraft:emerald"
   },
-  "xp": 15.0
+  "xp": 15
 }

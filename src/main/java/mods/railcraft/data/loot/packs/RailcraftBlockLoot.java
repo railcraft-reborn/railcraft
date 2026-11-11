@@ -4,9 +4,8 @@ import java.util.Set;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -16,12 +15,12 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftBlockLoot extends BlockLootSubProvider {
 
-  public RailcraftBlockLoot(HolderLookup.Provider registries) {
+  public RailcraftBlockLoot(LootTableSubProvider.Context registries) {
     super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
   }
 
@@ -444,11 +443,11 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
   }
 
   protected LootTable.Builder createOreDrop(Block block, Item item, int min, int max) {
-    var enchantment = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+    var enchantment = this.enchantments;
     return createSilkTouchDispatchTable(block, this.applyExplosionDecay(block,
         LootItem
             .lootTableItem(item)
-            .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
+            .apply(SetItemCountFunction.setCount(ContextIntProviders.between(min, max)))
             .apply(ApplyBonusCount.addOreBonusCount(enchantment.getOrThrow(Enchantments.FORTUNE)))));
   }
 

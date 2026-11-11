@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:high_speed_track"
+        "recipes": "railcraft:high_speed_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

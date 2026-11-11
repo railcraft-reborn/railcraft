@@ -2,6 +2,7 @@ package mods.railcraft.world.level.block.entity;
 
 import org.jspecify.annotations.Nullable;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.container.AdvancedContainer;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.SlotFilteredResourceHandler;
@@ -87,7 +88,7 @@ public class HobbyistSteamEngineBlockEntity extends SteamEngineBlockEntity {
   }
 
   private boolean isFuel(ItemStack itemStack) {
-    return this.level != null && itemStack.getBurnTime(null, this.level.fuelValues()) > 0;
+    return this.level != null && FuelUtil.burnTime(itemStack, this.level) > 0;
   }
 
   public StandardTank getWaterTank() {

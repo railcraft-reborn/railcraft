@@ -17,6 +17,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -35,30 +39,16 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ForestryRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
+  private final HolderGetter<Item> items;
 
-  private ForestryRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
+  private ForestryRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
     super(registries, recipeOutput.withConditions(
         new ModLoadedCondition(ForestryConstants.MOD_ID)));
-    this.items = registries.lookupOrThrow(Registries.ITEM);
+    this.items = recipes.lookup(Registries.ITEM);
   }
 
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries,
-        RecipeOutput output) {
-      return new ForestryRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "ForestryRecipeProvider";
-    }
+  public static void bootstrap(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    new ForestryRecipeProvider(recipes, advancements).buildRecipes();
   }
 
   @Override

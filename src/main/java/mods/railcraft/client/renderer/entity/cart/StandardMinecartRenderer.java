@@ -42,9 +42,7 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
         OverlayTexture.NO_OVERLAY,
         color,
         null,
-        0,
-        null
-    );
+        0);
 
     if (Seasons.isPolarExpress(renderState)) {
       var snowModel = this.getSnowModel(renderState);
@@ -58,9 +56,7 @@ public abstract class StandardMinecartRenderer<T extends RailcraftMinecart, S ex
           OverlayTexture.NO_OVERLAY,
           ARGB.colorFromFloat(1, 1, 1, 1),
           null,
-          0,
-          null
-      );
+          0);
     }
     poseStack.popPose();
   }

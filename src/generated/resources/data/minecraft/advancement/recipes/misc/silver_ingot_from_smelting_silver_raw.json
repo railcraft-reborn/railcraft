@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:silver_ingot_from_smelting_silver_raw"
+        "recipes": "minecraft:silver_ingot_from_smelting_silver_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

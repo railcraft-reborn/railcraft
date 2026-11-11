@@ -4,17 +4,17 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.util.LevelUtil;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.advancements.criterion.NbtPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.LocationPredicate;
+import net.minecraft.advancements.predicates.NbtPredicate;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 public class SpikeMaulUseTrigger extends
     SimpleCriterionTrigger<SpikeMaulUseTrigger.TriggerInstance> {
@@ -39,14 +39,14 @@ public class SpikeMaulUseTrigger extends
   }
 
   public record TriggerInstance(
-      Optional<ContextAwarePredicate> player,
+      Optional<Holder<LootItemCondition>> player,
       Optional<NbtPredicate> nbt,
       Optional<ItemPredicate> tool,
       Optional<LocationPredicate> location) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
+            LootItemCondition.CODEC.optionalFieldOf("player")
                 .forGetter(TriggerInstance::player),
             NbtPredicate.CODEC.optionalFieldOf("nbt")
                 .forGetter(TriggerInstance::nbt),
@@ -67,7 +67,7 @@ public class SpikeMaulUseTrigger extends
     }
 
     @Override
-    public Optional<ContextAwarePredicate> player() {
+    public Optional<Holder<LootItemCondition>> player() {
       return player;
     }
   }

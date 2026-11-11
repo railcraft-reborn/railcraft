@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -53,8 +52,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
   private static final Map<Charge, Spec> CHARGE_SPECS =
       Spec.make(Charge.distribution, ConnectType.BLOCK, 0,
           new ChargeStorage.Spec(State.RECHARGEABLE, 1000, 1000, 1));
-  private static final MapCodec<ForceTrackEmitterBlock> CODEC =
-      simpleCodec(ForceTrackEmitterBlock::new);
 
   public ForceTrackEmitterBlock(Properties properties) {
     super(properties);
@@ -64,10 +61,6 @@ public class ForceTrackEmitterBlock extends BaseEntityBlock implements ChargeBlo
         .setValue(COLOR, DEFAULT_COLOR));
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

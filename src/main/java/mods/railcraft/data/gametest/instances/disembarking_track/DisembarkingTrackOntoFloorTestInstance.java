@@ -9,7 +9,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 
 /**
@@ -30,7 +30,7 @@ public class DisembarkingTrackOntoFloorTestInstance extends GameTestInstance {
     helper.setBlock(2, 0, 3, Blocks.DIRT);
     helper.setBlock(2, 1, 3, Blocks.WITHER_ROSE);
     DisembarkingTrackTestHelper.disembarkShulker(helper);
-    helper.succeedWhen(() -> helper.assertEntityPresent(EntityType.SHULKER, 2, 1, 3));
+    helper.succeedWhen(() -> helper.assertEntityPresent(EntityTypes.SHULKER, 2, 1, 3));
   }
 
   @Override

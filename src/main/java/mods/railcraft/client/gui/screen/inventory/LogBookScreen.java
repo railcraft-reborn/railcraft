@@ -65,7 +65,7 @@ public class LogBookScreen extends Screen {
     this.addRenderableWidget(RailcraftButton
         .builder(
             CommonComponents.GUI_DONE,
-            button -> this.minecraft.setScreen(null),
+            button -> this.minecraft.gui.setScreen(null),
             ButtonTexture.LARGE_BUTTON)
         .pos(this.width / 2 - buttonWidth / 2, this.height / 2 + 90)
         .size(buttonWidth, 20)

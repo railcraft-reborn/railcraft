@@ -2,7 +2,6 @@ package mods.railcraft.data.gametest.instances.delayed_locking_track;
 
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.data.gametest.RailcraftGameTestInstances;
-
 import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestInstance;
@@ -10,7 +9,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class DelayedLockingTrackUnpoweredLetsCartsPassTestInstance extends GameTestInstance {
 
@@ -25,7 +24,7 @@ public class DelayedLockingTrackUnpoweredLetsCartsPassTestInstance extends GameT
   public void run(GameTestHelper helper) {
     DelayedLockingTrackTestHelper.build(helper, false);
     DelayedLockingTrackTestHelper.launchCart(helper);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, DelayedLockingTrackTestHelper.END_POS);
+    helper.succeedWhenEntityPresent(EntityTypes.MINECART, DelayedLockingTrackTestHelper.END_POS);
   }
 
   @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:cyan_post"
+        "recipes": "railcraft:cyan_post"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:dual_block_signal"
+        "recipes": "railcraft:dual_block_signal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

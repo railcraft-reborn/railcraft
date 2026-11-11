@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:charge_spool_medium_from_large"
+        "recipes": "railcraft:charge_spool_medium_from_large"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

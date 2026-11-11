@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:nickel_iron_battery"
+        "recipes": "railcraft:nickel_iron_battery"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

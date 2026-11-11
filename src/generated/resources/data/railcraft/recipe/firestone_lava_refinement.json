@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "L": "minecraft:lava_bucket",
     "R": "minecraft:redstone_block",

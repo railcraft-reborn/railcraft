@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.manipulator;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.FluidLoaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -15,16 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidLoaderBlock extends FluidManipulatorBlock<FluidLoaderBlockEntity> {
 
-  private static final MapCodec<FluidLoaderBlock> CODEC = simpleCodec(FluidLoaderBlock::new);
 
   public FluidLoaderBlock(Properties properties) {
     super(FluidLoaderBlockEntity.class, properties);
   }
 
-  @Override
-  protected MapCodec<? extends FluidManipulatorBlock<FluidLoaderBlockEntity>> codec() {
-    return CODEC;
-  }
 
   @Override
   public Direction getFacing(BlockState blockState) {

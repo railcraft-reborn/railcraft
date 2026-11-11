@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:blast_furnace/blasting_iron_door"
+        "recipes": "railcraft:blast_furnace/blasting_iron_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

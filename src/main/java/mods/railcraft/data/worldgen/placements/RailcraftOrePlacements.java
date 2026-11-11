@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.BlockPredicateFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
@@ -160,9 +160,9 @@ public class RailcraftOrePlacements {
     return ResourceKey.create(Registries.PLACED_FEATURE, RailcraftConstants.id(name));
   }
 
-  private static Holder.Reference<ConfiguredFeature<?, ?>> getConfiguredFeature(
+  private static Holder.Reference<Feature> getConfiguredFeature(
       BootstrapContext<PlacedFeature> context,
-      ResourceKey<ConfiguredFeature<?, ?>> resourceKey) {
-    return context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(resourceKey);
+      ResourceKey<Feature> resourceKey) {
+    return context.lookup(Registries.FEATURE).getOrThrow(resourceKey);
   }
 }

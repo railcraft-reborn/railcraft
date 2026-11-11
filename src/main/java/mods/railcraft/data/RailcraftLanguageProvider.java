@@ -1,7 +1,6 @@
 package mods.railcraft.data;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -25,7 +24,6 @@ import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
@@ -1448,13 +1446,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.BOILERS_EXPLODE, "Boilers explode");
   }
 
-  private void addFluidType(Supplier<? extends FluidType> key, String name) {
-    this.add(key.get(), name);
-  }
 
-  private void add(FluidType key, String name) {
-    this.add(key.getDescriptionId(), name);
-  }
 
   private void addBlockColorVariants(
       VariantSet<DyeColor, Block, ? extends Block> blocks, String name) {

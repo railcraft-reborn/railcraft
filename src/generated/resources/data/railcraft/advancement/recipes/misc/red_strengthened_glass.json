@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:red_strengthened_glass"
+        "recipes": "railcraft:red_strengthened_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

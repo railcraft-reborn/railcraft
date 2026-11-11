@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:hobbyist_steam_engine"
+        "recipes": "railcraft:hobbyist_steam_engine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

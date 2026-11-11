@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:analog_signal_controller_box"
+        "recipes": "railcraft:analog_signal_controller_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

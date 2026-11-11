@@ -5,6 +5,7 @@ import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
@@ -13,7 +14,6 @@ public class RailcraftRenderTypes {
   private static final RenderSetup POSITION_COLOR_LIGHTMAP_SETUP =
       RenderSetup.builder(RenderPipelines.OUTLINE_CULL)
           .useLightmap()
-          .bufferSize(256)
           .createRenderSetup();
 
   public static final RenderType POSITION_COLOR_LIGHTMAP = RenderType.create(
@@ -33,7 +33,7 @@ public class RailcraftRenderTypes {
               .createRenderSetup()));
 
   /**
-   * Like {@link net.minecraft.client.renderer.rendertype.RenderTypes#entityTranslucent} but with
+   * Like {@link RenderTypes#entityTranslucent} but with
    * back faces culled, so the inside of see-through models isn't drawn over the outside.
    */
   public static RenderType entityTranslucentCull(Identifier texture) {

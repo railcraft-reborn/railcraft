@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "#railcraft:iron_tank_wall",
     "b": "#c:dyes/black"

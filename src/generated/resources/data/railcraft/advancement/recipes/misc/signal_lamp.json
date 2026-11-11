@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_lamp"
+        "recipes": "railcraft:signal_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

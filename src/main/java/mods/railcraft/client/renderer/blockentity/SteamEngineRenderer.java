@@ -53,11 +53,21 @@ public class SteamEngineRenderer
       SubmitNodeCollector collector, CameraRenderState cameraRenderState) {
     poseStack.pushPose();
     poseStack.translate(0.5F, 0.5F, 0.5F);
-    poseStack.mulPose(state.facing.getRotation());
+    poseStack.rotate(state.facing.getRotation());
     poseStack.translate(-0.5F, -0.5F, -0.5F);
-    collector.submitModel(this.model, new SteamEngineModel.State(state.stage, state.progress),
-        poseStack, this.model.renderType(getTexture(state.tier)), state.lightCoords,
-        OverlayTexture.NO_OVERLAY, -1, null, 0, state.breakProgress);
+    collector.submitModel(
+        this.model,
+        new SteamEngineModel.State(state.stage, state.progress),
+        poseStack,
+        this.model.renderType(getTexture(state.tier)),
+        state.lightCoords,
+        OverlayTexture.NO_OVERLAY,
+        -1,
+        null,
+        0);
+    if (state.breakProgress != null) {
+      collector.submitCrumblingOverlay(this.model, new SteamEngineModel.State(state.stage, state.progress), poseStack, this.model.renderType(getTexture(state.tier)), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, state.breakProgress);
+    }
     poseStack.popPose();
   }
 }

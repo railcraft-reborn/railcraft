@@ -3,14 +3,15 @@ package mods.railcraft.world.entity.npc;
 import java.util.Optional;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.trading.TradeSet;
 import net.minecraft.world.item.trading.VillagerTrade;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class RailcraftTradeSets {
 
@@ -35,11 +36,11 @@ public class RailcraftTradeSets {
 
   private static void register(BootstrapContext<TradeSet> context, ResourceKey<TradeSet> key,
       TagKey<VillagerTrade> trades, int amount) {
-    register(context, key, trades, ConstantValue.exactly(amount));
+    register(context, key, trades, ContextIntProviders.exactly(amount));
   }
 
   private static void register(BootstrapContext<TradeSet> context, ResourceKey<TradeSet> key,
-      TagKey<VillagerTrade> trades, NumberProvider amount) {
+      TagKey<VillagerTrade> trades, Holder<ContextIntProvider> amount) {
     context.register(key, new TradeSet(
         context.lookup(Registries.VILLAGER_TRADE).getOrThrow(trades),
         amount,

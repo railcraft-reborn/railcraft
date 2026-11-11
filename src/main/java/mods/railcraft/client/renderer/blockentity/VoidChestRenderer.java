@@ -62,7 +62,7 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
       SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
     poseStack.pushPose();
     poseStack.translate(0.5F, 0.5F, 0.5F);
-    poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.angle));
+    poseStack.rotate(Axis.YP.rotationDegrees(-renderState.angle));
     poseStack.translate(-0.5F, -0.5F, -0.5F);
 
     float lidAngle = renderState.open;
@@ -79,9 +79,10 @@ public class VoidChestRenderer implements BlockEntityRenderer<VoidChestBlockEnti
         OverlayTexture.NO_OVERLAY,
         -1,
         this.sprites.get(VOID_CHEST),
-        0,
-        renderState.breakProgress
-    );
+        0);
+    if (renderState.breakProgress != null) {
+      nodeCollector.submitCrumblingOverlay(this.singleModel, lidAngle, poseStack, rendertype, renderState.lightCoords, OverlayTexture.NO_OVERLAY, -1, renderState.breakProgress);
+    }
     poseStack.popPose();
   }
 

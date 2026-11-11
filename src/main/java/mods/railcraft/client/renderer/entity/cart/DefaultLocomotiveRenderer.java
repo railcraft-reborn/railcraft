@@ -69,8 +69,7 @@ public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locom
           OverlayTexture.NO_OVERLAY,
           selectedColor,
           null,
-          0,
-          null);
+          0);
     }
 
     if (Seasons.isPolarExpress(renderState)) {
@@ -81,9 +80,7 @@ public abstract class DefaultLocomotiveRenderer extends LocomotiveRenderer<Locom
           this.snowLayer.renderType(this.textures[3]),
           renderState.lightCoords,
           OverlayTexture.NO_OVERLAY,
-          0,
-          null
-      );
+          0);
     }
     poseStack.popPose();
   }

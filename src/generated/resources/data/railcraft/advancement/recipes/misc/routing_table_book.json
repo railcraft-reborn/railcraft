@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:routing_table_book"
+        "recipes": "railcraft:routing_table_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

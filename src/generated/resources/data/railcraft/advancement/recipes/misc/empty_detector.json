@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:empty_detector"
+        "recipes": "railcraft:empty_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

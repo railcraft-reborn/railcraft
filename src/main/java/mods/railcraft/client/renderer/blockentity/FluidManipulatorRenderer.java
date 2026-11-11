@@ -48,7 +48,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
     interiorModel.setPackedLight(state.lightCoords);
     interiorModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockItemSheet(), (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(interiorModel, pose, vertexConsumer,
           0xFFFFFFFF, CuboidModelRenderer.FaceDisplay.FRONT, true);
     });
@@ -69,7 +69,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
       model.setPackedLight(RenderUtil.calculateGlowLight(state.lightCoords, fluidStack));
       model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockItemSheet(), (pose, vertexConsumer) -> {
         CuboidModelRenderer.render(model, pose, vertexConsumer,
             RenderUtil.getColorARGB(fluidStack, 1),
             CuboidModelRenderer.FaceDisplay.FRONT, true);

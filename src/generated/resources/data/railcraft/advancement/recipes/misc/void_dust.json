@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:void_dust"
+        "recipes": "railcraft:void_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -2,7 +2,9 @@ package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
 import mods.railcraft.Translations;
+import mods.railcraft.util.FuelUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +15,8 @@ import net.minecraft.world.level.block.Block;
 public class CoalCokeBlockItem extends BlockItem {
 
   public CoalCokeBlockItem(Block block, Properties properties) {
-    super(block, properties);
+    super(block, properties.component(DataComponents.COOKING_FUEL,
+        FuelUtil.cookingFuel(32000)));
   }
 
   @Override
@@ -22,7 +25,7 @@ public class CoalCokeBlockItem extends BlockItem {
     if (context.level() == null) {
       return;
     }
-    var burnTime = stack.getBurnTime(null, context.level().fuelValues());
+    var burnTime = FuelUtil.burnTime(stack, context.level());
     tooltipAdder.accept(Component.translatable(Translations.Tips.COAL_COKE_BLOCK, burnTime)
         .withStyle(ChatFormatting.GRAY));
   }

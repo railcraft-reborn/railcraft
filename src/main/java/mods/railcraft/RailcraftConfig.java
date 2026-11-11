@@ -33,7 +33,7 @@ public class RailcraftConfig {
 
   public static void registerConfig(ModContainer container) {
     container.registerConfig(ModConfig.Type.CLIENT, RailcraftConfig.CLIENT_SPEC);
-    container.registerConfig(ModConfig.Type.SERVER, RailcraftConfig.SERVER_SPEC);
+    container.registerConfig(ModConfig.Type.SYNCED, RailcraftConfig.SERVER_SPEC, "railcraft-server.toml");
   }
 
   public static boolean isOreEnabled(WorldgenOre ore) {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:lime_post"
+        "recipes": "railcraft:lime_post"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

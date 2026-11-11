@@ -4,12 +4,12 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.season.Season;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.TriggerInstance> {
 
@@ -33,13 +33,13 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Tr
   }
 
   public record TriggerInstance(
-      Optional<ContextAwarePredicate> player,
+      Optional<Holder<LootItemCondition>> player,
       Optional<Season> season,
       Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
+            LootItemCondition.CODEC.optionalFieldOf("player")
                 .forGetter(TriggerInstance::player),
             Season.CODEC.optionalFieldOf("season")
                 .forGetter(TriggerInstance::season),
@@ -55,7 +55,7 @@ public class SetSeasonTrigger extends SimpleCriterionTrigger<SetSeasonTrigger.Tr
     }
 
     @Override
-    public Optional<ContextAwarePredicate> player() {
+    public Optional<Holder<LootItemCondition>> player() {
       return player;
     }
   }

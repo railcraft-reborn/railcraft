@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:tin_ingot_from_smelting_tin_raw"
+        "recipes": "minecraft:tin_ingot_from_smelting_tin_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:brass_block_from_brass_ingot"
+        "recipes": "railcraft:brass_block_from_brass_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

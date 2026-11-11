@@ -155,7 +155,7 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     super.writeToBuf(data);
     this.signalController.writeToBuf(data);
     data.writeMap(this.signalAspectTriggerSignals,
-        FriendlyByteBuf::writeEnum, FriendlyByteBuf::writeBitSet);
+        FriendlyByteBuf::writeEnum, (buf, aspect, signals) -> buf.writeBitSet(signals));
   }
 
   @Override
@@ -164,6 +164,6 @@ public class AnalogSignalControllerBoxBlockEntity extends AbstractSignalBoxBlock
     this.signalController.readFromBuf(data);
     this.signalAspectTriggerSignals.clear();
     this.signalAspectTriggerSignals.putAll(data.readMap(buf ->
-            buf.readEnum(SignalAspect.class), FriendlyByteBuf::readBitSet));
+            buf.readEnum(SignalAspect.class), (buf, aspect) -> buf.readBitSet()));
   }
 }

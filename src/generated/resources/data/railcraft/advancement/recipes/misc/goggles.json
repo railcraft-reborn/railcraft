@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:goggles"
+        "recipes": "railcraft:goggles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

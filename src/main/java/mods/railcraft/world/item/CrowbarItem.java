@@ -21,6 +21,7 @@ import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -83,7 +84,7 @@ public class CrowbarItem extends Item implements Crowbar {
       var newBlockState = blockState.rotate(level, pos, Rotation.CLOCKWISE_90);
       if (newBlockState != blockState) {
         level.setBlockAndUpdate(pos, newBlockState);
-        player.swing(hand);
+        player.swing(hand, SwingAnimation.DEFAULT, true);
         stack.hurtAndBreak(1, serverLevel, player,
             item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
         return InteractionResult.SUCCESS;
@@ -130,7 +131,7 @@ public class CrowbarItem extends Item implements Crowbar {
   public void onWhack(ServerPlayer player, InteractionHand hand, ItemStack crowbar, BlockPos pos) {
     crowbar.hurtAndBreak(1, player.level(), player,
         item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
-    player.swing(hand);
+    player.swing(hand, SwingAnimation.DEFAULT, true);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class CrowbarItem extends Item implements Crowbar {
       AbstractMinecart cart) {
     crowbar.hurtAndBreak(1, player.level(), player,
         item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
-    player.swing(hand);
+    player.swing(hand, SwingAnimation.DEFAULT, true);
   }
 
   @Override
@@ -158,7 +159,7 @@ public class CrowbarItem extends Item implements Crowbar {
       AbstractMinecart cart) {
     crowbar.hurtAndBreak(BOOST_DAMAGE, player.level(), player,
         item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
-    player.swing(hand);
+    player.swing(hand, SwingAnimation.DEFAULT, true);
   }
 
   @Override

@@ -66,7 +66,7 @@ public class CargoMinecartRenderer extends ContentsMinecartRenderer<CargoMinecar
       SubmitNodeCollector collector, int color) {
     poseStack.pushPose();
     poseStack.translate(0.5, 0.5 + 0.3125, 0.5);
-    poseStack.mulPose(Axis.YP.rotationDegrees(90F));
+    poseStack.rotate(Axis.YP.rotationDegrees(90F));
     this.renderCargo(rendererState, poseStack, collector);
     poseStack.popPose();
   }
@@ -105,7 +105,7 @@ public class CargoMinecartRenderer extends ContentsMinecartRenderer<CargoMinecar
     }
     poseStack.translate(0, yOffset, 0);
     poseStack.scale(scale, scale, scale);
-    poseStack.mulPose(Axis.YP.rotationDegrees(90F));
+    poseStack.rotate(Axis.YP.rotationDegrees(90F));
     for (int i = 0; i < numIterations; i++) {
       poseStack.pushPose();
       float tx = (float) (RANDOM.nextDouble() - 0.5F) * xScale;

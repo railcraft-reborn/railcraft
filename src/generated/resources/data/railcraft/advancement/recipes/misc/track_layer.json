@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:track_layer"
+        "recipes": "railcraft:track_layer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

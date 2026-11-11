@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steel_axe"
+        "recipes": "railcraft:steel_axe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

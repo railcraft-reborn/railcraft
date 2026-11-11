@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strap_iron_one_way_track"
+        "recipes": "railcraft:strap_iron_one_way_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,4 +1,4 @@
-# Railcraft Reborn for Minecraft 26.1.x
+# Railcraft Reborn for Minecraft 26.3
 
 [![CI Build](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml/badge.svg)](https://github.com/railcraft-reborn/railcraft/actions/workflows/build.yml)
 [![Crowdin](https://badges.crowdin.net/railcraft-reborn/localized.svg)](https://crowdin.com/project/railcraft-reborn)
@@ -13,6 +13,20 @@ Here you will find the source and issue tracker for the **Railcraft Reborn** pro
 Railcraft Reborn is a community driven continuation of the popular Minecraft mod
 [Railcraft](https://github.com/Railcraft/Railcraft), originally developed by **CovertJaguar**.
 It is built on top of the [NeoForged](https://github.com/neoforged) API.
+
+## Building for Minecraft 26.3
+
+Use JDK 25 and run `./gradlew build` (`gradlew.bat build` on Windows).
+This branch targets Minecraft 26.3 with NeoForge 26.3.0.101 or newer in the 26.3 series.
+Run `./gradlew runGameTestServer` for the in-game tests.
+Regenerate game data with `./gradlew runClientData` after changing recipes, models or world generation.
+
+Server settings still use `railcraft-server.toml`. NeoForge 26.3 loads these from
+`config/` or a world's `syncedconfig/` directory; move existing world-specific settings
+from `serverconfig/` to `syncedconfig/` when upgrading.
+
+Patchouli is currently a compile-only dependency because no Minecraft 26.3 release is
+available. The guidebook integration requires a compatible Patchouli release at runtime.
 
 The mod greatly expands and improves the minecart system in Minecraft - adding many new blocks,
 entities, and features.

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:bushing_gear_bronze"
+        "recipes": "railcraft:bushing_gear_bronze"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

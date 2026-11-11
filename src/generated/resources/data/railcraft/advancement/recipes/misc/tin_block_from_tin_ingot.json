@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:tin_block_from_tin_ingot"
+        "recipes": "railcraft:tin_block_from_tin_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

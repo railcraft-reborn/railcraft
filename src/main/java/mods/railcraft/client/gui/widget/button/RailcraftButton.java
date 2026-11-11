@@ -53,7 +53,7 @@ public class RailcraftButton extends Button {
     guiGraphics.blit(RenderPipelines.GUI_TEXTURED, WIDGETS_LOCATION, this.getX() + this.width / 2,
         this.getY(), xOffset + w - this.width / 2, yOffset + i * h,
         this.width / 2, h, 256, 256, ARGB.white(this.alpha));
-    int j = getFGColor();
+    int j = getLabelTextColor();
     guiGraphics.centeredText(font, this.getMessage(), this.getX() + this.width / 2,
         this.getY() + (this.height - 8) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
   }

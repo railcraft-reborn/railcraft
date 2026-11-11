@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:black_post"
+        "recipes": "railcraft:black_post"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:reinforced_track"
+        "recipes": "railcraft:reinforced_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

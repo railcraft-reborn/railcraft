@@ -56,7 +56,7 @@ public class RailcraftBlockProperties {
   public static UnaryOperator<BlockBehaviour.Properties> steelAnvil() {
     return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.METAL)
-        .pushReaction(PushReaction.BLOCK)
+        .pushReaction(PushReaction.IMMOVEABLE)
         .requiresCorrectToolForDrops()
         .strength(5.0F, 2000.0F)
         .sound(SoundType.ANVIL);
@@ -142,7 +142,7 @@ public class RailcraftBlockProperties {
         .isValidSpawn(RailcraftBlockProperties::never)
         .isRedstoneConductor(RailcraftBlockProperties::never)
         .isSuffocating(RailcraftBlockProperties::never)
-        .isViewBlocking(RailcraftBlockProperties::never);
+        .isViewBlocking((state, level, pos, box) -> false);
   }
 
   public static BlockBehaviour.Properties ironTank() {
@@ -163,7 +163,7 @@ public class RailcraftBlockProperties {
         .sound(SoundType.GLASS)
         .isRedstoneConductor(RailcraftBlockProperties::never)
         .isSuffocating(RailcraftBlockProperties::never)
-        .isViewBlocking(RailcraftBlockProperties::never)
+        .isViewBlocking((state, level, pos, box) -> false)
         .lightLevel(LightBlock.LIGHT_EMISSION);
   }
 
@@ -185,7 +185,7 @@ public class RailcraftBlockProperties {
         .sound(SoundType.GLASS)
         .isRedstoneConductor(RailcraftBlockProperties::never)
         .isSuffocating(RailcraftBlockProperties::never)
-        .isViewBlocking(RailcraftBlockProperties::never)
+        .isViewBlocking((state, level, pos, box) -> false)
         .lightLevel(LightBlock.LIGHT_EMISSION);
   }
 

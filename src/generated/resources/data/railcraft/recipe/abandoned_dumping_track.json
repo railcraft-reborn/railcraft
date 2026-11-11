@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "railcraft:dumping_track_kit",
     "railcraft:abandoned_track"

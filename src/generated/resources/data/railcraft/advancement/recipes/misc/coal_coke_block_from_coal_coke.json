@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:coal_coke_block_from_coal_coke"
+        "recipes": "railcraft:coal_coke_block_from_coal_coke"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

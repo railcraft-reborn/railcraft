@@ -2,6 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
+    "particle": "#cap",
     "cap": "railcraft:block/switch_track_actuator_cap",
     "side_long": "railcraft:block/switch_track_actuator_side_long",
     "side_short": "railcraft:block/switch_track_actuator_side_short",

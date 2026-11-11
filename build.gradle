@@ -133,6 +133,11 @@ configurations {
 repositories {
     mavenLocal()
     maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
+    maven {
         name = 'JEI/Patchouli'
         url = 'https://maven.blamejared.com/'
     }
@@ -158,10 +163,11 @@ dependencies {
     compileOnly "dev.emi:emi-neoforge:$emi_version+1.21:api"
     //localRuntime "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
 
-    implementation "curse.maven:patchouli-306770:$patchouli_id"
-    implementation "curse.maven:jade-324717:$jade_id"
+    // Patchouli has no 26.3 release yet. Keep its optional API off the runtime classpath.
+    compileOnly "curse.maven:patchouli-306770:$patchouli_id"
+    implementation "maven.modrinth:jade:$jade_version"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
-    compileOnly "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
+    compileOnly "maven.modrinth:buildcraft-community-edition:$buildcraft_version"
     //localRuntime "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
     // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
     //compileOnly "curse.maven:forestry-community-edition-1056828:$forestry_id"
@@ -173,8 +179,6 @@ dependencies {
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 
-    localRuntime "curse.maven:edivadlib-638508:7961578"
-    localRuntime "curse.maven:solargeneration-336538:7926995"
     //localRuntime "curse.maven:morejeiinfo-902996:6149873"
 }
 

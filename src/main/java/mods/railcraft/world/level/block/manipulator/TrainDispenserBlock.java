@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.manipulator;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.TrainDispenserBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.redstone.Orientation;
 public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEntity> {
 
   public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-  private static final MapCodec<TrainDispenserBlock> CODEC = simpleCodec(TrainDispenserBlock::new);
 
   public TrainDispenserBlock(Properties properties) {
     super(TrainDispenserBlockEntity.class, properties);
@@ -30,10 +28,6 @@ public class TrainDispenserBlock extends ManipulatorBlock<TrainDispenserBlockEnt
         .setValue(FACING, Direction.DOWN));
   }
 
-  @Override
-  protected MapCodec<? extends ManipulatorBlock<TrainDispenserBlockEntity>> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

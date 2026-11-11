@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:stone_railbed"
+        "recipes": "railcraft:stone_railbed"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

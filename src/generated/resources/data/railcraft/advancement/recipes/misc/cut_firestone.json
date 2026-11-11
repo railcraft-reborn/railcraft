@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:cut_firestone"
+        "recipes": "railcraft:cut_firestone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

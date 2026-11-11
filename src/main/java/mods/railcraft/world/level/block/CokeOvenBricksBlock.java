@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.CokeOvenBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -13,16 +12,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class CokeOvenBricksBlock extends FurnaceMultiblockBlock {
 
-  private static final MapCodec<CokeOvenBricksBlock> CODEC = simpleCodec(CokeOvenBricksBlock::new);
 
   public CokeOvenBricksBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends FurnaceMultiblockBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.transfer.transaction.Transaction;
 
@@ -38,7 +38,7 @@ public class ForceTrackTestInstance extends GameTestInstance {
     });
 
     helper.pressButton(1, 3, 2);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 10, 2, 2);
+    helper.succeedWhenEntityPresent(EntityTypes.MINECART, 10, 2, 2);
   }
 
   @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:orange_post"
+        "recipes": "railcraft:orange_post"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

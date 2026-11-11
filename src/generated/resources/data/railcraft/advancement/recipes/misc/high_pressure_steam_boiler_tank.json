@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:high_pressure_steam_boiler_tank"
+        "recipes": "railcraft:high_pressure_steam_boiler_tank"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

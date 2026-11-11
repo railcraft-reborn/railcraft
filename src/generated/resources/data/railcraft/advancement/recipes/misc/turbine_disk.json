@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:turbine_disk"
+        "recipes": "railcraft:turbine_disk"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

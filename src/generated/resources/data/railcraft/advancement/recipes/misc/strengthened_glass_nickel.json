@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strengthened_glass_nickel"
+        "recipes": "railcraft:strengthened_glass_nickel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

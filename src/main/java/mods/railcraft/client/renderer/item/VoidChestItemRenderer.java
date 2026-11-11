@@ -40,9 +40,7 @@ public class VoidChestItemRenderer implements NoDataSpecialModelRenderer {
         packedOverlay,
         -1,
         this.sprites.get(VoidChestRenderer.VOID_CHEST),
-        outlineColor,
-        null
-    );
+        outlineColor);
   }
 
   @Override

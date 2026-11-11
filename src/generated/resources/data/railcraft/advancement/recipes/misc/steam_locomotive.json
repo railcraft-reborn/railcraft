@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steam_locomotive"
+        "recipes": "railcraft:steam_locomotive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

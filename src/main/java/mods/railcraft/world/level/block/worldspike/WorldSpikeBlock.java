@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.worldspike;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.Railcraft;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
@@ -21,16 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class WorldSpikeBlock extends BaseEntityBlock implements JeiSearchable {
 
-  private static final MapCodec<WorldSpikeBlock> CODEC = simpleCodec(WorldSpikeBlock::new);
 
   public WorldSpikeBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   public RenderShape getRenderShape(BlockState pState) {

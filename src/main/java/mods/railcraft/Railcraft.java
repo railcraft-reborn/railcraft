@@ -1,6 +1,7 @@
 package mods.railcraft;
 
 import java.util.Optional;
+import java.util.Set;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.charge.Charge;
@@ -47,6 +48,7 @@ import mods.railcraft.network.to_client.LinkedCartsMessage;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.sounds.RailcraftSoundEvents;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.FirestoneFuel;
 import mods.railcraft.world.damagesource.RailcraftDamageSources;
 import mods.railcraft.world.damagesource.RailcraftDamageType;
 import mods.railcraft.world.effect.RailcraftMobEffects;
@@ -101,9 +103,11 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.MultiRegistryBootstrap;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -111,6 +115,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.neoforged.api.distmarker.Dist;
@@ -127,6 +132,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -170,6 +176,7 @@ public class Railcraft {
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::handleGatherRegistries);
     modEventBus.addListener(this::registerChunkControllers);
 
     if (dist.isClient()) {
@@ -181,6 +188,7 @@ public class Railcraft {
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
+    FirestoneFuel.register(modEventBus);
     RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);
@@ -337,15 +345,29 @@ public class Railcraft {
   }
 
   private void handleGatherData(GatherDataEvent.Client event) {
+    // Use a registry patch to retain Railcraft's existing minecraft:* recipe overrides.
+    // The global gatherer rejects duplicate IDs already supplied by vanilla.
+    event.getDefaultPackGenerator().createReloadableRegistryObjects(
+        new net.minecraft.core.RegistrySetBuilder().add(new MultiRegistryBootstrap() {
+          @Override
+          public Set<ResourceKey<? extends Registry<?>>> requestedRegistries() {
+            return Set.of(Registries.RECIPE, Registries.ADVANCEMENT);
+          }
+
+          @Override
+          public void run(BootstrapGetter registries) {
+            var recipes = registries.get(Registries.RECIPE);
+            var advancements = registries.get(Registries.ADVANCEMENT);
+            new RailcraftAdvancementProvider().run(advancements);
+            RailcraftRecipeProvider.bootstrap(recipes, advancements);
+            BlastFurnaceRecipeProvider.bootstrap(recipes, advancements);
+            CokeOvenRecipeProvider.bootstrap(recipes, advancements);
+            CrusherRecipeProvider.bootstrap(recipes, advancements);
+            RollingRecipeProvider.bootstrap(recipes, advancements);
+          }
+        }), Set.of(RailcraftConstants.ID, "minecraft"));
     event.createBlockAndItemTags(RailcraftBlockTagsProvider::new, RailcraftItemTagsProvider::new);
     event.createProvider(RailcraftFluidTagsProvider::new);
-    event.createProvider(RailcraftLootTableProvider::new);
-    event.createProvider(RailcraftAdvancementProvider::new);
-    event.createProvider(RailcraftRecipeProvider.Runner::new);
-    event.createProvider(BlastFurnaceRecipeProvider.Runner::new);
-    event.createProvider(CokeOvenRecipeProvider.Runner::new);
-    event.createProvider(CrusherRecipeProvider.Runner::new);
-    event.createProvider(RollingRecipeProvider.Runner::new);
     // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
     // event.createProvider(ForestryRecipeProvider.Runner::new);
     event.createProvider(RailcraftPoiTypeTagsProvider::new);
@@ -357,8 +379,15 @@ public class Railcraft {
     event.createProvider(RailcraftSoundsProvider::new);
     event.createProvider(RailcraftSpriteSourceProvider::new);
     event.createProvider(RailcraftParticleProvider::new);
-    event.createDatapackRegistryObjects(new RegistrySetBuilder()
-        .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
+    // Must come after the trades themselves, so that the pools can resolve them
+    event.createProvider(RailcraftVillagerTradeTagsProvider::new);
+  }
+
+  private void handleGatherRegistries(GatherDataRegistryEntriesEvent event) {
+    event
+        .add(Registries.CONTEXT_INT_PROVIDER, FirestoneFuel::bootstrap)
+        .add(Registries.LOOT_TABLE, new RailcraftLootTableProvider())
+        .add(Registries.FEATURE, RailcraftOreFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
         .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
         .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
@@ -369,9 +398,7 @@ public class Railcraft {
         .add(Registries.TEST_INSTANCE, RailcraftGameTestInstances::bootstrap)
         .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap)
         .add(Registries.VILLAGER_TRADE, RailcraftVillagerTrades::bootstrap)
-        .add(Registries.TRADE_SET, RailcraftTradeSets::bootstrap));
-    // Must come after the trades themselves, so that the pools can resolve them
-    event.createProvider(RailcraftVillagerTradeTagsProvider::new);
+        .add(Registries.TRADE_SET, RailcraftTradeSets::bootstrap);
   }
 
   private void registerChunkControllers(RegisterTicketControllersEvent event) {
@@ -404,7 +431,8 @@ public class Railcraft {
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent.Post event) {
     if (event.getEntity() instanceof ServerPlayer player
-        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
+        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0
+        && player.connection.hasChannel(LinkedCartsMessage.TYPE)) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)
@@ -424,7 +452,7 @@ public class Railcraft {
       var stack = event.getItemStack();
 
       if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
-        player.swing(hand);
+        player.swing(hand, SwingAnimation.DEFAULT, true);
         if (!player.level().isClientSide()) {
           Optional.ofNullable(cart.getCapability(Capabilities.Energy.ENTITY, null))
               .filter(ChargeCartStorageImpl.class::isInstance)

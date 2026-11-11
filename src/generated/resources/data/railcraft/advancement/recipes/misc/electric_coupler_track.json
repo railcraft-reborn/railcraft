@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:electric_coupler_track"
+        "recipes": "railcraft:electric_coupler_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

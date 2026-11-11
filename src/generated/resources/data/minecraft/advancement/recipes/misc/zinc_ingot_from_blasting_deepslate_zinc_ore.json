@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:zinc_ingot_from_blasting_deepslate_zinc_ore"
+        "recipes": "minecraft:zinc_ingot_from_blasting_deepslate_zinc_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

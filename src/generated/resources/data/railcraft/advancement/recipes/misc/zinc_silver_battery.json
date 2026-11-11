@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:zinc_silver_battery"
+        "recipes": "railcraft:zinc_silver_battery"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -2,7 +2,7 @@ package mods.railcraft.client.gui.screen.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import mods.railcraft.world.inventory.RailcraftMenu;
 import mods.railcraft.world.inventory.slot.RailcraftSlot;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -58,7 +58,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
                 mouseX,
                 mouseY,
                 DefaultTooltipPositioner.INSTANCE,
-                null);
+                null, false);
           }
         }
       }
@@ -73,7 +73,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
                 mouseX,
                 mouseY,
                 DefaultTooltipPositioner.INSTANCE,
-                null);
+                null, false);
           }
         }
       }
@@ -131,7 +131,7 @@ public abstract class RailcraftMenuScreen<T extends RailcraftMenu>
   @Override
   public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
     Slot slot = this.getHoveredSlot();
-    if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && slot instanceof RailcraftSlot railcraftSlot
+    if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && slot instanceof RailcraftSlot railcraftSlot
         && railcraftSlot.isPhantom())
       return true;
     return super.mouseDragged(event, deltaX, deltaY);

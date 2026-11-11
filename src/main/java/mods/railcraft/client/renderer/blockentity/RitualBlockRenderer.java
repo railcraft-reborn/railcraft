@@ -55,7 +55,7 @@ public class RitualBlockRenderer implements BlockEntityRenderer<RitualBlockEntit
     poseStack.pushPose();
     poseStack.translate(0.5F, 0.95F + state.yOffset, 0.5F);
 
-    poseStack.mulPose(Axis.YP.rotation(state.yaw));
+    poseStack.rotate(Axis.YP.rotation(state.yaw));
 
     poseStack.scale(0.6F, 0.6F, 0.6F);
 
