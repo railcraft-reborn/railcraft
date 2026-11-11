@@ -367,12 +367,14 @@ public class RailcraftItemTagsProvider extends ItemTagsProvider {
     this.tag(ItemTags.FOOT_ARMOR).addTag(RailcraftTags.Items.ARMORS_BOOTS_STEEL);
 
     this.tag(ItemTags.DURABILITY_ENCHANTABLE)
+        .addTag(RailcraftTags.Items.CROWBAR)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.get());
     this.tag(ItemTags.MINING_ENCHANTABLE)
+        .addTag(RailcraftTags.Items.CROWBAR)
         .add(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get())
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get())

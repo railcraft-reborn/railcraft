@@ -3,7 +3,6 @@ package mods.railcraft.world.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +10,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -26,11 +29,10 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class RailcraftVillagerTrades {
 
   public static void addTradeForTrackman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
-    /*BiFunction<ItemStack, RandomSource, ItemStack> enchanter = (stack, rand) -> {
-      EnchantmentHelper.enchantItem(rand, stack,
-          15 + rand.nextInt(16), true);
-      return stack;
-    };*/
+    Enchanter enchanter = (stack, rand, registryAccess) -> EnchantmentHelper.enchantItem(rand, stack,
+            15 + rand.nextInt(16), registryAccess, registryAccess
+                    .registryOrThrow(Registries.ENCHANTMENT)
+                    .getTag(EnchantmentTags.ON_TRADED_EQUIPMENT));
 
     trades.get(1)
         .add(new GenericTrade(new Offer(Items.EMERALD), new Offer(Items.COAL, 16, 24)));
@@ -49,7 +51,7 @@ public class RailcraftVillagerTrades {
         .add(new TrackKitTrade());
     trades.get(3)
         .add(new GenericTrade(new Offer(RailcraftItems.STEEL_CROWBAR.get()),
-            new Offer(Items.EMERALD, 24, 52))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
+            new Offer(Items.EMERALD, 24, 52)).setEnchanter(enchanter).setUse(t -> 3));
     trades.get(3)
         .add(new GenericTrade(new Offer(RailcraftItems.WHISTLE_TUNER.get()),
             new Offer(Items.EMERALD, 1, 2)));
@@ -64,7 +66,7 @@ public class RailcraftVillagerTrades {
             new Offer(Items.EMERALD, 4, 8)));
     trades.get(3)
         .add(new GenericTrade(new Offer(RailcraftItems.OVERALLS.get()),
-            new Offer(Items.EMERALD, 19, 32))/*.setEnchanter(enchanter)*/.setUse(t -> 3));
+            new Offer(Items.EMERALD, 19, 32)).setEnchanter(enchanter).setUse(t -> 3));
   }
 
   public static void addTradeForCartman(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
@@ -151,6 +153,12 @@ public class RailcraftVillagerTrades {
             new Offer(Items.EMERALD, 6, 12)));
   }
 
+  @FunctionalInterface
+  private interface Enchanter {
+
+    ItemStack apply(ItemStack stack, RandomSource random, RegistryAccess registryAccess);
+  }
+
   private static class Offer {
 
     private final Item item;
@@ -174,12 +182,11 @@ public class RailcraftVillagerTrades {
   private static class GenericTrade implements VillagerTrades.ItemListing {
 
     private static final ToIntFunction<GenericTrade> USE_SETTER = t -> 7;
-    private static final BiFunction<ItemStack, RandomSource, ItemStack> DEFAULT_ENCHANTER =
-        (stack, rand) -> stack;
+    private static final Enchanter DEFAULT_ENCHANTER = (stack, rand, registryAccess) -> stack;
     private final Offer sale;
     private final Offer[] offers;
     private ToIntFunction<GenericTrade> maxUseSetter;
-    private BiFunction<ItemStack, RandomSource, ItemStack> enchanter;
+    private Enchanter enchanter;
 
     public GenericTrade(Offer sale, Offer... offers) {
       this.sale = sale;
@@ -192,7 +199,8 @@ public class RailcraftVillagerTrades {
       var sellStack = prepareStack(random, sale);
       var buyStack1 = prepareStack(random, offers[0]);
       var buyStack2 = Optional.ofNullable(offers.length >= 2 ? prepareStack(random, offers[1]) : null);
-      return new MerchantOffer(buyStack1, buyStack2, enchanter.apply(sellStack.itemStack(), random),
+      return new MerchantOffer(buyStack1, buyStack2, enchanter.apply(sellStack.itemStack(), random,
+          trader.level().registryAccess()),
           12, 15, maxUseSetter.applyAsInt(this));
     }
 
@@ -201,7 +209,7 @@ public class RailcraftVillagerTrades {
       return this;
     }
 
-    GenericTrade setEnchanter(BiFunction<ItemStack, RandomSource, ItemStack> enchanter) {
+    GenericTrade setEnchanter(Enchanter enchanter) {
       this.enchanter = enchanter;
       return this;
     }
