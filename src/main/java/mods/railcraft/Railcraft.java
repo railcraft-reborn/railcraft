@@ -29,6 +29,8 @@ import mods.railcraft.data.models.RailcraftItemModelProvider;
 import mods.railcraft.data.recipes.RailcraftRecipeProvider;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.integrations.buildcraft.BuildCraftIntegration;
+import mods.railcraft.integrations.forestry.ForestryIntegration;
+import mods.railcraft.integrations.forestry.RailcraftBackpacks;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -166,6 +168,9 @@ public class Railcraft {
     RailcraftEntityTypes.register(modEventBus);
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
+    if (ForestryIntegration.isLoaded()) {
+      RailcraftBackpacks.register(modEventBus);
+    }
     RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);

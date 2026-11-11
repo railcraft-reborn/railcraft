@@ -1,12 +1,16 @@
 package mods.railcraft.data.models;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.forestry.ForestryIntegration;
+import mods.railcraft.integrations.forestry.RailcraftBackpacks;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class RailcraftItemModelProvider extends ItemModelProvider {
@@ -207,5 +211,28 @@ public class RailcraftItemModelProvider extends ItemModelProvider {
     this.locomotiveItem(RailcraftItems.STEAM_LOCOMOTIVE.get());
     this.locomotiveItem(RailcraftItems.ELECTRIC_LOCOMOTIVE.get());
     this.locomotiveItem(RailcraftItems.CREATIVE_LOCOMOTIVE.get());
+
+    if (ForestryIntegration.isLoaded()) {
+      RailcraftBackpacks.normalBackpacks().forEach(item -> this.backpackItem(item.get(), "normal"));
+      RailcraftBackpacks.wovenBackpacks().forEach(item -> this.backpackItem(item.get(), "woven"));
+    }
+  }
+
+  private void backpackItem(Item item, String type) {
+    var rl = BuiltInRegistries.ITEM.getKey(item);
+    var builder = this.getBuilder(rl.getPath())
+        .parent(forestryBackpackModel(type, "neutral"));
+    var modes = new String[] {"locked", "receive", "resupply"};
+    for (int i = 0; i < modes.length; i++) {
+      builder.override()
+          .predicate(this.mcLoc("mode"), i + 1)
+          .model(forestryBackpackModel(type, modes[i]))
+          .end();
+    }
+  }
+
+  private static ModelFile forestryBackpackModel(String type, String mode) {
+    return new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(
+        ForestryIntegration.MOD_ID, "item/backpack/%s_%s".formatted(type, mode)));
   }
 }

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "forestry"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "tag": "minecraft:wool"
+    },
+    "V": {
+      "item": "minecraft:rail"
+    },
+    "X": {
+      "tag": "c:strings"
+    },
+    "Y": {
+      "tag": "c:chests/wooden"
+    }
+  },
+  "pattern": [
+    "X#X",
+    "VYV",
+    "X#X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "railcraft:trackman_backpack"
+  }
+}

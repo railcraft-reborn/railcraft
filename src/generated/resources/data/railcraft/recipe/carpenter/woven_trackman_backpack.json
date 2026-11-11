@@ -1,0 +1,39 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "forestry"
+    }
+  ],
+  "type": "forestry:carpenter",
+  "box": [],
+  "id": "railcraft:carpenter/woven_trackman_backpack",
+  "liquid": {
+    "amount": 1000,
+    "id": "minecraft:water"
+  },
+  "recipe": {
+    "category": "misc",
+    "key": {
+      "T": {
+        "item": "railcraft:trackman_backpack"
+      },
+      "W": {
+        "item": "forestry:woven_silk"
+      },
+      "X": {
+        "tag": "c:gems/diamond"
+      }
+    },
+    "pattern": [
+      "WXW",
+      "WTW",
+      "WWW"
+    ],
+    "result": {
+      "count": 1,
+      "id": "railcraft:woven_trackman_backpack"
+    }
+  },
+  "time": 200
+}
