@@ -41,6 +41,7 @@ import mods.railcraft.data.worldgen.features.RailcraftOreFeatures;
 import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.integrations.buildcraft.BuildCraftIntegration;
+import mods.railcraft.integrations.forestry.ForestryIntegration;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -189,6 +190,10 @@ public class Railcraft {
     RailcraftBlocks.register(modEventBus);
     RailcraftItems.register(modEventBus);
     FirestoneFuel.register(modEventBus);
+    if (ForestryIntegration.isLoaded()) {
+      // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+      // RailcraftBackpacks.register(modEventBus);
+    }
     RailcraftMobEffects.register(modEventBus);
     RailcraftCreativeModeTabs.register(modEventBus);
     RailcraftBlockEntityTypes.register(modEventBus);

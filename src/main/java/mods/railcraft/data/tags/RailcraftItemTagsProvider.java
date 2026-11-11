@@ -7,6 +7,7 @@ import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
@@ -296,6 +297,8 @@ public class RailcraftItemTagsProvider extends BlockTagCopyingItemTagProvider {
 
     this.tag(RailcraftTags.Items.SLAG).add(RailcraftItems.SLAG.key());
 
+    this.addBackpackTags();
+
     this.copy(RailcraftTags.Blocks.IRON_TANK_WALL, RailcraftTags.Items.IRON_TANK_WALL);
     this.copy(RailcraftTags.Blocks.IRON_TANK_GAUGE, RailcraftTags.Items.IRON_TANK_GAUGE);
     this.copy(RailcraftTags.Blocks.IRON_TANK_VALVE, RailcraftTags.Items.IRON_TANK_VALVE);
@@ -378,5 +381,84 @@ public class RailcraftItemTagsProvider extends BlockTagCopyingItemTagProvider {
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.key())
         .add(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.key())
         .add(RailcraftItems.NETHERITE_TUNNEL_BORE_HEAD.key());
+  }
+
+  private void addBackpackTags() {
+    this.tag(RailcraftTags.Items.TRACKMAN_BACKPACK_ALLOW)
+        .addTag(ItemTags.RAILS)
+        .addTag(RailcraftTags.Items.ABANDONED_TRACK)
+        .addTag(RailcraftTags.Items.ELECTRIC_TRACK)
+        .addTag(RailcraftTags.Items.HIGH_SPEED_TRACK)
+        .addTag(RailcraftTags.Items.HIGH_SPEED_ELECTRIC_TRACK)
+        .addTag(RailcraftTags.Items.IRON_TRACK)
+        .addTag(RailcraftTags.Items.REINFORCED_TRACK)
+        .addTag(RailcraftTags.Items.STRAP_IRON_TRACK)
+        .addTag(RailcraftTags.Items.TRACK_KIT)
+        .addTag(RailcraftTags.Items.CROWBAR)
+        .add(Items.MINECART)
+        .add(Items.CHEST_MINECART)
+        .add(Items.FURNACE_MINECART)
+        .add(Items.HOPPER_MINECART)
+        .add(Items.TNT_MINECART)
+        .add(Items.COMMAND_BLOCK_MINECART)
+        .add(RailcraftItems.ELEVATOR_TRACK.get())
+        .add(RailcraftItems.TRACK_PARTS.get())
+        .add(RailcraftItems.WOODEN_RAIL.get())
+        .add(RailcraftItems.STANDARD_RAIL.get())
+        .add(RailcraftItems.ADVANCED_RAIL.get())
+        .add(RailcraftItems.REINFORCED_RAIL.get())
+        .add(RailcraftItems.HIGH_SPEED_RAIL.get())
+        .add(RailcraftItems.ELECTRIC_RAIL.get())
+        .add(RailcraftItems.WOODEN_TIE.get())
+        .add(RailcraftItems.STONE_TIE.get())
+        .add(RailcraftItems.WOODEN_RAILBED.get())
+        .add(RailcraftItems.STONE_RAILBED.get())
+        .add(RailcraftItems.IRON_SPIKE_MAUL.get())
+        .add(RailcraftItems.STEEL_SPIKE_MAUL.get())
+        .add(RailcraftItems.DIAMOND_SPIKE_MAUL.get())
+        .add(RailcraftItems.SWITCH_TRACK_LEVER.get())
+        .add(RailcraftItems.SWITCH_TRACK_MOTOR.get())
+        .add(RailcraftItems.SWITCH_TRACK_ROUTER.get())
+        .add(RailcraftItems.CHARGE_METER.get())
+        .add(RailcraftItems.WIRE.get())
+        .add(RailcraftItems.WHISTLE_TUNER.get())
+        .add(RailcraftItems.TICKET.get())
+        .add(RailcraftItems.GOLDEN_TICKET.get())
+        .add(RailcraftItems.OVERALLS.get())
+        .add(RailcraftItems.CREOSOTE_BUCKET.get())
+        .add(RailcraftItems.WORLD_SPIKE.get())
+        .add(RailcraftItems.PERSONAL_WORLD_SPIKE.get())
+        .add(RailcraftItems.ITEM_LOADER.get())
+        .add(RailcraftItems.ITEM_UNLOADER.get())
+        .add(RailcraftItems.ADVANCED_ITEM_LOADER.get())
+        .add(RailcraftItems.ADVANCED_ITEM_UNLOADER.get())
+        .add(RailcraftItems.FLUID_LOADER.get())
+        .add(RailcraftItems.FLUID_UNLOADER.get())
+        .add(RailcraftItems.CART_DISPENSER.get())
+        .add(RailcraftItems.TRAIN_DISPENSER.get())
+        .add(RailcraftItems.CARGO_MINECART.get())
+        .add(RailcraftItems.TANK_MINECART.get())
+        .add(RailcraftItems.ENERGY_MINECART.get())
+        .add(RailcraftItems.VOID_CHEST_MINECART.get())
+        .add(RailcraftItems.BED_MINECART.get())
+        .add(RailcraftItems.WORLD_SPIKE_MINECART.get())
+        .add(RailcraftItems.TRACK_LAYER.get())
+        .add(RailcraftItems.TRACK_RELAYER.get())
+        .add(RailcraftItems.TRACK_REMOVER.get())
+        .add(RailcraftItems.TRACK_UNDERCUTTER.get())
+        .add(RailcraftItems.TUNNEL_BORE.get())
+        .add(RailcraftItems.STEAM_LOCOMOTIVE.get())
+        .add(RailcraftItems.ELECTRIC_LOCOMOTIVE.get())
+        .add(RailcraftItems.CREATIVE_LOCOMOTIVE.get());
+    this.tag(RailcraftTags.Items.TRACKMAN_BACKPACK_REJECT);
+
+    this.tag(RailcraftTags.Items.ICEMAN_BACKPACK_ALLOW)
+        .add(Items.SNOWBALL)
+        .add(Items.SNOW)
+        .add(Items.SNOW_BLOCK)
+        .add(Items.ICE)
+        .add(Items.PACKED_ICE)
+        .add(Items.BLUE_ICE);
+    this.tag(RailcraftTags.Items.ICEMAN_BACKPACK_REJECT);
   }
 }

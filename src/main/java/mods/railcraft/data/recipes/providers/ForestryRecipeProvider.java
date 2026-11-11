@@ -1,21 +1,19 @@
 package mods.railcraft.data.recipes.providers;
 
-// TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
-//  (see also build.gradle, Railcraft#gatherData and RailcraftDataMapProvider).
-//  Ported from the 1.21.x branch without a Forestry jar to compile against: check the
-//  CarpenterRecipe constructor (e.g. how an empty box is represented now that
-//  Ingredient.EMPTY no longer exists) and that the recipe JSON format is unchanged.
 /*
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import forestry.api.ForestryConstants;
 import forestry.core.content.machines.recipes.CarpenterRecipe;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.forestry.RailcraftBackpacks;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.advancements.Advancement;
@@ -34,6 +32,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -74,6 +73,37 @@ public class ForestryRecipeProvider extends RecipeProvider {
             '#', Ingredient.of(this.items.getOrThrow(ItemTags.WOOL)),
             '|', Ingredient.of(Items.STICK)
         ), "#", "|");
+
+    this.backpack(RailcraftBackpacks.TRACKMAN_BACKPACK.get(),
+        RailcraftBackpacks.WOVEN_TRACKMAN_BACKPACK.get(), Ingredient.of(Items.RAIL));
+    this.backpack(RailcraftBackpacks.ICEMAN_BACKPACK.get(),
+        RailcraftBackpacks.WOVEN_ICEMAN_BACKPACK.get(), Ingredient.of(Items.SNOW_BLOCK));
+  }
+
+  // Same recipes as Forestry's own backpacks: a crafting recipe for the normal backpack and a
+  // carpenter recipe that weaves it with silk into the woven backpack.
+  private void backpack(Item backpack, Item wovenBackpack, Ingredient material) {
+    this.shaped(RecipeCategory.TOOLS, backpack)
+        .pattern("X#X")
+        .pattern("VYV")
+        .pattern("X#X")
+        .define('#', this.tag(ItemTags.WOOL))
+        .define('V', material)
+        .define('X', this.tag(Tags.Items.STRINGS))
+        .define('Y', this.tag(Tags.Items.CHESTS_WOODEN))
+        .unlockedBy("has_chest", this.has(Tags.Items.CHESTS_WOODEN))
+        .save(this.output);
+
+    var wovenSilk = this.items.getOrThrow(
+        ResourceKey.create(Registries.ITEM, ForestryConstants.forestry("woven_silk")));
+    carpenter(BuiltInRegistries.ITEM.getKey(wovenBackpack).getPath(), 200,
+        new FluidStack(Fluids.WATER, 1000),
+        new ItemStackTemplate(wovenBackpack),
+        Map.of(
+            'W', Ingredient.of(wovenSilk.value()),
+            'X', this.tag(Tags.Items.GEMS_DIAMOND),
+            'T', Ingredient.of(backpack)
+        ), "WXW", "WTW", "WWW");
   }
 
   private void carpenter(String name, int packagingTime, FluidStack liquid,
