@@ -337,6 +337,13 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftTags.Items.LEAD_DUST, 2, 1)
         .addResult(RailcraftTags.Items.SILVER_DUST, 1, 0.1)
         .save(recipeOutput);
+    CrusherRecipeBuilder.crush(RailcraftTags.Items.APATITE_ORE)
+        .addResult(RailcraftTags.Items.APATITE_GEM, 4, 1)
+        .addResult(RailcraftTags.Items.APATITE_GEM, 1, 0.85)
+        .addResult(RailcraftTags.Items.APATITE_GEM, 1, 0.25)
+        .addResult(RailcraftItems.SULFUR_DUST, 1, 0.2)
+        .addResult(RailcraftItems.SALTPETER_DUST, 1, 0.05)
+        .save(recipeOutput);
     CrusherRecipeBuilder.crush(RailcraftTags.Items.COAL_COKE)
         .addResult(RailcraftTags.Items.COAL_COKE_DUST, 1, 1)
         .save(recipeOutput);

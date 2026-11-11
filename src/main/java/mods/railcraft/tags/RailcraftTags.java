@@ -159,6 +159,9 @@ public class RailcraftTags {
     public static final TagKey<Item> ARMORS_LEGGINGS_STEEL = commonTag("armors/leggings/steel");
     public static final TagKey<Item> ARMORS_BOOTS_STEEL = commonTag("armors/boots/steel");
 
+    public static final TagKey<Item> APATITE_ORE = commonTag("ores/apatite");
+    public static final TagKey<Item> APATITE_GEM = commonTag("gems/apatite");
+
     public static final TagKey<Item> TRACKMAN_BACKPACK_ALLOW = tag("backpack/allow/trackman");
     public static final TagKey<Item> TRACKMAN_BACKPACK_REJECT = tag("backpack/reject/trackman");
     public static final TagKey<Item> ICEMAN_BACKPACK_ALLOW = tag("backpack/allow/iceman");
