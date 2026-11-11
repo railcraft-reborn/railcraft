@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:cyan_steel_tank_gauge"
+        "recipes": "railcraft:cyan_steel_tank_gauge"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

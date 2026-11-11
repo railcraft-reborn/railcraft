@@ -79,7 +79,7 @@ public class RoutingTableBookHelpScreen extends Screen {
             RoutingTableBookScreen.BOOK_LOCATION, button -> this.pageForward()));
     this.helpBackButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_BACK, button -> {
-          this.minecraft.setScreen(this.routingTableBookScreen);
+          this.minecraft.gui.setScreen(this.routingTableBookScreen);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());

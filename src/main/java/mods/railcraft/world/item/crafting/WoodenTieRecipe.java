@@ -4,6 +4,7 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.ItemTags;
@@ -35,7 +36,7 @@ public class WoodenTieRecipe extends TieRecipe {
 
   @Override
   protected List<SlotDisplay> materialDisplays() {
-    var slabs = new SlotDisplay.TagSlotDisplay(ItemTags.WOODEN_SLABS);
+    var slabs = new SlotDisplay.TagSlotDisplay(BuiltInRegistries.ITEM.getOrThrow(ItemTags.WOODEN_SLABS));
     return List.of(slabs, slabs, slabs);
   }
 

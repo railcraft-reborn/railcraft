@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:locking_track_kit"
+        "recipes": "railcraft:locking_track_kit"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

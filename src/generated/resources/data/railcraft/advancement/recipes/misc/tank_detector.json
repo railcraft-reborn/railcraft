@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:tank_detector"
+        "recipes": "railcraft:tank_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

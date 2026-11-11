@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:nickel_ingot_from_blasting_nickel_raw"
+        "recipes": "minecraft:nickel_ingot_from_blasting_nickel_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

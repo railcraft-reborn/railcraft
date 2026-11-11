@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:invar_ingot"
+        "recipes": "railcraft:invar_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

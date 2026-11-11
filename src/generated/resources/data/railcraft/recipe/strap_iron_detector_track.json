@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "railcraft:detector_track_kit",
     "railcraft:strap_iron_track"

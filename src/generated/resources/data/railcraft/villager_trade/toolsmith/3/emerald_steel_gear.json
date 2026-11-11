@@ -2,15 +2,15 @@
   "gives": {
     "id": "railcraft:steel_gear"
   },
-  "max_uses": 12.0,
+  "max_uses": 12,
   "reputation_discount": 0.05,
   "wants": {
     "count": {
       "type": "minecraft:uniform",
-      "max": 16.0,
-      "min": 9.0
+      "max": 16,
+      "min": 9
     },
     "id": "minecraft:emerald"
   },
-  "xp": 15.0
+  "xp": 15
 }

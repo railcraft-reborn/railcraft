@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:tunnel_bore"
+        "recipes": "railcraft:tunnel_bore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

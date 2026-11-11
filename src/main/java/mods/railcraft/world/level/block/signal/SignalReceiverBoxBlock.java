@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.signal;
 
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.SignalReceiverBoxBlockEntity;
@@ -15,17 +14,11 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class SignalReceiverBoxBlock extends SignalBoxBlock implements EntityBlock {
 
-  private static final MapCodec<SignalReceiverBoxBlock> CODEC =
-      simpleCodec(SignalReceiverBoxBlock::new);
 
   public SignalReceiverBoxBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends SignalBoxBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos,

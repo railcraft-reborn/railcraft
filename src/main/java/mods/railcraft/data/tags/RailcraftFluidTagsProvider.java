@@ -19,10 +19,10 @@ public class RailcraftFluidTagsProvider extends FluidTagsProvider {
   @Override
   protected void addTags(HolderLookup.Provider registries) {
     this.tag(RailcraftTags.Fluids.STEAM)
-        .add(RailcraftFluids.STEAM.get());
+        .add(RailcraftFluids.STEAM.key());
     this.tag(Tags.Fluids.GASEOUS)
-        .add(RailcraftFluids.STEAM.get());
+        .add(RailcraftFluids.STEAM.key());
     this.tag(RailcraftTags.Fluids.CREOSOTE)
-        .add(RailcraftFluids.CREOSOTE.get());
+        .add(RailcraftFluids.CREOSOTE.key());
   }
 }

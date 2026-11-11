@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
@@ -16,16 +15,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TokenSignalBlock extends SingleSignalBlock implements JeiSearchable {
 
-  private static final MapCodec<TokenSignalBlock> CODEC = simpleCodec(TokenSignalBlock::new);
 
   public TokenSignalBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends SingleSignalBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

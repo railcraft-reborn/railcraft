@@ -5,7 +5,8 @@ import mods.railcraft.world.item.crafting.BlastFurnaceRecipe;
 import net.minecraft.SharedConstants;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemInstance;
@@ -46,7 +47,7 @@ public class BlastFurnaceRecipeBuilder extends AbstractCookingRecipeBuilder {
     var advancementId = customIdentifier.withPrefix("recipes/");
 
     var builder = recipeOutput.advancement()
-        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(customResourceKey))
+        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeOutput.lookup(Registries.RECIPE).getOrThrow(customResourceKey)))
         .rewards(AdvancementRewards.Builder.recipe(customResourceKey))
         .requirements(AdvancementRequirements.Strategy.OR);
     this.criteria.forEach(builder::addCriterion);

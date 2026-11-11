@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:disk",
+  "half_height": 1,
+  "radius": 1,
+  "state_provider": {
+    "id": "railcraft:firestone_ore"
+  },
+  "target": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:netherrack",
+      "railcraft:firestone_ore"
+    ]
+  }
+}

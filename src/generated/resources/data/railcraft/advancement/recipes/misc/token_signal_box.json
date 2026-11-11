@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:token_signal_box"
+        "recipes": "railcraft:token_signal_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

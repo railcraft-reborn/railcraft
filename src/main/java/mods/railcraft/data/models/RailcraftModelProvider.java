@@ -136,6 +136,15 @@ public class RailcraftModelProvider extends ModelProvider {
 
   @Override
   protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+    var creosoteModel = ModelTemplates.PARTICLE_ONLY.create(RailcraftBlocks.CREOSOTE.get(),
+        TextureMapping.particle(new Material(Identifier.withDefaultNamespace("block/water_still"))),
+        blockModels.modelOutput);
+    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(
+        RailcraftBlocks.CREOSOTE.get(), plainVariant(creosoteModel)));
+    var ritualModel = ModelTemplates.PARTICLE_ONLY.create(RailcraftBlocks.RITUAL.get(),
+        TextureMapping.particleFromItem(RailcraftItems.REFINED_FIRESTONE.get()), blockModels.modelOutput);
+    blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(
+        RailcraftBlocks.RITUAL.get(), plainVariant(ritualModel)));
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LABEL.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.SIGNAL_LAMP.get(), ModelTemplates.FLAT_ITEM);
     itemModels.generateFlatItem(RailcraftItems.TURBINE_ROTOR.get(), ModelTemplates.FLAT_ITEM);
@@ -797,7 +806,7 @@ public class RailcraftModelProvider extends ModelProvider {
     var bottomTexture = TextureMapping.getBlockTexture(block, "_bottom");
     var topTexture = TextureMapping.getBlockTexture(block, "_top");
 
-    var model = TexturedModel.CUBE_TOP_BOTTOM
+    var model = TexturedModel.CUBE_BOTTOM_TOP
         .updateTexture(tm -> tm
             .put(TextureSlot.SIDE, sideTexture)
             .put(TextureSlot.BOTTOM, bottomTexture)

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:polished_quarried_stone",
     "b": "minecraft:gunpowder"

@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.signal;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.client.ScreenFactories;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.signal.BlockSignalRelayBoxBlockEntity;
@@ -19,17 +18,11 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class SignalBlockRelayBoxBlock extends SignalBoxBlock implements EntityBlock {
 
-  private static final MapCodec<SignalBlockRelayBoxBlock> CODEC =
-      simpleCodec(SignalBlockRelayBoxBlock::new);
 
   public SignalBlockRelayBoxBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends SignalBoxBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos,

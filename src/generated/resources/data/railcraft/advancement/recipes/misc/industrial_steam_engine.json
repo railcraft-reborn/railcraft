@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:industrial_steam_engine"
+        "recipes": "railcraft:industrial_steam_engine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

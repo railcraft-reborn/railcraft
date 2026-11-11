@@ -16,9 +16,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
-import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.cubemob.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -39,13 +40,13 @@ public class EmbarkingTrackBlock extends PoweredOutfittedTrackBlock {
   public static final Set<EntityType<?>> excludedEntities = new HashSet<>();
 
   static {
-    excludedEntities.add(EntityType.IRON_GOLEM);
-    excludedEntities.add(EntityType.ENDER_DRAGON);
-    excludedEntities.add(EntityType.WITHER);
-    excludedEntities.add(EntityType.BLAZE);
-    excludedEntities.add(EntityType.MAGMA_CUBE);
-    excludedEntities.add(EntityType.SQUID);
-    excludedEntities.add(EntityType.BAT);
+    excludedEntities.add(EntityTypes.IRON_GOLEM);
+    excludedEntities.add(EntityTypes.ENDER_DRAGON);
+    excludedEntities.add(EntityTypes.WITHER);
+    excludedEntities.add(EntityTypes.BLAZE);
+    excludedEntities.add(EntityTypes.MAGMA_CUBE);
+    excludedEntities.add(EntityTypes.SQUID);
+    excludedEntities.add(EntityTypes.BAT);
   }
 
   public static final IntegerProperty RADIUS =

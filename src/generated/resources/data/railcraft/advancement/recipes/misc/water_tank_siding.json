@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:water_tank_siding"
+        "recipes": "railcraft:water_tank_siding"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

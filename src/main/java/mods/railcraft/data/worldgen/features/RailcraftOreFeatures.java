@@ -7,8 +7,9 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import mods.railcraft.world.level.levelgen.feature.RailcraftFeatures;
+import mods.railcraft.world.level.levelgen.feature.QuarriedFeature;
 import mods.railcraft.world.level.levelgen.feature.configuration.QuarriedConfiguration;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -17,10 +18,10 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.BlockReplacement;
+import net.minecraft.world.level.levelgen.feature.DiskFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
@@ -42,103 +43,90 @@ public class RailcraftOreFeatures {
   private static final TagMatchTest QUARRIED_REPLACEABLE_BLOCKS =
       new TagMatchTest(RailcraftTags.Blocks.QUARRIED_REPLACEABLE_BLOCKS);
 
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> LEAD_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> LEAD_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.LEAD_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState())));
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> TIN_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> TIN_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.TIN_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_TIN_ORE.get().defaultBlockState())));
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> SULFUR_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> SULFUR_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.SULFUR_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_SULFUR_ORE.get().defaultBlockState())));
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> ZINC_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> ZINC_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.ZINC_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_ZINC_ORE.get().defaultBlockState())));
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> NICKEL_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> NICKEL_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.NICKEL_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_NICKEL_ORE.get().defaultBlockState())));
-  private static final Supplier<List<OreConfiguration.TargetBlockState>> SILVER_ORE_TARGET_LIST =
+  private static final Supplier<List<BlockReplacement>> SILVER_ORE_TARGET_LIST =
       Suppliers.memoize(() -> List.of(
-          OreConfiguration.target(STONE_ORE_REPLACEABLES,
+          BlockReplacement.replace(STONE_ORE_REPLACEABLES,
               RailcraftBlocks.SILVER_ORE.get().defaultBlockState()),
-          OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES,
+          BlockReplacement.replace(DEEPSLATE_ORE_REPLACEABLES,
               RailcraftBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())));
 
-  public static final ResourceKey<ConfiguredFeature<?, ?>> LEAD_ORE = createKey("lead_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE_SMALL =
+  public static final ResourceKey<Feature> LEAD_ORE = createKey("lead_ore");
+  public static final ResourceKey<Feature> TIN_ORE_SMALL =
       createKey("tin_ore_small");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE_LARGE =
+  public static final ResourceKey<Feature> TIN_ORE_LARGE =
       createKey("tin_ore_large");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> SULFUR_ORE = createKey("sulfur_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> SULFUR_ORE_BURIED =
+  public static final ResourceKey<Feature> SULFUR_ORE = createKey("sulfur_ore");
+  public static final ResourceKey<Feature> SULFUR_ORE_BURIED =
       createKey("sulfur_ore_buried");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> ZINC_ORE = createKey("zinc_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> NICKEL_ORE = createKey("nickel_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> NICKEL_ORE_SMALL =
+  public static final ResourceKey<Feature> ZINC_ORE = createKey("zinc_ore");
+  public static final ResourceKey<Feature> NICKEL_ORE = createKey("nickel_ore");
+  public static final ResourceKey<Feature> NICKEL_ORE_SMALL =
       createKey("nickel_ore_small");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE = createKey("silver_ore");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_ORE_BURIED =
+  public static final ResourceKey<Feature> SILVER_ORE = createKey("silver_ore");
+  public static final ResourceKey<Feature> SILVER_ORE_BURIED =
       createKey("silver_ore_buried");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> QUARRIED_STONE =
+  public static final ResourceKey<Feature> QUARRIED_STONE =
       createKey("quarried_stone");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> SALTPETER = createKey("saltpeter");
-  public static final ResourceKey<ConfiguredFeature<?, ?>> FIRESTONE = createKey("firestone");
+  public static final ResourceKey<Feature> SALTPETER = createKey("saltpeter");
+  public static final ResourceKey<Feature> FIRESTONE = createKey("firestone");
 
-  public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-    context.register(LEAD_ORE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(LEAD_ORE_TARGET_LIST.get(), LEAD_VEIN_DIMENSION)));
-    context.register(TIN_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(TIN_ORE_TARGET_LIST.get(), TIN_SMALL_VEIN_DIMENSION)));
-    context.register(TIN_ORE_LARGE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(TIN_ORE_TARGET_LIST.get(), TIN_LARGE_VEIN_DIMENSION)));
-    context.register(SULFUR_ORE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION)));
-    context.register(SULFUR_ORE_BURIED, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION, 0.5F)));
-    context.register(ZINC_ORE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(ZINC_ORE_TARGET_LIST.get(), ZINC_VEIN_DIMENSION)));
-    context.register(NICKEL_ORE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(NICKEL_ORE_TARGET_LIST.get(), NICKEL_VEIN_DIMENSION)));
-    context.register(NICKEL_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(NICKEL_ORE_TARGET_LIST.get(), NICKEL_SMALL_VEIN_DIMENSION)));
-    context.register(SILVER_ORE, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION)));
-    context.register(SILVER_ORE_BURIED, new ConfiguredFeature<>(Feature.ORE,
-        new OreConfiguration(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION, 0.5F)));
-    context.register(QUARRIED_STONE, new ConfiguredFeature<>(RailcraftFeatures.QUARRIED_STONE.get(),
-        new QuarriedConfiguration(
+  public static void bootstrap(BootstrapContext<Feature> context) {
+    context.register(LEAD_ORE, new OreFeature(LEAD_ORE_TARGET_LIST.get(), LEAD_VEIN_DIMENSION));
+    context.register(TIN_ORE_SMALL, new OreFeature(TIN_ORE_TARGET_LIST.get(), TIN_SMALL_VEIN_DIMENSION));
+    context.register(TIN_ORE_LARGE, new OreFeature(TIN_ORE_TARGET_LIST.get(), TIN_LARGE_VEIN_DIMENSION));
+    context.register(SULFUR_ORE, new OreFeature(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION));
+    context.register(SULFUR_ORE_BURIED, new OreFeature(SULFUR_ORE_TARGET_LIST.get(), SULFUR_VEIN_DIMENSION, 0.5F));
+    context.register(ZINC_ORE, new OreFeature(ZINC_ORE_TARGET_LIST.get(), ZINC_VEIN_DIMENSION));
+    context.register(NICKEL_ORE, new OreFeature(NICKEL_ORE_TARGET_LIST.get(), NICKEL_VEIN_DIMENSION));
+    context.register(NICKEL_ORE_SMALL, new OreFeature(NICKEL_ORE_TARGET_LIST.get(), NICKEL_SMALL_VEIN_DIMENSION));
+    context.register(SILVER_ORE, new OreFeature(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION));
+    context.register(SILVER_ORE_BURIED, new OreFeature(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION, 0.5F));
+    context.register(QUARRIED_STONE, new QuarriedFeature(new QuarriedConfiguration(
             QUARRIED_REPLACEABLE_BLOCKS,
-            BlockStateProvider.simple(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).get()))));
-    context.register(SALTPETER, new ConfiguredFeature<>(Feature.DISK,
-        new DiskConfiguration(
-            BlockStateProvider.simple(RailcraftBlocks.SALTPETER_ORE.get()),
+            BlockStateProvider.of(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).get()))));
+    context.register(SALTPETER, new DiskFeature(
+            Holder.direct(BlockStateProvider.of(RailcraftBlocks.SALTPETER_ORE.get())),
             BlockPredicate.matchesBlocks(
-                List.of(Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get())),
-            UniformInt.of(2, 3), 1)));
-    context.register(FIRESTONE, new ConfiguredFeature<>(Feature.DISK,
-        new DiskConfiguration(
-            BlockStateProvider.simple(RailcraftBlocks.FIRESTONE_ORE.get()),
+                Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get()),
+            UniformInt.of(2, 3), 1));
+    context.register(FIRESTONE, new DiskFeature(
+            Holder.direct(BlockStateProvider.of(RailcraftBlocks.FIRESTONE_ORE.get())),
             BlockPredicate.matchesBlocks(
-                List.of(Blocks.NETHERRACK, RailcraftBlocks.FIRESTONE_ORE.get())),
-            ConstantInt.of(1), 1)));
+                Blocks.NETHERRACK, RailcraftBlocks.FIRESTONE_ORE.get()),
+            ConstantInt.of(1), 1));
   }
 
-  private static ResourceKey<ConfiguredFeature<?, ?>> createKey(String name) {
-    return ResourceKey.create(Registries.CONFIGURED_FEATURE, RailcraftConstants.id(name));
+  private static ResourceKey<Feature> createKey(String name) {
+    return ResourceKey.create(Registries.FEATURE, RailcraftConstants.id(name));
   }
 }

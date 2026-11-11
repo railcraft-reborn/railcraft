@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "d": "#c:gems/emerald",
     "g": "#c:ingots/gold",

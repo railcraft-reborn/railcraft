@@ -73,7 +73,7 @@ public class RenderUtil {
   public static void renderWorldText(SubmitNodeCollector collector, Font font, Component text,
       PoseStack poseStack, int packedLight) {
     poseStack.pushPose();
-    poseStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
+    poseStack.rotate(minecraft.gameRenderer.mainCamera().rotation());
     poseStack.scale(0.025F, -0.025F, 0.025F);
     float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
     int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;

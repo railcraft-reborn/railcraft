@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:switch_track_router"
+        "recipes": "railcraft:switch_track_router"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

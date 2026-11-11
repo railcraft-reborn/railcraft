@@ -8,13 +8,13 @@ import mods.railcraft.world.entity.npc.RailcraftVillagerTrades;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.KeyTagProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.tags.VillagerTradeTags;
 import net.minecraft.world.item.trading.VillagerTrade;
 
-public class RailcraftVillagerTradeTagsProvider extends KeyTagProvider<VillagerTrade> {
+public class RailcraftVillagerTradeTagsProvider extends TagsProvider<VillagerTrade> {
 
   public RailcraftVillagerTradeTagsProvider(PackOutput output,
       CompletableFuture<HolderLookup.Provider> registries) {

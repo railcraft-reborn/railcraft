@@ -8,6 +8,7 @@ import mods.railcraft.data.gametest.instances.BedMinecartTestInstance;
 import mods.railcraft.data.gametest.instances.BlockSignalTestInstance;
 import mods.railcraft.data.gametest.instances.DetectorTrackTestInstance;
 import mods.railcraft.data.gametest.instances.ForceTrackTestInstance;
+import mods.railcraft.data.gametest.instances.FuelComponentsTestInstance;
 import mods.railcraft.data.gametest.instances.InterlockTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTestInstance;
 import mods.railcraft.data.gametest.instances.RoutingTrackTestInstance;
@@ -81,6 +82,7 @@ import net.minecraft.gametest.framework.GameTestInstance;
 import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -143,6 +145,7 @@ public class RailcraftGameTestInstances {
     deferredRegister.register("tank_entity_outside", () -> TankEntityOutsideTestInstance.CODEC);
     deferredRegister.register("tank_reforms", () -> TankReformsTestInstance.CODEC);
     deferredRegister.register("bed_minecart_sleep", () -> BedMinecartTestInstance.CODEC);
+    deferredRegister.register("fuel_components", () -> FuelComponentsTestInstance.CODEC);
     deferredRegister.register("steam_oven", () -> SteamOvenTestInstance.CODEC);
     deferredRegister.register("steam_boiler", () -> SteamBoilerTestInstance.CODEC);
     deferredRegister.register("commercial_steam_engine_generates_energy", () -> CommercialSteamEngineGeneratesEnergyTestInstance.CODEC);
@@ -236,6 +239,7 @@ public class RailcraftGameTestInstances {
     registerTestInstance(bootstrap, "tank_reforms", "iron_tank", TankReformsTestInstance::new);
 
     registerTestInstance(bootstrap, "bed_minecart_sleep", "detector_track", BedMinecartTestInstance::new);
+    registerTestInstance(bootstrap, "fuel_components", "platform_7x7", FuelComponentsTestInstance::new);
 
     registerTestInstance(bootstrap, "steam_oven_door_on_one_side", "steam_oven", SteamOvenTestInstance::new);
     registerTestInstance(bootstrap, "high_pressure_boiler_steam_output", "platform_7x7_tall", SteamBoilerTestInstance::new);
@@ -282,6 +286,7 @@ public class RailcraftGameTestInstances {
     var environments = bootstrap.lookup(Registries.TEST_ENVIRONMENT);
     return new TestData<>(
         environments.getOrThrow(RailcraftTestEnvironments.DEFAULT),
+        Level.OVERWORLD,
         RailcraftConstants.id("test/" + template),
         400,
         0,

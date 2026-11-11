@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:light_blue_iron_tank_valve"
+        "recipes": "railcraft:light_blue_iron_tank_valve"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

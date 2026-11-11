@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:iron_tank_valve"
+        "recipes": "railcraft:iron_tank_valve"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

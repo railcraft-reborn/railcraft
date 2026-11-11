@@ -6,7 +6,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +22,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -92,13 +93,14 @@ public class BedMinecart extends RailcraftMinecart {
       return;
     }
 
-    // Sleeping dismounts the player, so we put him back on the cart.
-    player.startSleeping(pos);
-    if (player.getVehicle() != this && !player.startRiding(this, true, true)) {
-      player.stopSleeping();
-      return;
-    }
+    // Vanilla startSleeping now requires an AbstractBedBlock. The cart provides the bed
+    // and keeps the passenger mounted, so initialize the sleeping state directly.
+    player.setSleepingPos(pos);
     player.setPose(Pose.SLEEPING);
+    player.sleepCounter = 0;
+    player.setDeltaMovement(Vec3.ZERO);
+    player.needsSync = true;
+    player.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));
 
     player.awardStat(Stats.SLEEP_IN_BED);
     CriteriaTriggers.SLEPT_IN_BED.trigger(player);
@@ -148,7 +150,7 @@ public class BedMinecart extends RailcraftMinecart {
 
   @Override
   public BlockState getDefaultDisplayBlockState() {
-    return Blocks.GRAY_CARPET.defaultBlockState();
+    return Blocks.CARPET.pick(DyeColor.GRAY).defaultBlockState();
   }
 
   @Override

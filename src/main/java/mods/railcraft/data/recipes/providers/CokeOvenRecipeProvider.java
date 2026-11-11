@@ -1,43 +1,30 @@
 package mods.railcraft.data.recipes.providers;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 
 public class CokeOvenRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
+  private final HolderGetter<Item> items;
 
-  private CokeOvenRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
-    super(registries, recipeOutput);
-    this.items = registries.lookupOrThrow(Registries.ITEM);
+  private CokeOvenRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    super(recipes, advancements);
+    this.items = recipes.lookup(Registries.ITEM);
   }
 
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-      return new CokeOvenRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "CokeOvenRecipeProvider";
-    }
+  public static void bootstrap(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    new CokeOvenRecipeProvider(recipes, advancements).buildRecipes();
   }
 
   @Override

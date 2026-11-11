@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:zinc_carbon_battery"
+        "recipes": "railcraft:zinc_carbon_battery"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

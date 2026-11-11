@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:bronze_ingot_crafted_with_ingots"
+        "recipes": "railcraft:bronze_ingot_crafted_with_ingots"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

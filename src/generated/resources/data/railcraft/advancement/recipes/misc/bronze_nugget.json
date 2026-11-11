@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:bronze_nugget"
+        "recipes": "railcraft:bronze_nugget"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

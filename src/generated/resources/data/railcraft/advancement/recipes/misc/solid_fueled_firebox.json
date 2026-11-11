@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:solid_fueled_firebox"
+        "recipes": "railcraft:solid_fueled_firebox"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

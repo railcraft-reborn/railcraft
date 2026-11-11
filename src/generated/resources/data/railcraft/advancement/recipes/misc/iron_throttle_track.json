@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:iron_throttle_track"
+        "recipes": "railcraft:iron_throttle_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

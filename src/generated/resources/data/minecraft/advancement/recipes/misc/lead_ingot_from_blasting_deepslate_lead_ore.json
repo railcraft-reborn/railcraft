@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lead_ingot_from_blasting_deepslate_lead_ore"
+        "recipes": "minecraft:lead_ingot_from_blasting_deepslate_lead_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

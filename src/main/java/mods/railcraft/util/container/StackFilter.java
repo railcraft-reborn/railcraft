@@ -9,6 +9,7 @@ import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.item.MinecartFactory;
 import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.tags.RailcraftTags;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.fluids.FluidTools;
 import mods.railcraft.world.item.CartItem;
 import net.minecraft.core.component.DataComponents;
@@ -179,6 +180,6 @@ public enum StackFilter implements Predicate<ItemStack> {
   }
 
   public static Predicate<ItemStack> isFuel(Level level) {
-    return itemStack -> !itemStack.isEmpty() && level.fuelValues().isFuel(itemStack);
+    return itemStack -> !itemStack.isEmpty() && FuelUtil.burnTime(itemStack, level) > 0;
   }
 }

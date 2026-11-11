@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:dual_token_signal"
+        "recipes": "railcraft:dual_token_signal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

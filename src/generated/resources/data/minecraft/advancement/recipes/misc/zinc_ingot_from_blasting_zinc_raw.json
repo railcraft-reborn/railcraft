@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:zinc_ingot_from_blasting_zinc_raw"
+        "recipes": "minecraft:zinc_ingot_from_blasting_zinc_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

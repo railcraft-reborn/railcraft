@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:blast_furnace/blasting_iron_crowbar"
+        "recipes": "railcraft:blast_furnace/blasting_iron_crowbar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

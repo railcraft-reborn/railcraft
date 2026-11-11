@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:tank_minecart"
+        "recipes": "railcraft:tank_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:reinforced_whistle_track"
+        "recipes": "railcraft:reinforced_whistle_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

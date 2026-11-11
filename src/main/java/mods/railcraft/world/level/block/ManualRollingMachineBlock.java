@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.ManualRollingMachineBlockEntity;
@@ -22,17 +21,11 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class ManualRollingMachineBlock extends BaseEntityBlock implements JeiSearchable {
 
-  private static final MapCodec<ManualRollingMachineBlock> CODEC =
-      simpleCodec(ManualRollingMachineBlock::new);
 
   public ManualRollingMachineBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   public RenderShape getRenderShape(BlockState blockState) {

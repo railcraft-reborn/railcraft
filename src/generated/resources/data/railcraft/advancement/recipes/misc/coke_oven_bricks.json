@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:coke_oven_bricks"
+        "recipes": "railcraft:coke_oven_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

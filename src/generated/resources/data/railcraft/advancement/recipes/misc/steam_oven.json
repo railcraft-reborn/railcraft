@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steam_oven"
+        "recipes": "railcraft:steam_oven"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

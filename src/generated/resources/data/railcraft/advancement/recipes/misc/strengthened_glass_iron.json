@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strengthened_glass_iron"
+        "recipes": "railcraft:strengthened_glass_iron"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

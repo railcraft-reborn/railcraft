@@ -56,8 +56,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
         OverlayTexture.NO_OVERLAY,
         color,
         null,
-        0,
-        null
+        0
     );
     this.renderTank(renderState, poseStack, collector);
     if (renderState.hasFilter) {
@@ -86,7 +85,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
       poseStack.translate(RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL, RenderUtil.SCALED_PIXEL);
       fluidModel.setPackedLight(RenderUtil.calculateGlowLight(renderState.lightCoords, fluidStack));
       fluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockItemSheet(), (pose, vertexConsumer) -> {
         CuboidModelRenderer.render(fluidModel, pose, vertexConsumer,
             RenderUtil.getColorARGB(fluidStack, level),
             CuboidModelRenderer.FaceDisplay.FRONT, true);
@@ -103,7 +102,7 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
                 FluidRenderer.FluidType.FLOWING);
         fillingFluidModel.setPackedLight(RenderUtil.calculateGlowLight(renderState.lightCoords, fluidStack));
         fillingFluidModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-        collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+        collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockItemSheet(), (pose, vertexConsumer) -> {
           CuboidModelRenderer.render(fillingFluidModel, pose, vertexConsumer,
               RenderUtil.getColorARGB(fluidStack, 1),
               CuboidModelRenderer.FaceDisplay.FRONT, true);
@@ -120,14 +119,14 @@ public class TankMinecartRenderer extends ContentsMinecartRenderer<TankMinecart,
     final float scale = 1.2F;
 
     poseStack.pushPose();
-    poseStack.mulPose(Axis.YP.rotationDegrees(90));
+    poseStack.rotate(Axis.YP.rotationDegrees(90));
     poseStack.translate(0, -0.9F, 0.68F);
     poseStack.scale(scale, scale, scale);
     rendererState.itemState.submit(poseStack, collector, rendererState.lightCoords,
         OverlayTexture.NO_OVERLAY, 0);
     poseStack.popPose();
 
-    poseStack.mulPose(Axis.YN.rotationDegrees(90));
+    poseStack.rotate(Axis.YN.rotationDegrees(90));
     poseStack.translate(0, -0.9F, 0.68F);
     poseStack.scale(scale, scale, scale);
     rendererState.itemState.submit(poseStack, collector, rendererState.lightCoords,

@@ -24,14 +24,14 @@ public record SetAnalogSignalControllerBoxMessage(
   private static SetAnalogSignalControllerBoxMessage read(FriendlyByteBuf buf) {
     var blockPos = buf.readBlockPos();
     var signalAspectTriggerSignals =
-        buf.readMap(b -> b.readEnum(SignalAspect.class), FriendlyByteBuf::readBitSet);
+        buf.readMap(b -> b.readEnum(SignalAspect.class), (data, aspect) -> data.readBitSet());
     return new SetAnalogSignalControllerBoxMessage(blockPos, signalAspectTriggerSignals);
   }
 
   private void write(FriendlyByteBuf buf) {
     buf.writeBlockPos(this.blockPos);
     buf.writeMap(this.signalAspectTriggerSignals,
-        FriendlyByteBuf::writeEnum, FriendlyByteBuf::writeBitSet);
+        FriendlyByteBuf::writeEnum, (data, aspect, signals) -> data.writeBitSet(signals));
   }
 
   @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:firestone_cracked_fixing"
+        "recipes": "railcraft:firestone_cracked_fixing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

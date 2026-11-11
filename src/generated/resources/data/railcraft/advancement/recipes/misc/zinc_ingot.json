@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:zinc_ingot"
+        "recipes": "railcraft:zinc_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

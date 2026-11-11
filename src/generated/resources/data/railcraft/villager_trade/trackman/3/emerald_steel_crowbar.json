@@ -2,15 +2,15 @@
   "gives": {
     "id": "railcraft:steel_crowbar"
   },
-  "max_uses": 3.0,
+  "max_uses": 3,
   "reputation_discount": 0.2,
   "wants": {
     "count": {
       "type": "minecraft:uniform",
-      "max": 52.0,
-      "min": 24.0
+      "max": 52,
+      "min": 24
     },
     "id": "minecraft:emerald"
   },
-  "xp": 15.0
+  "xp": 15
 }

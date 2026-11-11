@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:switch_track_lever"
+        "recipes": "railcraft:switch_track_lever"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

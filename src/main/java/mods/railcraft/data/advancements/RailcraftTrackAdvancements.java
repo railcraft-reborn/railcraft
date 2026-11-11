@@ -1,6 +1,5 @@
 package mods.railcraft.data.advancements;
 
-import java.util.function.Consumer;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.MultiBlockFormedTrigger;
 import mods.railcraft.advancements.SpikeMaulUseTrigger;
@@ -9,157 +8,150 @@ import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
-class RailcraftTrackAdvancements implements AdvancementSubProvider {
+class RailcraftTrackAdvancements extends AdvancementSubProvider {
+
+  RailcraftTrackAdvancements(BootstrapContext<Advancement> output) {
+    super(output);
+  }
 
   @Override
-  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
+  public void generate() {
     var root = Advancement.Builder.advancement()
-        .display(
+        .rootDisplay(
             RailcraftItems.REINFORCED_TRACK.get(),
             Component.translatable(Translations.Advancement.Tracks.ROOT),
             Component.translatable(Translations.Advancement.Tracks.ROOT_DESC),
-            Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
+            Identifier.withDefaultNamespace("gui/advancements/backgrounds/stone"),
             AdvancementType.TASK,
             false, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.WOODEN_TIE.get()))
-        .save(consumer, RailcraftConstants.id("tracks/root"));
+        .save(this.output, RailcraftConstants.id("tracks/root"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.RAW_FIRESTONE.get(),
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE),
             Component.translatable(Translations.Advancement.Tracks.FIRESTONE_DESC),
-            null,
             AdvancementType.CHALLENGE,
             true, true, false)
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.RAW_FIRESTONE.get()))
-        .save(consumer, RailcraftConstants.id("tracks/firestone"));
+        .save(this.output, RailcraftConstants.id("tracks/firestone"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.BLAST_FURNACE_BRICKS.get(),
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE),
             Component.translatable(Translations.Advancement.Tracks.BLAST_FURNACE_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .parent(root)
         .addCriterion("blast_furnace_formed", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.BLAST_FURNACE.get()))
-        .save(consumer, RailcraftConstants.id("tracks/blast_furnace"));
+        .save(this.output, RailcraftConstants.id("tracks/blast_furnace"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.COKE_OVEN_BRICKS.get(),
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN),
             Component.translatable(Translations.Advancement.Tracks.COKE_OVEN_DESC),
-            null,
             AdvancementType.TASK,
             true, true, false)
         .parent(root)
         .addCriterion("has_coke_oven", MultiBlockFormedTrigger
             .formedMultiBlock(RailcraftBlockEntityTypes.COKE_OVEN.get()))
-        .save(consumer, RailcraftConstants.id("tracks/coke_oven"));
+        .save(this.output, RailcraftConstants.id("tracks/coke_oven"));
 
     var rollingTable = Advancement.Builder.advancement()
         .display(
             RailcraftItems.MANUAL_ROLLING_MACHINE.get(),
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE),
             Component.translatable(Translations.Advancement.Tracks.MANUAL_ROLLING_MACHINE_DESC),
-            null,
             AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance
                 .hasItems(RailcraftItems.MANUAL_ROLLING_MACHINE.get()))
-        .save(consumer, RailcraftConstants.id("tracks/manual_rolling_machine"));
+        .save(this.output, RailcraftConstants.id("tracks/manual_rolling_machine"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.CRUSHER.get(),
             Component.translatable(Translations.Advancement.Tracks.CRUSHER),
             Component.translatable(Translations.Advancement.Tracks.CRUSHER_DESC),
-            null,
             AdvancementType.GOAL,
             true, false, false)
         .parent(root)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.CRUSHER.get()))
-        .save(consumer, RailcraftConstants.id("tracks/crusher"));
+        .save(this.output, RailcraftConstants.id("tracks/crusher"));
 
     var basicTrack = Advancement.Builder.advancement()
         .display(
             Items.RAIL,
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK),
             Component.translatable(Translations.Advancement.Tracks.REGULAR_TRACK_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RAIL))
-        .save(consumer, RailcraftConstants.id("tracks/regular_track"));
+        .save(this.output, RailcraftConstants.id("tracks/regular_track"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.BUFFER_STOP_TRACK_KIT.get(),
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT),
             Component.translatable(Translations.Advancement.Tracks.TRACK_KIT_DESC),
-            null,
             AdvancementType.GOAL,
             true, true, false)
         .parent(basicTrack)
         .addCriterion("has_used_track_kit", UseTrackKitTrigger.hasUsedTrackKit())
-        .save(consumer, RailcraftConstants.id("tracks/track_kit"));
+        .save(this.output, RailcraftConstants.id("tracks/track_kit"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.IRON_SPIKE_MAUL.get(),
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS),
             Component.translatable(Translations.Advancement.Tracks.JUNCTIONS_DESC),
-            null,
             AdvancementType.GOAL,
             true, false, false)
         .parent(basicTrack)
         .addCriterion("has_used_spikemaul", SpikeMaulUseTrigger.hasUsedSpikeMaul())
-        .save(consumer, RailcraftConstants.id("tracks/junctions"));
+        .save(this.output, RailcraftConstants.id("tracks/junctions"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.HIGH_SPEED_TRACK.get(),
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK),
             Component.translatable(Translations.Advancement.Tracks.HIGH_SPEED_TRACK_DESC),
-            null,
             AdvancementType.CHALLENGE,
             true, true, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.HIGH_SPEED_TRACK.get()))
-        .save(consumer, RailcraftConstants.id("tracks/high_speed_track"));
+        .save(this.output, RailcraftConstants.id("tracks/high_speed_track"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STRAP_IRON_TRACK.get(),
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK),
             Component.translatable(Translations.Advancement.Tracks.WOODEN_TRACK_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .parent(rollingTable)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STRAP_IRON_TRACK.get()))
-        .save(consumer, RailcraftConstants.id("tracks/wooden_track"));
+        .save(this.output, RailcraftConstants.id("tracks/wooden_track"));
   }
 }

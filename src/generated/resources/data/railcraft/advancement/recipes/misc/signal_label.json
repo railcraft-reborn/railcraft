@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_label"
+        "recipes": "railcraft:signal_label"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

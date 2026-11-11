@@ -30,9 +30,16 @@ public class SteamEngineItemRenderer implements NoDataSpecialModelRenderer {
   @Override
   public void submit(PoseStack poseStack, SubmitNodeCollector collector, int packedLight,
       int packedOverlay, boolean hasFoil, int outlineColor) {
-    collector.submitModel(this.model, STATE, poseStack,
-        this.model.renderType(SteamEngineRenderer.getTexture(this.tier)), packedLight,
-        packedOverlay, -1, null, outlineColor, null);
+    collector.submitModel(
+        this.model,
+        STATE,
+        poseStack,
+        this.model.renderType(SteamEngineRenderer.getTexture(this.tier)),
+        packedLight,
+        packedOverlay,
+        -1,
+        null,
+        outlineColor);
   }
 
   @Override

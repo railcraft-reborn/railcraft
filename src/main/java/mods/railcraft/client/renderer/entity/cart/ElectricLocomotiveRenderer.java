@@ -55,9 +55,7 @@ public class ElectricLocomotiveRenderer extends DefaultLocomotiveRenderer {
         OverlayTexture.NO_OVERLAY,
         color,
         null,
-        0,
-        null
-    );
+        0);
     poseStack.popPose();
   }
 

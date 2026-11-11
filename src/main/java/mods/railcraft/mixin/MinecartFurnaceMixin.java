@@ -3,6 +3,7 @@ package mods.railcraft.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import mods.railcraft.util.FuelUtil;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -41,7 +42,7 @@ public abstract class MinecartFurnaceMixin extends AbstractMinecart {
       return ret;
     }
     ItemStack itemstack = player.getItemInHand(hand);
-    var burnTime = itemstack.getBurnTime(null, this.level().fuelValues());
+    var burnTime = FuelUtil.burnTime(itemstack, this.level());
     if (burnTime > 0 && this.fuel + burnTime <= 32000) {
       if (!player.getAbilities().instabuild) {
         var craftRemainder = itemstack.getCraftingRemainder();

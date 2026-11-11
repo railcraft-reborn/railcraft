@@ -3,6 +3,7 @@ package mods.railcraft.world.entity.vehicle.locomotive;
 import org.jspecify.annotations.Nullable;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.ContainerTools;
 import mods.railcraft.util.fluids.FluidTools;
@@ -107,7 +108,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
       return true;
     }
     int numItems = this.allFuelContainer
-        .countItems(item -> item.getBurnTime(null, this.level().fuelValues()) > 0);
+        .countItems(item -> FuelUtil.burnTime(item, this.level()) > 0);
     if (numItems == 0) {
       return true;
     }
@@ -148,7 +149,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
   public boolean canPlaceItem(int slot, ItemStack stack) {
     return switch (slot) {
       case FUEL_SLOT, EXTRA_FUEL_SLOT_A, EXTRA_FUEL_SLOT_B, EXTRA_FUEL_SLOT_C ->
-          stack.getBurnTime(null, this.level().fuelValues()) > 0;
+          FuelUtil.burnTime(stack, this.level()) > 0;
       case SLOT_WATER_INPUT ->
           // if (FluidItemHelper.getFluidStackInContainer(stack)
           // .filter(fluidStack -> fluidStack.getAmount() > FluidTools.BUCKET_VOLUME).isPresent()) {
@@ -162,7 +163,7 @@ public class SteamLocomotive extends BaseSteamLocomotive implements WorldlyConta
 
   @Override
   public boolean canAcceptPushedItem(RollingStock requester, ItemStack stack) {
-    return stack.getBurnTime(null, this.level().fuelValues()) > 0;
+    return FuelUtil.burnTime(stack, this.level()) > 0;
   }
 
   @Override

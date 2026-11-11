@@ -51,7 +51,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
 
     float roll = renderState.hurtTime;
     if (roll > 0) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float)renderState.hurtDir));
+      poseStack.rotate(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float)renderState.hurtDir));
     }
 
     boolean ghostTrain = Seasons.isGhostTrain(renderState);
@@ -109,7 +109,7 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
       var customName = renderState.nameTag.getString();
       if (!Seasons.GHOST_TRAIN.equals(customName) && !Seasons.POLAR_EXPRESS.equals(customName)) {
         collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, renderState.nameTag,
-            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
+            false, renderState.lightCoords, cameraState);
         renderName = true;
       }
     }
@@ -124,13 +124,13 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
         var destination = Component.literal(dest)
             .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
         collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, destination,
-            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
+            false, renderState.lightCoords, cameraState);
         poseStack.popPose();
       }
     }
 
-    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
-    poseStack.mulPose(Axis.ZP.rotationDegrees(-pitch));
+    poseStack.rotate(Axis.YP.rotationDegrees(180.0F - yaw));
+    poseStack.rotate(Axis.ZP.rotationDegrees(-pitch));
   }
 
   public void extractRenderState(T entity, S reusedState, float partialTick) {

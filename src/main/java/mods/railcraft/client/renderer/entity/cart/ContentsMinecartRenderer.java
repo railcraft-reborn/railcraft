@@ -59,7 +59,7 @@ public abstract class ContentsMinecartRenderer<T extends RailcraftMinecart, S ex
       SubmitNodeCollector collector, int color) {
     var displayBlockModel = renderState.displayBlockModel;
     if (!displayBlockModel.isEmpty()) {
-      poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+      poseStack.rotate(Axis.YP.rotationDegrees(90.0F));
       displayBlockModel.submitMultiLayer(poseStack, collector, renderState.lightCoords,
           OverlayTexture.NO_OVERLAY, renderState.outlineColor);
     }

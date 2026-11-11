@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:silver_ingot_from_blasting_silver_ore"
+        "recipes": "minecraft:silver_ingot_from_blasting_silver_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

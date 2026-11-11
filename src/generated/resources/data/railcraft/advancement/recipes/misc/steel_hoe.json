@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steel_hoe"
+        "recipes": "railcraft:steel_hoe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

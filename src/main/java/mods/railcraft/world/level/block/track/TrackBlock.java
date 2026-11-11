@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.item.SpikeMaulTarget;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -53,10 +53,6 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
     this.registerDefaultState(this.buildDefaultState(this.stateDefinition.any()));
   }
 
-  @Override
-  protected MapCodec<? extends BaseRailBlock> codec() {
-    return simpleCodec(properties -> new TrackBlock(this.trackType, properties));
-  }
 
   @Override
   public TrackType getTrackType() {
@@ -261,7 +257,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   /**
-   * @see net.minecraft.world.level.block.RailBlock#rotate(BlockState, Rotation)
+   * @see RailBlock#rotate(BlockState, Rotation)
    */
   @Override
   protected BlockState rotate(BlockState state, Rotation rot) {
@@ -340,7 +336,7 @@ public class TrackBlock extends BaseRailBlock implements TypedTrack, ChargeBlock
   }
 
   /**
-   * @see net.minecraft.world.level.block.RailBlock#mirror(BlockState, Mirror)
+   * @see RailBlock#mirror(BlockState, Mirror)
    */
   @Override
   protected BlockState mirror(BlockState state, Mirror mirror) {

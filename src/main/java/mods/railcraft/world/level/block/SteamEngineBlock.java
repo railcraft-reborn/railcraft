@@ -3,8 +3,6 @@ package mods.railcraft.world.level.block;
 import java.util.Optional;
 import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.item.Crowbar;
 import mods.railcraft.particle.RailcraftParticleTypes;
 import mods.railcraft.util.fluids.FluidTools;
@@ -48,10 +46,6 @@ public class SteamEngineBlock extends BaseEntityBlock {
 
   public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
-  private static final MapCodec<SteamEngineBlock> CODEC =
-      RecordCodecBuilder.mapCodec(instance -> instance.group(
-          Tier.CODEC.fieldOf("tier").forGetter(SteamEngineBlock::getTier),
-          propertiesCodec()).apply(instance, SteamEngineBlock::new));
 
   private final Tier tier;
 
@@ -65,10 +59,6 @@ public class SteamEngineBlock extends BaseEntityBlock {
     return this.tier;
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:abandoned_throttle_track"
+        "recipes": "railcraft:abandoned_throttle_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

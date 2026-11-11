@@ -31,6 +31,9 @@ public class BedMinecartTestInstance extends GameTestInstance {
     };
     try {
       player.snapTo(cart.position());
+      // Complete vanilla's first-tick bed validation before testing cart sleeping.
+      // Unlike a connected player, the mock is not ticked automatically.
+      player.doTick();
       helper.assertTrue(player.startRiding(cart, true, true), "Player should ride the cart");
     } catch (RuntimeException e) {
       cleanup.run();

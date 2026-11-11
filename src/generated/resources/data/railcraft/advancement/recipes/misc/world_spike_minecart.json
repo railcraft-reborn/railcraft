@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:world_spike_minecart"
+        "recipes": "railcraft:world_spike_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

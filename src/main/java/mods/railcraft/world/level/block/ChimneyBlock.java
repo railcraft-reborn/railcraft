@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block;
 
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.ChimneyBlockEntity;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import net.minecraft.core.BlockPos;
@@ -26,16 +25,11 @@ public class ChimneyBlock extends BaseEntityBlock {
 
   private static final VoxelShape INSIDE = box(2.0, 2.0, 2.0, 14.0, 16.0, 14.0);
   private static final VoxelShape SHAPE = Shapes.join(Shapes.block(), INSIDE, BooleanOp.ONLY_FIRST);
-  private static final MapCodec<ChimneyBlock> CODEC = simpleCodec(ChimneyBlock::new);
 
   public ChimneyBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,

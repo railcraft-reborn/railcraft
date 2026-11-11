@@ -85,17 +85,16 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
       var textField = new EditBox(this.font, centeredX + 72,
           centeredY + getYPosFromIndex(entry.getKey().ordinal()), 95, 10,
-          entry.getKey().getDisplayName());
-      textField.setMaxLength(37);
-      textField.setValue(this.rangeToString(entry.getValue()));
-      textField.setFilter(string -> {
-        for (var ch : string.toCharArray()) {
-          if (!Character.isDigit(ch) && ch != ',' && ch != '-') {
-            return false;
+          entry.getKey().getDisplayName()) {
+        @Override
+        public void insertText(String text) {
+          if (text.chars().allMatch(ch -> Character.isDigit(ch) || ch == ',' || ch == '-')) {
+            super.insertText(text);
           }
         }
-        return true;
-      });
+      };
+      textField.setMaxLength(37);
+      textField.setValue(this.rangeToString(entry.getValue()));
       this.addRenderableWidget(textField);
       this.textFields.put(entry.getKey(), textField);
     }

@@ -1,7 +1,6 @@
 package mods.railcraft.world.entity.npc;
 
 import java.util.List;
-import java.util.Optional;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.registries.Registries;
@@ -14,7 +13,7 @@ import net.minecraft.world.item.trading.TradeCost;
 import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 public class RailcraftVillagerTrades {
@@ -207,10 +206,10 @@ public class RailcraftVillagerTrades {
         sell(cost(Items.IRON_INGOT, 7, 9), Items.EMERALD));
 
     context.register(TOOLSMITH_2_EMERALD_IRON_STEEL_INGOT,
-        new VillagerTrade(cost(Items.EMERALD, 1, 2),
-            Optional.of(new TradeCost(Items.IRON_INGOT, 1)),
+        VillagerTrade.builder(cost(Items.EMERALD, 1, 2),
+            new TradeCost(Items.IRON_INGOT, 1),
             new ItemStackTemplate(RailcraftItems.STEEL_INGOT.asItem()),
-            MAX_USES, XP, BULK_DISCOUNT, Optional.empty(), List.of()));
+            MAX_USES, XP, BULK_DISCOUNT).build());
     context.register(TOOLSMITH_2_EMERALD_STEEL_INGOT,
         sell(cost(Items.EMERALD, 3, 4), RailcraftItems.STEEL_INGOT));
     context.register(TOOLSMITH_2_EMERALD_SLAG,
@@ -272,19 +271,16 @@ public class RailcraftVillagerTrades {
   }
 
   private static VillagerTrade sell(TradeCost wants, ItemLike gives, int maxUses, float discount) {
-    return new VillagerTrade(wants, new ItemStackTemplate(gives.asItem()), maxUses, XP, discount,
-        Optional.empty(), List.of());
+    return VillagerTrade.builder(wants, new ItemStackTemplate(gives.asItem()), maxUses, XP, discount).build();
   }
 
-  /** Sells a random amount of {@code gives}, between {@code min} and {@code max}. */
   private static VillagerTrade sellStack(TradeCost wants, ItemLike gives, int min, int max) {
-    return new VillagerTrade(wants, new ItemStackTemplate(gives.asItem()), MAX_USES, XP,
-        BULK_DISCOUNT, Optional.empty(),
-        List.of(SetItemCountFunction.setCount(UniformGenerator.between(min, max)).build()));
+    return VillagerTrade.builder(wants, new ItemStackTemplate(gives.asItem()), MAX_USES, XP, BULK_DISCOUNT)
+        .addModifier(SetItemCountFunction.setCount(ContextIntProviders.between(min, max))).build();
   }
 
   private static TradeCost cost(ItemLike item, int min, int max) {
-    return new TradeCost(item, UniformGenerator.between(min, max));
+    return new TradeCost(item, ContextIntProviders.between(min, max));
   }
 
   private static List<ResourceKey<VillagerTrade>> keysFor(String prefix,

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:purple_iron_tank_gauge"
+        "recipes": "railcraft:purple_iron_tank_gauge"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

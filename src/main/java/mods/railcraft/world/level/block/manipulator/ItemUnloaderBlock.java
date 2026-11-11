@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.manipulator;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.ItemUnloaderBlockEntity;
 import mods.railcraft.world.level.block.entity.manipulator.ManipulatorBlockEntity;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemUnloaderBlock extends ManipulatorBlock<ItemUnloaderBlockEntity> {
 
-  private static final MapCodec<ItemUnloaderBlock> CODEC = simpleCodec(ItemUnloaderBlock::new);
 
   public ItemUnloaderBlock(Properties properties) {
     super(ItemUnloaderBlockEntity.class, properties);
@@ -23,10 +21,6 @@ public class ItemUnloaderBlock extends ManipulatorBlock<ItemUnloaderBlockEntity>
         .setValue(POWERED, false));
   }
 
-  @Override
-  protected MapCodec<? extends ManipulatorBlock<ItemUnloaderBlockEntity>> codec() {
-    return CODEC;
-  }
 
   @Override
   public Direction getFacing(BlockState blockState) {

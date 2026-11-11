@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:zinc_gear"
+        "recipes": "railcraft:zinc_gear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

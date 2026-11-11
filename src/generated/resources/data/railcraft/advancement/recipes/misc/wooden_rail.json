@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:wooden_rail"
+        "recipes": "railcraft:wooden_rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

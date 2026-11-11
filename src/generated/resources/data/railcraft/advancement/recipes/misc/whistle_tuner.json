@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:whistle_tuner"
+        "recipes": "railcraft:whistle_tuner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

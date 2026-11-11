@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:diamond_crowbar"
+        "recipes": "railcraft:diamond_crowbar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

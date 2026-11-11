@@ -1,10 +1,8 @@
 package mods.railcraft.data.loot.packs;
 
-import java.util.function.BiConsumer;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
@@ -14,10 +12,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-public record RailcraftChestLoot(HolderLookup.Provider registries) implements LootTableSubProvider {
+public record RailcraftChestLoot(LootTableSubProvider.Context registries) implements LootTableSubProvider {
 
   // If you change the name, remember to regenerate the chest inside the structure
   // /setblock x y z minecraft:chest[facing=south]{LootTable:"railcraft:chests/component_workshop"}
@@ -29,11 +27,11 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
       ResourceKey.create(Registries.LOOT_TABLE, RailcraftConstants.id("chests/simple_dungeon"));
 
   @Override
-  public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
-    biConsumer.accept(COMPONENT_WORKSHOP, LootTable.lootTable()
+  public void run() {
+    this.registries.accept(COMPONENT_WORKSHOP, LootTable.lootTable()
         .withPool(LootPool.lootPool()
             .name("railcraft_tools")
-            .setRolls(ConstantValue.exactly(1))
+            .setRolls(ContextIntProviders.exactly(1))
             .add(LootItem.lootTableItem(RailcraftItems.IRON_CROWBAR.get()).setWeight(2))
             .add(LootItem.lootTableItem(RailcraftItems.SEASONS_CROWBAR.get()).setWeight(1))
             .add(LootItem.lootTableItem(RailcraftItems.IRON_SPIKE_MAUL.get()).setWeight(1))
@@ -46,7 +44,7 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_carts")
-            .setRolls(UniformGenerator.between(1, 2))
+            .setRolls(ContextIntProviders.between(1, 2))
             .add(LootItem.lootTableItem(Items.RAIL).setWeight(5))
             .add(LootItem.lootTableItem(Items.CHEST_MINECART).setWeight(3))
             .add(LootItem.lootTableItem(Items.HOPPER_MINECART).setWeight(1))
@@ -61,37 +59,37 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_resources")
-            .setRolls(UniformGenerator.between(1, 2))
+            .setRolls(ContextIntProviders.between(1, 2))
             .add(LootItem.lootTableItem(Items.COAL).setWeight(5)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.PLATE_CHEST_LOOT).setWeight(2)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.GEAR_CHEST_LOOT).setWeight(1)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.INGOT_CHEST_LOOT).setWeight(4)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.PLATE_CHEST_LOOT)).setWeight(2)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.GEAR_CHEST_LOOT)).setWeight(1)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 3))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.INGOT_CHEST_LOOT)).setWeight(4)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
             .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(1)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_tracks")
-            .setRolls(UniformGenerator.between(1, 2))
+            .setRolls(ContextIntProviders.between(1, 2))
             .add(LootItem.lootTableItem(Items.RAIL).setWeight(1)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 32))))
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(16, 32))))
         )
     );
 
-    biConsumer.accept(ABANDONED_MINESHAFT, LootTable.lootTable()
+    this.registries.accept(ABANDONED_MINESHAFT, LootTable.lootTable()
         .withPool(LootPool.lootPool()
             .name("railcraft_tools")
-            .setRolls(ConstantValue.exactly(1))
+            .setRolls(ContextIntProviders.exactly(1))
             .add(LootItem.lootTableItem(RailcraftItems.IRON_CROWBAR.get()).setWeight(5))
             .add(LootItem.lootTableItem(RailcraftItems.IRON_SPIKE_MAUL.get()).setWeight(5))
             .add(LootItem.lootTableItem(RailcraftItems.OVERALLS.get()).setWeight(5))
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_carts")
-            .setRolls(UniformGenerator.between(1, 2))
+            .setRolls(ContextIntProviders.between(1, 2))
             .add(LootItem.lootTableItem(Items.MINECART).setWeight(5))
             .add(LootItem.lootTableItem(Items.CHEST_MINECART).setWeight(5))
             .add(LootItem.lootTableItem(Items.HOPPER_MINECART).setWeight(1))
@@ -104,21 +102,21 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
         )
         .withPool(LootPool.lootPool()
             .name("railcraft_resources")
-            .setRolls(UniformGenerator.between(0, 2))
+            .setRolls(ContextIntProviders.between(0, 2))
             .add(LootItem.lootTableItem(Items.COAL).setWeight(5)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.PLATE_CHEST_LOOT).setWeight(2)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.GEAR_CHEST_LOOT).setWeight(1)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
-            .add(TagEntry.expandTag(RailcraftTags.Items.INGOT_CHEST_LOOT).setWeight(4)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.PLATE_CHEST_LOOT)).setWeight(2)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.GEAR_CHEST_LOOT)).setWeight(1)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(2, 3))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.INGOT_CHEST_LOOT)).setWeight(4)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
         )
     );
-    biConsumer.accept(SIMPLE_DUNGEON, LootTable.lootTable()
+    this.registries.accept(SIMPLE_DUNGEON, LootTable.lootTable()
         .withPool(LootPool.lootPool()
             .name("railcraft_general")
-            .setRolls(UniformGenerator.between(0, 1))
+            .setRolls(ContextIntProviders.between(0, 1))
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_SWORD.get()).setWeight(1))
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_AXE.get()).setWeight(1))
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_PICKAXE.get()).setWeight(1))
@@ -126,8 +124,8 @@ public record RailcraftChestLoot(HolderLookup.Provider registries) implements Lo
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_HELMET.get()).setWeight(1))
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_LEGGINGS.get()).setWeight(1))
             .add(LootItem.lootTableItem(RailcraftItems.STEEL_CHESTPLATE.get()).setWeight(1))
-            .add(TagEntry.expandTag(RailcraftTags.Items.INGOT_CHEST_LOOT).setWeight(2)
-                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))))
+            .add(TagEntry.expandTag(this.registries.lookup(Registries.ITEM).getOrThrow(RailcraftTags.Items.INGOT_CHEST_LOOT)).setWeight(2)
+                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(3, 8))))
         )
     );
   }

@@ -1,14 +1,19 @@
 package mods.railcraft.loot;
 
+import java.util.Arrays;
+import java.util.Optional;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mods.railcraft.RailcraftConfig;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
@@ -21,14 +26,14 @@ public class DungeonLootModifier extends LootModifier {
           .apply(inst, DungeonLootModifier::new));
   private final ResourceKey<LootTable> lootTable;
 
-  public DungeonLootModifier(LootItemCondition[] conditionsIn, int priority,
+  public DungeonLootModifier(Optional<Holder<LootItemCondition>> conditionsIn, int priority,
       ResourceKey<LootTable> lootTable) {
     super(conditionsIn, priority);
     this.lootTable = lootTable;
   }
 
   public DungeonLootModifier(LootItemCondition[] conditionsIn, ResourceKey<LootTable> lootTable) {
-    this(conditionsIn, IGlobalLootModifier.DEFAULT_PRIORITY, lootTable);
+    this(conditionsIn.length == 0 ? Optional.empty() : Optional.of(Holder.direct(AllOfCondition.allOf(HolderSet.direct(Arrays.stream(conditionsIn).map(Holder::direct).toList())))), IGlobalLootModifier.DEFAULT_PRIORITY, lootTable);
   }
 
   @SuppressWarnings("deprecation")

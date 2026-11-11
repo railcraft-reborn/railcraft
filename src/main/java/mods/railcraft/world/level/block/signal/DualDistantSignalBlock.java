@@ -1,6 +1,5 @@
 package mods.railcraft.world.level.block.signal;
 
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.Translations;
 import mods.railcraft.integrations.jei.JeiSearchable;
 import mods.railcraft.world.level.block.entity.signal.DualDistantSignalBlockEntity;
@@ -11,17 +10,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class DualDistantSignalBlock extends DualSignalBlock implements JeiSearchable {
 
-  private static final MapCodec<DualDistantSignalBlock> CODEC =
-      simpleCodec(DualDistantSignalBlock::new);
 
   public DualDistantSignalBlock(Properties properties) {
     super(properties);
   }
 
-  @Override
-  protected MapCodec<? extends DualSignalBlock> codec() {
-    return CODEC;
-  }
 
   @Override
   public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {

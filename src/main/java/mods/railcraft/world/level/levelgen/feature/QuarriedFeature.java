@@ -1,6 +1,6 @@
 package mods.railcraft.world.level.levelgen.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.levelgen.feature.configuration.QuarriedConfiguration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,23 +11,32 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class QuarriedFeature extends Feature<QuarriedConfiguration> {
+public class QuarriedFeature implements Feature {
 
   private static final int DISTANCE_OUTER_SQ = 8 * 8;
 
-  public QuarriedFeature(Codec<QuarriedConfiguration> codec) {
-    super(codec);
+  public static final MapCodec<QuarriedFeature> CODEC = QuarriedConfiguration.CODEC.fieldOf("config")
+      .xmap(QuarriedFeature::new, feature -> feature.config);
+
+  private final QuarriedConfiguration config;
+
+  public QuarriedFeature(QuarriedConfiguration config) {
+    this.config = config;
   }
 
   @Override
-  public boolean place(FeaturePlaceContext<QuarriedConfiguration> context) {
-    var level = context.level();
+  public MapCodec<QuarriedFeature> codec() {
+    return CODEC;
+  }
+
+  @Override
+  public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos position) {
     var origin = level
-        .getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, context.origin())
+        .getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, position)
         .below(3);
     if (!level.getBlockState(origin).is(BlockTags.DIRT))
       return false;
@@ -75,7 +84,7 @@ public class QuarriedFeature extends Feature<QuarriedConfiguration> {
 
           currentPos.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z);
           final BlockState existingState = level.getBlockState(currentPos);
-          placeState(existingState, level, currentPos, context.random(), context.config());
+          placeState(existingState, level, currentPos, random, this.config);
         }
       }
     }
@@ -104,7 +113,7 @@ public class QuarriedFeature extends Feature<QuarriedConfiguration> {
     if (level.getBlockState(above).is(Blocks.SHORT_GRASS))
       level.setBlock(above, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 
-    if (config.targetProvider().test(existingState, random))
+    if (config.targetProvider().test(existingState, blockPos, random))
       level.setBlock(blockPos, config.stateProvider().getState(level, random, blockPos),
           Block.UPDATE_CLIENTS);
   }
