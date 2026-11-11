@@ -161,6 +161,11 @@ public class RailcraftTags {
     public static final TagKey<Item> ARMORS_LEGGINGS_STEEL = commonTag("armors/leggings/steel");
     public static final TagKey<Item> ARMORS_BOOTS_STEEL = commonTag("armors/boots/steel");
 
+    public static final TagKey<Item> TRACKMAN_BACKPACK_ALLOW = tag("backpack/allow/trackman");
+    public static final TagKey<Item> TRACKMAN_BACKPACK_REJECT = tag("backpack/reject/trackman");
+    public static final TagKey<Item> ICEMAN_BACKPACK_ALLOW = tag("backpack/allow/iceman");
+    public static final TagKey<Item> ICEMAN_BACKPACK_REJECT = tag("backpack/reject/iceman");
+
     private static TagKey<Item> tag(String name) {
       return ItemTags.create(RailcraftConstants.id(name));
     }

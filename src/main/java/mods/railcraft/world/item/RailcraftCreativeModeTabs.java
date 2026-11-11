@@ -3,6 +3,7 @@ package mods.railcraft.world.item;
 import java.util.List;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.integrations.forestry.ForestryIntegration;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -220,6 +221,10 @@ public class RailcraftCreativeModeTabs {
             output.accept(RailcraftItems.LOGBOOK.get());
             output.accept(RailcraftItems.GOGGLES.get());
             output.accept(RailcraftItems.OVERALLS.get());
+            if (ForestryIntegration.isLoaded()) {
+              // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+              // RailcraftBackpacks.addToCreativeTab(output);
+            }
 
             output.accept(RailcraftItems.CONTROLLER_CIRCUIT.get());
             output.accept(RailcraftItems.RECEIVER_CIRCUIT.get());

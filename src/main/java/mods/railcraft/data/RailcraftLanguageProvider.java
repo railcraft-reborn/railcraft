@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.buildcraft.GateStatement;
+import mods.railcraft.integrations.forestry.ForestryIntegration;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
@@ -254,6 +255,13 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addItem(RailcraftItems.SIGNAL_BLOCK_SURVEYOR, "Signal Block Surveyor");
     this.addItem(RailcraftItems.SIGNAL_TUNER, "Signal Tuner");
     this.addItem(RailcraftItems.OVERALLS, "Overalls");
+    if (ForestryIntegration.isLoaded()) {
+      // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+      // this.addItem(RailcraftBackpacks.TRACKMAN_BACKPACK, "Trackman's Backpack");
+      // this.addItem(RailcraftBackpacks.WOVEN_TRACKMAN_BACKPACK, "Woven Trackman's Backpack");
+      // this.addItem(RailcraftBackpacks.ICEMAN_BACKPACK, "Iceman's Backpack");
+      // this.addItem(RailcraftBackpacks.WOVEN_ICEMAN_BACKPACK, "Woven Iceman's Backpack");
+    }
     this.addItem(RailcraftItems.GOLDEN_TICKET, "Golden Ticket");
     this.addItem(RailcraftItems.TICKET, "Ticket");
     this.addItem(RailcraftItems.TAG_FILTER, "Tag Filter");
