@@ -64,7 +64,7 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
   /**
    * Maximum energy pushed to adjacent blocks per tick, scaled by
-   * {@code turbineEnergyPowerRateMultiplier}.
+   * {@code turbineEnergyOutputRateMultiplier}.
    */
   public static int energyOutputRate() {
     return (int) Math.round(ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get());
