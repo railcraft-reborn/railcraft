@@ -1,6 +1,7 @@
 package mods.railcraft.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -17,7 +18,7 @@ import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(value = AbstractMinecart.class)
-public class AbstractMinecartMixin {
+public abstract class AbstractMinecartMixin {
 
   /**
    * Vanilla only notices a cart turning around when its yaw changes by 170 degrees or more in a
@@ -25,6 +26,9 @@ public class AbstractMinecartMixin {
    * the other way.
    */
   private static final float FLIP_CUTOFF = 120;
+
+  @Shadow
+  protected abstract double getMaxSpeed(ServerLevel level);
 
   private AbstractMinecart self() {
     return (AbstractMinecart) (Object) this;
@@ -53,13 +57,14 @@ public class AbstractMinecartMixin {
       at = @At(value = "INVOKE",
           target = "Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D"))
   private double railcraft$bypassgetMaxSpeed(AbstractMinecart minecart, ServerLevel level) {
+    // Call the cart's own max speed so subclass overrides (e.g. the furnace minecart) still apply
     if (minecart.onGround()) {
-      return minecart.getBehavior().getMaxSpeed(level);
+      return this.getMaxSpeed(level);
     }
 
     return minecart.getData(RailcraftAttachmentTypes.MAX_SPEED_AIR_LATERAL)
         .map(Double::valueOf)
-        .orElse(minecart.getBehavior().getMaxSpeed(level));
+        .orElseGet(() -> this.getMaxSpeed(level));
   }
 
   @Inject(method = "comeOffTrack",

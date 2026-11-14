@@ -42,13 +42,6 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
     return (OldMinecartBehavior) (Object) this;
   }
 
-  /*@Redirect(method = "moveAlongTrack",
-      at = @At(value = "INVOKE",
-          target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;getMaxSpeed(Lnet/minecraft/server/level/ServerLevel;)D"))
-  private double railcraft$bypassgetMaxSpeed(AbstractMinecart minecart, ServerLevel level) {
-    return getCustomMaxSpeed(level);
-  }*/
-
   /**
    * Uses Railcraft's cart collision box, which accounts for the cart being longer than it is wide.
    */
