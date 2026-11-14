@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 import it.unimi.dsi.fastutil.chars.CharList;
-import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -35,7 +34,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineBlockEntity, Void> {
 
   private static final int WATER_OUTPUT_RATE = 4;
-  private static final int ENERGY_OUTPUT_RATE = 900;
 
   private static final BlockPredicate BLOCK_PREDICATE =
       BlockPredicate.of(RailcraftBlocks.STEAM_TURBINE);
@@ -94,8 +92,7 @@ public class SteamTurbineBlockEntity extends MultiblockBlockEntity<SteamTurbineB
               || !tank.getMembership().equals(blockEntity.getMembership());
 
           EnergyUtil.pushToSides(level, blockPos, master.getEnergyStorage(),
-              ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get().intValue(), filter,
-              Direction.values());
+              SteamTurbineModule.energyOutputRate(), filter, Direction.values());
 
           var neighbors = FluidTools.findNeighbors(level, blockPos, filter,
               Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);

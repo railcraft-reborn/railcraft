@@ -26,7 +26,8 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
 
   private static final int ROTOR_DAMAGE_CHANCE = 200;
 
-  public static final int CHARGE_OUTPUT = 225;
+  private static final int CHARGE_OUTPUT = 225;
+  private static final int ENERGY_OUTPUT_RATE = 900;
   private static final int STEAM_USAGE = 360;
   public static final int TANK_STEAM = 0;
   public static final int TANK_WATER = 1;
@@ -54,6 +55,21 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
         .changeCallback(provider::setChanged);
   }
 
+  /**
+   * Charge produced per operating tick, scaled by {@code turbinePowerMultiplier}.
+   */
+  public static int chargeOutput() {
+    return (int) Math.round(CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get());
+  }
+
+  /**
+   * Maximum energy pushed to adjacent blocks per tick, scaled by
+   * {@code turbineEnergyPowerRateMultiplier}.
+   */
+  public static int energyOutputRate() {
+    return (int) Math.round(ENERGY_OUTPUT_RATE * RailcraftConfig.SERVER.turbineEnergyOutputRateMultiplier.get());
+  }
+
   public IFluidHandler getFluidHandler() {
     return this.fluidHandler;
   }
@@ -70,13 +86,14 @@ public class SteamTurbineModule extends ChargeModule<SteamTurbineBlockEntity> {
   public void serverTick() {
     super.serverTick();
     var addedEnergy = false;
-    if (this.energy < (CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue())) {
+    var chargeOutput = chargeOutput();
+    if (this.energy < chargeOutput) {
       var steam = this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.SIMULATE);
       if (steam.getAmount() >= STEAM_USAGE) {
         var rotorStack = this.rotorContainer.getItem(0);
         if (rotorStack.is(RailcraftItems.TURBINE_ROTOR.get())) {
           addedEnergy = true;
-          this.energy += CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue();
+          this.energy += chargeOutput;
           this.steamTank.internalDrain(STEAM_USAGE, IFluidHandler.FluidAction.EXECUTE);
           this.waterTank.internalFill(new FluidStack(Fluids.WATER, 2), IFluidHandler.FluidAction.EXECUTE);
           this.rotorContainer.setItem(0, useRotor((ServerLevel) this.provider.level(), rotorStack));

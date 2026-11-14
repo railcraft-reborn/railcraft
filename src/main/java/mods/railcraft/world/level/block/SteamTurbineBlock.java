@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
-import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
@@ -79,11 +78,9 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state,
       ServerLevel level, BlockPos pos) {
+    var chargeOutput = SteamTurbineModule.chargeOutput();
     return Spec.make(Charge.distribution, ChargeBlock.ConnectType.BLOCK, 0,
-      new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
-          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
-          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
-        1));
+        new ChargeStorage.Spec(ChargeStorage.State.DISABLED, chargeOutput, chargeOutput, 1));
   }
 
   @Override
@@ -91,7 +88,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
     Charge.zapEffectProvider().throwSparks(state, level, pos, rand, 50);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos,
       RandomSource random) {
@@ -99,7 +95,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
     this.registerNode(blockState, level, blockPos);
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState oldState,
       boolean moved) {
@@ -109,7 +104,6 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
     }
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState newState,
       boolean moved) {

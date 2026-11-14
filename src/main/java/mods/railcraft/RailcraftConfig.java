@@ -219,11 +219,14 @@ public class RailcraftConfig {
             .comment("Adjust the losses for the Charge network")
             .defineInRange("lossMultiplier", 1.0D, 0.2D, 10.0D);
         this.turbinePowerMultiplier = builder
-            .comment("Adjust the amount of power produced in a Turbine")
-            .defineInRange("turbinePowerMultiplier", 1.0F, 0.1F, 100F);
+            .comment("Multiplier for the charge a Steam Turbine produces per tick.",
+                "Steam consumption is not affected.")
+            .defineInRange("turbinePowerMultiplier", 1.0D, 0.1D, 100.0D);
         this.turbineEnergyOutputRateMultiplier = builder
-            .comment("Adjust the amount of energy output rate in a Turbine")
-            .defineInRange("turbineEnergyPowerRateMultiplier", 1.0F, 0.1F, 100F);
+            .comment("Multiplier for the maximum energy (FE/t) a Steam Turbine pushes",
+                "into adjacent blocks. Raise it together with turbinePowerMultiplier",
+                "if the extra charge should also reach FE consumers.")
+            .defineInRange("turbineEnergyPowerRateMultiplier", 1.0D, 0.1D, 100.0D);
       }
       builder.pop();
 
