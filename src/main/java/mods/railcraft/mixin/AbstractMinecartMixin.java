@@ -5,10 +5,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
+import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.minecart.OldMinecartBehavior;
 import net.minecraft.world.phys.Vec3;
@@ -30,6 +33,20 @@ public class AbstractMinecartMixin {
   @Inject(method = "tick", at = @At("HEAD"))
   public void railcraft$tick(CallbackInfo callbackInfo) {
     RollingStock.getOrThrow(self()).tick();
+  }
+
+  /**
+   * Replaces the vanilla cart collisions with Railcraft's, which make carts solid, auto link
+   * colliding carts and handle high speed collisions. NeoForge used to do this through
+   * {@code IMinecartCollisionHandler}, which it no longer calls.
+   */
+  @Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"),
+      cancellable = true)
+  private void railcraft$push(Entity entity, CallbackInfo ci) {
+    if (!self().level().isClientSide() && RailcraftConfig.SERVER.solidCarts.get()) {
+      MinecartHandler.INSTANCE.onEntityCollision(self(), entity);
+      ci.cancel();
+    }
   }
 
   @Redirect(method = "comeOffTrack",

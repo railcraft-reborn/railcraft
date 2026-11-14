@@ -25,6 +25,11 @@ import net.neoforged.neoforge.common.IMinecartCollisionHandler;
 
 public class MinecartHandler implements IMinecartCollisionHandler {
 
+  /**
+   * NeoForge no longer lets mods register an {@link IMinecartCollisionHandler}
+   */
+  public static final MinecartHandler INSTANCE = new MinecartHandler();
+
   private static final float OPTIMAL_DISTANCE = 1.28f;
   private static final float COEF_SPRING = 0.2f;
   private static final float COEF_SPRING_PLAYER = 0.5f;

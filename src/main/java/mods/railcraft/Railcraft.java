@@ -137,7 +137,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -159,7 +158,7 @@ public class Railcraft {
     }
   }
 
-  private final MinecartHandler minecartHandler = new MinecartHandler();
+  private final MinecartHandler minecartHandler = MinecartHandler.INSTANCE;
 
   public Railcraft(ModContainer modContainer, Dist dist) {
     NeoForge.EVENT_BUS.register(this);
@@ -387,13 +386,6 @@ public class Railcraft {
   @SubscribeEvent
   public void handleServerAboutToStart(ServerAboutToStartEvent event) {
     ComponentWorkshop.addVillageStructures(event.getServer().registryAccess());
-  }
-
-  @SubscribeEvent
-  public void handleServerStarted(ServerStartedEvent event) {
-    if (RailcraftConfig.SERVER.solidCarts.get()) {
-      //AbstractMinecart.registerCollisionHandler(this.minecartHandler);
-    }
   }
 
   @SubscribeEvent

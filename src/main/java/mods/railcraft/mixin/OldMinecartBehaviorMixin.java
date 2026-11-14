@@ -3,9 +3,13 @@ package mods.railcraft.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import com.mojang.datafixers.util.Pair;
+import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.carts.CartAdvanceable;
 import mods.railcraft.attachment.RailcraftAttachmentTypes;
+import mods.railcraft.world.entity.vehicle.MinecartHandler;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -24,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 @Mixin(value = OldMinecartBehavior.class)
@@ -43,6 +48,19 @@ public abstract class OldMinecartBehaviorMixin extends MinecartBehavior {
   private double railcraft$bypassgetMaxSpeed(AbstractMinecart minecart, ServerLevel level) {
     return getCustomMaxSpeed(level);
   }*/
+
+  /**
+   * Uses Railcraft's cart collision box, which accounts for the cart being longer than it is wide.
+   */
+  @Redirect(method = "pushAndPickupEntities",
+      at = @At(value = "INVOKE",
+          target = "Lnet/minecraft/world/phys/AABB;inflate(DDD)Lnet/minecraft/world/phys/AABB;"))
+  private AABB railcraft$minecartCollisionBox(AABB box, double x, double y, double z) {
+    if (RailcraftConfig.SERVER.solidCarts.get()) {
+      return MinecartHandler.INSTANCE.getMinecartCollisionBox(this.minecart);
+    }
+    return box.inflate(x, y, z);
+  }
 
   @Unique
   private double railcraft$getCustomMaxSpeed(ServerLevel level) {
