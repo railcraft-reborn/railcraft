@@ -3,7 +3,6 @@ package mods.railcraft.world.level.block;
 import java.util.Map;
 import org.jspecify.annotations.Nullable;
 import com.mojang.serialization.MapCodec;
-import mods.railcraft.RailcraftConfig;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -73,11 +72,9 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
   @Override
   public Map<Charge, Spec> getChargeSpecs(BlockState state,
       ServerLevel level, BlockPos pos) {
+    var chargeOutput = SteamTurbineModule.chargeOutput();
     return Spec.make(Charge.distribution, ChargeBlock.ConnectType.BLOCK, 0,
-      new ChargeStorage.Spec(ChargeStorage.State.DISABLED,
-          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
-          SteamTurbineModule.CHARGE_OUTPUT * RailcraftConfig.SERVER.turbinePowerMultiplier.get().intValue(),
-        1));
+        new ChargeStorage.Spec(ChargeStorage.State.DISABLED, chargeOutput, chargeOutput, 1));
   }
 
   @Override
