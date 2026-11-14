@@ -1,0 +1,57 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ores/apatite"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:gems/apatite"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:gems/apatite"
+      }
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:gems/apatite"
+      }
+    }
+  ],
+  "type": "railcraft:crusher",
+  "ingredient": "#c:ores/apatite",
+  "outputs": [
+    {
+      "count": 4,
+      "probability": 1.0,
+      "result": "#c:gems/apatite"
+    },
+    {
+      "probability": 0.85,
+      "result": "#c:gems/apatite"
+    },
+    {
+      "probability": 0.25,
+      "result": "#c:gems/apatite"
+    },
+    {
+      "probability": 0.2,
+      "result": "railcraft:sulfur_dust"
+    },
+    {
+      "probability": 0.05,
+      "result": "railcraft:saltpeter_dust"
+    }
+  ]
+}
