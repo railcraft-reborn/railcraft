@@ -1,4 +1,15 @@
 {
+  "given_item_modifiers": [
+    {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "max": 30.0,
+        "min": 15.0
+      },
+      "options": "#minecraft:on_traded_equipment"
+    }
+  ],
   "gives": {
     "id": "railcraft:steel_crowbar"
   },

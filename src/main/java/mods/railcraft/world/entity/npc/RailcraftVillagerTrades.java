@@ -4,15 +4,19 @@ import java.util.List;
 import java.util.Optional;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.trading.TradeCost;
 import net.minecraft.world.item.trading.VillagerTrade;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -162,6 +166,11 @@ public class RailcraftVillagerTrades {
   }
 
   private static void bootstrapTrackman(BootstrapContext<VillagerTrade> context) {
+    Optional<HolderSet<Enchantment>> tradedEquipmentEnchantments =
+        context.lookup(Registries.ENCHANTMENT)
+            .get(EnchantmentTags.ON_TRADED_EQUIPMENT)
+            .map(named -> (HolderSet<Enchantment>) named);
+
     context.register(TRACKMAN_1_COAL_EMERALD, sell(cost(Items.COAL, 16, 24), Items.EMERALD));
     context.register(TRACKMAN_1_COAL_COKE_EMERALD,
         sell(cost(RailcraftItems.COAL_COKE, 16, 24), Items.EMERALD));
@@ -174,7 +183,8 @@ public class RailcraftVillagerTrades {
     }
 
     context.register(TRACKMAN_3_EMERALD_STEEL_CROWBAR,
-        sellRare(cost(Items.EMERALD, 24, 52), RailcraftItems.STEEL_CROWBAR));
+        sellEnchanted(cost(Items.EMERALD, 24, 52), RailcraftItems.STEEL_CROWBAR,
+            tradedEquipmentEnchantments));
     context.register(TRACKMAN_3_EMERALD_WHISTLE_TUNER,
         sell(cost(Items.EMERALD, 1, 2), RailcraftItems.WHISTLE_TUNER));
     context.register(TRACKMAN_3_EMERALD_SIGNAL_BLOCK_SURVEYOR,
@@ -184,7 +194,8 @@ public class RailcraftVillagerTrades {
     context.register(TRACKMAN_3_EMERALD_GOGGLES,
         sell(cost(Items.EMERALD, 4, 8), RailcraftItems.GOGGLES));
     context.register(TRACKMAN_3_EMERALD_OVERALLS,
-        sellRare(cost(Items.EMERALD, 19, 32), RailcraftItems.OVERALLS));
+        sellEnchanted(cost(Items.EMERALD, 19, 32), RailcraftItems.OVERALLS,
+            tradedEquipmentEnchantments));
   }
 
   private static void bootstrapCartman(BootstrapContext<VillagerTrade> context) {
@@ -267,8 +278,17 @@ public class RailcraftVillagerTrades {
     return sell(wants, gives, MAX_USES, BULK_DISCOUNT);
   }
 
-  private static VillagerTrade sellRare(TradeCost wants, ItemLike gives) {
-    return sell(wants, gives, RARE_MAX_USES, EQUIPMENT_DISCOUNT);
+  /**
+   * Sells a rare item enchanted with 15 to 30 levels worth of {@code enchantments}, like the
+   * pre-26.1 trades did.
+   */
+  private static VillagerTrade sellEnchanted(TradeCost wants, ItemLike gives,
+      Optional<HolderSet<Enchantment>> enchantments) {
+    return new VillagerTrade(wants, new ItemStackTemplate(gives.asItem()), RARE_MAX_USES, XP,
+        EQUIPMENT_DISCOUNT, Optional.empty(),
+        List.of(new EnchantWithLevelsFunction.Builder(UniformGenerator.between(15, 30))
+            .withOptions(enchantments)
+            .build()));
   }
 
   private static VillagerTrade sell(TradeCost wants, ItemLike gives, int maxUses, float discount) {
