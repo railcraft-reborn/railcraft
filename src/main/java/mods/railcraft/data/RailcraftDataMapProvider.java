@@ -49,6 +49,7 @@ public class RailcraftDataMapProvider extends DataMapProvider {
         .add(RailcraftTags.Fluids.CREOSOTE, new FluidHeat(4800), false)
         // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
         // .add(forestry("ethanol"), new FluidHeat(16000), false, forestry)
+        // .add(forestry("biomass"), new FluidHeat(8000), false, forestry)
         .add(buildcraft("oil_heavy"), new FluidHeat(42666), false, buildcraft)
         .add(buildcraft("oil_dense"), new FluidHeat(64000), false, buildcraft)
         .add(buildcraft("oil_distilled"), new FluidHeat(20000), false, buildcraft)
