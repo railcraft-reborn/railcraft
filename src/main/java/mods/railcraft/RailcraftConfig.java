@@ -226,7 +226,7 @@ public class RailcraftConfig {
             .comment("Multiplier for the maximum energy (FE/t) a Steam Turbine pushes",
                 "into adjacent blocks. Raise it together with turbinePowerMultiplier",
                 "if the extra charge should also reach FE consumers.")
-            .defineInRange("turbineEnergyPowerRateMultiplier", 1.0D, 0.1D, 100.0D);
+            .defineInRange("turbineEnergyOutputRateMultiplier", 1.0D, 0.1D, 100.0D);
       }
       builder.pop();
 
