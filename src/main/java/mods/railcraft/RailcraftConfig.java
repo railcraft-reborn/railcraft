@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -44,6 +47,25 @@ public class RailcraftConfig {
     return !SERVER_SPEC.isLoaded() || SERVER.smoothCartMovement.get();
   }
 
+  public static boolean isIgnoredByHighSpeedCollisions(EntityType<?> type) {
+    for (var entry : SERVER.highSpeedTrackIgnoredEntities.get()) {
+      if (entry.startsWith("#")) {
+        var tag = ResourceLocation.tryParse(entry.substring(1));
+        if (tag != null && type.is(TagKey.create(Registries.ENTITY_TYPE, tag))) {
+          return true;
+        }
+      } else if (entry.equals(EntityType.getKey(type).toString())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean isValidEntityEntry(Object obj) {
+    var str = obj.toString();
+    return isValidResourceLocation(str.startsWith("#") ? str.substring(1) : str);
+  }
+
   private static boolean isValidResourceLocation(Object obj) {
     var str = obj.toString();
     if (str.isEmpty()) {
@@ -55,6 +77,7 @@ public class RailcraftConfig {
     return ResourceLocation.tryParse(str) != null;
   }
 
+  // TODO 26.4.x: group related options (tankCart, tank, bore, locomotive, carts)
   public static class Server {
 
     public final DoubleValue highSpeedTrackMaxSpeed;
@@ -109,13 +132,17 @@ public class RailcraftConfig {
         final var defaultEntities = List.of(
             "minecraft:bat", "minecraft:blaze", "minecraft:cave_spider",
             "minecraft:chicken", "minecraft:parrot", "minecraft:rabbit",
-            "minecraft:spider", "minecraft:vex", "minecraft:bee");
+            "minecraft:spider", "minecraft:vex", "minecraft:bee",
+            "minecraft:silverfish", "minecraft:endermite", "minecraft:allay",
+            "minecraft:frog", "minecraft:axolotl", "minecraft:armadillo",
+            "minecraft:cat", "minecraft:ocelot", "minecraft:fox");
 
         this.highSpeedTrackIgnoredEntities = builder
             .comment(
-                "Add entity names to exclude them from explosions caused by high speed collisions")
+                "Add entity names to exclude them from explosions caused by high speed collisions",
+                "Entity type tags are also accepted, prefixed with '#' (e.g. '#minecraft:arthropod')")
             .defineList("highSpeedTrackIgnoredEntities", () -> defaultEntities,
-                () -> "minecraft:bat", RailcraftConfig::isValidResourceLocation);
+                () -> "minecraft:bat", RailcraftConfig::isValidEntityEntry);
       }
       builder.pop();
 

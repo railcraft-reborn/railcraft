@@ -8,7 +8,6 @@ import mods.railcraft.api.track.TrackUtil;
 import mods.railcraft.util.EntitySearcher;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.world.level.block.RailcraftBlocks;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -206,8 +205,7 @@ public class MinecartHandler implements IMinecartCollisionHandler {
         }
       }
 
-      if (!other.isAlive() || RailcraftConfig.SERVER.highSpeedTrackIgnoredEntities.get()
-          .contains(BuiltInRegistries.ENTITY_TYPE.getKey(other.getType()).toString())) {
+      if (!other.isAlive() || RailcraftConfig.isIgnoredByHighSpeedCollisions(other.getType())) {
         return;
       }
 
