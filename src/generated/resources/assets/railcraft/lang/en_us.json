@@ -827,6 +827,8 @@
   "railcraft.configuration.tankCartFluidTransferRate": "Tank Cart fluid transfer rate",
   "railcraft.configuration.tankStackingEnabled": "Tank stacking enabled",
   "railcraft.configuration.tinOre": "Tin ore",
+  "railcraft.configuration.turbineEnergyOutputRateMultiplier": "Steam Turbine energy output rate multiplier",
+  "railcraft.configuration.turbinePowerMultiplier": "Steam Turbine power multiplier",
   "railcraft.configuration.waterCollectionRate": "Water collection rate",
   "railcraft.configuration.worldgen": "World Generation",
   "railcraft.configuration.zincOre": "Zinc ore",
