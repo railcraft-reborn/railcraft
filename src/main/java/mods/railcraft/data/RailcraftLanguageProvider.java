@@ -1447,6 +1447,10 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.CHANGE_DUNGEON_LOOT, "Change dungeon loot");
     this.add(Translations.ConfigurationScreen.CHARGE, "Charge");
     this.add(Translations.ConfigurationScreen.LOSS_MULTIPLIER, "Loss multiplier");
+    this.add(Translations.ConfigurationScreen.TURBINE_POWER_MULTIPLIER,
+        "Steam Turbine power multiplier");
+    this.add(Translations.ConfigurationScreen.TURBINE_ENERGY_OUTPUT_RATE_MULTIPLIER,
+        "Steam Turbine energy output rate multiplier");
     this.add(Translations.ConfigurationScreen.PREFERRED_ORES, "Preferred ores");
     this.add(Translations.ConfigurationScreen.STEAM, "Steam");
     this.add(Translations.ConfigurationScreen.FUEL_MULTIPLIER, "Fuel multiplier");

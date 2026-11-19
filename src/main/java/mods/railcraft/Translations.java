@@ -221,6 +221,10 @@ public class Translations {
         makeConfigurationKey("changeDungeonLoot");
     public static final String CHARGE = makeConfigurationKey("charge");
     public static final String LOSS_MULTIPLIER = makeConfigurationKey("lossMultiplier");
+    public static final String TURBINE_POWER_MULTIPLIER =
+        makeConfigurationKey("turbinePowerMultiplier");
+    public static final String TURBINE_ENERGY_OUTPUT_RATE_MULTIPLIER =
+        makeConfigurationKey("turbineEnergyOutputRateMultiplier");
     public static final String PREFERRED_ORES = makeConfigurationKey("preferredOres");
     public static final String STEAM = makeConfigurationKey("steam");
     public static final String FUEL_MULTIPLIER = makeConfigurationKey("fuelMultiplier");
