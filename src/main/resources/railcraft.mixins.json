@@ -12,7 +12,8 @@
     "SlotMixin",
     "FenceBlockMixin",
     "WallBlockMixin",
-    "AnvilBlockMixin"
+    "AnvilBlockMixin",
+    "ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

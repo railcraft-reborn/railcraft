@@ -189,6 +189,7 @@ public class Translations {
     public static final String LOCOMOTIVE_DAMAGE_MOBS = makeConfigurationKey("damageMobs");
     public static final String LOCOMOTIVE_HORSEPOWER = makeConfigurationKey("horsepower");
     public static final String SOLID_CARTS = makeConfigurationKey("solidCarts");
+    public static final String SMOOTH_CART_MOVEMENT = makeConfigurationKey("smoothCartMovement");
     public static final String BORE_MINING_SPEED_MULTIPLIER =
         makeConfigurationKey("boreMiningSpeedMultiplier");
     public static final String BORE_DESTROYS_BLOCKS =

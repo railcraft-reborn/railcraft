@@ -40,6 +40,10 @@ public class RailcraftConfig {
     return !SERVER_SPEC.isLoaded() || SERVER.oreGeneration.get(ore).get();
   }
 
+  public static boolean isSmoothCartMovementEnabled() {
+    return !SERVER_SPEC.isLoaded() || SERVER.smoothCartMovement.get();
+  }
+
   private static boolean isValidResourceLocation(Object obj) {
     var str = obj.toString();
     if (str.isEmpty()) {
@@ -62,6 +66,7 @@ public class RailcraftConfig {
     public final DoubleValue locomotiveHorsepower;
     public final BooleanValue solidCarts;
     public final BooleanValue cartsCollideWithItems;
+    public final BooleanValue smoothCartMovement;
     public final DoubleValue boreMiningSpeedMultiplier;
     public final BooleanValue boreDestroysBlocks;
     public final BooleanValue boreMinesAllBlocks;
@@ -148,6 +153,13 @@ public class RailcraftConfig {
       this.cartsCollideWithItems = builder
           .comment("Change to 'true' to restore minecart collisions with dropped items")
           .define("cartsCollideWithItems", false);
+
+      this.smoothCartMovement = builder
+          .comment(
+              "Change to false to restore vanilla minecart movement on the client",
+              "When true, the server sends a minecart's position every tick instead of every 3 ticks",
+              "and the client follows it closely, so fast carts don't cut across curves")
+          .define("smoothCartMovement", true);
 
       this.boreMiningSpeedMultiplier = builder
           .comment(

@@ -1424,6 +1424,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.LOCOMOTIVE_DAMAGE_MOBS, "Locomotive damage mobs");
     this.add(Translations.ConfigurationScreen.LOCOMOTIVE_HORSEPOWER, "Locomotive horsepower");
     this.add(Translations.ConfigurationScreen.SOLID_CARTS, "Solid Carts");
+    this.add(Translations.ConfigurationScreen.SMOOTH_CART_MOVEMENT, "Smooth cart movement");
     this.add(Translations.ConfigurationScreen.BORE_MINING_SPEED_MULTIPLIER,
         "Bore mining speed multiplier");
     this.add(Translations.ConfigurationScreen.BORE_DESTROYS_BLOCKS, "Bore destroys blocks");
