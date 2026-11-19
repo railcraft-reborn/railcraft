@@ -160,7 +160,6 @@ public class Translations {
     public static final String SEASON_ENABLED = makeConfigurationKey("seasonsEnabled");
     public static final String CHRISTMAS = makeConfigurationKey("christmas");
     public static final String HALLOWEEN = makeConfigurationKey("halloween");
-    public static final String HARVEST = makeConfigurationKey("harvest");
     public static final String WORLDGEN = makeConfigurationKey("worldgen");
 
     public static String oreGeneration(WorldgenOre ore) {

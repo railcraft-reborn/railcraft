@@ -750,7 +750,6 @@
   "railcraft.configuration.fuelPerSteamMultiplier": "蒸気あたりの燃料倍率",
   "railcraft.configuration.ghostTrainEnabled": "幽霊列車の有効化",
   "railcraft.configuration.halloween": "ハロウィンモード",
-  "railcraft.configuration.harvest": "収穫モード",
   "railcraft.configuration.highSpeedTrack": "高速レール",
   "railcraft.configuration.highSpeedTrackIgnoredEntities": "無視するエンティティ",
   "railcraft.configuration.highSpeedTrackMaxSpeed": "高速レールの最大速度",

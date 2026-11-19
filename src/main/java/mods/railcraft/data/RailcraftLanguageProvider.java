@@ -1395,7 +1395,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.SEASON_ENABLED, "Seasons enabled");
     this.add(Translations.ConfigurationScreen.CHRISTMAS, "Christmas mode");
     this.add(Translations.ConfigurationScreen.HALLOWEEN, "Halloween mode");
-    this.add(Translations.ConfigurationScreen.HARVEST, "Harvest mode");
     this.add(Translations.ConfigurationScreen.WORLDGEN, "World Generation");
     this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.LEAD), "Lead ore");
     this.add(Translations.ConfigurationScreen.oreGeneration(WorldgenOre.TIN), "Tin ore");
