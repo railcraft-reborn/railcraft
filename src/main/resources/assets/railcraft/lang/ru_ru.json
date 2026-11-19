@@ -737,7 +737,6 @@
   "railcraft.configuration.fuelPerSteamMultiplier": "Множитель топлива на пар",
   "railcraft.configuration.ghostTrainEnabled": "Призрачный поезд включен",
   "railcraft.configuration.halloween": "Режим Хэллоуина",
-  "railcraft.configuration.harvest": "Режим сбора урожая",
   "railcraft.configuration.highSpeedTrack": "Высокоскоростной путь",
   "railcraft.configuration.highSpeedTrackIgnoredEntities": "Игнорировать сущности",
   "railcraft.configuration.highSpeedTrackMaxSpeed": "Максимальная скорость высокоскоростного пути",

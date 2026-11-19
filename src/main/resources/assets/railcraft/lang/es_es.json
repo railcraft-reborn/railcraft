@@ -741,7 +741,6 @@
   "railcraft.configuration.fuelPerSteamMultiplier": "Multiplicador de combustible por vapor",
   "railcraft.configuration.ghostTrainEnabled": "Modo Tren Fantasma habilitado",
   "railcraft.configuration.halloween": "Modo Halloween",
-  "railcraft.configuration.harvest": "Modo cosecha",
   "railcraft.configuration.highSpeedTrack": "Vías de alta velocidad",
   "railcraft.configuration.highSpeedTrackIgnoredEntities": "Entidades ignoradas",
   "railcraft.configuration.highSpeedTrackMaxSpeed": "Velocidad máxima de vías de alta velocidad",
