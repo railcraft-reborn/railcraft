@@ -2,6 +2,7 @@ package mods.railcraft.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -25,6 +26,7 @@ public abstract class AbstractMinecartMixin {
    * tick. A cart turning around on a curve changes by less, so it would keep the new yaw and face
    * the other way.
    */
+  @Unique
   private static final float FLIP_CUTOFF = 120;
 
   @Shadow
