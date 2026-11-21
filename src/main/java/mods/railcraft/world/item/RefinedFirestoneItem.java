@@ -79,6 +79,10 @@ public class RefinedFirestoneItem extends FirestoneItem {
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
       newStack.hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
           __ -> res.set(ItemStack.EMPTY));
+    } else if (newStack.isDamageableItem()) {
+      // Consumed as fuel by a machine (boiler, locomotive, ...): no player, so spend one charge
+      // manually. Capped at max damage so the empty stone stays around to be recharged.
+      newStack.setDamageValue(Math.min(newStack.getDamageValue() + 1, newStack.getMaxDamage()));
     }
     return res.get();
   }

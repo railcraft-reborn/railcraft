@@ -27,6 +27,10 @@ public class CrackedFirestoneItem extends RefinedFirestoneItem {
     if (CommonHooks.getCraftingPlayer() instanceof ServerPlayer serverPlayer) {
       newStack.get().hurtAndBreak(1, serverPlayer.serverLevel(), serverPlayer,
           __ -> newStack.set(ItemStack.EMPTY));
+    } else if (newStack.get().isDamageableItem()) {
+      // Consumed as fuel by a machine: no player, so spend one charge manually.
+      var stack = newStack.get();
+      stack.setDamageValue(Math.min(stack.getDamageValue() + 1, stack.getMaxDamage()));
     }
     return newStack.get();
   }
