@@ -118,10 +118,16 @@ public class StandardTank extends FluidStacksResourceHandler {
     return this.validator.test(resource);
   }
 
+  // The indexed overloads are the ones every caller ends up in: the non-indexed
+  // ResourceHandler defaults loop over them, and TankManager delegates to them directly.
   @Override
-  public int insert(FluidResource resource, int amount, TransactionContext transaction) {
+  public int insert(int index, FluidResource resource, int amount,
+      TransactionContext transaction) {
+    if (this.disableInsert) {
+      return 0;
+    }
     fluidStackJournal.updateSnapshots(transaction);
-    return this.disableInsert ? 0 : super.insert(resource, amount, transaction);
+    return super.insert(index, resource, amount, transaction);
   }
 
   /**
@@ -130,12 +136,13 @@ public class StandardTank extends FluidStacksResourceHandler {
    * @see net.neoforged.neoforge.transfer.ResourceHandler#insert(Resource, int, TransactionContext)
    */
   public int internalInsert(FluidResource resource, int amount, TransactionContext transaction) {
-    return super.insert(resource, amount, transaction);
+    return super.insert(0, resource, amount, transaction);
   }
 
   @Override
-  public int extract(FluidResource resource, int amount, TransactionContext transaction) {
-    return this.disableExtract ? 0 : super.extract(resource, amount, transaction);
+  public int extract(int index, FluidResource resource, int amount,
+      TransactionContext transaction) {
+    return this.disableExtract ? 0 : super.extract(index, resource, amount, transaction);
   }
 
   /**
@@ -144,7 +151,7 @@ public class StandardTank extends FluidStacksResourceHandler {
    * @see net.neoforged.neoforge.transfer.ResourceHandler#extract(Resource, int, TransactionContext)
    */
   public int internalExtract(FluidResource resource, int amount, TransactionContext transaction) {
-    return super.extract(resource, amount, transaction);
+    return super.extract(0, resource, amount, transaction);
   }
 
   /**
