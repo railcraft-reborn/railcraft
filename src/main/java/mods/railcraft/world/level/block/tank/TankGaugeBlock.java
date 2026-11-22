@@ -60,12 +60,15 @@ public abstract class TankGaugeBlock extends AbstractStrengthenedGlassBlock impl
   @Override
   public InteractionResult use(BlockState blockState, Level level,
       BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-
+    var blockEntity = LevelUtil.getBlockEntity(level, pos, TankBlockEntity.class);
     if (level.isClientSide()) {
-      return InteractionResult.SUCCESS;
+      // Must match the server result, otherwise the placer doesn't hear the place sound
+      return blockEntity.flatMap(MultiblockBlockEntity::getUnresolvedMembership).isPresent()
+              ? InteractionResult.SUCCESS
+              : InteractionResult.PASS;
     }
 
-    return LevelUtil.getBlockEntity(level, pos, TankBlockEntity.class)
+    return blockEntity
         .flatMap(MultiblockBlockEntity::getMembership)
         .map(MultiblockBlockEntity.Membership::master)
         .map(master -> {
