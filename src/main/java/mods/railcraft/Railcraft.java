@@ -133,7 +133,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
 
-  public static final boolean BETA = false;
   public static final TicketController CHUNK_CONTROLLER =
       new TicketController(RailcraftConstants.rl("ticket_controller"),
           new WorldSpikeBlockEntity.RailcraftValidationTicket());

@@ -5,7 +5,6 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Axis;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
-import mods.railcraft.Railcraft;
 import mods.railcraft.RailcraftConfig;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -402,7 +401,9 @@ public class ClientManager {
 
     var qualifier = modInfo.getVersion().getQualifier();
     boolean isSnapshot = qualifier != null && qualifier.equals("snapshot");
-    boolean showMessageBeta = Railcraft.BETA && RailcraftConfig.CLIENT.showBetaMessage.get();
+    boolean isBeta = Boolean.parseBoolean(
+        String.valueOf(modInfo.getModProperties().getOrDefault("beta", "false")));
+    boolean showMessageBeta = isBeta && RailcraftConfig.CLIENT.showBetaMessage.get();
     if (!FMLLoader.isProduction() || isSnapshot || showMessageBeta) {
       var type = isSnapshot ? "development" : "beta";
       var issueUrl = ((ModFileInfo) (modInfo.getOwningFile())).getIssueURL().toString();
