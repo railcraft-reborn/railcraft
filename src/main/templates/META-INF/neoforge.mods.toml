@@ -13,6 +13,9 @@ issueTrackerURL = "https://github.com/railcraft-reborn/railcraft/issues"
   modUrl = "https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn"
   authors = "Sm0keySa1m0n, Edivad99"
 
+[modproperties.railcraft]
+  beta = "${mod_beta}"
+
 [[mixins]]
   config = "railcraft.mixins.json"
 

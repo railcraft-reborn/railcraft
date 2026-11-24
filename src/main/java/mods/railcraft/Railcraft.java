@@ -146,7 +146,6 @@ import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 @Mod(RailcraftConstants.ID)
 public class Railcraft {
 
-  public static final boolean BETA = false;
   public static final TicketController CHUNK_CONTROLLER =
       new TicketController(RailcraftConstants.id("ticket_controller"),
           new WorldSpikeBlockEntity.RailcraftValidationTicket());
