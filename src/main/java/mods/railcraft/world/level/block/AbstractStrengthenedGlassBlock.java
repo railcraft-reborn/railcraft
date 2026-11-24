@@ -2,7 +2,7 @@ package mods.railcraft.world.level.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +34,7 @@ public abstract class AbstractStrengthenedGlassBlock extends TransparentBlock {
       this.name = name;
     }
 
-    public static Type determine(BlockPos blockPos, Level level, Block block) {
+    public static Type determine(BlockPos blockPos, BlockGetter level, Block block) {
       var above = level.getBlockState(blockPos.above()).is(block);
       var below = level.getBlockState(blockPos.below()).is(block);
       if (above && below) {

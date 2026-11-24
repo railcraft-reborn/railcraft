@@ -2,11 +2,12 @@ package mods.railcraft.world.level.block;
 
 import org.jspecify.annotations.Nullable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.redstone.Orientation;
 
 public class StrengthenedGlassBlock extends AbstractStrengthenedGlassBlock {
 
@@ -23,17 +24,13 @@ public class StrengthenedGlassBlock extends AbstractStrengthenedGlassBlock {
   }
 
   @Override
-  protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block neighborBlock,
-      @Nullable Orientation orientation, boolean movedByPiston) {
-    super.neighborChanged(blockState, level, blockPos, neighborBlock, orientation, movedByPiston);
-    throw new RuntimeException("TEST");
-    /*if (neighborPos.getX() != blockPos.getX() || neighborPos.getZ() != blockPos.getZ()) {
-      return;
+  protected BlockState updateShape(BlockState blockState, LevelReader level,
+      ScheduledTickAccess scheduledTickAccess, BlockPos blockPos, Direction direction,
+      BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+    if (direction.getAxis() == Direction.Axis.Y) {
+      blockState = blockState.setValue(TYPE, Type.determine(blockPos, level, this));
     }
-
-    var type = Type.determine(blockPos, level, this);
-    if (type != blockState.getValue(TYPE)) {
-      level.setBlockAndUpdate(blockPos, blockState.setValue(TYPE, type));
-    }*/
+    return super.updateShape(blockState, level, scheduledTickAccess, blockPos, direction,
+        neighborPos, neighborState, random);
   }
 }
