@@ -424,12 +424,12 @@ public class ClientManager {
       var message = CommonComponents.joinLines(
           Component.literal("You are using a %s version of %s.".formatted(type, RailcraftConstants.NAME))
               .withStyle(ChatFormatting.RED),
-        /*Component.literal("- World saves are not stable and may break between versions.")
-            .withStyle(ChatFormatting.GRAY),*/
-          Component.literal("- Features might be missing or only partially implemented.")
-              .withStyle(ChatFormatting.GRAY),
-        /*Component.literal("You have been warned.")
-            .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),*/
+          /*Component.literal("- World saves are not stable and may break between versions.")
+              .withStyle(ChatFormatting.GRAY),*/
+          /*Component.literal("- Features might be missing or only partially implemented.")
+              .withStyle(ChatFormatting.GRAY),*/
+          /*Component.literal("You have been warned.")
+              .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC),*/
           Component.literal("Bug reports are welcome at our issue tracker.")
               .withStyle(style -> style
                   .withColor(ChatFormatting.GREEN)
