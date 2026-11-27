@@ -13,7 +13,6 @@ public class RailcraftRenderTypes {
   private static final RenderSetup POSITION_COLOR_LIGHTMAP_SETUP =
       RenderSetup.builder(RenderPipelines.OUTLINE_CULL)
           .useLightmap()
-          .bufferSize(256)
           .createRenderSetup();
 
   public static final RenderType POSITION_COLOR_LIGHTMAP = RenderType.create(

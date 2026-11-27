@@ -43,12 +43,13 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRen
 
     float yaw = state.yRot;
     poseStack.translate(0F, 0.375F, 0F);
-    poseStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
-    poseStack.mulPose(Axis.YP.rotationDegrees(90));
+    poseStack.rotateDegrees(Axis.YP, 180 - yaw);
+    poseStack.rotateDegrees(Axis.YP, 90);
 
     float roll = state.hurtTime;
     if (roll > 0) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * state.damageTime / 10.0F * (float)state.hurtDir));
+      poseStack.rotateDegrees(Axis.XP,
+          Mth.sin(roll) * roll * state.damageTime / 10.0F * (float) state.hurtDir);
     }
 
     // float light = bore.getBrightness();
@@ -74,8 +75,7 @@ public class TunnelBoreRenderer extends EntityRenderer<TunnelBore, TunnelBoreRen
         OverlayTexture.NO_OVERLAY,
         ARGB.colorFromFloat(ghostTrain ? 0.8F : 1, colorIntensity, colorIntensity, colorIntensity),
         null,
-        0,
-        null
+        0
     );
     poseStack.popPose();
   }

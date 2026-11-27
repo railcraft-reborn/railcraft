@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -45,7 +45,7 @@ public class TankEntityInsideTestInstance extends TankTestInstance {
         .thenExecute(() -> {
           assertFormed(helper, "after being built");
           setFluid(helper, fluid());
-          helper.spawn(EntityType.ARMOR_STAND, INTERIOR);
+          helper.spawn(EntityTypes.ARMOR_STAND, INTERIOR);
         })
         .thenIdle(5)
         // Any block update next to the tank makes it re-evaluate its pattern.

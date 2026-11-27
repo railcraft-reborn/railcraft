@@ -14,13 +14,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
-import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
 public class RailcraftDataMapProvider extends DataMapProvider {
-
-  private static final int COAL_COKE_BURN_TIME = 3200;
-  private static final int CREOSOTE_BUCKET_BURN_TIME = 800;
 
   public RailcraftDataMapProvider(PackOutput packOutput,
       CompletableFuture<HolderLookup.Provider> registries) {
@@ -29,11 +24,6 @@ public class RailcraftDataMapProvider extends DataMapProvider {
 
   @Override
   protected void gather(HolderLookup.Provider registries) {
-    this.builder(NeoForgeDataMaps.FURNACE_FUELS)
-        .add(RailcraftBlocks.COAL_COKE_BLOCK.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME * 10), false)
-        .add(RailcraftItems.COAL_COKE.getId(), new FurnaceFuel(COAL_COKE_BURN_TIME), false)
-        .add(RailcraftItems.CREOSOTE_BUCKET.getId(), new FurnaceFuel(CREOSOTE_BUCKET_BURN_TIME), false);
-
     this.builder(RailcraftDataMaps.TUNNEL_BORE_HEAD)
         .add(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)
         .add(RailcraftItems.STEEL_TUNNEL_BORE_HEAD, new TunnelBoreHead(1.25F), false)

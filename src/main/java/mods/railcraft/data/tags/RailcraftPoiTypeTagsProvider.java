@@ -18,7 +18,7 @@ public class RailcraftPoiTypeTagsProvider extends PoiTypeTagsProvider {
   @Override
   protected void addTags(HolderLookup.Provider registries) {
     this.tag(PoiTypeTags.ACQUIRABLE_JOB_SITE)
-        .add(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey())
-        .add(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey());
+        .add(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.key())
+        .add(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.key());
   }
 }

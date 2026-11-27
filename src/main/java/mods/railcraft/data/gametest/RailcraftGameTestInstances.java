@@ -81,6 +81,7 @@ import net.minecraft.gametest.framework.GameTestInstance;
 import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -282,6 +283,7 @@ public class RailcraftGameTestInstances {
     var environments = bootstrap.lookup(Registries.TEST_ENVIRONMENT);
     return new TestData<>(
         environments.getOrThrow(RailcraftTestEnvironments.DEFAULT),
+        Level.OVERWORLD,
         RailcraftConstants.id("test/" + template),
         400,
         0,

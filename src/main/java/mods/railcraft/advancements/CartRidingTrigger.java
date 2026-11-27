@@ -3,11 +3,11 @@ package mods.railcraft.advancements;
 import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 /**
  * TODO: Implament this on carts.
@@ -68,12 +68,12 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
   // }
 
   public record TriggerInstance(
-      Optional<ContextAwarePredicate> player,
+      Optional<Holder<LootItemCondition>> player,
       Optional<MinecartPredicate> cart) implements SimpleCriterionTrigger.SimpleInstance {
 
     public static final Codec<TriggerInstance> CODEC =
         RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
+            LootItemCondition.CODEC.optionalFieldOf("player")
                 .forGetter(TriggerInstance::player),
             MinecartPredicate.CODEC.optionalFieldOf("cart")
                 .forGetter(TriggerInstance::cart)
@@ -88,7 +88,7 @@ public class CartRidingTrigger extends SimpleCriterionTrigger<CartRidingTrigger.
     }
 
     @Override
-    public Optional<ContextAwarePredicate> player() {
+    public Optional<Holder<LootItemCondition>> player() {
       return player;
     }
   }

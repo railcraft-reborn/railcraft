@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.item.LocomotiveItem;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.ItemTags;
@@ -88,7 +89,7 @@ public class LocomotivePaintingRecipe extends CustomRecipe {
 
   @Override
   public List<RecipeDisplay> display() {
-    var dyes = new SlotDisplay.TagSlotDisplay(ItemTags.DYES);
+    var dyes = new SlotDisplay.TagSlotDisplay(BuiltInRegistries.ITEM.getOrThrow(ItemTags.DYES));
     var locomotives = new SlotDisplay.Composite(LOCOMOTIVES.stream()
         .<SlotDisplay>map(SlotDisplay.ItemSlotDisplay::new)
         .toList());

@@ -2,20 +2,18 @@ package mods.railcraft.data.recipes.providers;
 
 /*
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import forestry.api.ForestryConstants;
 import forestry.core.content.machines.recipes.CarpenterRecipe;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.forestry.RailcraftBackpacks;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -34,30 +32,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ForestryRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
-
-  private ForestryRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
-    super(registries, recipeOutput.withConditions(
-        new ModLoadedCondition(ForestryConstants.MOD_ID)));
-    this.items = registries.lookupOrThrow(Registries.ITEM);
-  }
-
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries,
-        RecipeOutput output) {
-      return new ForestryRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "ForestryRecipeProvider";
-    }
+  public ForestryRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    super(recipes, advancements, null, new ModLoadedCondition(ForestryConstants.MOD_ID));
   }
 
   @Override
@@ -100,8 +76,8 @@ public class ForestryRecipeProvider extends RecipeProvider {
         .define('#', this.tag(ItemTags.WOOL))
         .define('V', material)
         .define('X', this.tag(Tags.Items.STRINGS))
-        .define('Y', this.tag(Tags.Items.CHESTS_WOODEN))
-        .unlockedBy("has_chest", this.has(Tags.Items.CHESTS_WOODEN))
+        .define('Y', this.tag(Tags.BlockItems.CHESTS_WOODEN.item()))
+        .unlockedBy("has_chest", this.has(Tags.BlockItems.CHESTS_WOODEN.item()))
         .save(this.output);
 
     var wovenSilk = this.items.getOrThrow(

@@ -6,7 +6,7 @@ import mods.railcraft.Translations;
 import mods.railcraft.advancements.RailcraftCriteriaTriggers;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.item.RailcraftItems;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -148,7 +148,7 @@ public class BedMinecart extends RailcraftMinecart {
 
   @Override
   public BlockState getDefaultDisplayBlockState() {
-    return Blocks.GRAY_CARPET.defaultBlockState();
+    return Blocks.CARPET.gray().defaultBlockState();
   }
 
   @Override

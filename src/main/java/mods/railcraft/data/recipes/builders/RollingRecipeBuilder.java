@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -36,7 +36,7 @@ public class RollingRecipeBuilder {
     return new RollingRecipeBuilder(result, DEFAULT_PROCESSING_TIME);
   }
 
-  public RollingRecipeBuilder define(HolderLookup.RegistryLookup<Item> items,
+  public RollingRecipeBuilder define(HolderGetter<Item> items,
       Character key, TagKey<Item> itemTagValue) {
     return this.define(key, Ingredient.of(items.getOrThrow(itemTagValue)));
   }

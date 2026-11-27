@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.detector;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,19 +21,11 @@ public class DetectorBlock extends BaseEntityBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
-  private static final MapCodec<DetectorBlock> CODEC =
-      simpleCodec(DetectorBlock::new);
-
   protected DetectorBlock(BlockBehaviour.Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(POWERED, false)
         .setValue(FACING, Direction.DOWN));
-  }
-
-  @Override
-  protected MapCodec<? extends BaseEntityBlock> codec() {
-    return CODEC;
   }
 
   @Override

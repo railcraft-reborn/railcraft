@@ -13,9 +13,9 @@ import net.neoforged.neoforge.fluids.FluidType;
 public class IronTankBlockEntity extends TankBlockEntity {
 
   private static final Collection<MultiblockPattern<Void>> PATTERNS =
-      buildPatterns(RailcraftTags.Blocks.IRON_TANK_WALL,
-          RailcraftTags.Blocks.IRON_TANK_GAUGE,
-          RailcraftTags.Blocks.IRON_TANK_VALVE);
+      buildPatterns(RailcraftTags.BlockItems.IRON_TANK_WALL.block(),
+          RailcraftTags.BlockItems.IRON_TANK_GAUGE.block(),
+          RailcraftTags.BlockItems.IRON_TANK_VALVE.block());
 
   public IronTankBlockEntity(BlockPos blockPos, BlockState blockState) {
     super(RailcraftBlockEntityTypes.IRON_TANK.get(), blockPos, blockState, PATTERNS);

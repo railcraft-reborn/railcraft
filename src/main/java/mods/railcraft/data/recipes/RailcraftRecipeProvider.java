@@ -1,10 +1,9 @@
 package mods.railcraft.data.recipes;
 
 import static net.neoforged.neoforge.common.conditions.NeoForgeConditions.modLoaded;
-
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.tags.RailcraftTags;
@@ -22,19 +21,16 @@ import mods.railcraft.world.item.crafting.VoidChestMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.WoodenTieRecipe;
 import mods.railcraft.world.item.crafting.WorldSpikeMinecartDisassemblyRecipe;
 import mods.railcraft.world.level.block.DecorativeBlock;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -42,6 +38,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -49,28 +46,8 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 public class RailcraftRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
-
-  protected RailcraftRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-    super(registries, output);
-    this.items = registries.lookupOrThrow(Registries.ITEM);
-  }
-
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-      return new RailcraftRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "RailcraftRecipeProvider";
-    }
+  public RailcraftRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    super(recipes, advancements);
   }
 
   @Override
@@ -643,11 +620,11 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     tunnelBoreHead(RailcraftItems.BRONZE_TUNNEL_BORE_HEAD.get(),
         RailcraftTags.Items.BRONZE_BLOCK);
     tunnelBoreHead(RailcraftItems.IRON_TUNNEL_BORE_HEAD.get(),
-        Tags.Items.STORAGE_BLOCKS_IRON);
+        Tags.BlockItems.STORAGE_BLOCKS_IRON.item());
     tunnelBoreHead(RailcraftItems.STEEL_TUNNEL_BORE_HEAD.get(),
         RailcraftTags.Items.STEEL_BLOCK);
     tunnelBoreHead(RailcraftItems.DIAMOND_TUNNEL_BORE_HEAD.get(),
-        Tags.Items.STORAGE_BLOCKS_DIAMOND);
+        Tags.BlockItems.STORAGE_BLOCKS_DIAMOND.item());
 
     SmithingTransformRecipeBuilder.smithing(
             Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
@@ -677,8 +654,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" b ")
         .define('a', Tags.Items.INGOTS_IRON)
         .define('b', Tags.Items.RODS_WOODEN)
-        .define('c', Tags.Items.STORAGE_BLOCKS_IRON)
-        .unlockedBy(getHasName(Items.IRON_BLOCK), has(Tags.Items.STORAGE_BLOCKS_IRON))
+        .define('c', Tags.BlockItems.STORAGE_BLOCKS_IRON.item())
+        .unlockedBy(getHasName(Items.IRON_BLOCK), has(Tags.BlockItems.STORAGE_BLOCKS_IRON.item()))
         .save(output);
     shaped(RecipeCategory.MISC, RailcraftItems.STEEL_SPIKE_MAUL.get())
         .pattern("aca")
@@ -696,8 +673,9 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" b ")
         .define('a', Tags.Items.GEMS_DIAMOND)
         .define('b', Tags.Items.RODS_WOODEN)
-        .define('c', Tags.Items.STORAGE_BLOCKS_DIAMOND)
-        .unlockedBy(getHasName(Items.DIAMOND_BLOCK), has(Tags.Items.STORAGE_BLOCKS_DIAMOND))
+        .define('c', Tags.BlockItems.STORAGE_BLOCKS_DIAMOND.item())
+        .unlockedBy(getHasName(Items.DIAMOND_BLOCK),
+            has(Tags.BlockItems.STORAGE_BLOCKS_DIAMOND.item()))
         .save(output);
   }
 
@@ -796,7 +774,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern(" b ")
         .pattern("cdc")
         .define('a', plate)
-        .define('b', Tags.Items.GLASS_BLOCKS_COLORLESS)
+        .define('b', Tags.BlockItems.GLASS_BLOCKS_COLORLESS.item())
         .define('c', gear)
         .define('d', Items.PISTON)
         .unlockedBy("has_gear", has(gear))
@@ -910,10 +888,10 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void buildCircuit() {
-    circuitFromMaterial(RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.RED_WOOL);
-    circuitFromMaterial(RailcraftItems.RECEIVER_CIRCUIT.get(), Items.GREEN_WOOL);
-    circuitFromMaterial(RailcraftItems.SIGNAL_CIRCUIT.get(), Items.YELLOW_WOOL);
-    circuitFromMaterial(RailcraftItems.RADIO_CIRCUIT.get(), Items.BLUE_WOOL);
+    circuitFromMaterial(RailcraftItems.CONTROLLER_CIRCUIT.get(), Items.WOOL.red());
+    circuitFromMaterial(RailcraftItems.RECEIVER_CIRCUIT.get(), Items.WOOL.green());
+    circuitFromMaterial(RailcraftItems.SIGNAL_CIRCUIT.get(), Items.WOOL.yellow());
+    circuitFromMaterial(RailcraftItems.RADIO_CIRCUIT.get(), Items.WOOL.blue());
   }
 
   private void circuitFromMaterial(Item itemOut, Item woolItem) {
@@ -1119,7 +1097,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("ddd")
         .define('a', Items.WRITABLE_BOOK)
         .define('b', Items.GOLD_INGOT)
-        .define('c', Items.RED_WOOL)
+        .define('c', Items.WOOL.red())
         .define('d', ItemTags.PLANKS)
         .unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK))
         .save(output);
@@ -1168,8 +1146,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aaa")
         .pattern("a a")
         .pattern("a a")
-        .define('a', Items.CYAN_WOOL)
-        .unlockedBy(getHasName(Items.CYAN_WOOL), has(Items.CYAN_WOOL))
+        .define('a', Items.WOOL.cyan())
+        .unlockedBy(getHasName(Items.WOOL.cyan()), has(Items.WOOL.cyan()))
         .save(output);
     shaped(RecipeCategory.MISC, RailcraftItems.WHISTLE_TUNER.get())
         .pattern("a a")
@@ -1192,7 +1170,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .define('a', RailcraftTags.Items.TIN_PLATE)
         .define('b', RailcraftTags.Items.ENDER_DUST)
         .define('c', RailcraftItems.CHARGE_COIL.get())
-        .define('d', Tags.Items.STORAGE_BLOCKS_DIAMOND)
+        .define('d', Tags.BlockItems.STORAGE_BLOCKS_DIAMOND.item())
         .unlockedBy(getHasName(RailcraftItems.ENDER_DUST.get()),
             has(RailcraftItems.ENDER_DUST.get()))
         .save(output);
@@ -1201,7 +1179,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("cbc")
         .pattern(" d ")
         .define('a', Items.COMPASS)
-        .define('b', Tags.Items.GLASS_PANES)
+        .define('b', Tags.BlockItems.GLASS_PANES.item())
         .define('c', Blocks.STONE_BUTTON)
         .define('d', Tags.Items.DUSTS_REDSTONE)
         .unlockedBy(getHasName(Items.REDSTONE), has(Tags.Items.DUSTS_REDSTONE))
@@ -1220,7 +1198,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aba")
         .pattern("c c")
         .pattern("ddd")
-        .define('a', Tags.Items.GLASS_PANES)
+        .define('a', Tags.BlockItems.GLASS_PANES.item())
         .define('b', RailcraftItems.RECEIVER_CIRCUIT.get())
         .define('c', RailcraftTags.Items.STEEL_INGOT)
         .define('d', Tags.Items.LEATHERS)
@@ -1289,7 +1267,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     shaped(RecipeCategory.MISC, RailcraftItems.TANK_MINECART.get())
         .pattern("a")
         .pattern("b")
-        .define('a', RailcraftTags.Items.STRENGTHENED_GLASS)
+        .define('a', RailcraftTags.BlockItems.STRENGTHENED_GLASS.item())
         .define('b', Items.MINECART)
         .unlockedBy(getHasName(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()),
             has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
@@ -1319,7 +1297,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("b")
         .define('a', ItemTags.BEDS)
         .define('b', Items.MINECART)
-        .unlockedBy(getHasName(Items.WHITE_BED), has(Items.WHITE_BED))
+        .unlockedBy(getHasName(Items.BED.white()), has(Items.BED.white()))
         .save(output);
 
     shaped(RecipeCategory.MISC, RailcraftItems.WORLD_SPIKE_MINECART)
@@ -1346,7 +1324,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aab")
         .pattern("aab")
         .pattern("cdd")
-        .define('a', RailcraftTags.Items.IRON_TANK_WALL)
+        .define('a', RailcraftTags.BlockItems.IRON_TANK_WALL.item())
         .define('b', RailcraftItems.BLAST_FURNACE_BRICKS.get())
         .define('c', Items.IRON_BARS)
         .define('d', Items.MINECART)
@@ -1483,83 +1461,83 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildKits() {
     kits(RailcraftItems.ACTIVATOR_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 2)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 2)));
     kits(RailcraftItems.BOOSTER_TRACK_KIT.get(), 16, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.BUFFER_STOP_TRACK_KIT.get(), 2, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)), 2)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)), 2)));
     kits(RailcraftItems.CONTROL_TRACK_KIT.get(), 16, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.DETECTOR_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.DISEMBARKING_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Pair<>(Ingredient.of(Items.LEAD), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.EMBARKING_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(Items.ENDER_PEARL), 1),
-        new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.ENDER_PEARL), 1),
+        new Pair<>(Ingredient.of(Items.LEAD), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.DUMPING_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_PLATE)), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_PLATE)), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.GATED_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.FENCE_GATES)), 1),
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.BlockItems.FENCE_GATES.item())), 1),
+        new Pair<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.LOCKING_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(Items.STICKY_PISTON), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Pair<>(Ingredient.of(Items.STICKY_PISTON), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.DELAYED_LOCKING_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(Items.STICKY_PISTON), 1),
-        new Tuple<>(Ingredient.of(Items.REPEATER), 1)));
+        new Pair<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Pair<>(Ingredient.of(Items.STICKY_PISTON), 1),
+        new Pair<>(Ingredient.of(Items.REPEATER), 1)));
     kits(RailcraftItems.MESSENGER_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(ItemTags.SIGNS)), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(ItemTags.SIGNS)), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.ONE_WAY_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
-        new Tuple<>(Ingredient.of(Items.PISTON), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.STONE_PRESSURE_PLATE), 1),
+        new Pair<>(Ingredient.of(Items.PISTON), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.LAUNCHER_TRACK_KIT.get(), 1, List.of(
-        new Tuple<>(Ingredient.of(Items.PISTON), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_BLOCK)), 2),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.PISTON), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_BLOCK)), 2),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.LOCOMOTIVE_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.SIGNAL_LAMP.get()), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(RailcraftItems.SIGNAL_LAMP.get()), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.TRANSITION_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 2)));
+        new Pair<>(Ingredient.of(RailcraftItems.ADVANCED_RAIL.get()), 2),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 2)));
     kits(RailcraftItems.COUPLER_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(Items.LEAD), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(Items.LEAD), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.ROUTING_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(
+        new Pair<>(Ingredient.of(
             RailcraftItems.TICKET.get(), RailcraftItems.GOLDEN_TICKET.get()), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.THROTTLE_TRACK_KIT.get(), 4, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_YELLOW)), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_BLACK)), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_YELLOW)), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_BLACK)), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
     kits(RailcraftItems.WHISTLE_TRACK_KIT.get(), 8, List.of(
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_YELLOW)), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_BLACK)), 1),
-        new Tuple<>(Ingredient.of(Items.NOTE_BLOCK), 1),
-        new Tuple<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_YELLOW)), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DYES_BLACK)), 1),
+        new Pair<>(Ingredient.of(Items.NOTE_BLOCK), 1),
+        new Pair<>(Ingredient.of(this.items.getOrThrow(Tags.Items.DUSTS_REDSTONE)), 1)));
   }
 
-  private void kits(Item result, int count, List<Tuple<Ingredient, Integer>> ingredients) {
+  private void kits(Item result, int count, List<Pair<Ingredient, Integer>> ingredients) {
     var builder = shapeless(RecipeCategory.MISC, result, count)
         .requires(ItemTags.PLANKS)
         .requires(RailcraftItems.TRACK_PARTS.get());
 
     for (var ingredient : ingredients) {
-      builder = builder.requires(ingredient.getA(), ingredient.getB());
+      builder = builder.requires(ingredient.getFirst(), ingredient.getSecond());
     }
     builder
         .unlockedBy(getHasName(RailcraftItems.TRACK_PARTS.get()),
@@ -1788,7 +1766,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         "iron", Tags.Items.INGOTS_IRON);
 
     var colorItems = RailcraftItems.STRENGTHENED_GLASS;
-    var tagItem = RailcraftTags.Items.STRENGTHENED_GLASS;
+    var tagItem = RailcraftTags.BlockItems.STRENGTHENED_GLASS.item();
 
     var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 6);
     var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
@@ -1799,7 +1777,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
           .pattern("aba")
           .pattern("aca")
           .pattern("ada")
-          .define('a', Tags.Items.GLASS_BLOCKS)
+          .define('a', Tags.BlockItems.GLASS_BLOCKS.item())
           .define('b', ingredient.getValue())
           .define('c', RailcraftTags.Items.SALTPETER_DUST)
           .define('d', Items.WATER_BUCKET)
@@ -1891,21 +1869,21 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildTankBlocks() {
     tankWall(RailcraftTags.Items.IRON_PLATE, RailcraftItems.IRON_TANK_WALL,
-        RailcraftTags.Items.IRON_TANK_WALL);
+        RailcraftTags.BlockItems.IRON_TANK_WALL.item());
     tankWall(RailcraftTags.Items.STEEL_PLATE, RailcraftItems.STEEL_TANK_WALL,
-        RailcraftTags.Items.STEEL_TANK_WALL);
+        RailcraftTags.BlockItems.STEEL_TANK_WALL.item());
     tankValve(RailcraftTags.Items.IRON_PLATE, RailcraftItems.IRON_TANK_VALVE,
-        RailcraftTags.Items.IRON_TANK_VALVE);
+        RailcraftTags.BlockItems.IRON_TANK_VALVE.item());
     tankValve(RailcraftTags.Items.STEEL_PLATE, RailcraftItems.STEEL_TANK_VALVE,
-        RailcraftTags.Items.STEEL_TANK_VALVE);
+        RailcraftTags.BlockItems.STEEL_TANK_VALVE.item());
     tankGauge(RailcraftTags.Items.IRON_PLATE, RailcraftItems.IRON_TANK_GAUGE,
-        RailcraftTags.Items.IRON_TANK_GAUGE);
+        RailcraftTags.BlockItems.IRON_TANK_GAUGE.item());
     tankGauge(RailcraftTags.Items.STEEL_PLATE, RailcraftItems.STEEL_TANK_GAUGE,
-        RailcraftTags.Items.STEEL_TANK_GAUGE);
+        RailcraftTags.BlockItems.STEEL_TANK_GAUGE.item());
   }
 
   private void buildPost() {
-    coloredBlockVariant(RailcraftItems.POST, RailcraftTags.Items.POST, DyeColor.BLACK);
+    coloredBlockVariant(RailcraftItems.POST, RailcraftTags.BlockItems.POST.item(), DyeColor.BLACK);
   }
 
   private void buildDecorativeStone() {
@@ -2112,7 +2090,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("aaa")
         .define('a', ItemTags.WOOL)
         .define('b', Items.STONE_PRESSURE_PLATE)
-        .unlockedBy(getHasName(Items.WHITE_WOOL), has(Items.WHITE_WOOL))
+        .unlockedBy(getHasName(Items.WOOL.white()), has(Items.WOOL.white()))
         .save(output);
     shaped(RecipeCategory.MISC, RailcraftItems.TANK_DETECTOR.get())
         .pattern("aaa")

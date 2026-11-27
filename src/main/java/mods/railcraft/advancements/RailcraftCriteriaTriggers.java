@@ -3,8 +3,8 @@ package mods.railcraft.advancements;
 import java.util.function.Supplier;
 import mods.railcraft.util.registration.DeferredCriterionTrigger;
 import mods.railcraft.util.registration.RailcraftDeferredRegister;
-import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
 

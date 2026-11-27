@@ -5,7 +5,7 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.track.TrackBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -39,7 +39,7 @@ final class HighSpeedTrackTestHelper {
   }
 
   static void runCart(GameTestHelper helper, int startY, double startZ) {
-    var cart = helper.spawn(EntityType.MINECART, new Vec3(1.5, startY, startZ));
+    var cart = helper.spawn(EntityTypes.MINECART, new Vec3(1.5, startY, startZ));
     cart.setDeltaMovement(0, 0, SPEED);
     var highSpeed = new boolean[1];
     helper.onEachTick(() -> {

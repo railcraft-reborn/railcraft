@@ -1,9 +1,11 @@
 package mods.railcraft.data.loot;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.loot.packs.RailcraftChestLoot;
 import mods.railcraft.loot.DungeonLootModifier;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -35,8 +37,7 @@ public class RailcraftLootModifierProvider extends GlobalLootModifierProvider {
         new DungeonLootModifier(getCondition(targetLootTable.identifier()), customLootTable));
   }
 
-  private LootItemCondition[] getCondition(Identifier lootTable) {
-    var condition = LootTableIdCondition.builder(lootTable);
-    return new LootItemCondition[]{condition.build()};
+  private Optional<Holder<LootItemCondition>> getCondition(Identifier lootTable) {
+    return Optional.of(Holder.direct(LootTableIdCondition.builder(lootTable).build()));
   }
 }

@@ -12,7 +12,7 @@ import net.neoforged.neoforge.common.CommonHooks;
 public class CrackedFirestoneItem extends RefinedFirestoneItem {
 
   public CrackedFirestoneItem(Properties properties) {
-    super(100, true, properties);
+    super(true, properties);
   }
 
   public static ItemStack getItemEmpty() {

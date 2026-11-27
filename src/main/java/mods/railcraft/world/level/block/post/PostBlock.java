@@ -209,7 +209,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
           : Connection.NONE;
     }
 
-    if (blockState.is(RailcraftTags.Blocks.POST)
+    if (blockState.is(RailcraftTags.BlockItems.POST.block())
         || !isExceptionForConnection(blockState) && sturdy) {
       return Connection.DOUBLE;
     }
@@ -227,7 +227,7 @@ public class PostBlock extends Block implements SimpleWaterloggedBlock {
       return Column.PLATFORM;
     }
 
-    if (belowState.is(RailcraftTags.Blocks.POST)
+    if (belowState.is(RailcraftTags.BlockItems.POST.block())
         || belowState.is(RailcraftTags.Blocks.SIGNAL)
         || belowState.isFaceSturdy(level, belowPos, Direction.UP)) {
       return Column.FULL;

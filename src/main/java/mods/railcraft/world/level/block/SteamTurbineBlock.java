@@ -2,7 +2,6 @@ package mods.railcraft.world.level.block;
 
 import java.util.Map;
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.api.charge.Charge;
 import mods.railcraft.api.charge.ChargeBlock;
 import mods.railcraft.api.charge.ChargeStorage;
@@ -31,19 +30,11 @@ public class SteamTurbineBlock extends MultiblockBlock implements ChargeBlock {
 
   public static final Property<Boolean> ROTATED = BooleanProperty.create("rotated");
 
-
-  private static final MapCodec<SteamTurbineBlock> CODEC = simpleCodec(SteamTurbineBlock::new);
-
   public SteamTurbineBlock(Properties properties) {
     super(properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(TYPE, Type.NONE)
         .setValue(ROTATED, false));
-  }
-
-  @Override
-  protected MapCodec<? extends MultiblockBlock> codec() {
-    return CODEC;
   }
 
   @Override

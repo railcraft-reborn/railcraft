@@ -23,8 +23,8 @@ public class RailcraftVillagerProfession {
   public static final DeferredHolder<VillagerProfession, VillagerProfession> TRACKMAN =
       deferredRegister.register("trackman", () -> new VillagerProfession(
           name("trackman"),
-          holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey()),
-          holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.getKey()),
+          holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.key()),
+          holder -> holder.is(RailcraftPoiTypes.MANUAL_ROLLING_MACHINE_POI.key()),
           ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_ARMORER,
           tradeSetsByLevel(RailcraftTradeSets.TRACKMAN_LEVEL_1,
               RailcraftTradeSets.TRACKMAN_LEVEL_2, RailcraftTradeSets.TRACKMAN_LEVEL_3)));
@@ -32,8 +32,8 @@ public class RailcraftVillagerProfession {
   public static final DeferredHolder<VillagerProfession, VillagerProfession> CARTMAN =
       deferredRegister.register("cartman", () -> new VillagerProfession(
           name("cartman"),
-          holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey()),
-          holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.getKey()),
+          holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.key()),
+          holder -> holder.is(RailcraftPoiTypes.POWERED_ROLLING_MACHINE_POI.key()),
           ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_ARMORER,
           tradeSetsByLevel(RailcraftTradeSets.CARTMAN_LEVEL_1, RailcraftTradeSets.CARTMAN_LEVEL_2,
               RailcraftTradeSets.CARTMAN_LEVEL_3)));

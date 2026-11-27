@@ -1397,7 +1397,7 @@ public class RailcraftBlocks {
                   .liquid()
                   .noCollision()
                   .strength(50.0F)
-                  .pushReaction(PushReaction.DESTROY)
+                  .pushReaction(PushReaction.POPPED)
                   .noLootTable()
                   .sound(SoundType.EMPTY)));
 

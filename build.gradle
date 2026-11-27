@@ -6,9 +6,9 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'net.neoforged.moddev' version "$mod_dev_gradle"
-    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.1.2'
-    id 'me.modmuss50.mod-publish-plugin' version '2.2.0'
-    id 'com.diffplug.spotless' version '8.9.0'
+    id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin' version '3.4.2'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.1'
+    id 'com.diffplug.spotless' version '8.12.0'
 }
 
 def isRelease = System.getenv('CURSEFORGE_TOKEN')
@@ -155,10 +155,10 @@ dependencies {
     compileOnly "mezz.jei:jei-$minecraft_version-neoforge-api:$jei_version"
     localRuntime "mezz.jei:jei-$minecraft_version-neoforge:$jei_version"
 
-    compileOnly "dev.emi:emi-neoforge:$emi_version+1.21:api"
+    compileOnly "dev.emi:emi-neoforge:$emi_version+1.21.1:api"
     //localRuntime "dev.emi:emi-neoforge:$emi_version+$minecraft_version"
 
-    implementation "curse.maven:patchouli-306770:$patchouli_id"
+    compileOnly "curse.maven:patchouli-306770:$patchouli_id"
     implementation "curse.maven:jade-324717:$jade_id"
     compileOnly "curse.maven:dynamiclights-reforged-551736:$dynamiclights_id"
     compileOnly "curse.maven:buildcraft-community-edition-1592400:$buildcraft_id"
@@ -173,8 +173,8 @@ dependencies {
     //localRuntime "curse.maven:sodium-options-api-1103431:6100815"
     //localRuntime "curse.maven:reeses-sodium-options-511319:6091021"
 
-    localRuntime "curse.maven:edivadlib-638508:7961578"
-    localRuntime "curse.maven:solargeneration-336538:7926995"
+    localRuntime "curse.maven:edivadlib-638508:9221330"
+    localRuntime "curse.maven:solargeneration-336538:8957657"
     //localRuntime "curse.maven:morejeiinfo-902996:6149873"
 }
 

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.AABB;
 
 public class RailcraftBlockProperties {
 
@@ -56,7 +57,7 @@ public class RailcraftBlockProperties {
   public static UnaryOperator<BlockBehaviour.Properties> steelAnvil() {
     return __ -> BlockBehaviour.Properties.of()
         .mapColor(MapColor.METAL)
-        .pushReaction(PushReaction.BLOCK)
+        .pushReaction(PushReaction.IMMOVEABLE)
         .requiresCorrectToolForDrops()
         .strength(5.0F, 2000.0F)
         .sound(SoundType.ANVIL);
@@ -207,6 +208,10 @@ public class RailcraftBlockProperties {
   }
 
   private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    return false;
+  }
+
+  private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, AABB aabb) {
     return false;
   }
 }

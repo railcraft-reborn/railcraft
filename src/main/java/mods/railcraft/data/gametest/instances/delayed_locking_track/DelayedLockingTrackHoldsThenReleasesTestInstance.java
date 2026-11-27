@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class DelayedLockingTrackHoldsThenReleasesTestInstance extends GameTestInstance {
 
@@ -30,10 +30,10 @@ public class DelayedLockingTrackHoldsThenReleasesTestInstance extends GameTestIn
         .thenExecuteAfter(DelayedLockingTrackTestHelper.DELAY / 2 + 10, () -> {
           helper.assertBlockProperty(DelayedLockingTrackTestHelper.TRACK_POS,
               DelayedLockingTrackBlock.HOLDING, true);
-          helper.assertEntityPresent(EntityType.MINECART, DelayedLockingTrackTestHelper.TRACK_POS);
+          helper.assertEntityPresent(EntityTypes.MINECART, DelayedLockingTrackTestHelper.TRACK_POS);
         })
         // Released carts only get a small push, so just check it left the track
-        .thenWaitUntil(() -> helper.assertEntityPresent(EntityType.MINECART,
+        .thenWaitUntil(() -> helper.assertEntityPresent(EntityTypes.MINECART,
             DelayedLockingTrackTestHelper.NEXT_POS))
         .thenSucceed();
   }

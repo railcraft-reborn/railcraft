@@ -5,7 +5,7 @@ import java.util.List;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.crafting.CrusherRecipe;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -40,7 +40,7 @@ public class CrusherRecipeBuilder {
     return crush(Ingredient.of(ingredient));
   }
 
-  public static CrusherRecipeBuilder crush(HolderLookup.RegistryLookup<Item> items,
+  public static CrusherRecipeBuilder crush(HolderGetter<Item> items,
       TagKey<Item> ingredient) {
     var builder = crush(Ingredient.of(items.getOrThrow(ingredient)));
     builder.conditions.add(new NotCondition(new TagEmptyCondition(ingredient)));
@@ -59,7 +59,7 @@ public class CrusherRecipeBuilder {
     return addResult(Ingredient.of(output), quantity, probability);
   }
 
-  public CrusherRecipeBuilder addResult(HolderLookup.RegistryLookup<Item> items,
+  public CrusherRecipeBuilder addResult(HolderGetter<Item> items,
       TagKey<Item> output, int quantity, double probability) {
     this.conditions.add(new NotCondition(new TagEmptyCondition(output)));
     return addResult(Ingredient.of(items.getOrThrow(output)), quantity, probability);

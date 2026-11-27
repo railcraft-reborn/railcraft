@@ -46,7 +46,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
     var doneButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_DONE, button -> {
           sendMessageToServer();
-          this.minecraft.setScreen(null);
+          this.minecraft.gui.setScreen(null);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
@@ -58,7 +58,7 @@ public class GoldenTicketScreen extends IngameWindowScreen {
         .build());
     var cancelButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_CANCEL, button -> {
-          this.minecraft.setScreen(null);
+          this.minecraft.gui.setScreen(null);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());

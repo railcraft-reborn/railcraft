@@ -7,7 +7,6 @@ import mods.railcraft.client.util.CuboidModelRenderer;
 import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.tank.TankBlockEntity;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -65,7 +64,7 @@ public class TankRenderer implements BlockEntityRenderer<TankBlockEntity, TankBl
     poseStack.pushPose();
     model.setPackedLight(RenderUtil.calculateGlowLight(state.lightCoords, fluidStack));
     model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
-    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, RenderUtil.cutoutBlockSheet(), (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(model, pose, vertexConsumer,
           RenderUtil.getColorARGB(fluidStack, 1.0F),
           CuboidModelRenderer.FaceDisplay.FRONT, true);

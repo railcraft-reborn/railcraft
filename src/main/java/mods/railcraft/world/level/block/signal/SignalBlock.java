@@ -172,7 +172,7 @@ public abstract class SignalBlock extends BaseEntityBlock implements SimpleWater
       return connectsToDirection(blockState, direction);
     }
 
-    if (blockState.is(RailcraftTags.Blocks.POST)) {
+    if (blockState.is(RailcraftTags.BlockItems.POST.block())) {
       return true;
     }
 

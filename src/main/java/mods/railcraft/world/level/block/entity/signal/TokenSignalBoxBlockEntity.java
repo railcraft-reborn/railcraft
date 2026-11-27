@@ -154,7 +154,7 @@ public class TokenSignalBoxBlockEntity extends ActionSignalBoxBlockEntity
   @Override
   public Vec3 ringCentroidPos() {
     if (this.ringCentroidPos == null)
-      return this.getBlockPos().getCenter();
+      return Vec3.atCenterOf(this.getBlockPos());
     return this.ringCentroidPos;
   }
 

@@ -1,7 +1,6 @@
 package mods.railcraft.world.level.block.manipulator;
 
 import org.jspecify.annotations.Nullable;
-import com.mojang.serialization.MapCodec;
 import mods.railcraft.world.level.block.entity.RailcraftBlockEntityTypes;
 import mods.railcraft.world.level.block.entity.manipulator.CartDispenserBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -21,18 +20,12 @@ import net.minecraft.world.level.redstone.Orientation;
 public class CartDispenserBlock extends ManipulatorBlock<CartDispenserBlockEntity> {
 
   public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-  private static final MapCodec<CartDispenserBlock> CODEC = simpleCodec(CartDispenserBlock::new);
 
   public CartDispenserBlock(Properties properties) {
     super(CartDispenserBlockEntity.class, properties);
     this.registerDefaultState(this.stateDefinition.any()
         .setValue(POWERED, false)
         .setValue(FACING, Direction.DOWN));
-  }
-
-  @Override
-  protected MapCodec<? extends ManipulatorBlock<CartDispenserBlockEntity>> codec() {
-    return CODEC;
   }
 
   @Override

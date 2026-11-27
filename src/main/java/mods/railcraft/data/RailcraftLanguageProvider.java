@@ -1,7 +1,6 @@
 package mods.railcraft.data;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
@@ -26,7 +25,6 @@ import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class RailcraftLanguageProvider extends LanguageProvider {
@@ -1167,8 +1165,7 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   /** Matches the name component the profession itself is registered with. */
   private static String villagerName(
       DeferredHolder<VillagerProfession, VillagerProfession> profession) {
-    return Translations.makeKey("entity",
-        "villager." + profession.getKey().identifier().getPath());
+    return Translations.makeKey("entity", "villager." + profession.key().identifier().getPath());
   }
 
   private void damageSourceTranslations() {
@@ -1457,14 +1454,6 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.add(Translations.ConfigurationScreen.FUEL_PER_STEAM_MULTIPLIER,
         "Fuel per steam multiplier");
     this.add(Translations.ConfigurationScreen.BOILERS_EXPLODE, "Boilers explode");
-  }
-
-  private void addFluidType(Supplier<? extends FluidType> key, String name) {
-    this.add(key.get(), name);
-  }
-
-  private void add(FluidType key, String name) {
-    this.add(key.getDescriptionId(), name);
   }
 
   private void addBlockColorVariants(

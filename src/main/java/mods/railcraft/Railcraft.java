@@ -41,6 +41,8 @@ import mods.railcraft.data.worldgen.placements.RailcraftOrePlacements;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.integrations.buildcraft.BuildCraftIntegration;
 import mods.railcraft.integrations.forestry.ForestryIntegration;
+import mods.railcraft.loot.RailcraftContextIntProviderTypes;
+import mods.railcraft.loot.RailcraftContextIntProviders;
 import mods.railcraft.loot.RailcraftLootModifiers;
 import mods.railcraft.network.PacketHandler;
 import mods.railcraft.network.RailcraftDataSerializers;
@@ -102,7 +104,6 @@ import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
 import mods.railcraft.world.signal.TokenRingManager;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -112,6 +113,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.neoforged.api.distmarker.Dist;
@@ -128,6 +130,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -169,6 +172,7 @@ public class Railcraft {
     modEventBus.addListener(this::handleRegisterCapabilities);
     modEventBus.addListener(this::buildContents);
     modEventBus.addListener(this::handleGatherData);
+    modEventBus.addListener(this::handleGatherDataRegistryEntries);
     modEventBus.addListener(this::registerChunkControllers);
 
     if (dist.isClient()) {
@@ -200,6 +204,7 @@ public class Railcraft {
     RailcraftPoiTypes.register(modEventBus);
     RailcraftVillagerProfession.register(modEventBus);
     RailcraftLootModifiers.register(modEventBus);
+    RailcraftContextIntProviderTypes.register(modEventBus);
     RailcraftFeatures.register(modEventBus);
     RailcraftPlacementModifierTypes.register(modEventBus);
     RailcraftStructureTypes.register(modEventBus);
@@ -339,29 +344,16 @@ public class Railcraft {
     }
   }
 
-  private void handleGatherData(GatherDataEvent.Client event) {
-    event.createBlockAndItemTags(RailcraftBlockTagsProvider::new, RailcraftItemTagsProvider::new);
-    event.createProvider(RailcraftFluidTagsProvider::new);
-    event.createProvider(RailcraftLootTableProvider::new);
-    event.createProvider(RailcraftAdvancementProvider::new);
-    event.createProvider(RailcraftRecipeProvider.Runner::new);
-    event.createProvider(BlastFurnaceRecipeProvider.Runner::new);
-    event.createProvider(CokeOvenRecipeProvider.Runner::new);
-    event.createProvider(CrusherRecipeProvider.Runner::new);
-    event.createProvider(RollingRecipeProvider.Runner::new);
-    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
-    // event.createProvider(ForestryRecipeProvider.Runner::new);
-    event.createProvider(RailcraftPoiTypeTagsProvider::new);
-    event.createProvider(RailcraftLootModifierProvider::new);
-    event.createProvider(RailcraftDamageTypeTagsProvider::new);
-    event.createProvider(RailcraftDataMapProvider::new);
-    event.createProvider(RailcraftModelProvider::new);
-    event.createProvider(RailcraftLanguageProvider::new);
-    event.createProvider(RailcraftSoundsProvider::new);
-    event.createProvider(RailcraftSpriteSourceProvider::new);
-    event.createProvider(RailcraftParticleProvider::new);
-    event.createDatapackRegistryObjects(new RegistrySetBuilder()
-        .add(Registries.CONFIGURED_FEATURE, RailcraftOreFeatures::bootstrap)
+  private void handleGatherDataRegistryEntries(GatherDataRegistryEntriesEvent event) {
+    event
+        .recipe(RailcraftRecipeProvider::new)
+        .recipe(BlastFurnaceRecipeProvider::new)
+        .recipe(CokeOvenRecipeProvider::new)
+        .recipe(CrusherRecipeProvider::new)
+        .recipe(RollingRecipeProvider::new)
+        .add(Registries.LOOT_TABLE, new RailcraftLootTableProvider())
+        .add(Registries.ADVANCEMENT, new RailcraftAdvancementProvider())
+        .add(Registries.FEATURE, RailcraftOreFeatures::bootstrap)
         .add(Registries.PLACED_FEATURE, RailcraftOrePlacements::bootstrap)
         .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RailcraftBiomeModifiers::bootstrap)
         .add(Registries.DAMAGE_TYPE, RailcraftDamageType::bootstrap)
@@ -372,7 +364,24 @@ public class Railcraft {
         .add(Registries.TEST_INSTANCE, RailcraftGameTestInstances::bootstrap)
         .add(Registries.TEST_ENVIRONMENT, RailcraftTestEnvironments::bootstrap)
         .add(Registries.VILLAGER_TRADE, RailcraftVillagerTrades::bootstrap)
-        .add(Registries.TRADE_SET, RailcraftTradeSets::bootstrap));
+        .add(Registries.TRADE_SET, RailcraftTradeSets::bootstrap)
+        .add(Registries.CONTEXT_INT_PROVIDER, RailcraftContextIntProviders::bootstrap);
+    // TODO Forestry CE 26.1: uncomment when Forestry CE is released for 26.1.x
+    // event.recipe(ForestryRecipeProvider::new);
+  }
+
+  private void handleGatherData(GatherDataEvent.Client event) {
+    event.createBlockAndItemTags(RailcraftBlockTagsProvider::new, RailcraftItemTagsProvider::new);
+    event.createProvider(RailcraftFluidTagsProvider::new);
+    event.createProvider(RailcraftPoiTypeTagsProvider::new);
+    event.createProvider(RailcraftLootModifierProvider::new);
+    event.createProvider(RailcraftDamageTypeTagsProvider::new);
+    event.createProvider(RailcraftDataMapProvider::new);
+    event.createProvider(RailcraftModelProvider::new);
+    event.createProvider(RailcraftLanguageProvider::new);
+    event.createProvider(RailcraftSoundsProvider::new);
+    event.createProvider(RailcraftSpriteSourceProvider::new);
+    event.createProvider(RailcraftParticleProvider::new);
     // Must come after the trades themselves, so that the pools can resolve them
     event.createProvider(RailcraftVillagerTradeTagsProvider::new);
   }
@@ -420,7 +429,7 @@ public class Railcraft {
       var stack = event.getItemStack();
 
       if (!stack.isEmpty() && stack.is(RailcraftItems.CHARGE_METER.get())) {
-        player.swing(hand);
+        player.swing(hand, SwingAnimation.DEFAULT, true);
         if (!player.level().isClientSide()) {
           Optional.ofNullable(cart.getCapability(Capabilities.Energy.ENTITY, null))
               .filter(ChargeCartStorageImpl.class::isInstance)

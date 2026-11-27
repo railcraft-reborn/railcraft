@@ -15,7 +15,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class DualBlockSignalPrimary extends GameTestInstance {
 
@@ -37,7 +37,7 @@ public class DualBlockSignalPrimary extends GameTestInstance {
   @Override
   public void run(GameTestHelper helper) {
     if (spawnCart) {
-      helper.spawn(EntityType.MINECART, new BlockPos(1, 1, 2));
+      helper.spawn(EntityTypes.MINECART, new BlockPos(1, 1, 2));
     }
     helper.succeedWhen(() -> {
       var dual = helper.getBlockEntity(DUAL_BLOCK_SIGNAL, DualBlockSignalBlockEntity.class);

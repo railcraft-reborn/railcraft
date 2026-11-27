@@ -18,8 +18,9 @@ public class GeodeStructure extends Structure {
     int x = context.chunkPos().getBlockX(9);
     int z = context.chunkPos().getBlockZ(9);
 
-    for (var holder : context.biomeSource().getBiomesWithin(x,
-        context.chunkGenerator().getSeaLevel(), z, 29, context.randomState().sampler())) {
+    int seaLevel = context.chunkGenerator().getSeaLevel();
+    var biomesHolder = context.biomeResolver().getBiomesWithin(x, seaLevel, z, 29);
+    for (var holder : biomesHolder) {
       if (!holder.is(BiomeTags.IS_DEEP_OCEAN)) {
         return Optional.empty();
       }

@@ -1,6 +1,5 @@
 package mods.railcraft.data.advancements;
 
-import java.util.function.Consumer;
 import mods.railcraft.Translations;
 import mods.railcraft.advancements.BedCartSleepTrigger;
 import mods.railcraft.advancements.CartLinkingTrigger;
@@ -10,102 +9,99 @@ import mods.railcraft.advancements.SurpriseTrigger;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.data.advancements.AdvancementSubProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
-class RailcraftCartAdvancements implements AdvancementSubProvider {
+class RailcraftCartAdvancements extends AdvancementSubProvider {
+
+  RailcraftCartAdvancements(BootstrapContext<Advancement> output) {
+    super(output);
+  }
 
   @Override
-  public void generate(HolderLookup.Provider registries, Consumer<AdvancementHolder> consumer) {
+  public void generate() {
     var root = Advancement.Builder.advancement()
-        .display(
+        .rootDisplay(
             RailcraftItems.DIAMOND_CROWBAR.get(),
             Component.translatable(Translations.Advancement.Carts.ROOT),
             Component.translatable(Translations.Advancement.Carts.ROOT_DESC),
-            Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png"),
+            Identifier.withDefaultNamespace("gui/advancements/backgrounds/stone"),
             AdvancementType.TASK,
             true, false, false)
         .addCriterion("inv_changed",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.IRON_CROWBAR.get()))
-        .save(consumer, RailcraftConstants.id("carts/root"));
+        .save(this.output, RailcraftConstants.id("carts/root"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEEL_CROWBAR.get(),
             Component.translatable(Translations.Advancement.Carts.LINK_CARTS),
             Component.translatable(Translations.Advancement.Carts.LINK_CARTS_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .addCriterion("linked_carts", CartLinkingTrigger.hasLinked())
         .parent(root)
-        .save(consumer, RailcraftConstants.id("carts/link_carts"));
+        .save(this.output, RailcraftConstants.id("carts/link_carts"));
 
     Advancement.Builder.advancement()
         .display(
             RailcraftItems.SEASONS_CROWBAR.get(),
             Component.translatable(Translations.Advancement.Carts.SEASONS),
             Component.translatable(Translations.Advancement.Carts.SEASONS_DESC),
-            null,
             AdvancementType.GOAL,
             true, false, false)
         .addCriterion("on_season_set", SetSeasonTrigger.onSeasonSet())
         .parent(root)
-        .save(consumer, RailcraftConstants.id("carts/seasons"));
+        .save(this.output, RailcraftConstants.id("carts/seasons"));
 
     var rcLocomotive = Advancement.Builder.advancement()
         .display(
             RailcraftItems.STEAM_LOCOMOTIVE.get(),
             Component.translatable(Translations.Advancement.Carts.LOCOMOTIVE),
             Component.translatable(Translations.Advancement.Carts.LOCOMOTIVE_DESC),
-            null,
             AdvancementType.CHALLENGE,
             true, true, false)
         .addCriterion("has_locomotives",
             InventoryChangeTrigger.TriggerInstance.hasItems(RailcraftItems.STEAM_LOCOMOTIVE.get()))
         .parent(root)
-        .save(consumer, RailcraftConstants.id("carts/locomotive"));
+        .save(this.output, RailcraftConstants.id("carts/locomotive"));
 
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
             Component.translatable(Translations.Advancement.Carts.BED_CART),
             Component.translatable(Translations.Advancement.Carts.BED_CART_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .addCriterion("has_slept_in_rc_bed", BedCartSleepTrigger.hasSlept())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.id("carts/bed_cart"));
+        .save(this.output, RailcraftConstants.id("carts/bed_cart"));
 
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
             Component.translatable(Translations.Advancement.Carts.JUKEBOX_CART),
             Component.translatable(Translations.Advancement.Carts.JUKEBOX_CART_DESC),
-            null,
             AdvancementType.TASK,
             true, false, false)
         .addCriterion("stal_played", JukeboxCartPlayMusicTrigger.hasPlayedAnyMusic())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.id("carts/jukebox_cart"));
+        .save(this.output, RailcraftConstants.id("carts/jukebox_cart"));
 
     Advancement.Builder.advancement()
         .display(
             Items.MINECART,
             Component.translatable(Translations.Advancement.Carts.SURPRISE),
             Component.translatable(Translations.Advancement.Carts.SURPRISE_DESC),
-            null,
             AdvancementType.TASK,
             true, true, false)
         .addCriterion("has_exploded_track", SurpriseTrigger.hasExplodedCart())
         .parent(rcLocomotive)
-        .save(consumer, RailcraftConstants.id("carts/surprise"));
+        .save(this.output, RailcraftConstants.id("carts/surprise"));
   }
 }

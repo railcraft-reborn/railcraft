@@ -2,13 +2,13 @@ package mods.railcraft.world.item.enchantment;
 
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.tags.RailcraftTags;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.EntityTypePredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -54,7 +54,7 @@ public class RailcraftEnchantments {
             LootItemEntityPropertyCondition.hasProperties(
                 LootContext.EntityTarget.THIS,
                 EntityPredicate.Builder.entity()
-                    .entityType(EntityTypePredicate.of(entityType, EntityType.CREEPER)))));
+                    .entityType(EntityTypePredicate.of(entityType, EntityTypes.CREEPER)))));
     register(context, DESTRUCTION, Enchantment.enchantment(
         Enchantment.definition(items.getOrThrow(RailcraftTags.Items.CROWBAR), 1, 3,
             Enchantment.dynamicCost(5, 10), Enchantment.dynamicCost(15, 10),

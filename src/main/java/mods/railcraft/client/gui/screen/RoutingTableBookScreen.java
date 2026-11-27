@@ -111,20 +111,20 @@ public class RoutingTableBookScreen extends Screen {
             button -> this.pageForward()));
     this.titleButton = this.addRenderableWidget(RailcraftButton
         .builder(Translations.Screen.NAME, button -> {
-          this.minecraft.setScreen(this.titleScreen);
+          this.minecraft.gui.setScreen(this.titleScreen);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
     this.helpButton = this.addRenderableWidget(RailcraftButton
         .builder(Translations.Screen.HELP, button -> {
-          this.minecraft.setScreen(this.helpScreen);
+          this.minecraft.gui.setScreen(this.helpScreen);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
     var doneButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_DONE, button -> {
           this.saveChanges();
-          this.minecraft.setScreen(null);
+          this.minecraft.gui.setScreen(null);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());

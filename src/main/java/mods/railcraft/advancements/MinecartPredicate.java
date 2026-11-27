@@ -6,8 +6,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mods.railcraft.api.carts.RollingStock;
 import mods.railcraft.api.core.Ownable;
 import mods.railcraft.world.entity.vehicle.MinecartUtil;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.predicates.MinMaxBounds;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 

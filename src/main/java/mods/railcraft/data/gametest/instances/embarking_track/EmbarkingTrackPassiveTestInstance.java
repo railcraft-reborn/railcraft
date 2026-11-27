@@ -9,7 +9,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class EmbarkingTrackPassiveTestInstance extends GameTestInstance {
 
@@ -24,8 +24,8 @@ public class EmbarkingTrackPassiveTestInstance extends GameTestInstance {
   public void run(GameTestHelper helper) {
     helper.pressButton(0, 2, 3);
     helper.succeedWhen(() -> {
-      helper.assertEntityPresent(EntityType.MINECART, 5, 1, 3);
-      helper.assertEntityPresent(EntityType.VILLAGER, 3, 1, 4);
+      helper.assertEntityPresent(EntityTypes.MINECART, 5, 1, 3);
+      helper.assertEntityPresent(EntityTypes.VILLAGER, 3, 1, 4);
     });
   }
 

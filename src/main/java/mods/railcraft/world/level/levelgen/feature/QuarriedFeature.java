@@ -1,9 +1,10 @@
 package mods.railcraft.world.level.levelgen.feature;
 
-import com.mojang.serialization.Codec;
-import mods.railcraft.world.level.levelgen.feature.configuration.QuarriedConfiguration;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -11,23 +12,34 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class QuarriedFeature extends Feature<QuarriedConfiguration> {
+public record QuarriedFeature(
+    RuleTest targetProvider, Holder<BlockStateProvider> stateProvider) implements Feature {
+
+  public static final MapCodec<QuarriedFeature> CODEC =
+      RecordCodecBuilder.mapCodec(instance -> instance.group(
+          RuleTest.CODEC.fieldOf("target_provider")
+              .forGetter(QuarriedFeature::targetProvider),
+          BlockStateProvider.CODEC.fieldOf("state_provider")
+              .forGetter(QuarriedFeature::stateProvider)
+      ).apply(instance, QuarriedFeature::new));
 
   private static final int DISTANCE_OUTER_SQ = 8 * 8;
 
-  public QuarriedFeature(Codec<QuarriedConfiguration> codec) {
-    super(codec);
+  @Override
+  public MapCodec<QuarriedFeature> codec() {
+    return CODEC;
   }
 
   @Override
-  public boolean place(FeaturePlaceContext<QuarriedConfiguration> context) {
-    var level = context.level();
+  public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos blockPos) {
     var origin = level
-        .getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, context.origin())
+        .getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, blockPos)
         .below(3);
     if (!level.getBlockState(origin).is(BlockTags.DIRT))
       return false;
@@ -75,7 +87,7 @@ public class QuarriedFeature extends Feature<QuarriedConfiguration> {
 
           currentPos.set(origin.getX() + x, origin.getY() + y, origin.getZ() + z);
           final BlockState existingState = level.getBlockState(currentPos);
-          placeState(existingState, level, currentPos, context.random(), context.config());
+          placeState(existingState, level, currentPos, random);
         }
       }
     }
@@ -98,14 +110,12 @@ public class QuarriedFeature extends Feature<QuarriedConfiguration> {
     return true;
   }
 
-  private void placeState(BlockState existingState, WorldGenLevel level, BlockPos blockPos,
-      RandomSource random, QuarriedConfiguration config) {
+  private void placeState(BlockState existingState, WorldGenLevel level, BlockPos blockPos, RandomSource random) {
     var above = blockPos.above();
     if (level.getBlockState(above).is(Blocks.SHORT_GRASS))
       level.setBlock(above, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 
-    if (config.targetProvider().test(existingState, random))
-      level.setBlock(blockPos, config.stateProvider().getState(level, random, blockPos),
-          Block.UPDATE_CLIENTS);
+    if (this.targetProvider.test(existingState, blockPos, random))
+      level.setBlock(blockPos, this.stateProvider.value().getState(level, random, blockPos), Block.UPDATE_CLIENTS);
   }
 }

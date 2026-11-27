@@ -114,17 +114,20 @@ public class Patchouli {
 
   private static IStateMatcher validTankWallBlock(PatchouliAPI.IPatchouliAPI api,
       IronTankWallBlock block) {
-    return api.predicateMatcher(block, state -> state.is(RailcraftTags.Blocks.IRON_TANK_WALL));
+    return api.predicateMatcher(block,
+        state -> state.is(RailcraftTags.BlockItems.IRON_TANK_WALL.block()));
   }
 
   private static IStateMatcher validTankGaugeBlock(PatchouliAPI.IPatchouliAPI api,
       IronTankGaugeBlock block) {
-    return api.predicateMatcher(block, state -> state.is(RailcraftTags.Blocks.IRON_TANK_GAUGE));
+    return api.predicateMatcher(block,
+        state -> state.is(RailcraftTags.BlockItems.IRON_TANK_GAUGE.block()));
   }
 
   private static IStateMatcher validTankValveBlock(PatchouliAPI.IPatchouliAPI api,
       IronTankValveBlock block) {
-    return api.predicateMatcher(block, state -> state.is(RailcraftTags.Blocks.IRON_TANK_VALVE));
+    return api.predicateMatcher(block,
+        state -> state.is(RailcraftTags.BlockItems.IRON_TANK_VALVE.block()));
   }
 
   private static IStateMatcher validFireboxBlock(PatchouliAPI.IPatchouliAPI api,

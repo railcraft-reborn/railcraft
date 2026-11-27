@@ -3,6 +3,7 @@ package mods.railcraft.tags;
 import mods.railcraft.api.core.RailcraftConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.BlockItemTagId;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
@@ -82,7 +83,6 @@ public class RailcraftTags {
     public static final TagKey<Item> NICKEL_GEAR = gearsTag("nickel");
     public static final TagKey<Item> SILVER_GEAR = gearsTag("silver");
 
-
     public static final TagKey<Item> SLAG = commonTag("slag");
     public static final TagKey<Item> COAL_COKE = commonTag("coal_coke");
     public static final TagKey<Item> BRONZE_DUST = dustsTag("bronze");
@@ -107,42 +107,12 @@ public class RailcraftTags {
     public static final TagKey<Item> OBSIDIAN_DUST = dustsTag("obsidian");
     public static final TagKey<Item> ENDER_DUST = dustsTag("ender_pearl");
 
-    public static final TagKey<Item> IRON_TANK_GAUGE = tag("iron_tank_gauge");
-    public static final TagKey<Item> IRON_TANK_VALVE = tag("iron_tank_valve");
-    public static final TagKey<Item> IRON_TANK_WALL = tag("iron_tank_wall");
-
-    public static final TagKey<Item> STEEL_TANK_GAUGE = tag("steel_tank_gauge");
-    public static final TagKey<Item> STEEL_TANK_VALVE = tag("steel_tank_valve");
-    public static final TagKey<Item> STEEL_TANK_WALL = tag("steel_tank_wall");
-
     public static final TagKey<Item> PLATE_CHEST_LOOT = tag("plate_chest_loot");
     public static final TagKey<Item> GEAR_CHEST_LOOT = tag("gear_chest_loot");
     public static final TagKey<Item> INGOT_CHEST_LOOT = tag("ingot_chest_loot");
 
-    public static final TagKey<Item> QUARRIED = tag("quarried");
-    public static final TagKey<Item> ABYSSAL = tag("abyssal");
-    public static final TagKey<Item> DETECTOR = tag("detector");
-
-    public static final TagKey<Item> POST = tag("post");
-    public static final TagKey<Item> STRENGTHENED_GLASS = tag("strengthened_glass");
-    public static final TagKey<Item> ABANDONED_TRACK = tag("abandoned_track");
-    public static final TagKey<Item> ELECTRIC_TRACK = tag("electric_track");
-    public static final TagKey<Item> HIGH_SPEED_TRACK = tag("high_speed_track");
-    public static final TagKey<Item> HIGH_SPEED_ELECTRIC_TRACK = tag("high_speed_electric_track");
-    public static final TagKey<Item> IRON_TRACK = tag("iron_track");
-    public static final TagKey<Item> REINFORCED_TRACK = tag("reinforced_track");
-    public static final TagKey<Item> STRAP_IRON_TRACK = tag("strap_iron_track");
-
     public static final TagKey<Item> TRACK_KIT = tag("track_kit");
     public static final TagKey<Item> ENCHANTMENTS = tag("enchantments");
-
-    public static final TagKey<Item> LEAD_ORE = oresTag("lead");
-    public static final TagKey<Item> NICKEL_ORE = oresTag("nickel");
-    public static final TagKey<Item> SILVER_ORE = oresTag("silver");
-    public static final TagKey<Item> SULFUR_ORE = oresTag("sulfur");
-    public static final TagKey<Item> TIN_ORE = oresTag("tin");
-    public static final TagKey<Item> ZINC_ORE = oresTag("zinc");
-    public static final TagKey<Item> SALTPETER_ORE = oresTag("saltpeter");
 
     public static final TagKey<Item> TIN_RAW = rawMaterialsTag("tin");
     public static final TagKey<Item> ZINC_RAW = rawMaterialsTag("zinc");
@@ -218,31 +188,10 @@ public class RailcraftTags {
     public static final TagKey<Block> SWITCH_TRACK_ACTUATOR = tag("switch_track_actuator");
     public static final TagKey<Block> ASPECT_RECEIVER = tag("aspect_receiver");
     public static final TagKey<Block> ASPECT_EMITTER = tag("aspect_emitter");
-    public static final TagKey<Block> POST = tag("post");
-    public static final TagKey<Block> STRENGTHENED_GLASS = tag("strengthened_glass");
     public static final TagKey<Block> SIGNAL = tag("signal");
-    public static final TagKey<Block> ABANDONED_TRACK = tag("abandoned_track");
-    public static final TagKey<Block> ELECTRIC_TRACK = tag("electric_track");
-    public static final TagKey<Block> HIGH_SPEED_TRACK = tag("high_speed_track");
-    public static final TagKey<Block> HIGH_SPEED_ELECTRIC_TRACK = tag("high_speed_electric_track");
-    public static final TagKey<Block> IRON_TRACK = tag("iron_track");
-    public static final TagKey<Block> REINFORCED_TRACK = tag("reinforced_track");
-    public static final TagKey<Block> STRAP_IRON_TRACK = tag("strap_iron_track");
 
-    public static final TagKey<Block> IRON_TANK_GAUGE = tag("iron_tank_gauge");
-    public static final TagKey<Block> IRON_TANK_VALVE = tag("iron_tank_valve");
-    public static final TagKey<Block> IRON_TANK_WALL = tag("iron_tank_wall");
-
-    public static final TagKey<Block> STEEL_TANK_GAUGE = tag("steel_tank_gauge");
-    public static final TagKey<Block> STEEL_TANK_VALVE = tag("steel_tank_valve");
-    public static final TagKey<Block> STEEL_TANK_WALL = tag("steel_tank_wall");
-
-    public static final TagKey<Block> QUARRIED = tag("quarried");
     public static final TagKey<Block> QUARRIED_REPLACEABLE_BLOCKS =
         tag("quarried_replaceable_blocks");
-
-    public static final TagKey<Block> ABYSSAL = tag("abyssal");
-    public static final TagKey<Block> DETECTOR = tag("detector");
 
     public static final TagKey<Block> MINEABLE_WITH_CROWBAR = tag("mineable/crowbar");
     public static final TagKey<Block> TUNNEL_BORE_MINEABLE_BLOCKS =
@@ -250,20 +199,55 @@ public class RailcraftTags {
     public static final TagKey<Block> TUNNEL_BORE_REPLACEABLE_BLOCKS =
         tag("tunnel_bore_replaceable_blocks");
 
-    public static final TagKey<Block> LEAD_ORE = commonTag("ores/lead");
-    public static final TagKey<Block> NICKEL_ORE = commonTag("ores/nickel");
-    public static final TagKey<Block> SILVER_ORE = commonTag("ores/silver");
-    public static final TagKey<Block> SULFUR_ORE = commonTag("ores/sulfur");
-    public static final TagKey<Block> TIN_ORE = commonTag("ores/tin");
-    public static final TagKey<Block> ZINC_ORE = commonTag("ores/zinc");
-    public static final TagKey<Block> SALTPETER_ORE = commonTag("ores/saltpeter");
-
     private static TagKey<Block> tag(String name) {
       return BlockTags.create(RailcraftConstants.id(name));
     }
 
     private static TagKey<Block> commonTag(String name) {
       return BlockTags.create(Identifier.fromNamespaceAndPath("c", name));
+    }
+  }
+
+  public static class BlockItems {
+
+    public static final BlockItemTagId POST = tag("post");
+    public static final BlockItemTagId STRENGTHENED_GLASS = tag("strengthened_glass");
+    public static final BlockItemTagId QUARRIED = tag("quarried");
+    public static final BlockItemTagId ABYSSAL = tag("abyssal");
+    public static final BlockItemTagId DETECTOR = tag("detector");
+
+    public static final BlockItemTagId ABANDONED_TRACK = tag("abandoned_track");
+    public static final BlockItemTagId ELECTRIC_TRACK = tag("electric_track");
+    public static final BlockItemTagId HIGH_SPEED_TRACK = tag("high_speed_track");
+    public static final BlockItemTagId HIGH_SPEED_ELECTRIC_TRACK = tag("high_speed_electric_track");
+    public static final BlockItemTagId IRON_TRACK = tag("iron_track");
+    public static final BlockItemTagId REINFORCED_TRACK = tag("reinforced_track");
+    public static final BlockItemTagId STRAP_IRON_TRACK = tag("strap_iron_track");
+
+    public static final BlockItemTagId IRON_TANK_GAUGE = tag("iron_tank_gauge");
+    public static final BlockItemTagId IRON_TANK_VALVE = tag("iron_tank_valve");
+    public static final BlockItemTagId IRON_TANK_WALL = tag("iron_tank_wall");
+
+    public static final BlockItemTagId STEEL_TANK_GAUGE = tag("steel_tank_gauge");
+    public static final BlockItemTagId STEEL_TANK_VALVE = tag("steel_tank_valve");
+    public static final BlockItemTagId STEEL_TANK_WALL = tag("steel_tank_wall");
+
+    public static final BlockItemTagId LEAD_ORE = commonTag("ores/lead");
+    public static final BlockItemTagId NICKEL_ORE = commonTag("ores/nickel");
+    public static final BlockItemTagId SILVER_ORE = commonTag("ores/silver");
+    public static final BlockItemTagId SULFUR_ORE = commonTag("ores/sulfur");
+    public static final BlockItemTagId TIN_ORE = commonTag("ores/tin");
+    public static final BlockItemTagId ZINC_ORE = commonTag("ores/zinc");
+    public static final BlockItemTagId SALTPETER_ORE = commonTag("ores/saltpeter");
+
+    private static BlockItemTagId tag(String name) {
+      var id = RailcraftConstants.id(name);
+      return BlockItemTagId.create(id, id);
+    }
+
+    private static BlockItemTagId commonTag(String name) {
+      var id = Identifier.fromNamespaceAndPath("c", name);
+      return BlockItemTagId.create(id, id);
     }
   }
 

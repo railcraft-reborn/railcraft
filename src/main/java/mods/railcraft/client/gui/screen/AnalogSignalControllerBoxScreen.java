@@ -7,8 +7,10 @@ import java.util.regex.Pattern;
 import mods.railcraft.api.signal.SignalAspect;
 import mods.railcraft.network.to_server.SetAnalogSignalControllerBoxMessage;
 import mods.railcraft.world.level.block.entity.signal.AnalogSignalControllerBoxBlockEntity;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
@@ -52,7 +54,7 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
       start = 15;
     }
 
-    if ((s.length() == 0) || start == 15)
+    if ((s.isEmpty()) || start == 15)
       return s.toString();
     else
       return s.substring(0, s.length() - 1); // Remove trailing comma
@@ -83,19 +85,11 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
     var centeredY = (this.height - this.windowHeight) / 2;
 
     for (var entry : this.signalAspectTriggerSignals.entrySet()) {
-      var textField = new EditBox(this.font, centeredX + 72,
+      var textField = new RangeEditBox(this.font, centeredX + 72,
           centeredY + getYPosFromIndex(entry.getKey().ordinal()), 95, 10,
           entry.getKey().getDisplayName());
       textField.setMaxLength(37);
       textField.setValue(this.rangeToString(entry.getValue()));
-      textField.setFilter(string -> {
-        for (var ch : string.toCharArray()) {
-          if (!Character.isDigit(ch) && ch != ',' && ch != '-') {
-            return false;
-          }
-        }
-        return true;
-      });
       this.addRenderableWidget(textField);
       this.textFields.put(entry.getKey(), textField);
     }
@@ -127,4 +121,21 @@ public class AnalogSignalControllerBoxScreen extends IngameWindowScreen {
     return 22 + i * 14;
   }
 
+  private static class RangeEditBox extends EditBox {
+
+    private RangeEditBox(Font font, int x, int y, int width, int height, Component narration) {
+      super(font, x, y, width, height, narration);
+    }
+
+    @Override
+    public void insertText(String input) {
+      var filtered = new StringBuilder(input.length());
+      for (var ch : input.toCharArray()) {
+        if (Character.isDigit(ch) || ch == ',' || ch == '-') {
+          filtered.append(ch);
+        }
+      }
+      super.insertText(filtered.toString());
+    }
+  }
 }

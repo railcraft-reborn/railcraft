@@ -17,6 +17,7 @@ import mods.railcraft.attachment.RailcraftAttachmentTypes;
 import mods.railcraft.datamaps.RailcraftDataMaps;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.EntitySearcher;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.LevelUtil;
 import mods.railcraft.util.ModEntitySelector;
 import mods.railcraft.util.container.ContainerMapper;
@@ -130,11 +131,8 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
         new TunnelBorePart(this, 1.6F, 1.4F, -2.2F), // tail2
     };
     this.constructed = true;
-    this.fuelContainer.addFilters(StackFilter.isFuel(level));
+    this.fuelContainer.addFilters(StackFilter.isFuel());
     this.containers = List.of(this.fuelContainer, this.ballastContainer, this.trackContainer);
-
-    // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
-    this.setId(ENTITY_COUNTER.getAndAdd(this.parts.length + 1) + 1);
 
     this.setData(RailcraftAttachmentTypes.MAX_CART_SPEED_ON_RAIL, SPEED);
     this.setData(RailcraftAttachmentTypes.SHOULD_DO_RAIL_FUNCTIONS, false);
@@ -293,7 +291,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
         if (getDelay() == 0) {
           float offset = 1.5f;
-          var targetPos = new BlockPos(getPositionAhead(offset)).below();
+          var targetPos = getPositionAhead(offset).immutable().below();
 
           if (placeBallast) {
             boolean placed = this.placeBallast(serverLevel, targetPos);
@@ -312,7 +310,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
         if (getDelay() == 0) {
           float offset = 0.8f;
-          var targetPos = new BlockPos(getPositionAhead(offset));
+          var targetPos = getPositionAhead(offset).immutable();
           var existingState = this.level().getBlockState(targetPos);
 
           if (placeRail) {
@@ -340,7 +338,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
 
         if (getDelay() == 0) {
           float offset = 3.3f;
-          var targetPos = new BlockPos(getPositionAhead(offset));
+          var targetPos = getPositionAhead(offset).immutable();
 
           if (boreLayer) {
             boolean bored = boreLayer(targetPos, dir);
@@ -730,7 +728,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
               .withParameter(LootContextParams.ATTACKING_ENTITY, this)
               .withParameter(LootContextParams.ORIGIN, this.position()))
           .forEach(stack -> {
-            if (StackFilter.isFuel(serverLevel).test(stack)) {
+            if (StackFilter.isFuel().test(stack)) {
               stack = this.fuelContainer.insert(stack);
             }
 
@@ -918,7 +916,7 @@ public class TunnelBore extends RailcraftMinecart implements Linkable {
     for (int slot = 0; slot < this.fuelContainer.getContainerSize(); slot++) {
       var stack = this.fuelContainer.getItem(slot);
       if (!stack.isEmpty()) {
-        burn = stack.getBurnTime(null, this.level().fuelValues());
+        burn = FuelUtil.getBurnTime(this.level(), stack);
         if (burn > 0) {
           var remainingItem = stack.getItem().getCraftingRemainder(stack);
           if (remainingItem != null) {

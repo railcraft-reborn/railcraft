@@ -128,7 +128,7 @@ public abstract class MaintenanceMinecart extends RailcraftMinecart {
   protected RailShape removeOldTrack(BlockPos pos, BlockState state) {
     var drops = state.getDrops(new LootParams.Builder((ServerLevel) this.level())
         .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-        .withParameter(LootContextParams.ORIGIN, pos.getCenter()));
+        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)));
 
     var rollingStock = RollingStock.getOrThrow(this);
     for (var stack : drops) {

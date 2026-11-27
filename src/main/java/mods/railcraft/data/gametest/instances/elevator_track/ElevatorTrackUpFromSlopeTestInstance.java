@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
@@ -27,10 +27,10 @@ public class ElevatorTrackUpFromSlopeTestInstance extends GameTestInstance {
   public void run(GameTestHelper helper) {
     ElevatorTrackSlopeTestHelper.build(helper);
     helper.setBlock(new BlockPos(1, 6, ElevatorTrackSlopeTestHelper.Z), Blocks.REDSTONE_BLOCK);
-    var cart = helper.spawn(EntityType.MINECART,
+    var cart = helper.spawn(EntityTypes.MINECART,
         new Vec3(5.5, 1.1, ElevatorTrackSlopeTestHelper.Z + 0.5));
     cart.setDeltaMovement(-0.6, 0, 0);
-    helper.succeedWhenEntityPresent(EntityType.MINECART,
+    helper.succeedWhenEntityPresent(EntityTypes.MINECART,
         new BlockPos(3, 5, ElevatorTrackSlopeTestHelper.Z));
   }
 

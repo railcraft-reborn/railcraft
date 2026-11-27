@@ -1,45 +1,22 @@
 package mods.railcraft.data.recipes.providers;
 
-import java.util.concurrent.CompletableFuture;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.DecorativeBlock;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.common.Tags;
 
 public class CrusherRecipeProvider extends RecipeProvider {
 
-  private final HolderLookup.RegistryLookup<Item> items;
-
-  private CrusherRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
-    super(registries, recipeOutput);
-    this.items = registries.lookupOrThrow(Registries.ITEM);
-  }
-
-  public static class Runner extends RecipeProvider.Runner {
-
-    public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-      super(output, registries);
-    }
-
-    @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
-      return new CrusherRecipeProvider(registries, output);
-    }
-
-    @Override
-    public String getName() {
-      return "CrusherRecipeProvider";
-    }
+  public CrusherRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+    super(recipes, advancements);
   }
 
   @Override
@@ -67,10 +44,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.GOLD_NUGGET, 1, 0.001)
         .addResult(Items.DIAMOND, 1, 0.00005)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.STONES)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.STONES.item())
         .addResult(Items.COBBLESTONE, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.SANDSTONE_BLOCKS)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.SANDSTONE_BLOCKS.item())
         .addResult(Items.SAND, 4, 1)
         .save(output);
     CrusherRecipeBuilder.crush(Items.BRICKS)
@@ -137,30 +114,30 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(Items.BLAZE_POWDER, 1, 0.25)
         .addResult(Items.BLAZE_POWDER, 1, 0.25)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_REDSTONE)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_REDSTONE.item())
         .addResult(Items.REDSTONE, 6, 1)
         .addResult(Items.REDSTONE, 2, 0.85)
         .addResult(Items.REDSTONE, 1, 0.25)
         .addResult(Items.GLOWSTONE_DUST, 1, 0.1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_DIAMOND)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_DIAMOND.item())
         .addResult(Items.DIAMOND, 1, 1)
         .addResult(Items.DIAMOND, 1, 0.85)
         .addResult(Items.DIAMOND, 1, 0.25)
         .addResult(Items.COAL, 1, 0.1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_EMERALD)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_EMERALD.item())
         .addResult(Items.EMERALD, 1, 1)
         .addResult(Items.EMERALD, 1, 0.85)
         .addResult(Items.EMERALD, 1, 0.25)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_LAPIS)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_LAPIS.item())
         .addResult(Items.LAPIS_LAZULI, 8, 1)
         .addResult(Items.LAPIS_LAZULI, 1, 0.85)
         .addResult(Items.LAPIS_LAZULI, 1, 0.35)
         .addResult(RailcraftItems.SULFUR_DUST, 1, 0.2)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_COAL)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_COAL.item())
         .addResult(RailcraftItems.COAL_DUST, 2, 1)
         .addResult(RailcraftItems.COAL_DUST, 1, 0.65)
         .addResult(RailcraftItems.SULFUR_DUST, 1, 0.15)
@@ -179,7 +156,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Items.ENDER_PEARL)
         .addResult(RailcraftItems.ENDER_DUST, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_QUARTZ)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_QUARTZ.item())
         .addResult(Items.QUARTZ, 3, 1)
         .addResult(RailcraftItems.SULFUR_DUST, 1, 0.25)
         .save(output);
@@ -207,7 +184,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(Items.RAW_IRON_BLOCK)
         .addResult(Items.RAW_IRON, 9, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.STORAGE_BLOCKS_RAW_COPPER)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.STORAGE_BLOCKS_RAW_COPPER.item())
         .addResult(Items.RAW_COPPER, 9, 1)
         .save(output);
     CrusherRecipeBuilder.crush(Items.RAW_GOLD_BLOCK)
@@ -233,12 +210,12 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(RailcraftItems.OBSIDIAN_DUST, 1, 1)
         .addResult(RailcraftItems.OBSIDIAN_DUST, 1, 0.25)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.SULFUR_ORE)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.SULFUR_ORE.item())
         .addResult(RailcraftItems.SULFUR_DUST, 5, 1)
         .addResult(RailcraftItems.SULFUR_DUST, 1, 0.85)
         .addResult(RailcraftItems.SULFUR_DUST, 1, 0.35)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.SALTPETER_ORE)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.SALTPETER_ORE.item())
         .addResult(RailcraftItems.SALTPETER_DUST, 3, 1)
         .addResult(RailcraftItems.SALTPETER_DUST, 1, 0.85)
         .addResult(RailcraftItems.SALTPETER_DUST, 1, 0.35)
@@ -246,11 +223,11 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(RailcraftItems.FIRESTONE_ORE)
         .addResult(RailcraftItems.RAW_FIRESTONE, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.QUARRIED)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.QUARRIED.item())
         .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
             .variantFor(DecorativeBlock.QUARRIED).get(), 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.ABYSSAL)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.ABYSSAL.item())
         .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
             .variantFor(DecorativeBlock.ABYSSAL).get(), 1, 1)
         .save(output);
@@ -311,10 +288,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(this.items, Tags.Items.INGOTS_IRON)
         .addResult(this.items, RailcraftTags.Items.IRON_DUST, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.STORAGE_BLOCKS_RAW_IRON)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.STORAGE_BLOCKS_RAW_IRON.item())
         .addResult(this.items, RailcraftTags.Items.IRON_DUST, 12, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_IRON)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_IRON.item())
         .addResult(this.items, RailcraftTags.Items.IRON_DUST, 2, 1)
         .addResult(this.items, RailcraftTags.Items.NICKEL_DUST, 1, 0.1)
         .save(output);
@@ -325,10 +302,10 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(this.items, Tags.Items.INGOTS_GOLD)
         .addResult(this.items, RailcraftTags.Items.GOLD_DUST, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_GOLD)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_GOLD.item())
         .addResult(this.items, RailcraftTags.Items.GOLD_DUST, 2, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.STORAGE_BLOCKS_RAW_GOLD)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.STORAGE_BLOCKS_RAW_GOLD.item())
         .addResult(this.items, RailcraftTags.Items.GOLD_DUST, 12, 1)
         .save(output);
     CrusherRecipeBuilder.crush(this.items, Tags.Items.INGOTS_COPPER)
@@ -338,7 +315,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(this.items, RailcraftTags.Items.COPPER_DUST, 1, 1)
         .addResult(this.items, RailcraftTags.Items.COPPER_DUST, 1, 0.35)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, Tags.Items.ORES_COPPER)
+    CrusherRecipeBuilder.crush(this.items, Tags.BlockItems.ORES_COPPER.item())
         .addResult(this.items, RailcraftTags.Items.COPPER_DUST, 2, 1)
         .addResult(this.items, RailcraftTags.Items.GOLD_DUST, 1, 0.1)
         .save(output);
@@ -351,7 +328,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.RAW_LEAD_BLOCK)
         .addResult(this.items, RailcraftTags.Items.LEAD_DUST, 12, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.LEAD_ORE)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.LEAD_ORE.item())
         .addResult(this.items, RailcraftTags.Items.LEAD_DUST, 2, 1)
         .addResult(this.items, RailcraftTags.Items.SILVER_DUST, 1, 0.1)
         .save(output);
@@ -368,7 +345,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.SILVER_INGOT)
         .addResult(this.items, RailcraftTags.Items.SILVER_DUST, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.SILVER_ORE)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.SILVER_ORE.item())
         .addResult(this.items, RailcraftTags.Items.SILVER_DUST, 2, 1)
         .addResult(this.items, RailcraftTags.Items.LEAD_DUST, 1, 0.1)
         .save(output);
@@ -389,7 +366,7 @@ public class CrusherRecipeProvider extends RecipeProvider {
         .addResult(this.items, RailcraftTags.Items.NICKEL_DUST, 1, 1)
         .addResult(this.items, RailcraftTags.Items.NICKEL_DUST, 1, 0.35)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.Items.NICKEL_ORE)
+    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.NICKEL_ORE.item())
         .addResult(this.items, RailcraftTags.Items.NICKEL_DUST, 2, 1)
         .save(output);
   }

@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -32,24 +33,17 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.FuelValues;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class RefinedFirestoneItem extends FirestoneItem {
 
   public static final int CHARGES = 5000;
 
-  protected final int heat;
   protected final RandomSource random;
 
-  protected RefinedFirestoneItem(int heat, boolean spawnsFire, Properties properties) {
-    super(spawnsFire, properties);
-    this.heat = heat;
-    this.random = RandomSource.create();
-  }
-
   public RefinedFirestoneItem(boolean spawnsFire, Properties properties) {
-    this(250, spawnsFire, properties);
+    super(spawnsFire, properties);
+    this.random = RandomSource.create();
   }
 
   public static ItemStack getItemCharged() {
@@ -91,12 +85,6 @@ public class RefinedFirestoneItem extends FirestoneItem {
     }
     var remainder = res.get();
     return remainder.isEmpty() ? null : ItemStackTemplate.fromNonEmptyStack(remainder);
-  }
-
-  @Override
-  public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType,
-      FuelValues fuelValues) {
-    return itemStack.getDamageValue() < itemStack.getMaxDamage() ? this.heat : 0;
   }
 
   @Override
@@ -178,7 +166,7 @@ public class RefinedFirestoneItem extends FirestoneItem {
           item -> player.onEquippedItemBroken(item, hand.asEquipmentSlot()));
       level.playSound(null, livingEntity.blockPosition(), SoundEvents.FIRECHARGE_USE,
           SoundSource.AMBIENT, 1, player.getRandom().nextFloat() * 0.4F + 0.8F);
-      player.swing(hand);
+      player.swing(hand, SwingAnimation.DEFAULT, true);
       level.setBlockAndUpdate(livingEntity.blockPosition(), Blocks.FIRE.defaultBlockState());
     }
     return InteractionResult.SUCCESS;

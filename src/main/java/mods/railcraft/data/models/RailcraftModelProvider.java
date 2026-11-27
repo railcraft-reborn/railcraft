@@ -10,7 +10,6 @@ import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_90;
 import static net.minecraft.client.data.models.BlockModelGenerators.condition;
 import static net.minecraft.client.data.models.BlockModelGenerators.plainModel;
 import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
-
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -797,7 +796,7 @@ public class RailcraftModelProvider extends ModelProvider {
     var bottomTexture = TextureMapping.getBlockTexture(block, "_bottom");
     var topTexture = TextureMapping.getBlockTexture(block, "_top");
 
-    var model = TexturedModel.CUBE_TOP_BOTTOM
+    var model = TexturedModel.CUBE_BOTTOM_TOP
         .updateTexture(tm -> tm
             .put(TextureSlot.SIDE, sideTexture)
             .put(TextureSlot.BOTTOM, bottomTexture)

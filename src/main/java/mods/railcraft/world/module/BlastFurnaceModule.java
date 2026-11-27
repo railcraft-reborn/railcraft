@@ -2,6 +2,7 @@ package mods.railcraft.world.module;
 
 import mods.railcraft.api.container.manipulator.ContainerManipulator;
 import mods.railcraft.api.core.CompoundTagKeys;
+import mods.railcraft.util.FuelUtil;
 import mods.railcraft.util.container.ContainerMapper;
 import mods.railcraft.util.container.SlotFilteredResourceHandler;
 import mods.railcraft.world.item.RailcraftItems;
@@ -107,7 +108,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   private int getItemBurnTime(ItemStack itemStack) {
-    return itemStack.getBurnTime(null, this.provider.level().fuelValues());
+    return FuelUtil.getBurnTime(this.provider.level(), itemStack);
   }
 
   private void loadFuel() {
@@ -163,7 +164,7 @@ public class BlastFurnaceModule extends CookingModule<BlastFurnaceRecipe, BlastF
   }
 
   public boolean isFuel(ItemStack itemStack) {
-    return this.getItemBurnTime(itemStack) > 0;
+    return FuelUtil.isFuel(itemStack);
   }
 
   public ResourceHandler<ItemResource> getItemHandler() {

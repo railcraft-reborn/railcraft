@@ -1,6 +1,5 @@
 package mods.railcraft.client;
 
-import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import mods.railcraft.Translations;
 import net.minecraft.client.KeyMapping;
@@ -8,19 +7,19 @@ import net.neoforged.neoforge.client.settings.KeyConflictContext;
 
 public enum KeyBinding {
 
-  CHANGE_AURA(Translations.KeyBinding.CHANGE_AURA, GLFW.GLFW_KEY_G),
-  REVERSE(Translations.KeyBinding.REVERSE, GLFW.GLFW_KEY_N),
-  FASTER(Translations.KeyBinding.FASTER, GLFW.GLFW_KEY_PERIOD),
-  SLOWER(Translations.KeyBinding.SLOWER, GLFW.GLFW_KEY_COMMA),
-  MODE_CHANGE(Translations.KeyBinding.MODE, GLFW.GLFW_KEY_M),
-  WHISTLE(Translations.KeyBinding.WHISTLE, GLFW.GLFW_KEY_B),
-  SLEEP(Translations.KeyBinding.SLEEP, GLFW.GLFW_KEY_DOWN);
+  CHANGE_AURA(Translations.KeyBinding.CHANGE_AURA, InputConstants.KEY_G),
+  REVERSE(Translations.KeyBinding.REVERSE, InputConstants.KEY_N),
+  FASTER(Translations.KeyBinding.FASTER, InputConstants.KEY_PERIOD),
+  SLOWER(Translations.KeyBinding.SLOWER, InputConstants.KEY_COMMA),
+  MODE_CHANGE(Translations.KeyBinding.MODE, InputConstants.KEY_M),
+  WHISTLE(Translations.KeyBinding.WHISTLE, InputConstants.KEY_B),
+  SLEEP(Translations.KeyBinding.SLEEP, InputConstants.KEY_DOWN);
 
   private final KeyMapping keyMapping;
 
   KeyBinding(String name, int keycode) {
     this.keyMapping = new KeyMapping(name, KeyConflictContext.IN_GAME,
-          InputConstants.Type.KEYSYM, keycode, RailcraftKeyMappingCategory.DEFAULT);
+          InputConstants.Type.KEYBOARD, keycode, RailcraftKeyMappingCategory.DEFAULT);
   }
 
   public KeyMapping getKeyMapping() {

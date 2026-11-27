@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 /**
  * The bounds a tank checks for entities cover its interior only. They used to be centred on the
@@ -33,7 +33,7 @@ public class TankEntityOutsideTestInstance extends TankTestInstance {
 
   @Override
   public void run(GameTestHelper helper) {
-    helper.spawn(EntityType.ARMOR_STAND, NORTH_WEST_CORNER);
+    helper.spawn(EntityTypes.ARMOR_STAND, NORTH_WEST_CORNER);
     buildTank(helper, SIZE);
     helper.startSequence()
         .thenIdle(5)

@@ -16,7 +16,7 @@ public class BedMinecartDisassemblyRecipe extends CartDisassemblyRecipe {
   public static final RecipeSerializer<BedMinecartDisassemblyRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
   public BedMinecartDisassemblyRecipe() {
-    super(RailcraftItems.BED_MINECART.get(), Items.WHITE_BED);
+    super(RailcraftItems.BED_MINECART.get(), Items.BED.white());
   }
 
   @Override

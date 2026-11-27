@@ -33,56 +33,56 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ScreenFactories {
 
   public static void openSignalControllerBoxScreen(SignalControllerBoxBlockEntity signalBox) {
-    Minecraft.getInstance().setScreen(new SignalControllerBoxScreen(signalBox));
+    Minecraft.getInstance().gui.setScreen(new SignalControllerBoxScreen(signalBox));
   }
 
   public static void openAnalogSignalControllerBoxScreen(
       AnalogSignalControllerBoxBlockEntity signalBox) {
-    Minecraft.getInstance().setScreen(new AnalogSignalControllerBoxScreen(signalBox));
+    Minecraft.getInstance().gui.setScreen(new AnalogSignalControllerBoxScreen(signalBox));
   }
 
   public static void openSignalCapacitorBoxScreen(SignalCapacitorBoxBlockEntity signalBox) {
-    Minecraft.getInstance().setScreen(new SignalCapacitorBoxScreen(signalBox));
+    Minecraft.getInstance().gui.setScreen(new SignalCapacitorBoxScreen(signalBox));
   }
 
   public static void openActionSignalBoxScreen(ActionSignalBoxBlockEntity signalBox) {
-    Minecraft.getInstance().setScreen(new ActionSignalBoxScreen(signalBox));
+    Minecraft.getInstance().gui.setScreen(new ActionSignalBoxScreen(signalBox));
   }
 
   public static void openSwitchTrackMotorScreen(SwitchTrackMotorBlockEntity switchTrackMotor) {
-    Minecraft.getInstance().setScreen(new SwitchTrackMotorScreen(switchTrackMotor));
+    Minecraft.getInstance().gui.setScreen(new SwitchTrackMotorScreen(switchTrackMotor));
   }
 
   public static void openEmbarkingTrackScreen(BlockState blockState, BlockPos blockPos) {
-    Minecraft.getInstance().setScreen(new EmbarkingTrackScreen(blockState, blockPos));
+    Minecraft.getInstance().gui.setScreen(new EmbarkingTrackScreen(blockState, blockPos));
   }
 
   public static void openLauncherTrackScreen(LauncherTrackBlockEntity track) {
-    Minecraft.getInstance().setScreen(new LauncherTrackScreen(track));
+    Minecraft.getInstance().gui.setScreen(new LauncherTrackScreen(track));
   }
 
   public static void openDelayedLockingTrackScreen(DelayedLockingTrackBlockEntity track) {
-    Minecraft.getInstance().setScreen(new DelayedLockingTrackScreen(track));
+    Minecraft.getInstance().gui.setScreen(new DelayedLockingTrackScreen(track));
   }
 
   public static void openMessengerTrackScreen(MessengerTrackBlockEntity track) {
-    Minecraft.getInstance().setScreen(new MessengerTrackScreen(track));
+    Minecraft.getInstance().gui.setScreen(new MessengerTrackScreen(track));
   }
 
   public static void openGoldenTicketScreen(ItemStack itemStack, InteractionHand hand) {
-    Minecraft.getInstance().setScreen(new GoldenTicketScreen(itemStack, hand));
+    Minecraft.getInstance().gui.setScreen(new GoldenTicketScreen(itemStack, hand));
   }
 
   public static void openRoutingTableBookScreen(Player player, ItemStack itemStack,
       InteractionHand hand) {
-    Minecraft.getInstance().setScreen(new RoutingTableBookScreen(player, itemStack, hand));
+    Minecraft.getInstance().gui.setScreen(new RoutingTableBookScreen(player, itemStack, hand));
   }
 
   public static void openLogBookScreen(List<List<String>> pages) {
-    Minecraft.getInstance().setScreen(new LogBookScreen(pages));
+    Minecraft.getInstance().gui.setScreen(new LogBookScreen(pages));
   }
 
   public static void openTrainDetectorScreen(TrainDetectorBlockEntity trainDetector) {
-    Minecraft.getInstance().setScreen(new TrainDetectorScreen(trainDetector));
+    Minecraft.getInstance().gui.setScreen(new TrainDetectorScreen(trainDetector));
   }
 }

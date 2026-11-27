@@ -14,7 +14,7 @@ import net.neoforged.neoforge.common.Tags;
 public interface RailcraftArmorMaterials {
 
   ArmorMaterial OVERALLS = new ArmorMaterial(5, makeDefense(1, 2, 3, 1, 3), 8,
-      SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0, Tags.Items.DYED_BLUE,
+      SoundEvents.ARMOR_EQUIP_LEATHER, 0, 0, Tags.BlockItems.DYED_BLUE.item(),
       ResourceKey.create(EquipmentAssets.ROOT_ID, RailcraftConstants.id("overalls")));
 
   ArmorMaterial GOGGLES = new ArmorMaterial(5, makeDefense(1, 2, 3, 1, 3), 8,

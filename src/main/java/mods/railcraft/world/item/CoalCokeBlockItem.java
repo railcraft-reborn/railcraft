@@ -2,6 +2,7 @@ package mods.railcraft.world.item;
 
 import java.util.function.Consumer;
 import mods.railcraft.Translations;
+import mods.railcraft.loot.RailcraftContextIntProviders;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -19,11 +20,9 @@ public class CoalCokeBlockItem extends BlockItem {
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context,
       TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-    if (context.level() == null) {
-      return;
-    }
-    var burnTime = stack.getBurnTime(null, context.level().fuelValues());
-    tooltipAdder.accept(Component.translatable(Translations.Tips.COAL_COKE_BLOCK, burnTime)
+    // Burn times are resolved on the server only, so the tooltip shows the base value
+    tooltipAdder.accept(Component.translatable(Translations.Tips.COAL_COKE_BLOCK,
+            RailcraftContextIntProviders.COAL_COKE_BLOCK_BURN_TIME)
         .withStyle(ChatFormatting.GRAY));
   }
 }

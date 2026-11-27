@@ -48,20 +48,20 @@ public class RoutingTableBookTitleScreen extends Screen {
   protected void init() {
     this.backButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_BACK, button -> {
-          this.minecraft.setScreen(this.routingTableBookScreen);
+          this.minecraft.gui.setScreen(this.routingTableBookScreen);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
     this.helpButton = this.addRenderableWidget(RailcraftButton
         .builder(Translations.Screen.HELP, button -> {
-          this.minecraft.setScreen(this.helpScreen);
+          this.minecraft.gui.setScreen(this.helpScreen);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
     var doneButton = this.addRenderableWidget(RailcraftButton
         .builder(CommonComponents.GUI_DONE, button -> {
           this.saveChanges();
-          this.minecraft.setScreen(null);
+          this.minecraft.gui.setScreen(null);
         }, ButtonTexture.LARGE_BUTTON)
         .size(64, 20)
         .build());
@@ -106,7 +106,7 @@ public class RoutingTableBookTitleScreen extends Screen {
   public boolean keyPressed(KeyEvent event) {
     if (this.titleBox.isFocused() && !this.titleBox.getValue().isEmpty() && (event.key() == 257 || event.key() == 335)) {
       this.saveChanges();
-      this.minecraft.setScreen(null);
+      this.minecraft.gui.setScreen(null);
       return true;
     } else {
       return super.keyPressed(event);

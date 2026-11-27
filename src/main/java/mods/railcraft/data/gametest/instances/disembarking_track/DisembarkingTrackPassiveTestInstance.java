@@ -9,7 +9,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class DisembarkingTrackPassiveTestInstance extends GameTestInstance {
 
@@ -22,11 +22,11 @@ public class DisembarkingTrackPassiveTestInstance extends GameTestInstance {
 
   @Override
   public void run(GameTestHelper helper) {
-    helper.spawnWithNoFreeWill(EntityType.VILLAGER, 1, 1, 3);
+    helper.spawnWithNoFreeWill(EntityTypes.VILLAGER, 1, 1, 3);
     helper.pressButton(0, 2, 3);
     helper.succeedWhen(() -> {
-      helper.assertEntityPresent(EntityType.MINECART, 5, 1, 3);
-      helper.assertEntityPresent(EntityType.VILLAGER, 5, 1, 3);
+      helper.assertEntityPresent(EntityTypes.MINECART, 5, 1, 3);
+      helper.assertEntityPresent(EntityTypes.VILLAGER, 5, 1, 3);
     });
   }
 

@@ -15,7 +15,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class BlockSignalRelayBoxTestInstance extends GameTestInstance {
 
@@ -38,7 +38,7 @@ public class BlockSignalRelayBoxTestInstance extends GameTestInstance {
   @Override
   public void run(GameTestHelper helper) {
     if (this.spawnCart) {
-      helper.spawn(EntityType.MINECART, new BlockPos(4, 1, 2));
+      helper.spawn(EntityTypes.MINECART, new BlockPos(4, 1, 2));
     }
     helper.succeedWhen(() -> {
       var left = helper.getBlockEntity(BLOCK_SIGNAL_LEFT, BlockSignalBlockEntity.class);

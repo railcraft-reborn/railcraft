@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.loot.RailcraftContextIntProviders;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.BedMinecart;
@@ -80,16 +81,13 @@ import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.charge.BatterySpecs;
 import mods.railcraft.world.level.block.track.TrackTypes;
 import mods.railcraft.world.level.material.RailcraftFluids;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
@@ -331,7 +329,8 @@ public class RailcraftItems {
       blockItem(RailcraftBlocks.SALTPETER_ORE);
 
   public static final DeferredItem<CoalCokeBlockItem> COAL_COKE_BLOCK =
-      blockItem(RailcraftBlocks.COAL_COKE_BLOCK, CoalCokeBlockItem::new);
+      blockItem(RailcraftBlocks.COAL_COKE_BLOCK, (block, properties) -> new CoalCokeBlockItem(
+          block, properties.cookingFuel(RailcraftContextIntProviders.COOKING_TIME_COAL_COKE_BLOCK)));
 
   public static final DeferredItem<ShearsItem> STEEL_SHEARS =
       deferredRegister.registerItem("steel_shears", properties ->
@@ -341,21 +340,21 @@ public class RailcraftItems {
       deferredRegister.registerItem("steel_sword", properties ->
           new Item(properties.sword(RailcraftToolMaterial.STEEL, 3, -2.4F)));
 
-  public static final DeferredItem<ShovelItem> STEEL_SHOVEL =
+  public static final DeferredItem<Item> STEEL_SHOVEL =
       deferredRegister.registerItem("steel_shovel", properties ->
-          new ShovelItem(RailcraftToolMaterial.STEEL, 1.5F, -3F, properties));
+          new Item(properties.shovel(RailcraftToolMaterial.STEEL, 1.5F, -3F)));
 
   public static final DeferredItem<Item> STEEL_PICKAXE =
       deferredRegister.registerItem("steel_pickaxe", properties ->
           new Item(properties.pickaxe(RailcraftToolMaterial.STEEL, 1, -2.8F)));
 
-  public static final DeferredItem<AxeItem> STEEL_AXE =
+  public static final DeferredItem<Item> STEEL_AXE =
       deferredRegister.registerItem("steel_axe", properties ->
-          new AxeItem(RailcraftToolMaterial.STEEL, 5.5F, -3F, properties));
+          new Item(properties.axe(RailcraftToolMaterial.STEEL, 5.5F, -3F)));
 
-  public static final DeferredItem<HoeItem> STEEL_HOE =
+  public static final DeferredItem<Item> STEEL_HOE =
       deferredRegister.registerItem("steel_hoe", properties ->
-          new HoeItem(RailcraftToolMaterial.STEEL, -2, -0.5F, properties));
+          new Item(properties.hoe(RailcraftToolMaterial.STEEL, -2, -0.5F)));
 
   public static final DeferredItem<Item> STEEL_BOOTS =
       deferredRegister.registerItem("steel_boots", properties ->
@@ -650,14 +649,16 @@ public class RailcraftItems {
           new RefinedFirestoneItem(false, properties
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
-              .rarity(Rarity.RARE)));
+              .rarity(Rarity.RARE)
+              .cookingFuel(RailcraftContextIntProviders.COOKING_TIME_REFINED_FIRESTONE)));
 
   public static final DeferredItem<CrackedFirestoneItem> CRACKED_FIRESTONE =
       deferredRegister.registerItem("cracked_firestone", properties ->
           new CrackedFirestoneItem(properties
               .stacksTo(1)
               .durability(RefinedFirestoneItem.CHARGES)
-              .rarity(Rarity.RARE)));
+              .rarity(Rarity.RARE)
+              .cookingFuel(RailcraftContextIntProviders.COOKING_TIME_CRACKED_FIRESTONE)));
 
   public static final DeferredItem<FirestoneItem> CUT_FIRESTONE =
       deferredRegister.registerItem("cut_firestone", properties ->
@@ -1407,7 +1408,9 @@ public class RailcraftItems {
   public static final DeferredItem<CrushedObsidianBlockItem> CRUSHED_OBSIDIAN =
       blockItem(RailcraftBlocks.CRUSHED_OBSIDIAN, CrushedObsidianBlockItem::new);
 
-  public static final DeferredItem<Item> COAL_COKE = registerBasic("coal_coke");
+  public static final DeferredItem<Item> COAL_COKE = deferredRegister.registerSimpleItem(
+      "coal_coke",
+      properties -> properties.cookingFuel(RailcraftContextIntProviders.COOKING_TIME_COAL_COKE));
   public static final DeferredItem<Item> STEEL_PLATE = registerBasic("steel_plate");
   public static final DeferredItem<Item> IRON_PLATE = registerBasic("iron_plate");
   public static final DeferredItem<Item> TIN_PLATE = registerBasic("tin_plate");
@@ -1604,7 +1607,8 @@ public class RailcraftItems {
       deferredRegister.registerItem("creosote_bucket", properties ->
           new BucketItem(RailcraftFluids.CREOSOTE.get(), properties
               .stacksTo(1)
-              .craftRemainder(Items.BUCKET)));
+              .craftRemainder(Items.BUCKET)
+              .cookingFuel(RailcraftContextIntProviders.COOKING_TIME_CREOSOTE_BUCKET)));
 
   public static final DeferredItem<BlockItem> WORLD_SPIKE =
       blockItem(RailcraftBlocks.WORLD_SPIKE);

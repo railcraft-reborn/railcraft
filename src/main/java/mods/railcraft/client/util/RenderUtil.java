@@ -4,6 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
@@ -18,6 +21,13 @@ public class RenderUtil {
   public static final float SCALED_PIXEL = PIXEL / 16.0F;
 
   private static final Minecraft minecraft = Minecraft.getInstance();
+
+  /**
+   * Cutout entity render type on the block atlas, used to draw fluid sprites as custom geometry.
+   */
+  public static RenderType cutoutBlockSheet() {
+    return RenderTypes.entityCutout(TextureAtlas.LOCATION_BLOCKS);
+  }
 
   public static int replaceAlpha(int color, int alpha) {
     return (color & 0x00FFFFFF) | (alpha << 24);
@@ -73,7 +83,7 @@ public class RenderUtil {
   public static void renderWorldText(SubmitNodeCollector collector, Font font, Component text,
       PoseStack poseStack, int packedLight) {
     poseStack.pushPose();
-    poseStack.mulPose(minecraft.gameRenderer.getMainCamera().rotation());
+    poseStack.rotate(minecraft.gameRenderer.mainCamera().rotation());
     poseStack.scale(0.025F, -0.025F, 0.025F);
     float backgroundOpacity = minecraft.options.getBackgroundOpacity(0.25F);
     int packedOverlay = (int) (backgroundOpacity * 255.0F) << 24;

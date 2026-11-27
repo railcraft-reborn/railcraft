@@ -9,7 +9,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class TurnoutTrackActiveReverseTestInstance extends GameTestInstance {
 
@@ -23,7 +23,7 @@ public class TurnoutTrackActiveReverseTestInstance extends GameTestInstance {
   @Override
   public void run(GameTestHelper helper) {
     helper.pressButton(6, 2, 2);
-    helper.succeedWhenEntityPresent(EntityType.MINECART, 2, 1, 2);
+    helper.succeedWhenEntityPresent(EntityTypes.MINECART, 2, 1, 2);
   }
 
   @Override

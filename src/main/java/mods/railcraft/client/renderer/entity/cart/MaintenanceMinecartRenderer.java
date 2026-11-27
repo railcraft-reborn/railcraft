@@ -61,8 +61,7 @@ public abstract class MaintenanceMinecartRenderer
         OverlayTexture.NO_OVERLAY,
         color,
         null,
-        0,
-        null
+        0
     );
 
     poseStack.pushPose();
@@ -87,8 +86,7 @@ public abstract class MaintenanceMinecartRenderer
         OverlayTexture.NO_OVERLAY,
         color,
         null,
-        0,
-        null
+        0
     );
     poseStack.popPose();
   }

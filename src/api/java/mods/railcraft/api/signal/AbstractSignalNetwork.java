@@ -19,6 +19,7 @@ import mods.railcraft.api.core.CompoundTagKeys;
 import mods.railcraft.api.core.NetworkSerializable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -146,14 +147,14 @@ public abstract class AbstractSignalNetwork<T extends BlockEntityLike>
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf data) {
     data.writeBoolean(this.linking);
-    data.writeCollection(this.peers, RegistryFriendlyByteBuf::writeBlockPos);
+    BlockPos.STREAM_CODEC.apply(ByteBufCodecs.list()).encode(data, new ArrayList<>(this.peers));
   }
 
   @Override
   public void readFromBuf(RegistryFriendlyByteBuf data) {
     this.linking = data.readBoolean();
     this.peers.clear();
-    this.peers.addAll(data.readList(RegistryFriendlyByteBuf::readBlockPos));
+    this.peers.addAll(BlockPos.STREAM_CODEC.apply(ByteBufCodecs.list()).decode(data));
   }
 
   public void syncToClient() {

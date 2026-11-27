@@ -23,7 +23,7 @@ class SimpleLineRenderer implements LineRenderer {
       return;
     }
     normal.normalize();
-    float width = Minecraft.getInstance().gameRenderer.getGameRenderState()
+    float width = Minecraft.getInstance().gameRenderer.gameRenderState()
         .windowRenderState.appropriateLineWidth;
 
     this.vertexConsumer

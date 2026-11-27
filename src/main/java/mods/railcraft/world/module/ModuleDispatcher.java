@@ -45,7 +45,7 @@ public class ModuleDispatcher implements NetworkSerializable, ValueIOSerializabl
   @Override
   public void writeToBuf(RegistryFriendlyByteBuf out) {
     out.writeMap(this.moduleByName,
-        FriendlyByteBuf::writeUtf, (buf, module) -> module.writeToBuf((RegistryFriendlyByteBuf)buf));
+        FriendlyByteBuf::writeUtf, (buf, _, module) -> module.writeToBuf((RegistryFriendlyByteBuf)buf));
   }
 
   @Override

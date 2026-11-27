@@ -10,7 +10,7 @@ import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 public class CartDispenserPickUpTestInstance extends GameTestInstance {
 
@@ -23,9 +23,9 @@ public class CartDispenserPickUpTestInstance extends GameTestInstance {
 
   @Override
   public void run(GameTestHelper helper) {
-    helper.spawn(EntityType.MINECART, new BlockPos(1, 1, 0));
+    helper.spawn(EntityTypes.MINECART, new BlockPos(1, 1, 0));
     helper.pressButton(0, 1, 1);
-    helper.succeedWhenEntityNotPresent(EntityType.MINECART, 1, 1, 0);
+    helper.succeedWhenEntityNotPresent(EntityTypes.MINECART, 1, 1, 0);
   }
 
   @Override

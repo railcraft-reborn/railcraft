@@ -4,6 +4,7 @@ import mods.railcraft.gui.widget.AnalogGaugeWidget;
 import mods.railcraft.gui.widget.ChargeNetworkLevelIndicator;
 import mods.railcraft.world.level.block.entity.PoweredRollingMachineBlockEntity;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,9 +29,9 @@ public class PoweredRollingMachineMenu extends ManualRollingMachineMenu {
       var itemstack = this.getCarried();
       if (!itemstack.isEmpty()) {
         if (player.isAlive() && !serverPlayer.hasDisconnected()) {
-          player.getInventory().placeItemBackInInventory(itemstack);
+          player.getInventory().placeItemBackInInventory(itemstack, Prediction.SERVER_ONLY);
         } else {
-          player.drop(itemstack, false);
+          player.drop(itemstack, false, Prediction.SERVER_ONLY);
         }
         this.setCarried(ItemStack.EMPTY);
       }

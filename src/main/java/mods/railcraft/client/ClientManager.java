@@ -98,6 +98,9 @@ import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.gizmos.Gizmos;
+import net.minecraft.gizmos.SimpleGizmoCollector;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -110,12 +113,10 @@ import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.VersionChecker;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.loading.moddiscovery.ModFileInfo;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -138,6 +139,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.fluid.FluidTintSources;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.VersionChecker;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -312,7 +314,7 @@ public class ClientManager {
       }
 
       @Override
-      public boolean addHitEffects(BlockState state, Level level, @Nullable HitResult result,
+      public boolean addHitEffects(BlockState state, Level level, BlockPos pos, Direction face,
           ParticleEngine particleEngine) {
         return true;
       }
@@ -384,8 +386,11 @@ public class ClientManager {
 
   @SubscribeEvent
   static void handleRenderWorldLast(RenderLevelStageEvent.AfterOpaqueFeatures event) {
-    shuntingAuraRenderer.render(event.getPoseStack(), event.getLevelRenderState().cameraRenderState,
-        Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
+    var gizmos = new SimpleGizmoCollector();
+    try (var ignored = Gizmos.withCollector(gizmos)) {
+      shuntingAuraRenderer.render(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
+    }
+    Minecraft.getInstance().levelRenderer.addMainThreadGizmos(gizmos.drainGizmos());
   }
 
   @SubscribeEvent
@@ -476,7 +481,7 @@ public class ClientManager {
       var poseStack = event.getPoseStack();
       poseStack.pushPose();
       var yaw = Mth.rotLerp(event.getPartialTick(), cart.yRotO, cart.getYRot());
-      poseStack.mulPose(Axis.YP.rotationDegrees(180 - yaw));
+      poseStack.rotateDegrees(Axis.YP, 180 - yaw);
       var height = cart.getFirstPassenger().getDimensions(Pose.STANDING).height();
       poseStack.translate(height / 2, 0.625F, 0);
     }
@@ -517,7 +522,7 @@ public class ClientManager {
     if (player == null) {
       return;
     }
-    if (Minecraft.getInstance().screen instanceof ChatScreen) {
+    if (Minecraft.getInstance().gui.screen() instanceof ChatScreen) {
       return;
     }
 

@@ -10,7 +10,6 @@ import mods.railcraft.client.util.FluidRenderer;
 import mods.railcraft.client.util.RenderUtil;
 import mods.railcraft.world.level.block.entity.manipulator.FluidManipulatorBlockEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -48,7 +47,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
     interiorModel.setPackedLight(state.lightCoords);
     interiorModel.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-    collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+    collector.submitCustomGeometry(poseStack, RenderUtil.cutoutBlockSheet(), (pose, vertexConsumer) -> {
       CuboidModelRenderer.render(interiorModel, pose, vertexConsumer,
           0xFFFFFFFF, CuboidModelRenderer.FaceDisplay.FRONT, true);
     });
@@ -69,7 +68,7 @@ public abstract class FluidManipulatorRenderer<T extends FluidManipulatorBlockEn
       model.setPackedLight(RenderUtil.calculateGlowLight(state.lightCoords, fluidStack));
       model.setPackedOverlay(OverlayTexture.NO_OVERLAY);
 
-      collector.submitCustomGeometry(poseStack, Sheets.cutoutBlockSheet(), (pose, vertexConsumer) -> {
+      collector.submitCustomGeometry(poseStack, RenderUtil.cutoutBlockSheet(), (pose, vertexConsumer) -> {
         CuboidModelRenderer.render(model, pose, vertexConsumer,
             RenderUtil.getColorARGB(fluidStack, 1),
             CuboidModelRenderer.FaceDisplay.FRONT, true);

@@ -26,6 +26,10 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
     extends EntityRenderer<T, S> {
 
   private static final Logger LOGGER = LogUtils.getLogger();
+  /**
+   * Same distance vanilla uses to hide name tags.
+   */
+  private static final double NAME_TAG_DISTANCE = 64.0;
 
   public CustomMinecartRenderer(EntityRendererProvider.Context context) {
     super(context);
@@ -51,7 +55,8 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
 
     float roll = renderState.hurtTime;
     if (roll > 0) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float)renderState.hurtDir));
+      poseStack.rotateDegrees(Axis.XP,
+          Mth.sin(roll) * roll * renderState.damageTime / 10.0F * (float) renderState.hurtDir);
     }
 
     boolean ghostTrain = Seasons.isGhostTrain(renderState);
@@ -109,14 +114,15 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
       var customName = renderState.nameTag.getString();
       if (!Seasons.GHOST_TRAIN.equals(customName) && !Seasons.POLAR_EXPRESS.equals(customName)) {
         collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, renderState.nameTag,
-            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
+            false, renderState.lightCoords, cameraState);
         renderName = true;
       }
     }
 
     if (renderState instanceof LocomotiveRenderState locomotiveRenderState) {
       String dest = locomotiveRenderState.destination;
-      if (!StringUtils.isBlank(dest)) {
+      if (!StringUtils.isBlank(dest)
+          && renderState.distanceToCameraSq < Mth.square(NAME_TAG_DISTANCE)) {
         poseStack.pushPose();
         if (renderName) {
           poseStack.translate(0, 0.3F, 0);
@@ -124,13 +130,13 @@ public abstract class CustomMinecartRenderer<T extends AbstractMinecart, S exten
         var destination = Component.literal(dest)
             .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
         collector.submitNameTag(poseStack, renderState.nameTagAttachment, 0, destination,
-            false, renderState.lightCoords, renderState.distanceToCameraSq, cameraState);
+            false, renderState.lightCoords, cameraState);
         poseStack.popPose();
       }
     }
 
-    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
-    poseStack.mulPose(Axis.ZP.rotationDegrees(-pitch));
+    poseStack.rotateDegrees(Axis.YP, 180.0F - yaw);
+    poseStack.rotateDegrees(Axis.ZP, -pitch);
   }
 
   public void extractRenderState(T entity, S reusedState, float partialTick) {
