@@ -108,18 +108,18 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.dropSelf(RailcraftBlocks.FIRESTONE_ORE.get());
 
     for (var type : DecorativeBlock.values()) {
-      this.dropSelf(RailcraftBlocks.DECORATIVE_STONE.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.DECORATIVE_BRICKS.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.DECORATIVE_PAVER.variantFor(type).get());
-      this.dropSelf(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.variantFor(type).get());
-      this.add(RailcraftBlocks.DECORATIVE_BRICK_SLAB.variantFor(type).get(),
+      this.dropSelf(RailcraftBlocks.DECORATIVE_STONE.pick(type).get());
+      this.dropSelf(RailcraftBlocks.DECORATIVE_COBBLESTONE.pick(type).get());
+      this.dropSelf(RailcraftBlocks.POLISHED_DECORATIVE_STONE.pick(type).get());
+      this.dropSelf(RailcraftBlocks.CHISELED_DECORATIVE_STONE.pick(type).get());
+      this.dropSelf(RailcraftBlocks.ETCHED_DECORATIVE_STONE.pick(type).get());
+      this.dropSelf(RailcraftBlocks.DECORATIVE_BRICKS.pick(type).get());
+      this.dropSelf(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.pick(type).get());
+      this.dropSelf(RailcraftBlocks.DECORATIVE_PAVER.pick(type).get());
+      this.dropSelf(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.pick(type).get());
+      this.add(RailcraftBlocks.DECORATIVE_BRICK_SLAB.pick(type).get(),
           this::createSlabItemTable);
-      this.add(RailcraftBlocks.DECORATIVE_PAVER_SLAB.variantFor(type).get(),
+      this.add(RailcraftBlocks.DECORATIVE_PAVER_SLAB.pick(type).get(),
           this::createSlabItemTable);
     }
 

@@ -1889,69 +1889,69 @@ public class RailcraftRecipeProvider extends RecipeProvider {
 
   private void buildDecorativeStone() {
     for (var type : DecorativeBlock.values()) {
-      square2x2(RailcraftItems.DECORATIVE_STONE.variantFor(type).get(),
-          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type), 4),
+      square2x2(RailcraftItems.DECORATIVE_STONE.pick(type).get(),
+          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type), 4),
           "_from_%s_stone".formatted(type.getSerializedName()));
-      square2x2(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get(),
-          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type), 4),
+      square2x2(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get(),
+          new ItemStackTemplate(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type), 4),
           "_from_%s_cobblestone".formatted(type.getSerializedName()));
       SingleItemRecipeBuilder.stonecutting(
-              Ingredient.of(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()),
+              Ingredient.of(RailcraftItems.DECORATIVE_STONE.pick(type).get()),
               RecipeCategory.MISC,
-              RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 1)
-          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()),
-              has(RailcraftItems.DECORATIVE_STONE.variantFor(type).get()))
+              RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get(), 1)
+          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_STONE.pick(type).get()),
+              has(RailcraftItems.DECORATIVE_STONE.pick(type).get()))
           .save(output,
               RailcraftConstants.id("polished_%s_stone_from_%s_stone_in_stonecutter"
                   .formatted(type.getSerializedName(), type.getSerializedName())).toString());
       SingleItemRecipeBuilder.stonecutting(
-              Ingredient.of(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()),
+              Ingredient.of(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get()),
               RecipeCategory.MISC,
-              RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(), 1)
-          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()),
-              has(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get()))
+              RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get(), 1)
+          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get()),
+              has(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get()))
           .save(output,
               RailcraftConstants.id("polished_%s_stone_from_%s_cobblestone_in_stonecutter"
                   .formatted(type.getSerializedName(), type.getSerializedName())).toString());
       shaped(RecipeCategory.MISC,
-              RailcraftItems.CHISELED_DECORATIVE_STONE.variantFor(type).get(), 8)
+              RailcraftItems.CHISELED_DECORATIVE_STONE.pick(type).get(), 8)
           .pattern("aaa")
           .pattern("a a")
           .pattern("aaa")
-          .define('a', RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get())
-          .unlockedBy(getHasName(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get()),
-              has(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get()))
+          .define('a', RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get())
+          .unlockedBy(getHasName(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get()),
+              has(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get()))
           .save(output);
       shaped(RecipeCategory.MISC,
-              RailcraftItems.ETCHED_DECORATIVE_STONE.variantFor(type).get(), 8)
+              RailcraftItems.ETCHED_DECORATIVE_STONE.pick(type).get(), 8)
           .pattern("aaa")
           .pattern("aba")
           .pattern("aaa")
-          .define('a', RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get())
+          .define('a', RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get())
           .define('b', Items.GUNPOWDER)
-          .unlockedBy(getHasName(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get()),
-              has(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get()))
+          .unlockedBy(getHasName(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get()),
+              has(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get()))
           .save(output);
-      square2x2(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get(),
-          new ItemStackTemplate(RailcraftItems.DECORATIVE_BRICKS.variantFor(type), 4), "");
-      stairBuilder(RailcraftItems.DECORATIVE_BRICK_STAIRS.variantFor(type).get(),
-          Ingredient.of(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get()))
-          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get()),
-              has(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get()))
-          .save(output);
-      slab(RecipeCategory.MISC,
-          RailcraftItems.DECORATIVE_BRICK_SLAB.variantFor(type).get(),
-          RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get());
-      square2x2(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get(),
-          new ItemStackTemplate(RailcraftItems.DECORATIVE_PAVER.variantFor(type), 4), "");
-      stairBuilder(RailcraftItems.DECORATIVE_PAVER_STAIRS.variantFor(type).get(),
-          Ingredient.of(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get()))
-          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get()),
-              has(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get()))
+      square2x2(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get(),
+          new ItemStackTemplate(RailcraftItems.DECORATIVE_BRICKS.pick(type), 4), "");
+      stairBuilder(RailcraftItems.DECORATIVE_BRICK_STAIRS.pick(type).get(),
+          Ingredient.of(RailcraftItems.DECORATIVE_BRICKS.pick(type).get()))
+          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_BRICKS.pick(type).get()),
+              has(RailcraftItems.DECORATIVE_BRICKS.pick(type).get()))
           .save(output);
       slab(RecipeCategory.MISC,
-          RailcraftItems.DECORATIVE_PAVER_SLAB.variantFor(type).get(),
-          RailcraftItems.DECORATIVE_PAVER.variantFor(type).get());
+          RailcraftItems.DECORATIVE_BRICK_SLAB.pick(type).get(),
+          RailcraftItems.DECORATIVE_BRICKS.pick(type).get());
+      square2x2(RailcraftItems.DECORATIVE_BRICKS.pick(type).get(),
+          new ItemStackTemplate(RailcraftItems.DECORATIVE_PAVER.pick(type), 4), "");
+      stairBuilder(RailcraftItems.DECORATIVE_PAVER_STAIRS.pick(type).get(),
+          Ingredient.of(RailcraftItems.DECORATIVE_PAVER.pick(type).get()))
+          .unlockedBy(getHasName(RailcraftItems.DECORATIVE_PAVER.pick(type).get()),
+              has(RailcraftItems.DECORATIVE_PAVER.pick(type).get()))
+          .save(output);
+      slab(RecipeCategory.MISC,
+          RailcraftItems.DECORATIVE_PAVER_SLAB.pick(type).get(),
+          RailcraftItems.DECORATIVE_PAVER.pick(type).get());
     }
   }
 

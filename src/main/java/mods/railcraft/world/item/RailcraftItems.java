@@ -6,7 +6,6 @@ import java.util.function.Function;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.loot.RailcraftContextIntProviders;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.entity.vehicle.BedMinecart;
 import mods.railcraft.world.entity.vehicle.CargoMinecart;
 import mods.railcraft.world.entity.vehicle.EnergyMinecart;
@@ -76,7 +75,7 @@ import mods.railcraft.world.item.track.outfitted.TransitionTrackBlockItem;
 import mods.railcraft.world.item.track.outfitted.WhistleTrackBlockItem;
 import mods.railcraft.world.item.tunnelbore.TunnelBoreHeadItem;
 import mods.railcraft.world.item.tunnelbore.TunnelBoreItem;
-import mods.railcraft.world.level.block.DecorativeBlock;
+import mods.railcraft.world.level.block.DecorativeCollection;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import mods.railcraft.world.level.block.charge.BatterySpecs;
 import mods.railcraft.world.level.block.track.TrackTypes;
@@ -103,11 +102,13 @@ public class RailcraftItems {
   private static final DeferredRegister.Items deferredRegister =
       DeferredRegister.createItems(RailcraftConstants.ID);
 
-  private static final BiFunction<Item.Properties, Block, BlockItem> BLOCK_TO_BLOCK_ITEM =
-      (properties, block) -> new BlockItem(block, properties);
-
   private static ColorCollection<DeferredItem<BlockItem>> registerColoredBlockItems(
       ColorCollection<? extends DeferredBlock<?>> blocks) {
+    return blocks.map(deferredRegister::registerSimpleBlockItem);
+  }
+
+  private static DecorativeCollection<DeferredItem<BlockItem>> registerDecorativeBlockItems(
+      DecorativeCollection<? extends DeferredBlock<?>> blocks) {
     return blocks.map(deferredRegister::registerSimpleBlockItem);
   }
 
@@ -1500,82 +1501,38 @@ public class RailcraftItems {
   public static final DeferredItem<WaterTankSidingBlockItem> WATER_TANK_SIDING =
       blockItem(RailcraftBlocks.WATER_TANK_SIDING, WaterTankSidingBlockItem::new);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_STONE =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_STONE,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_STONE =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_STONE);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_COBBLESTONE =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_COBBLESTONE,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_COBBLESTONE =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_COBBLESTONE);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> POLISHED_DECORATIVE_STONE =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.POLISHED_DECORATIVE_STONE,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> POLISHED_DECORATIVE_STONE =
+      registerDecorativeBlockItems(RailcraftBlocks.POLISHED_DECORATIVE_STONE);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> CHISELED_DECORATIVE_STONE =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.CHISELED_DECORATIVE_STONE,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> CHISELED_DECORATIVE_STONE =
+      registerDecorativeBlockItems(RailcraftBlocks.CHISELED_DECORATIVE_STONE);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> ETCHED_DECORATIVE_STONE =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.ETCHED_DECORATIVE_STONE,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> ETCHED_DECORATIVE_STONE =
+      registerDecorativeBlockItems(RailcraftBlocks.ETCHED_DECORATIVE_STONE);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_BRICKS =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_BRICKS,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_BRICKS =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_BRICKS);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_BRICK_STAIRS =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_BRICK_STAIRS,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_BRICK_STAIRS =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_BRICK_STAIRS);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_BRICK_SLAB =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_BRICK_SLAB,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_BRICK_SLAB =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_BRICK_SLAB);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_PAVER =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_PAVER,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_PAVER =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_PAVER);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_PAVER_STAIRS =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_PAVER_STAIRS,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_PAVER_STAIRS =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_PAVER_STAIRS);
 
-  public static final VariantSet<DecorativeBlock, Item, BlockItem> DECORATIVE_PAVER_SLAB =
-      VariantSet.ofMapped(
-          DecorativeBlock.class,
-          deferredRegister,
-          RailcraftBlocks.DECORATIVE_PAVER_SLAB,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final DecorativeCollection<DeferredItem<BlockItem>> DECORATIVE_PAVER_SLAB =
+      registerDecorativeBlockItems(RailcraftBlocks.DECORATIVE_PAVER_SLAB);
 
   public static final DeferredItem<BucketItem> CREOSOTE_BUCKET =
       deferredRegister.registerItem("creosote_bucket", properties ->

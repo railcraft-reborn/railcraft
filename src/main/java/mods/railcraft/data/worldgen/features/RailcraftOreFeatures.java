@@ -111,7 +111,7 @@ public class RailcraftOreFeatures {
     context.register(SILVER_ORE_BURIED, new OreFeature(SILVER_ORE_TARGET_LIST.get(), SILVER_VEIN_DIMENSION, 0.5F));
     context.register(QUARRIED_STONE, new QuarriedFeature(QUARRIED_REPLACEABLE_BLOCKS,
         BlockStateProvider.holderOf(
-            RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).get())));
+            RailcraftBlocks.DECORATIVE_STONE.pick(DecorativeBlock.QUARRIED).get())));
     context.register(SALTPETER, new DiskFeature(
             BlockStateProvider.holderOf(RailcraftBlocks.SALTPETER_ORE.get()),
             BlockPredicate.matchesBlocks(Blocks.DIRT, RailcraftBlocks.SALTPETER_ORE.get()),

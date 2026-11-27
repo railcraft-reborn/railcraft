@@ -72,13 +72,13 @@ public class GeodeStructurePiece extends StructurePiece {
         ? random.nextBoolean()
           ? Blocks.DEEPSLATE.defaultBlockState()
           : Blocks.SMOOTH_BASALT.defaultBlockState()
-        : RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).get().defaultBlockState();
+        : RailcraftBlocks.DECORATIVE_STONE.pick(DecorativeBlock.ABYSSAL).get().defaultBlockState();
     this.placeBlock(level, state, pos.getX(), pos.getY(), pos.getZ(), this.getBoundingBox());
   }
 
   private void placeOre(WorldGenLevel level, BlockState existingState, RandomSource random,
       BlockPos pos) {
-    if (existingState.is(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).get())) {
+    if (existingState.is(RailcraftBlocks.DECORATIVE_STONE.pick(DecorativeBlock.ABYSSAL).get())) {
       double chance = random.nextDouble();
       BlockState oreState = null;
       if (chance <= 0.004) {

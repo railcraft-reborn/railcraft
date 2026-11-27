@@ -224,23 +224,20 @@ public class CrusherRecipeProvider extends RecipeProvider {
     CrusherRecipeBuilder.crush(RailcraftItems.FIRESTONE_ORE)
         .addResult(RailcraftItems.RAW_FIRESTONE, 1, 1)
         .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.QUARRIED.item())
-        .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
-            .variantFor(DecorativeBlock.QUARRIED).get(), 1, 1)
-        .save(output);
-    CrusherRecipeBuilder.crush(this.items, RailcraftTags.BlockItems.ABYSSAL.item())
-        .addResult(RailcraftItems.DECORATIVE_COBBLESTONE
-            .variantFor(DecorativeBlock.ABYSSAL).get(), 1, 1)
-        .save(output);
     for (var type : DecorativeBlock.values()) {
-      CrusherRecipeBuilder.crush(Ingredient.of(
-              RailcraftItems.DECORATIVE_BRICK_STAIRS.variantFor(type).get(),
-              RailcraftItems.DECORATIVE_PAVER_STAIRS.variantFor(type).get()))
-          .addResult(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get(), 1, 0.75)
+      CrusherRecipeBuilder.crush(this.items,
+              RailcraftTags.BlockItems.DECORATIVE_MATERIALS.pick(type).item())
+          .addResult(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get(), 1, 1)
           .save(output);
-      CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.DECORATIVE_BRICK_SLAB.variantFor(type).get(),
-              RailcraftItems.DECORATIVE_PAVER_SLAB.variantFor(type).get()))
-          .addResult(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get(), 1, 0.5)
+      CrusherRecipeBuilder.crush(Ingredient.of(
+              RailcraftItems.DECORATIVE_BRICK_STAIRS.pick(type).get(),
+              RailcraftItems.DECORATIVE_PAVER_STAIRS.pick(type).get()))
+          .addResult(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get(), 1, 0.75)
+          .save(output);
+      CrusherRecipeBuilder.crush(Ingredient.of(
+              RailcraftItems.DECORATIVE_BRICK_SLAB.pick(type).get(),
+              RailcraftItems.DECORATIVE_PAVER_SLAB.pick(type).get()))
+          .addResult(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get(), 1, 0.5)
           .save(output);
     }
     CrusherRecipeBuilder.crush(Ingredient.of(RailcraftItems.ZINC_SILVER_BATTERY_EMPTY,

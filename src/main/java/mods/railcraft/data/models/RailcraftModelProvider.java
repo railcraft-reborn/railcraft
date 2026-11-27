@@ -471,13 +471,13 @@ public class RailcraftModelProvider extends ModelProvider {
         .filter(BlockFamily::shouldGenerateModel)
         .forEach(family -> blockModels.family(family.getBaseBlock()).generateFor(family));
     for (var type : DecorativeBlock.values()) {
-      blockModels.createTrivialCube(RailcraftBlocks.DECORATIVE_STONE.variantFor(type).get());
-      blockModels.createTrivialCube(RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(type).get());
+      blockModels.createTrivialCube(RailcraftBlocks.DECORATIVE_STONE.pick(type).get());
+      blockModels.createTrivialCube(RailcraftBlocks.DECORATIVE_COBBLESTONE.pick(type).get());
       blockModels.createTrivialCube(
-          RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(type).get());
+          RailcraftBlocks.POLISHED_DECORATIVE_STONE.pick(type).get());
       blockModels.createTrivialCube(
-          RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(type).get());
-      blockModels.createTrivialCube(RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(type).get());
+          RailcraftBlocks.CHISELED_DECORATIVE_STONE.pick(type).get());
+      blockModels.createTrivialCube(RailcraftBlocks.ETCHED_DECORATIVE_STONE.pick(type).get());
     }
 
     this.createAbandonedTracks(blockModels,

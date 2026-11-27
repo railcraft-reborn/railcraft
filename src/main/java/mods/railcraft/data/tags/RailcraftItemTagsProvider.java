@@ -333,8 +333,7 @@ public class RailcraftItemTagsProvider extends BlockTagCopyingItemTagProvider {
     this.copy(RailcraftTags.BlockItems.REINFORCED_TRACK);
     this.copy(RailcraftTags.BlockItems.STRAP_IRON_TRACK);
 
-    this.copy(RailcraftTags.BlockItems.QUARRIED);
-    this.copy(RailcraftTags.BlockItems.ABYSSAL);
+    RailcraftTags.BlockItems.DECORATIVE_MATERIALS.forEach(this::copy);
     this.copy(RailcraftTags.BlockItems.DETECTOR);
 
     // TOOLS

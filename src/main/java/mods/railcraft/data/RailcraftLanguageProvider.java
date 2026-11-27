@@ -157,27 +157,27 @@ public class RailcraftLanguageProvider extends LanguageProvider {
     this.addBlock(RailcraftBlocks.WATER_TANK_SIDING, "Water Tank Siding");
 
     for (var type : DecorativeBlock.values()) {
-      this.addBlock(RailcraftBlocks.DECORATIVE_STONE.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_STONE.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Stone");
-      this.addBlock(RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_COBBLESTONE.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Cobblestone");
-      this.addBlock(RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(type),
+      this.addBlock(RailcraftBlocks.POLISHED_DECORATIVE_STONE.pick(type),
           "Polished " + StringUtils.capitalize(type.getSerializedName()) + " Stone");
-      this.addBlock(RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(type),
+      this.addBlock(RailcraftBlocks.CHISELED_DECORATIVE_STONE.pick(type),
           "Chiseled " + StringUtils.capitalize(type.getSerializedName()) + " Stone");
-      this.addBlock(RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(type),
+      this.addBlock(RailcraftBlocks.ETCHED_DECORATIVE_STONE.pick(type),
           "Etched " + StringUtils.capitalize(type.getSerializedName()) + " Stone");
-      this.addBlock(RailcraftBlocks.DECORATIVE_BRICKS.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_BRICKS.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Bricks");
-      this.addBlock(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Brick Stairs");
-      this.addBlock(RailcraftBlocks.DECORATIVE_BRICK_SLAB.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_BRICK_SLAB.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Brick Slab");
-      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Paver");
-      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Paver Stairs");
-      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER_SLAB.variantFor(type),
+      this.addBlock(RailcraftBlocks.DECORATIVE_PAVER_SLAB.pick(type),
           StringUtils.capitalize(type.getSerializedName()) + " Paver Slab");
     }
 

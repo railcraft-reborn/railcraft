@@ -293,21 +293,18 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.BlockItems.IRON_TANK_WALL.block(),
             RailcraftTags.BlockItems.STEEL_TANK_GAUGE.block(),
             RailcraftTags.BlockItems.STEEL_TANK_VALVE.block(),
-            RailcraftTags.BlockItems.STEEL_TANK_WALL.block())
-        .addTag(RailcraftTags.BlockItems.ABYSSAL.block())
-        .addTag(RailcraftTags.BlockItems.QUARRIED.block());
+            RailcraftTags.BlockItems.STEEL_TANK_WALL.block());
+    var mineableWithPickaxe = this.tag(BlockTags.MINEABLE_WITH_PICKAXE);
+    RailcraftTags.BlockItems.DECORATIVE_MATERIALS
+        .forEach(tag -> mineableWithPickaxe.addTag(tag.block()));
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .addAll(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.DECORATIVE_BRICK_STAIRS.map(DeferredHolder::key).asList());
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .addAll(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.DECORATIVE_PAVER_STAIRS.map(DeferredHolder::key).asList());
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .addAll(RailcraftBlocks.DECORATIVE_BRICK_SLAB.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.DECORATIVE_BRICK_SLAB.map(DeferredHolder::key).asList());
     this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-        .addAll(RailcraftBlocks.DECORATIVE_PAVER_SLAB.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.DECORATIVE_PAVER_SLAB.map(DeferredHolder::key).asList());
 
     this.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .add(RailcraftBlocks.FIRESTONE_ORE.key())
@@ -377,29 +374,24 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
     this.tag(RailcraftTags.BlockItems.POST.block())
         .addAll(RailcraftBlocks.POST.map(DeferredHolder::key).asList());
 
-    this.tag(RailcraftTags.BlockItems.QUARRIED.block())
-        .add(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.DECORATIVE_BRICKS.variantFor(DecorativeBlock.QUARRIED).key(),
-            RailcraftBlocks.DECORATIVE_PAVER.variantFor(DecorativeBlock.QUARRIED).key());
+    for (var type : DecorativeBlock.values()) {
+      this.tag(RailcraftTags.BlockItems.DECORATIVE_MATERIALS.pick(type).block())
+          .addAll(Stream.of(RailcraftBlocks.DECORATIVE_STONE,
+                  RailcraftBlocks.DECORATIVE_COBBLESTONE,
+                  RailcraftBlocks.POLISHED_DECORATIVE_STONE,
+                  RailcraftBlocks.CHISELED_DECORATIVE_STONE,
+                  RailcraftBlocks.ETCHED_DECORATIVE_STONE,
+                  RailcraftBlocks.DECORATIVE_BRICKS,
+                  RailcraftBlocks.DECORATIVE_PAVER)
+              .map(blocks -> blocks.pick(type).key())
+              .toList());
+    }
     this.tag(RailcraftTags.Blocks.QUARRIED_REPLACEABLE_BLOCKS)
         .addTags(BlockTags.DIRT)
         .addTags(BlockTags.BASE_STONE_OVERWORLD)
         .addTags(Tags.BlockItems.ORES.block())
         .add(key(Blocks.CLAY))
         .add(key(Blocks.GRAVEL));
-
-    this.tag(RailcraftTags.BlockItems.ABYSSAL.block())
-        .add(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.DECORATIVE_COBBLESTONE.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.POLISHED_DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.CHISELED_DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.ETCHED_DECORATIVE_STONE.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.DECORATIVE_BRICKS.variantFor(DecorativeBlock.ABYSSAL).key(),
-            RailcraftBlocks.DECORATIVE_PAVER.variantFor(DecorativeBlock.ABYSSAL).key());
 
     this.tag(RailcraftTags.BlockItems.DETECTOR.block())
         .add(RailcraftBlocks.ADVANCED_DETECTOR.key(),

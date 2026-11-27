@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import mods.railcraft.api.core.RailcraftConstants;
-import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.level.block.charge.EmptyBatteryBlock;
 import mods.railcraft.world.level.block.charge.FrameBlock;
 import mods.railcraft.world.level.block.charge.NickelIronBatteryBlock;
@@ -132,6 +131,21 @@ public class RailcraftBlocks {
     return ColorCollection.NAMES.map(color -> deferredRegister.registerBlock(
         String.format(nameTemplate, color), factory, () -> properties));
   }
+  private static <T extends Block> DecorativeCollection<DeferredBlock<T>> registerDecorative(
+      String nameTemplate, Function<BlockBehaviour.Properties, T> factory,
+      BlockBehaviour.Properties properties) {
+    return DecorativeCollection.NAMES.map(type -> deferredRegister.registerBlock(
+        String.format(nameTemplate, type), factory, () -> properties));
+  }
+
+  private static DecorativeCollection<DeferredBlock<StairBlock>> registerDecorativeStairs(
+      String nameTemplate, DecorativeCollection<? extends DeferredBlock<?>> base,
+      BlockBehaviour.Properties properties) {
+    return DecorativeCollection.zipMap(DecorativeCollection.NAMES, base,
+        (type, baseBlock) -> deferredRegister.registerBlock(String.format(nameTemplate, type),
+            p -> new StairBlock(baseBlock.get().defaultBlockState(), p), () -> properties));
+  }
+
 
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
@@ -1388,92 +1402,48 @@ public class RailcraftBlocks {
               .requiresCorrectToolForDrops()
               .strength(50, 1200)));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> DECORATIVE_STONE =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_stone",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> DECORATIVE_STONE =
+      registerDecorative("%s_stone", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> DECORATIVE_COBBLESTONE =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_cobblestone",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> DECORATIVE_COBBLESTONE =
+      registerDecorative("%s_cobblestone", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> POLISHED_DECORATIVE_STONE =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "polished_%s_stone",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> POLISHED_DECORATIVE_STONE =
+      registerDecorative("polished_%s_stone", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_ANDESITE));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> CHISELED_DECORATIVE_STONE =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "chiseled_%s_stone",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> CHISELED_DECORATIVE_STONE =
+      registerDecorative("chiseled_%s_stone", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_STONE_BRICKS));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> ETCHED_DECORATIVE_STONE =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "etched_%s_stone",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> ETCHED_DECORATIVE_STONE =
+      registerDecorative("etched_%s_stone", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> DECORATIVE_BRICKS =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_bricks",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> DECORATIVE_BRICKS =
+      registerDecorative("%s_bricks", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, StairBlock> DECORATIVE_BRICK_STAIRS =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_brick_stairs",
-          (properties, type) -> new StairBlock(DECORATIVE_BRICKS.variantFor(type).get().defaultBlockState(), properties),
+  public static final DecorativeCollection<DeferredBlock<StairBlock>> DECORATIVE_BRICK_STAIRS =
+      registerDecorativeStairs("%s_brick_stairs", DECORATIVE_BRICKS,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, SlabBlock> DECORATIVE_BRICK_SLAB =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_brick_slab",
-          SlabBlock::new,
+  public static final DecorativeCollection<DeferredBlock<SlabBlock>> DECORATIVE_BRICK_SLAB =
+      registerDecorative("%s_brick_slab", SlabBlock::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, ? extends Block> DECORATIVE_PAVER =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_paver",
-          Block::new,
+  public static final DecorativeCollection<DeferredBlock<Block>> DECORATIVE_PAVER =
+      registerDecorative("%s_paver", Block::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, StairBlock> DECORATIVE_PAVER_STAIRS =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_paver_stairs",
-          (properties, type) -> new StairBlock(DECORATIVE_PAVER.variantFor(type).get().defaultBlockState(), properties),
+  public static final DecorativeCollection<DeferredBlock<StairBlock>> DECORATIVE_PAVER_STAIRS =
+      registerDecorativeStairs("%s_paver_stairs", DECORATIVE_PAVER,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
-  public static final VariantSet<DecorativeBlock, Block, SlabBlock> DECORATIVE_PAVER_SLAB =
-      VariantSet.of(
-          DecorativeBlock.class,
-          deferredRegister,
-          "%s_paver_slab",
-          SlabBlock::new,
+  public static final DecorativeCollection<DeferredBlock<SlabBlock>> DECORATIVE_PAVER_SLAB =
+      registerDecorative("%s_paver_slab", SlabBlock::new,
           BlockBehaviour.Properties.ofFullCopy(Blocks.STONE));
 
   public static final DeferredBlock<WorldSpikeBlock> WORLD_SPIKE =

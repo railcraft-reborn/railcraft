@@ -1,6 +1,7 @@
 package mods.railcraft.tags;
 
 import mods.railcraft.api.core.RailcraftConstants;
+import mods.railcraft.world.level.block.DecorativeCollection;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockItemTagId;
@@ -212,8 +213,8 @@ public class RailcraftTags {
 
     public static final BlockItemTagId POST = tag("post");
     public static final BlockItemTagId STRENGTHENED_GLASS = tag("strengthened_glass");
-    public static final BlockItemTagId QUARRIED = tag("quarried");
-    public static final BlockItemTagId ABYSSAL = tag("abyssal");
+    public static final DecorativeCollection<BlockItemTagId> DECORATIVE_MATERIALS =
+        DecorativeCollection.NAMES.map(BlockItems::tag);
     public static final BlockItemTagId DETECTOR = tag("detector");
 
     public static final BlockItemTagId ABANDONED_TRACK = tag("abandoned_track");

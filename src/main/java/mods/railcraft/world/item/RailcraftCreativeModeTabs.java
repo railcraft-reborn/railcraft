@@ -426,17 +426,17 @@ public class RailcraftCreativeModeTabs {
               RailcraftItems.STRENGTHENED_GLASS.black().get()))
           .displayItems((params, output) -> {
             for (var type : DecorativeBlock.values()) {
-              output.accept(RailcraftItems.DECORATIVE_STONE.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_COBBLESTONE.variantFor(type).get());
-              output.accept(RailcraftItems.POLISHED_DECORATIVE_STONE.variantFor(type).get());
-              output.accept(RailcraftItems.CHISELED_DECORATIVE_STONE.variantFor(type).get());
-              output.accept(RailcraftItems.ETCHED_DECORATIVE_STONE.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_BRICKS.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_BRICK_STAIRS.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_BRICK_SLAB.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_PAVER.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_PAVER_STAIRS.variantFor(type).get());
-              output.accept(RailcraftItems.DECORATIVE_PAVER_SLAB.variantFor(type).get());
+              output.accept(RailcraftItems.DECORATIVE_STONE.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_COBBLESTONE.pick(type).get());
+              output.accept(RailcraftItems.POLISHED_DECORATIVE_STONE.pick(type).get());
+              output.accept(RailcraftItems.CHISELED_DECORATIVE_STONE.pick(type).get());
+              output.accept(RailcraftItems.ETCHED_DECORATIVE_STONE.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_BRICKS.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_BRICK_STAIRS.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_BRICK_SLAB.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_PAVER.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_PAVER_STAIRS.pick(type).get());
+              output.accept(RailcraftItems.DECORATIVE_PAVER_SLAB.pick(type).get());
             }
 
             RailcraftItems.STRENGTHENED_GLASS.forEach(item -> output.accept(item.get()));
