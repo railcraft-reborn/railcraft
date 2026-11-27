@@ -1,5 +1,6 @@
 package mods.railcraft.data.recipes.providers;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.CokeOvenRecipeBuilder;
 import mods.railcraft.world.item.RailcraftItems;
 import net.minecraft.advancements.Advancement;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.crafting.Recipe;
 public class CokeOvenRecipeProvider extends RecipeProvider {
 
   public CokeOvenRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements);
+    super(recipes, advancements, RailcraftConstants.ID);
   }
 
   @Override

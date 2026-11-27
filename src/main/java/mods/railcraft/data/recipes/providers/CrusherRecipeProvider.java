@@ -1,5 +1,6 @@
 package mods.railcraft.data.recipes.providers;
 
+import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.CrusherRecipeBuilder;
 import mods.railcraft.tags.RailcraftTags;
 import mods.railcraft.world.item.RailcraftItems;
@@ -16,7 +17,7 @@ import net.neoforged.neoforge.common.Tags;
 public class CrusherRecipeProvider extends RecipeProvider {
 
   public CrusherRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements);
+    super(recipes, advancements, RailcraftConstants.ID);
   }
 
   @Override

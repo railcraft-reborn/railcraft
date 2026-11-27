@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.Tags;
 public class RollingRecipeProvider extends RecipeProvider {
 
   public RollingRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements);
+    super(recipes, advancements, RailcraftConstants.ID);
   }
 
   @Override

@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.Tags;
 public class BlastFurnaceRecipeProvider extends RecipeProvider {
 
   public BlastFurnaceRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements);
+    super(recipes, advancements, RailcraftConstants.ID);
   }
 
   @Override

@@ -32,8 +32,10 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ForestryRecipeProvider extends RecipeProvider {
 
-  public ForestryRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements, null, new ModLoadedCondition(ForestryConstants.MOD_ID));
+  public ForestryRecipeProvider(BootstrapContext<Recipe<?>> recipes,
+      BootstrapContext<Advancement> advancements) {
+    super(recipes, advancements, RailcraftConstants.ID,
+        new ModLoadedCondition(ForestryConstants.MOD_ID));
   }
 
   @Override

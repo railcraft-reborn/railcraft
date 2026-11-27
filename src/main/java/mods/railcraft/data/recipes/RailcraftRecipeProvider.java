@@ -47,7 +47,7 @@ import vazkii.patchouli.api.PatchouliAPI;
 public class RailcraftRecipeProvider extends RecipeProvider {
 
   public RailcraftRecipeProvider(BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
-    super(recipes, advancements);
+    super(recipes, advancements, RailcraftConstants.ID);
   }
 
   @Override
@@ -105,8 +105,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_TIE.get());
     railsFromMaterials(RailcraftItems.STRAP_IRON_TRACK.get(), 32,
         RailcraftItems.WOODEN_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
-    railsFromMaterials(Items.RAIL, 32,
-        RailcraftItems.STANDARD_RAIL.get(), RailcraftItems.WOODEN_RAILBED.get());
+    // The vanilla rail recipe is replaced by data/minecraft/recipe/rail.json in src/main/resources:
+    // datagen can't override a vanilla registry entry.
     railsFromMaterials(RailcraftItems.REINFORCED_TRACK.get(), 32,
         RailcraftItems.REINFORCED_RAIL.get(), RailcraftItems.STONE_RAILBED.get());
     railsFromMaterials(RailcraftItems.ELECTRIC_TRACK.get(), 32,

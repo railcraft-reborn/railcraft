@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "a": "railcraft:standard_rail",
+    "b": "railcraft:wooden_railbed"
+  },
+  "pattern": [
+    "a a",
+    "aba",
+    "a a"
+  ],
+  "result": {
+    "count": 32,
+    "id": "minecraft:rail"
+  }
+}
