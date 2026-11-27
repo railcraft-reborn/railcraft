@@ -1,5 +1,7 @@
 package mods.railcraft.data.recipes;
 
+import net.minecraft.world.level.block.ColorCollection;
+import net.neoforged.neoforge.registries.DeferredItem;
 import static net.neoforged.neoforge.common.conditions.NeoForgeConditions.modLoaded;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +9,6 @@ import com.mojang.datafixers.util.Pair;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.data.recipes.builders.RailcraftSpecialRecipeBuilder;
 import mods.railcraft.tags.RailcraftTags;
-import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.item.crafting.BedMinecartDisassemblyRecipe;
 import mods.railcraft.world.item.crafting.ChestMinecartDisassemblyRecipe;
@@ -1269,8 +1270,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
         .pattern("b")
         .define('a', RailcraftTags.BlockItems.STRENGTHENED_GLASS.item())
         .define('b', Items.MINECART)
-        .unlockedBy(getHasName(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()),
-            has(RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.WHITE).get()))
+        .unlockedBy(getHasName(RailcraftItems.STRENGTHENED_GLASS.white().get()),
+            has(RailcraftItems.STRENGTHENED_GLASS.white().get()))
         .save(output);
 
     shaped(RecipeCategory.MISC, RailcraftItems.ENERGY_MINECART)
@@ -1768,7 +1769,7 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     var colorItems = RailcraftItems.STRENGTHENED_GLASS;
     var tagItem = RailcraftTags.BlockItems.STRENGTHENED_GLASS.item();
 
-    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 6);
+    var result = new ItemStackTemplate(colorItems.white(), 6);
     var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
 
     for (var ingredient : ingredients.entrySet()) {
@@ -1815,8 +1816,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void tankWall(TagKey<Item> ingredientTag,
-      VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+      ColorCollection<DeferredItem<BlockItem>> colorItems, TagKey<Item> tagItem) {
+    var result = new ItemStackTemplate(colorItems.white(), 8);
     var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
@@ -1831,8 +1832,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void tankValve(TagKey<Item> ingredientTag,
-      VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+      ColorCollection<DeferredItem<BlockItem>> colorItems, TagKey<Item> tagItem) {
+    var result = new ItemStackTemplate(colorItems.white(), 8);
     var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
@@ -1850,8 +1851,8 @@ public class RailcraftRecipeProvider extends RecipeProvider {
   }
 
   private void tankGauge(TagKey<Item> ingredientTag,
-      VariantSet<DyeColor, Item, BlockItem> colorItems, TagKey<Item> tagItem) {
-    var result = new ItemStackTemplate(colorItems.variantFor(DyeColor.WHITE), 8);
+      ColorCollection<DeferredItem<BlockItem>> colorItems, TagKey<Item> tagItem) {
+    var result = new ItemStackTemplate(colorItems.white(), 8);
     var name = RecipeBuilder.getDefaultRecipeId(result).identifier().getPath();
     var ingredient = ingredientTag.equals(RailcraftTags.Items.IRON_PLATE)
         ? "has_iron_plate" : "has_steel_plate";
@@ -2165,23 +2166,22 @@ public class RailcraftRecipeProvider extends RecipeProvider {
     }
   }
 
-  private void coloredBlockVariant(VariantSet<DyeColor, Item, BlockItem> colorItems,
+  private void coloredBlockVariant(ColorCollection<DeferredItem<BlockItem>> colorItems,
       TagKey<Item> tagItem) {
     coloredBlockVariant(colorItems, tagItem, DyeColor.WHITE);
   }
 
-  private void coloredBlockVariant(VariantSet<DyeColor, Item, BlockItem> colorItems,
+  private void coloredBlockVariant(ColorCollection<DeferredItem<BlockItem>> colorItems,
       TagKey<Item> tagItem, DyeColor baseColor) {
-    var base = colorItems.variantFor(baseColor).get();
-    for (var dyeColor : DyeColor.values()) {
-      shaped(RecipeCategory.MISC, colorItems.variantFor(dyeColor).get(), 8)
-          .pattern("aaa")
-          .pattern("aba")
-          .pattern("aaa")
-          .define('a', tagItem)
-          .define('b', dyeColor.getTag())
-          .unlockedBy(getHasName(base), has(base))
-          .save(output);
-    }
+    var base = colorItems.pick(baseColor).get();
+    ColorCollection.zipApply(colorItems, Tags.Items.DYE_COLORS, (item, dye) ->
+        shaped(RecipeCategory.MISC, item.get(), 8)
+            .pattern("aaa")
+            .pattern("aba")
+            .pattern("aaa")
+            .define('a', tagItem)
+            .define('b', dye)
+            .unlockedBy(getHasName(base), has(base))
+            .save(output));
   }
 }

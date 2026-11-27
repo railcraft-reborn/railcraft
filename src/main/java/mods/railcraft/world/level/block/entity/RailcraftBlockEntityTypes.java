@@ -76,17 +76,17 @@ public class RailcraftBlockEntityTypes {
       deferredRegister.register("iron_tank",
           () -> new BlockEntityType<>(IronTankBlockEntity::new,
                   toArray(
-                      RailcraftBlocks.IRON_TANK_GAUGE.variants(),
-                      RailcraftBlocks.IRON_TANK_VALVE.variants(),
-                      RailcraftBlocks.IRON_TANK_WALL.variants())));
+                      RailcraftBlocks.IRON_TANK_GAUGE.asList(),
+                      RailcraftBlocks.IRON_TANK_VALVE.asList(),
+                      RailcraftBlocks.IRON_TANK_WALL.asList())));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteelTankBlockEntity>> STEEL_TANK =
       deferredRegister.register("steel_tank",
           () -> new BlockEntityType<>(SteelTankBlockEntity::new,
                   toArray(
-                      RailcraftBlocks.STEEL_TANK_GAUGE.variants(),
-                      RailcraftBlocks.STEEL_TANK_VALVE.variants(),
-                      RailcraftBlocks.STEEL_TANK_WALL.variants())));
+                      RailcraftBlocks.STEEL_TANK_GAUGE.asList(),
+                      RailcraftBlocks.STEEL_TANK_VALVE.asList(),
+                      RailcraftBlocks.STEEL_TANK_WALL.asList())));
 
   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SteamBoilerBlockEntity>> STEAM_BOILER =
       deferredRegister.register("steam_boiler",

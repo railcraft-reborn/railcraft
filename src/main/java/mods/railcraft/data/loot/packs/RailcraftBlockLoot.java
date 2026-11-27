@@ -1,13 +1,13 @@
 package mods.railcraft.data.loot.packs;
 
 import java.util.Set;
+import java.util.stream.Stream;
 import mods.railcraft.world.item.RailcraftItems;
 import mods.railcraft.world.level.block.DecorativeBlock;
 import mods.railcraft.world.level.block.RailcraftBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -130,17 +130,11 @@ public class RailcraftBlockLoot extends BlockLootSubProvider {
     this.add(RailcraftBlocks.SALTPETER_ORE.get(),
         block -> this.createOreDrop(block, RailcraftItems.SALTPETER_DUST.get(), 3, 5));
 
-    for (var dyeColor : DyeColor.values()) {
-      this.dropSelf(RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.POST.variantFor(dyeColor).get());
-
-      this.dropSelf(RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get());
-      this.dropSelf(RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-    }
+    Stream.of(RailcraftBlocks.STRENGTHENED_GLASS, RailcraftBlocks.POST,
+            RailcraftBlocks.IRON_TANK_GAUGE, RailcraftBlocks.IRON_TANK_VALVE,
+            RailcraftBlocks.IRON_TANK_WALL, RailcraftBlocks.STEEL_TANK_GAUGE,
+            RailcraftBlocks.STEEL_TANK_VALVE, RailcraftBlocks.STEEL_TANK_WALL)
+        .forEach(blocks -> blocks.forEach(block -> this.dropSelf(block.get())));
 
     /* === tracks === */
     this.dropSelf(RailcraftBlocks.ABANDONED_TRACK.get());

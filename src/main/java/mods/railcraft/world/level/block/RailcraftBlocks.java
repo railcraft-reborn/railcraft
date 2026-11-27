@@ -1,6 +1,7 @@
 package mods.railcraft.world.level.block;
 
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.util.VariantSet;
@@ -96,11 +97,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -121,6 +122,17 @@ public class RailcraftBlocks {
   private static final DeferredRegister.Blocks deferredRegister =
       DeferredRegister.createBlocks(RailcraftConstants.ID);
 
+  /**
+   * Registers one block for each dye color, named by replacing {@code %s} in the template with the
+   * color name.
+   */
+  private static <T extends Block> ColorCollection<DeferredBlock<T>> registerColored(
+      String nameTemplate, Function<BlockBehaviour.Properties, T> factory,
+      BlockBehaviour.Properties properties) {
+    return ColorCollection.NAMES.map(color -> deferredRegister.registerBlock(
+        String.format(nameTemplate, color), factory, () -> properties));
+  }
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
@@ -129,69 +141,36 @@ public class RailcraftBlocks {
     return deferredRegister.getEntries();
   }
 
-  public static final VariantSet<DyeColor, Block, StrengthenedGlassBlock> STRENGTHENED_GLASS =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_strengthened_glass",
-          StrengthenedGlassBlock::new,
+  public static final ColorCollection<DeferredBlock<StrengthenedGlassBlock>> STRENGTHENED_GLASS =
+      registerColored("%s_strengthened_glass", StrengthenedGlassBlock::new,
           RailcraftBlockProperties.strengthenedGlass());
 
-  public static final VariantSet<DyeColor, Block, IronTankGaugeBlock> IRON_TANK_GAUGE =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_iron_tank_gauge",
-          IronTankGaugeBlock::new,
+  public static final ColorCollection<DeferredBlock<IronTankGaugeBlock>> IRON_TANK_GAUGE =
+      registerColored("%s_iron_tank_gauge", IronTankGaugeBlock::new,
           RailcraftBlockProperties.ironTankGauge());
 
-  public static final VariantSet<DyeColor, Block, IronTankValveBlock> IRON_TANK_VALVE =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_iron_tank_valve",
-          IronTankValveBlock::new,
+  public static final ColorCollection<DeferredBlock<IronTankValveBlock>> IRON_TANK_VALVE =
+      registerColored("%s_iron_tank_valve", IronTankValveBlock::new,
           RailcraftBlockProperties.ironTank());
 
-  public static final VariantSet<DyeColor, Block, IronTankWallBlock> IRON_TANK_WALL =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_iron_tank_wall",
-          IronTankWallBlock::new,
+  public static final ColorCollection<DeferredBlock<IronTankWallBlock>> IRON_TANK_WALL =
+      registerColored("%s_iron_tank_wall", IronTankWallBlock::new,
           RailcraftBlockProperties.ironTank());
 
-  public static final VariantSet<DyeColor, Block, SteelTankGaugeBlock> STEEL_TANK_GAUGE =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_steel_tank_gauge",
-          SteelTankGaugeBlock::new,
+  public static final ColorCollection<DeferredBlock<SteelTankGaugeBlock>> STEEL_TANK_GAUGE =
+      registerColored("%s_steel_tank_gauge", SteelTankGaugeBlock::new,
           RailcraftBlockProperties.steelTankGauge());
 
-  public static final VariantSet<DyeColor, Block, SteelTankValveBlock> STEEL_TANK_VALVE =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_steel_tank_valve",
-          SteelTankValveBlock::new,
+  public static final ColorCollection<DeferredBlock<SteelTankValveBlock>> STEEL_TANK_VALVE =
+      registerColored("%s_steel_tank_valve", SteelTankValveBlock::new,
           RailcraftBlockProperties.steelTank());
 
-  public static final VariantSet<DyeColor, Block, SteelTankWallBlock> STEEL_TANK_WALL =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_steel_tank_wall",
-          SteelTankWallBlock::new,
+  public static final ColorCollection<DeferredBlock<SteelTankWallBlock>> STEEL_TANK_WALL =
+      registerColored("%s_steel_tank_wall", SteelTankWallBlock::new,
           RailcraftBlockProperties.steelTank());
 
-  public static final VariantSet<DyeColor, Block, PostBlock> POST =
-      VariantSet.of(
-          DyeColor.class,
-          deferredRegister,
-          "%s_post",
-          PostBlock::new,
-          RailcraftBlockProperties.post());
+  public static final ColorCollection<DeferredBlock<PostBlock>> POST =
+      registerColored("%s_post", PostBlock::new, RailcraftBlockProperties.post());
 
   public static final DeferredBlock<SteamBoilerTankBlock> LOW_PRESSURE_STEAM_BOILER_TANK =
       deferredRegister.registerBlock("low_pressure_steam_boiler_tank", SteamBoilerTankBlock::new,

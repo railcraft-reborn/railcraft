@@ -1,12 +1,12 @@
 package mods.railcraft.data;
 
-import java.util.function.Function;
+import net.minecraft.world.level.block.ColorCollection;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.apache.commons.lang3.StringUtils;
 import mods.railcraft.Translations;
 import mods.railcraft.api.core.RailcraftConstants;
 import mods.railcraft.integrations.buildcraft.GateStatement;
 import mods.railcraft.integrations.forestry.ForestryIntegration;
-import mods.railcraft.util.VariantSet;
 import mods.railcraft.world.effect.RailcraftMobEffects;
 import mods.railcraft.world.entity.RailcraftEntityTypes;
 import mods.railcraft.world.entity.npc.RailcraftVillagerProfession;
@@ -20,7 +20,6 @@ import mods.railcraft.world.level.block.track.outfitted.LockingMode;
 import mods.railcraft.world.level.levelgen.placement.WorldgenOre;
 import mods.railcraft.world.level.material.RailcraftFluidTypes;
 import net.minecraft.data.PackOutput;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -1457,13 +1456,9 @@ public class RailcraftLanguageProvider extends LanguageProvider {
   }
 
   private void addBlockColorVariants(
-      VariantSet<DyeColor, Block, ? extends Block> blocks, String name) {
-    this.addBlockVariants(blocks, name, RailcraftLanguageProvider::getColorName);
-  }
-
-  private <K extends Enum<K> & StringRepresentable> void addBlockVariants(
-      VariantSet<K, Block, ? extends Block> blocks, String name, Function<K, String> nameGetter) {
-    blocks.forEach((color, block) -> this.addBlock(block, nameGetter.apply(color) + " " + name));
+      ColorCollection<? extends DeferredBlock<?>> blocks, String name) {
+    ColorCollection.zipApply(blocks, ColorCollection.VALUES,
+        (block, color) -> this.addBlock(block, getColorName(color) + " " + name));
   }
 
   private static String getColorName(DyeColor color) {

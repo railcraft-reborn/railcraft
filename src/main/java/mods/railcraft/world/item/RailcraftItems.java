@@ -91,6 +91,7 @@ import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ColorCollection;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -105,6 +106,11 @@ public class RailcraftItems {
   private static final BiFunction<Item.Properties, Block, BlockItem> BLOCK_TO_BLOCK_ITEM =
       (properties, block) -> new BlockItem(block, properties);
 
+  private static ColorCollection<DeferredItem<BlockItem>> registerColoredBlockItems(
+      ColorCollection<? extends DeferredBlock<?>> blocks) {
+    return blocks.map(deferredRegister::registerSimpleBlockItem);
+  }
+
   public static void register(IEventBus modEventBus) {
     deferredRegister.register(modEventBus);
   }
@@ -113,54 +119,22 @@ public class RailcraftItems {
     return deferredRegister.getEntries();
   }
 
-  public static final VariantSet<DyeColor, Item, BlockItem> STRENGTHENED_GLASS =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.STRENGTHENED_GLASS,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> POST =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.POST,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_GAUGE =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.IRON_TANK_GAUGE,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_VALVE =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.IRON_TANK_VALVE,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> IRON_TANK_WALL =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.IRON_TANK_WALL,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_GAUGE =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.STEEL_TANK_GAUGE,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_VALVE =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.STEEL_TANK_VALVE,
-          BLOCK_TO_BLOCK_ITEM);
-  public static final VariantSet<DyeColor, Item, BlockItem> STEEL_TANK_WALL =
-      VariantSet.ofMapped(
-          DyeColor.class,
-          deferredRegister,
-          RailcraftBlocks.STEEL_TANK_WALL,
-          BLOCK_TO_BLOCK_ITEM);
+  public static final ColorCollection<DeferredItem<BlockItem>> STRENGTHENED_GLASS =
+      registerColoredBlockItems(RailcraftBlocks.STRENGTHENED_GLASS);
+  public static final ColorCollection<DeferredItem<BlockItem>> POST =
+      registerColoredBlockItems(RailcraftBlocks.POST);
+  public static final ColorCollection<DeferredItem<BlockItem>> IRON_TANK_GAUGE =
+      registerColoredBlockItems(RailcraftBlocks.IRON_TANK_GAUGE);
+  public static final ColorCollection<DeferredItem<BlockItem>> IRON_TANK_VALVE =
+      registerColoredBlockItems(RailcraftBlocks.IRON_TANK_VALVE);
+  public static final ColorCollection<DeferredItem<BlockItem>> IRON_TANK_WALL =
+      registerColoredBlockItems(RailcraftBlocks.IRON_TANK_WALL);
+  public static final ColorCollection<DeferredItem<BlockItem>> STEEL_TANK_GAUGE =
+      registerColoredBlockItems(RailcraftBlocks.STEEL_TANK_GAUGE);
+  public static final ColorCollection<DeferredItem<BlockItem>> STEEL_TANK_VALVE =
+      registerColoredBlockItems(RailcraftBlocks.STEEL_TANK_VALVE);
+  public static final ColorCollection<DeferredItem<BlockItem>> STEEL_TANK_WALL =
+      registerColoredBlockItems(RailcraftBlocks.STEEL_TANK_WALL);
 
   public static final DeferredItem<PressureBoilerTankBlockItem> LOW_PRESSURE_STEAM_BOILER_TANK =
       customBlockItem("low_pressure_steam_boiler_tank", properties ->

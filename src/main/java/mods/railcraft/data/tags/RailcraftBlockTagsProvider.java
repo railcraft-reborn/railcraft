@@ -361,29 +361,21 @@ public class RailcraftBlockTagsProvider extends BlockTagsProvider {
             RailcraftTags.BlockItems.STEEL_TANK_WALL.block());
 
     this.tag(RailcraftTags.BlockItems.STRENGTHENED_GLASS.block())
-        .addAll(RailcraftBlocks.STRENGTHENED_GLASS.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.STRENGTHENED_GLASS.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.IRON_TANK_GAUGE.block())
-        .addAll(RailcraftBlocks.IRON_TANK_GAUGE.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.IRON_TANK_GAUGE.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.IRON_TANK_VALVE.block())
-        .addAll(RailcraftBlocks.IRON_TANK_VALVE.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.IRON_TANK_VALVE.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.IRON_TANK_WALL.block())
-        .addAll(RailcraftBlocks.IRON_TANK_WALL.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.IRON_TANK_WALL.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.STEEL_TANK_GAUGE.block())
-        .addAll(RailcraftBlocks.STEEL_TANK_GAUGE.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.STEEL_TANK_GAUGE.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.STEEL_TANK_VALVE.block())
-        .addAll(RailcraftBlocks.STEEL_TANK_VALVE.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.STEEL_TANK_VALVE.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.STEEL_TANK_WALL.block())
-        .addAll(RailcraftBlocks.STEEL_TANK_WALL.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.STEEL_TANK_WALL.map(DeferredHolder::key).asList());
     this.tag(RailcraftTags.BlockItems.POST.block())
-        .addAll(RailcraftBlocks.POST.variants().stream()
-            .map(DeferredHolder::key));
+        .addAll(RailcraftBlocks.POST.map(DeferredHolder::key).asList());
 
     this.tag(RailcraftTags.BlockItems.QUARRIED.block())
         .add(RailcraftBlocks.DECORATIVE_STONE.variantFor(DecorativeBlock.QUARRIED).key(),

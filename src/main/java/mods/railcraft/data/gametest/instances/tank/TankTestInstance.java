@@ -9,7 +9,6 @@ import net.minecraft.gametest.framework.GameTestInstance;
 import net.minecraft.gametest.framework.TestData;
 import net.minecraft.gametest.framework.TestEnvironmentDefinition;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -50,7 +49,7 @@ public abstract class TankTestInstance extends GameTestInstance {
   }
 
   protected static Block wallBlock() {
-    return RailcraftBlocks.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get();
+    return RailcraftBlocks.IRON_TANK_WALL.white().get();
   }
 
   /**

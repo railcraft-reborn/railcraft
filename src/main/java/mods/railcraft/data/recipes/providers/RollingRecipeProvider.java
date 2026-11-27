@@ -9,7 +9,6 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -36,7 +35,7 @@ public class RollingRecipeProvider extends RecipeProvider {
 
   private void misc() {
     RollingRecipePattern.hForm(output, Ingredient.of(this.items.getOrThrow(Tags.Items.INGOTS_IRON)),
-        new ItemStackTemplate(RailcraftItems.POST.variantFor(DyeColor.BLACK), 16));
+        new ItemStackTemplate(RailcraftItems.POST.black(), 16));
 
     RollingRecipePattern.diagonalLine(output,
         Ingredient.of(this.items.getOrThrow(RailcraftTags.Items.STEEL_PLATE)),

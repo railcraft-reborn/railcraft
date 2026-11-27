@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -262,12 +261,12 @@ public class RailcraftCreativeModeTabs {
 
             output.accept(RailcraftItems.CREOSOTE_BUCKET.get());
 
-            output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
-            output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(DyeColor.WHITE).get());
-            output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get());
-            output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
-            output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(DyeColor.WHITE).get());
-            output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(DyeColor.WHITE).get());
+            output.accept(RailcraftItems.IRON_TANK_GAUGE.white().get());
+            output.accept(RailcraftItems.IRON_TANK_VALVE.white().get());
+            output.accept(RailcraftItems.IRON_TANK_WALL.white().get());
+            output.accept(RailcraftItems.STEEL_TANK_GAUGE.white().get());
+            output.accept(RailcraftItems.STEEL_TANK_VALVE.white().get());
+            output.accept(RailcraftItems.STEEL_TANK_WALL.white().get());
           })
           .build());
   public static final DeferredHolder<CreativeModeTab, CreativeModeTab> OUTFITTED_TRACKS =
@@ -424,7 +423,7 @@ public class RailcraftCreativeModeTabs {
           .withTabsBefore(OUTFITTED_TRACKS.getId())
           .title(Component.translatable(Translations.Tab.RAILCRAFT_DECORATIVE_BLOCKS))
           .icon(() -> new ItemStack(
-              RailcraftItems.STRENGTHENED_GLASS.variantFor(DyeColor.BLACK).get()))
+              RailcraftItems.STRENGTHENED_GLASS.black().get()))
           .displayItems((params, output) -> {
             for (var type : DecorativeBlock.values()) {
               output.accept(RailcraftItems.DECORATIVE_STONE.variantFor(type).get());
@@ -440,30 +439,14 @@ public class RailcraftCreativeModeTabs {
               output.accept(RailcraftItems.DECORATIVE_PAVER_SLAB.variantFor(type).get());
             }
 
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STRENGTHENED_GLASS.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.POST.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.IRON_TANK_WALL.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_GAUGE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_VALVE.variantFor(color).get());
-            }
-            for (var color : DyeColor.values()) {
-              output.accept(RailcraftItems.STEEL_TANK_WALL.variantFor(color).get());
-            }
+            RailcraftItems.STRENGTHENED_GLASS.forEach(item -> output.accept(item.get()));
+            RailcraftItems.POST.forEach(item -> output.accept(item.get()));
+            RailcraftItems.IRON_TANK_GAUGE.forEach(item -> output.accept(item.get()));
+            RailcraftItems.IRON_TANK_VALVE.forEach(item -> output.accept(item.get()));
+            RailcraftItems.IRON_TANK_WALL.forEach(item -> output.accept(item.get()));
+            RailcraftItems.STEEL_TANK_GAUGE.forEach(item -> output.accept(item.get()));
+            RailcraftItems.STEEL_TANK_VALVE.forEach(item -> output.accept(item.get()));
+            RailcraftItems.STEEL_TANK_WALL.forEach(item -> output.accept(item.get()));
           }).build());
 
   public static void register(IEventBus modEventBus) {

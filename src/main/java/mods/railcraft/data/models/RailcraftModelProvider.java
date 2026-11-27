@@ -1,5 +1,6 @@
 package mods.railcraft.data.models;
 
+import net.minecraft.world.level.block.ColorCollection;
 import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_FACING;
 import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING;
 import static net.minecraft.client.data.models.BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT;
@@ -119,7 +120,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
@@ -339,23 +339,18 @@ public class RailcraftModelProvider extends ModelProvider {
     this.generateLocomotive(itemModels, RailcraftItems.CREATIVE_LOCOMOTIVE.get());
 
     /// BLOCKS
-    for (var dyeColor : DyeColor.values()) {
-      this.createStrengthenedGlass(blockModels,
-          RailcraftBlocks.STRENGTHENED_GLASS.variantFor(dyeColor).get());
-      this.createStrengthenedGlass(blockModels,
-          RailcraftBlocks.IRON_TANK_GAUGE.variantFor(dyeColor).get());
-      this.createStrengthenedGlass(blockModels,
-          RailcraftBlocks.STEEL_TANK_GAUGE.variantFor(dyeColor).get());
-      this.createTankValve(blockModels, RailcraftBlocks.IRON_TANK_VALVE.variantFor(dyeColor).get(),
-          RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-      this.createTankValve(blockModels, RailcraftBlocks.STEEL_TANK_VALVE.variantFor(dyeColor).get(),
-          RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-      this.createCubeColumnBlock(blockModels,
-          RailcraftBlocks.IRON_TANK_WALL.variantFor(dyeColor).get());
-      this.createCubeColumnBlock(blockModels,
-          RailcraftBlocks.STEEL_TANK_WALL.variantFor(dyeColor).get());
-      this.createPost(blockModels, RailcraftBlocks.POST.variantFor(dyeColor).get());
-    }
+    Stream.of(RailcraftBlocks.STRENGTHENED_GLASS, RailcraftBlocks.IRON_TANK_GAUGE,
+            RailcraftBlocks.STEEL_TANK_GAUGE)
+        .forEach(blocks -> blocks.forEach(
+            block -> this.createStrengthenedGlass(blockModels, block.get())));
+    ColorCollection.zipApply(RailcraftBlocks.IRON_TANK_VALVE, RailcraftBlocks.IRON_TANK_WALL,
+        (valve, wall) -> this.createTankValve(blockModels, valve.get(), wall.get()));
+    ColorCollection.zipApply(RailcraftBlocks.STEEL_TANK_VALVE, RailcraftBlocks.STEEL_TANK_WALL,
+        (valve, wall) -> this.createTankValve(blockModels, valve.get(), wall.get()));
+    Stream.of(RailcraftBlocks.IRON_TANK_WALL, RailcraftBlocks.STEEL_TANK_WALL)
+        .forEach(blocks -> blocks.forEach(
+            block -> this.createCubeColumnBlock(blockModels, block.get())));
+    RailcraftBlocks.POST.forEach(block -> this.createPost(blockModels, block.get()));
 
     this.createAnvil(blockModels, RailcraftBlocks.STEEL_ANVIL.get());
     this.createAnvil(blockModels, RailcraftBlocks.CHIPPED_STEEL_ANVIL.get());

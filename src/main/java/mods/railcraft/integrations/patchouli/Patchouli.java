@@ -8,7 +8,6 @@ import mods.railcraft.world.level.block.steamboiler.SteamBoilerTankBlock;
 import mods.railcraft.world.level.block.tank.IronTankGaugeBlock;
 import mods.railcraft.world.level.block.tank.IronTankValveBlock;
 import mods.railcraft.world.level.block.tank.IronTankWallBlock;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import vazkii.patchouli.api.IStateMatcher;
 import vazkii.patchouli.api.PatchouliAPI;
@@ -71,11 +70,11 @@ public class Patchouli {
     patchouliApi.registerMultiblock(RailcraftConstants.id("steam_oven"), steamOven);
 
     var ironTankWallBlock = validTankWallBlock(patchouliApi,
-        RailcraftBlocks.IRON_TANK_WALL.variantFor(DyeColor.WHITE).get());
+        RailcraftBlocks.IRON_TANK_WALL.white().get());
     var ironTankGaugeBlock = validTankGaugeBlock(patchouliApi,
-        RailcraftBlocks.IRON_TANK_GAUGE.variantFor(DyeColor.WHITE).get());
+        RailcraftBlocks.IRON_TANK_GAUGE.white().get());
     var ironTankValveBlock = validTankValveBlock(patchouliApi,
-        RailcraftBlocks.IRON_TANK_VALVE.variantFor(DyeColor.WHITE).get());
+        RailcraftBlocks.IRON_TANK_VALVE.white().get());
     var tank = patchouliApi.makeMultiblock(new String[][]{
         {"BBBBB", "BBBBB", "BBVBB", "BBBBB", "BBBBB"}, //Y:4
         {"BGGGB", "GAAAG", "GAAAG", "GAAAG", "BGGGB"}, //Y:3
