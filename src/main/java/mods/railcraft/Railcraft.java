@@ -409,7 +409,8 @@ public class Railcraft {
   @SubscribeEvent
   public void handlePlayerTick(PlayerTickEvent.Post event) {
     if (event.getEntity() instanceof ServerPlayer player
-        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0) {
+        && player.tickCount % SharedConstants.TICKS_PER_SECOND == 0
+        && player.connection.hasChannel(LinkedCartsMessage.TYPE)) {
       var linkedCarts = EntitySearcher.findMinecarts()
           .around(player)
           .inflate(32F)

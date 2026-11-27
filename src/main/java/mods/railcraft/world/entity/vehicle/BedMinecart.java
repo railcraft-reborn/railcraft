@@ -92,13 +92,10 @@ public class BedMinecart extends RailcraftMinecart {
       return;
     }
 
-    // Sleeping dismounts the player, so we put him back on the cart.
-    player.startSleeping(pos);
-    if (player.getVehicle() != this && !player.startRiding(this, true, true)) {
-      player.stopSleeping();
-      return;
-    }
+    player.setSleepingPos(pos);
     player.setPose(Pose.SLEEPING);
+    player.setDeltaMovement(Vec3.ZERO);
+    player.needsSync = true;
 
     player.awardStat(Stats.SLEEP_IN_BED);
     CriteriaTriggers.SLEPT_IN_BED.trigger(player);
@@ -111,8 +108,10 @@ public class BedMinecart extends RailcraftMinecart {
   }
 
   /**
-   * Same checks of {@link ServerPlayer#startSleepInBed(BlockPos)}, without the ones that require a
-   * bed block.
+   * Same checks of
+   * {@link ServerPlayer#startSleepInBed(net.minecraft.world.level.block.AbstractBedBlock,
+   * BlockState, net.minecraft.world.attribute.BedRule, BlockPos)}, without the ones that require
+   * a bed block.
    */
   private Either<Player.BedSleepingProblem, Unit> checkSleep(ServerPlayer player, BlockPos pos) {
     Player.@Nullable BedSleepingProblem problem = null;

@@ -25,6 +25,9 @@ public class BedMinecartTestInstance extends GameTestInstance {
   public void run(GameTestHelper helper) {
     var cart = helper.spawn(RailcraftEntityTypes.BED_MINECART.get(), 1, 2, 1);
     var player = helper.makeMockServerPlayerInLevel();
+    // The first tick of an entity wakes it up if it isn't on a bed block,
+    // so get it out of the way before the player falls asleep
+    player.doTick();
     Runnable cleanup = () -> {
       setDayTime(helper, 1000);
       helper.getLevel().getServer().getPlayerList().remove(player);
@@ -71,8 +74,9 @@ public class BedMinecartTestInstance extends GameTestInstance {
         helper.assertTrue(player.getVehicle() == cart,
             "Player should ride the cart after waking up");
 
+        // startSleeping does nothing without a bed block, so set the sleeping position directly
         player.stopRiding();
-        player.startSleeping(cart.blockPosition());
+        player.setSleepingPos(cart.blockPosition());
         player.doTick();
         helper.assertFalse(player.isSleeping(), "Player should not sleep without the cart");
       } finally {
