@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steam_turbine"
+        "recipes": "railcraft:steam_turbine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

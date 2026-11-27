@@ -2,15 +2,15 @@
   "gives": {
     "id": "railcraft:brass_ingot"
   },
-  "max_uses": 12.0,
+  "max_uses": 12,
   "reputation_discount": 0.05,
   "wants": {
     "count": {
       "type": "minecraft:uniform",
-      "max": 3.0,
-      "min": 2.0
+      "max": 3,
+      "min": 2
     },
     "id": "minecraft:emerald"
   },
-  "xp": 15.0
+  "xp": 15
 }

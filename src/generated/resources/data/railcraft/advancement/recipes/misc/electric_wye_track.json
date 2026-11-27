@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:electric_wye_track"
+        "recipes": "railcraft:electric_wye_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

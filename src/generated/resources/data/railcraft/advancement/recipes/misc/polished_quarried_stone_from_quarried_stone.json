@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:polished_quarried_stone_from_quarried_stone"
+        "recipes": "railcraft:polished_quarried_stone_from_quarried_stone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

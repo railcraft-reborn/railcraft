@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:abyssal_brick_stairs"
+        "recipes": "railcraft:abyssal_brick_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

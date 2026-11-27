@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:dual_distant_signal"
+        "recipes": "railcraft:dual_distant_signal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

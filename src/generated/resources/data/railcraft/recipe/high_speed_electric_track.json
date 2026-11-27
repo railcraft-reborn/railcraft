@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:high_speed_rail",
     "b": "railcraft:stone_railbed",

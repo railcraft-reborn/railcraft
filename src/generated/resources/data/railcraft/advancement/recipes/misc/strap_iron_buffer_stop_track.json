@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strap_iron_buffer_stop_track"
+        "recipes": "railcraft:strap_iron_buffer_stop_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

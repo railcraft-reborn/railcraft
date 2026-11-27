@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:villager_detector"
+        "recipes": "railcraft:villager_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

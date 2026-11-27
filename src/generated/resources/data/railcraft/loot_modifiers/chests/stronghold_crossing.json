@@ -1,10 +1,8 @@
 {
   "type": "railcraft:dungeon_loot_modifier",
-  "conditions": [
-    {
-      "condition": "neoforge:loot_table_id",
-      "loot_table_id": "minecraft:chests/stronghold_crossing"
-    }
-  ],
+  "condition": {
+    "type": "neoforge:loot_table_id",
+    "loot_table_id": "minecraft:chests/stronghold_crossing"
+  },
   "lootTable": "railcraft:chests/simple_dungeon"
 }

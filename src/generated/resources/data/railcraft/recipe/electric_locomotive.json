@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "minecraft:redstone_lamp",
     "b": "#c:plates/steel",

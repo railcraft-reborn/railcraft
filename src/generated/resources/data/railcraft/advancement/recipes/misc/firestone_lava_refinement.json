@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:firestone_lava_refinement"
+        "recipes": "railcraft:firestone_lava_refinement"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

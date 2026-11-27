@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:copper_gear"
+        "recipes": "railcraft:copper_gear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

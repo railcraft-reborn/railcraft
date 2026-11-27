@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:iron_locomotive_track"
+        "recipes": "railcraft:iron_locomotive_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

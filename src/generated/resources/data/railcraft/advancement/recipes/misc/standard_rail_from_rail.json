@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:standard_rail_from_rail"
+        "recipes": "railcraft:standard_rail_from_rail"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

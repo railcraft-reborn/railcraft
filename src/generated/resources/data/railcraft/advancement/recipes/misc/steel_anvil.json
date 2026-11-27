@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steel_anvil"
+        "recipes": "railcraft:steel_anvil"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:nickel_zinc_battery"
+        "recipes": "railcraft:nickel_zinc_battery"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:force_track_emitter"
+        "recipes": "railcraft:force_track_emitter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

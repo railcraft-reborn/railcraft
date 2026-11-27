@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:locomotive_track_kit"
+        "recipes": "railcraft:locomotive_track_kit"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

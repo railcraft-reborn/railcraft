@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:elevator_track"
+        "recipes": "railcraft:elevator_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

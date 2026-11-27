@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:radio_circuit"
+        "recipes": "railcraft:radio_circuit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

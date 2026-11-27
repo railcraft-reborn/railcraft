@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strengthened_glass_invar"
+        "recipes": "railcraft:strengthened_glass_invar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

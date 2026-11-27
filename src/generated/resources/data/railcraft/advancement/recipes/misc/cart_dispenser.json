@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:cart_dispenser"
+        "recipes": "railcraft:cart_dispenser"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

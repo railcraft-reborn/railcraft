@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_sequencer_box"
+        "recipes": "railcraft:signal_sequencer_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

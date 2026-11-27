@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "minecraft:chiseled_quartz_block",
     "b": "minecraft:stone_pressure_plate"

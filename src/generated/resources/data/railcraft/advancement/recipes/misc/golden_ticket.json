@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:golden_ticket"
+        "recipes": "railcraft:golden_ticket"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:buffer_stop_track_kit"
+        "recipes": "railcraft:buffer_stop_track_kit"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

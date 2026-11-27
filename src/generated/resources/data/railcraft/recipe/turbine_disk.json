@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:turbine_blade",
     "b": "#c:ingots/steel"

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_tuner"
+        "recipes": "railcraft:signal_tuner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:bushing_gear_brass"
+        "recipes": "railcraft:bushing_gear_brass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

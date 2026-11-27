@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -21,10 +20,9 @@
         }
       ],
       "name": "railcraft_tools",
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -65,85 +63,72 @@
       "name": "railcraft_carts",
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 2.0,
-        "min": 1.0
+        "max": 2,
+        "min": 1
       }
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 8,
+              "min": 3
             }
-          ],
+          },
           "name": "minecraft:coal",
           "weight": 5
         },
         {
           "type": "minecraft:tag",
           "expand": true,
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+          "items": "#railcraft:plate_chest_loot",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 8,
+              "min": 3
             }
-          ],
-          "name": "railcraft:plate_chest_loot",
+          },
           "weight": 2
         },
         {
           "type": "minecraft:tag",
           "expand": true,
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
+          "items": "#railcraft:gear_chest_loot",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 3,
+              "min": 2
             }
-          ],
-          "name": "railcraft:gear_chest_loot"
+          }
         },
         {
           "type": "minecraft:tag",
           "expand": true,
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+          "items": "#railcraft:ingot_chest_loot",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 8,
+              "min": 3
             }
-          ],
-          "name": "railcraft:ingot_chest_loot",
+          },
           "weight": 4
         }
       ],
       "name": "railcraft_resources",
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 2.0,
-        "min": 0.0
+        "max": 2,
+        "min": 0
       }
     }
   ],

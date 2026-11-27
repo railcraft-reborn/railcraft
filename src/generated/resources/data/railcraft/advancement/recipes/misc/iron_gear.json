@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:iron_gear"
+        "recipes": "railcraft:iron_gear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:manual_rolling_machine"
+        "recipes": "railcraft:manual_rolling_machine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

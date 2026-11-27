@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:coke_oven/charcoal"
+        "recipes": "railcraft:coke_oven/charcoal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

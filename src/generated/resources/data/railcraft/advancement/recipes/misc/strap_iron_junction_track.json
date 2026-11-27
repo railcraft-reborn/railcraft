@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strap_iron_junction_track"
+        "recipes": "railcraft:strap_iron_junction_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

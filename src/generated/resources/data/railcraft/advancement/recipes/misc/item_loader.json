@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:item_loader"
+        "recipes": "railcraft:item_loader"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

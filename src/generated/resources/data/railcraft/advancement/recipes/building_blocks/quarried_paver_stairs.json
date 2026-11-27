@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:quarried_paver_stairs"
+        "recipes": "railcraft:quarried_paver_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

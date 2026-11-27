@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:reinforced_messenger_track"
+        "recipes": "railcraft:reinforced_messenger_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

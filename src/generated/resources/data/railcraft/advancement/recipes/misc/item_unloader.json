@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:item_unloader"
+        "recipes": "railcraft:item_unloader"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

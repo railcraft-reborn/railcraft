@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:tin_gear"
+        "recipes": "railcraft:tin_gear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

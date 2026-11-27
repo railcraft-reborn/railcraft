@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:polished_abyssal_stone_from_abyssal_stone_in_stonecutter"
+        "recipes": "railcraft:polished_abyssal_stone_from_abyssal_stone_in_stonecutter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

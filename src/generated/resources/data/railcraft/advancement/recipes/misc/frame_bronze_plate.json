@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:frame_bronze_plate"
+        "recipes": "railcraft:frame_bronze_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

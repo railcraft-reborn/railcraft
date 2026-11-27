@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:bed_minecart"
+        "recipes": "railcraft:bed_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

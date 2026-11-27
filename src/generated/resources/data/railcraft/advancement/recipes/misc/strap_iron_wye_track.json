@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:strap_iron_wye_track"
+        "recipes": "railcraft:strap_iron_wye_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

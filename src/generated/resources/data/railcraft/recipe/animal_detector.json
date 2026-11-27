@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "minecraft:oak_log",
     "b": "minecraft:stone_pressure_plate"

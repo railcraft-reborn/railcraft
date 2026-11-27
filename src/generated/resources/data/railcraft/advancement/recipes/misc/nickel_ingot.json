@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:nickel_ingot"
+        "recipes": "railcraft:nickel_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

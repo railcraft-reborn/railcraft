@@ -1,0 +1,10 @@
+{
+  "type": "railcraft:quarried",
+  "state_provider": {
+    "id": "railcraft:quarried_stone"
+  },
+  "target_provider": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "railcraft:quarried_replaceable_blocks"
+  }
+}

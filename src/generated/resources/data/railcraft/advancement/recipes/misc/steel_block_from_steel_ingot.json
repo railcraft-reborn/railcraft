@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:steel_block_from_steel_ingot"
+        "recipes": "railcraft:steel_block_from_steel_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

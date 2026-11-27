@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:electric_rail",
     "b": "railcraft:stone_railbed"

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:chiseled_quarried_stone"
+        "recipes": "railcraft:chiseled_quarried_stone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:gated_track_kit"
+        "recipes": "railcraft:gated_track_kit"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "group": "lead_ingot",
+  "ingredient": "railcraft:lead_raw",
+  "result": {
+    "id": "railcraft:lead_ingot"
+  }
+}

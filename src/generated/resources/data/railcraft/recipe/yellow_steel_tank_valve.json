@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "#railcraft:steel_tank_valve",
     "b": "#c:dyes/yellow"

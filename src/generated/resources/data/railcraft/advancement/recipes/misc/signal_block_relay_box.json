@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_block_relay_box"
+        "recipes": "railcraft:signal_block_relay_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

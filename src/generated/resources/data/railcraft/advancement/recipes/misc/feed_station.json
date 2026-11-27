@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:feed_station"
+        "recipes": "railcraft:feed_station"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

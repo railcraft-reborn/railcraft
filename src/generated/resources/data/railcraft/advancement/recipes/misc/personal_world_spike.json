@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:personal_world_spike"
+        "recipes": "railcraft:personal_world_spike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

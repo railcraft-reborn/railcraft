@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:chiseled_abyssal_stone"
+        "recipes": "railcraft:chiseled_abyssal_stone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

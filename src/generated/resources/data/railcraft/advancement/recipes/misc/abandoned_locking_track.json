@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:abandoned_locking_track"
+        "recipes": "railcraft:abandoned_locking_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

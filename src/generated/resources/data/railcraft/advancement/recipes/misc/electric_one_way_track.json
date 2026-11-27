@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:electric_one_way_track"
+        "recipes": "railcraft:electric_one_way_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

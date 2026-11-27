@@ -1,5 +1,5 @@
 {
-  "amount": 2.0,
+  "amount": 2,
   "random_sequence": "railcraft:trade_set/trackman/level_2",
   "trades": "#railcraft:trackman/level_2"
 }

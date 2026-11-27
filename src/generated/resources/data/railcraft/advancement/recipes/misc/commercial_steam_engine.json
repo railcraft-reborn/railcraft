@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:commercial_steam_engine"
+        "recipes": "railcraft:commercial_steam_engine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

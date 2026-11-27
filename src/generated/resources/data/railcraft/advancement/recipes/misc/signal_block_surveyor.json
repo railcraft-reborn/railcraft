@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_block_surveyor"
+        "recipes": "railcraft:signal_block_surveyor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

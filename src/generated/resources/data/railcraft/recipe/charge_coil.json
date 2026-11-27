@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "railcraft:charge_spool_small",
     "b": "#c:plates/iron"

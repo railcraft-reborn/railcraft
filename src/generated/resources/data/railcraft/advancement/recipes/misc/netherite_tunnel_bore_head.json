@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:netherite_tunnel_bore_head"
+        "recipes": "railcraft:netherite_tunnel_bore_head"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

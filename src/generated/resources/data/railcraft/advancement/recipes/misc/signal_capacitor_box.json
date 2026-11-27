@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:signal_capacitor_box"
+        "recipes": "railcraft:signal_capacitor_box"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

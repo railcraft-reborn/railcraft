@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:routing_track_kit"
+        "recipes": "railcraft:routing_track_kit"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

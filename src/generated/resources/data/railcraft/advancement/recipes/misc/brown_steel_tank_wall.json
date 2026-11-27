@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:brown_steel_tank_wall"
+        "recipes": "railcraft:brown_steel_tank_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

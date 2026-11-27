@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:white_post"
+        "recipes": "railcraft:white_post"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

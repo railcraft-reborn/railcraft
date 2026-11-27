@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:abyssal_paver_slab"
+        "recipes": "railcraft:abyssal_paver_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

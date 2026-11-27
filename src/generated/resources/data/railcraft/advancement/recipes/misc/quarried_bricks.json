@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:quarried_bricks"
+        "recipes": "railcraft:quarried_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

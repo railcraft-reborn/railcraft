@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "B": "#c:slime_balls",
     "G": "#c:ingots/gold",

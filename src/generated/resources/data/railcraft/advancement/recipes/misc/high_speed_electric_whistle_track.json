@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:high_speed_electric_whistle_track"
+        "recipes": "railcraft:high_speed_electric_whistle_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

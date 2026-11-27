@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:iron_turnout_track"
+        "recipes": "railcraft:iron_turnout_track"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

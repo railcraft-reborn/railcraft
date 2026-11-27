@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "a": "minecraft:iron_ingot",
     "b": "railcraft:radio_circuit",

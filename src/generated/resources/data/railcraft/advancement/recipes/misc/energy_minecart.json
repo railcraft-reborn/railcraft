@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "railcraft:energy_minecart"
+        "recipes": "railcraft:energy_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
